@@ -27,12 +27,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  bloc: ^7.1.0
+  bloc: ^7.2.0
   easy_localization: ^3.0.0
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_bloc: ^7.2.0
+  flutter_bloc: ^7.3.0
   fluttertoast: ^8.0.8
   geolocator: ^7.6.2
   google_maps_flutter: ^2.0.10
@@ -74,6 +74,11 @@ flutter:
     - assets/
     - assets/translations/
     - assets/marker.png
+    - assets/back.png
+    - assets/check_on.png
+    - assets/check_off.png
+    - assets/close.png
+    - assets/shape.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

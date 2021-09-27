@@ -21,13 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
+          const Center(
               child: Icon(
             CupertinoIcons.house,
             size: 50,
             color: Colors.white,
           )),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           CustomText(

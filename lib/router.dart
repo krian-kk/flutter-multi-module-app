@@ -1,11 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/case_details_screen.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
+import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
+import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -15,6 +18,9 @@ class AppRoutes {
   static const splashScreen = 'splash_screen';
   static const dashboardScreen = 'dashboard_screen';
   static const homeTabScreen = 'home_tab_screen';
+  static const searchAllocationDetailsScreen =
+      'search_allocation_details_screen';
+  static const caseDetailsScreen = 'case_details_screen';
 }
 
 Route<dynamic> getRoute(RouteSettings settings) {
@@ -25,6 +31,10 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildDashboardScreen(settings);
     case AppRoutes.homeTabScreen:
       return _buildHomePage(settings);
+    case AppRoutes.searchAllocationDetailsScreen:
+      return _buildSearchAllocationDetailsScreen(settings);
+    case AppRoutes.caseDetailsScreen:
+      return _buildCaseDetailsScreen(settings);
   }
   return _buildSplashScreen();
 }
@@ -50,6 +60,28 @@ Route<dynamic> _buildHomePage(RouteSettings settings) {
     return addAuthBloc(context, PageBuilder.buildBottomTabPage(authBloc));
   });
 }
+
+Route<dynamic> _buildSearchAllocationDetailsScreen(RouteSettings settings) {
+  return MaterialPageRoute(builder: (context) {
+    return addAuthBloc(
+        context, PageBuilder.buildSearchAllocationDetailsScreen());
+  });
+}
+
+Route<dynamic> _buildCaseDetailsScreen(RouteSettings sttings) {
+  return MaterialPageRoute(builder: (context) {
+    // final CaseDetailsBloc authBloc = BlocProvider.of<CaseDetailsBloc>(context);
+    return addAuthBloc(context, PageBuilder.buildCaseDetailsScreen());
+  });
+}
+
+// Route<dynamic> _buildCaseDetailsScreen(RouteSettings setting) {
+//   return MaterialPageRoute(builder: (context) {
+//     CaseDetailsBloc authBloc =
+//         BlocProvider.of<CaseDetailsBloc>(context, listen: true);
+//     return addAuthBloc(context, PageBuilder.buildCaseDetailsScreen());
+//   });
+// }
 
 class PageBuilder {
   // Prefer (✔️) - SplashScreen Screen
@@ -92,6 +124,32 @@ class PageBuilder {
       child: HomeTabScreen(authBloc),
     );
   }
+
+  static Widget buildSearchAllocationDetailsScreen() {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeTabBloc>(
+          create: (BuildContext context) {
+            return HomeTabBloc()..add(HomeTabInitialEvent());
+          },
+        ),
+      ],
+      child: SearchAllocationDetailsScreen(),
+    );
+  }
+
+  static Widget buildCaseDetailsScreen() {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CaseDetailsBloc>(
+          create: (BuildContext context) {
+            return CaseDetailsBloc()..add(CaseDetailsInitialEvent());
+          },
+        ),
+      ],
+      child: CaseDetailsScreen(),
+    );
+  }
 }
 
 Widget addAuthBloc(BuildContext context, Widget widget) {
@@ -103,7 +161,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
-        Navigator.pushReplacementNamed(context, AppRoutes.dashboardScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.caseDetailsScreen);
         // Navigator.pushNamed(context, AppRoutes.homepatient);
       }
     },

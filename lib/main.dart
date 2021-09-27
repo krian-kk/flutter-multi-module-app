@@ -32,7 +32,7 @@ Future<void> main() async {
         },
         child: MyApp(),
       ),
-      supportedLocales: [Locale('en', 'US'), Locale('ar', 'AE')],
+      supportedLocales: [const Locale('en', 'US'), const Locale('ar', 'AE')],
       path: "assets/translations",
       fallbackLocale: const Locale('en', 'US'),
     ),
