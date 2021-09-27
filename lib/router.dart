@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/screen/allocation/allocation.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
-import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
-import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
-import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -14,7 +13,7 @@ import 'authentication/authentication_state.dart';
 class AppRoutes {
   static const splashScreen = 'splash_screen';
   static const dashboardScreen = 'dashboard_screen';
-  static const homeTabScreen = 'home_tab_screen';
+  static const allocationScreen = 'allocation_screen';
 }
 
 Route<dynamic> getRoute(RouteSettings settings) {
@@ -23,8 +22,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildSplashScreen();
     case AppRoutes.dashboardScreen:
       return _buildDashboardScreen(settings);
-    case AppRoutes.homeTabScreen:
-      return _buildHomePage(settings);
+    case AppRoutes.allocationScreen:
+      return _buildAllocationScreen(settings);
   }
   return _buildSplashScreen();
 }
@@ -35,19 +34,20 @@ Route<dynamic> _buildSplashScreen() {
   );
 }
 
+Route<dynamic> _buildAllocationScreen(RouteSettings settings) {
+  return MaterialPageRoute(builder: (context) {
+    final AuthenticationBloc authBloc =
+        BlocProvider.of<AuthenticationBloc>(context);
+    return addAuthBloc(context, PageBuilder.buildAllocationPage(authBloc));
+  });
+}
+
+
 Route<dynamic> _buildDashboardScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
     return addAuthBloc(context, PageBuilder.buildDashboardPage(authBloc));
-  });
-}
-
-Route<dynamic> _buildHomePage(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
-    final AuthenticationBloc authBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildBottomTabPage(authBloc));
   });
 }
 
@@ -66,6 +66,7 @@ class PageBuilder {
     );
   }
 
+// BottomNavBar(authBloc);
   static Widget buildDashboardPage(AuthenticationBloc authBloc) {
     return MultiBlocProvider(
       providers: [
@@ -79,17 +80,16 @@ class PageBuilder {
     );
   }
 
-  //BottomNavBar(authBloc);
-  static Widget buildBottomTabPage(AuthenticationBloc authBloc) {
+   static Widget buildAllocationPage(AuthenticationBloc authBloc) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<HomeTabBloc>(
+        BlocProvider<AllocationBloc>(
           create: (BuildContext context) {
-            return HomeTabBloc()..add(HomeTabInitialEvent());
+            return AllocationBloc()..add(AllocationInitialEvent());
           },
         ),
       ],
-      child: HomeTabScreen(authBloc),
+      child: AllocationScreen(authBloc),
     );
   }
 }
@@ -103,7 +103,8 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
-        Navigator.pushReplacementNamed(context, AppRoutes.dashboardScreen);
+        // Navigator.pushReplacementNamed(context, AppRoutes.dashboardScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.allocationScreen);
         // Navigator.pushNamed(context, AppRoutes.homepatient);
       }
     },

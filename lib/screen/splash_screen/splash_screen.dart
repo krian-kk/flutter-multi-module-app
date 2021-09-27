@@ -16,23 +16,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorResource.color0066cc,
+      color: ColorResource.colorffffff,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-              child: Icon(
-            CupertinoIcons.house,
-            size: 50,
-            color: Colors.white,
-          )),
-          SizedBox(
-            height: 30,
-          ),
           CustomText(
             StringResource.origa,
-            color: Colors.white,
+            color: ColorResource.color23375A,
             fontSize: FontSize.twentyFour,
           )
         ],

@@ -15,6 +15,8 @@ PODS:
     - GoogleMaps/Base
   - "location_permissions (3.0.0+1)":
     - Flutter
+  - package_info_plus (0.4.5):
+    - Flutter
   - shared_preferences (0.0.1):
     - Flutter
   - Toast (4.0.0)
@@ -29,6 +31,7 @@ DEPENDENCIES:
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -49,6 +52,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   location_permissions:
     :path: ".symlinks/plugins/location_permissions/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   url_launcher:
@@ -63,6 +68,7 @@ SPEC CHECKSUMS:
   google_maps_flutter: abdb8dee6c52d4be36ad131ee6ebfacd14417c5a
   GoogleMaps: 008e2c80e38605b56b560e8deb73d4194ff30bef
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   shared_preferences: 5033afbb22d372e15aff8ff766df9021b845f273
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
