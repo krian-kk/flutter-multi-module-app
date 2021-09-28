@@ -4,6 +4,7 @@ import 'package:origa/screen/search_allocation_details_screen/bloc/search_alloca
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -41,7 +42,7 @@ class _SearchAllocationDetailsScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorResource.colorC5C8CE,
-        title: Text('SEARCH ALLOCATION DETAILS'),
+        title: Text(StringResource.searchAllocationDetails),
         centerTitle: false,
         leadingWidth: 0.0,
         titleTextStyle: TextStyle(
@@ -76,32 +77,32 @@ class _SearchAllocationDetailsScreenState
                     Column(
                       children: [
                         CustomTextField(
-                          'Account No.',
+                          StringResource.accountNo + '.',
                           accountNoController,
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          'Customer Name',
+                          StringResource.customerName,
                           customerNameController,
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          'DPD/Bucket',
+                          StringResource.dpdBucket,
                           bucketController,
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          'Status',
+                          StringResource.status,
                           statusController,
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          'Pincode',
+                          StringResource.pincode,
                           pincodeController,
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          'Customer ID',
+                          StringResource.myRecentActivity,
                           customerIDController,
                         ),
                         const SizedBox(height: 21),
@@ -111,7 +112,7 @@ class _SearchAllocationDetailsScreenState
                                 ? ImageResource.checkOn
                                 : ImageResource.checkOff),
                             const SizedBox(width: 13),
-                            CustomText('My Recent Activity')
+                            CustomText(StringResource.myRecentActivity)
                           ],
                         ),
                         Row(
@@ -120,7 +121,7 @@ class _SearchAllocationDetailsScreenState
                                 ? ImageResource.checkOn
                                 : ImageResource.checkOff),
                             const SizedBox(width: 13),
-                            CustomText('Show Only Top Results')
+                            CustomText(StringResource.showOnlyTopResults)
                           ],
                         )
                       ],
@@ -133,11 +134,10 @@ class _SearchAllocationDetailsScreenState
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
         child: CustomButton(
-          'SEARCH',
+          StringResource.sEARCH,
           cardShape: 85,
-          // width: 100,
         ),
       ),
     );
