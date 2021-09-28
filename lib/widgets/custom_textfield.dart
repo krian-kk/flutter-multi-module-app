@@ -64,7 +64,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             maxLines: widget.obscureText ? 1 : null,
             style: TextStyle(
                 color: ColorResource.color000000,
-                fontFamily: Font.robotoRegular.toString(),
+                fontFamily: Font.latoRegular.toString(),
                 fontSize: 14),
             decoration: InputDecoration(
               hintText: widget.hintText,

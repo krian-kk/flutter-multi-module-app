@@ -37,7 +37,7 @@ class CustomButton extends StatefulWidget {
       this.trailingWidget = const Expanded(
         child: SizedBox.shrink(),
       ),
-      this.font = Font.robotoRegular,
+      this.font = Font.latoRegular,
       this.buttonBackgroundColor = ColorResource.color23375A,
       this.borderColor = Colors.black26,
       this.textAlign = TextAlign.left,

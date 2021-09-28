@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Font {
-  static const Font robotoBold = Font("Roboto-Bold");
-  static const Font robotoItalic = Font("Roboto-Italic");
-  static const Font robotoMedium = Font("Roboto-Medium");
-  static const Font robotoRegular = Font("Roboto-Regular");
+  static const Font latoBold = Font("Lato-Bold");
+  static const Font latoItalic = Font("Lato-Italic");
+  static const Font latoMedium = Font("Lato-Medium");
+  static const Font latoRegular = Font("Lato-Regular");
 
   final String _fontName;
 

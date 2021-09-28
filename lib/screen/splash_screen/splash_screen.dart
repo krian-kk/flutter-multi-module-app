@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorResource.color0066cc,
+      color: ColorResource.colorffffff,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           CustomText(
             StringResource.origa,
-            color: Colors.white,
+            color: ColorResource.color23375A,
             fontSize: FontSize.twentyFour,
           )
         ],

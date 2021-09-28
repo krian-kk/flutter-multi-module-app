@@ -4,9 +4,9 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/case_details_screen.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
-import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
-import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
-import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
+// import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
+// import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
+// import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
 import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
@@ -29,8 +29,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildSplashScreen();
     case AppRoutes.dashboardScreen:
       return _buildDashboardScreen(settings);
-    case AppRoutes.homeTabScreen:
-      return _buildHomePage(settings);
+    // case AppRoutes.homeTabScreen:
+    //   return _buildHomePage(settings);
     case AppRoutes.searchAllocationDetailsScreen:
       return _buildSearchAllocationDetailsScreen(settings);
     case AppRoutes.caseDetailsScreen:
@@ -45,19 +45,19 @@ Route<dynamic> _buildSplashScreen() {
   );
 }
 
+// Route<dynamic> _buildAllocationScreen(RouteSettings settings) {
+//   return MaterialPageRoute(builder: (context) {
+//     final AuthenticationBloc authBloc =
+//         BlocProvider.of<AuthenticationBloc>(context);
+//     return addAuthBloc(context, PageBuilder.buildAllocationPage(authBloc));
+//   });
+// }
+
 Route<dynamic> _buildDashboardScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
     return addAuthBloc(context, PageBuilder.buildDashboardPage(authBloc));
-  });
-}
-
-Route<dynamic> _buildHomePage(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
-    final AuthenticationBloc authBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildBottomTabPage(authBloc));
   });
 }
 
@@ -98,6 +98,7 @@ class PageBuilder {
     );
   }
 
+// BottomNavBar(authBloc);
   static Widget buildDashboardPage(AuthenticationBloc authBloc) {
     return MultiBlocProvider(
       providers: [
@@ -111,26 +112,26 @@ class PageBuilder {
     );
   }
 
-  //BottomNavBar(authBloc);
-  static Widget buildBottomTabPage(AuthenticationBloc authBloc) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<HomeTabBloc>(
-          create: (BuildContext context) {
-            return HomeTabBloc()..add(HomeTabInitialEvent());
-          },
-        ),
-      ],
-      child: HomeTabScreen(authBloc),
-    );
-  }
+  //  static Widget buildAllocationPage(AuthenticationBloc authBloc) {
+  //   return MultiBlocProvider(
+  //     providers: [
+  //       BlocProvider<AllocationBloc>(
+  //         create: (BuildContext context) {
+  //           return AllocationBloc()..add(AllocationInitialEvent());
+  //         },
+  //       ),
+  //     ],
+  //     child: AllocationScreen(authBloc),
+  //   );
+  // }
 
   static Widget buildSearchAllocationDetailsScreen() {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<HomeTabBloc>(
+        BlocProvider<SearchAllocationDetailsBloc>(
           create: (BuildContext context) {
-            return HomeTabBloc()..add(HomeTabInitialEvent());
+            return SearchAllocationDetailsBloc()
+              ..add(SearchAllocationDetailsInitialEvent());
           },
         ),
       ],
@@ -161,7 +162,8 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
-        Navigator.pushReplacementNamed(context, AppRoutes.caseDetailsScreen);
+        Navigator.pushReplacementNamed(
+            context, AppRoutes.searchAllocationDetailsScreen);
         // Navigator.pushNamed(context, AppRoutes.homepatient);
       }
     },

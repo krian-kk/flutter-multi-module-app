@@ -41,7 +41,7 @@ class InputLabelWidget extends StatelessWidget {
         textCapitalization: this.textCapitalization,
         inputFormatters: inputformaters,
         style: TextStyle(
-            fontFamily: Font.robotoRegular.toString(),
+            fontFamily: Font.latoRegular.toString(),
             fontSize: 14,
             color: ColorResource.color232222),
         decoration: InputDecoration(
@@ -55,7 +55,7 @@ class InputLabelWidget extends StatelessWidget {
             ),
             labelText: label,
             labelStyle: TextStyle(
-                fontFamily: Font.robotoRegular.toString(),
+                fontFamily: Font.latoRegular.toString(),
                 fontSize: 14,
                 color: ColorResource.color232222),
             hintText: hint,
@@ -63,7 +63,7 @@ class InputLabelWidget extends StatelessWidget {
             hintStyle: TextStyle(
                 color: ColorResource.colorD1D1D1,
                 fontSize: 14,
-                fontFamily: Font.robotoRegular.toString())),
+                fontFamily: Font.latoRegular.toString())),
       ),
     );
   }

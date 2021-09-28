@@ -53,7 +53,7 @@ class _GradientButtonState extends State<GradientButton> {
           child: CustomText(
             widget.buttonName,
             color: widget.textColor,
-            font: Font.robotoMedium,
+            font: Font.latoMedium,
             fontSize: widget.fontSize,
           ),
         ),

@@ -88,8 +88,8 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: CustomText(
-                                  StringResource.done,
-                                  font: Font.robotoBold,
+                                  'StringResource.done',
+                                  font: Font.latoBold,
                                   fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeights.bold,

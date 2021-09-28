@@ -3,8 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/primary_button.dart';
-import 'package:origa/widgets/secondary_button.dart';
+import 'package:origa/widgets/custom_button.dart';
 
 class CustomDialogBox extends StatefulWidget {
   final String title, descriptions;
@@ -74,9 +73,9 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                 height: 22,
               ),
               Center(
-                child: PrimaryButton(
+                child: CustomButton(
                   StringResource.okay,
-                  onClick: () {
+                  onTap: () {
                     Navigator.pop(context);
                   },
                 ),
@@ -85,9 +84,9 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                 height: 22,
               ),
               Center(
-                child: SecondaryButton(
+                child: CustomButton(
                   StringResource.cancel,
-                  onClick: () {
+                  onTap: () {
                     Navigator.pop(context);
                   },
                 ),

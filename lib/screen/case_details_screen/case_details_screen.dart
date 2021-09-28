@@ -77,11 +77,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   width: double.infinity,
                                   height: 170,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         CustomText(
                                           'DEBASISH PATNAIK',
@@ -90,7 +90,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           color: ColorResource.color333333,
                                         ),
-                                        const SizedBox(height: 11),
+                                        const SizedBox(height: 9),
                                         CustomText(
                                           StringResource.accountNo,
                                           fontWeight: FontWeight.w400,
@@ -98,7 +98,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           color: ColorResource.color666666,
                                         ),
-                                        const SizedBox(height: 9),
+                                        const SizedBox(height: 7),
                                         CustomText(
                                           'TVSF_BFRT6524869550',
                                           fontWeight: FontWeight.w700,
@@ -106,7 +106,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           color: ColorResource.color333333,
                                         ),
-                                        const SizedBox(height: 13),
+                                        const SizedBox(height: 11),
                                         CustomText(
                                           StringResource.overdueAmount,
                                           fontWeight: FontWeight.w400,
@@ -114,7 +114,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           color: ColorResource.color666666,
                                         ),
-                                        const SizedBox(height: 9),
+                                        const SizedBox(height: 7),
                                         CustomText(
                                           '397553.67',
                                           fontWeight: FontWeight.w700,
@@ -266,7 +266,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       fontStyle: FontStyle.normal,
                                       color: ColorResource.color666666,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 4),
                                     CustomText(
                                       'Bank Name',
                                       fontSize: FontSize.fourteen,
@@ -274,7 +274,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color333333,
                                     ),
-                                    const SizedBox(height: 14),
+                                    const SizedBox(height: 10),
                                     CustomText(
                                       StringResource.referenceLender,
                                       fontSize: FontSize.twelve,
@@ -282,7 +282,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       fontStyle: FontStyle.normal,
                                       color: ColorResource.color666666,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 4),
                                     CustomText(
                                       'Name',
                                       fontSize: FontSize.fourteen,
@@ -290,7 +290,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color333333,
                                     ),
-                                    const SizedBox(height: 14),
+                                    const SizedBox(height: 10),
                                     CustomText(
                                       StringResource.referenceURL,
                                       fontSize: FontSize.twelve,
@@ -298,7 +298,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       fontStyle: FontStyle.normal,
                                       color: ColorResource.color666666,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 4),
                                     CustomText(
                                       'URL',
                                       fontSize: FontSize.fourteen,
@@ -306,7 +306,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color333333,
                                     ),
-                                    const SizedBox(height: 16),
+                                    const SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -316,7 +316,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           width: 120,
                                           height: 40,
                                         ),
-                                        SizedBox(width: 10),
+                                        SizedBox(width: 8),
                                         CustomButton(
                                           StringResource.sendWHATSAPP,
                                           width: 155,
@@ -356,12 +356,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(StringResource.accountNo),
-                                          SizedBox(height: 9),
+                                          SizedBox(height: 5),
                                           CustomText('TVSF_BFRT6458922993'),
-                                          SizedBox(height: 15),
+                                          SizedBox(height: 11),
                                           CustomText(
                                               StringResource.overdueAmount),
-                                          SizedBox(height: 9),
+                                          SizedBox(height: 5),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
