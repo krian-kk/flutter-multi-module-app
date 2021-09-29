@@ -16,6 +16,7 @@ class CustomText extends StatefulWidget {
   final int? maxLines;
   final FontWeight? fontWeight;
   final FontStyle? fontStyle;
+  final double? letterSpacing;
   final TextStyle? style;
 
   CustomText(String text,
@@ -29,6 +30,7 @@ class CustomText extends StatefulWidget {
       this.onTap,
       this.isUnderLine = false,
       this.isSingleLine = false,
+      this.letterSpacing,
       this.style,
       this.maxLines})
       // ignore: prefer_initializing_formals
@@ -42,26 +44,23 @@ class _CustomTextState extends State<CustomText> {
   @override
   Widget build(BuildContext context) {
     // ignore: unnecessary_this
-    final Text textWidget = Text(
-      widget.text,
-
-      // ignore: unnecessary_this
-      textAlign: this.widget.textAlign,
-      overflow: widget.isSingleLine ? TextOverflow.ellipsis : null,
-      maxLines: widget.maxLines,
-      style: widget.style ??
-          TextStyle(
-              decoration: widget.isUnderLine
-                  ? TextDecoration.underline
-                  : TextDecoration.none,
-              color: widget.color,
-              fontFamily: widget.font.value,
-              fontSize: widget.fontSize,
-              height: widget.lineHeight,
-              fontStyle: widget.fontStyle,
-              fontWeight: widget.fontWeight),
-      softWrap: true,
-    );
+    final Text textWidget = Text(this.widget.text,
+            // ignore: unnecessary_this
+            textAlign: this.widget.textAlign,
+            overflow: widget.isSingleLine ? TextOverflow.ellipsis : null,
+            maxLines: widget.maxLines,
+            style: TextStyle(
+                decoration: widget.isUnderLine
+                    ? TextDecoration.underline
+                    : TextDecoration.none,
+                color: widget.color,
+                fontFamily: widget.font.value,
+                fontSize: widget.fontSize,
+                height: widget.lineHeight,
+                fontStyle: widget.fontStyle,
+                letterSpacing: widget.letterSpacing,
+                fontWeight: widget.fontWeight))
+        .tr();
 
     if (widget.onTap != null) {
       return GestureDetector(

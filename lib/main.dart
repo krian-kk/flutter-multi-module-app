@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,19 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
   Bloc.observer = EchoBlocDelegate();
+  runApp(
+    EasyLocalization(
+      child: BlocProvider<AuthenticationBloc>(
+        create: (BuildContext context) {
+          return AuthenticationBloc()..add(AppStarted());
+        },
+        child: MyApp(),
+      ),
+      supportedLocales: [const Locale('en', 'US'), const Locale('ar', 'AE')],
+      path: "assets/translations",
+      fallbackLocale: const Locale('en', 'US'),
+    ),
+  );
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) {
       return AuthenticationBloc()..add(AppStarted());
@@ -66,38 +80,38 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-          locale: _locale,
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('ar', ''),
-            Locale('hi', '')
-          ],
-          localizationsDelegates: const [
-            AppLocalizationsDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate
-          ],
-          localeResolutionCallback:
-              (Locale? locale, Iterable<Locale> supportedLocales) {
-            for (Locale supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale?.languageCode &&
-                  supportedLocale.countryCode == locale?.countryCode) {
-                return supportedLocale;
-              }
-            }
-            return supportedLocales.first;
-          },
-          onGenerateRoute: getRoute,
-          debugShowCheckedModeBanner: false,
-          // ignore: prefer_double_quotes
+      locale: _locale,
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('ar', ''),
+        Locale('hi', '')
+      ],
+      localizationsDelegates: const [
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
+      localeResolutionCallback:
+          (Locale? locale, Iterable<Locale> supportedLocales) {
+        for (Locale supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode &&
+              supportedLocale.countryCode == locale?.countryCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
+      onGenerateRoute: getRoute,
+      debugShowCheckedModeBanner: false,
+      // ignore: prefer_double_quotes
 
-          home: addAuthBloc(
-            context,
-             SplashScreen(),
-          ),
-        );
-}
+      home: addAuthBloc(
+        context,
+        SplashScreen(),
+      ),
+    );
+  }
 }
 
 

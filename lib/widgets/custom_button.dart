@@ -26,6 +26,8 @@ class CustomButton extends StatefulWidget {
   final double fontSize;
   final Font font;
   final bool isEnabled;
+  final double width;
+  final double height;
 
   CustomButton(this.text,
       {this.fontWeight = FontWeight.w600,
@@ -35,23 +37,25 @@ class CustomButton extends StatefulWidget {
       this.trailingWidget = const Expanded(
         child: SizedBox.shrink(),
       ),
-      this.font = Font.latoMedium,
+      this.font = Font.latoRegular,
       this.buttonBackgroundColor = ColorResource.color23375A,
-      this.borderColor = ColorResource.color23375A,
+      this.borderColor = Colors.black26,
       this.textAlign = TextAlign.left,
       this.onTap,
-      this.textColor = Colors.white,
+      this.textColor = ColorResource.colorFFFFFF,
       this.fontSize = FontSize.eighteen,
       this.isUnderLine = false,
       this.isLeading = false,
       this.isTrailing = false,
       this.isSingleLine = false,
-      this.trailingIconData = Icons.settings,
       this.cardElevation = 0.0,
       this.cardShape = 8.0,
       this.axis = Axis.horizontal,
       this.alignment = MainAxisAlignment.center,
       this.maxLines,
+      this.trailingIconData,
+      this.height = 56,
+      this.width = double.infinity,
       this.isEnabled = true});
 
   @override
@@ -68,18 +72,22 @@ class _CustomButtonState extends State<CustomButton> {
         }
       },
       child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 56,
-        child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(widget.cardShape),
-              side: BorderSide(
-                width: 0.5,
-                  color: widget.borderColor
-                      .withOpacity(widget.isEnabled ? 1 : 0.3))),
-          color: widget.buttonBackgroundColor
-              .withOpacity(widget.isEnabled ? 1 : 0.3),
-          elevation: widget.cardElevation,
+        width: widget.width,
+        height: widget.height,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(widget.cardShape)),
+            color: widget.buttonBackgroundColor
+                .withOpacity(widget.isEnabled ? 1 : 0.3),
+          ),
+          // shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.circular(widget.cardShape),
+          //     side: BorderSide(
+          //         color: widget.borderColor
+          //             .withOpacity(widget.isEnabled ? 1 : 0.3))),
+          // color: widget.buttonBackgroundColor
+          //     .withOpacity(widget.isEnabled ? 1 : 0.3),
+          //elevation: widget.cardElevation,
           child: Padding(
             padding: const EdgeInsets.all(0.0),
             child: Flex(
@@ -94,8 +102,9 @@ class _CustomButtonState extends State<CustomButton> {
                       widget.text.toString(),
                       textAlign: widget.textAlign,
                       style: Theme.of(context).textTheme.button!.copyWith(
-                          color: widget.textColor
-                              .withOpacity(widget.isEnabled ? 1 : 0.3)),
+                              color: widget.textColor.withOpacity(
+                            widget.isEnabled ? 1 : 0.3,
+                          )),
                       maxLines: widget.maxLines,
                       overflow:
                           widget.isSingleLine ? TextOverflow.ellipsis : null,

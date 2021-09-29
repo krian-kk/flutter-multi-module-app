@@ -21,6 +21,15 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Center(
+              child: Icon(
+            CupertinoIcons.house,
+            size: 50,
+            color: Colors.white,
+          )),
+          const SizedBox(
+            height: 30,
+          ),
           CustomText(
             StringResource.origa,
             color: ColorResource.color23375A,
