@@ -131,7 +131,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           buttonBackgroundColor: ColorResource.colorEA6D48,
                           cardShape: 5,
                           )),
-                          const SizedBox(width: 10.0,),
+                          const SizedBox(width: 6.0,),
                           Container(
                           width: 80,
                           height: 40,
