@@ -66,7 +66,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                   color: ColorResource.color23375A,
                                   )),
                                 Expanded(
-                                  flex: 6,
+                                  flex: 7,
                                   child: Container(
                                     height: 70,
                                     width: 45,

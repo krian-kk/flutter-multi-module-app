@@ -38,9 +38,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorResource.colorE5E5E5,
+      backgroundColor: ColorResource.colorF7F8FA,
       appBar: AppBar(
-        backgroundColor: ColorResource.colorE5E5E5,
+        backgroundColor: ColorResource.colorF7F8FA,
         title: CustomText(
           StringResource.caseDetials,
           fontWeight: FontWeight.w700,
@@ -370,16 +370,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              CustomButton(
-                                                StringResource.sendSMS,
+                                              Container(
                                                 width: 120,
                                                 height: 40,
+                                                child: CustomButton(
+                                                  StringResource.sendSMS,
+                                                ),
                                               ),
                                               SizedBox(width: 8),
-                                              CustomButton(
-                                                StringResource.sendWHATSAPP,
+                                              Container(
                                                 width: 155,
                                                 height: 40,
+                                                child: CustomButton(
+                                                  StringResource.sendWHATSAPP,
+                                                ),
                                               ),
                                             ],
                                           )
@@ -620,16 +624,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
+                          width: 150,
+                          height: 50,
                             child: CustomButton(
                           'REPO',
-                          width: 150,
-                          height: 50,
                         )),
                         Container(
-                            child: CustomButton(
-                          'Add Contact',
                           width: 150,
                           height: 50,
+                            child: CustomButton(
+                          'Add Contact',
                         )),
                       ],
                     ),
@@ -677,33 +681,39 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                  child: CustomButton(
-                    'LEFT MESSAGE',
-                    textColor: ColorResource.color000000,
-                    buttonBackgroundColor:
-                        ColorResource.colorFFB800.withOpacity(0.67),
+                  child: Container(
                     width: 139,
                     height: 40,
+                    child: CustomButton(
+                      'LEFT MESSAGE',
+                      textColor: ColorResource.color000000,
+                      buttonBackgroundColor:
+                          ColorResource.colorFFB800.withOpacity(0.67),
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                  child: CustomButton(
-                    'DOOR LOCKED',
-                    buttonBackgroundColor: ColorResource.colorE7E7E7,
-                    textColor: ColorResource.color000000,
+                  child: Container(
                     width: 162,
                     height: 40,
+                    child: CustomButton(
+                      'DOOR LOCKED',
+                      buttonBackgroundColor: ColorResource.colorE7E7E7,
+                      textColor: ColorResource.color000000,
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                  child: CustomButton(
-                    'ENTRY RESTRICTED',
-                    textColor: ColorResource.color000000,
-                    buttonBackgroundColor: ColorResource.colorE7E7E7,
+                  child: Container(
                     width: 171,
                     height: 40,
+                    child: CustomButton(
+                      'ENTRY RESTRICTED',
+                      textColor: ColorResource.color000000,
+                      buttonBackgroundColor: ColorResource.colorE7E7E7,
+                    ),
                   ),
                 ),
               ],
@@ -740,16 +750,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
+                          width: 150,
+                          height: 50,
                             child: CustomButton(
                           'REPO',
-                          width: 150,
-                          height: 50,
                         )),
                         Container(
-                            child: CustomButton(
-                          'Add Contact',
                           width: 150,
                           height: 50,
+                            child: CustomButton(
+                          'Add Contact',
                         )),
                       ],
                     ),
