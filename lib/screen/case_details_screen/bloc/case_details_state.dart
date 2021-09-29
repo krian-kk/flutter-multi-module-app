@@ -4,3 +4,16 @@ part of 'case_details_bloc.dart';
 class CaseDetailsState extends BaseEquatable {}
 
 class CaseDetailsInitial extends CaseDetailsState {}
+
+class CaseDetailsLoadingState extends CaseDetailsState {}
+
+//class InitialState extends CaseDetailsState {}
+
+// class SuccessState extends CaseDetailsState {
+//   final dynamic successResponse;
+
+//   SuccessState({this.successResponse});
+
+//   @override
+//   List<Object> get props => [successResponse];
+// }

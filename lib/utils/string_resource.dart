@@ -34,4 +34,15 @@ class StringResource {
   static const String oTHERLOANOF = 'OTHER LOAN OF';
   static const String dEBASISHPATNAIK = 'DEBASISH PATNAIK';
   static const String vIEW = 'VIEW';
+  static const String customerMet = 'Customer Met';
+  static const String customerNotMet = 'Customer Not Met';
+  static const String invalid = 'Invalid';
+  static const String ptp = 'PTP';
+  static const String rtp = 'RTP (DENIAL)';
+  static const String dispute = 'DISPUTE';
+  static const String remainder = 'REMINDER/CB';
+  static const String collections = 'COLLECTIONS';
+  static const String ots = 'OTS';
+  static const String product = 'Product';
+  static const String batchNo = 'Batch No.';
 }

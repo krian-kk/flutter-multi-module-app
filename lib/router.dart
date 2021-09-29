@@ -162,8 +162,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
-        Navigator.pushReplacementNamed(
-            context, AppRoutes.searchAllocationDetailsScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.caseDetailsScreen);
         // Navigator.pushNamed(context, AppRoutes.homepatient);
       }
     },

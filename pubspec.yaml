@@ -80,6 +80,12 @@ flutter:
     - assets/check_off.png
     - assets/close.png
     - assets/shape.png
+    - assets/ptp.png
+    - assets/rtp.png
+    - assets/dispute.png
+    - assets/remainder.png
+    - assets/collections.png
+    - assets/capture_img.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
