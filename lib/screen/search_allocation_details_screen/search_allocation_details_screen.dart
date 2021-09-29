@@ -50,7 +50,13 @@ class _SearchAllocationDetailsScreenState
             fontWeight: FontWeight.w700,
             fontSize: FontSize.sixteen),
         elevation: 0.0,
-        actions: [Image.asset(ImageResource.close)],
+        actions: [
+          GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Image.asset(ImageResource.close))
+        ],
       ),
       backgroundColor: ColorResource.colorC5C8CE,
       body: BlocListener<SearchAllocationDetailsBloc,

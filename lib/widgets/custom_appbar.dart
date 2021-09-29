@@ -4,6 +4,7 @@ import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/widget_utils.dart';
 
 import 'custom_text.dart';
 
@@ -22,7 +23,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
   final String? titleString;
   final String? subTitle;
   final String? clear;
-  final int? indicatorIndex;
+  final int? actionIndex;
   final int? notificationCount;
   final IconEnum? iconEnumValues;
   TextEditingController? controller = TextEditingController();
@@ -34,7 +35,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
       {Key? key,
       this.titleString,
       this.subTitle,
-      this.indicatorIndex = 0,
+      this.actionIndex = 0,
       this.iconEnumValues = IconEnum.empty,
       this.showNotification = false,
       this.showDownload = false,
@@ -131,6 +132,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                     )
               : const SizedBox(),
       actions: <Widget>[
+        // actionView(context, widget.actionIndex),
         // searchButton(context),
         // notificationButton(context),
         // textButton(context),
@@ -146,6 +148,13 @@ class _CustomAppbarState extends State<CustomAppbar> {
   void setUpdateState() {
     setState(() {});
   }
+
+  //   Widget actionView(BuildContext context, int? actionIndex) {
+  //   return Visibility(
+  //     child: WidgetUtils.actionViewWidget(actionIndex!),
+  //     visible: true,
+  //   );
+  // }
 
   // Widget searchBar() {
   //   showCancel = widget.controller?.text.isNotEmpty == true;
