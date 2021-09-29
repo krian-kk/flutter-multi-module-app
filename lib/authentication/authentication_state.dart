@@ -22,3 +22,5 @@ class AuthenticationAuthenticated extends AuthenticationState {
     return "AuthenticationAuthenticated";
   }
 }
+
+class SplashScreenState extends AuthenticationState {}

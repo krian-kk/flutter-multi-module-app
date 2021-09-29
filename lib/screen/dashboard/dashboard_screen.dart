@@ -6,8 +6,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class DashboardScreen extends StatefulWidget {
-   AuthenticationBloc authenticationBloc;
-  DashboardScreen(this.authenticationBloc);
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
