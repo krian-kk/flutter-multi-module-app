@@ -5,3 +5,5 @@ class AllocationState extends BaseEquatable {}
 class AllocationInitial extends AllocationState {}
 
 class AllocationLoadingState extends AllocationState {}
+
+class AllocationLoadedState extends AllocationState {}

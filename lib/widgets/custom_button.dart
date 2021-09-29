@@ -74,6 +74,7 @@ class _CustomButtonState extends State<CustomButton> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(widget.cardShape),
               side: BorderSide(
+                width: 0.5,
                   color: widget.borderColor
                       .withOpacity(widget.isEnabled ? 1 : 0.3))),
           color: widget.buttonBackgroundColor
