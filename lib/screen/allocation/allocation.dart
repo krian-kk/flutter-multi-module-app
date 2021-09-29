@@ -33,20 +33,21 @@ class _AllocationScreenState extends State<AllocationScreen> {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent());
   }
-  String selectedOption= StringResource.priority;
+
+  String selectedOption = StringResource.priority;
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return BlocListener<AllocationBloc , AllocationState>(
-       bloc: bloc,
+    return BlocListener<AllocationBloc, AllocationState>(
+      bloc: bloc,
       listener: (BuildContext context, AllocationState state) {
         // TODO: implement listener
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
-         bloc: bloc,
-        builder: (BuildContext context,AllocationState state) {
+        bloc: bloc,
+        builder: (BuildContext context, AllocationState state) {
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             floatingActionButton: Padding(
@@ -74,23 +75,26 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 color: ColorResource.colorffffff,
                                 shape: BoxShape.circle,
                               ),
-                              child: Center(child: CustomText(
+                              child: Center(
+                                  child: CustomText(
                                 '2',
                                 fontSize: FontSize.twelve,
                                 fontWeight: FontWeight.w700,
-                                )),
+                              )),
                             ),
                           ),
                         ),
-                        onTap: (){
+                        onTap: () {
                           AppUtils.showToast('Message');
                         },
-                        ),
-                        ),
+                      ),
+                    ),
                   ),
-                    const Spacer(),
+                  const Spacer(),
                   CustomFloatingActionButton(
-                    onTap: (){
+                    onTap: () async {
+                      await Navigator.pushNamed(
+                          context, AppRoutes.searchAllocationDetailsScreen);
                       AppUtils.showToast('search');
                     },
                   ),
@@ -98,30 +102,36 @@ class _AllocationScreenState extends State<AllocationScreen> {
               ),
             ),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 9.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 9.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                    
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     decoration: BoxDecoration(
                       color: ColorResource.colorffffff,
                       borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: ColorResource.colorECECEC, width: 1.0),
-                      ),
+                      border: Border.all(
+                          color: ColorResource.colorECECEC, width: 1.0),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(ImageResource.location),
-                        const SizedBox(width: 13.0,),
+                        const SizedBox(
+                          width: 13.0,
+                        ),
                         CustomText(
                           StringResource.areYouAtOffice,
                           fontSize: FontSize.twelve,
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
-                        const SizedBox(width: 15.0,),
+                        const SizedBox(
+                          width: 15.0,
+                        ),
                         Container(
                           width: 80,
                           height: 40,
@@ -143,45 +153,57 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           )),
                       ],
                     ),
-                    ),
-                  const SizedBox(height: 10.0,),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(35, 55, 90, 0.27),
                       borderRadius: BorderRadius.circular(10),
-                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(StringResource.searchbasedOn,
-                        fontSize: FontSize.ten,
-                        color: ColorResource.color000000,
-                        fontWeight: FontWeight.w600,
+                        CustomText(
+                          StringResource.searchbasedOn,
+                          fontSize: FontSize.ten,
+                          color: ColorResource.color000000,
+                          fontWeight: FontWeight.w600,
                         ),
                         // const SizedBox(height: 10.0,),
-                        CustomText(StringResource.pincode+' 636808',
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color000000,
-                        fontWeight: FontWeight.w700,
+                        CustomText(
+                          StringResource.pincode + ' 636808',
+                          fontSize: FontSize.fourteen,
+                          color: ColorResource.color000000,
+                          fontWeight: FontWeight.w700,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15.0,),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
                   Wrap(
-                   runSpacing: 10,
+                    runSpacing: 10,
                     spacing: 10,
                     children: _buildSelectOptions(),
                   ),
-                  const SizedBox(height: 8.0,),
-                  CustomText('10 Allocation',
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color000000,
-                        fontWeight: FontWeight.w700,
-                        ),
-                  const SizedBox(height: 8.0,),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  CustomText(
+                    '10 Allocation',
+                    fontSize: FontSize.fourteen,
+                    color: ColorResource.color000000,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
                   Expanded(child: WidgetUtils.buildListView(bloc))
                 ],
               ),
@@ -200,7 +222,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
     return widgets;
   }
 
-    Widget _buildUpiIdWidget(String option) {
+  Widget _buildUpiIdWidget(String option) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -215,18 +237,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
           borderRadius: BorderRadius.circular(5),
-          color:
-              option == selectedOption ? ColorResource.color23375A : Colors.white,
+          color: option == selectedOption
+              ? ColorResource.color23375A
+              : Colors.white,
         ),
         child: Center(
           child: CustomText(
             option,
             fontSize: FontSize.twelve,
             fontWeight: FontWeight.w700,
-             color: option == selectedOption
-                      ? Colors.white
-                      : ColorResource.color000000,
-            
+            color: option == selectedOption
+                ? Colors.white
+                : ColorResource.color000000,
           ),
         ),
       ),

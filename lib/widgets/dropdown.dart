@@ -28,7 +28,7 @@ class _DropDownState extends State<DropDown> {
             color: ColorResource.colorbfbfbf,
             fontSize: 16),
         hint: CustomText(
-          StringResource.select,
+          'select',
           fontSize: 16,
           color: ColorResource.colorbfbfbf,
         ),

@@ -27,7 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  bloc: ^7.1.0
+  bloc: ^7.2.0
   easy_localization: ^3.0.0
   flutter:
     sdk: flutter
@@ -75,6 +75,17 @@ flutter:
     - assets/
     - assets/translations/
     - assets/marker.png
+    - assets/back.png
+    - assets/check_on.png
+    - assets/check_off.png
+    - assets/close.png
+    - assets/shape.png
+    - assets/ptp.png
+    - assets/rtp.png
+    - assets/dispute.png
+    - assets/remainder.png
+    - assets/collections.png
+    - assets/capture_img.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
