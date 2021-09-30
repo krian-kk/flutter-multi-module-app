@@ -17,6 +17,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   List<AllocationListModel> allocationList = [];
 
+  String selectedOption = StringResource.priority;
+
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationEvent) {

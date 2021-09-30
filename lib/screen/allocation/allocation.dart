@@ -34,8 +34,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
     bloc = AllocationBloc()..add(AllocationInitialEvent());
   }
 
-  String selectedOption = StringResource.priority;
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -61,10 +59,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       // padding: EdgeInsets.all(10),
                       child: CustomButton(
                         StringResource.message,
-                        alignment: MainAxisAlignment.start,
+                        alignment: MainAxisAlignment.end,
                         cardShape: 50,
-                        isLeading: true,
-                        trailingWidget: Padding(
+                        isTrailing: true,
+                        leadingWidget: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             width: 40,
@@ -190,11 +188,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   Wrap(
                     runSpacing: 10,
                     spacing: 10,
-                    children: _buildSelectOptions(),
+                    children: _buildFilterOptions(),
                   ),
                   const SizedBox(
                     height: 8.0,
                   ),
+                  _buildBuildRoute(),
                   CustomText(
                     '10 Allocation',
                     fontSize: FontSize.fourteen,
@@ -214,19 +213,19 @@ class _AllocationScreenState extends State<AllocationScreen> {
     );
   }
 
-  List<Widget> _buildSelectOptions() {
+  List<Widget> _buildFilterOptions() {
     List<Widget> widgets = [];
     bloc.selectOptions.forEach((element) {
-      widgets.add(_buildUpiIdWidget(element));
+      widgets.add(_buildFilterWidget(element));
     });
     return widgets;
   }
 
-  Widget _buildUpiIdWidget(String option) {
+  Widget _buildFilterWidget(String option) {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedOption = option;
+          bloc.selectedOption = option;
         });
         print(option);
       },
@@ -237,7 +236,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
           borderRadius: BorderRadius.circular(5),
-          color: option == selectedOption
+          color: option ==  bloc.selectedOption
               ? ColorResource.color23375A
               : Colors.white,
         ),
@@ -246,12 +245,32 @@ class _AllocationScreenState extends State<AllocationScreen> {
             option,
             fontSize: FontSize.twelve,
             fontWeight: FontWeight.w700,
-            color: option == selectedOption
+            color: option ==  bloc.selectedOption
                 ? Colors.white
                 : ColorResource.color000000,
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildBuildRoute() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Image.asset(ImageResource.location),
+            const SizedBox(width: 8,),
+                 CustomText(
+                  'No.1, ABC Street, Gandhi Nagar 1st phase',
+                   fontSize: FontSize.twelve,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color101010,
+                ),
+
+          ],
+        )
+      ],
     );
   }
 }
