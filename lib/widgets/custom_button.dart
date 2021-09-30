@@ -36,8 +36,8 @@ class CustomButton extends StatefulWidget {
         child: SizedBox.shrink(),
       ),
       this.font = Font.latoMedium,
-      this.buttonBackgroundColor = ColorResource.color23375A,
-      this.borderColor = ColorResource.color23375A,
+      this.buttonBackgroundColor = ColorResource.colorEA6D48,
+      this.borderColor = ColorResource.colorEA6D48,
       this.textAlign = TextAlign.left,
       this.onTap,
       this.textColor = Colors.white,
@@ -74,7 +74,7 @@ class _CustomButtonState extends State<CustomButton> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(widget.cardShape),
               side: BorderSide(
-                width: 0.5,
+                  width: 0.5,
                   color: widget.borderColor
                       .withOpacity(widget.isEnabled ? 1 : 0.3))),
           color: widget.buttonBackgroundColor

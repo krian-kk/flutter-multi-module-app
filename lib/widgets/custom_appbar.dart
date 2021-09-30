@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/widget_utils.dart';
 
@@ -12,6 +13,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
   final bool? showSettings;
   final bool? showNotification;
   final bool? showFilter;
+  final bool? showClose;
   final bool? showDownload;
   final bool? isAuthentication;
   final bool? showSearch;
@@ -41,6 +43,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
       this.showDownload = false,
       this.clear,
       this.showFilter = false,
+      this.showClose = false,
       this.showSettings = false,
       this.showTextButton = false,
       this.textButtonString = '',
@@ -85,16 +88,17 @@ class _CustomAppbarState extends State<CustomAppbar> {
       backwardsCompatibility: false,
       titleSpacing: widget.titleSpacing ?? 0,
       title:
-      //  showSearch
-      //     ? searchBar()
-      //     : 
+          //  showSearch
+          //     ? searchBar()
+          //     :
           titleString != null || titleString != ''
               ? widget.subTitle == null || widget.subTitle == ''
                   ? CustomText(
                       titleString,
-                      style: TextStyle(color: ColorResource.color23375A,
+                      style: TextStyle(
+                          color: ColorResource.color101010,
                           fontFamily: Font.latoRegular.toString(),
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           fontSize: FontSize.sixteen),
                     )
                   : Container(
@@ -109,8 +113,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                 .subtitle1!
                                 .copyWith(
                                     color: ColorResource.colorffffff,
-                                    fontFamily:
-                                        Font.latoRegular.toString(),
+                                    fontFamily: Font.latoRegular.toString(),
                                     fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
@@ -123,8 +126,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                 .subtitle2!
                                 .copyWith(
                                     color: ColorResource.colorffffff,
-                                    fontFamily:
-                                        Font.latoRegular.toString(),
+                                    fontFamily: Font.latoRegular.toString(),
                                     fontWeight: FontWeight.w400),
                           )
                         ],
@@ -132,7 +134,6 @@ class _CustomAppbarState extends State<CustomAppbar> {
                     )
               : const SizedBox(),
       actions: <Widget>[
-        // actionView(context, widget.actionIndex),
         // searchButton(context),
         // notificationButton(context),
         // textButton(context),
@@ -140,6 +141,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
         // downloadIconButton(context),
         // if (widget.clear != null) clearButton(context),
         // settingsButton(context),
+        closeButton(context),
       ],
       leading: leadingIcon(context),
     );
@@ -147,6 +149,20 @@ class _CustomAppbarState extends State<CustomAppbar> {
 
   void setUpdateState() {
     setState(() {});
+  }
+
+  Widget closeButton(BuildContext context) {
+    return Visibility(
+      visible: widget.showClose!,
+      child: GestureDetector(
+        child: Image.asset(ImageResource.close),
+        onTap: () {
+          setState(() {
+            widget.onItemSelected!('close');
+          });
+        },
+      ),
+    );
   }
 
   //   Widget actionView(BuildContext context, int? actionIndex) {
@@ -427,13 +443,13 @@ extension IconExtension on IconEnum {
       case IconEnum.close:
         return const Icon(
           Icons.close,
-          color: Colors.white,
+          color: Colors.black,
           size: 25,
         );
       case IconEnum.back:
         return const Icon(
           Icons.arrow_back,
-          color: Colors.white,
+          color: Colors.black,
         );
       case IconEnum.menu:
         return const Icon(Icons.menu);
