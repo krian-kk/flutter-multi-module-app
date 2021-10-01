@@ -23,4 +23,8 @@ class ImageResource {
   static const String whatsApp = 'assets/whatsapp.png';
   static const String uploadPhoto = 'assets/upload_photo.png';
   static const String capturImage = 'assets/capture_image.png';
+  static const String location2 = 'assets/location2.png';
+  static const String star = 'assets/star.png';
+  static const String origa = 'assets/origa.png';
+  static const String login = 'assets/login.png';
 }
