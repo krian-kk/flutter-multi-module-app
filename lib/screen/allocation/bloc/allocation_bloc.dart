@@ -9,15 +9,26 @@ part 'allocation_state.dart';
 
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationBloc() : super(AllocationInitial());
+
+  String selectedOption = StringResource.priority;
+
+  String selectedDistance = StringResource.all;
+
+  bool showFilterDistance = false;
+
    List<String> selectOptions = [
     StringResource.priority,
     StringResource.buildRoute,
     StringResource.mapView,
    ];
 
-  List<AllocationListModel> allocationList = [];
+    List<String> filterBuildRoute = [
+    StringResource.all,
+    StringResource.under5km,
+    StringResource.more5km,
+   ];
 
-  String selectedOption = StringResource.priority;
+  List<AllocationListModel> allocationList = [];
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {

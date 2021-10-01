@@ -19,4 +19,8 @@ class ImageResource {
   static const String forwardArrow = 'assets/forward_arrow.png';
   static const String search = 'assets/search.png';
   static const String allocation = 'assets/allocation.png';
+  static const String location2 = 'assets/location2.png';
+  static const String star = 'assets/star.png';
+  static const String origa = 'assets/origa.png';
+  static const String login = 'assets/login.png';
 }
