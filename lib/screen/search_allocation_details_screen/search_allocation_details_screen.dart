@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -189,6 +191,19 @@ class _SearchAllocationDetailsScreenState
               child: CustomButton(
                 StringResource.sEARCH,
                 cardShape: 5,
+                onTap: () {
+                  if (accountNoController.text.isNotEmpty ||
+                      customerNameController.text.isNotEmpty ||
+                      bucketController.text.isNotEmpty ||
+                      statusController.text.isNotEmpty ||
+                      pincodeController.text.isNotEmpty ||
+                      customerIDController.text.isNotEmpty) {
+                    Navigator.pop(context);
+                  } else {
+                    AppUtils.showToast('Please Enter Any Field',
+                        gravity: ToastGravity.CENTER);
+                  }
+                },
               ),
             ),
           ),
@@ -260,6 +275,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: TextField(
+          controller: widget.controller,
           obscureText: widget.obsecureText,
           cursorColor: widget.cursorColor,
           decoration: InputDecoration(

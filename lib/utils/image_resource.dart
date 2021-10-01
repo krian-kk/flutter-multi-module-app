@@ -11,7 +11,8 @@ class ImageResource {
   static const collections = 'assets/collections.png';
   static const ots = 'assets/collections.png';
   static const captureImage = 'assets/capture_img.png';
-
+  static const String radioOn = 'assets/radio_on.png';
+  static const String radioOff = 'assets/radio_off.png';
   static const String dashboard = 'assets/dashboard.png';
   static const String profile = 'assets/profile.png';
   static const String location = 'assets/location.png';

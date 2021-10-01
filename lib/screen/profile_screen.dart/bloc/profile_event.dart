@@ -4,3 +4,9 @@ part of 'profile_bloc.dart';
 abstract class ProfileEvent {}
 
 class ProfileInitialEvent extends ProfileEvent {}
+
+class ClickNotificationEvent extends ProfileEvent {}
+
+class ClickChangeLaunguageEvent extends ProfileEvent {}
+
+class ClickChnagePassswordEvent extends ProfileEvent {}

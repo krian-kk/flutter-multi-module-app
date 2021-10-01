@@ -13,10 +13,34 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ProfileEvent) {
       yield ProfileLoadingState();
       profileNavigationList.addAll([
-        ProfileNavigation(title: 'Notification', count: true),
-        ProfileNavigation(title: 'Change language', count: false),
-        ProfileNavigation(title: 'Change Password', count: false)
+        ProfileNavigation(
+            title: 'Notification',
+            count: true,
+            onTap: () {
+              this.add(ClickNotificationEvent());
+            }),
+        ProfileNavigation(
+            title: 'Change language',
+            count: false,
+            onTap: () {
+              this.add(ClickChangeLaunguageEvent());
+            }),
+        ProfileNavigation(
+            title: 'Change Password',
+            count: false,
+            onTap: () {
+              this.add(ClickChnagePassswordEvent());
+            })
       ]);
+      yield ProfileLoadedState();
+    }
+    if (event is ClickNotificationEvent) {
+      yield ClickNotificationState();
+    } else if (event is ClickChangeLaunguageEvent) {
+      yield ClickChangeLaunguageState();
+    } else if (event is ClickChnagePassswordEvent) {
+      yield ClickPasswordState();
+    } else {
       yield ProfileLoadedState();
     }
   }

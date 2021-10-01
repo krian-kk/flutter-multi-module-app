@@ -26,11 +26,12 @@ class AppUtils {
         fontSize: 14.0);
   }
 
-  static void showToast(String text) {
+  static void showToast(String text,
+      {ToastGravity gravity = ToastGravity.BOTTOM}) {
     Fluttertoast.showToast(
         msg: text,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: gravity,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.green,
         textColor: Colors.white,

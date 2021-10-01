@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -19,10 +23,24 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc bloc;
+  File? image;
   @override
   void initState() {
     bloc = ProfileBloc()..add(ProfileInitialEvent());
     super.initState();
+  }
+
+  Future pickImage(
+      ImageSource source, BuildContext cameraDialogueContext) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      'error';
+    }
+    Navigator.pop(cameraDialogueContext);
   }
 
   @override
@@ -37,8 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Scaffold(
               backgroundColor: ColorResource.colorF7F8FA,
               body: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 9.0),
+                padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -72,11 +89,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () {
                                       profileImageShowBottomSheet();
                                     },
-                                    child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage:
-                                          AssetImage(ImageResource.profile),
-                                    ),
+                                    child: image == null
+                                        ? CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage: AssetImage(
+                                                ImageResource.profile))
+                                        : CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage:
+                                                FileImage(File(image!.path))),
                                   ),
                                   SizedBox(width: 13),
                                   Column(
@@ -116,14 +137,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    'HOME ADDRESS',
+                                    StringResource.homeAddress.toUpperCase(),
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.w700,
                                     color: ColorResource.color101010,
                                   ),
                                   CustomText(
-                                    'MARK AS HOME',
+                                    StringResource.markAsHome,
                                     fontSize: FontSize.twelve,
                                     isUnderLine: true,
                                     fontStyle: FontStyle.normal,
@@ -172,44 +193,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              children: [
-                                                CustomText(
-                                                  bloc
-                                                      .profileNavigationList[
-                                                          index]
-                                                      .title
-                                                      .toUpperCase(),
-                                                  fontSize: FontSize.sixteen,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color23375A,
-                                                ),
-                                                SizedBox(width: 5),
-                                                Visibility(
-                                                  visible: bloc
-                                                      .profileNavigationList[
-                                                          index]
-                                                      .count,
-                                                  child: CircleAvatar(
-                                                    backgroundColor:
-                                                        ColorResource
-                                                            .color23375A,
-                                                    radius: 13,
-                                                    child: Center(
-                                                      child: CustomText('2',
-                                                          lineHeight: 1,
-                                                          fontSize:
-                                                              FontSize.twelve,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: ColorResource
-                                                              .colorFFFFFF),
-                                                    ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                switch (bloc
+                                                    .profileNavigationList[
+                                                        index]
+                                                    .title) {
+                                                  case 'Notification':
+                                                    break;
+                                                  case 'Change language':
+                                                    launguageBottomSheet();
+                                                    break;
+                                                  case 'Change Password':
+                                                    break;
+                                                }
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  CustomText(
+                                                    bloc
+                                                        .profileNavigationList[
+                                                            index]
+                                                        .title
+                                                        .toUpperCase(),
+                                                    fontSize: FontSize.sixteen,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: ColorResource
+                                                        .color23375A,
                                                   ),
-                                                )
-                                              ],
+                                                  SizedBox(width: 5),
+                                                  Visibility(
+                                                    visible: bloc
+                                                        .profileNavigationList[
+                                                            index]
+                                                        .count,
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
+                                                      radius: 13,
+                                                      child: Center(
+                                                        child: CustomText('2',
+                                                            lineHeight: 1,
+                                                            fontSize:
+                                                                FontSize.twelve,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: ColorResource
+                                                                .colorFFFFFF),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                             Image.asset(
                                                 ImageResource.forwardArrow)
@@ -234,7 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 new BorderRadius.all(Radius.circular(75.0))),
                         child: Center(
                           child: CustomText(
-                            'LOGOUT',
+                            StringResource.logout.toUpperCase(),
                             fontSize: FontSize.twelve,
                             color: ColorResource.color23375A,
                             fontWeight: FontWeight.w700,
@@ -326,6 +363,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderColor: ColorResource.colorBEC4CF,
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
+                          onTap: () => pickImage(ImageSource.camera, context),
+                          // onTap: () => pickImage(source, cameraDialogueContext)
                           trailingWidget:
                               Image.asset(ImageResource.capturImage),
                         ),
@@ -333,6 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CustomButton(
                           'UPLOAD PHOTO',
                           cardShape: 75.0,
+                          onTap: () => pickImage(ImageSource.gallery, context),
                           borderColor: ColorResource.colorBEC4CF,
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
@@ -359,33 +399,181 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              'MESSAGE'.toUpperCase(),
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(ImageResource.close))
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.87,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    StringResource.launguage.toUpperCase(),
+                                    fontSize: FontSize.fourteen,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    color: ColorResource.color23375A,
+                                  ),
+                                  Spacer(),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Image.asset(ImageResource.close))
+                                ],
+                              ),
+                              SizedBox(height: 14),
+                              CustomText(
+                                StringResource.defaultLaunguage.toUpperCase(),
+                                fontWeight: FontWeight.w700,
+                                fontSize: FontSize.twelve,
+                                fontStyle: FontStyle.normal,
+                                color: ColorResource.color23375A,
+                              ),
+                              SizedBox(height: 6),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: new BoxDecoration(
+                                    color: ColorResource.colorF8F9FB,
+                                    borderRadius: new BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: ListTile(
+                                  title: CustomText(
+                                    StringResource.english,
+                                    lineHeight: 1,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  leading: true
+                                      ? Image.asset(ImageResource.radioOn)
+                                      : Image.asset(ImageResource.radioOff),
+                                ),
+                              ),
+                              SizedBox(height: 17),
+                              CustomText(
+                                StringResource.defaultLaunguage.toUpperCase(),
+                                fontWeight: FontWeight.w700,
+                                fontSize: FontSize.twelve,
+                                fontStyle: FontStyle.normal,
+                                color: ColorResource.color23375A,
+                              ),
+                              SizedBox(height: 6),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: new BoxDecoration(
+                                    color: ColorResource.colorF8F9FB,
+                                    borderRadius: new BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: ListTile(
+                                  title: CustomText(
+                                    StringResource.hindi,
+                                    lineHeight: 1,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  leading: false
+                                      ? Image.asset(ImageResource.radioOn)
+                                      : Image.asset(ImageResource.radioOff),
+                                ),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: new BoxDecoration(
+                                    color: ColorResource.colorF8F9FB,
+                                    borderRadius: new BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: ListTile(
+                                  title: CustomText(
+                                    StringResource.tamil,
+                                    lineHeight: 1,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  leading: false
+                                      ? Image.asset(ImageResource.radioOn)
+                                      : Image.asset(ImageResource.radioOff),
+                                ),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: new BoxDecoration(
+                                    color: ColorResource.colorF8F9FB,
+                                    borderRadius: new BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: ListTile(
+                                  title: CustomText(
+                                    StringResource.kannadam,
+                                    lineHeight: 1,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  leading: false
+                                      ? Image.asset(ImageResource.radioOn)
+                                      : Image.asset(ImageResource.radioOff),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: new BoxDecoration(
+                          color: ColorResource.colorFFFFFF,
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorResource.color000000.withOpacity(0.2),
+                              blurRadius: 2.0,
+                              offset: Offset(
+                                  1.0, 1.0), // shadow direction: bottom right
+                            )
                           ],
                         ),
-                        SizedBox(height: 60),
-                      ],
-                    ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 85, vertical: 11.0),
+                          child: Container(
+                            decoration: new BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorResource.color000000
+                                      .withOpacity(0.2),
+                                  blurRadius: 2.0,
+                                  offset: Offset(1.0,
+                                      1.0), // shadow direction: bottom right
+                                )
+                              ],
+                            ),
+                            child: CustomButton(
+                              StringResource.okay.toUpperCase(),
+                              onTap: () => messageShowBottomSheet(),
+                              cardShape: 5,
+                              leadingWidget: CircleAvatar(
+                                radius: 13,
+                                backgroundColor: ColorResource.colorFFFFFF,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )));
   }
