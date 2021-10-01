@@ -19,4 +19,7 @@ class ImageResource {
   static const String forwardArrow = 'assets/forward_arrow.png';
   static const String search = 'assets/search.png';
   static const String allocation = 'assets/allocation.png';
+  static const String whatsApp = 'assets/whatsapp.png';
+  static const String uploadPhoto = 'assets/upload_photo.png';
+  static const String capturImage = 'assets/capture_image.png';
 }

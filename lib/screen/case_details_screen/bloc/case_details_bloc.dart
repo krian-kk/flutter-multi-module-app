@@ -6,6 +6,7 @@ import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'case_details_event.dart';
 part 'case_details_state.dart';
@@ -22,7 +23,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   CaseDetailsBloc() : super(CaseDetailsInitial()) {
     // ignore: void_checks
     on<CaseDetailsEvent>((event, emit) async* {
-      if (event is CaseDetailsInitialEvent) {}
+      if (event is CaseDetailsInitialEvent) {
+      } else if (event is LaunchWhatsappEvent) {}
+      if (event is LaunchSMSEvent) {}
     });
   }
 }

@@ -186,8 +186,6 @@ class _SearchAllocationDetailsScreenState
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
             child: Container(
-              width: 111,
-              height: 50,
               child: CustomButton(
                 StringResource.sEARCH,
                 cardShape: 5,
