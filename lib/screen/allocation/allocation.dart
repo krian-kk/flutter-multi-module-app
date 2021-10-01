@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/router.dart';
+import 'package:origa/screen/allocation/map_view.dart';
+import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
+import 'package:origa/screen/map_screen/bloc/map_event.dart';
+import 'package:origa/screen/map_screen/map_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -26,15 +30,15 @@ class AllocationScreen extends StatefulWidget {
 
 class _AllocationScreenState extends State<AllocationScreen> {
   late AllocationBloc bloc;
+  late MapBloc mapBloc;
   String version = "";
 
   @override
   void initState() {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent());
+     mapBloc = MapBloc()..add(MapInitialEvent());
   }
-
-  String selectedOption = StringResource.priority;
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +65,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       // padding: EdgeInsets.all(10),
                       child: CustomButton(
                         StringResource.message,
-                        alignment: MainAxisAlignment.start,
+                        alignment: MainAxisAlignment.end,
                         cardShape: 50,
-                        isLeading: true,
-                        trailingWidget: Padding(
+                        isTrailing: true,
+                        leadingWidget: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             width: 40,
@@ -80,6 +84,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 '2',
                                 fontSize: FontSize.twelve,
                                 fontWeight: FontWeight.w700,
+                                lineHeight: 1,
                               )),
                             ),
                           ),
@@ -190,16 +195,39 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   Wrap(
                     runSpacing: 10,
                     spacing: 10,
-                    children: _buildSelectOptions(),
+                    children: _buildFilterOptions(),
                   ),
                   const SizedBox(
                     height: 8.0,
                   ),
-                  CustomText(
-                    '10 Allocation',
-                    fontSize: FontSize.fourteen,
-                    color: ColorResource.color000000,
-                    fontWeight: FontWeight.w700,
+                 bloc.showFilterDistance ?
+                  _buildBuildRoute() :
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        '10 Allocation',
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color000000,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      const SizedBox(
+                        width: 9.0,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(ImageResource.star)),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      CustomText(
+                        bloc.allocationList.length.toString() + " High Priority",
+                        fontSize: FontSize.ten,
+                        color: ColorResource.color101010,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 8.0,
@@ -214,30 +242,56 @@ class _AllocationScreenState extends State<AllocationScreen> {
     );
   }
 
-  List<Widget> _buildSelectOptions() {
+  List<Widget> _buildFilterOptions() {
     List<Widget> widgets = [];
     bloc.selectOptions.forEach((element) {
-      widgets.add(_buildUpiIdWidget(element));
+      widgets.add(_buildFilterWidget(element));
     });
     return widgets;
   }
 
-  Widget _buildUpiIdWidget(String option) {
+  Widget _buildFilterWidget(String option) {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedOption = option;
+          bloc.selectedOption = option;
         });
+        switch (option) {
+          case 'Build Route':
+            setState(() {
+              bloc.showFilterDistance = true;
+            });
+            break;
+          case 'Map View':
+            mapView(context);
+            setState(() {
+              bloc.showFilterDistance = false;
+            });
+            break;
+            default:
+             setState(() {
+              bloc.showFilterDistance = false;
+            });
+        }
+        // if (option == 'Build Route') {
+        //   setState(() {
+        //     bloc.showFilterDistance = true;
+        //   });
+        // } else {
+        //   setState(() {
+        //     bloc.showFilterDistance = false;
+        //   });
+        // }
         print(option);
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(8, 5, 8, 8),
-        width: 84,
+        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+        width: 90,
         // height: 35,
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
           borderRadius: BorderRadius.circular(5),
-          color: option == selectedOption
+          color: option ==  bloc.selectedOption
               ? ColorResource.color23375A
               : Colors.white,
         ),
@@ -246,7 +300,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             option,
             fontSize: FontSize.twelve,
             fontWeight: FontWeight.w700,
-            color: option == selectedOption
+            color: option ==  bloc.selectedOption
                 ? Colors.white
                 : ColorResource.color000000,
           ),
@@ -254,4 +308,110 @@ class _AllocationScreenState extends State<AllocationScreen> {
       ),
     );
   }
+
+  Widget _buildBuildRoute() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 7,),
+        Row(
+          children: [
+            const SizedBox(width: 5,),
+            Image.asset(ImageResource.location2),
+            const SizedBox(width: 8,),
+                 Container(
+                   width: 213,
+                   child: CustomText(
+                    'No.1, ABC Street, Gandhi Nagar 1st phase',
+                     fontSize: FontSize.twelve,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color101010,
+                      isSingleLine: true,
+                ),
+                 ),
+                 Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 13),
+              child: GestureDetector(
+                child: CustomText(
+                      StringResource.change,
+                       fontSize: FontSize.twelve,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color23375A,
+                    ),
+                  onTap: (){
+                    AppUtils.showToast('Change address');
+                  },
+              ),
+            ),
+
+          ],
+        ),
+        const SizedBox(height: 12,),
+          Wrap(
+             runSpacing: 10,
+              spacing: 10,
+               children: _buildRouteFilterOptions(),
+               ),
+          const SizedBox(height: 7,),
+      ],
+    );
+  }
+
+  List<Widget> _buildRouteFilterOptions() {
+    List<Widget> widgets = [];
+    bloc.filterBuildRoute.forEach((element) {
+      widgets.add(_buildRouteFilterWidget(element));
+    });
+    return widgets;
+  }
+
+  Widget _buildRouteFilterWidget(String distance) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          bloc.selectedDistance = distance;
+        });
+        print(distance);
+      },
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+        width: 93,
+        // height: 35,
+        decoration: BoxDecoration(
+          border: Border.all(color: ColorResource.color23375A, width: 0.5),
+          borderRadius: BorderRadius.circular(85),
+          color: distance ==  bloc.selectedDistance
+              ? ColorResource.color23375A
+              : Colors.white,
+        ),
+        child: Center(
+          child: CustomText(
+            distance,
+            fontSize: FontSize.twelve,
+            fontWeight: FontWeight.w700,
+            color: distance ==  bloc.selectedDistance
+                ? Colors.white
+                : ColorResource.color000000,
+          ),
+        ),
+      ),
+    );
+  }
+
+   void mapView(BuildContext buildContext) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        isDismissible: false,
+        context: buildContext,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        ),
+        backgroundColor: ColorResource.colorFFFFFF,
+        builder: (BuildContext context) {
+          return MapView(bloc);
+        });
+  }
+
 }

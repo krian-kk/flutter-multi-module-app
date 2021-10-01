@@ -61,4 +61,8 @@ class StringResource {
   static const String view = 'VIEW';
   static const String message = 'MESSAGE';
   static const String followUpDate = 'Follow Up Date';
+  static const String change = 'Change';
+  static const String all = 'All';
+  static const String under5km = 'Under 5Km';
+  static const String more5km = '5Km-10Km';
 }

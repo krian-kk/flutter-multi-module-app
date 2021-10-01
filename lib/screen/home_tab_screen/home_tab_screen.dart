@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/screen/allocation/allocation.dart';
@@ -44,6 +45,9 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
     return Scaffold(
       backgroundColor: ColorResource.colorF7F8FA,
       body: SafeArea(

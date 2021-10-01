@@ -10,6 +10,8 @@ import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
+import 'package:origa/screen/login_screen/bloc/login_bloc.dart';
+import 'package:origa/screen/login_screen/login_screen.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
 import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
@@ -19,6 +21,7 @@ import 'authentication/authentication_state.dart';
 
 class AppRoutes {
   static const String splashScreen = 'splash_screen';
+  static const String loginScreen = 'login_screen';
   static const String homeTabScreen = 'homeTab_screen';
   static const String dashboardScreen = 'dashboard_screen';
   static const String allocationScreen = 'allocation_screen';
@@ -41,6 +44,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildSearchAllocationDetailsScreen();
     case AppRoutes.caseDetailsScreen:
       return _buildCaseDetailsScreen();
+    case AppRoutes.loginScreen:
+      return _buildLoginScreen(settings);
   }
   return _buildSplashScreen();
 }
@@ -56,6 +61,14 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
     return addAuthBloc(context, PageBuilder.buildHomeTabScreen(authBloc));
+  });
+}
+
+Route<dynamic> _buildLoginScreen(RouteSettings settings) {
+  return MaterialPageRoute(builder: (context) {
+    final AuthenticationBloc authBloc =
+        BlocProvider.of<AuthenticationBloc>(context);
+    return addAuthBloc(context, PageBuilder.buildLoginScreen(authBloc));
   });
 }
 // Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
@@ -115,6 +128,14 @@ class PageBuilder {
     );
   }
 
+    static Widget buildLoginScreen(AuthenticationBloc authBloc) {
+    return BlocProvider(
+      create: (BuildContext context) =>
+          BlocProvider.of<LoginBloc>(context)..add(LoginInitialEvent()),
+      child: LoginScreen(authBloc),
+    );
+  }
+
   static Widget buildDashboardPage() {
     return BlocProvider(
       create: (BuildContext context) =>
@@ -158,7 +179,8 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
 
       if (state is SplashScreenState) {

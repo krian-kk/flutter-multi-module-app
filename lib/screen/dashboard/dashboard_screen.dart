@@ -31,18 +31,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorResource.colorF7F8FA,
-      appBar: AppBar(
-        title: CustomText(StringResource.origa, 
-        color: ColorResource.colorD1D1D1,
-        fontSize: 18,fontWeight: FontWeight.w600,),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: CustomText(StringResource.origa, 
+      //   color: ColorResource.colorD1D1D1,
+      //   fontSize: 18,fontWeight: FontWeight.w600,),
+      //   centerTitle: true,
+      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             child: Center(child: CustomText(
-              'Wellcome To Origa', 
+              'Dashboard', 
               fontSize: 18,
               fontWeight: FontWeight.w600,
               ),
