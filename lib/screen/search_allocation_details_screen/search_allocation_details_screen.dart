@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -39,111 +42,171 @@ class _SearchAllocationDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        // appBar: CustomAppbar(
+        //   titleString: StringResource.searchAllocationDetails,
+        // ),
+        // appBar: AppBar(
+        //   backgroundColor: ColorResource.colorC5C8CE,
+        //   automaticallyImplyLeading: false,
+        //   title: Text(StringResource.searchAllocationDetails),
+        //   centerTitle: false,
+        //   leadingWidth: 0.0,
+        //   titleTextStyle: TextStyle(
+        //       color: ColorResource.color101010,
+        //       fontWeight: FontWeight.w700,
+        //       fontSize: FontSize.sixteen),
+        //   elevation: 0.0,
+        //   actions: [
+        //     GestureDetector(
+        //         onTap: () {
+        //           Navigator.pop(context);
+        //         },
+        //         child: Image.asset(ImageResource.close))
+        //   ],
+        // ),
         backgroundColor: ColorResource.colorC5C8CE,
-        title: Text(StringResource.searchAllocationDetails),
-        centerTitle: false,
-        leadingWidth: 0.0,
-        titleTextStyle: TextStyle(
-            color: ColorResource.color101010,
-            fontWeight: FontWeight.w700,
-            fontSize: FontSize.sixteen),
-        elevation: 0.0,
-        actions: [
-          GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Image.asset(ImageResource.close))
-        ],
-      ),
-      backgroundColor: ColorResource.colorC5C8CE,
-      body: BlocListener<SearchAllocationDetailsBloc,
-          SearchAllocationDetailsState>(
-        bloc: bloc,
-        listener: (context, state) {
-          // TODO: implement listener
-        },
-        child: BlocBuilder<SearchAllocationDetailsBloc,
+        body: BlocListener<SearchAllocationDetailsBloc,
             SearchAllocationDetailsState>(
           bloc: bloc,
-          builder: (context, state) {
-            if (state is SearchAllocationDetailsLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        CustomTextField(
-                          StringResource.accountNo + '.',
-                          accountNoController,
-                        ),
-                        const SizedBox(height: 21),
-                        CustomTextField(
-                          StringResource.customerName,
-                          customerNameController,
-                        ),
-                        const SizedBox(height: 21),
-                        CustomTextField(
-                          StringResource.dpdBucket,
-                          bucketController,
-                        ),
-                        const SizedBox(height: 21),
-                        CustomTextField(
-                          StringResource.status,
-                          statusController,
-                        ),
-                        const SizedBox(height: 21),
-                        CustomTextField(
-                          StringResource.pincode,
-                          pincodeController,
-                        ),
-                        const SizedBox(height: 21),
-                        CustomTextField(
-                          StringResource.myRecentActivity,
-                          customerIDController,
-                        ),
-                        const SizedBox(height: 21),
-                        Row(
-                          children: [
-                            Image.asset(value1
-                                ? ImageResource.checkOn
-                                : ImageResource.checkOff),
-                            const SizedBox(width: 13),
-                            CustomText(StringResource.myRecentActivity)
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Image.asset(value2
-                                ? ImageResource.checkOn
-                                : ImageResource.checkOff),
-                            const SizedBox(width: 13),
-                            CustomText(StringResource.showOnlyTopResults)
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
+          listener: (context, state) {
+            // TODO: implement listener
           },
+          child: BlocBuilder<SearchAllocationDetailsBloc,
+              SearchAllocationDetailsState>(
+            bloc: bloc,
+            builder: (context, state) {
+              if (state is SearchAllocationDetailsLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Column(
+                children: [
+                  CustomAppbar(
+                    titleString: StringResource.searchAllocationDetails,
+                    titleSpacing: 21,
+                    showClose: true,
+                    onItemSelected: (value) {
+                      if (value == 'close') {
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  CustomTextField(
+                                    StringResource.accountNo + '.',
+                                    accountNoController,
+                                  ),
+                                  const SizedBox(height: 21),
+                                  CustomTextField(
+                                    StringResource.customerName,
+                                    customerNameController,
+                                  ),
+                                  const SizedBox(height: 21),
+                                  CustomTextField(
+                                    StringResource.dpdBucket,
+                                    bucketController,
+                                  ),
+                                  const SizedBox(height: 21),
+                                  CustomTextField(
+                                    StringResource.status,
+                                    statusController,
+                                  ),
+                                  const SizedBox(height: 21),
+                                  CustomTextField(
+                                    StringResource.pincode,
+                                    pincodeController,
+                                  ),
+                                  const SizedBox(height: 21),
+                                  CustomTextField(
+                                    StringResource.myRecentActivity,
+                                    customerIDController,
+                                  ),
+                                  const SizedBox(height: 21),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        value1 = !value1;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Image.asset(value1
+                                            ? ImageResource.checkOn
+                                            : ImageResource.checkOff),
+                                        const SizedBox(width: 13),
+                                        CustomText(
+                                            StringResource.myRecentActivity)
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        value2 = !value2;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Image.asset(value2
+                                            ? ImageResource.checkOn
+                                            : ImageResource.checkOff),
+                                        const SizedBox(width: 13),
+                                        CustomText(
+                                            StringResource.showOnlyTopResults)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-        child: CustomButton(
-          StringResource.sEARCH,
-          cardShape: 85,
+        bottomNavigationBar: Container(
+          width: double.infinity,
+          color: ColorResource.colorFFFFFF,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+            child: Container(
+              child: CustomButton(
+                StringResource.sEARCH,
+                cardShape: 5,
+                onTap: () {
+                  if (accountNoController.text.isNotEmpty ||
+                      customerNameController.text.isNotEmpty ||
+                      bucketController.text.isNotEmpty ||
+                      statusController.text.isNotEmpty ||
+                      pincodeController.text.isNotEmpty ||
+                      customerIDController.text.isNotEmpty) {
+                    Navigator.pop(context);
+                  } else {
+                    AppUtils.showToast('Please Enter Any Field',
+                        gravity: ToastGravity.CENTER);
+                  }
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -170,6 +233,7 @@ class CustomTextField extends StatefulWidget {
   final BorderStyle borderStyle;
   final Color borderColour;
   final double borderWidth;
+  final Color cursorColor;
 
   CustomTextField(this.hintText, this.controller,
       {this.colour = ColorResource.colorFFFFFF,
@@ -188,6 +252,7 @@ class CustomTextField extends StatefulWidget {
       this.maximumWordCount = 1,
       this.borderColour = ColorResource.colorDADADA,
       this.borderWidth = 1.0,
+      this.cursorColor = ColorResource.colorDADADA,
       this.borderStyle = BorderStyle.solid});
 
   @override
@@ -210,7 +275,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: TextField(
+          controller: widget.controller,
           obscureText: widget.obsecureText,
+          cursorColor: widget.cursorColor,
           decoration: InputDecoration(
               fillColor: widget.fillColor,
               hoverColor: widget.hoverColor,
@@ -223,3 +290,33 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 }
+
+// class CustomAppBar1 extends StatefulWidget implements PreferredSizeWidget {
+//   final Widget child;
+//   final double height;
+
+//   CustomAppBar1({
+//     required this.child,
+//     this.height = kToolbarHeight,
+//   });
+//   @override
+//   Size get preferredSize => Size.fromHeight(height);
+
+//   @override
+//   State<CustomAppBar1> createState() => _CustomAppBar1State();
+// }
+
+// class _CustomAppBar1State extends State<CustomAppBar1> {
+//   @override
+//   Size get preferredSize => Size.fromHeight(widget.height);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: preferredSize.height,
+//       color: Colors.orange,
+//       alignment: Alignment.center,
+//       child: widget.child,
+//     );
+//   }
+// }

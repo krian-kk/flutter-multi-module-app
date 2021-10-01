@@ -37,7 +37,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   void initState() {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent());
-     mapBloc = MapBloc()..add(MapInitialEvent());
+    mapBloc = MapBloc()..add(MapInitialEvent());
   }
 
   @override
@@ -82,6 +82,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               child: Center(
                                   child: CustomText(
                                 '2',
+                                color: ColorResource.colorEA6D48,
                                 fontSize: FontSize.twelve,
                                 fontWeight: FontWeight.w700,
                                 lineHeight: 1,
@@ -138,24 +139,28 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           width: 15.0,
                         ),
                         Container(
-                          width: 80,
-                          height: 40,
-                          child: CustomButton(StringResource.yes,
-                          fontSize: FontSize.twelve,
-                          borderColor: ColorResource.colorEA6D48,
-                          buttonBackgroundColor: ColorResource.colorEA6D48,
-                          cardShape: 5,
-                          )),
-                          const SizedBox(width: 6.0,),
-                          Container(
-                          width: 80,
-                          height: 40,
-                          child: CustomButton(StringResource.no,
-                          fontSize: FontSize.twelve,
-                          textColor: ColorResource.color23375A,
-                          buttonBackgroundColor: ColorResource.colorffffff,
-                          cardShape: 5,
-                          )),
+                            width: 80,
+                            height: 40,
+                            child: CustomButton(
+                              StringResource.yes,
+                              fontSize: FontSize.twelve,
+                              borderColor: ColorResource.colorEA6D48,
+                              buttonBackgroundColor: ColorResource.colorEA6D48,
+                              cardShape: 5,
+                            )),
+                        const SizedBox(
+                          width: 6.0,
+                        ),
+                        Container(
+                            width: 80,
+                            height: 40,
+                            child: CustomButton(
+                              StringResource.no,
+                              fontSize: FontSize.twelve,
+                              textColor: ColorResource.color23375A,
+                              buttonBackgroundColor: ColorResource.colorffffff,
+                              cardShape: 5,
+                            )),
                       ],
                     ),
                   ),
@@ -193,42 +198,43 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     height: 15.0,
                   ),
                   Wrap(
-                    runSpacing: 10,
+                    runSpacing: 0,
                     spacing: 10,
                     children: _buildFilterOptions(),
                   ),
                   const SizedBox(
                     height: 8.0,
                   ),
-                 bloc.showFilterDistance ?
-                  _buildBuildRoute() :
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        '10 Allocation',
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color000000,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      const SizedBox(
-                        width: 9.0,
-                      ),
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: Image.asset(ImageResource.star)),
-                      const SizedBox(
-                        width: 5.0,
-                      ),
-                      CustomText(
-                        bloc.allocationList.length.toString() + " High Priority",
-                        fontSize: FontSize.ten,
-                        color: ColorResource.color101010,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ],
-                  ),
+                  bloc.showFilterDistance
+                      ? _buildBuildRoute()
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              '10 Allocation',
+                              fontSize: FontSize.fourteen,
+                              color: ColorResource.color000000,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            const SizedBox(
+                              width: 9.0,
+                            ),
+                            Container(
+                                height: 20,
+                                width: 20,
+                                child: Image.asset(ImageResource.star)),
+                            const SizedBox(
+                              width: 5.0,
+                            ),
+                            CustomText(
+                              bloc.allocationList.length.toString() +
+                                  " High Priority",
+                              fontSize: FontSize.ten,
+                              color: ColorResource.color101010,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ],
+                        ),
                   const SizedBox(
                     height: 8.0,
                   ),
@@ -268,8 +274,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
               bloc.showFilterDistance = false;
             });
             break;
-            default:
-             setState(() {
+          default:
+            setState(() {
               bloc.showFilterDistance = false;
             });
         }
@@ -291,7 +297,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
           borderRadius: BorderRadius.circular(5),
-          color: option ==  bloc.selectedOption
+          color: option == bloc.selectedOption
               ? ColorResource.color23375A
               : Colors.white,
         ),
@@ -300,7 +306,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             option,
             fontSize: FontSize.twelve,
             fontWeight: FontWeight.w700,
-            color: option ==  bloc.selectedOption
+            color: option == bloc.selectedOption
                 ? Colors.white
                 : ColorResource.color000000,
           ),
@@ -313,47 +319,56 @@ class _AllocationScreenState extends State<AllocationScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 7,),
+        const SizedBox(
+          height: 7,
+        ),
         Row(
           children: [
-            const SizedBox(width: 5,),
+            const SizedBox(
+              width: 5,
+            ),
             Image.asset(ImageResource.location2),
-            const SizedBox(width: 8,),
-                 Container(
-                   width: 213,
-                   child: CustomText(
-                    'No.1, ABC Street, Gandhi Nagar 1st phase',
-                     fontSize: FontSize.twelve,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color101010,
-                      isSingleLine: true,
-                ),
-                 ),
-                 Spacer(),
+            const SizedBox(
+              width: 8,
+            ),
+            Container(
+              width: 213,
+              child: CustomText(
+                'No.1, ABC Street, Gandhi Nagar 1st phase',
+                fontSize: FontSize.twelve,
+                fontWeight: FontWeight.w700,
+                color: ColorResource.color101010,
+                isSingleLine: true,
+              ),
+            ),
+            Spacer(),
             Padding(
               padding: const EdgeInsets.only(right: 13),
               child: GestureDetector(
                 child: CustomText(
-                      StringResource.change,
-                       fontSize: FontSize.twelve,
-                        fontWeight: FontWeight.w700,
-                        color: ColorResource.color23375A,
-                    ),
-                  onTap: (){
-                    AppUtils.showToast('Change address');
-                  },
+                  StringResource.change,
+                  fontSize: FontSize.twelve,
+                  fontWeight: FontWeight.w700,
+                  color: ColorResource.color23375A,
+                ),
+                onTap: () {
+                  AppUtils.showToast('Change address');
+                },
               ),
             ),
-
           ],
         ),
-        const SizedBox(height: 12,),
-          Wrap(
-             runSpacing: 10,
-              spacing: 10,
-               children: _buildRouteFilterOptions(),
-               ),
-          const SizedBox(height: 7,),
+        const SizedBox(
+          height: 12,
+        ),
+        Wrap(
+          runSpacing: 10,
+          spacing: 10,
+          children: _buildRouteFilterOptions(),
+        ),
+        const SizedBox(
+          height: 7,
+        ),
       ],
     );
   }
@@ -381,7 +396,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
           borderRadius: BorderRadius.circular(85),
-          color: distance ==  bloc.selectedDistance
+          color: distance == bloc.selectedDistance
               ? ColorResource.color23375A
               : Colors.white,
         ),
@@ -390,7 +405,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             distance,
             fontSize: FontSize.twelve,
             fontWeight: FontWeight.w700,
-            color: distance ==  bloc.selectedDistance
+            color: distance == bloc.selectedDistance
                 ? Colors.white
                 : ColorResource.color000000,
           ),
@@ -399,7 +414,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
     );
   }
 
-   void mapView(BuildContext buildContext) {
+  void mapView(BuildContext buildContext) {
     showModalBottomSheet(
         isScrollControlled: true,
         isDismissible: false,
@@ -413,5 +428,4 @@ class _AllocationScreenState extends State<AllocationScreen> {
           return MapView(bloc);
         });
   }
-
 }

@@ -11,7 +11,8 @@ class ImageResource {
   static const collections = 'assets/collections.png';
   static const ots = 'assets/collections.png';
   static const captureImage = 'assets/capture_img.png';
-
+  static const String radioOn = 'assets/radio_on.png';
+  static const String radioOff = 'assets/radio_off.png';
   static const String dashboard = 'assets/dashboard.png';
   static const String profile = 'assets/profile.png';
   static const String location = 'assets/location.png';
@@ -19,6 +20,9 @@ class ImageResource {
   static const String forwardArrow = 'assets/forward_arrow.png';
   static const String search = 'assets/search.png';
   static const String allocation = 'assets/allocation.png';
+  static const String whatsApp = 'assets/whatsapp.png';
+  static const String uploadPhoto = 'assets/upload_photo.png';
+  static const String capturImage = 'assets/capture_image.png';
   static const String location2 = 'assets/location2.png';
   static const String star = 'assets/star.png';
   static const String origa = 'assets/origa.png';

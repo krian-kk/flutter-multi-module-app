@@ -88,14 +88,15 @@ class _CustomAppbarState extends State<CustomAppbar> {
       backwardsCompatibility: false,
       titleSpacing: widget.titleSpacing ?? 0,
       title:
-      //  showSearch
-      //     ? searchBar()
-      //     : 
+          //  showSearch
+          //     ? searchBar()
+          //     :
           titleString != null || titleString != ''
               ? widget.subTitle == null || widget.subTitle == ''
                   ? CustomText(
                       titleString,
-                      style: TextStyle(color: ColorResource.color101010,
+                      style: TextStyle(
+                          color: ColorResource.color101010,
                           fontFamily: Font.latoRegular.toString(),
                           fontWeight: FontWeight.w700,
                           fontSize: FontSize.sixteen),
@@ -112,8 +113,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                 .subtitle1!
                                 .copyWith(
                                     color: ColorResource.colorffffff,
-                                    fontFamily:
-                                        Font.latoRegular.toString(),
+                                    fontFamily: Font.latoRegular.toString(),
                                     fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
@@ -126,8 +126,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                 .subtitle2!
                                 .copyWith(
                                     color: ColorResource.colorffffff,
-                                    fontFamily:
-                                        Font.latoRegular.toString(),
+                                    fontFamily: Font.latoRegular.toString(),
                                     fontWeight: FontWeight.w400),
                           )
                         ],
@@ -165,7 +164,6 @@ class _CustomAppbarState extends State<CustomAppbar> {
       ),
     );
   }
-
 
   //   Widget actionView(BuildContext context, int? actionIndex) {
   //   return Visibility(

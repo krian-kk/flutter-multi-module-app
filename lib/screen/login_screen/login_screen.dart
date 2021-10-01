@@ -24,10 +24,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late LoginBloc bloc;
 
-late TextEditingController userName = TextEditingController();
-late TextEditingController password = TextEditingController();
+  late TextEditingController userName = TextEditingController();
+  late TextEditingController password = TextEditingController();
 
- final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -58,100 +58,122 @@ late TextEditingController password = TextEditingController();
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 7,),
+                          const SizedBox(
+                            height: 7,
+                          ),
                           Image.asset(ImageResource.origa),
-                          const SizedBox(height: 17,),
+                          const SizedBox(
+                            height: 17,
+                          ),
                           Image.asset(ImageResource.login),
-                          const SizedBox(height: 17,),
+                          const SizedBox(
+                            height: 17,
+                          ),
                           Container(
-                              // height: widget.height,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                            // height: widget.height,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                color: ColorResource.colorFEFFFF,
+                                border: Border.all(
+                                  // width: widget.borderWidth,
                                   color: ColorResource.colorFEFFFF,
-                                  border: Border.all(
-                                      // width: widget.borderWidth,
-                                      color: ColorResource.colorFEFFFF,
-                                      // style: widget.borderStyle
-                                      )),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter user name';
-                                    }
-                                    return null;
-                                  },
-                                  obscureText: false,
-                                  controller: userName,
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'User Name',
-                                      hintStyle:
-                                          TextStyle(color: ColorResource.color101010.withOpacity(0.3))),
-                                ),
+                                  // style: widget.borderStyle
+                                )),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter user name';
+                                  }
+                                  return null;
+                                },
+                                obscureText: false,
+                                controller: userName,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'User Name',
+                                    hintStyle: TextStyle(
+                                        color: ColorResource.color101010
+                                            .withOpacity(0.3))),
                               ),
                             ),
-                            const SizedBox(height: 20,),
-                            Container(
-                              // height: widget.height,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            // height: widget.height,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                color: ColorResource.colorFEFFFF,
+                                border: Border.all(
+                                  // width: widget.borderWidth,
                                   color: ColorResource.colorFEFFFF,
-                                  border: Border.all(
-                                      // width: widget.borderWidth,
-                                      color: ColorResource.colorFEFFFF,
-                                      // style: widget.borderStyle
-                                      )),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                                child: TextFormField(
-                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter valid password';
-                                    }
-                                    return null;
-                                  },
-                                  obscureText: true,
-                                  controller: password,
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'Password',
-                                      hintStyle:
-                                          TextStyle(color: ColorResource.color101010.withOpacity(0.3))),
-                                ),
+                                  // style: widget.borderStyle
+                                )),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter valid password';
+                                  }
+                                  return null;
+                                },
+                                obscureText: true,
+                                controller: password,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Password',
+                                    hintStyle: TextStyle(
+                                        color: ColorResource.color101010
+                                            .withOpacity(0.3))),
                               ),
                             ),
-                            const SizedBox(height: 20,),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           CustomButton(
                             'SIGN IN',
+                            buttonBackgroundColor: ColorResource.color23375A,
                             onTap: () {
-                              if (userName.text.isEmpty && password.text.isEmpty) {
+                              if (userName.text.isEmpty &&
+                                  password.text.isEmpty) {
                                 AppUtils.showToast('Please fill the fields');
-                              } else if (password.text != '1111'){
-                                AppUtils.showToast('Please enter valid password');
+                              } else if (password.text != '1111') {
+                                AppUtils.showToast(
+                                    'Please enter valid password');
                               } else {
-                                Navigator.pushNamed(context, AppRoutes.homeTabScreen);
+                                Navigator.pushNamed(
+                                    context, AppRoutes.homeTabScreen);
                                 setState(() {
-                                userName.clear();
-                                password.clear();
-                              });
+                                  userName.clear();
+                                  password.clear();
+                                });
                               }
-                            //   if (_formKey.currentState!.validate()) {
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(content: Text('Processing Data')),
-                            //   );
-                            // }
+                              //   if (_formKey.currentState!.validate()) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(content: Text('Processing Data')),
+                              //   );
+                              // }
                             },
                             cardShape: 85,
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
                           ),
-                          const SizedBox(height: 17,),
+                          const SizedBox(
+                            height: 17,
+                          ),
                           GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               AppUtils.showToast('Reset Password');
                             },
                             child: CustomText(
@@ -161,7 +183,9 @@ late TextEditingController password = TextEditingController();
                               color: ColorResource.color23375A,
                             ),
                           ),
-                          const SizedBox(height: 30,),
+                          const SizedBox(
+                            height: 30,
+                          ),
                           CustomButton(
                             'Login via diffrent user',
                             onTap: () {
@@ -170,6 +194,7 @@ late TextEditingController password = TextEditingController();
                                 password.clear();
                               });
                             },
+                            borderColor: ColorResource.color23375A,
                             cardShape: 85,
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
@@ -189,5 +214,3 @@ late TextEditingController password = TextEditingController();
     );
   }
 }
-
-

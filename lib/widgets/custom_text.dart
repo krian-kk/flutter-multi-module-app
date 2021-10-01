@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 
@@ -45,22 +44,21 @@ class _CustomTextState extends State<CustomText> {
   Widget build(BuildContext context) {
     // ignore: unnecessary_this
     final Text textWidget = Text(this.widget.text,
-            // ignore: unnecessary_this
-            textAlign: this.widget.textAlign,
-            overflow: widget.isSingleLine ? TextOverflow.ellipsis : null,
-            maxLines: widget.maxLines,
-            style: TextStyle(
-                decoration: widget.isUnderLine
-                    ? TextDecoration.underline
-                    : TextDecoration.none,
-                color: widget.color,
-                fontFamily: widget.font.value,
-                fontSize: widget.fontSize,
-                height: widget.lineHeight,
-                fontStyle: widget.fontStyle,
-                letterSpacing: widget.letterSpacing,
-                fontWeight: widget.fontWeight))
-        .tr();
+        // ignore: unnecessary_this
+        textAlign: this.widget.textAlign,
+        overflow: widget.isSingleLine ? TextOverflow.ellipsis : null,
+        maxLines: widget.maxLines,
+        style: TextStyle(
+            decoration: widget.isUnderLine
+                ? TextDecoration.underline
+                : TextDecoration.none,
+            color: widget.color,
+            fontFamily: widget.font.value,
+            fontSize: widget.fontSize,
+            height: widget.lineHeight,
+            fontStyle: widget.fontStyle,
+            letterSpacing: widget.letterSpacing,
+            fontWeight: widget.fontWeight));
 
     if (widget.onTap != null) {
       return GestureDetector(
