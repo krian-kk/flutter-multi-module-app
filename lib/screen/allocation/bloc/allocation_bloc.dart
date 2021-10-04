@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -29,6 +30,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
    ];
 
   List<AllocationListModel> allocationList = [];
+  late Position currentLocation;
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
@@ -64,5 +66,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield AllocationLoadedState();     
     }
+
+     if (event is MapViewEvent) {
+      yield MapViewState();
+    }
   }
+
+
 }

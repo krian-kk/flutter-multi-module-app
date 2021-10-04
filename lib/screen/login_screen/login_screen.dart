@@ -174,6 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              Navigator.pushNamed(
+                                    context, AppRoutes.homeTabScreen);
                               AppUtils.showToast('Reset Password');
                             },
                             child: CustomText(

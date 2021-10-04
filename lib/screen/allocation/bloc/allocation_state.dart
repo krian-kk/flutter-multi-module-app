@@ -7,3 +7,5 @@ class AllocationInitial extends AllocationState {}
 class AllocationLoadingState extends AllocationState {}
 
 class AllocationLoadedState extends AllocationState {}
+
+class MapViewState extends AllocationState {}

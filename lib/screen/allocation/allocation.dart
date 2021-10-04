@@ -47,11 +47,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) {
-        // TODO: implement listener
+        if (state is MapViewState) {
+                    mapView(context);
+                  }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
+           if (state is AllocationLoadingState) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             floatingActionButton: Padding(
@@ -269,7 +276,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             break;
           case 'Map View':
-            mapView(context);
+            bloc.add(MapViewEvent());
             setState(() {
               bloc.showFilterDistance = false;
             });
