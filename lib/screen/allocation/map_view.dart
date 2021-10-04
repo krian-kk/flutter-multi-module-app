@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -135,7 +136,7 @@ class _MapViewState extends State<MapView> {
                       Container(
                         padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
                         child: CustomAppbar(
-                          titleString: StringResource.mapView,
+                          titleString: Languages.of(context)!.mapView,
                           showClose: true,
                           onItemSelected: (value){
                             Navigator.pop(context);

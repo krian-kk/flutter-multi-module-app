@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final imageTemporary = File(image.path);
       setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
-      'error';
+      print(e.message);
     }
     Navigator.pop(cameraDialogueContext);
   }
@@ -137,14 +138,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    StringResource.homeAddress.toUpperCase(),
+                                    Languages.of(context)!
+                                        .homeAddress
+                                        .toUpperCase(),
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.w700,
                                     color: ColorResource.color101010,
                                   ),
                                   CustomText(
-                                    StringResource.markAsHome,
+                                    Languages.of(context)!.markAsHome,
                                     fontSize: FontSize.twelve,
                                     isUnderLine: true,
                                     fontStyle: FontStyle.normal,
@@ -153,6 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 5),
                               Container(
                                 width: double.infinity,
                                 margin: EdgeInsets.symmetric(vertical: 5.0),
@@ -200,8 +204,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         index]
                                                     .title) {
                                                   case 'Notification':
+                                                    notificationShowBottomSheet();
                                                     break;
-                                                  case 'Change language':
+                                                  case 'Select Launguage':
                                                     launguageBottomSheet();
                                                     break;
                                                   case 'Change Password':
@@ -216,6 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             index]
                                                         .title
                                                         .toUpperCase(),
+                                                    lineHeight: 1,
                                                     fontSize: FontSize.sixteen,
                                                     fontWeight: FontWeight.w700,
                                                     fontStyle: FontStyle.normal,
@@ -260,22 +266,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 22),
-                      Container(
-                        width: 125,
-                        height: 40,
-                        decoration: new BoxDecoration(
-                            color: ColorResource.colorFFFFFF,
-                            border: Border.all(
-                                color: ColorResource.color23375A, width: 0.5),
-                            borderRadius:
-                                new BorderRadius.all(Radius.circular(75.0))),
-                        child: Center(
-                          child: CustomText(
-                            StringResource.logout.toUpperCase(),
-                            fontSize: FontSize.twelve,
-                            color: ColorResource.color23375A,
-                            fontWeight: FontWeight.w700,
-                            lineHeight: 1,
+                      GestureDetector(
+                        // onTap: () =>
+                        //     Navigator.popUntil(context, (route) => false),
+                        child: Container(
+                          width: 125,
+                          height: 40,
+                          decoration: new BoxDecoration(
+                              color: ColorResource.colorFFFFFF,
+                              border: Border.all(
+                                  color: ColorResource.color23375A, width: 0.5),
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(75.0))),
+                          child: Center(
+                            child: CustomText(
+                              Languages.of(context)!.logout.toUpperCase(),
+                              fontSize: FontSize.twelve,
+                              color: ColorResource.color23375A,
+                              fontWeight: FontWeight.w700,
+                              lineHeight: 1,
+                            ),
                           ),
                         ),
                       )
@@ -289,8 +299,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
                   child: Container(
+                    decoration: BoxDecoration(),
                     child: CustomButton(
-                      StringResource.message,
+                      Languages.of(context)!.message,
                       onTap: () => messageShowBottomSheet(),
                       cardShape: 5,
                       isTrailing: true,
@@ -300,6 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: CustomText('2',
                             fontSize: FontSize.twelve,
                             lineHeight: 1,
+                            color: ColorResource.colorEA6D48,
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal),
                       ),
@@ -417,7 +429,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    StringResource.launguage.toUpperCase(),
+                                    Languages.of(context)!
+                                        .launguage
+                                        .toUpperCase(),
                                     fontSize: FontSize.fourteen,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
@@ -433,7 +447,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               SizedBox(height: 14),
                               CustomText(
-                                StringResource.defaultLaunguage.toUpperCase(),
+                                Languages.of(context)!
+                                    .defaultLaunguage
+                                    .toUpperCase(),
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.twelve,
                                 fontStyle: FontStyle.normal,
@@ -449,7 +465,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.english,
+                                    Languages.of(context)!.english,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -462,7 +478,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               SizedBox(height: 17),
                               CustomText(
-                                StringResource.defaultLaunguage.toUpperCase(),
+                                Languages.of(context)!
+                                    .defaultLaunguage
+                                    .toUpperCase(),
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.twelve,
                                 fontStyle: FontStyle.normal,
@@ -478,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.hindi,
+                                    Languages.of(context)!.hindi,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -498,7 +516,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.tamil,
+                                    Languages.of(context)!.tamil,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -518,7 +536,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.kannadam,
+                                    Languages.of(context)!.kannada,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -550,19 +568,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 85, vertical: 11.0),
                           child: Container(
-                            decoration: new BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ColorResource.color000000
-                                      .withOpacity(0.2),
-                                  blurRadius: 2.0,
-                                  offset: Offset(1.0,
-                                      1.0), // shadow direction: bottom right
-                                )
-                              ],
-                            ),
+                            decoration: new BoxDecoration(),
                             child: CustomButton(
-                              StringResource.okay.toUpperCase(),
+                              Languages.of(context)!.okay.toUpperCase(),
                               onTap: () => messageShowBottomSheet(),
                               cardShape: 5,
                               leadingWidget: CircleAvatar(
@@ -619,6 +627,161 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(height: 60),
                       ],
                     ),
+                  ),
+                )));
+  }
+
+  notificationShowBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.87,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    Languages.of(context)!
+                                        .notification
+                                        .toUpperCase(),
+                                    fontSize: FontSize.fourteen,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  Spacer(),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Image.asset(ImageResource.close))
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: bloc.notificationList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                            bloc.notificationList[index].date),
+                                        ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: bloc
+                                                .notificationList[index]
+                                                .listOfNotification
+                                                .length,
+                                            itemBuilder: (BuildContext context,
+                                                int innerIndex) {
+                                              return Container(
+                                                margin:
+                                                    EdgeInsets.only(bottom: 20),
+                                                width: double.infinity,
+                                                decoration: new BoxDecoration(
+                                                    boxShadow: [
+                                                      new BoxShadow(
+                                                        color: ColorResource
+                                                            .color000000
+                                                            .withOpacity(.25),
+                                                        blurRadius: 2.0,
+                                                        offset:
+                                                            Offset(1.0, 1.0),
+                                                      ),
+                                                    ],
+                                                    border: Border.all(
+                                                        color: ColorResource
+                                                            .colorDADADA,
+                                                        width: 0.5),
+                                                    color: ColorResource
+                                                        .colorF7F8FA,
+                                                    borderRadius:
+                                                        new BorderRadius.all(
+                                                            Radius.circular(
+                                                                10.0))),
+                                                child: Column(
+                                                  children: [
+                                                    CustomText(bloc
+                                                        .notificationList[index]
+                                                        .listOfNotification[
+                                                            innerIndex]
+                                                        .headText
+                                                        .toString()),
+                                                    CustomText(bloc
+                                                        .notificationList[index]
+                                                        .listOfNotification[
+                                                            innerIndex]
+                                                        .subText
+                                                        .toString()),
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    );
+                                  }),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: new BoxDecoration(
+                          color: ColorResource.colorFFFFFF,
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorResource.color000000.withOpacity(0.2),
+                              blurRadius: 2.0,
+                              offset: Offset(
+                                  1.0, 1.0), // shadow direction: bottom right
+                            )
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 85, vertical: 11.0),
+                          child: Container(
+                            decoration: new BoxDecoration(),
+                            child: CustomButton(
+                              Languages.of(context)!.read.toUpperCase(),
+                              cardShape: 5,
+                              leadingWidget: CircleAvatar(
+                                radius: 13,
+                                backgroundColor: ColorResource.colorFFFFFF,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )));
   }

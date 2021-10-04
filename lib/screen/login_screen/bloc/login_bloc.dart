@@ -14,6 +14,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    // if (event is LoginEvent) {
+    //   yield LoginLoadingState();
+    //   yield LoginLoadedState(); 
+    // }
+
+    if (event is HomeTabEvent) {
+      yield HomeTabState();
+    }
   }
 }

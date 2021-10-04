@@ -1,31 +1,38 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:origa/base/base_state.dart';
-//import 'package:origa/base/base_state.dart';
-import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/models/multi_details_model.dart';
 import 'package:origa/utils/base_equatable.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
-  List<CustomerMetModel> customerMetList = [
-    CustomerMetModel(ImageResource.ptp, StringResource.ptp),
-    CustomerMetModel(ImageResource.rtp, StringResource.rtp),
-    CustomerMetModel(ImageResource.dispute, StringResource.dispute),
-    CustomerMetModel(ImageResource.remainder, StringResource.remainder),
-    CustomerMetModel(ImageResource.collections, StringResource.collections),
-    CustomerMetModel(ImageResource.ots, StringResource.ots),
-  ];
-  CaseDetailsBloc() : super(CaseDetailsInitial()) {
-    // ignore: void_checks
-    on<CaseDetailsEvent>((event, emit) async* {
-      if (event is CaseDetailsInitialEvent) {
-      } else if (event is LaunchWhatsappEvent) {}
-      if (event is LaunchSMSEvent) {}
-    });
+  double launguageValue = 0;
+  List<MultiAddressDetailsModel> multiAddressDetilsList = [];
+  List<MultiCallDetailsModel> multiCallDetilsList = [];
+
+  CaseDetailsBloc() : super(CaseDetailsInitial());
+  @override
+  Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
+    if (event is CaseDetailsInitialEvent) {
+      yield CaseDetailsLoadingState();
+      multiAddressDetilsList.addAll([
+        MultiAddressDetailsModel('Address 01',
+            '2/345, 6th Main Road Gomathipuram, Madurai - 625032'),
+        MultiAddressDetailsModel(
+            'Address 02', '2/345, 6th Main Road Gomathipuram, Madurai - 625032')
+      ]);
+      multiCallDetilsList.addAll([
+        MultiCallDetailsModel('PHONE NUMBER 01', '9841021453'),
+        MultiCallDetailsModel('PHONE NUMBER 02', '9841021453')
+      ]);
+      yield CaseDetailsLoadedState();
+    }
+    if (event is ClickAddressBottomSheetEvent) {
+      yield ClickAddressBottomSheetState();
+    }
+    if (event is ClickCallBottomSheetEvent) {
+      yield ClickCallBottomSheetState();
+    }
   }
 }
