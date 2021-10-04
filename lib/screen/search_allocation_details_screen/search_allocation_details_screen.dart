@@ -10,6 +10,7 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/custom_textfield.dart';
 
 class SearchAllocationDetailsScreen extends StatefulWidget {
   SearchAllocationDetailsScreen({Key? key}) : super(key: key);
@@ -108,33 +109,45 @@ class _SearchAllocationDetailsScreenState
                                   CustomTextField(
                                     StringResource.accountNo + '.',
                                     accountNoController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
-                                  const SizedBox(height: 21),
+                                  const SizedBox(height: 19),
                                   CustomTextField(
                                     StringResource.customerName,
                                     customerNameController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
-                                  const SizedBox(height: 21),
+                                  const SizedBox(height: 19),
                                   CustomTextField(
                                     StringResource.dpdBucket,
                                     bucketController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
-                                  const SizedBox(height: 21),
+                                  const SizedBox(height: 19),
                                   CustomTextField(
                                     StringResource.status,
                                     statusController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
-                                  const SizedBox(height: 21),
+                                  const SizedBox(height: 19),
                                   CustomTextField(
                                     StringResource.pincode,
                                     pincodeController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
-                                  const SizedBox(height: 21),
+                                  const SizedBox(height: 19),
                                   CustomTextField(
                                     StringResource.myRecentActivity,
                                     customerIDController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
-                                  const SizedBox(height: 21),
+                                  const SizedBox(height: 19),
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -200,7 +213,7 @@ class _SearchAllocationDetailsScreenState
                       customerIDController.text.isNotEmpty) {
                     Navigator.pop(context);
                   } else {
-                    AppUtils.showToast('Please Enter Any Field',
+                    AppUtils.showToast('Please Enter Any Field1',
                         gravity: ToastGravity.CENTER);
                   }
                 },
@@ -213,83 +226,83 @@ class _SearchAllocationDetailsScreenState
   }
 }
 
-class CustomTextField extends StatefulWidget {
-  final TextEditingController controller;
-  final String hintText;
-  final Color? colour;
-  final Color? hintTextColour;
-  final bool obsecureText;
-  final Color? hoverColor;
-  final Color? fillColor;
-  final double? height;
-  final double borderRadius;
-  final Widget? suffixWidget;
-  final bool isEnable;
-  final bool isReadOnly;
-  final Function? onTapped;
-  final Widget? prefixWidget;
-  final TextInputType keyBoardType;
-  final int? maximumWordCount;
-  final BorderStyle borderStyle;
-  final Color borderColour;
-  final double borderWidth;
-  final Color cursorColor;
+// class CustomTextField extends StatefulWidget {
+//   final TextEditingController controller;
+//   final String hintText;
+//   final Color? colour;
+//   final Color? hintTextColour;
+//   final bool obsecureText;
+//   final Color? hoverColor;
+//   final Color? fillColor;
+//   final double? height;
+//   final double borderRadius;
+//   final Widget? suffixWidget;
+//   final bool isEnable;
+//   final bool isReadOnly;
+//   final Function? onTapped;
+//   final Widget? prefixWidget;
+//   final TextInputType keyBoardType;
+//   final int? maximumWordCount;
+//   final BorderStyle borderStyle;
+//   final Color borderColour;
+//   final double borderWidth;
+//   final Color cursorColor;
 
-  CustomTextField(this.hintText, this.controller,
-      {this.colour = ColorResource.colorFFFFFF,
-      this.hintTextColour,
-      this.obsecureText = false,
-      this.hoverColor = ColorResource.color000000,
-      this.fillColor = ColorResource.color000000,
-      this.height = 50,
-      this.borderRadius = 5.0,
-      this.suffixWidget,
-      this.isEnable = true,
-      this.isReadOnly = false,
-      this.onTapped,
-      this.prefixWidget,
-      this.keyBoardType = TextInputType.name,
-      this.maximumWordCount = 1,
-      this.borderColour = ColorResource.colorDADADA,
-      this.borderWidth = 1.0,
-      this.cursorColor = ColorResource.colorDADADA,
-      this.borderStyle = BorderStyle.solid});
+//   CustomTextField(this.hintText, this.controller,
+//       {this.colour = ColorResource.colorFFFFFF,
+//       this.hintTextColour,
+//       this.obsecureText = false,
+//       this.hoverColor = ColorResource.color000000,
+//       this.fillColor = ColorResource.color000000,
+//       this.height = 50,
+//       this.borderRadius = 5.0,
+//       this.suffixWidget,
+//       this.isEnable = true,
+//       this.isReadOnly = false,
+//       this.onTapped,
+//       this.prefixWidget,
+//       this.keyBoardType = TextInputType.name,
+//       this.maximumWordCount = 1,
+//       this.borderColour = ColorResource.colorDADADA,
+//       this.borderWidth = 1.0,
+//       this.cursorColor = ColorResource.colorDADADA,
+//       this.borderStyle = BorderStyle.solid});
 
-  @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
-}
+//   @override
+//   State<CustomTextField> createState() => _CustomTextFieldState();
+// }
 
-class _CustomTextFieldState extends State<CustomTextField> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)),
-          color: widget.colour,
-          border: Border.all(
-              width: widget.borderWidth,
-              color: widget.borderColour,
-              style: widget.borderStyle)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: TextField(
-          controller: widget.controller,
-          obscureText: widget.obsecureText,
-          cursorColor: widget.cursorColor,
-          decoration: InputDecoration(
-              fillColor: widget.fillColor,
-              hoverColor: widget.hoverColor,
-              border: InputBorder.none,
-              hintText: widget.hintText,
-              hintStyle:
-                  TextStyle(color: ColorResource.color101010.withOpacity(0.3))),
-        ),
-      ),
-    );
-  }
-}
+// class _CustomTextFieldState extends State<CustomTextField> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: widget.height,
+//       width: double.infinity,
+//       decoration: BoxDecoration(
+//           borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)),
+//           color: widget.colour,
+//           border: Border.all(
+//               width: widget.borderWidth,
+//               color: widget.borderColour,
+//               style: widget.borderStyle)),
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 24.0),
+//         child: TextField(
+//           controller: widget.controller,
+//           obscureText: widget.obsecureText,
+//           cursorColor: widget.cursorColor,
+//           decoration: InputDecoration(
+//               fillColor: widget.fillColor,
+//               hoverColor: widget.hoverColor,
+//               border: InputBorder.none,
+//               hintText: widget.hintText,
+//               hintStyle:
+//                   TextStyle(color: ColorResource.color101010.withOpacity(0.3))),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // class CustomAppBar1 extends StatefulWidget implements PreferredSizeWidget {
 //   final Widget child;

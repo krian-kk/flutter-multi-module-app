@@ -12,6 +12,7 @@ part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
+  double launguageValue = 0;
   List<CustomerMetModel> customerMetList = [
     CustomerMetModel(ImageResource.ptp, StringResource.ptp),
     CustomerMetModel(ImageResource.rtp, StringResource.rtp),

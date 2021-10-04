@@ -78,4 +78,7 @@ class StringResource {
   static const String all = 'All';
   static const String under5km = 'Under 5Km';
   static const String more5km = '5Km-10Km';
+  static const String read = 'read';
+  static const String addressDetails = 'addressDetails';
+  static const String callDetails = 'callDetails';
 }

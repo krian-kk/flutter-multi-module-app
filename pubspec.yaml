@@ -85,6 +85,8 @@ flutter:
     - assets/upload_photo.png
     - assets/radio_on.png
     - assets/radio_off.png
+    - assets/phone.png
+    - assets/direction.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
