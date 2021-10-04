@@ -2,717 +2,707 @@ import 'package:origa/languages/app_languages.dart';
 
 class LanguageEn extends Languages {
   @override
-  String get appName => 'ICICI Pockets';
+  String get origa => 'Origa.ai';
 
   @override
-  String get labelWelcome => 'You have pushed the button this many times:';
+  String get splashScreen => 'splashScreen';
 
   @override
-  String get labelSelectLanguage => 'Select Language';
+  String get cancel => 'cancel';
 
   @override
-  String get showPopUp => 'Show popup';
+  String get search => 'search';
 
   @override
-  String get setLightTheme => 'Set Light Theme';
+  String get searchAllocationDetails => 'SEARCH ALLOCATION DETAILS';
 
   @override
-  String get setDarkTheme => 'Set Dark Theme';
+  String get accountNo => 'Account No';
 
   @override
-  String get noteWalletSuccess =>
-      'Your Pockets Wallet is activated & offers you the following benefits -';
+  String get customerName => 'Customer Name';
 
   @override
-  String get walletUPIid => 'Wallet UPI ID';
+  String get dpdBucket => 'DPD/Bucket';
 
   @override
   String get walletLimit => 'Wallet Limit';
 
   @override
-  String get virtualVISAcard => 'Virtual VISA Card';
+  String get status => 'Status';
 
   @override
-  String get congratulations => 'Congratulations !!!';
+  String get pincode => 'Pincode';
 
   @override
-  String get goToDashboard => 'Go to Dashboard';
+  String get customerID => 'Customer ID';
 
-  String get welcomeString => 'Welcome to';
-
   @override
-  String get pockets => 'Pockets';
+  String get myRecentActivity => 'My Recent Activity';
 
   @override
-  String get welcomeDescriptionString =>
-      '3 step journey to start\nyour neo-banking\nexperience:';
+  String get showOnlyTopResults => 'Show Only Top Results';
 
   @override
-  String get verifyMobileNumber => 'Verify Mobile Number';
+  String get new_ => 'NEW';
 
   @override
-  String get verifyPersonalDetails => 'Verify Personal Details';
+  String get overdueAmount => 'Overdue Amount';
 
   @override
-  String get setupPasscode => 'Set up Passcode';
+  String get loanAmount => 'Loan Amount';
 
   @override
-  String get verifyYourMobileNumber => 'Verify your mobile number';
+  String get loanDuration => 'Loan Duration';
 
   @override
-  String get noteWelcomeScreen =>
-      '*Regular SMS charges will apply for verification.';
+  String get pos => 'POS';
 
   @override
-  String get moSimCardErrorMessage =>
-      'Sorry, We can\'t go ahead, ICICI need atlease one sim in mobile';
+  String get schemeCode => 'Scheme Code';
 
   @override
-  String get selectYourSim => 'Please select your SIM';
+  String get emiStartDate => 'EMI Start Date';
 
   @override
-  String get sim => 'SIM';
+  String get bankName => 'Bank Name';
 
   @override
-  String get verify => 'Verify';
+  String get repaymentInfo => 'REPAYMENT INFO';
 
   @override
-  String get noteWelocomeScreen =>
-      '*Regular SMS charges will apply for verification.';
+  String get beneficiaryDetails => 'Beneficiary Details';
 
   @override
-  String get exisitingUserRegisterMessage =>
-      '*For ICICI existing customer, please select the number registered with your bank.';
+  String get repaymentBankName => 'Repayment Bank Name';
 
   @override
-  String get numberVerificationString => 'Number verification in the process';
+  String get referenceLender => 'Reference Lender';
 
   @override
-  String get numberVerificationDescriptionString =>
-      'We’re verifying your number. Have patience with us, don’t close the app.';
-
-  String get asPerPanCard => 'As per PAN card';
+  String get referenceUrl => 'Reference URL';
 
   @override
-  String get personalDetails => 'Personal Details';
+  String get caseDetials => 'CASE DETAILS';
 
   @override
-  String get dateOfBirth => 'Date of Birth';
+  String get sendSms => 'SEND SMS';
 
   @override
-  String get male => 'Male';
+  String get sendWhatsapp => 'SEND WHATSAPP';
 
   @override
-  String get female => 'Female';
+  String get otherLoanOf => 'OTHER LOAN OF';
 
   @override
-  String get transGender => 'Transgender';
+  String get debasishPatnaik => 'DEBASISH PATNAIK';
 
   @override
-  String get personalDetailsReq => 'Personal details requirement';
+  String get view => 'VIEW';
 
   @override
-  // ignore: lines_longer_than_80_chars
-  String get personalDetailsDes =>
-      'Before moving ahead, we need few important things to setup your account';
+  String get customerMet => 'Customer Met';
 
   @override
-  String get continueText => 'Continue';
+  String get customerNotMet => 'Customer Not Met';
 
   @override
-  String get ok => 'Ok';
+  String get logout => 'logout';
 
   @override
-  String get dontAllow => 'Don\'t Allow';
+  String get invalid => 'Invalid';
 
   @override
-  String get smsSendDescription =>
-      'Do you want to allow “Pockets” to send a SMS?';
+  String get ptp => 'PTP';
 
   @override
-  String get smsSendDescriptionNote =>
-      '\nSend SMS to verify the users mobile number';
+  String get rtp => 'RTP (DENIAL)';
 
   @override
-  String get mobileNumber => 'Mobile Number';
+  String get dispute => 'DISPUTE';
 
-  String get goodToSeeYouBack => 'Good to see you back!';
-
   @override
-  String get home => 'Home';
+  String get remainderCb => 'REMINDER/CB';
 
   @override
-  String get rewards => 'Rewards';
+  String get collections => 'COLLECTIONS';
 
   @override
-  String get addAddress => 'Add Address';
+  String get ots => 'OTS';
 
   @override
-  String get updateAddress => 'Update';
+  String get product => 'Product';
 
   @override
-  String get verifyEmail => 'Verify Email';
+  String get batchNo => 'Batch No.';
 
   @override
-  String get updateEmail => 'Update Email';
+  String get done => 'done';
 
   @override
-  String get otpVerification => 'OTP verification';
+  String get select => 'select';
 
   @override
-  String get camera => 'Camera';
+  String get allocation => 'Allocation';
 
   @override
-  String get gallery => 'Gallery';
+  String get dashboard => 'Dashboard';
 
   @override
-  String get otpVerificationDescription =>
-      'Please enter the OTP we have sent you to your Email Id ';
+  String get profile => 'Profile';
 
   @override
-  String get whatWentWrong => 'What went wrong???';
+  String get areYouAtOffice => 'Are you at Office ?';
 
   @override
-  String get weHappy =>
-      'We\'re happy to help you at any cost. Please allow us to understand your concern.';
+  String get yes => 'YES';
 
   @override
-  String get youCan => 'You can call us on';
+  String get no => 'NO';
 
   @override
-  String get orTap => 'or tap the button';
+  String get searchbasedOn => 'SEARCH BASED ON';
 
   @override
-  String get someone => 'Someone from Pockets team will assist you.';
+  String get priority => 'Priority';
 
   @override
-  String get requestForCallBack => 'Request for call back';
+  String get buildRoute => 'Build Route';
 
   @override
-  String get continueToDelete => 'Continue to Delete';
+  String get mapView => 'Map View';
 
   @override
-  String get requestAccepted => 'Request Accepted';
+  String get message => 'MESSAGE';
 
   @override
-  String get weHaveAccepted =>
-      'We have accepted your request. You can expect Call from us within 2 hours.';
+  String get followUpDate => 'Follow Up Date';
 
   @override
-  String get gotIt => 'Got it';
+  String get error => 'error';
 
   @override
-  String get pleaseTellUs => 'Please tell us why you’re leaving';
+  String get homeAddress => 'HOME ADDRESS';
 
   @override
-  String get reasonForWalletClosure => 'Reason for Wallet closure';
+  String get markAsHome => 'MARK AS HOME';
 
   @override
-  String get closeWallet => 'Close Wallet';
+  String get notification => 'Notification';
 
   @override
-  String get reason => 'Reason';
+  String get changeLanguage => 'Change Language';
 
   @override
-  String get yourRequest =>
-      'Your request for Pockets wallet closure has been registered and will be closed in 2 working days. Meanwhile,You can call us on';
+  String get changePassword => 'Change Password';
 
   @override
-  String get toDeactivate => 'to deactivate request for wallet closure.';
+  String get launguage => 'Launguage';
 
   @override
-  String get referenceNo => 'Reference No: ';
+  String get defaultLaunguage => 'Default Launguage';
 
   @override
-  String get pleaseNote =>
-      'Note: Please note down reference no. for wallet closure tracking. Contact customer care for any further concerns.';
+  String get english => 'ENGLISH';
 
   @override
-  String get weFound => 'We found you have enough balance in wallet';
+  String get hindi => 'हिन्दी  / HINDI';
 
   @override
-  String get weSuggest =>
-      'We suggest you to transfer or use the balance, then only you can request for closure.';
-
-  String get seeAllServices => 'See All Services';
+  String get tamil => 'தமிழ்  / TAMIL';
 
   @override
-  String get needHelp => 'Need Help';
+  String get kannada => 'ಕನ್ನಡ  / KANNADA';
 
   @override
-  String get reasonforWalletClosure => 'Reason for Wallet closure';
+  String get change => 'Change';
 
   @override
-  String get supportingHours => '24x7 Help & Support';
+  String get all => 'All';
 
   @override
-  String get liveSupport => 'Live Support';
+  String get under5Km => 'Under 5Km';
 
   @override
-  String get complete => 'Complete';
+  String get more5km => '5Km-10Km';
 
   @override
-  String get trendingService => 'Trending Services';
+  String get read => 'read';
 
   @override
-  String get KYCRequired => 'KYC Required';
+  String get addressDetails => 'Address Details';
 
   @override
-  String get statement => 'Statement';
+  String get callDetails => 'Call Details';
 
   @override
-  String get viewFullHistory => 'View Full History';
+  String get okay => 'okay';
 
   @override
-  String get detailedStatement => 'Detailed Statement';
+  String get call => 'CALL';
 
   @override
-  String get lastMonth => 'Last Month';
+  String get viewMap => 'VIEW MAP';
 
-  @override
-  String get lastThreeMonth => 'Last 3 Months';
+//   @override
+//   String get statement => 'Statement';
 
-  @override
-  String get lastSixMonth => 'Last 6 Months';
+//   @override
+//   String get viewFullHistory => 'View Full History';
 
-  @override
-  String get selectCustomDateRange => 'Select Custom Date Range';
+//   @override
+//   String get detailedStatement => 'Detailed Statement';
 
-  @override
-  String get statementDuration => 'For which period you need a statement?';
+//   @override
+//   String get lastMonth => 'Last Month';
 
-  @override
-  String get startDate => 'Start Date';
+//   @override
+//   String get lastThreeMonth => 'Last 3 Months';
 
-  @override
-  String get endDate => 'End Date';
+//   @override
+//   String get lastSixMonth => 'Last 6 Months';
 
-  @override
-  String get downloadStatement => 'Download Statement';
+//   @override
+//   String get selectCustomDateRange => 'Select Custom Date Range';
 
-  @override
-  String get downloadPDF => 'Download PDF';
+//   @override
+//   String get statementDuration => 'For which period you need a statement?';
 
-  @override
-  String get downloadStatementOverEmail => 'Download Statement over email';
+//   @override
+//   String get startDate => 'Start Date';
 
-  @override
-  String get filter => 'Filter';
+//   @override
+//   String get endDate => 'End Date';
 
-  @override
-  String get allPaidAndReceived => 'All paid/received';
+//   @override
+//   String get downloadStatement => 'Download Statement';
 
-  @override
-  String get credit => 'Credit';
+//   @override
+//   String get downloadPDF => 'Download PDF';
 
-  @override
-  String get debit => 'Debit';
+//   @override
+//   String get downloadStatementOverEmail => 'Download Statement over email';
 
-  @override
-  String get allUPITransactionStaus => 'All UPI transaction status';
+//   @override
+//   String get filter => 'Filter';
 
-  @override
-  String get failure => 'Failure';
+//   @override
+//   String get allPaidAndReceived => 'All paid/received';
 
-  @override
-  String get success => 'Success';
+//   @override
+//   String get credit => 'Credit';
 
-  @override
-  String get timeout => 'Timeout';
+//   @override
+//   String get debit => 'Debit';
 
-  @override
-  String get allPaymentsTypes => 'All payments types';
+//   @override
+//   String get allUPITransactionStaus => 'All UPI transaction status';
 
-  @override
-  String get transfers => 'Transfers';
+//   @override
+//   String get failure => 'Failure';
 
-  @override
-  String get upi => 'UPI';
+//   @override
+//   String get success => 'Success';
 
-  @override
-  String get showResults => 'Show Results';
+//   @override
+//   String get timeout => 'Timeout';
 
-  @override
-  String get billPayment => 'Bill Payment';
+//   @override
+//   String get allPaymentsTypes => 'All payments types';
 
-  @override
-  String get onlinePayment => 'Online Payment';
+//   @override
+//   String get transfers => 'Transfers';
 
-  @override
-  String get startDateRequired => 'Start date is required';
+//   @override
+//   String get upi => 'UPI';
 
-  @override
-  String get endDateRequired => 'End date is required';
+//   @override
+//   String get showResults => 'Show Results';
 
-  @override
-  String get startAndEndDateRequired => 'Start & End date is required';
+//   @override
+//   String get billPayment => 'Bill Payment';
 
-  @override
-  String get statementSentMessage =>
-      'Statement sent to your registered email address';
+//   @override
+//   String get onlinePayment => 'Online Payment';
 
-  @override
-  String get statementSentNote =>
-      'You will receive an email with your statement for the requested period.';
+//   @override
+//   String get startDateRequired => 'Start date is required';
 
-  @override
-  String get done => 'Done';
+//   @override
+//   String get endDateRequired => 'End date is required';
 
-  @override
-  String get allServices => 'All Services';
+//   @override
+//   String get startAndEndDateRequired => 'Start & End date is required';
 
-  @override
-  String get notifications => 'Notifications';
+//   @override
+//   String get statementSentMessage =>
+//       'Statement sent to your registered email address';
 
-  @override
-  String get clearAll => 'Clear all';
+//   @override
+//   String get statementSentNote =>
+//       'You will receive an email with your statement for the requested period.';
 
-  @override
-  String get today => 'Today';
+//   @override
+//   String get done => 'Done';
 
-  @override
-  String get yesterday => 'Yesterday';
+//   @override
+//   String get allServices => 'All Services';
 
-  @override
-  String get notificationEmpty => 'No Notification Found';
+//   @override
+//   String get notifications => 'Notifications';
 
-  @override
-  String get notificationEmptyDescription =>
-      'Dummy content, will be added latersome time';
+//   @override
+//   String get clearAll => 'Clear all';
 
-  @override
-  String get trackShipment => 'Track Shipments';
+//   @override
+//   String get today => 'Today';
 
-  @override
-  String get orderDetails => 'Order Details:';
+//   @override
+//   String get yesterday => 'Yesterday';
 
-  @override
-  String get dateOfOrder => 'Date of order:';
+//   @override
+//   String get notificationEmpty => 'No Notification Found';
 
-  @override
-  String get amount => 'Amount:';
+//   @override
+//   String get notificationEmptyDescription =>
+//       'Dummy content, will be added latersome time';
 
-  @override
-  String get estimatedDelivery => 'Estimated Delivery:';
+//   @override
+//   String get trackShipment => 'Track Shipments';
 
-  @override
-  String get deliveryAddress => 'Delivery Address:';
+//   @override
+//   String get orderDetails => 'Order Details:';
 
-  @override
-  String get payment => 'Payment';
+//   @override
+//   String get dateOfOrder => 'Date of order:';
 
-  @override
-  String get rechargeBillsOffers => 'Recharge, Bills & Offers';
+//   @override
+//   String get amount => 'Amount:';
 
-  @override
-  String get bank => 'Bank';
+//   @override
+//   String get estimatedDelivery => 'Estimated Delivery:';
 
-  @override
-  String get trackServiceRequest => 'Track Service Request';
+//   @override
+//   String get deliveryAddress => 'Delivery Address:';
 
-  @override
-  String get openRequest => 'Open Request';
+//   @override
+//   String get payment => 'Payment';
 
-  @override
-  String get closedRequest => 'Closed Request';
+//   @override
+//   String get rechargeBillsOffers => 'Recharge, Bills & Offers';
 
-  @override
-  String get serviceRequestNo => 'Service Request No.';
+//   @override
+//   String get bank => 'Bank';
 
-  @override
-  String get open => 'Open';
+//   @override
+//   String get trackServiceRequest => 'Track Service Request';
 
-  @override
-  String get description => 'Description:';
+//   @override
+//   String get openRequest => 'Open Request';
 
-  @override
-  String get haveMoreQuestions => 'Have more questions?';
+//   @override
+//   String get closedRequest => 'Closed Request';
 
-  @override
-  String get ourSupport => 'Our support staff will try to resolve your query.';
+//   @override
+//   String get serviceRequestNo => 'Service Request No.';
 
-  @override
-  String get gotoSupport => 'Go to Support';
+//   @override
+//   String get open => 'Open';
 
-  @override
-  String get noOpenRequestFound => 'No Open Request Found';
+//   @override
+//   String get description => 'Description:';
 
-  @override
-  String get trackPhysicalCard => 'Track Physical card';
+//   @override
+//   String get haveMoreQuestions => 'Have more questions?';
 
-  @override
-  String get nothingyouorderedPhysicalCard =>
-      'Nothing you ordered Physical card';
+//   @override
+//   String get ourSupport => 'Our support staff will try to resolve your query.';
 
-  @override
-  String get requestPhysicalCard => 'Request Physical Card';
+//   @override
+//   String get gotoSupport => 'Go to Support';
 
-  @override
-  String get amountPaid => 'Amount Paid';
+//   @override
+//   String get noOpenRequestFound => 'No Open Request Found';
 
-  @override
-  String get closed => 'Closed';
+//   @override
+//   String get trackPhysicalCard => 'Track Physical card';
 
-  @override
-  String get upiid => 'UPI ID';
+//   @override
+//   String get nothingyouorderedPhysicalCard =>
+//       'Nothing you ordered Physical card';
 
-  @override
-  String get checkAvailability => 'Check Availability';
+//   @override
+//   String get requestPhysicalCard => 'Request Physical Card';
 
-  @override
-  String get alternateSuggestedUpiid => 'Alternate Suggested UPI ID';
+//   @override
+//   String get amountPaid => 'Amount Paid';
 
-  @override
-  String get notAvailable => 'Not Available';
+//   @override
+//   String get closed => 'Closed';
 
-  @override
-  String get available => 'Available';
+//   @override
+//   String get upiid => 'UPI ID';
 
-  @override
-  String get pocketStatement => 'Pocket Statement';
+//   @override
+//   String get checkAvailability => 'Check Availability';
 
-  @override
-  String get accounts => 'Accounts';
+//   @override
+//   String get alternateSuggestedUpiid => 'Alternate Suggested UPI ID';
 
-  @override
-  String get others => 'Others';
+//   @override
+//   String get notAvailable => 'Not Available';
 
-  @override
-  String get setTransactionLimit => 'Set Transaction Limit';
+//   @override
+//   String get available => 'Available';
 
-  @override
-  String get reqForWalletClosure => 'Request for wallet Closure';
+//   @override
+//   String get pocketStatement => 'Pocket Statement';
 
-  @override
-  String get authenticateAccount => 'Authenticate Account';
+//   @override
+//   String get accounts => 'Accounts';
 
-  @override
-  String get selectBankAccount => 'Select Bank Account';
+//   @override
+//   String get others => 'Others';
 
-  @override
-  String get selectDebitCard => 'Select Debit Card';
+//   @override
+//   String get setTransactionLimit => 'Set Transaction Limit';
 
-  @override
-  String get gridNumber => 'Grid Number';
-  @override
-  String get set4DigitPIN => 'Set 4 digit PIN';
-  @override
-  String get enter4DigitPIN => 'Enter 4 digit New PIN';
-  @override
-  String get pinCreatedSuccessfully => 'PIN created successfully';
-  @override
-  String get reEnter4DigitPIN => 'Re-Enter 4 digit New PIN';
-  @override
-  String get termsAndConditions => 'Terms & conditions';
-  @override
-  String get proceed => 'Proceed';
-  @override
-  String get iHave =>
-      'I have gone through the safe bank tips and agree with the Terms & Conditions';
-  @override
-  String get thisPasscode =>
-      'This passcode will be used every time you log in to the application.';
+//   @override
+//   String get reqForWalletClosure => 'Request for wallet Closure';
 
-  @override
-  String get gridHint =>
-      'Your ICICI Bank Debit card has grid on its reverse. Enter numbers from the grid as printed against the alphabets.';
+//   @override
+//   String get authenticateAccount => 'Authenticate Account';
 
-  @override
-  String get gridWrongHint => 'Wrong Grid Number, Please enter correct Grid';
+//   @override
+//   String get selectBankAccount => 'Select Bank Account';
 
-  @override
-  String get paymentStatus => 'Payment Status';
+//   @override
+//   String get selectDebitCard => 'Select Debit Card';
 
-  @override
-  String get sentTo => 'Sent To';
+//   @override
+//   String get gridNumber => 'Grid Number';
+//   @override
+//   String get set4DigitPIN => 'Set 4 digit PIN';
+//   @override
+//   String get enter4DigitPIN => 'Enter 4 digit New PIN';
+//   @override
+//   String get pinCreatedSuccessfully => 'PIN created successfully';
+//   @override
+//   String get reEnter4DigitPIN => 'Re-Enter 4 digit New PIN';
+//   @override
+//   String get termsAndConditions => 'Terms & conditions';
+//   @override
+//   String get proceed => 'Proceed';
+//   @override
+//   String get iHave =>
+//       'I have gone through the safe bank tips and agree with the Terms & Conditions';
+//   @override
+//   String get thisPasscode =>
+//       'This passcode will be used every time you log in to the application.';
 
-  @override
-  String get sentAmountId => '9958084563@okicici';
+//   @override
+//   String get gridHint =>
+//       'Your ICICI Bank Debit card has grid on its reverse. Enter numbers from the grid as printed against the alphabets.';
 
-  @override
-  String get sentDate => 'May 29 2018, 2:50 PM';
+//   @override
+//   String get gridWrongHint => 'Wrong Grid Number, Please enter correct Grid';
 
-  @override
-  String get transactionId => 'Transaction ID';
+//   @override
+//   String get paymentStatus => 'Payment Status';
 
-  @override
-  String get transRefNo => '#100138080791';
+//   @override
+//   String get sentTo => 'Sent To';
 
-  @override
-  String get transferVia => 'Transfer Via';
+//   @override
+//   String get sentAmountId => '9958084563@okicici';
 
-  @override
-  String get vpa => 'VPA';
+//   @override
+//   String get sentDate => 'May 29 2018, 2:50 PM';
 
-  @override
-  String get edit => 'Edit';
+//   @override
+//   String get transactionId => 'Transaction ID';
 
-  @override
-  String get category => 'Category';
+//   @override
+//   String get transRefNo => '#100138080791';
 
-  @override
-  String get outgoingTransfer => 'Outgoing Transfer';
+//   @override
+//   String get transferVia => 'Transfer Via';
 
-  @override
-  String get remark => 'Remark';
+//   @override
+//   String get vpa => 'VPA';
 
-  @override
-  String get sentFrom => 'Sent From';
+//   @override
+//   String get edit => 'Edit';
 
-  @override
-  String get na => 'NA';
+//   @override
+//   String get category => 'Category';
 
-  @override
-  String get raiseDispute => 'Raise Dispute';
+//   @override
+//   String get outgoingTransfer => 'Outgoing Transfer';
 
-  @override
-  String get validFrom => 'Valid From';
+//   @override
+//   String get remark => 'Remark';
 
-  @override
-  String get validThru => 'Valid Thru';
+//   @override
+//   String get sentFrom => 'Sent From';
 
-  @override
-  String get validToDate => '20 May 2021';
+//   @override
+//   String get na => 'NA';
 
-  @override
-  String get validFromDate => 'Apr 2026';
+//   @override
+//   String get raiseDispute => 'Raise Dispute';
 
-  @override
-  String get viewCvv => 'View Cvv';
+//   @override
+//   String get validFrom => 'Valid From';
 
-  @override
-  String get cvv => 'Cvv';
+//   @override
+//   String get validThru => 'Valid Thru';
 
-  String get enterCurrentPasscode => 'Enter CurrentPasscode';
+//   @override
+//   String get validToDate => '20 May 2021';
 
-  @override
-  String get enterNewPasscode => 'Enter New Passcode';
+//   @override
+//   String get validFromDate => 'Apr 2026';
 
-  @override
-  String get confirmPasscode => 'Confirm Passcode';
+//   @override
+//   String get viewCvv => 'View Cvv';
 
-  @override
-  String get passcodeChangedSuccessfully => 'Passcode changed successfully';
+//   @override
+//   String get cvv => 'Cvv';
 
-  @override
-  String get passcodeChangedSuccessfullySubText =>
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit incididunt.';
+//   String get enterCurrentPasscode => 'Enter CurrentPasscode';
 
-  @override
-  String get setPasscode => 'Set Passcode';
+//   @override
+//   String get enterNewPasscode => 'Enter New Passcode';
 
-  @override
-  String get notMatchedText => 'Not matched, Please enter correct PIN';
+//   @override
+//   String get confirmPasscode => 'Confirm Passcode';
 
-  @override
-  String get changePasscode => 'Change Passcode';
+//   @override
+//   String get passcodeChangedSuccessfully => 'Passcode changed successfully';
 
-  String get weDontDeliverHere => 'We don’t deliver here yet';
+//   @override
+//   String get passcodeChangedSuccessfullySubText =>
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit incididunt.';
 
-  @override
-  String get regularPocketsCard => 'Regular Pockets Card';
+//   @override
+//   String get setPasscode => 'Set Passcode';
 
-  @override
-  String get selectAddress => 'Select Address';
+//   @override
+//   String get notMatchedText => 'Not matched, Please enter correct PIN';
 
-  @override
-  String get deliverTo => 'Deliver to';
+//   @override
+//   String get changePasscode => 'Change Passcode';
 
-  @override
-  String get applyNow => 'Apply Now';
+//   String get weDontDeliverHere => 'We don’t deliver here yet';
 
-  @override
-  String get continuee => 'Continue';
+//   @override
+//   String get regularPocketsCard => 'Regular Pockets Card';
 
-  @override
-  String get changeLocation => 'Change Location';
+//   @override
+//   String get selectAddress => 'Select Address';
 
-  @override
-  String get save => 'Save';
+//   @override
+//   String get deliverTo => 'Deliver to';
 
-  @override
-  String get addFund => 'Add Fund';
+//   @override
+//   String get applyNow => 'Apply Now';
 
-  @override
-  String get addFunds => 'Add Funds';
+//   @override
+//   String get continuee => 'Continue';
 
-  @override
-  String get editAddress => 'Edit Address';
+//   @override
+//   String get changeLocation => 'Change Location';
 
-  @override
-  String get billDetails => 'Bill Details:';
+//   @override
+//   String get save => 'Save';
 
-  @override
-  String get toPay => 'To Pay';
+//   @override
+//   String get addFund => 'Add Fund';
 
-  @override
-  String get expressionPocketsCard => 'Expression Pockets Card';
+//   @override
+//   String get addFunds => 'Add Funds';
 
-  @override
-  String get gst => 'GST';
+//   @override
+//   String get editAddress => 'Edit Address';
 
-  @override
-  String get placeOrder => 'Place Order';
+//   @override
+//   String get billDetails => 'Bill Details:';
 
-  @override
-  String get thankYou => 'Thank you for placing Expression Pockets Card.';
+//   @override
+//   String get toPay => 'To Pay';
 
-  @override
-  String get returntoAccountDetails => 'Retun to Account Details';
+//   @override
+//   String get expressionPocketsCard => 'Expression Pockets Card';
 
-  @override
-  String get requestForPhysicalCard => 'Request for Physical Card';
+//   @override
+//   String get gst => 'GST';
 
-  @override
-  String get orderStatus => 'Order Status';
+//   @override
+//   String get placeOrder => 'Place Order';
 
-  @override
-  String get paidAmount => '₹2000.00';
+//   @override
+//   String get thankYou => 'Thank you for placing Expression Pockets Card.';
 
-  @override
-  String get copyToClipboard => 'Copied to clipboard';
-  @override
-  String get pocketsRewards => 'Pockets Rewards';
-  @override
-  String get pocketsRewardsDes => 'Thank you for creating an account with Pockets.';
-  @override
-  String get pocketsRewardsDes1 =>'No promocode required. Pay bills, Recharge mobile, Buy FASTag; use @pockets UPI ID to send money or pay.';
-  @override
-  String get availNow => 'Avail Now';
-  @override
-  String get termsAndConditionsApply => '*Terms and Conditions apply ';
+//   @override
+//   String get returntoAccountDetails => 'Retun to Account Details';
 
-  @override
-  String get expressionPocketCard => 'Expression Pocket card';
+//   @override
+//   String get requestForPhysicalCard => 'Request for Physical Card';
 
-  @override
-  String get blockYourPhysicalCard => 'Block your Physical Card';
+//   @override
+//   String get orderStatus => 'Order Status';
 
-  @override
-  String get more => 'More..';
+//   @override
+//   String get paidAmount => '₹2000.00';
 
-  @override
-  String get completeKYC => 'Complete KYC';
+//   @override
+//   String get copyToClipboard => 'Copied to clipboard';
+//   @override
+//   String get pocketsRewards => 'Pockets Rewards';
+//   @override
+//   String get pocketsRewardsDes =>
+//       'Thank you for creating an account with Pockets.';
+//   @override
+//   String get pocketsRewardsDes1 =>
+//       'No promocode required. Pay bills, Recharge mobile, Buy FASTag; use @pockets UPI ID to send money or pay.';
+//   @override
+//   String get availNow => 'Avail Now';
+//   @override
+//   String get termsAndConditionsApply => '*Terms and Conditions apply ';
 
-  @override
-  String get kycComplete => 'KYC InComplete';
+//   @override
+//   String get expressionPocketCard => 'Expression Pocket card';
 
-  @override
-  String get dontShowMeAgain => 'Don’t Show me again';
+//   @override
+//   String get blockYourPhysicalCard => 'Block your Physical Card';
 
-  @override
-  String get viewStatement => 'View Statement';
+//   @override
+//   String get more => 'More..';
 
-  @override
-  String get kycCompleteDescription => '''
-Your wallet is minimum KYC compliant, please complete full KYC to enjoy uninterrupted services.''';
-  @override
-  String get welcomeHomeScreen => 'Welcome';
-  @override
-  String get welcomeHomeText => 'Home!';
-  @override
-  String get welcomeExisting =>
-      'Your’re already an existing Pockets account holder.';
-  @override
-  String get setUpPasscode => 'Set up Passcode';
+//   @override
+//   String get completeKYC => 'Complete KYC';
+
+//   @override
+//   String get kycComplete => 'KYC InComplete';
+
+//   @override
+//   String get dontShowMeAgain => 'Don’t Show me again';
+
+//   @override
+//   String get viewStatement => 'View Statement';
+
+//   @override
+//   String get kycCompleteDescription => '''
+// Your wallet is minimum KYC compliant, please complete full KYC to enjoy uninterrupted services.''';
+//   @override
+//   String get welcomeHomeScreen => 'Welcome';
+//   @override
+//   String get welcomeHomeText => 'Home!';
+//   @override
+//   String get welcomeExisting =>
+//       'Your’re already an existing Pockets account holder.';
+//   @override
+//   String get setUpPasscode => 'Set up Passcode';
+
 }

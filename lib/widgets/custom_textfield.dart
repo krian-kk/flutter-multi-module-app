@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -33,6 +31,7 @@ class CustomTextField extends StatefulWidget {
   final Function? onEditing;
   final bool isBorder;
   final bool isFill;
+  final Color cursorColor;
   final Function(bool)? validatorCallBack;
 
   // ignore: avoid_unused_constructor_parameters
@@ -66,6 +65,7 @@ class CustomTextField extends StatefulWidget {
       this.isLabel = false,
       this.isBorder = false,
       this.isFill = false,
+      this.cursorColor = ColorResource.color666666,
       this.validationRules = const []});
 
   @override
@@ -141,6 +141,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       readOnly: widget.isReadOnly,
       enabled: widget.isEnable,
       keyboardType: widget.keyBoardType,
+      cursorColor: widget.cursorColor,
       // maxLines: 1,
 
       focusNode: widget.focusNode,

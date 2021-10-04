@@ -5,463 +5,465 @@ abstract class Languages {
     return Localizations.of<Languages>(context, Languages);
   }
 
-  String get appName;
+  String get origa;
 
-  String get labelWelcome;
+  String get splashScreen;
 
-  String get labelSelectLanguage;
+  String get cancel;
 
-  String get showPopUp;
+  String get search;
 
-  String get setLightTheme;
+  String get searchAllocationDetails;
 
-  String get setDarkTheme;
+  String get accountNo;
 
-  String get noteWalletSuccess;
+  String get customerName;
 
-  String get walletUPIid;
+  String get dpdBucket;
 
-  String get orderStatus;
+  String get status;
 
-  String get walletLimit;
+  String get pincode;
 
-  String get virtualVISAcard;
+  String get customerID;
 
-  String get congratulations;
+  String get myRecentActivity;
 
-  String get goToDashboard;
+  String get showOnlyTopResults;
 
-  String get welcomeString;
+  String get new_;
 
-  String get pockets;
+  String get overdueAmount;
 
-  String get welcomeDescriptionString;
+  String get loanAmount;
 
-  String get verifyMobileNumber;
+  String get loanDuration;
 
-  String get verifyPersonalDetails;
+  String get pos;
 
-  String get setupPasscode;
+  String get schemeCode;
 
-  String get verifyYourMobileNumber;
+  String get emiStartDate;
 
-  String get noteWelcomeScreen;
+  String get bankName;
 
-  String get moSimCardErrorMessage;
+  String get repaymentInfo;
 
-  String get selectYourSim;
+  String get beneficiaryDetails;
 
-  String get sim;
+  String get repaymentBankName;
 
-  String get verify;
+  String get referenceLender;
 
-  String get noteWelocomeScreen;
+  String get referenceUrl;
 
-  String get exisitingUserRegisterMessage;
+  String get caseDetials;
 
-  String get numberVerificationString;
+  String get sendSms;
 
-  String get numberVerificationDescriptionString;
+  String get sendWhatsapp;
 
-  String get asPerPanCard;
+  String get otherLoanOf;
 
-  String get personalDetails;
+  String get debasishPatnaik;
 
-  String get dateOfBirth;
+  String get view;
 
-  String get male;
+  String get customerMet;
 
-  String get female;
+  String get customerNotMet;
 
-  String get transGender;
+  String get invalid;
 
-  String get personalDetailsReq;
+  String get ptp;
 
-  String get personalDetailsDes;
+  String get rtp;
 
-  String get continueText;
+  String get dispute;
 
-  String get ok;
+  String get remainderCb;
 
-  String get dontAllow;
+  String get collections;
 
-  String get smsSendDescription;
+  String get ots;
 
-  String get smsSendDescriptionNote;
+  String get product;
 
-  String get mobileNumber;
-
-  String get goodToSeeYouBack;
-
-  String get home;
-
-  String get rewards;
-
-  String get updateAddress;
-
-  String get addAddress;
-
-  String get verifyEmail;
-
-  String get updateEmail;
-
-  String get otpVerification;
-  String get set4DigitPIN;
-  String get thisPasscode;
-  String get enter4DigitPIN;
-  String get reEnter4DigitPIN;
-
-  String get otpVerificationDescription;
-
-  String get camera;
-
-  String get gallery;
-
-  String get whatWentWrong;
-
-  String get requestForCallBack;
-
-  String get weHappy;
-
-  String get youCan;
-
-  String get orTap;
-
-  String get someone;
-
-  String get continueToDelete;
-
-  String get requestAccepted;
-
-  String get toDeactivate;
-
-  String get weHaveAccepted;
-
-  String get gotIt;
-
-  String get pleaseTellUs;
-
-  String get reasonForWalletClosure;
-
-  String get closeWallet;
-
-  String get reason;
-
-  String get yourRequest;
-
-  String get referenceNo;
-
-  String get pleaseNote;
-
-  String get weFound;
-
-  String get weSuggest;
-
-  String get trendingService;
-
-  String get reasonforWalletClosure;
-
-  String get seeAllServices;
-
-  String get needHelp;
-
-  String get supportingHours;
-
-  String get liveSupport;
-
-  String get complete;
-
-  String get KYCRequired;
-
-  String get statement;
-
-  String get viewFullHistory;
-
-  String get detailedStatement;
-
-  String get lastMonth;
-
-  String get lastThreeMonth;
-
-  String get lastSixMonth;
-
-  String get selectCustomDateRange;
-
-  String get statementDuration;
-
-  String get startDate;
-
-  String get endDate;
-
-  String get downloadStatement;
-
-  String get downloadPDF;
-
-  String get downloadStatementOverEmail;
-
-  String get filter;
-
-  String get allPaidAndReceived;
-
-  String get credit;
-
-  String get debit;
-
-  String get allUPITransactionStaus;
-
-  String get failure;
-
-  String get success;
-
-  String get timeout;
-
-  String get allPaymentsTypes;
-
-  String get editAddress;
-
-  String get billDetails;
-
-  String get toPay;
-
-  String get expressionPocketsCard;
-
-  String get gst;
-
-  String get placeOrder;
-
-  String get thankYou;
-
-  String get returntoAccountDetails;
-
-  String get transfers;
-
-  String get upi;
-
-  String get billPayment;
-
-  String get onlinePayment;
-
-  String get showResults;
-
-  String get startDateRequired;
-
-  String get endDateRequired;
-
-  String get startAndEndDateRequired;
-
-  String get statementSentMessage;
-
-  String get statementSentNote;
+  String get batchNo;
 
   String get done;
 
-  String get allServices;
+  String get select;
 
-  String get notifications;
+  String get allocation;
 
-  String get clearAll;
+  String get dashboard;
 
-  String get today;
+  String get profile;
 
-  String get yesterday;
+  String get areYouAtOffice;
 
-  String get notificationEmpty;
+  String get yes;
 
-  String get notificationEmptyDescription;
+  String get no;
 
-  String get trackShipment;
+  String get searchbasedOn;
 
-  String get orderDetails;
+  String get priority;
 
-  String get dateOfOrder;
+  String get buildRoute;
 
-  String get closed;
+  String get mapView;
 
-  String get amount;
+  String get message;
 
-  String get amountPaid;
+  String get followUpDate;
 
-  String get estimatedDelivery;
+  String get error;
 
-  String get deliveryAddress;
+  String get homeAddress;
 
-  String get payment;
+  String get markAsHome;
 
-  String get rechargeBillsOffers;
+  String get notification;
 
-  String get bank;
+  String get changeLanguage;
 
-  String get trackServiceRequest;
+  String get changePassword;
 
-  String get openRequest;
+  String get launguage;
 
-  String get closedRequest;
+  String get defaultLaunguage;
 
-  String get serviceRequestNo;
+  String get english;
 
-  String get open;
+  String get hindi;
 
-  String get description;
+  String get tamil;
 
-  String get haveMoreQuestions;
+  String get kannada;
 
-  String get ourSupport;
+  String get change;
 
-  String get gotoSupport;
+  String get all;
 
-  String get noOpenRequestFound;
+  String get under5Km;
 
-  String get trackPhysicalCard;
+  String get more5km;
 
-  String get nothingyouorderedPhysicalCard;
+  String get read;
 
-  String get requestPhysicalCard;
+  String get addressDetails;
 
-  String get upiid;
+  String get callDetails;
 
-  String get checkAvailability;
+  String get okay;
 
-  String get alternateSuggestedUpiid;
+  String get call;
 
-  String get notAvailable;
+  String get viewMap;
 
-  String get available;
+  String get addAProfilePhoto;
 
-  String get pocketStatement;
+  String get captureImage;
 
-  String get accounts;
+  String get uploadPhoto;
 
-  String get others;
+  // String get liveSupport;
 
-  String get setTransactionLimit;
+  // String get complete;
 
-  String get reqForWalletClosure;
+  // String get KYCRequired;
 
-  String get authenticateAccount;
+  // String get statement;
 
-  String get selectBankAccount;
+  // String get viewFullHistory;
 
-  String get selectDebitCard;
+  // String get detailedStatement;
 
-  String get gridNumber;
+  // String get lastMonth;
 
-  String get gridHint;
+  // String get lastThreeMonth;
 
-  String get gridWrongHint;
+  // String get lastSixMonth;
 
-  String get paymentStatus;
+  // String get selectCustomDateRange;
 
-  String get sentTo;
+  // String get statementDuration;
 
-  String get sentAmountId;
+  // String get startDate;
 
-  String get sentDate;
+  // String get endDate;
 
-  String get transactionId;
+  // String get downloadStatement;
 
-  String get transRefNo;
+  // String get downloadPDF;
 
-  String get transferVia;
+  // String get downloadStatementOverEmail;
 
-  String get vpa;
+  // String get filter;
 
-  String get sentFrom;
+  // String get allPaidAndReceived;
 
-  String get remark;
+  // String get credit;
 
-  String get category;
+  // String get debit;
 
-  String get outgoingTransfer;
+  // String get allUPITransactionStaus;
 
-  String get edit;
+  // String get failure;
 
-  String get na;
+  // String get success;
 
-  String get raiseDispute;
+  // String get timeout;
 
-  String get validFrom;
+  // String get allPaymentsTypes;
 
-  String get validThru;
+  // String get editAddress;
 
-  String get validFromDate;
+  // String get billDetails;
 
-  String get validToDate;
+  // String get toPay;
 
-  String get viewCvv;
+  // String get expressionPocketsCard;
 
-  String get cvv;
+  // String get gst;
 
-  String get enterCurrentPasscode;
+  // String get placeOrder;
 
-  String get enterNewPasscode;
+  // String get thankYou;
 
-  String get confirmPasscode;
+  // String get returntoAccountDetails;
 
-  String get passcodeChangedSuccessfully;
+  // String get transfers;
 
-  String get pinCreatedSuccessfully;
-  String get termsAndConditions;
-  String get iHave;
-  String get proceed;
-  String get passcodeChangedSuccessfullySubText;
+  // String get upi;
 
-  String get notMatchedText;
+  // String get billPayment;
 
-  String get changePasscode;
+  // String get onlinePayment;
 
-  String get weDontDeliverHere;
+  // String get showResults;
 
-  String get regularPocketsCard;
+  // String get startDateRequired;
 
-  String get selectAddress;
+  // String get endDateRequired;
 
-  String get deliverTo;
+  // String get startAndEndDateRequired;
 
-  String get applyNow;
+  // String get statementSentMessage;
 
-  String get continuee;
+  // String get statementSentNote;
 
-  String get changeLocation;
+  // String get done;
 
-  String get save;
+  // String get allServices;
 
-  String get addFund;
+  // String get notifications;
 
-  String get addFunds;
+  // String get clearAll;
 
-  String get requestForPhysicalCard;
+  // String get today;
 
-  String get paidAmount;
+  // String get yesterday;
 
-  String get copyToClipboard;
+  // String get notificationEmpty;
 
-  String get pocketsRewards;
+  // String get notificationEmptyDescription;
 
-  String get pocketsRewardsDes;
+  // String get trackShipment;
 
-  String get availNow;
+  // String get orderDetails;
 
-  String get pocketsRewardsDes1;
+  // String get dateOfOrder;
 
+  // String get closed;
 
-  String get expressionPocketCard;
+  // String get amount;
 
-  String get blockYourPhysicalCard;
+  // String get amountPaid;
 
-  String get more;
+  // String get estimatedDelivery;
 
-  String get completeKYC;
+  // String get deliveryAddress;
 
-  String get dontShowMeAgain;
+  // String get payment;
 
-  String get kycComplete;
+  // String get rechargeBillsOffers;
 
-  String get kycCompleteDescription;
+  // String get bank;
 
-  String get viewStatement;
-  String get termsAndConditionsApply;
-  String get welcomeHomeScreen;
-  String get welcomeHomeText;
-  String get welcomeExisting;
-  String get setUpPasscode;
+  // String get trackServiceRequest;
+
+  // String get openRequest;
+
+  // String get closedRequest;
+
+  // String get serviceRequestNo;
+
+  // String get open;
+
+  // String get description;
+
+  // String get haveMoreQuestions;
+
+  // String get ourSupport;
+
+  // String get gotoSupport;
+
+  // String get noOpenRequestFound;
+
+  // String get trackPhysicalCard;
+
+  // String get nothingyouorderedPhysicalCard;
+
+  // String get requestPhysicalCard;
+
+  // String get upiid;
+
+  // String get checkAvailability;
+
+  // String get alternateSuggestedUpiid;
+
+  // String get notAvailable;
+
+  // String get available;
+
+  // String get pocketStatement;
+
+  // String get accounts;
+
+  // String get others;
+
+  // String get setTransactionLimit;
+
+  // String get reqForWalletClosure;
+
+  // String get authenticateAccount;
+
+  // String get selectBankAccount;
+
+  // String get selectDebitCard;
+
+  // String get gridNumber;
+
+  // String get gridHint;
+
+  // String get gridWrongHint;
+
+  // String get paymentStatus;
+
+  // String get sentTo;
+
+  // String get sentAmountId;
+
+  // String get sentDate;
+
+  // String get transactionId;
+
+  // String get transRefNo;
+
+  // String get transferVia;
+
+  // String get vpa;
+
+  // String get sentFrom;
+
+  // String get remark;
+
+  // String get category;
+
+  // String get outgoingTransfer;
+
+  // String get edit;
+
+  // String get na;
+
+  // String get raiseDispute;
+
+  // String get validFrom;
+
+  // String get validThru;
+
+  // String get validFromDate;
+
+  // String get validToDate;
+
+  // String get viewCvv;
+
+  // String get cvv;
+
+  // String get enterCurrentPasscode;
+
+  // String get enterNewPasscode;
+
+  // String get confirmPasscode;
+
+  // String get passcodeChangedSuccessfully;
+
+  // String get pinCreatedSuccessfully;
+  // String get termsAndConditions;
+  // String get iHave;
+  // String get proceed;
+  // String get passcodeChangedSuccessfullySubText;
+
+  // String get notMatchedText;
+
+  // String get changePasscode;
+
+  // String get weDontDeliverHere;
+
+  // String get regularPocketsCard;
+
+  // String get selectAddress;
+
+  // String get deliverTo;
+
+  // String get applyNow;
+
+  // String get continuee;
+
+  // String get changeLocation;
+
+  // String get save;
+
+  // String get addFund;
+
+  // String get addFunds;
+
+  // String get requestForPhysicalCard;
+
+  // String get paidAmount;
+
+  // String get copyToClipboard;
+
+  // String get pocketsRewards;
+
+  // String get pocketsRewardsDes;
+
+  // String get availNow;
+
+  // String get pocketsRewardsDes1;
+
+  // String get expressionPocketCard;
+
+  // String get blockYourPhysicalCard;
+
+  // String get more;
+
+  // String get completeKYC;
+
+  // String get dontShowMeAgain;
+
+  // String get kycComplete;
+
+  // String get kycCompleteDescription;
+
+  // String get viewStatement;
+  // String get termsAndConditionsApply;
+  // String get welcomeHomeScreen;
+  // String get welcomeHomeText;
+  // String get welcomeExisting;
+  // String get setUpPasscode;
+  String get logout;
 }

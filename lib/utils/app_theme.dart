@@ -21,7 +21,7 @@ class AppTheme {
       //Used for font size of 14
       subtitle1: base.subtitle1!.copyWith(
           fontFamily: 'Lato',
-          fontSize: 14.0,
+          fontSize: 20.0,
           color: ColorResource.colorFFFFFF,
           fontWeight: FontWeight.w700),
 

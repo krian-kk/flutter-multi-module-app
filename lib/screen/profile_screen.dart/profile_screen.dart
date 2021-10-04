@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -137,14 +138,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    StringResource.homeAddress.toUpperCase(),
+                                    Languages.of(context)!
+                                        .homeAddress
+                                        .toUpperCase(),
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.w700,
                                     color: ColorResource.color101010,
                                   ),
                                   CustomText(
-                                    StringResource.markAsHome,
+                                    Languages.of(context)!.markAsHome,
                                     fontSize: FontSize.twelve,
                                     isUnderLine: true,
                                     fontStyle: FontStyle.normal,
@@ -264,8 +267,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 22),
                       GestureDetector(
-                        onTap: () =>
-                            Navigator.popUntil(context, (route) => false),
+                        // onTap: () =>
+                        //     Navigator.popUntil(context, (route) => false),
                         child: Container(
                           width: 125,
                           height: 40,
@@ -277,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   new BorderRadius.all(Radius.circular(75.0))),
                           child: Center(
                             child: CustomText(
-                              StringResource.logout.toUpperCase(),
+                              Languages.of(context)!.logout.toUpperCase(),
                               fontSize: FontSize.twelve,
                               color: ColorResource.color23375A,
                               fontWeight: FontWeight.w700,
@@ -298,7 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Container(
                     decoration: BoxDecoration(),
                     child: CustomButton(
-                      StringResource.message,
+                      Languages.of(context)!.message,
                       onTap: () => messageShowBottomSheet(),
                       cardShape: 5,
                       isTrailing: true,
@@ -426,7 +429,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    StringResource.launguage.toUpperCase(),
+                                    Languages.of(context)!
+                                        .launguage
+                                        .toUpperCase(),
                                     fontSize: FontSize.fourteen,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
@@ -442,7 +447,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               SizedBox(height: 14),
                               CustomText(
-                                StringResource.defaultLaunguage.toUpperCase(),
+                                Languages.of(context)!
+                                    .defaultLaunguage
+                                    .toUpperCase(),
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.twelve,
                                 fontStyle: FontStyle.normal,
@@ -458,7 +465,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.english,
+                                    Languages.of(context)!.english,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -471,7 +478,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               SizedBox(height: 17),
                               CustomText(
-                                StringResource.defaultLaunguage.toUpperCase(),
+                                Languages.of(context)!
+                                    .defaultLaunguage
+                                    .toUpperCase(),
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.twelve,
                                 fontStyle: FontStyle.normal,
@@ -487,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.hindi,
+                                    Languages.of(context)!.hindi,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -507,7 +516,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.tamil,
+                                    Languages.of(context)!.tamil,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -527,7 +536,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Radius.circular(10.0))),
                                 child: ListTile(
                                   title: CustomText(
-                                    StringResource.kannadam,
+                                    Languages.of(context)!.kannada,
                                     lineHeight: 1,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -561,7 +570,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Container(
                             decoration: new BoxDecoration(),
                             child: CustomButton(
-                              StringResource.okay.toUpperCase(),
+                              Languages.of(context)!.okay.toUpperCase(),
                               onTap: () => messageShowBottomSheet(),
                               cardShape: 5,
                               leadingWidget: CircleAvatar(
@@ -651,7 +660,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    StringResource.notification.toUpperCase(),
+                                    Languages.of(context)!
+                                        .notification
+                                        .toUpperCase(),
                                     fontSize: FontSize.fourteen,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
@@ -760,7 +771,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Container(
                             decoration: new BoxDecoration(),
                             child: CustomButton(
-                              StringResource.read.toUpperCase(),
+                              Languages.of(context)!.read.toUpperCase(),
                               cardShape: 5,
                               leadingWidget: CircleAvatar(
                                 radius: 13,

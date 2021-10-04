@@ -11,6 +11,7 @@ class StringResource {
   static const String dpdBucket = 'DPD/Bucket';
   static const String status = 'Status';
   static const String pincode = 'Pincode';
+
   static const String customerID = 'Customer ID';
   static const String myRecentActivity = 'My Recent Activity';
   static const String showOnlyTopResults = 'Show Only Top Results';
@@ -19,9 +20,10 @@ class StringResource {
   static const String overdueAmount = 'Overdue Amount';
   static const String loanAmount = 'Loan Amount';
   static const String loanDuration = 'Loan Duration';
+
   static const String pos = 'POS';
   static const String schemeCode = 'Scheme Code';
-  static const String emiStartDate = 'select';
+  static const String emiStartDate = 'EMI Start Date';
   static const String bankName = 'Bank Name';
   static const String repaymentInfo = 'REPAYMENT INFO';
   static const String beneficiaryDetails = 'Beneficiary Details';
@@ -30,6 +32,7 @@ class StringResource {
   static const String referenceURL = 'Reference URL';
   static const String caseDetials = 'CASE DETAILS';
   static const String sendSMS = 'SEND SMS';
+
   static const String sendWHATSAPP = 'SEND WHATSAPP';
   static const String oTHERLOANOF = 'OTHER LOAN OF';
   static const String dEBASISHPATNAIK = 'DEBASISH PATNAIK';
@@ -42,6 +45,7 @@ class StringResource {
   static const String dispute = 'DISPUTE';
   static const String remainder = 'REMINDER/CB';
   static const String collections = 'COLLECTIONS';
+
   static const String ots = 'OTS';
   static const String product = 'Product';
   static const String batchNo = 'Batch No.';
@@ -76,9 +80,10 @@ class StringResource {
   static const String kannadam = 'ಕನ್ನಡ  / KANNADA';
   static const String change = 'Change';
   static const String all = 'All';
+
   static const String under5km = 'Under 5Km';
   static const String more5km = '5Km-10Km';
   static const String read = 'read';
-  static const String addressDetails = 'addressDetails';
-  static const String callDetails = 'callDetails';
+  static const String addressDetails = 'Address \nDetails';
+  static const String callDetails = 'Call \nDetails';
 }

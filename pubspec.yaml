@@ -32,8 +32,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^7.3.0
-  flutter_locales: ^2.0.0
   fluttertoast: ^8.0.8
+  flutter_localizations:
+    sdk: flutter
   geolocator: ^7.6.2
   google_maps_flutter: ^2.0.10
   image_picker: ^0.8.4+2

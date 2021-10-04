@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -87,7 +86,7 @@ class _SearchAllocationDetailsScreenState
               return Column(
                 children: [
                   CustomAppbar(
-                    titleString: StringResource.searchAllocationDetails,
+                    titleString: Languages.of(context)!.searchAllocationDetails,
                     titleSpacing: 21,
                     showClose: true,
                     onItemSelected: (value) {
@@ -107,42 +106,42 @@ class _SearchAllocationDetailsScreenState
                               Column(
                                 children: [
                                   CustomTextField(
-                                    StringResource.accountNo + '.',
+                                    Languages.of(context)!.accountNo + '.',
                                     accountNoController,
                                     isFill: true,
                                     isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    StringResource.customerName,
+                                    Languages.of(context)!.customerName,
                                     customerNameController,
                                     isFill: true,
                                     isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    StringResource.dpdBucket,
+                                    Languages.of(context)!.dpdBucket,
                                     bucketController,
                                     isFill: true,
                                     isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    StringResource.status,
+                                    Languages.of(context)!.status,
                                     statusController,
                                     isFill: true,
                                     isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    StringResource.pincode,
+                                    Languages.of(context)!.pincode,
                                     pincodeController,
                                     isFill: true,
                                     isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    StringResource.myRecentActivity,
+                                    Languages.of(context)!.myRecentActivity,
                                     customerIDController,
                                     isFill: true,
                                     isBorder: true,
@@ -160,8 +159,8 @@ class _SearchAllocationDetailsScreenState
                                             ? ImageResource.checkOn
                                             : ImageResource.checkOff),
                                         const SizedBox(width: 13),
-                                        CustomText(
-                                            StringResource.myRecentActivity)
+                                        CustomText(Languages.of(context)!
+                                            .myRecentActivity)
                                       ],
                                     ),
                                   ),
@@ -177,8 +176,8 @@ class _SearchAllocationDetailsScreenState
                                             ? ImageResource.checkOn
                                             : ImageResource.checkOff),
                                         const SizedBox(width: 13),
-                                        CustomText(
-                                            StringResource.showOnlyTopResults)
+                                        CustomText(Languages.of(context)!
+                                            .showOnlyTopResults)
                                       ],
                                     ),
                                   )
@@ -202,7 +201,7 @@ class _SearchAllocationDetailsScreenState
             padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
             child: Container(
               child: CustomButton(
-                StringResource.sEARCH,
+                Languages.of(context)!.search,
                 cardShape: 5,
                 onTap: () {
                   if (accountNoController.text.isNotEmpty ||
