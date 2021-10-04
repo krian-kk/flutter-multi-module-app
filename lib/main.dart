@@ -1,8 +1,10 @@
 //import 'package:easy_localization/easy_localization.dart';
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/router.dart';
@@ -19,19 +21,6 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
   Bloc.observer = EchoBlocDelegate();
-  // runApp(
-  //   EasyLocalization(
-  //     child: BlocProvider<AuthenticationBloc>(
-  //       create: (BuildContext context) {
-  //         return AuthenticationBloc()..add(AppStarted());
-  //       },
-  //       child: MyApp(),
-  //     ),
-  //     supportedLocales: [const Locale('en', 'US'), const Locale('ar', 'AE')],
-  //     path: "assets/translations",
-  //     fallbackLocale: const Locale('en', 'US'),
-  //   ),
-  // );
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) {
       return AuthenticationBloc()..add(AppStarted());
@@ -69,11 +58,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void didChangeDependencies() {
-    // getLocale().then((Locale locale) {
-    //   setState(() {
-    //     _locale = locale;
-    //   });
-    // });
+    getLocale().then((Locale locale) {
+      setState(() {
+        _locale = locale;
+      });
+    });
     super.didChangeDependencies();
   }
 
@@ -81,16 +70,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: _locale,
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('ar', ''),
-        Locale('hi', '')
-      ],
+      supportedLocales: const [Locale('en', ''), Locale('hi', '')],
       localizationsDelegates: const [
         AppLocalizationsDelegate(),
-        // GlobalMaterialLocalizations.delegate,
-        // GlobalWidgetsLocalizations.delegate,
-        // GlobalCupertinoLocalizations.delegate
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
       ],
       localeResolutionCallback:
           (Locale? locale, Iterable<Locale> supportedLocales) {

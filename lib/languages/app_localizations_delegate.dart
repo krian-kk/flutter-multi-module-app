@@ -8,7 +8,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
 
   @override
   bool isSupported(Locale locale) =>
-      ['en'/*, 'ar', 'hi'*/].contains(locale.languageCode);
+      ['en', 'hi' /*, 'ar', 'hi'*/].contains(locale.languageCode);
 
   @override
   Future<Languages> load(Locale locale) => _load(locale);
@@ -17,7 +17,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
     switch (locale.languageCode) {
       case 'en':
         return LanguageEn();
-    /*  case 'ar':
+      /*  case 'ar':
         return LanguageAr();
       case 'hi':
         return LanguageHi();*/
