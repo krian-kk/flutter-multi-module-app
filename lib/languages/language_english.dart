@@ -221,7 +221,7 @@ class LanguageEn extends Languages {
   String get all => 'All';
 
   @override
-  String get under5Km => 'Under 5Km';
+  String get under5km => 'Under 5Km';
 
   @override
   String get more5km => '5Km-10Km';
@@ -247,15 +247,29 @@ class LanguageEn extends Languages {
   @override
   String get captureImage => 'CAPTURE IMAGE';
 
-
-
   @override
   String get uploadPhoto => 'UPLOAD PHOTO';
 
-
-
   @override
   String get choiceOtherLanguages => 'Choose other LANGUAGE';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get signin => 'SIGN IN';
+
+  @override
+  String get resetPassword => 'Reset password via OTP';
+
+  @override
+  String get loginViaDiffrentUser => 'Login via diffrent user';
+
+   @override
+  String get hignPriority => 'High Priority';
 
   @override
   // TODO: implement addAProfilePhoto

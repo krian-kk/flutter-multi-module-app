@@ -1,111 +1,75 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/font.dart';
+import 'package:origa/widgets/custom_text.dart';
 
-class CustomDialogBox extends StatefulWidget {
-  final String title, descriptions;
-  final Image? img;
-
-  const CustomDialogBox(
-      {Key? key, required this.title, required this.descriptions, this.img})
-      : super(key: key);
-
-  @override
-  _CustomDialogBoxState createState() => _CustomDialogBoxState();
-}
-
-class _CustomDialogBoxState extends State<CustomDialogBox> {
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: contentBox(),
-    );
-  }
-
-  Widget contentBox() {
-    return Stack(
-      children: <Widget>[
-        Container(
-          padding:
-              const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 16),
-          margin: const EdgeInsets.only(top: 16),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                const BoxShadow(offset: Offset(0, 10), blurRadius: 10),
-              ]),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: 16,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    child: Icon(CupertinoIcons.home)),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.title,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                widget.descriptions,
-                style: const TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Center(
-                child: CustomButton(
-                  StringResource.okay,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Center(
-                child: CustomButton(
-                  StringResource.cancel,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              )
-            ],
-          ),
+class DialogUtils {
+  static Future<void> showDialog(
+      {required BuildContext buildContext,
+      required String title,
+      required String description,
+      required String okBtnText,
+      String? otherButton,
+      String? cancelBtnText,
+      required Function(String) okBtnFunction}) async {
+    await showCupertinoDialog(
+      context: buildContext,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: CustomText(
+          title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: ColorResource.color000000, fontSize: FontSize.sixteen),
         ),
-        // Positioned(
-        //   left: 16,
-        //   right: 16,
-        //   child: CircleAvatar(
-        //     backgroundColor: Colors.transparent,
-        //     radius: 16,
-        //     child: ClipRRect(
-        //         borderRadius: BorderRadius.all(Radius.circular(16)),
-        //         child: Icon(CupertinoIcons.home)),
-        //   ),
-        // ),
-      ],
+        content: CustomText(
+          description,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.subtitle2!.copyWith(
+              color: ColorResource.color23375A, fontSize: FontSize.fourteen),
+        ),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: CustomText(
+              okBtnText,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                  color: Colors.blue,
+                  fontSize: FontSize.fourteen),
+            ),
+            onPressed: () {
+              okBtnFunction(okBtnText);
+            },
+          ),
+          if (cancelBtnText != null)
+            CupertinoDialogAction(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: CustomText(
+                cancelBtnText,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    color: ColorResource.color23375A,
+                    fontSize: FontSize.fourteen),
+              ),
+            ),
+          if (otherButton != null)
+            CupertinoDialogAction(
+              child: CustomText(
+                otherButton,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    color: ColorResource.color23375A,
+                    fontSize: FontSize.fourteen),
+              ),
+              onPressed: () {
+                okBtnFunction(otherButton);
+              },
+            ),
+
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/utils/app_utils.dart';
 // import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
@@ -10,6 +11,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/custom_textfield.dart';
 
 import 'bloc/login_bloc.dart';
 
@@ -29,9 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  late FocusNode username;
+  late FocusNode passwords;
+
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent());
+    username = FocusNode();
+    passwords = FocusNode();
     super.initState();
   }
 
@@ -40,169 +47,116 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<LoginBloc, LoginState>(
       bloc: bloc,
       listener: (context, state) {
-        // TODO: implement listener
+       if (state is HomeTabState) {
+         Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+       }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         bloc: bloc,
         builder: (context, state) {
-          return SafeArea(
-            child: Scaffold(
-              backgroundColor: ColorResource.colorF7F8FA,
-              body: SingleChildScrollView(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 7,
-                          ),
-                          Image.asset(ImageResource.origa),
-                          const SizedBox(
-                            height: 17,
-                          ),
-                          Image.asset(ImageResource.login),
-                          const SizedBox(
-                            height: 17,
-                          ),
-                          Container(
-                            // height: widget.height,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                color: ColorResource.colorFEFFFF,
-                                border: Border.all(
-                                  // width: widget.borderWidth,
-                                  color: ColorResource.colorFEFFFF,
-                                  // style: widget.borderStyle
-                                )),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter user name';
-                                  }
-                                  return null;
-                                },
-                                obscureText: false,
-                                controller: userName,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'User Name',
-                                    hintStyle: TextStyle(
-                                        color: ColorResource.color101010
-                                            .withOpacity(0.3))),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            // height: widget.height,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                color: ColorResource.colorFEFFFF,
-                                border: Border.all(
-                                  // width: widget.borderWidth,
-                                  color: ColorResource.colorFEFFFF,
-                                  // style: widget.borderStyle
-                                )),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter valid password';
-                                  }
-                                  return null;
-                                },
-                                obscureText: true,
-                                controller: password,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Password',
-                                    hintStyle: TextStyle(
-                                        color: ColorResource.color101010
-                                            .withOpacity(0.3))),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          CustomButton(
-                            'SIGN IN',
-                            buttonBackgroundColor: ColorResource.color23375A,
-                            onTap: () {
-                              if (userName.text.isEmpty &&
-                                  password.text.isEmpty) {
-                                AppUtils.showToast('Please fill the fields');
-                              } else if (password.text != '1111') {
-                                AppUtils.showToast(
-                                    'Please enter valid password');
-                              } else {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.homeTabScreen);
-                                setState(() {
-                                  userName.clear();
-                                  password.clear();
-                                });
-                              }
-                              //   if (_formKey.currentState!.validate()) {
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     const SnackBar(content: Text('Processing Data')),
-                              //   );
-                              // }
-                            },
-                            cardShape: 85,
+          return Scaffold(
+            backgroundColor: ColorResource.colorF8F9FB,
+            body: SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        Image.asset(ImageResource.origa),
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        Image.asset(ImageResource.login),
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        CustomTextField(
+                                  Languages.of(context)!.userName,
+                                  userName,
+                                  isFill: true,
+                                  isBorder: true,
+                                  errorborderColor: ColorResource.colorF8F9FB,
+                                  borderColor: ColorResource.colorF8F9FB,
+                                  validationRules: ['required'],
+                                  focusNode: username,
+                                  onEditing: () {
+                                    username.unfocus();
+                                    _formKey.currentState!.validate();
+                                  },
+                                  validatorCallBack: (bool values) {},
+                                ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomTextField(
+                                  Languages.of(context)!.password,
+                                  password,
+                                  obscureText: true,
+                                  isFill: true,
+                                  isBorder: true,
+                                  borderColor: ColorResource.colorF8F9FB,
+                                  errorborderColor: ColorResource.colorF8F9FB,
+                                   validationRules: ['required'],
+                                   focusNode: passwords,
+                                   onEditing: () {
+                                    passwords.unfocus();
+                                    _formKey.currentState!.validate();
+                                  },
+                                  validatorCallBack: (bool values) {},
+                                ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomButton(
+                          'SIGN IN',
+                          buttonBackgroundColor: ColorResource.color23375A,
+                          onTap: () {
+                              _signIn();
+                          },
+                          cardShape: 85,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            AppUtils.showToast('Reset Password');
+                          },
+                          child: CustomText(
+                            'Reset password via OTP',
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
+                            color: ColorResource.color23375A,
                           ),
-                          const SizedBox(
-                            height: 17,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              AppUtils.showToast('Reset Password');
-                            },
-                            child: CustomText(
-                              'Reset password via OTP',
-                              fontSize: FontSize.sixteen,
-                              fontWeight: FontWeight.w600,
-                              color: ColorResource.color23375A,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          CustomButton(
-                            'Login via diffrent user',
-                            onTap: () {
-                              setState(() {
-                                userName.clear();
-                                password.clear();
-                              });
-                            },
-                            borderColor: ColorResource.color23375A,
-                            cardShape: 85,
-                            fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
-                            textColor: ColorResource.color23375A,
-                            buttonBackgroundColor: ColorResource.colorffffff,
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        CustomButton(
+                          'Login via diffrent user',
+                          onTap: () {
+                            setState(() {
+                              userName.clear();
+                              password.clear();
+                            });
+                          },
+                          borderColor: ColorResource.color23375A,
+                          cardShape: 85,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorResource.color23375A,
+                          buttonBackgroundColor: ColorResource.colorffffff,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -212,5 +166,15 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
+  }
+
+  void _signIn() {
+    final bool isValid = _formKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    } else {
+      bloc.add(HomeTabEvent());
+    }
+    _formKey.currentState!.save();
   }
 }

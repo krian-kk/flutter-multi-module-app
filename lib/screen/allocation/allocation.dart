@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
@@ -47,11 +48,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) {
-        // TODO: implement listener
+        if (state is MapViewState) {
+                    mapView(context);
+                  }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
+           if (state is AllocationLoadingState) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             floatingActionButton: Padding(
@@ -64,7 +72,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       width: 175,
                       // padding: EdgeInsets.all(10),
                       child: CustomButton(
-                        StringResource.message,
+                        Languages.of(context)!.message,
                         alignment: MainAxisAlignment.end,
                         cardShape: 50,
                         isTrailing: true,
@@ -101,7 +109,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     onTap: () async {
                       await Navigator.pushNamed(
                           context, AppRoutes.searchAllocationDetailsScreen);
-                      AppUtils.showToast('search');
                     },
                   ),
                 ],
@@ -130,7 +137,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           width: 13.0,
                         ),
                         CustomText(
-                          StringResource.areYouAtOffice,
+                          Languages.of(context)!.areYouAtOffice,
                           fontSize: FontSize.twelve,
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
@@ -142,7 +149,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             width: 80,
                             height: 40,
                             child: CustomButton(
-                              StringResource.yes,
+                              Languages.of(context)!.yes,
                               fontSize: FontSize.twelve,
                               borderColor: ColorResource.colorEA6D48,
                               buttonBackgroundColor: ColorResource.colorEA6D48,
@@ -155,7 +162,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             width: 80,
                             height: 40,
                             child: CustomButton(
-                              StringResource.no,
+                              Languages.of(context)!.no,
                               fontSize: FontSize.twelve,
                               textColor: ColorResource.color23375A,
                               buttonBackgroundColor: ColorResource.colorffffff,
@@ -179,14 +186,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          StringResource.searchbasedOn,
+                          Languages.of(context)!.searchbasedOn,
                           fontSize: FontSize.ten,
                           color: ColorResource.color000000,
                           fontWeight: FontWeight.w600,
                         ),
                         // const SizedBox(height: 10.0,),
                         CustomText(
-                          StringResource.pincode + ' 636808',
+                          Languages.of(context)!.pincode + ' 636808',
                           fontSize: FontSize.fourteen,
                           color: ColorResource.color000000,
                           fontWeight: FontWeight.w700,
@@ -211,7 +218,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CustomText(
-                              '10 Allocation',
+                              '10 '+Languages.of(context)!.allocation,
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color000000,
                               fontWeight: FontWeight.w700,
@@ -228,7 +235,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             ),
                             CustomText(
                               bloc.allocationList.length.toString() +
-                                  " High Priority",
+                                  " "+Languages.of(context)!.hignPriority,
                               fontSize: FontSize.ten,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,
@@ -269,7 +276,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             break;
           case 'Map View':
-            mapView(context);
+            bloc.add(MapViewEvent());
             setState(() {
               bloc.showFilterDistance = false;
             });
@@ -346,7 +353,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
               padding: const EdgeInsets.only(right: 13),
               child: GestureDetector(
                 child: CustomText(
-                  StringResource.change,
+                  Languages.of(context)!.change,
                   fontSize: FontSize.twelve,
                   fontWeight: FontWeight.w700,
                   color: ColorResource.color23375A,

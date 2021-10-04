@@ -18,6 +18,7 @@ class CustomTextField extends StatefulWidget {
   final int? maximumWordCount;
   final Color titleColor;
   final Color? borderColor;
+  final Color? errorborderColor;
   final Color textColor;
   final bool isHighlighted;
   final Color highlightColor;
@@ -52,6 +53,7 @@ class CustomTextField extends StatefulWidget {
       this.titleColor = ColorResource.color666666,
       this.textColor = ColorResource.color333333,
       this.borderColor = ColorResource.colorDADADA,
+      this.errorborderColor = Colors.red,
       this.isHighlighted = false,
       this.highlightColor = ColorResource.colorDADADA,
       this.focusNode,
@@ -90,6 +92,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextFormField(
       textInputAction: TextInputAction.done,
 
+      
       validator: (String? value) {
         if (widget.validationRules.isNotEmpty) {
           final ValidationState validationStatus =
@@ -151,9 +154,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : widget.textColor),
 
       decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(25,20,20,20),
           fillColor: ColorResource.colorFFFFFF,
           filled: widget.isFill,
           hintText: widget.hintText,
+          hintStyle: TextStyle(color: ColorResource.color101010.withOpacity(0.3), 
+          fontSize: FontSize.sixteen,),
           labelText: widget.isLabel ? widget.hintText : null,
           isDense: false,
           counterText: widget.descriptionText,
@@ -181,29 +187,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
           //         : ColorResource.color666666),
           focusedBorder: widget.isBorder
               ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(color: widget.borderColor!))
+              : InputBorder.none,
           border: widget.isBorder
               ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(color: widget.borderColor!, width: 0.5))
+              : InputBorder.none,
           enabledBorder: widget.isBorder
               ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(color: widget.borderColor!))
+              : InputBorder.none,
           disabledBorder: widget.isBorder
               ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(color: widget.borderColor!))
+              : InputBorder.none,
+          focusedErrorBorder: widget.isBorder
+              ? OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(color: widget.errorborderColor!))
+              : InputBorder.none,
           errorBorder: widget.isBorder
               ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.red))
-              : null),
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(color: widget.errorborderColor!))
+              : InputBorder.none,),
     );
   }
 
