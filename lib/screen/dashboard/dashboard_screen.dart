@@ -58,6 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: Colors.grey.shade400,
               ),
           ),
+          CustomText('hhh'),
         ],
       ),
     );
