@@ -27,4 +27,5 @@ class ImageResource {
   static const String star = 'assets/star.png';
   static const String origa = 'assets/origa.png';
   static const String login = 'assets/login.png';
+  static const String vectorArrow = 'assets/Vector.png';
 }

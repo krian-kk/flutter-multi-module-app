@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/custom_card_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -37,30 +39,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
       //   fontSize: 18,fontWeight: FontWeight.w600,),
       //   centerTitle: true,
       // ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+      body: SafeArea(
+       child: Column(
+           children: [
           Container(
-            child: Center(child: CustomText(
-              'Dashboard', 
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              ),
-              ),
-          ),
-          SizedBox(height: 30,),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: CustomText(
-              'v$version', 
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade400,
-              ),
-          ),
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+            child: GridView.builder(
+              shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  childAspectRatio: 3/2.2,
+                  maxCrossAxisExtent: 200,
 
-        ],
-      ),
-    );
+                ),
+             itemCount: 5,
+             itemBuilder: (BuildContext context,int index) {
+            return Wrap(
+                children:[ CustomCard(2, Container(
+              ),
+              color: ColorResource.colorFFFFFF,
+              height: 130,
+              width: 155,
+                ),
+                  CustomCard(02, Text(''),height: 63,width: 155,),
+                  CustomCard(02, Text(''),height: 54,width: 155,)
+         ] );}
+            ),
+          ),
+             CustomCard(2, Text(''),
+               height: 65,width: 320,),
+             CustomCard(2, Text(''),
+               height: 65,width: 320,),
+           ]),
+          ));
   }
 }
