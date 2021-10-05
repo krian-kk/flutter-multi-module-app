@@ -9,4 +9,8 @@ class ClickNotificationEvent extends ProfileEvent {}
 
 class ClickChangeLaunguageEvent extends ProfileEvent {}
 
-class ClickChnagePassswordEvent extends ProfileEvent {}
+class ClickChangePassswordEvent extends ProfileEvent {}
+
+class ClickMessageEvent extends ProfileEvent {}
+
+class ChangeProfileImageEvent extends ProfileEvent {}

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
 
@@ -10,9 +14,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
   List<ProfileNavigation> profileNavigationList = [];
   List<NotificationMainModel> notificationList = [];
+  List<LanguageModel> languageList = [];
+  int languageValue = 0;
+
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
-    if (event is ProfileEvent) {
+    if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
       profileNavigationList.addAll([
         ProfileNavigation(
@@ -31,7 +38,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             title: 'Change Password',
             count: false,
             onTap: () {
-              this.add(ClickChnagePassswordEvent());
+              this.add(ClickChangePassswordEvent());
             })
       ]);
       notificationList.addAll([
@@ -46,16 +53,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               'Hi, Check Case Details with all in pincode 600054 .')
         ]),
       ]);
-      yield ProfileLoadedState();
     }
     if (event is ClickNotificationEvent) {
       yield ClickNotificationState();
-    } else if (event is ClickChangeLaunguageEvent) {
+    }
+    if (event is ClickChangeLaunguageEvent) {
       yield ClickChangeLaunguageState();
-    } else if (event is ClickChnagePassswordEvent) {
-      yield ClickPasswordState();
-    } else {
-      yield ProfileLoadedState();
+    }
+    if (event is ClickChangePassswordEvent) {
+      yield ClickChangePasswordState();
+    }
+    if (event is ClickMessageEvent) {
+      yield ClickMessageState();
+    }
+    if (event is ChangeProfileImageEvent) {
+      yield ChangeProfileImageState();
     }
   }
   // {

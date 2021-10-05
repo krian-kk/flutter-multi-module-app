@@ -23,8 +23,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             'Address 02', '2/345, 6th Main Road Gomathipuram, Madurai - 625032')
       ]);
       multiCallDetilsList.addAll([
-        MultiCallDetailsModel('PHONE NUMBER 01', '9841021453'),
-        MultiCallDetailsModel('PHONE NUMBER 02', '9841021453')
+        MultiCallDetailsModel('PHONE NUMBER 01', '9841021453', true),
+        MultiCallDetailsModel('PHONE NUMBER 02', '9841021453', false)
       ]);
       yield CaseDetailsLoadedState();
     }

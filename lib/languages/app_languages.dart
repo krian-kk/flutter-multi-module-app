@@ -182,4 +182,8 @@ abstract class Languages {
   String get loginViaDiffrentUser;
 
   String get hignPriority;
+
+  String get choiceOtherLanguages;
+
+  String get declinedCall;
 }
