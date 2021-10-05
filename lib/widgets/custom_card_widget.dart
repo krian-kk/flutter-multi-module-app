@@ -15,11 +15,12 @@ class CustomCard extends StatefulWidget {
   Color? shadowColor;
   double? height;
   double? width;
-  String? title;
-  String? subTitle;
-  String? amount;
-  String? price;
-  String? count;
+  dynamic? title;
+  dynamic? subTitle;
+  dynamic? amount;
+  dynamic? amountrs;
+  dynamic? price;
+  dynamic? count;
 
   GlobalKey<_CustomCardState> _myKey = GlobalKey();
 
@@ -39,6 +40,7 @@ class CustomCard extends StatefulWidget {
         this.title,
         this.subTitle,
         this.amount,
+        this.amountrs,
         this.count,
         this.price,
 
@@ -60,26 +62,32 @@ class CustomCard extends StatefulWidget {
         shape: widget.shape,
         shadowColor: widget.shadowColor,
           clipBehavior: widget.clipBehavior,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-           Container(
-             margin: EdgeInsets.only(left: 5,top: 8),
-             padding: EdgeInsets.all(8),
-             decoration: BoxDecoration(
-               shape: BoxShape.circle,
-               color: ColorResource.color23375A.withOpacity(0.2),
-             ),
-             child: Container(
-               height: 15,
-               width: 15,
-               child:
-             Image.asset(ImageResource.vectorArrow),),
-           ),
-          ],
+        child: widget.child,
+        // child: Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+           // Container(
+           //   margin: EdgeInsets.only(left: 5,top: 8),
+           //   padding: EdgeInsets.all(8),
+           //   decoration: BoxDecoration(
+           //     shape: BoxShape.circle,
+           //     color: ColorResource.color23375A.withOpacity(0.2),
+           //   ),
+           //   child: Row(
+           //     children: [
+           //       SizedBox(
+           //         height: 15,
+           //         width: 15,
+           //         child:
+           //       Image.asset(ImageResource.vectorArrow),),
+           //     ],
+           //   ),
+           // ),
+           //
+          // ],
         ),
         color: widget.color,
-      ));
+      );
 
     }
 
