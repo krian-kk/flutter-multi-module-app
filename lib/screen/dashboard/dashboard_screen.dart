@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/screen/dashboard/priority_follow_up_bottomsheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -49,6 +52,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
           ),
           SizedBox(height: 30,),
+          CustomButton(
+            'Priority Follow Up',
+            onTap: (){
+              priorityFollowUpSheet(context);
+            },
+          ),
+          SizedBox(height: 30,),
           Align(
             alignment: Alignment.bottomCenter,
             child: CustomText(
@@ -61,5 +71,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
     );
+  }
+
+
+  void priorityFollowUpSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        // isScrollControlled: true,
+        // elevation: 13,
+        // isDismissible: false,
+        context: buildContext,
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //       topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        // ),
+        // backgroundColor: ColorResource.colorFFFFFF,
+        builder: (BuildContext context) {
+          return PriorityFollowUpBottomSheet();
+        });
   }
 }

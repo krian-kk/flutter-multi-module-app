@@ -158,18 +158,47 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                     ),
                                   ),
                                   Tab(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    child: Stack(
+                                      // alignment: Alignment.topLeft,
                                       children: [
-                                        Image.asset(ImageResource.profile),
-                                        const SizedBox(
-                                          height: 3,
+                                        Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center, 
+                                          children: [
+                                            bloc.notificationCount != 0 ?
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 5),
+                                              child: Image.asset(ImageResource.profile),
+                                            ) : Image.asset(ImageResource.profile),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            CustomText(
+                                              StringResource.profile,
+                                              fontSize: FontSize.eight,
+                                            ),
+                                          ],
                                         ),
-                                        CustomText(
-                                          StringResource.profile,
-                                          fontSize: FontSize.eight,
-                                        ),
+                                         if (bloc.notificationCount != 0)
+                                              Container(
+                                                alignment: Alignment.center,
+                                                child: CustomText(
+                                                  bloc.notificationCount! > 10
+                                                      ? '10+'
+                                                      : bloc.notificationCount.toString(),
+                                                     color: ColorResource.colorFFFFFF,
+                                                      fontSize: 8,
+                                                      lineHeight: 1,
+                                                      fontWeight: FontWeight.w700,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: ColorResource.colorD5344C,
+                                                ),
+                                                height: 19,
+                                                width: 19,
+                                              ),
                                       ],
                                     ),
                                   ),
