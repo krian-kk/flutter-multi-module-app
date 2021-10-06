@@ -25,8 +25,7 @@ class CustomCard extends StatefulWidget {
   GlobalKey<_CustomCardState> _myKey = GlobalKey();
 
   CustomCard(
-      this.elevation,
-      this.child,
+
       {
         Key? key,
         this.semanticContainer = true,
@@ -43,6 +42,8 @@ class CustomCard extends StatefulWidget {
         this.amountrs,
         this.count,
         this.price,
+        this.elevation,
+        this.child,
 
       });
 
@@ -53,41 +54,23 @@ class CustomCard extends StatefulWidget {
   class _CustomCardState extends State<CustomCard> {
     @override
     Widget build(BuildContext context) {
-      return Container(
-        height: widget.height,
-        width: widget.width,
-        margin: EdgeInsets.only(left: 15,right: 15,top: 10),
-        child: Card(
-          elevation: widget.elevation,
-        shape: widget.shape,
-        shadowColor: widget.shadowColor,
-          clipBehavior: widget.clipBehavior,
-        child: widget.child,
-        // child: Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-           // Container(
-           //   margin: EdgeInsets.only(left: 5,top: 8),
-           //   padding: EdgeInsets.all(8),
-           //   decoration: BoxDecoration(
-           //     shape: BoxShape.circle,
-           //     color: ColorResource.color23375A.withOpacity(0.2),
-           //   ),
-           //   child: Row(
-           //     children: [
-           //       SizedBox(
-           //         height: 15,
-           //         width: 15,
-           //         child:
-           //       Image.asset(ImageResource.vectorArrow),),
-           //     ],
-           //   ),
-           // ),
-           //
-          // ],
-        ),
-        color: widget.color,
-      );
+      return
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 6),
+          child: Container(
+            height: widget.height,
+            width: widget.width,
+
+            child: Card(
+              elevation: widget.elevation,
+            shape: widget.shape,
+            shadowColor: widget.shadowColor,
+              clipBehavior: widget.clipBehavior,
+            child: widget.child,
+            ),
+            color: widget.color,
+          ),
+        );
 
     }
 
