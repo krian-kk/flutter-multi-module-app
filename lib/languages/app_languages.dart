@@ -186,4 +186,10 @@ abstract class Languages {
   String get choiceOtherLanguages;
 
   String get declinedCall;
+
+  String get leftMessage;
+
+  String get doorLocked;
+
+  String get entryRestricted;
 }

@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/screen/address_screen/address_screen.dart';
+import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const String searchAllocationDetailsScreen =
       'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
+  static const String addressScreen = 'address_screen';
 }
 
 Route<dynamic> getRoute(RouteSettings settings) {
@@ -46,6 +48,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildCaseDetailsScreen();
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
+    case AppRoutes.addressScreen:
+      return _buildAddressScreen();
   }
   return _buildSplashScreen();
 }
@@ -106,6 +110,12 @@ Route<dynamic> _buildCaseDetailsScreen() {
   );
 }
 
+Route<dynamic> _buildAddressScreen() {
+  return MaterialPageRoute(
+    builder: (context) => addAuthBloc(context, PageBuilder.buildAddressPage()),
+  );
+}
+
 class PageBuilder {
   static Widget buildSplashScreen() {
     return BlocProvider(
@@ -128,7 +138,7 @@ class PageBuilder {
     );
   }
 
-    static Widget buildLoginScreen(AuthenticationBloc authBloc) {
+  static Widget buildLoginScreen(AuthenticationBloc authBloc) {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<LoginBloc>(context)..add(LoginInitialEvent()),
@@ -169,6 +179,14 @@ class PageBuilder {
       child: CaseDetailsScreen(),
     );
   }
+
+  static Widget buildAddressPage() {
+    return BlocProvider(
+      create: (BuildContext context) =>
+          BlocProvider.of<AddressBloc>(context)..add(AddressInitialEvent()),
+      child: AddressScreen(),
+    );
+  }
 }
 
 Widget addAuthBloc(BuildContext context, Widget widget) {
@@ -179,7 +197,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.addressScreen);
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
 

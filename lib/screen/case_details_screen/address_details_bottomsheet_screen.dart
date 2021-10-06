@@ -157,6 +157,8 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                                   CustomText(
                                                     Languages.of(context)!
                                                         .viewMap,
+                                                    fontSize: FontSize.fourteen,
+                                                    fontWeight: FontWeight.w700,
                                                     color: ColorResource
                                                         .color23375A,
                                                   )

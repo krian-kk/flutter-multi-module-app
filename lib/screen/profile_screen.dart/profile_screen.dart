@@ -13,7 +13,6 @@ import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_scree
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -39,7 +38,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
       final imageTemporary = File(image.path);
-      print(imageTemporary);
       setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print(e.message);

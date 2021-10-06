@@ -276,4 +276,13 @@ class LanguageEn extends Languages {
 
   @override
   String get declinedCall => 'Declined call';
+
+  @override
+  String get leftMessage => 'LEFT MESSAGE';
+
+  @override
+  String get doorLocked => 'DOOR LOCKED';
+
+  @override
+  String get entryRestricted => 'ENTRY RESTRICTED';
 }
