@@ -267,6 +267,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                   decoration: new BoxDecoration(),
                   child: CustomButton(
                     Languages.of(context)!.okay.toUpperCase(),
+                    onTap: () => Navigator.pop(context),
                     cardShape: 5,
                     leadingWidget: CircleAvatar(
                       radius: 13,

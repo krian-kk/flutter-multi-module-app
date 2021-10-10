@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -17,21 +17,21 @@ List<SelectedClipModel> selectedClipList = [
   SelectedClipModel('ENTRY RESTRICTED'),
 ];
 
-class AddressSecondTabScreen extends StatefulWidget {
-  const AddressSecondTabScreen({
+class PhoneSecondTabScreen extends StatefulWidget {
+  const PhoneSecondTabScreen({
     Key? key,
     required this.context,
     required this.bloc,
   }) : super(key: key);
 
   final BuildContext context;
-  final AddressBloc bloc;
+  final PhoneBloc bloc;
 
   @override
-  State<AddressSecondTabScreen> createState() => _AddressSecondTabScreenState();
+  State<PhoneSecondTabScreen> createState() => _PhoneSecondTabScreenState();
 }
 
-class _AddressSecondTabScreenState extends State<AddressSecondTabScreen> {
+class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(

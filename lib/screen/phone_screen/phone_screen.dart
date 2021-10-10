@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/customer_not_met_model.dart';
-import 'package:origa/screen/address_screen/address_first_tab_screen.dart';
-import 'package:origa/screen/address_screen/address_second_tab_screen.dart';
-import 'package:origa/screen/address_screen/address_third_tab_screen.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
+import 'package:origa/screen/phone_screen/phone_firsttab_screen.dart';
+import 'package:origa/screen/phone_screen/phone_secondtab_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -16,19 +15,19 @@ import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class AddressScreen extends StatefulWidget {
-  AddressScreen({Key? key}) : super(key: key);
+class PhoneScreen extends StatefulWidget {
+  PhoneScreen({Key? key}) : super(key: key);
 
   @override
-  _AddressScreenState createState() => _AddressScreenState();
+  _PhoneScreenState createState() => _PhoneScreenState();
 }
 
-class _AddressScreenState extends State<AddressScreen> {
-  late AddressBloc bloc;
+class _PhoneScreenState extends State<PhoneScreen> {
+  late PhoneBloc bloc;
 
   @override
   void initState() {
-    bloc = AddressBloc()..add(AddressInitialEvent());
+    bloc = PhoneBloc()..add(PhoneInitialEvent());
     super.initState();
   }
 
@@ -59,10 +58,10 @@ class _AddressScreenState extends State<AddressScreen> {
                 }
               },
             ),
-            BlocListener<AddressBloc, AddressState>(
+            BlocListener<PhoneBloc, PhoneState>(
               bloc: bloc,
               listener: (context, state) {},
-              child: BlocBuilder<AddressBloc, AddressState>(
+              child: BlocBuilder<PhoneBloc, PhoneState>(
                 bloc: bloc,
                 builder: (context, state) {
                   return Expanded(
@@ -72,8 +71,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         boxShadow: [
                           new BoxShadow(
                             color: ColorResource.colorCACACA.withOpacity(.25),
-                            blurRadius: 2.0,
-                            offset: Offset(1.0, 1.0),
+                            blurRadius: 30.0,
                           ),
                         ],
                         borderRadius: new BorderRadius.vertical(
@@ -95,7 +93,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomText(
-                                      'ADDRESS 01',
+                                      'Phone Number 01'.toUpperCase(),
                                       fontWeight: FontWeight.w700,
                                       fontSize: FontSize.fourteen,
                                       fontStyle: FontStyle.normal,
@@ -117,7 +115,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                   child: SizedBox(
                                     width: 255,
                                     child: CustomText(
-                                      '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+                                      '9841021453',
                                       fontWeight: FontWeight.w400,
                                       fontSize: FontSize.fourteen,
                                       fontStyle: FontStyle.normal,
@@ -140,12 +138,12 @@ class _AddressScreenState extends State<AddressScreen> {
                                                                 75.0))),
                                                 child: Row(
                                                   children: [
-                                                    Image.asset(ImageResource
-                                                        .direction),
+                                                    Image.asset(
+                                                        ImageResource.phone),
                                                     SizedBox(width: 12),
                                                     CustomText(
                                                       Languages.of(context)!
-                                                          .viewMap,
+                                                          .call,
                                                       fontSize:
                                                           FontSize.fourteen,
                                                       fontWeight:
@@ -155,7 +153,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                                     )
                                                   ],
                                                 )))),
-                                    SizedBox(width: 40),
+                                    SizedBox(width: 67),
                                     Expanded(
                                         child: CustomButton(
                                       'Event Details',
@@ -192,8 +190,8 @@ class _AddressScreenState extends State<AddressScreen> {
                                       ColorResource.colorC4C4C4,
                                   // ignore: prefer_const_literals_to_create_immutables
                                   tabs: [
-                                    Tab(text: StringResource.customerMet),
-                                    Tab(text: StringResource.customerNotMet),
+                                    Tab(text: StringResource.connected),
+                                    Tab(text: StringResource.unreachable),
                                     Tab(text: StringResource.invalid)
                                   ],
                                   // tabs: [
@@ -215,12 +213,12 @@ class _AddressScreenState extends State<AddressScreen> {
                                     MediaQuery.of(context).size.height - 275,
                                 child: TabBarView(
                                   children: [
-                                    AddressFirstTapScreen(
+                                    PhoneFirstTapScreen(
                                         bloc: bloc, context: context),
-                                    AddressSecondTabScreen(
-                                        context: context, bloc: bloc),
-                                    AddressThirdTabScreen(
-                                        context: context, bloc: bloc),
+                                    PhoneSecondTabScreen(
+                                        bloc: bloc, context: context),
+                                    PhoneFirstTapScreen(
+                                        bloc: bloc, context: context),
                                   ],
                                 ),
                               ),
@@ -235,33 +233,6 @@ class _AddressScreenState extends State<AddressScreen> {
             )
           ],
         ),
-        // bottomNavigationBar: Container(
-        //   height: MediaQuery.of(context).size.height * 0.12,
-        //   decoration: BoxDecoration(
-        //     color: ColorResource.colorFFFFFF,
-        //     boxShadow: [
-        //       new BoxShadow(
-        //         color: ColorResource.color000000.withOpacity(.25),
-        //         blurRadius: 2.0,
-        //         offset: Offset(1.0, 1.0),
-        //       ),
-        //     ],
-        //   ),
-        //   width: double.infinity,
-        //   child: Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-        //     child: Container(
-        //       decoration: BoxDecoration(),
-        //       child: CustomButton(
-        //         Languages.of(context)!.done.toUpperCase(),
-        //         fontSize: FontSize.sixteen,
-        //         fontWeight: FontWeight.w600,
-        //         // onTap: () => bloc.add(ClickMessageEvent()),
-        //         cardShape: 5,
-        //       ),
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }

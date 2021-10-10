@@ -8,3 +8,5 @@ class AddressInitial extends AddressState {}
 class AddressLoadingState extends AddressState {}
 
 class AddressLoadedState extends AddressState {}
+
+class AddressNavigatePtpState extends AddressState {}

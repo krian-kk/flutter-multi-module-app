@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -9,7 +10,13 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class AddressThirdTabScreen extends StatelessWidget {
+List<SelectedClipModel> selectedClipList = [
+  SelectedClipModel('WRONG ADDRESS'),
+  SelectedClipModel('SHIFTED'),
+  SelectedClipModel('ADDRESS NOT FOUND'),
+];
+
+class AddressThirdTabScreen extends StatefulWidget {
   const AddressThirdTabScreen(
       {Key? key, required this.context, required this.bloc})
       : super(key: key);
@@ -17,6 +24,11 @@ class AddressThirdTabScreen extends StatelessWidget {
   final BuildContext context;
   final AddressBloc bloc;
 
+  @override
+  State<AddressThirdTabScreen> createState() => _AddressThirdTabScreenState();
+}
+
+class _AddressThirdTabScreenState extends State<AddressThirdTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,36 +44,9 @@ class AddressThirdTabScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Wrap(
+                    runSpacing: 10,
                     spacing: 10,
-                    children: [
-                      Container(
-                        width: 139,
-                        child: CustomButton(
-                          'LEFT MESSAGE',
-                          textColor: ColorResource.color000000,
-                          borderColor: ColorResource.colorE7E7E7,
-                          buttonBackgroundColor: ColorResource.colorF1BCC4,
-                        ),
-                      ),
-                      Container(
-                        width: 162,
-                        child: CustomButton(
-                          'DOOR LOCKED',
-                          buttonBackgroundColor: ColorResource.colorE7E7E7,
-                          borderColor: ColorResource.colorE7E7E7,
-                          textColor: ColorResource.color000000,
-                        ),
-                      ),
-                      Container(
-                        width: 171,
-                        child: CustomButton(
-                          'ENTRY RESTRICTED',
-                          textColor: ColorResource.color000000,
-                          borderColor: ColorResource.colorE7E7E7,
-                          buttonBackgroundColor: ColorResource.colorE7E7E7,
-                        ),
-                      ),
-                    ],
+                    children: _buildSelectedClip(),
                   ),
                   SizedBox(height: 27),
                   Align(
@@ -122,64 +107,7 @@ class AddressThirdTabScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )
-
-                  // Container(
-                  //   decoration: new BoxDecoration(
-                  //       color: ColorResource.colorF7F8FA,
-                  //       borderRadius: new BorderRadius.all(Radius.circular(10.0))),
-                  //   width: double.infinity,
-                  //   height: 150,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(
-                  //         horizontal: 10.0, vertical: 19.0),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Column(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             Container(
-                  //                 width: 150,
-                  //                 height: 50,
-                  //                 child: CustomButton(
-                  //                   'REPO',
-                  //                 )),
-                  //             Container(
-                  //                 width: 150,
-                  //                 height: 50,
-                  //                 child: CustomButton(
-                  //                   'Add Contact',
-                  //                 )),
-                  //           ],
-                  //         ),
-                  //         Container(
-                  //           height: 110,
-                  //           width: 150,
-                  //           decoration: new BoxDecoration(
-                  //               color: ColorResource.color23375A,
-                  //               borderRadius:
-                  //                   new BorderRadius.all(Radius.circular(5.0))),
-                  //           child: Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.center,
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               Image.asset(ImageResource.captureImage),
-                  //               SizedBox(height: 5),
-                  //               CustomText(
-                  //                 'CAPTURE \nIMAGE',
-                  //                 textAlign: TextAlign.center,
-                  //                 color: ColorResource.colorFFFFFF,
-                  //                 fontSize: FontSize.sixteen,
-                  //                 fontWeight: FontWeight.w600,
-                  //               )
-                  //             ],
-                  //           ),
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+                  ),
                 ],
               ),
             ),
@@ -213,5 +141,34 @@ class AddressThirdTabScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  List<Widget> _buildSelectedClip() {
+    List<Widget> widgets = [];
+    selectedClipList.forEach((element) {
+      widgets.add(InkWell(
+        onTap: () {
+          widget.bloc.selectedCustomerNotMetClip = element.clipTitle;
+          setState(() {});
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: element.clipTitle == widget.bloc.selectedCustomerNotMetClip
+                ? ColorResource.colorF1BCC4
+                : ColorResource.colorE7E7E7,
+          ),
+          child: CustomText(
+            element.clipTitle,
+            color: ColorResource.color000000,
+            fontSize: FontSize.fourteen,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ));
+    });
+    return widgets;
   }
 }

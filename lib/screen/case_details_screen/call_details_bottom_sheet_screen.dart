@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -178,20 +179,26 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                                           .call)
                                                 ],
                                               )))),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CustomText(
-                                        Languages.of(context)!.view,
-                                        lineHeight: 1,
-                                        color: ColorResource.color23375A,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Image.asset(ImageResource.viewShape,
-                                          height: 20),
-                                      SizedBox(width: 10)
-                                    ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Navigator.of(context)
+                                      //     .push(_createRoute());
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!.view,
+                                          lineHeight: 1,
+                                          color: ColorResource.color23375A,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Image.asset(ImageResource.viewShape,
+                                            height: 20),
+                                        SizedBox(width: 10)
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

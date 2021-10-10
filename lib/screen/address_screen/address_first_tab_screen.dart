@@ -42,35 +42,37 @@ class AddressFirstTapScreen extends StatelessWidget {
                     itemBuilder: (BuildContext context, int innerIndex) {
                       return Padding(
                         padding: const EdgeInsets.all(4.5),
-                        child: Container(
-                          decoration: new BoxDecoration(
-                              color: ColorResource.colorF8F9FB,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ColorResource.color000000
-                                      .withOpacity(0.2),
-                                  blurRadius: 2.0,
-                                  offset: Offset(1.0,
-                                      1.0), // shadow direction: bottom right
+                        child: GestureDetector(
+                          child: Container(
+                            decoration: new BoxDecoration(
+                                color: ColorResource.colorF8F9FB,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: ColorResource.color000000
+                                        .withOpacity(0.2),
+                                    blurRadius: 2.0,
+                                    offset: Offset(1.0,
+                                        1.0), // shadow direction: bottom right
+                                  )
+                                ],
+                                borderRadius: new BorderRadius.all(
+                                    Radius.circular(10.0))),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              // ignore: prefer_const_literals_to_create_immutables
+                              children: [
+                                Image.asset(
+                                    bloc.customerMetGridList[innerIndex].icon),
+                                SizedBox(height: 8),
+                                CustomText(
+                                  bloc.customerMetGridList[innerIndex].title,
+                                  color: ColorResource.color000000,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w700,
                                 )
                               ],
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(10.0))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            children: [
-                              Image.asset(
-                                  bloc.customerMetGridList[innerIndex].icon),
-                              SizedBox(height: 8),
-                              CustomText(
-                                bloc.customerMetGridList[innerIndex].title,
-                                color: ColorResource.color000000,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w700,
-                              )
-                            ],
+                            ),
                           ),
                         ),
                       );
@@ -201,16 +203,21 @@ class AddressFirstTapScreen extends StatelessWidget {
           ),
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-            child: Container(
-              decoration: BoxDecoration(),
-              child: CustomButton(
-                Languages.of(context)!.done.toUpperCase(),
-                fontSize: FontSize.sixteen,
-                fontWeight: FontWeight.w600,
-                // onTap: () => bloc.add(ClickMessageEvent()),
-                cardShape: 5,
-              ),
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 191,
+                  child: CustomButton(
+                    Languages.of(context)!.done.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    cardShape: 5,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -8,6 +8,9 @@ part 'address_event.dart';
 part 'address_state.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
+  String selectedCustomerNotMetClip = '';
+  String selectedInvalidClip = '';
+
   List<CustomerMetGridModel> customerMetGridList = [];
   AddressBloc() : super(AddressInitial()) {
     on<AddressEvent>((event, emit) {
