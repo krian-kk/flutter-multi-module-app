@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,9 +64,27 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                       padding: const EdgeInsets.only(left: 24, right: 8),
                       child: Row(
                         children: [
+                          // Expanded(
+                          //   flex: 4,
+                          //   child: AnimatedTextKit(
+                          //     animatedTexts: [
+                          //       WavyAnimatedText(title!,
+                          //       textStyle: TextStyle(
+                          //         fontSize: FontSize.sixteen,
+                          //         fontWeight: FontWeight.w700,
+                          //         color: ColorResource.color23375A,
+                          //       )),
+                          //     ],
+                          //     isRepeatingAnimation: false,
+                          //     onTap: () {
+                          //       print("Tap Event");
+                          //     },
+                          //   ),
+                          // ),
                           Expanded(
                               flex: 4,
-                              child: CustomText(
+                              child: 
+                              CustomText(
                                 title!,
                                 fontSize: FontSize.sixteen,
                                 fontWeight: FontWeight.w700,
@@ -158,18 +177,47 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                     ),
                                   ),
                                   Tab(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    child: Stack(
+                                      // alignment: Alignment.topLeft,
                                       children: [
-                                        Image.asset(ImageResource.profile),
-                                        const SizedBox(
-                                          height: 3,
+                                        Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center, 
+                                          children: [
+                                            bloc.notificationCount != 0 ?
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 5),
+                                              child: Image.asset(ImageResource.profile),
+                                            ) : Image.asset(ImageResource.profile),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            CustomText(
+                                              StringResource.profile,
+                                              fontSize: FontSize.eight,
+                                            ),
+                                          ],
                                         ),
-                                        CustomText(
-                                          StringResource.profile,
-                                          fontSize: FontSize.eight,
-                                        ),
+                                         if (bloc.notificationCount != 0)
+                                              Container(
+                                                alignment: Alignment.center,
+                                                child: CustomText(
+                                                  bloc.notificationCount! > 10
+                                                      ? '10+'
+                                                      : bloc.notificationCount.toString(),
+                                                     color: ColorResource.colorFFFFFF,
+                                                      fontSize: 8,
+                                                      lineHeight: 1,
+                                                      fontWeight: FontWeight.w700,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: ColorResource.colorD5344C,
+                                                ),
+                                                height: 19,
+                                                width: 19,
+                                              ),
                                       ],
                                     ),
                                   ),
