@@ -8,7 +8,7 @@ part 'phone_event.dart';
 part 'phone_state.dart';
 
 class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
-  String selectedCustomerNotMetClip = '';
+  String selectedUnreadableClip = '';
   String selectedInvalidClip = '';
   List<CustomerMetGridModel> customerMetGridList = [];
 

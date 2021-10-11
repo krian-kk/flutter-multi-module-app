@@ -30,4 +30,5 @@ class ImageResource {
   static const String phone = 'assets/phone.png';
   static const String direction = 'assets/direction.png';
   static const String activePerson = 'assets/active_person.png';
+  static const String money = 'assets/money.png';
 }

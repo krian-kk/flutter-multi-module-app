@@ -35,12 +35,9 @@ class _AddressScreenState extends State<AddressScreen> {
   @override
   Widget build(BuildContext context) {
     List<CustomerMetNotButtonModel> customerMetNotButtonList = [
-      CustomerMetNotButtonModel(ColorResource.colorFFB800.withOpacity(.67),
-          Languages.of(context)!.leftMessage),
-      CustomerMetNotButtonModel(
-          ColorResource.colorE7E7E7, Languages.of(context)!.doorLocked),
-      CustomerMetNotButtonModel(
-          ColorResource.colorE7E7E7, Languages.of(context)!.entryRestricted),
+      CustomerMetNotButtonModel(Languages.of(context)!.leftMessage),
+      CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
+      CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
     ];
     return SafeArea(
       top: false,

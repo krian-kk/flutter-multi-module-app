@@ -7,6 +7,7 @@ import 'package:origa/models/customer_not_met_model.dart';
 import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/screen/phone_screen/phone_firsttab_screen.dart';
 import 'package:origa/screen/phone_screen/phone_secondtab_screen.dart';
+import 'package:origa/screen/phone_screen/phone_thirdtab_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -34,12 +35,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
   @override
   Widget build(BuildContext context) {
     List<CustomerMetNotButtonModel> customerMetNotButtonList = [
-      CustomerMetNotButtonModel(ColorResource.colorFFB800.withOpacity(.67),
-          Languages.of(context)!.leftMessage),
-      CustomerMetNotButtonModel(
-          ColorResource.colorE7E7E7, Languages.of(context)!.doorLocked),
-      CustomerMetNotButtonModel(
-          ColorResource.colorE7E7E7, Languages.of(context)!.entryRestricted),
+      CustomerMetNotButtonModel(Languages.of(context)!.leftMessage),
+      CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
+      CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
     ];
     return SafeArea(
       top: false,
@@ -190,7 +188,12 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                       ColorResource.colorC4C4C4,
                                   // ignore: prefer_const_literals_to_create_immutables
                                   tabs: [
-                                    Tab(text: StringResource.connected),
+                                    Tab(
+                                      child: Expanded(
+                                        child: CustomText(
+                                            StringResource.connected),
+                                      ),
+                                    ),
                                     Tab(text: StringResource.unreachable),
                                     Tab(text: StringResource.invalid)
                                   ],
@@ -217,7 +220,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                         bloc: bloc, context: context),
                                     PhoneSecondTabScreen(
                                         bloc: bloc, context: context),
-                                    PhoneFirstTapScreen(
+                                    PhoneThirdTabScreen(
                                         bloc: bloc, context: context),
                                   ],
                                 ),

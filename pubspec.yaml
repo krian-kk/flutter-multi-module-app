@@ -91,6 +91,7 @@ flutter:
     - assets/phone.png
     - assets/direction.png
     - assets/active_person.png
+    - assets/money.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

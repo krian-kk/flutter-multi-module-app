@@ -7,33 +7,29 @@ import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 List<SelectedClipModel> selectedClipList = [
-  SelectedClipModel('LINE BUSY'),
-  SelectedClipModel('SWITCH OFF'),
-  SelectedClipModel('RNR'),
-  SelectedClipModel('OUT OF NETWORK'),
-  SelectedClipModel('DISCONNECTING'),
+  SelectedClipModel('DOES NOT EXIST'),
+  SelectedClipModel('INCORRECT NUMBER'),
+  SelectedClipModel('NUMBER NOT WORKING'),
+  SelectedClipModel('NOT OPERATIONAL'),
 ];
 
-class PhoneSecondTabScreen extends StatefulWidget {
-  const PhoneSecondTabScreen({
-    Key? key,
-    required this.context,
-    required this.bloc,
-  }) : super(key: key);
+class PhoneThirdTabScreen extends StatefulWidget {
+  const PhoneThirdTabScreen(
+      {Key? key, required this.context, required this.bloc})
+      : super(key: key);
 
   final BuildContext context;
   final PhoneBloc bloc;
 
   @override
-  State<PhoneSecondTabScreen> createState() => _PhoneSecondTabScreenState();
+  State<PhoneThirdTabScreen> createState() => _PhoneThirdTabScreenState();
 }
 
-class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
+class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,24 +48,6 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
                     runSpacing: 10,
                     spacing: 10,
                     children: _buildSelectedClip(),
-                  ),
-                  SizedBox(height: 25),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomText('NEXT ACTION DATE*')),
-                  Container(
-                    width: (MediaQuery.of(context).size.width - 62) / 2,
-                    child: TextField(
-                      //controller: loanDurationController,
-                      decoration: new InputDecoration(
-                          suffixIcon: GestureDetector(
-                              onTap: () {},
-                              child: const Icon(Icons.calendar_today)),
-                          labelText: StringResource.loanDuration,
-                          focusColor: ColorResource.colorE5EAF6,
-                          labelStyle:
-                              new TextStyle(color: const Color(0xFF424242))),
-                    ),
                   ),
                   SizedBox(height: 27),
                   Align(
@@ -101,6 +79,36 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
                     // onTap: () => pickImage(source, cameraDialogueContext)
                     trailingWidget: Image.asset(ImageResource.capturImage),
                   ),
+                  SizedBox(height: 20),
+                  Wrap(
+                    spacing: 15,
+                    children: [
+                      Container(
+                        width: 165,
+                        child: CustomButton(
+                          'ADD New contact',
+                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          borderColor: ColorResource.color23375A,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.twelve,
+                          fontWeight: FontWeight.w700,
+                          cardShape: 75,
+                        ),
+                      ),
+                      Container(
+                        width: 157,
+                        child: CustomButton(
+                          'REPO',
+                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          borderColor: ColorResource.color23375A,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.twelve,
+                          fontWeight: FontWeight.w700,
+                          cardShape: 75,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -110,7 +118,6 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
           decoration: BoxDecoration(
             color: ColorResource.colorFFFFFF,
             boxShadow: [
-              // ignore: unnecessary_new
               new BoxShadow(
                 color: ColorResource.color000000.withOpacity(.25),
                 blurRadius: 2.0,
@@ -120,24 +127,16 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
           ),
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(width: 95, child: Center(child: CustomText('CANCEL'))),
-                SizedBox(width: 25),
-                Container(
-                  width: 191,
-                  decoration: BoxDecoration(),
-                  child: CustomButton(
-                    'submit'.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
-                    cardShape: 5,
-                  ),
-                ),
-              ],
+            padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+            child: Container(
+              decoration: BoxDecoration(),
+              child: CustomButton(
+                Languages.of(context)!.done.toUpperCase(),
+                fontSize: FontSize.sixteen,
+                fontWeight: FontWeight.w600,
+                // onTap: () => bloc.add(ClickMessageEvent()),
+                cardShape: 5,
+              ),
             ),
           ),
         ),
@@ -158,7 +157,7 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: element.clipTitle == widget.bloc.selectedInvalidClip
-                ? ColorResource.colorFFB800.withOpacity(0.67)
+                ? ColorResource.colorF1BCC4
                 : ColorResource.colorE7E7E7,
           ),
           child: CustomText(
