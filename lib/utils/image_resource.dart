@@ -31,4 +31,5 @@ class ImageResource {
   static const String direction = 'assets/direction.png';
   static const String activePerson = 'assets/active_person.png';
   static const String money = 'assets/money.png';
+  static const String vectorArrow = 'assets/Vector.png';
 }

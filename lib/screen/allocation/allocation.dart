@@ -32,6 +32,7 @@ class AllocationScreen extends StatefulWidget {
 class _AllocationScreenState extends State<AllocationScreen> {
   late AllocationBloc bloc;
   late MapBloc mapBloc;
+  bool areyouatOffice = true;
   String version = "";
 
   @override
@@ -120,55 +121,68 @@ class _AllocationScreenState extends State<AllocationScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                      color: ColorResource.colorffffff,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: ColorResource.colorECECEC, width: 1.0),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(ImageResource.location),
-                        const SizedBox(
-                          width: 13.0,
-                        ),
-                        CustomText(
-                          Languages.of(context)!.areYouAtOffice,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
-                        const SizedBox(
-                          width: 15.0,
-                        ),
-                        Container(
-                            width: 80,
-                            height: 40,
-                            child: CustomButton(
-                              Languages.of(context)!.yes,
-                              fontSize: FontSize.twelve,
-                              borderColor: ColorResource.colorEA6D48,
-                              buttonBackgroundColor: ColorResource.colorEA6D48,
-                              cardShape: 5,
-                            )),
-                        const SizedBox(
-                          width: 6.0,
-                        ),
-                        Container(
-                            width: 80,
-                            height: 40,
-                            child: CustomButton(
-                              Languages.of(context)!.no,
-                              fontSize: FontSize.twelve,
-                              textColor: ColorResource.color23375A,
-                              buttonBackgroundColor: ColorResource.colorffffff,
-                              cardShape: 5,
-                            )),
-                      ],
+                  Visibility(
+                    visible: areyouatOffice,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                      decoration: BoxDecoration(
+                        color: ColorResource.colorffffff,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: ColorResource.colorECECEC, width: 1.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(ImageResource.location),
+                          const SizedBox(
+                            width: 13.0,
+                          ),
+                          CustomText(
+                            Languages.of(context)!.areYouAtOffice,
+                            fontSize: FontSize.twelve,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                          const SizedBox(
+                            width: 15.0,
+                          ),
+                          Container(
+                              width: 80,
+                              height: 40,
+                              child: CustomButton(
+                                Languages.of(context)!.yes,
+                                fontSize: FontSize.twelve,
+                                borderColor: ColorResource.colorEA6D48,
+                                buttonBackgroundColor: ColorResource.colorEA6D48,
+                                cardShape: 5,
+                                onTap: (){
+                                  setState(() {
+                                    areyouatOffice = false;
+                                  });
+                                },
+                              )),
+                          const SizedBox(
+                            width: 6.0,
+                          ),
+                          Container(
+                              width: 80,
+                              height: 40,
+                              child: CustomButton(
+                                Languages.of(context)!.no,
+                                fontSize: FontSize.twelve,
+                                textColor: ColorResource.color23375A,
+                                buttonBackgroundColor: ColorResource.colorffffff,
+                                cardShape: 5,
+                                onTap: (){
+                                  setState(() {
+                                    areyouatOffice = false;
+                                  });
+                                },
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
