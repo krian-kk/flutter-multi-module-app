@@ -10,15 +10,15 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class PriorityFollowUpBottomSheet extends StatefulWidget {
+class UntouchedCasesBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
-  PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  UntouchedCasesBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
-  _PriorityFollowUpBottomSheetState createState() => _PriorityFollowUpBottomSheetState();
+  _UntouchedCasesBottomSheetState createState() => _UntouchedCasesBottomSheetState();
 }
 
-class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomSheet> {
+class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +44,7 @@ class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomShee
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
                              const BottomSheetAppbar(
-                              title: 'PRIORITY FOLLOW UP',
+                              title: 'UNTOUCHED CASES',
                             ),
                             Expanded(
                               child: Padding(

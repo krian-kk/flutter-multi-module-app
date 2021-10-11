@@ -10,15 +10,15 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class PriorityFollowUpBottomSheet extends StatefulWidget {
+class MyVisitsBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
-  PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  MyVisitsBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
-  _PriorityFollowUpBottomSheetState createState() => _PriorityFollowUpBottomSheetState();
+  _MyVisitsBottomSheetState createState() => _MyVisitsBottomSheetState();
 }
 
-class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomSheet> {
+class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   @override
   void initState() {
     // TODO: implement initState
@@ -41,15 +41,17 @@ class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomShee
                       padding: EdgeInsets.only(top: 16),
                       child: Scaffold(
                         body: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
                              const BottomSheetAppbar(
-                              title: 'PRIORITY FOLLOW UP',
+                              title: 'MY VISITS',
                             ),
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(5.0),
@@ -93,7 +95,13 @@ class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomShee
                                         ],
                                       ),
                                     ),
-                                    Expanded(child: CaseLists.buildListView(widget.bloc))
+                                    const SizedBox(height: 12,),
+                                    Wrap(
+                                    runSpacing: 0,
+                                    spacing: 7,
+                                    children: _buildFilterOptions(),
+                                  ),
+                                    // Expanded(child: CaseLists.buildListView(widget.bloc))
                                   ],
                                 ),
                               ),
@@ -105,6 +113,57 @@ class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomShee
                   );
                 }
                ),
+    );
+  }
+
+  List<Widget> _buildFilterOptions() {
+    List<Widget> widgets = [];
+    widget.bloc.filterOption.forEach((element) {
+      widgets.add(_buildFilterWidget(element));
+    });
+    return widgets;
+  }
+
+  Widget _buildFilterWidget(String option) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          widget.bloc.selectedFilter = option;
+        });
+        switch (option) {
+          case 'WEEKLY':
+            break;
+          case 'MONTHLY':
+            break;
+          default:
+        }
+        print(option);
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+          width: 90,
+          // height: 35,
+          decoration: BoxDecoration(
+            border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
+            borderRadius: BorderRadius.circular(10),
+            color: option == widget.bloc.selectedFilter
+                ? ColorResource.color23375A
+                : Colors.white,
+          ),
+          child: Center(
+            child: CustomText(
+              option,
+              fontSize: FontSize.twelve,
+              fontWeight: FontWeight.w700,
+              color: option == widget.bloc.selectedFilter
+                  ? Colors.white
+                  : ColorResource.color101010,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

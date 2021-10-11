@@ -10,15 +10,15 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class PriorityFollowUpBottomSheet extends StatefulWidget {
+class BrokenPTPBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
-  PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
-  _PriorityFollowUpBottomSheetState createState() => _PriorityFollowUpBottomSheetState();
+  _BrokenPTPBottomSheetState createState() => _BrokenPTPBottomSheetState();
 }
 
-class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomSheet> {
+class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +44,7 @@ class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomShee
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
                              const BottomSheetAppbar(
-                              title: 'PRIORITY FOLLOW UP',
+                              title: 'BROKEN PTP',
                             ),
                             Expanded(
                               child: Padding(
