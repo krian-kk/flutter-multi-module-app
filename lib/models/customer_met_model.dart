@@ -1,5 +1,8 @@
-class CustomerMetModel {
+import 'package:flutter/material.dart';
+
+class CustomerMetGridModel {
   String icon;
   String title;
-  CustomerMetModel(this.icon, this.title);
+
+  CustomerMetGridModel(this.icon, this.title);
 }

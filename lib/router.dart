@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/screen/address_screen/address_screen.dart';
+import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -12,6 +13,8 @@ import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/screen/login_screen/bloc/login_bloc.dart';
 import 'package:origa/screen/login_screen/login_screen.dart';
+import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
+import 'package:origa/screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
 import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
@@ -28,6 +31,8 @@ class AppRoutes {
   static const String searchAllocationDetailsScreen =
       'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
+  static const String addressScreen = 'address_screen';
+  static const String phoneScreen = 'phone_screen';
 }
 
 Route<dynamic> getRoute(RouteSettings settings) {
@@ -46,6 +51,10 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildCaseDetailsScreen();
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
+    case AppRoutes.addressScreen:
+      return _buildAddressScreen();
+    case AppRoutes.phoneScreen:
+      return _buildPhoneScreen();
   }
   return _buildSplashScreen();
 }
@@ -106,6 +115,18 @@ Route<dynamic> _buildCaseDetailsScreen() {
   );
 }
 
+Route<dynamic> _buildAddressScreen() {
+  return MaterialPageRoute(
+    builder: (context) => addAuthBloc(context, PageBuilder.buildAddressPage()),
+  );
+}
+
+Route<dynamic> _buildPhoneScreen() {
+  return MaterialPageRoute(
+    builder: (context) => addAuthBloc(context, PageBuilder.buildPhonePage()),
+  );
+}
+
 class PageBuilder {
   static Widget buildSplashScreen() {
     return BlocProvider(
@@ -128,7 +149,7 @@ class PageBuilder {
     );
   }
 
-    static Widget buildLoginScreen(AuthenticationBloc authBloc) {
+  static Widget buildLoginScreen(AuthenticationBloc authBloc) {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<LoginBloc>(context)..add(LoginInitialEvent()),
@@ -169,7 +190,40 @@ class PageBuilder {
       child: CaseDetailsScreen(),
     );
   }
+
+  static Widget buildAddressPage() {
+    return BlocProvider(
+      create: (BuildContext context) =>
+          BlocProvider.of<AddressBloc>(context)..add(AddressInitialEvent()),
+      child: AddressScreen(),
+    );
+  }
+
+  static Widget buildPhonePage() {
+    return BlocProvider(
+      create: (BuildContext context) =>
+          BlocProvider.of<PhoneBloc>(context)..add(PhoneInitialEvent()),
+      child: PhoneScreen(),
+    );
+  }
 }
+
+// Route _createRoute() {
+//   return PageRouteBuilder(
+//     transitionDuration: Duration(microseconds: 3),
+//     pageBuilder: (context, animation, secondaryAnimation) => AddressScreen(),
+//     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+//       const begin = Offset(0.0, 1.0);
+//       const end = Offset.zero;
+//       final tween = Tween(begin: begin, end: end);
+//       final offsetAnimation = animation.drive(tween);
+//       return SlideTransition(
+//         position: offsetAnimation,
+//         child: child,
+//       );
+//     },
+//   );
+// }
 
 Widget addAuthBloc(BuildContext context, Widget widget) {
   return BlocListener(

@@ -26,6 +26,7 @@ class CustomButton extends StatefulWidget {
   final double fontSize;
   final Font font;
   final bool isEnabled;
+  final double padding;
 
   CustomButton(this.text,
       {this.fontWeight = FontWeight.w600,
@@ -52,6 +53,7 @@ class CustomButton extends StatefulWidget {
       this.axis = Axis.horizontal,
       this.alignment = MainAxisAlignment.center,
       this.maxLines,
+      this.padding = 5.0,
       this.isEnabled = true});
 
   @override
@@ -89,7 +91,7 @@ class _CustomButtonState extends State<CustomButton> {
                 if (widget.isLeading) widget.trailingWidget,
                 if (widget.text != null)
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(widget.padding),
                     child: Text(
                       widget.text.toString(),
                       textAlign: widget.textAlign,

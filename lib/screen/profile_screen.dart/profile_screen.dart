@@ -8,10 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
+import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
+import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -48,11 +49,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is ClickNotificationState) {
+          notificationShowBottomSheet(context);
+        }
+        if (state is ClickChangeLaunguageState) {
+          launguageBottomSheet();
+        }
+        if (state is ClickMessageState) {
+          messageShowBottomSheet();
+        }
+        if (state is ChangeProfileImageState) {
+          profileImageShowBottomSheet();
+        }
+      },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: bloc,
         builder: (context, state) {
           if (state is ProfileLoadedState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
             return Scaffold(
               backgroundColor: ColorResource.colorF7F8FA,
               body: Padding(
@@ -87,9 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
-                                    onTap: () {
-                                      profileImageShowBottomSheet();
-                                    },
+                                    onTap: () =>
+                                        bloc.add(ChangeProfileImageEvent()),
                                     child: image == null
                                         ? CircleAvatar(
                                             radius: 25,
@@ -198,21 +215,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             GestureDetector(
-                                              onTap: () {
-                                                switch (bloc
-                                                    .profileNavigationList[
-                                                        index]
-                                                    .title) {
-                                                  case 'Notification':
-                                                    notificationShowBottomSheet();
-                                                    break;
-                                                  case 'Select Launguage':
-                                                    launguageBottomSheet();
-                                                    break;
-                                                  case 'Change Password':
-                                                    break;
-                                                }
-                                              },
+                                              onTap: bloc
+                                                  .profileNavigationList[index]
+                                                  .onTap,
+                                              // () {
+                                              //   switch (bloc
+                                              //       .profileNavigationList[
+                                              //           index]
+                                              //       .title) {
+                                              //     case 'Notification':
+                                              //       notificationShowBottomSheet(
+                                              //           context);
+                                              //       break;
+                                              //     case 'Select Launguage':
+                                              //       launguageBottomSheet();
+                                              //       break;
+                                              //     case 'Change Password':
+                                              //       break;
+                                              //   }
+                                              // },
                                               child: Row(
                                                 children: [
                                                   CustomText(
@@ -302,7 +323,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(),
                     child: CustomButton(
                       Languages.of(context)!.message,
-                      onTap: () => messageShowBottomSheet(),
+                      onTap: () => bloc.add(ClickMessageEvent()),
                       cardShape: 5,
                       isTrailing: true,
                       leadingWidget: CircleAvatar(
@@ -319,10 +340,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
             );
           }
         },
@@ -344,7 +361,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                Container(
+                SizedBox(
                   height: 270.0,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -355,7 +372,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                              'Add a PROFILE PHOTO'.toUpperCase(),
+                              Languages.of(context)!
+                                  .addAProfilePhoto
+                                  .toUpperCase(),
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
@@ -370,8 +389,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 60),
                         CustomButton(
-                          'CAPTURE IMAGE',
+                          Languages.of(context)!.captureImage.toUpperCase(),
                           cardShape: 75.0,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w700,
+                          padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
@@ -382,7 +405,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 20),
                         CustomButton(
-                          'UPLOAD PHOTO',
+                          Languages.of(context)!.uploadPhoto,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w700,
+                          padding: 15.0,
                           cardShape: 75.0,
                           onTap: () => pickImage(ImageSource.gallery, context),
                           borderColor: ColorResource.colorBEC4CF,
@@ -411,179 +438,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.87,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!
-                                        .launguage
-                                        .toUpperCase(),
-                                    fontSize: FontSize.fourteen,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    color: ColorResource.color23375A,
-                                  ),
-                                  Spacer(),
-                                  GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Image.asset(ImageResource.close))
-                                ],
-                              ),
-                              SizedBox(height: 14),
-                              CustomText(
-                                Languages.of(context)!
-                                    .defaultLaunguage
-                                    .toUpperCase(),
-                                fontWeight: FontWeight.w700,
-                                fontSize: FontSize.twelve,
-                                fontStyle: FontStyle.normal,
-                                color: ColorResource.color23375A,
-                              ),
-                              SizedBox(height: 6),
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: new BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: ListTile(
-                                  title: CustomText(
-                                    Languages.of(context)!.english,
-                                    lineHeight: 1,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  leading: true
-                                      ? Image.asset(ImageResource.radioOn)
-                                      : Image.asset(ImageResource.radioOff),
-                                ),
-                              ),
-                              SizedBox(height: 17),
-                              CustomText(
-                                Languages.of(context)!
-                                    .defaultLaunguage
-                                    .toUpperCase(),
-                                fontWeight: FontWeight.w700,
-                                fontSize: FontSize.twelve,
-                                fontStyle: FontStyle.normal,
-                                color: ColorResource.color23375A,
-                              ),
-                              SizedBox(height: 6),
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: new BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: ListTile(
-                                  title: CustomText(
-                                    Languages.of(context)!.hindi,
-                                    lineHeight: 1,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  leading: false
-                                      ? Image.asset(ImageResource.radioOn)
-                                      : Image.asset(ImageResource.radioOff),
-                                ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: new BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: ListTile(
-                                  title: CustomText(
-                                    Languages.of(context)!.tamil,
-                                    lineHeight: 1,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  leading: false
-                                      ? Image.asset(ImageResource.radioOn)
-                                      : Image.asset(ImageResource.radioOff),
-                                ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: new BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: ListTile(
-                                  title: CustomText(
-                                    Languages.of(context)!.kannada,
-                                    lineHeight: 1,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  leading: false
-                                      ? Image.asset(ImageResource.radioOn)
-                                      : Image.asset(ImageResource.radioOff),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: new BoxDecoration(
-                          color: ColorResource.colorFFFFFF,
-                          boxShadow: [
-                            BoxShadow(
-                              color: ColorResource.color000000.withOpacity(0.2),
-                              blurRadius: 2.0,
-                              offset: Offset(
-                                  1.0, 1.0), // shadow direction: bottom right
-                            )
-                          ],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 85, vertical: 11.0),
-                          child: Container(
-                            decoration: new BoxDecoration(),
-                            child: CustomButton(
-                              Languages.of(context)!.okay.toUpperCase(),
-                              onTap: () => messageShowBottomSheet(),
-                              cardShape: 5,
-                              leadingWidget: CircleAvatar(
-                                radius: 13,
-                                backgroundColor: ColorResource.colorFFFFFF,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )));
+                LanguageBottomSheetScreen(bloc: bloc)));
   }
 
   messageShowBottomSheet() {
@@ -631,7 +486,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )));
   }
 
-  notificationShowBottomSheet() {
+  void notificationShowBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -645,144 +500,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.87,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!
-                                        .notification
-                                        .toUpperCase(),
-                                    fontSize: FontSize.fourteen,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  Spacer(),
-                                  GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Image.asset(ImageResource.close))
-                                ],
-                              ),
-                              SizedBox(height: 15),
-                              ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: bloc.notificationList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                            bloc.notificationList[index].date),
-                                        ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: bloc
-                                                .notificationList[index]
-                                                .listOfNotification
-                                                .length,
-                                            itemBuilder: (BuildContext context,
-                                                int innerIndex) {
-                                              return Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 20),
-                                                width: double.infinity,
-                                                decoration: new BoxDecoration(
-                                                    boxShadow: [
-                                                      new BoxShadow(
-                                                        color: ColorResource
-                                                            .color000000
-                                                            .withOpacity(.25),
-                                                        blurRadius: 2.0,
-                                                        offset:
-                                                            Offset(1.0, 1.0),
-                                                      ),
-                                                    ],
-                                                    border: Border.all(
-                                                        color: ColorResource
-                                                            .colorDADADA,
-                                                        width: 0.5),
-                                                    color: ColorResource
-                                                        .colorF7F8FA,
-                                                    borderRadius:
-                                                        new BorderRadius.all(
-                                                            Radius.circular(
-                                                                10.0))),
-                                                child: Column(
-                                                  children: [
-                                                    CustomText(bloc
-                                                        .notificationList[index]
-                                                        .listOfNotification[
-                                                            innerIndex]
-                                                        .headText
-                                                        .toString()),
-                                                    CustomText(bloc
-                                                        .notificationList[index]
-                                                        .listOfNotification[
-                                                            innerIndex]
-                                                        .subText
-                                                        .toString()),
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                        const SizedBox(height: 20),
-                                      ],
-                                    );
-                                  }),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: new BoxDecoration(
-                          color: ColorResource.colorFFFFFF,
-                          boxShadow: [
-                            BoxShadow(
-                              color: ColorResource.color000000.withOpacity(0.2),
-                              blurRadius: 2.0,
-                              offset: Offset(
-                                  1.0, 1.0), // shadow direction: bottom right
-                            )
-                          ],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 85, vertical: 11.0),
-                          child: Container(
-                            decoration: new BoxDecoration(),
-                            child: CustomButton(
-                              Languages.of(context)!.read.toUpperCase(),
-                              cardShape: 5,
-                              leadingWidget: CircleAvatar(
-                                radius: 13,
-                                backgroundColor: ColorResource.colorFFFFFF,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )));
+                NotificationBottomSheetScreen(bloc: bloc)));
   }
 }

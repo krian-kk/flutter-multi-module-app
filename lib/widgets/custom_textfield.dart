@@ -92,7 +92,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextFormField(
       textInputAction: TextInputAction.done,
 
-      
       validator: (String? value) {
         if (widget.validationRules.isNotEmpty) {
           final ValidationState validationStatus =
@@ -154,67 +153,68 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : widget.textColor),
 
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(25,20,20,20),
-          fillColor: ColorResource.colorFFFFFF,
-          filled: widget.isFill,
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: ColorResource.color101010.withOpacity(0.3), 
-          fontSize: FontSize.sixteen,),
-          labelText: widget.isLabel ? widget.hintText : null,
-          isDense: false,
-          counterText: widget.descriptionText,
-          errorMaxLines: 1,
-          errorStyle: Theme.of(context)
-              .textTheme
-              .subtitle1!
-              .copyWith(color: Colors.red),
-          counterStyle: const TextStyle(
-              color: ColorResource.color666666,
-              fontFamily: 'Lato-Medium',
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              fontSize: 12),
-          // errorText: validatePassword(widget.controller.text.trim()),
-          labelStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: FontSize.twelve,
-              color: ColorResource.color666666),
+        contentPadding: EdgeInsets.fromLTRB(25, 20, 20, 20),
+        fillColor: ColorResource.colorFFFFFF,
+        filled: widget.isFill,
+        hintText: widget.hintText,
+        hintStyle: TextStyle(
+          color: ColorResource.color101010.withOpacity(0.3),
+          fontSize: FontSize.sixteen,
+        ),
+        labelText: widget.isLabel ? widget.hintText : null,
+        isDense: false,
+        counterText: widget.descriptionText,
+        errorMaxLines: 1,
+        errorStyle:
+            Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.red),
+        counterStyle: const TextStyle(
+            color: ColorResource.color666666,
+            fontFamily: 'Lato-Medium',
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
+            fontSize: 12),
+        // errorText: validatePassword(widget.controller.text.trim()),
+        labelStyle: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.normal,
+            fontSize: FontSize.twelve,
+            color: ColorResource.color666666),
 
-          // Theme.of(context).textTheme.subtitle1!.copyWith(
-          //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
-          //         ? ColorResource.color333333
-          //         : ColorResource.color666666),
-          focusedBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: widget.borderColor!))
-              : InputBorder.none,
-          border: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: widget.borderColor!, width: 0.5))
-              : InputBorder.none,
-          enabledBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: widget.borderColor!))
-              : InputBorder.none,
-          disabledBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: widget.borderColor!))
-              : InputBorder.none,
-          focusedErrorBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: widget.errorborderColor!))
-              : InputBorder.none,
-          errorBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: widget.errorborderColor!))
-              : InputBorder.none,),
+        // Theme.of(context).textTheme.subtitle1!.copyWith(
+        //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
+        //         ? ColorResource.color333333
+        //         : ColorResource.color666666),
+        focusedBorder: widget.isBorder
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: widget.borderColor!))
+            : InputBorder.none,
+        border: widget.isBorder
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: widget.borderColor!, width: 0.5))
+            : InputBorder.none,
+        enabledBorder: widget.isBorder
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: widget.borderColor!))
+            : InputBorder.none,
+        disabledBorder: widget.isBorder
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: widget.borderColor!))
+            : InputBorder.none,
+        focusedErrorBorder: widget.isBorder
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: widget.errorborderColor!))
+            : InputBorder.none,
+        errorBorder: widget.isBorder
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: widget.errorborderColor!))
+            : InputBorder.none,
+      ),
     );
   }
 

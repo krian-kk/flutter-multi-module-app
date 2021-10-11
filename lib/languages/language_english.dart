@@ -268,10 +268,21 @@ class LanguageEn extends Languages {
   @override
   String get loginViaDiffrentUser => 'Login via diffrent user';
 
-   @override
+  @override
   String get hignPriority => 'High Priority';
 
   @override
-  // TODO: implement addAProfilePhoto
-  String get addAProfilePhoto => throw UnimplementedError();
+  String get addAProfilePhoto => 'Add a PROFILE PHOTO';
+
+  @override
+  String get declinedCall => 'Declined call';
+
+  @override
+  String get leftMessage => 'LEFT MESSAGE';
+
+  @override
+  String get doorLocked => 'DOOR LOCKED';
+
+  @override
+  String get entryRestricted => 'ENTRY RESTRICTED';
 }

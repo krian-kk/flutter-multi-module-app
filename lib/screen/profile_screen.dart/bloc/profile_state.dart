@@ -13,4 +13,8 @@ class ClickNotificationState extends ProfileState {}
 
 class ClickChangeLaunguageState extends ProfileState {}
 
-class ClickPasswordState extends ProfileState {}
+class ClickChangePasswordState extends ProfileState {}
+
+class ClickMessageState extends ProfileState {}
+
+class ChangeProfileImageState extends ProfileState {}

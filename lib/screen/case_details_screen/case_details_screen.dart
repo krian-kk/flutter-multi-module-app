@@ -1,20 +1,18 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/base/base_state.dart';
 import 'package:origa/languages/app_languages.dart';
-//import 'package:origa/base/base_state.dart';
-import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
+import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -81,6 +79,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     CustomAppbar(
                       titleString: Languages.of(context)!.caseDetials,
                       titleSpacing: 21,
+
                       iconEnumValues: IconEnum.back,
 
                       // showClose: true,
@@ -107,108 +106,99 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.only(top: 12),
-                                    height: 180,
-                                    child: Stack(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Container(
-                                            // ignore: unnecessary_new
-                                            decoration: new BoxDecoration(
-                                                color:
-                                                    ColorResource.colorD4F5CF,
-                                                borderRadius:
-                                                    new BorderRadius.all(
-                                                        Radius.circular(10.0))),
-                                            width: double.infinity,
-
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  CustomText(
-                                                    'DEBASISH PATNAIK',
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color333333,
-                                                  ),
-                                                  const SizedBox(height: 9),
-                                                  CustomText(
-                                                    Languages.of(context)!
-                                                        .accountNo,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: FontSize.twelve,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color666666,
-                                                  ),
-                                                  const SizedBox(height: 7),
-                                                  CustomText(
-                                                    'TVSF_BFRT6524869550',
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color333333,
-                                                  ),
-                                                  const SizedBox(height: 11),
-                                                  CustomText(
-                                                    Languages.of(context)!
-                                                        .overdueAmount,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: FontSize.twelve,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color666666,
-                                                  ),
-                                                  const SizedBox(height: 7),
-                                                  CustomText(
-                                                    '397553.67',
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize:
-                                                        FontSize.twentyFour,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color333333,
-                                                  ),
-                                                ],
-                                              ),
+                                  Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Container(
+                                          decoration: new BoxDecoration(
+                                              color: ColorResource.colorD4F5CF,
+                                              borderRadius:
+                                                  new BorderRadius.all(
+                                                      Radius.circular(10.0))),
+                                          margin: EdgeInsets.only(top: 10),
+                                          width: double.infinity,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                CustomText(
+                                                  'DEBASISH PATNAIK',
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: FontSize.fourteen,
+                                                  fontStyle: FontStyle.normal,
+                                                  color:
+                                                      ColorResource.color333333,
+                                                ),
+                                                const SizedBox(height: 9),
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .accountNo,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: FontSize.twelve,
+                                                  fontStyle: FontStyle.normal,
+                                                  color:
+                                                      ColorResource.color666666,
+                                                ),
+                                                const SizedBox(height: 7),
+                                                CustomText(
+                                                  'TVSF_BFRT6524869550',
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: FontSize.fourteen,
+                                                  fontStyle: FontStyle.normal,
+                                                  color:
+                                                      ColorResource.color333333,
+                                                ),
+                                                const SizedBox(height: 11),
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .overdueAmount,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: FontSize.twelve,
+                                                  fontStyle: FontStyle.normal,
+                                                  color:
+                                                      ColorResource.color666666,
+                                                ),
+                                                const SizedBox(height: 7),
+                                                CustomText(
+                                                  '397553.67',
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: FontSize.twentyFour,
+                                                  fontStyle: FontStyle.normal,
+                                                  color:
+                                                      ColorResource.color333333,
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 12),
-                                          width: 55,
-                                          height: 18,
-                                          decoration: new BoxDecoration(
-                                              color: ColorResource.colorD5344C,
-                                              borderRadius:
-                                                  new BorderRadius.all(
-                                                      Radius.circular(30.0))),
-                                          child: Center(
-                                            child: CustomText(
-                                              Languages.of(context)!.new_,
-                                              color: ColorResource.colorFFFFFF,
-                                              fontSize: FontSize.ten,
-                                              fontWeight: FontWeight.w700,
-                                            ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 12),
+                                        width: 55,
+                                        height: 18,
+                                        decoration: new BoxDecoration(
+                                            color: ColorResource.colorD5344C,
+                                            borderRadius: new BorderRadius.all(
+                                                Radius.circular(30.0))),
+                                        child: Center(
+                                          child: CustomText(
+                                            Languages.of(context)!.new_,
+                                            color: ColorResource.colorFFFFFF,
+                                            fontSize: FontSize.ten,
+                                            fontWeight: FontWeight.w700,
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                   const SizedBox(height: 16),
-                                  CustomTextField(
+                                  CustomReadOnlyTextField(
                                     Languages.of(context)!.loanAmount,
                                     loanAmountController,
                                     isLabel: true,
@@ -224,7 +214,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             (MediaQuery.of(context).size.width -
                                                     62) /
                                                 2,
-                                        child: CustomTextField(
+                                        child: CustomReadOnlyTextField(
                                           Languages.of(context)!.loanDuration,
                                           loanDurationController,
                                           isLabel: true,
@@ -241,7 +231,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             (MediaQuery.of(context).size.width -
                                                     62) /
                                                 2,
-                                        child: CustomTextField(
+                                        child: CustomReadOnlyTextField(
                                           Languages.of(context)!.pos,
                                           posController,
                                           isLabel: true,
@@ -261,7 +251,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             (MediaQuery.of(context).size.width -
                                                     62) /
                                                 2,
-                                        child: CustomTextField(
+                                        child: CustomReadOnlyTextField(
                                           Languages.of(context)!.schemeCode,
                                           schemeCodeController,
                                           isLabel: true,
@@ -278,7 +268,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             (MediaQuery.of(context).size.width -
                                                     62) /
                                                 2,
-                                        child: CustomTextField(
+                                        child: CustomReadOnlyTextField(
                                           Languages.of(context)!.emiStartDate,
                                           emiStartStateController,
                                           isLabel: true,
@@ -303,7 +293,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     ],
                                   ),
                                   const SizedBox(height: 15),
-                                  CustomTextField(
+                                  CustomReadOnlyTextField(
                                     Languages.of(context)!.bankName,
                                     bankNameController,
                                     isLabel: true,
@@ -322,7 +312,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   //           color: const Color(0xFF424242))),
                                   // ),
                                   SizedBox(height: 17),
-                                  CustomTextField(
+                                  CustomReadOnlyTextField(
                                     Languages.of(context)!.product,
                                     productController,
                                     isLabel: true,
@@ -331,7 +321,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   // CustomTextFormField(
                                   //     productController, StringResource.product),
                                   SizedBox(height: 17),
-                                  CustomTextField(
+                                  CustomReadOnlyTextField(
                                     Languages.of(context)!.batchNo,
                                     batchNoController,
                                     isLabel: true,
@@ -652,18 +642,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 ),
                 bottomNavigationBar: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.16,
-                  // ignore: unnecessary_new
+                  height: MediaQuery.of(context).size.height * 0.15,
                   decoration: new BoxDecoration(
                       color: ColorResource.colorFFFFFF,
-                      // ignore: unnecessary_new
                       borderRadius: new BorderRadius.only(
-                          topLeft: Radius.circular(48.0),
-                          topRight: Radius.circular(48.0))),
+                          topLeft: Radius.circular(28.0),
+                          topRight: Radius.circular(28.0))),
                   child: Padding(
                     padding: const EdgeInsets.all(21.0),
                     child: Align(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.center,
                       child: Row(
                         children: [
                           Expanded(
@@ -771,196 +759,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.87,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 21, vertical: 13),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!
-                                  .addressDetails
-                                  .toUpperCase(),
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color23375A,
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(ImageResource.close))
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Container(
-                          width: double.infinity,
-                          decoration: new BoxDecoration(
-                              color: ColorResource.colorF7F8FA,
-                              // ignore: unnecessary_new
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(10.0))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 14),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  'DEBASISH PATNAIK',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(height: 7),
-                                CustomText(
-                                  'TVSF_BFRT6458922993',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(height: 17),
-                                CustomText(
-                                  'Overdue Amount',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize.twelve,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(height: 9),
-                                CustomText(
-                                  '397553.67',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.twentyFour,
-                                  fontStyle: FontStyle.normal,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: bloc.multiAddressDetilsList.length,
-                          itemBuilder: (context, i) {
-                            return SizedBox(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(bloc
-                                      .multiAddressDetilsList[i].title
-                                      .toUpperCase()),
-                                  SizedBox(height: 7),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: new BoxDecoration(
-                                        color: ColorResource.colorF8F9FB,
-                                        borderRadius: new BorderRadius.all(
-                                            new Radius.circular(10.0))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 12, 12, 12),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                child: CustomText(
-                                                  bloc.multiAddressDetilsList[i]
-                                                      .address,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color484848,
-                                                ),
-                                              ),
-                                              Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: Image.asset(
-                                                      ImageResource.back)),
-                                            ],
-                                          ),
-                                          SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                  child: SizedBox(
-                                                      width: 150,
-                                                      child: Container(
-                                                          decoration: new BoxDecoration(
-                                                              color: ColorResource
-                                                                  .colorBEC4CF,
-                                                              borderRadius:
-                                                                  new BorderRadius
-                                                                      .all(new Radius
-                                                                          .circular(
-                                                                      75.0))),
-                                                          child: Row(
-                                                            children: [
-                                                              Image.asset(
-                                                                  ImageResource
-                                                                      .direction),
-                                                              SizedBox(
-                                                                  width: 12),
-                                                              CustomText(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .viewMap,
-                                                                color: ColorResource
-                                                                    .color23375A,
-                                                              )
-                                                            ],
-                                                          )))),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  CustomText(
-                                                    Languages.of(context)!.view,
-                                                    lineHeight: 1,
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Image.asset(
-                                                      ImageResource.viewShape,
-                                                      height: 20),
-                                                  SizedBox(width: 10)
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                )));
+                AddressDetailsBottomSheetScreen(bloc: bloc)));
   }
 
   void callDetailsShowBottomSheet(BuildContext context) {
@@ -977,192 +776,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.87,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 21, vertical: 13),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.callDetails.toUpperCase(),
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color23375A,
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(ImageResource.close))
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Container(
-                          width: double.infinity,
-                          decoration: new BoxDecoration(
-                              color: ColorResource.colorF7F8FA,
-                              // ignore: unnecessary_new
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(10.0))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 14),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  'DEBASISH PATNAIK',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(height: 7),
-                                CustomText(
-                                  'TVSF_BFRT6458922993',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(height: 17),
-                                CustomText(
-                                  'Overdue Amount',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize.twelve,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(height: 9),
-                                CustomText(
-                                  '397553.67',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.twentyFour,
-                                  fontStyle: FontStyle.normal,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: bloc.multiCallDetilsList.length,
-                          itemBuilder: (context, i) {
-                            return SizedBox(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(bloc.multiCallDetilsList[i].title
-                                      .toUpperCase()),
-                                  SizedBox(height: 7),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: new BoxDecoration(
-                                        color: ColorResource.colorF8F9FB,
-                                        borderRadius: new BorderRadius.all(
-                                            new Radius.circular(10.0))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 12, 12, 12),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                child: CustomText(
-                                                  bloc.multiCallDetilsList[i]
-                                                      .mobileNo,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color484848,
-                                                ),
-                                              ),
-                                              Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: Image.asset(
-                                                      ImageResource.back)),
-                                            ],
-                                          ),
-                                          SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                  child: SizedBox(
-                                                      width: 150,
-                                                      child: Container(
-                                                          decoration: new BoxDecoration(
-                                                              color: ColorResource
-                                                                  .colorBEC4CF,
-                                                              borderRadius:
-                                                                  new BorderRadius
-                                                                      .all(new Radius
-                                                                          .circular(
-                                                                      75.0))),
-                                                          child: Row(
-                                                            children: [
-                                                              Image.asset(
-                                                                  ImageResource
-                                                                      .direction),
-                                                              SizedBox(
-                                                                  width: 12),
-                                                              CustomText(
-                                                                  Languages.of(
-                                                                          context)!
-                                                                      .call)
-                                                            ],
-                                                          )))),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  CustomText(
-                                                    Languages.of(context)!.view,
-                                                    lineHeight: 1,
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Image.asset(
-                                                      ImageResource.viewShape,
-                                                      height: 20),
-                                                  SizedBox(width: 10)
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                )));
+                CallDetailsBottomSheetScreen(bloc: bloc)));
   }
   // Widget CustomDraggableScrollableSheet(ScrollController scrollController) {
   //   return Container(

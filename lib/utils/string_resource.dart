@@ -86,4 +86,6 @@ class StringResource {
   static const String read = 'read';
   static const String addressDetails = 'Address \nDetails';
   static const String callDetails = 'Call \nDetails';
+  static const String connected = 'Connected';
+  static const String unreachable = 'Unreachable';
 }
