@@ -14,15 +14,15 @@ import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 
-class MyVisitsBottomSheet extends StatefulWidget {
+class MyReceiptsBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
-  MyVisitsBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  MyReceiptsBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
-  _MyVisitsBottomSheetState createState() => _MyVisitsBottomSheetState();
+  _MyReceiptsBottomSheetState createState() => _MyReceiptsBottomSheetState();
 }
 
-class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
+class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
   @override
   void initState() {
     // TODO: implement initState
@@ -57,7 +57,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
                                const BottomSheetAppbar(
-                                title: 'MY VISITS',
+                                title: 'MY RECEIPTS',
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
