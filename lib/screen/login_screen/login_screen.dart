@@ -173,7 +173,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!isValid) {
       return;
     } else {
-      bloc.add(HomeTabEvent());
+      if (userName.text == 'origa' && password.text == '1234') {
+        bloc.add(HomeTabEvent());
+      } else {
+        AppUtils.showToast("Password doesn't match");
+      }
+      // bloc.add(HomeTabEvent());
     }
     _formKey.currentState!.save();
   }
