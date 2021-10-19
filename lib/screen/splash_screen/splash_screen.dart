@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class SplashScreen extends StatefulWidget {

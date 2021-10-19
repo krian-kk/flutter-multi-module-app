@@ -15,96 +15,104 @@ class PriorityFollowUpBottomSheet extends StatefulWidget {
   PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
-  _PriorityFollowUpBottomSheetState createState() => _PriorityFollowUpBottomSheetState();
+  _PriorityFollowUpBottomSheetState createState() =>
+      _PriorityFollowUpBottomSheetState();
 }
 
-class _PriorityFollowUpBottomSheetState extends State<PriorityFollowUpBottomSheet> {
+class _PriorityFollowUpBottomSheetState
+    extends State<PriorityFollowUpBottomSheet> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-               decoration:const BoxDecoration(
-                 color: ColorResource.colorF7F8FA,
-                borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-               ),
-               height: MediaQuery.of(context).size.height * 0.85,
-               child:  StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return WillPopScope(
-                    onWillPop: () async => false,
-                    child: Container(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Scaffold(
-                        body: Column(
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                             const BottomSheetAppbar(
-                              title: 'PRIORITY FOLLOW UP',
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: Column(
-                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                CustomText(
-                                                'COUNT',
-                                                fontSize: FontSize.ten,
-                                                color: ColorResource.color101010,),
-                                                CustomText('200', 
-                                                fontSize: FontSize.fourteen,
-                                                color: ColorResource.color101010,
-                                                fontWeight: FontWeight.w700,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 7,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                CustomText(
-                                                'AMOUNT',
-                                                fontSize: FontSize.ten,
-                                                color: ColorResource.color101010,),
-                                                CustomText('₹ 3,97,553.67', 
-                                                fontSize: FontSize.fourteen,
-                                                color: ColorResource.color101010,
-                                                fontWeight: FontWeight.w700,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+      decoration: const BoxDecoration(
+        color: ColorResource.colorF7F8FA,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+      ),
+      height: MediaQuery.of(context).size.height * 0.85,
+      child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Container(
+            padding: EdgeInsets.only(top: 16),
+            child: Scaffold(
+              body: Column(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  const BottomSheetAppbar(
+                    title: 'PRIORITY FOLLOW UP',
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        'COUNT',
+                                        fontSize: FontSize.ten,
+                                        color: ColorResource.color101010,
                                       ),
-                                    ),
-                                    Expanded(child: CaseLists.buildListView(widget.bloc))
-                                  ],
+                                      CustomText(
+                                        '200',
+                                        fontSize: FontSize.fourteen,
+                                        color: ColorResource.color101010,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
+                                Expanded(
+                                  flex: 7,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        'AMOUNT',
+                                        fontSize: FontSize.ten,
+                                        color: ColorResource.color101010,
+                                      ),
+                                      CustomText(
+                                        '₹ 3,97,553.67',
+                                        fontSize: FontSize.fourteen,
+                                        color: ColorResource.color101010,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(child: CaseLists.buildListView(widget.bloc))
+                        ],
                       ),
                     ),
-                  );
-                }
-               ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
     );
   }
 }

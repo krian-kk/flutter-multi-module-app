@@ -63,7 +63,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
       this.onEditing,
       this.inputformaters,
       this.isLabel = false,
-      this.isBorder = false,
+      this.isBorder = true,
       this.isFill = false,
       this.cursorColor = ColorResource.color666666,
       this.validationRules = const []});
@@ -88,123 +88,129 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      textInputAction: TextInputAction.done,
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SizedBox(
+        height: widget.isLabel ? null : 40,
+        child: TextFormField(
+          textInputAction: TextInputAction.done,
+          cursorHeight: 17,
 
-      validator: (String? value) {
-        if (widget.validationRules.isNotEmpty) {
-          final ValidationState validationStatus =
-              Validator.validate(value ?? '', rules: widget.validationRules);
-          widget.validatorCallBack!(validationStatus.status);
-          if (!validationStatus.status) {
-            return validationStatus.error;
-          }
-        }
-        return null;
-      },
+          validator: (String? value) {
+            if (widget.validationRules.isNotEmpty) {
+              final ValidationState validationStatus = Validator.validate(
+                  value ?? '',
+                  rules: widget.validationRules);
+              widget.validatorCallBack!(validationStatus.status);
+              if (!validationStatus.status) {
+                return validationStatus.error;
+              }
+            }
+            return null;
+          },
 
-      onEditingComplete: () {
-        setState(() {});
-        FocusScope.of(context).requestFocus(FocusNode());
-        if (widget.onEditing != null) {
-          widget.onEditing!();
-        }
-      },
+          onEditingComplete: () {
+            setState(() {});
+            FocusScope.of(context).requestFocus(FocusNode());
+            if (widget.onEditing != null) {
+              widget.onEditing!();
+            }
+          },
 
-      onFieldSubmitted: (text) {
-        setState(() {});
-        FocusScope.of(context).requestFocus(FocusNode());
-        if (widget.onEditing != null) {
-          widget.onEditing!();
-        }
-      },
+          onFieldSubmitted: (text) {
+            setState(() {});
+            FocusScope.of(context).requestFocus(FocusNode());
+            if (widget.onEditing != null) {
+              widget.onEditing!();
+            }
+          },
 
-      onTap: () {
-        setState(() {});
-        if (widget.onTapped != null) {
-          widget.onTapped!();
-        }
-      },
-      onChanged: (q) {
-        setState(() {});
-      },
-      // ignore: prefer_const_literals_to_create_immutables
-      // inputFormatters: [
-      //   // if (widget.maximumWordCount != null)
-      //   //   LengthLimitingTextInputFormatter(widget.maximumWordCount),
-      // ],
-      inputFormatters: widget.inputformaters,
+          onTap: () {
+            setState(() {});
+            if (widget.onTapped != null) {
+              widget.onTapped!();
+            }
+          },
+          onChanged: (q) {
+            setState(() {});
+          },
+          // ignore: prefer_const_literals_to_create_immutables
+          // inputFormatters: [
+          //   // if (widget.maximumWordCount != null)
+          //   //   LengthLimitingTextInputFormatter(widget.maximumWordCount),
+          // ],
+          inputFormatters: widget.inputformaters,
 
-      autocorrect: false,
-      enableSuggestions: false,
-      obscureText: widget.obscureText,
-      controller: widget.controller,
-      readOnly: widget.isReadOnly,
-      enabled: widget.isEnable,
-      keyboardType: widget.keyBoardType,
-      cursorColor: widget.cursorColor,
-      // maxLines: 1,
+          autocorrect: false,
+          enableSuggestions: false,
+          obscureText: widget.obscureText,
+          controller: widget.controller,
+          readOnly: widget.isReadOnly,
+          enabled: widget.isEnable,
+          keyboardType: widget.keyBoardType,
+          cursorColor: widget.cursorColor,
 
-      focusNode: widget.focusNode,
-      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-          color: (widget.focusNode != null && widget.focusNode!.hasFocus)
-              ? widget.focusTextColor
-              : widget.textColor),
+          // maxLines: 1,
 
-      decoration: InputDecoration(
-          fillColor: ColorResource.colorFFFFFF,
-          filled: widget.isFill,
-          hintText: widget.hintText,
-          labelText: widget.isLabel ? widget.hintText : null,
-          isDense: false,
-          counterText: widget.descriptionText,
-          errorMaxLines: 1,
-          errorStyle: Theme.of(context)
-              .textTheme
-              .subtitle1!
-              .copyWith(color: Colors.red),
-          counterStyle: const TextStyle(
-              color: ColorResource.color666666,
-              fontFamily: 'Lato-Medium',
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              fontSize: 12),
-          // errorText: validatePassword(widget.controller.text.trim()),
-          labelStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: FontSize.twelve,
-              color: ColorResource.color666666),
+          focusNode: widget.focusNode,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: (widget.focusNode != null && widget.focusNode!.hasFocus)
+                  ? widget.focusTextColor
+                  : widget.textColor),
 
-          // Theme.of(context).textTheme.subtitle1!.copyWith(
-          //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
-          //         ? ColorResource.color333333
-          //         : ColorResource.color666666),
-          focusedBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
-          border: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
-          enabledBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
-          disabledBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: ColorResource.colorDADADA))
-              : null,
-          errorBorder: widget.isBorder
-              ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.red))
-              : null),
+          decoration: InputDecoration(
+              fillColor: ColorResource.colorFFFFFF,
+              filled: widget.isFill,
+              hintText: widget.hintText,
+              labelText: widget.isLabel ? widget.hintText : null,
+              isDense: true,
+              counterText: widget.descriptionText,
+              contentPadding: EdgeInsets.fromLTRB(0, 10, 0, 11),
+              errorMaxLines: 1,
+              suffixIcon: widget.suffixWidget,
+              errorStyle: Theme.of(context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(color: Colors.red),
+              counterStyle: const TextStyle(
+                  color: ColorResource.color666666,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 14),
+              // errorText: validatePassword(widget.controller.text.trim()),
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                  fontSize: FontSize.twelve,
+                  color: ColorResource.color666666),
+
+              // Theme.of(context).textTheme.subtitle1!.copyWith(
+              //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
+              //         ? ColorResource.color333333
+              //         : ColorResource.color666666),
+              focusedBorder: widget.isBorder
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  : null,
+              border: widget.isBorder
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  : null,
+              enabledBorder: widget.isBorder
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  : null,
+              disabledBorder: widget.isBorder
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  : null,
+              errorBorder: widget.isBorder
+                  ? UnderlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red))
+                  : null),
+        ),
+      ),
     );
   }
 

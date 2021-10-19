@@ -2,33 +2,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/language.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 List<SelectedClipModel> selectedClipList = [
-  SelectedClipModel('WRONG ADDRESS'),
-  SelectedClipModel('SHIFTED'),
-  SelectedClipModel('ADDRESS NOT FOUND'),
+  SelectedClipModel('DOES NOT EXIST'),
+  SelectedClipModel('INCORRECT NUMBER'),
+  SelectedClipModel('NUMBER NOT WORKING'),
+  SelectedClipModel('NOT OPERATIONAL'),
 ];
 
-class AddressThirdTabScreen extends StatefulWidget {
-  const AddressThirdTabScreen(
+class PhoneThirdTabScreen extends StatefulWidget {
+  const PhoneThirdTabScreen(
       {Key? key, required this.context, required this.bloc})
       : super(key: key);
 
   final BuildContext context;
-  final AddressBloc bloc;
+  final PhoneBloc bloc;
 
   @override
-  State<AddressThirdTabScreen> createState() => _AddressThirdTabScreenState();
+  State<PhoneThirdTabScreen> createState() => _PhoneThirdTabScreenState();
 }
 
-class _AddressThirdTabScreenState extends State<AddressThirdTabScreen> {
+class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,10 +50,14 @@ class _AddressThirdTabScreenState extends State<AddressThirdTabScreen> {
                     children: _buildSelectedClip(),
                   ),
                   SizedBox(height: 27),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomText('REMARKS*')),
-                  Container(
+                  CustomText(
+                    Languages.of(context)!.remarks,
+                    color: ColorResource.color666666,
+                    fontWeight: FontWeight.w400,
+                    fontSize: FontSize.twelve,
+                    fontStyle: FontStyle.normal,
+                  ),
+                  SizedBox(
                     width: double.infinity,
                     child: TextField(
                       //controller: loanDurationController,
@@ -65,76 +70,31 @@ class _AddressThirdTabScreenState extends State<AddressThirdTabScreen> {
                   ),
                   TextField(),
                   SizedBox(height: 19),
-                  CustomButton(
-                    Languages.of(context)!.captureImage.toUpperCase(),
-                    cardShape: 75.0,
-                    textColor: ColorResource.color23375A,
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w700,
-                    padding: 15.0,
-                    borderColor: ColorResource.colorBEC4CF,
-                    buttonBackgroundColor: ColorResource.colorBEC4CF,
-                    isLeading: true,
-                    // onTap: () => pickImage(source, cameraDialogueContext)
-                    trailingWidget: Image.asset(ImageResource.capturImage),
-                  ),
-                  SizedBox(height: 20),
-                  Wrap(
-                    spacing: 15,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 165,
+                      Expanded(
                         child: CustomButton(
-                          'ADD New contact',
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          Languages.of(context)!.addNewContact,
+                          textColor: ColorResource.colorFFFFFF,
                           borderColor: ColorResource.color23375A,
-                          textColor: ColorResource.color23375A,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w700,
                           cardShape: 75,
+                          buttonBackgroundColor: ColorResource.color23375A,
                         ),
                       ),
-                      Container(
-                        width: 157,
+                      SizedBox(height: 11),
+                      Expanded(
                         child: CustomButton(
-                          'REPO',
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
-                          borderColor: ColorResource.color23375A,
+                          Languages.of(context)!.eventDetails,
                           textColor: ColorResource.color23375A,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w700,
+                          borderColor: ColorResource.color23375A,
                           cardShape: 75,
+                          buttonBackgroundColor: ColorResource.colorFFFFFF,
                         ),
                       ),
                     ],
                   ),
                 ],
-              ),
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              new BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-            child: Container(
-              decoration: BoxDecoration(),
-              child: CustomButton(
-                Languages.of(context)!.done.toUpperCase(),
-                fontSize: FontSize.sixteen,
-                fontWeight: FontWeight.w600,
-                // onTap: () => bloc.add(ClickMessageEvent()),
-                cardShape: 5,
               ),
             ),
           ),
@@ -148,14 +108,14 @@ class _AddressThirdTabScreenState extends State<AddressThirdTabScreen> {
     selectedClipList.forEach((element) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.selectedCustomerNotMetClip = element.clipTitle;
+          widget.bloc.selectedInvalidClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.selectedCustomerNotMetClip
+            color: element.clipTitle == widget.bloc.selectedInvalidClip
                 ? ColorResource.colorF1BCC4
                 : ColorResource.colorE7E7E7,
           ),

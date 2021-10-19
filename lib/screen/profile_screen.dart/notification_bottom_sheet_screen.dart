@@ -19,7 +19,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.87,
       child: Column(
         children: [
@@ -36,6 +36,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                         fontSize: FontSize.fourteen,
                         fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
+                        color: ColorResource.color23375A,
                       ),
                       Spacer(),
                       GestureDetector(
@@ -61,8 +62,17 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    CustomText(
-                                        bloc.notificationList[index].date),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 10.0),
+                                      child: CustomText(
+                                        bloc.notificationList[index].date,
+                                        color: ColorResource.color484848,
+                                        fontSize: FontSize.ten,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
                                     ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -103,18 +113,32 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  CustomText(bloc
-                                                      .notificationList[index]
-                                                      .listOfNotification[
-                                                          innerIndex]
-                                                      .headText
-                                                      .toString()),
-                                                  CustomText(bloc
-                                                      .notificationList[index]
-                                                      .listOfNotification[
-                                                          innerIndex]
-                                                      .subText
-                                                      .toString()),
+                                                  CustomText(
+                                                    bloc
+                                                        .notificationList[index]
+                                                        .listOfNotification[
+                                                            innerIndex]
+                                                        .headText
+                                                        .toString(),
+                                                    color: ColorResource
+                                                        .color101010,
+                                                    fontSize: FontSize.sixteen,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  CustomText(
+                                                    bloc
+                                                        .notificationList[index]
+                                                        .listOfNotification[
+                                                            innerIndex]
+                                                        .subText
+                                                        .toString(),
+                                                    color: ColorResource
+                                                        .color484848,
+                                                    fontSize: FontSize.fourteen,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
                                                 ],
                                               ),
                                             ),

@@ -10,32 +10,32 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-
 class WidgetUtils {
   static Widget buildListView(AllocationBloc bloc) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: bloc.allocationList.length,
         itemBuilder: (BuildContext context, int index) {
-        int listCount = index +1;
+          int listCount = index + 1;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Visibility(
-                visible: bloc.showFilterDistance,
-                child: Padding(padding: EdgeInsets.only(bottom: 7, top: 3),
-                child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.0, vertical: 3.0),
-                    decoration: BoxDecoration(
-                      color: ColorResource.colorBEC4CF,
-                      borderRadius: BorderRadius.circular(75),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
+                  visible: bloc.showFilterDistance,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 7, top: 3),
+                    child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 3.0, vertical: 3.0),
+                        decoration: BoxDecoration(
+                          color: ColorResource.colorBEC4CF,
+                          borderRadius: BorderRadius.circular(75),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
                               height: 26,
                               width: 26,
                               decoration: BoxDecoration(
@@ -51,31 +51,33 @@ class WidgetUtils {
                                 color: ColorResource.colorffffff,
                               )),
                             ),
-                            const SizedBox(width: 7,),
+                            const SizedBox(
+                              width: 7,
+                            ),
                             CustomText(
-                                '2.4km 20min',
-                                fontSize: FontSize.fourteen,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color101010,
-                              ),
-                              const SizedBox(width: 10,),
-                      ],
-                    )
-                  ),
-                )
-                ),
+                              '2.4km 20min',
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w400,
+                              color: ColorResource.color101010,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        )),
+                  )),
               Stack(
                 children: [
-                 
                   Padding(
-                    padding: bloc.showFilterDistance ?const EdgeInsets.only(bottom: 20):
-                    const EdgeInsets.only(bottom: 10, top: 19),
+                    padding: bloc.showFilterDistance
+                        ? const EdgeInsets.only(bottom: 20)
+                        : const EdgeInsets.only(bottom: 10, top: 19),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: ColorResource.colorffffff,
-                        border:
-                            Border.all(color: ColorResource.colorDADADA, width: 0.5),
+                        border: Border.all(
+                            color: ColorResource.colorDADADA, width: 0.5),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
@@ -93,7 +95,8 @@ class WidgetUtils {
                             height: 2.0,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 2),
                             child: CustomText(
                               bloc.allocationList[index].loanID!,
                               fontSize: FontSize.twelve,
@@ -138,7 +141,8 @@ class WidgetUtils {
                                         // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                         decoration: BoxDecoration(
                                             color: ColorResource.colorD5344C,
-                                            borderRadius: BorderRadius.circular(30)),
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
                                         child: Center(
                                           child: CustomText(
                                             StringResource.new_,
@@ -154,7 +158,8 @@ class WidgetUtils {
                           ),
 
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 6),
                             child: Container(
                               padding: EdgeInsets.fromLTRB(20, 12, 15, 12),
                               decoration: BoxDecoration(
@@ -203,8 +208,8 @@ class WidgetUtils {
                                     const Spacer(),
                                     GestureDetector(
                                       onTap: () async {
-                                        await Navigator.pushNamed(
-                                            context, AppRoutes.caseDetailsScreen);
+                                        await Navigator.pushNamed(context,
+                                            AppRoutes.caseDetailsScreen);
                                       },
                                       child: Row(
                                         children: [
@@ -217,7 +222,8 @@ class WidgetUtils {
                                           const SizedBox(
                                             width: 10,
                                           ),
-                                          Image.asset(ImageResource.forwardArrow)
+                                          Image.asset(
+                                              ImageResource.forwardArrow)
                                         ],
                                       ),
                                     ),
@@ -230,12 +236,14 @@ class WidgetUtils {
                       ),
                     ),
                   ),
-                 bloc.showFilterDistance ? SizedBox():  Container(
-                    alignment: Alignment.topRight,
-                     width: MediaQuery.of(context).size.width,
-                     padding: EdgeInsets.symmetric(horizontal: 12),
-                     child: Image.asset(ImageResource.star),
-                  ),
+                  bloc.showFilterDistance
+                      ? SizedBox()
+                      : Container(
+                          alignment: Alignment.topRight,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: Image.asset(ImageResource.star),
+                        ),
                 ],
               ),
             ],

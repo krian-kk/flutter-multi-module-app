@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/router.dart';
 import 'package:origa/screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -20,7 +21,7 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.87,
+      height: MediaQuery.of(context).size.height * 0.89,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 13),
         child: Column(
@@ -62,8 +63,10 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                     CustomText(
                       'DEBASISH PATNAIK',
                       fontWeight: FontWeight.w700,
+                      lineHeight: 1,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color333333,
                     ),
                     SizedBox(height: 7),
                     CustomText(
@@ -71,20 +74,24 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color333333,
                     ),
                     SizedBox(height: 17),
                     CustomText(
-                      'Overdue Amount',
+                      Languages.of(context)!.overdueAmount,
                       fontWeight: FontWeight.w400,
                       fontSize: FontSize.twelve,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color666666,
                     ),
                     SizedBox(height: 9),
                     CustomText(
                       '397553.67',
                       fontWeight: FontWeight.w700,
+                      lineHeight: 1,
                       fontSize: FontSize.twentyFour,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color333333,
                     )
                   ],
                 ),
@@ -103,7 +110,12 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomText(
-                          bloc.multiAddressDetilsList[i].title.toUpperCase()),
+                        bloc.multiAddressDetilsList[i].title.toUpperCase(),
+                        fontWeight: FontWeight.w700,
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color23375A,
+                        fontStyle: FontStyle.normal,
+                      ),
                       SizedBox(height: 7),
                       Container(
                         width: double.infinity,
@@ -134,7 +146,7 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                           ImageResource.activePerson)),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 15),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -167,8 +179,8 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                               )))),
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context)
-                                          .push(_createRoute());
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.addressScreen);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -178,6 +190,9 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                           Languages.of(context)!.view,
                                           lineHeight: 1,
                                           color: ColorResource.color23375A,
+                                          fontSize: FontSize.fourteen,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                         const SizedBox(width: 10),
                                         Image.asset(ImageResource.viewShape,
@@ -191,7 +206,8 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 15)
                     ],
                   ),
                 );

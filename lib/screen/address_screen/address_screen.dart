@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/customer_not_met_model.dart';
-import 'package:origa/screen/address_screen/address_first_tab_screen.dart';
-import 'package:origa/screen/address_screen/address_second_tab_screen.dart';
-import 'package:origa/screen/address_screen/address_third_tab_screen.dart';
+import 'package:origa/screen/address_screen/customer_met_screen.dart';
+import 'package:origa/screen/address_screen/customer_not_met_screen.dart';
+import 'package:origa/screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -23,13 +23,23 @@ class AddressScreen extends StatefulWidget {
   _AddressScreenState createState() => _AddressScreenState();
 }
 
-class _AddressScreenState extends State<AddressScreen> {
+class _AddressScreenState extends State<AddressScreen>
+    with SingleTickerProviderStateMixin {
   late AddressBloc bloc;
+  late TabController _controller;
 
   @override
   void initState() {
     bloc = AddressBloc()..add(AddressInitialEvent());
     super.initState();
+    _controller = TabController(vsync: this, length: 3);
+    _controller.addListener(_handleTabSelection);
+  }
+
+  _handleTabSelection() {
+    if (_controller.indexIsChanging) {
+      setState(() {});
+    }
   }
 
   @override
@@ -69,7 +79,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         boxShadow: [
                           new BoxShadow(
                             color: ColorResource.colorCACACA.withOpacity(.25),
-                            blurRadius: 2.0,
+                            blurRadius: 20.0,
                             offset: Offset(1.0, 1.0),
                           ),
                         ],
@@ -155,7 +165,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                     SizedBox(width: 40),
                                     Expanded(
                                         child: CustomButton(
-                                      'Event Details',
+                                      Languages.of(context)!.eventDetails,
                                       textColor: ColorResource.color23375A,
                                       borderColor: ColorResource.color23375A,
                                       buttonBackgroundColor:
@@ -177,6 +187,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                             color: ColorResource.colorD8D8D8))),
                                 child: TabBar(
                                   isScrollable: true,
+                                  controller: _controller,
                                   indicatorColor: ColorResource.colorD5344C,
                                   labelStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
@@ -195,28 +206,39 @@ class _AddressScreenState extends State<AddressScreen> {
                                   ],
                                   // tabs: [
                                   //   SizedBox(
-                                  //       width: MediaQuery.of(context).size.width * 0.29,
-                                  //       child: Tab(text: StringResource.customerMet)),
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.22,
+                                  //       child: Tab(
+                                  //           text: StringResource.customerMet)),
                                   //   SizedBox(
-                                  //       width: MediaQuery.of(context).size.width * 0.29,
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.33,
+                                  //       child: Tab(
+                                  //           text:
+                                  //               StringResource.customerNotMet)),
+                                  //   SizedBox(
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.22,
                                   //       child:
-                                  //           Tab(text: StringResource.customerNotMet)),
-                                  //   SizedBox(
-                                  //       width: MediaQuery.of(context).size.width * 0.24,
-                                  //       child: Tab(text: StringResource.invalid))
+                                  //           Tab(text: StringResource.invalid))
                                   // ],
                                 ),
                               ),
-                              SizedBox(
+                              Container(
                                 height:
-                                    MediaQuery.of(context).size.height - 275,
+                                    MediaQuery.of(context).size.height * 0.65,
                                 child: TabBarView(
+                                  controller: _controller,
+                                  physics: NeverScrollableScrollPhysics(),
                                   children: [
-                                    AddressFirstTapScreen(
+                                    CustomerMetScreen(
                                         bloc: bloc, context: context),
-                                    AddressSecondTabScreen(
+                                    CustomerNotMetScreen(
                                         context: context, bloc: bloc),
-                                    AddressThirdTabScreen(
+                                    AddressInvalidScreen(
                                         context: context, bloc: bloc),
                                   ],
                                 ),
@@ -232,33 +254,78 @@ class _AddressScreenState extends State<AddressScreen> {
             )
           ],
         ),
-        // bottomNavigationBar: Container(
-        //   height: MediaQuery.of(context).size.height * 0.12,
-        //   decoration: BoxDecoration(
-        //     color: ColorResource.colorFFFFFF,
-        //     boxShadow: [
-        //       new BoxShadow(
-        //         color: ColorResource.color000000.withOpacity(.25),
-        //         blurRadius: 2.0,
-        //         offset: Offset(1.0, 1.0),
-        //       ),
-        //     ],
-        //   ),
-        //   width: double.infinity,
-        //   child: Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-        //     child: Container(
-        //       decoration: BoxDecoration(),
-        //       child: CustomButton(
-        //         Languages.of(context)!.done.toUpperCase(),
-        //         fontSize: FontSize.sixteen,
-        //         fontWeight: FontWeight.w600,
-        //         // onTap: () => bloc.add(ClickMessageEvent()),
-        //         cardShape: 5,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        bottomNavigationBar: _controller.index == 0
+            ? Container(
+                height: 75,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    new BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: Offset(1.0, 1.0),
+                    ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+                  child: Container(
+                    decoration: BoxDecoration(),
+                    child: CustomButton(
+                      Languages.of(context)!.done.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      onTap: () {},
+                      cardShape: 5,
+                    ),
+                  ),
+                ),
+              )
+            : Container(
+                height: 75,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    new BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: Offset(1.0, 1.0),
+                    ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                          width: 95,
+                          child: Center(
+                              child: CustomText(
+                            Languages.of(context)!.cancel.toUpperCase(),
+                            color: ColorResource.colorEA6D48,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            fontSize: FontSize.sixteen,
+                          ))),
+                      SizedBox(width: 25),
+                      Container(
+                        width: 191,
+                        decoration: BoxDecoration(),
+                        child: CustomButton(
+                          Languages.of(context)!.submit.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          // onTap: () => bloc.add(ClickMessageEvent()),
+                          cardShape: 5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
   }

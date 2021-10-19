@@ -88,4 +88,7 @@ class StringResource {
   static const String callDetails = 'Call \nDetails';
   static const String connected = 'Connected';
   static const String unreachable = 'Unreachable';
+  static const String repo = 'REPO';
+  static const String captureImage = 'CAPTURE IMAGE';
+  static const String otherFeedback = 'OTHER FEEDBACK';
 }

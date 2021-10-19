@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/router.dart';
 import 'package:origa/screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -20,7 +22,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.87,
+      height: MediaQuery.of(context).size.height * 0.89,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 13),
         child: Column(
@@ -64,6 +66,8 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal,
+                      lineHeight: 1,
+                      color: ColorResource.color333333,
                     ),
                     SizedBox(height: 7),
                     CustomText(
@@ -71,13 +75,15 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color333333,
                     ),
                     SizedBox(height: 17),
                     CustomText(
-                      'Overdue Amount',
+                      Languages.of(context)!.overdueAmount,
                       fontWeight: FontWeight.w400,
                       fontSize: FontSize.twelve,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color666666,
                     ),
                     SizedBox(height: 9),
                     CustomText(
@@ -85,6 +91,8 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       fontSize: FontSize.twentyFour,
                       fontStyle: FontStyle.normal,
+                      color: ColorResource.color333333,
+                      lineHeight: 1,
                     )
                   ],
                 ),
@@ -100,10 +108,14 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomText(
-                          bloc.multiCallDetilsList[i].title.toUpperCase()),
+                        bloc.multiCallDetilsList[i].title.toUpperCase(),
+                        fontSize: FontSize.fourteen,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                        color: ColorResource.color23375A,
+                      ),
                       SizedBox(height: 7),
                       Container(
                         width: double.infinity,
@@ -136,7 +148,8 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                         SizedBox(width: 10),
                                         bloc.multiCallDetilsList[i].isDeclinded
                                             ? CustomText(
-                                                'Declinded Call',
+                                                Languages.of(context)!
+                                                    .declinedCall,
                                                 fontSize: FontSize.fourteen,
                                                 fontWeight: FontWeight.w400,
                                                 fontStyle: FontStyle.normal,
@@ -153,7 +166,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                           ImageResource.activePerson)),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 15),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -172,18 +185,23 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                               child: Row(
                                                 children: [
                                                   Image.asset(
-                                                      ImageResource.direction),
+                                                      ImageResource.phone),
                                                   SizedBox(width: 12),
                                                   CustomText(
-                                                      Languages.of(context)!
-                                                          .call)
+                                                    Languages.of(context)!.call,
+                                                    color: ColorResource
+                                                        .color23375A,
+                                                    lineHeight: 1,
+                                                    fontSize: FontSize.fourteen,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
                                                 ],
                                               )))),
                                   GestureDetector(
-                                    onTap: () {
-                                      // Navigator.of(context)
-                                      //     .push(_createRoute());
-                                    },
+                                    // onTap: () => broPTPSheet(context),
+                                    onTap: () => Navigator.pushNamed(
+                                        context, AppRoutes.phoneScreen),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -191,6 +209,9 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                         CustomText(
                                           Languages.of(context)!.view,
                                           lineHeight: 1,
+                                          fontSize: FontSize.fourteen,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
                                         ),
                                         const SizedBox(width: 10),
@@ -205,7 +226,8 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 15)
                     ],
                   ),
                 );
@@ -215,5 +237,24 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void broPTPSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+            // top: false,
+            bottom: false,
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: AddressScreen()),
+            // child: Container(
+            //   width: double.infinity,
+            //   height: 300,
+            //   color: ColorResource.colorFFFFFF,
+            // )
+          );
+        });
   }
 }

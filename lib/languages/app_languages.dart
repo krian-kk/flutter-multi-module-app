@@ -192,4 +192,70 @@ abstract class Languages {
   String get doorLocked;
 
   String get entryRestricted;
+
+  String get addNewContact;
+
+  String get repo;
+
+  String get otherFeedBack;
+
+  String get submit;
+
+  String get nextActionDate;
+
+  String get nextActionTime;
+
+  String get remarks;
+
+  String get ptpDate;
+
+  String get ptpTime;
+
+  String get ptpAmount;
+
+  String get paymentMode;
+
+  String get reference;
+
+  String get amountCollected;
+
+  String get date;
+
+  String get time;
+
+  String get cheque;
+
+  String get otsPaymentDate;
+
+  String get otsProposedAmount;
+
+  String get otsPaymentTime;
+
+  String get rtpDenialReason;
+
+  String get disputeReason;
+
+  String get modelMake;
+
+  String get registrationNo;
+
+  String get chassisNo;
+
+  String get customUpload;
+
+  String get eventDetails;
+
+  String get pickUp;
+
+  String get selfPay;
+
+  String get digital;
+
+  String get qrCode;
+
+  String get wrongAddress;
+
+  String get shifted;
+
+  String get addressNotFound;
 }

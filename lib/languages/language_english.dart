@@ -285,4 +285,103 @@ class LanguageEn extends Languages {
 
   @override
   String get entryRestricted => 'ENTRY RESTRICTED';
+
+  @override
+  String get addNewContact => 'ADD New contact';
+
+  @override
+  String get repo => 'REPO';
+
+  @override
+  String get otherFeedBack => 'OTHER FEEDBACK';
+
+  @override
+  String get submit => 'SUBMIT';
+
+  @override
+  String get nextActionDate => 'NEXT Action Date*';
+
+  @override
+  String get nextActionTime => 'NEXT Action Time*';
+
+  @override
+  String get remarks => 'REMARKS*';
+
+  @override
+  String get ptpDate => 'PTP Date*';
+
+  @override
+  String get ptpTime => 'PTP TIME*';
+
+  @override
+  String get ptpAmount => 'PTP Amount*';
+
+  @override
+  String get paymentMode => 'Payment Mode';
+
+  @override
+  String get reference => 'Reference*';
+
+  @override
+  String get amountCollected => 'Amount Collected*';
+
+  @override
+  String get date => 'Date*';
+
+  @override
+  String get time => 'Time*';
+
+  @override
+  String get cheque => 'REF/CHEQUE NO.';
+
+  @override
+  String get otsProposedAmount => 'OTS Proposed Amount*';
+
+  @override
+  String get otsPaymentDate => 'OTS Payment Date*';
+
+  @override
+  String get otsPaymentTime => 'OTS Payment Time*';
+
+  @override
+  String get rtpDenialReason => 'RTP/Denial Reason*';
+
+  @override
+  String get disputeReason => 'Dispute Reason*';
+
+  @override
+  String get modelMake => 'MODEL MAKE*';
+
+  @override
+  String get registrationNo => 'REGISTRATION NO*';
+
+  @override
+  String get chassisNo => 'CHASSIS NO*';
+
+  @override
+  String get customUpload => 'CUSTOM UPLOAD';
+
+  @override
+  String get eventDetails => 'EVENT DETAILS';
+
+  @override
+  String get pickUp => 'PICK-UP';
+
+  @override
+  String get selfPay => 'SELF PAY';
+
+  @override
+  String get digital => 'DIGITAL';
+
+  @override
+  String get qrCode => 'QR CODE';
+
+  @override
+  String get wrongAddress => 'WRONG ADDRESS';
+
+  @override
+  String get shifted => 'SHIFTED';
+
+  @override
+  String get addressNotFound => 'ADDRESS NOT FOUND';
 }

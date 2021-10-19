@@ -109,6 +109,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                       fontSize: FontSize.fourteen,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w400,
+                                      color: ColorResource.color484848,
                                     ),
                                     leading: (widget.bloc.languageValue == i)
                                         ? Image.asset(ImageResource.radioOn)
@@ -116,135 +117,9 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                   ),
                                 ),
                               ),
-                              // i < languageList.length
-                              //     ? (languageList[i + 1].isTitle
-                              //         ? SizedBox(height: 17)
-                              //         : SizedBox(height: 0))
-                              //     : SizedBox(height: 0),
                             ],
                           );
                         }),
-                    //   CustomText(
-                    //     Languages.of(context)!.defaultLaunguage.toUpperCase(),
-                    //     fontWeight: FontWeight.w700,
-                    //     fontSize: FontSize.twelve,
-                    //     fontStyle: FontStyle.normal,
-                    //     color: ColorResource.color23375A,
-                    //   ),
-                    //   SizedBox(height: 6),
-                    //   GestureDetector(
-                    //     onTap: () {
-                    //       setState(() {});
-                    //       widget.bloc.languageValue = 0;
-                    //     },
-                    //     child: Container(
-                    //       width: double.infinity,
-                    //       margin: EdgeInsets.symmetric(vertical: 5.0),
-                    //       decoration: new BoxDecoration(
-                    //           color: ColorResource.colorF8F9FB,
-                    //           borderRadius:
-                    //               new BorderRadius.all(Radius.circular(10.0))),
-                    //       child: ListTile(
-                    //         title: CustomText(
-                    //           Languages.of(context)!.english,
-                    //           lineHeight: 1,
-                    //           fontSize: FontSize.fourteen,
-                    //           fontStyle: FontStyle.normal,
-                    //           fontWeight: FontWeight.w400,
-                    //         ),
-                    //         leading: (widget.bloc.languageValue == 0)
-                    //             ? Image.asset(ImageResource.radioOn)
-                    //             : Image.asset(ImageResource.radioOff),
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   SizedBox(height: 17),
-                    //   CustomText(
-                    //     Languages.of(context)!.choiceOtherLanguages.toUpperCase(),
-                    //     fontWeight: FontWeight.w700,
-                    //     fontSize: FontSize.twelve,
-                    //     fontStyle: FontStyle.normal,
-                    //     color: ColorResource.color23375A,
-                    //   ),
-                    //   SizedBox(height: 6),
-                    //   GestureDetector(
-                    //     onTap: () {
-                    //       setState(() {});
-                    //       widget.bloc.languageValue = 1;
-                    //     },
-                    //     child: Container(
-                    //       width: double.infinity,
-                    //       margin: EdgeInsets.symmetric(vertical: 5.0),
-                    //       decoration: new BoxDecoration(
-                    //           color: ColorResource.colorF8F9FB,
-                    //           borderRadius:
-                    //               new BorderRadius.all(Radius.circular(10.0))),
-                    //       child: ListTile(
-                    //         title: CustomText(
-                    //           Languages.of(context)!.hindi,
-                    //           lineHeight: 1,
-                    //           fontSize: FontSize.fourteen,
-                    //           fontStyle: FontStyle.normal,
-                    //           fontWeight: FontWeight.w400,
-                    //         ),
-                    //         leading: (widget.bloc.languageValue == 1)
-                    //             ? Image.asset(ImageResource.radioOn)
-                    //             : Image.asset(ImageResource.radioOff),
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   GestureDetector(
-                    //     onTap: () {
-                    //       setState(() {});
-                    //       widget.bloc.languageValue = 2;
-                    //     },
-                    //     child: Container(
-                    //       width: double.infinity,
-                    //       margin: EdgeInsets.symmetric(vertical: 5.0),
-                    //       decoration: new BoxDecoration(
-                    //           color: ColorResource.colorF8F9FB,
-                    //           borderRadius:
-                    //               new BorderRadius.all(Radius.circular(10.0))),
-                    //       child: ListTile(
-                    //         title: CustomText(
-                    //           Languages.of(context)!.tamil,
-                    //           lineHeight: 1,
-                    //           fontSize: FontSize.fourteen,
-                    //           fontStyle: FontStyle.normal,
-                    //           fontWeight: FontWeight.w400,
-                    //         ),
-                    //         leading: (widget.bloc.languageValue == 2)
-                    //             ? Image.asset(ImageResource.radioOn)
-                    //             : Image.asset(ImageResource.radioOff),
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   GestureDetector(
-                    //     onTap: () {
-                    //       setState(() {});
-                    //       widget.bloc.languageValue = 3;
-                    //     },
-                    //     child: Container(
-                    //       width: double.infinity,
-                    //       margin: EdgeInsets.symmetric(vertical: 5.0),
-                    //       decoration: new BoxDecoration(
-                    //           color: ColorResource.colorF8F9FB,
-                    //           borderRadius:
-                    //               new BorderRadius.all(Radius.circular(10.0))),
-                    //       child: ListTile(
-                    //         title: CustomText(
-                    //           Languages.of(context)!.kannada,
-                    //           lineHeight: 1,
-                    //           fontSize: FontSize.fourteen,
-                    //           fontStyle: FontStyle.normal,
-                    //           fontWeight: FontWeight.w400,
-                    //         ),
-                    //         leading: (widget.bloc.languageValue == 3)
-                    //             ? Image.asset(ImageResource.radioOn)
-                    //             : Image.asset(ImageResource.radioOff),
-                    //       ),
-                    //     ),
-                    //   ),
                   ],
                 ),
               ),
