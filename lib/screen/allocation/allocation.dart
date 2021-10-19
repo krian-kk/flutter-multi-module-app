@@ -50,17 +50,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) {
         if (state is MapViewState) {
-                    mapView(context);
-                  }
+          mapView(context);
+        }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
-           if (state is AllocationLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+          if (state is AllocationLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             floatingActionButton: Padding(
@@ -84,8 +84,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             child: Container(
                               height: 26,
                               width: 26,
+                              // ignore: prefer_const_constructors
                               decoration: BoxDecoration(
-                                color: ColorResource.colorffffff,
+                                color: ColorResource.colorFFFFFF,
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
@@ -155,9 +156,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 Languages.of(context)!.yes,
                                 fontSize: FontSize.twelve,
                                 borderColor: ColorResource.colorEA6D48,
-                                buttonBackgroundColor: ColorResource.colorEA6D48,
+                                buttonBackgroundColor:
+                                    ColorResource.colorEA6D48,
                                 cardShape: 5,
-                                onTap: (){
+                                onTap: () {
                                   setState(() {
                                     areyouatOffice = false;
                                   });
@@ -173,9 +175,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 Languages.of(context)!.no,
                                 fontSize: FontSize.twelve,
                                 textColor: ColorResource.color23375A,
-                                buttonBackgroundColor: ColorResource.colorffffff,
+                                buttonBackgroundColor:
+                                    ColorResource.colorffffff,
                                 cardShape: 5,
-                                onTap: (){
+                                onTap: () {
                                   setState(() {
                                     areyouatOffice = false;
                                   });
@@ -232,7 +235,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CustomText(
-                              '10 '+Languages.of(context)!.allocation,
+                              '10 ' + Languages.of(context)!.allocation,
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color000000,
                               fontWeight: FontWeight.w700,
@@ -249,7 +252,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             ),
                             CustomText(
                               bloc.allocationList.length.toString() +
-                                  " "+Languages.of(context)!.hignPriority,
+                                  " " +
+                                  Languages.of(context)!.hignPriority,
                               fontSize: FontSize.ten,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,

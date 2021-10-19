@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/customer_not_met_model.dart';
 import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
-import 'package:origa/screen/phone_screen/phone_firsttab_screen.dart';
-import 'package:origa/screen/phone_screen/phone_secondtab_screen.dart';
-import 'package:origa/screen/phone_screen/phone_thirdtab_screen.dart';
+import 'package:origa/screen/phone_screen/connected_screen.dart';
+import 'package:origa/screen/phone_screen/invalid_screen.dart';
+import 'package:origa/screen/phone_screen/unreachable_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -23,13 +23,26 @@ class PhoneScreen extends StatefulWidget {
   _PhoneScreenState createState() => _PhoneScreenState();
 }
 
-class _PhoneScreenState extends State<PhoneScreen> {
+class _PhoneScreenState extends State<PhoneScreen>
+    with SingleTickerProviderStateMixin {
   late PhoneBloc bloc;
+  late TabController _controller;
+  int currentIndex = 0;
+
+  _handleTabSelection() {
+    if (_controller.indexIsChanging) {
+      setState(() {
+        currentIndex = _controller.index;
+      });
+    }
+  }
 
   @override
   void initState() {
     bloc = PhoneBloc()..add(PhoneInitialEvent());
     super.initState();
+    _controller = TabController(vsync: this, length: 3);
+    _controller.addListener(_handleTabSelection);
   }
 
   @override
@@ -68,9 +81,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         color: ColorResource.colorFFFFFF,
                         boxShadow: [
                           new BoxShadow(
-                            color: ColorResource.colorCACACA.withOpacity(.25),
-                            blurRadius: 30.0,
-                          ),
+                              color: ColorResource.colorCACACA.withOpacity(.25),
+                              blurRadius: 30.0,
+                              offset: Offset(1.0, 1.0)),
                         ],
                         borderRadius: new BorderRadius.vertical(
                             top: Radius.circular(30))),
@@ -154,7 +167,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                     SizedBox(width: 67),
                                     Expanded(
                                         child: CustomButton(
-                                      'Event Details',
+                                      Languages.of(context)!.eventDetails,
                                       textColor: ColorResource.color23375A,
                                       borderColor: ColorResource.color23375A,
                                       buttonBackgroundColor:
@@ -165,68 +178,65 @@ class _PhoneScreenState extends State<PhoneScreen> {
                               ],
                             ),
                           ),
-                          DefaultTabController(
-                            length: 3,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            child: Column(children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: ColorResource.colorD8D8D8))),
-                                child: TabBar(
-                                  isScrollable: true,
-                                  indicatorColor: ColorResource.colorD5344C,
-                                  labelStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal),
-                                  indicatorWeight: 5.0,
-                                  labelColor: ColorResource.color23375A,
-                                  unselectedLabelColor:
-                                      ColorResource.colorC4C4C4,
-                                  // ignore: prefer_const_literals_to_create_immutables
-                                  tabs: [
-                                    Tab(
-                                      child: Expanded(
-                                        child: CustomText(
-                                            StringResource.connected),
-                                      ),
-                                    ),
-                                    Tab(text: StringResource.unreachable),
-                                    Tab(text: StringResource.invalid)
-                                  ],
-                                  // tabs: [
-                                  //   SizedBox(
-                                  //       width: MediaQuery.of(context).size.width * 0.29,
-                                  //       child: Tab(text: StringResource.customerMet)),
-                                  //   SizedBox(
-                                  //       width: MediaQuery.of(context).size.width * 0.29,
-                                  //       child:
-                                  //           Tab(text: StringResource.customerNotMet)),
-                                  //   SizedBox(
-                                  //       width: MediaQuery.of(context).size.width * 0.24,
-                                  //       child: Tab(text: StringResource.invalid))
-                                  // ],
-                                ),
+                          Column(children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: ColorResource.colorD8D8D8))),
+                              child: TabBar(
+                                controller: _controller,
+                                physics: NeverScrollableScrollPhysics(),
+                                isScrollable: true,
+                                indicatorColor: ColorResource.colorD5344C,
+                                labelStyle: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: ColorResource.color23375A,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal),
+                                indicatorWeight: 5.0,
+                                labelColor: ColorResource.color23375A,
+                                unselectedLabelColor: ColorResource.colorC4C4C4,
+                                // ignore: prefer_const_literals_to_create_immutables
+                                // tabs: [
+                                //   Tab(text: StringResource.connected),
+                                //   Tab(text: StringResource.unreachable),
+                                //   Tab(text: StringResource.invalid)
+                                // ],
+                                tabs: [
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.27,
+                                      child:
+                                          Tab(text: StringResource.connected)),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.27,
+                                      child: Tab(
+                                          text: StringResource.unreachable)),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.22,
+                                      child: Tab(text: StringResource.invalid))
+                                ],
                               ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height - 275,
-                                child: TabBarView(
-                                  children: [
-                                    PhoneFirstTapScreen(
-                                        bloc: bloc, context: context),
-                                    PhoneSecondTabScreen(
-                                        bloc: bloc, context: context),
-                                    PhoneThirdTabScreen(
-                                        bloc: bloc, context: context),
-                                  ],
-                                ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.65,
+                              child: TabBarView(
+                                physics: NeverScrollableScrollPhysics(),
+                                controller: _controller,
+                                children: [
+                                  PhoneFirstTapScreen(
+                                      bloc: bloc, context: context),
+                                  PhoneSecondTabScreen(
+                                      bloc: bloc, context: context),
+                                  PhoneThirdTabScreen(
+                                      bloc: bloc, context: context),
+                                ],
                               ),
-                            ]),
-                          )
+                            ),
+                          ])
                         ],
                       ),
                     ),
@@ -236,6 +246,78 @@ class _PhoneScreenState extends State<PhoneScreen> {
             )
           ],
         ),
+        bottomNavigationBar: currentIndex == 0
+            ? Container(
+                height: 75,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    new BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: Offset(1.0, 1.0),
+                    ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+                  child: Container(
+                    decoration: BoxDecoration(),
+                    child: CustomButton(
+                      Languages.of(context)!.done.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      onTap: () {},
+                      cardShape: 5,
+                    ),
+                  ),
+                ),
+              )
+            : Container(
+                height: 75,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    new BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: Offset(1.0, 1.0),
+                    ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                          width: 95,
+                          child: Center(
+                              child: CustomText(
+                            Languages.of(context)!.cancel.toUpperCase(),
+                            color: ColorResource.colorEA6D48,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            fontSize: FontSize.sixteen,
+                          ))),
+                      SizedBox(width: 25),
+                      Container(
+                        width: 191,
+                        decoration: BoxDecoration(),
+                        child: CustomButton(
+                          Languages.of(context)!.submit.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          // onTap: () => bloc.add(ClickMessageEvent()),
+                          cardShape: 5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
   }

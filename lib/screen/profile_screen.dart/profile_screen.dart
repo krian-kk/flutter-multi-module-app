@@ -218,22 +218,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               onTap: bloc
                                                   .profileNavigationList[index]
                                                   .onTap,
-                                              // () {
-                                              //   switch (bloc
-                                              //       .profileNavigationList[
-                                              //           index]
-                                              //       .title) {
-                                              //     case 'Notification':
-                                              //       notificationShowBottomSheet(
-                                              //           context);
-                                              //       break;
-                                              //     case 'Select Launguage':
-                                              //       launguageBottomSheet();
-                                              //       break;
-                                              //     case 'Change Password':
-                                              //       break;
-                                              //   }
-                                              // },
                                               child: Row(
                                                 children: [
                                                   CustomText(
@@ -375,6 +359,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Languages.of(context)!
                                   .addAProfilePhoto
                                   .toUpperCase(),
+                              color: ColorResource.color23375A,
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
@@ -455,7 +440,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.87,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -466,7 +451,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                              'MESSAGE'.toUpperCase(),
+                              Languages.of(context)!.message.toUpperCase(),
+                              color: ColorResource.color23375A,
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,

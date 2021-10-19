@@ -27,14 +27,17 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animated_text_kit: ^4.2.1
   bloc: ^7.2.0
   cupertino_icons: ^1.0.2
+  file_picker: ^4.1.4
   flutter:
     sdk: flutter
   flutter_bloc: ^7.3.0
-  fluttertoast: ^8.0.8
   flutter_localizations:
     sdk: flutter
+  flutter_staggered_grid_view: ^0.4.0
+  fluttertoast: ^8.0.8
   geolocator: ^7.6.2
   google_maps_flutter: ^2.0.11
   image_picker: ^0.8.4+2
@@ -43,14 +46,12 @@ dependencies:
   lint: ^1.7.2
   location_permissions: ^4.0.0
   package_info_plus: ^1.0.4
+  permission_handler: ^8.1.4+2
   shared_preferences: ^2.0.8
   sticky_headers: ^0.2.0
   url_launcher: ^6.0.11
   webview_flutter: ^2.0.14
-  permission_handler: ^8.1.4+2
-  animated_text_kit: ^4.2.1
   percent_indicator: ^3.4.0
-  flutter_staggered_grid_view: ^0.4.0
 
 dev_dependencies:
   dio: ^4.0.0
@@ -94,6 +95,10 @@ flutter:
     - assets/direction.png
     - assets/active_person.png
     - assets/money.png
+    - assets/arrow_down.png
+    - assets/calendar.png
+    - assets/arrow_drop_down.png
+    - assets/upload.png
     - assets/navigate_vector.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

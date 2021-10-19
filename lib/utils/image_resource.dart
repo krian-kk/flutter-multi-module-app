@@ -31,7 +31,10 @@ class ImageResource {
   static const String direction = 'assets/direction.png';
   static const String activePerson = 'assets/active_person.png';
   static const String money = 'assets/money.png';
-  static const String vectorArrow = 'assets/navigate_vector.png';
+  static const String vectorArrow = 'assets/Vector.png';
+  static const String calendar = 'assets/calendar.png';
+  static const String downArrow = 'assets/arrow_down.png';
+  static const String dropDownArrow = 'assets/arrow_drop_down.png';
   static const String help = 'assets/help.png';
   static const String upload = 'assets/upload.png';
 }

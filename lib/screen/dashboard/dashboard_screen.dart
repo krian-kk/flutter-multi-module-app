@@ -61,384 +61,493 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return Scaffold(
                   backgroundColor: ColorResource.colorF7F8FA,
                   body: SafeArea(
-                    bottom: false,
+                      bottom: false,
                       child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 13),
-                            child: CustomText(
-                              '15th Oct, 2020',
-                               fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w700,
-                                color: ColorResource.color23375A,
-                             ),
-                          ),
-                          const SizedBox(height: 3,),
-                          Padding(
-                            padding: const EdgeInsets.all(7.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: Container(
-                                   child: userActivity(
-                                      StringResource.customerMet,
-                                      '20',
-                                      ColorResource.colorBEC4CF,
-                                      ColorResource.color73C170,
-                                    ),)),
-                                    const SizedBox(width: 8,),
-                                  Expanded(
-                                  flex: 5,
-                                  child: Container(
-                                   child: userActivity(
-                                      StringResource.customerNotMet,
-                                      '10',
-                                      ColorResource.colorBEC4CF,
-                                      ColorResource.colorE5C55B,
-                                    ),)),
-                                    const SizedBox(width: 8,),
-                                  Expanded(
-                                  flex: 3,
-                                  child: Container(
-                                   child: userActivity(
-                                      StringResource.invalid,
-                                      '10',
-                                      ColorResource.colorBEC4CF,
-                                      ColorResource.colorF1BCC4,
-                                    ),)),
-                              ],
-                            ),
-                          ),
-                          // userActivity(
-                          //   StringResource.customerMet,
-                          //   '20',
-                          //   ColorResource.colorBEC4CF,
-                          //   ColorResource.color73C170,
-                          // ),
-                          const SizedBox(height: 8,),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child:  Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 13),
+                                child: CustomText(
+                                  '15th Oct, 2020',
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w700,
+                                  color: ColorResource.color23375A,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(7.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 4,
+                                        child: Container(
+                                          child: userActivity(
+                                            StringResource.customerMet,
+                                            '20',
+                                            ColorResource.colorBEC4CF,
+                                            ColorResource.color73C170,
+                                          ),
+                                        )),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                        flex: 5,
+                                        child: Container(
+                                          child: userActivity(
+                                            StringResource.customerNotMet,
+                                            '10',
+                                            ColorResource.colorBEC4CF,
+                                            ColorResource.colorE5C55B,
+                                          ),
+                                        )),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          child: userActivity(
+                                            StringResource.invalid,
+                                            '10',
+                                            ColorResource.colorBEC4CF,
+                                            ColorResource.colorF1BCC4,
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              // userActivity(
+                              //   StringResource.customerMet,
+                              //   '20',
+                              //   ColorResource.colorBEC4CF,
+                              //   ColorResource.color73C170,
+                              // ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
                                       'MTD RESOLUTION PROGRESS',
                                       fontSize: FontSize.twelve,
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color23375A,
-                                  ),
-                                  const SizedBox(height: 5,),
-                                CustomText('CUSTOMER',
-                                color: ColorResource.color23375A,
-                                fontSize: FontSize.ten,
-                                fontWeight: FontWeight.w700,
-                                ),
-                                const SizedBox(height: 5,),
-                                LinearPercentIndicator(
-                                  // width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.all(4),
-                                  animation: true,
-                                  lineHeight: 12.0,
-                                  animationDuration: 2500,
-                                  percent: 0.25,
-                                  // center: Text("80.0%"),
-                                  linearStrokeCap: LinearStrokeCap.roundAll,
-                                  progressColor: ColorResource.colorEA6D48,
-                                  backgroundColor: ColorResource.colorD3D7DE,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                  CustomText(
-                                      '40',
-                                      fontSize: FontSize.sixteen,
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                  ),
-                                  CustomText(
-                                      '400',
-                                      fontSize: FontSize.sixteen,
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                  ),
-                                ],)
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5,),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child:  Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText('AMOUNT',
-                                color: ColorResource.color23375A,
-                                fontSize: FontSize.ten,
-                                fontWeight: FontWeight.w700,
-                                ),
-                                const SizedBox(height: 5,),
-                                LinearPercentIndicator(
-                                  // width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.all(4),
-                                  animation: true,
-                                  lineHeight: 12.0,
-                                  animationDuration: 2500,
-                                  percent: 0.4,
-                                  // center: Text("80.0%"),
-                                  linearStrokeCap: LinearStrokeCap.roundAll,
-                                  progressColor: ColorResource.colorEA6D48,
-                                  backgroundColor: ColorResource.colorD3D7DE,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                  CustomText(
-                                      '₹ 3,979.67',
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                  ),
-                                  CustomText(
-                                      '₹ 3,97,553.67',
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                  ),
-                                ],)
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12,),
-                          StaggeredGridView.countBuilder(
-                            physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              crossAxisCount: 4,
-                              itemCount: bloc.dashboardList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: GestureDetector(
-                                    onTap: (){
-                                      switch (bloc.dashboardList[index].title) {
-                                        case 'PRIORITY FOLLOW UP':
-                                          priorityFollowUpSheet(context);
-                                          break;
-                                        case 'BROKEN PTP':
-                                          brokenPTPSheet(context);
-                                          break;
-                                        case 'UNTOUCHED CASES':
-                                          untouchedCasesSheet(context);
-                                          break;
-                                        case 'MY VISITS':
-                                          myVisitsSheet(context);
-                                          break;
-                                        case 'MY RECEIPTS':
-                                          myReceiptsSheet(context);
-                                          break;
-                                        case 'MY DEPOSISTS':
-                                          myDeposistsSheet(context);
-                                          break;
-                                        case 'YARDING & SELF- RELEASE':
-                                          yardingSelfReleaseSheet(context);
-                                          break;
-                                        default:
-                                        AppUtils.showToast('Yet to start');
-                                      }
-                                     
-                                    },
-                                    child:
-                                    index == 5 ?
-                                    Card(
-                                      elevation: 0,
-                                      color: ColorResource.colorD3D7DE,
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(color: ColorResource.colorD3D7DE, width: 1),
-                                        borderRadius: BorderRadius.circular(75),
-                                      ),
-                                      child: Center(
-                                        child: CustomText(bloc
-                                                          .dashboardList[index].title!,
-                                                        fontSize: FontSize.twelve,
-                                                        fontWeight: FontWeight.w700,
-                                                        color: ColorResource.color23375A,
-                                                      ),
-                                      ),
-                                    ) :
-                                    index == 6 ?
-                                    Card(
-                                      elevation: 0,
-                                      color: ColorResource.colorffffff,
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(color: ColorResource.color23375A, width: 0.5),
-                                        borderRadius: BorderRadius.circular(75),
-                                      ),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                                          child: CustomText(bloc
-                                                            .dashboardList[index].title!,
-                                                          fontSize: FontSize.twelve,
-                                                          fontWeight: FontWeight.w700,
-                                                          color: ColorResource.color23375A,
-                                                          textAlign: TextAlign.center,
-                                                        ),
-                                        ),
-                                      ),
-                                    ) :
-                                     Card(
-                                      elevation: 2,
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(color: ColorResource.colorDADADA, width: 0.5),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.fromLTRB(12, 7, 10, 8),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              // height: 50,
-                                              // color: ColorResource.color484848,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  SizedBox(
-                                                      // height: 40,
-                                                      width: 105,
-                                                      // color: ColorResource.color101010,
-                                                      child: CustomText(bloc
-                                                          .dashboardList[index].title!,
-                                                        fontSize: FontSize.twelve,
-                                                        fontWeight: FontWeight.w700,
-                                                        color: ColorResource.color23375A,
-                                                      )),
-                                                if (bloc.dashboardList[index].image! != '')
-                                                  Image.asset(bloc
-                                                          .dashboardList[index].image!),
-                                                ],
-                                              ),
-                                            ),
-                                            // const SizedBox(height: 4,),
-                                            const Spacer(),
-                                            Row(
-                                              children: [
-                                                CustomText(
-                                                '40',
-                                                fontSize: FontSize.fourteen,
-                                                fontWeight: FontWeight.w700,
-                                                color: ColorResource.color23375A,
-                                              ),
-                                             const SizedBox(width: 6,),
-                                              CustomText(
-                                                'Customer',
-                                                fontSize: FontSize.fourteen,
-                                                fontWeight: FontWeight.w500,
-                                                color: ColorResource.color23375A,
-                                              ),
-                                            ],),
-                                            const SizedBox(height: 3,),
-                                            CustomText(
-                                                bloc.dashboardList[index].amountRs!,
-                                              fontSize: FontSize.sixteen,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color23375A,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
                                     ),
-                                  ),
-                                );
-
-                              },
-                               staggeredTileBuilder: (int index) =>
-                                     StaggeredTile.count(2, index == 5 ? 0.6 : index == 6 ? 0.7 : 1.3),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    CustomText(
+                                      'CUSTOMER',
+                                      color: ColorResource.color23375A,
+                                      fontSize: FontSize.ten,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    LinearPercentIndicator(
+                                      // width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(4),
+                                      animation: true,
+                                      lineHeight: 12.0,
+                                      animationDuration: 2500,
+                                      percent: 0.25,
+                                      // center: Text("80.0%"),
+                                      linearStrokeCap: LinearStrokeCap.roundAll,
+                                      progressColor: ColorResource.colorEA6D48,
+                                      backgroundColor:
+                                          ColorResource.colorD3D7DE,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                          '40',
+                                          fontSize: FontSize.sixteen,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color23375A,
+                                        ),
+                                        CustomText(
+                                          '400',
+                                          fontSize: FontSize.sixteen,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color23375A,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      'AMOUNT',
+                                      color: ColorResource.color23375A,
+                                      fontSize: FontSize.ten,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    LinearPercentIndicator(
+                                      // width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(4),
+                                      animation: true,
+                                      lineHeight: 12.0,
+                                      animationDuration: 2500,
+                                      percent: 0.4,
+                                      // center: Text("80.0%"),
+                                      linearStrokeCap: LinearStrokeCap.roundAll,
+                                      progressColor: ColorResource.colorEA6D48,
+                                      backgroundColor:
+                                          ColorResource.colorD3D7DE,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                          '₹ 3,979.67',
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color23375A,
+                                        ),
+                                        CustomText(
+                                          '₹ 3,97,553.67',
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color23375A,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              StaggeredGridView.countBuilder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                crossAxisCount: 4,
+                                itemCount: bloc.dashboardList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        switch (
+                                            bloc.dashboardList[index].title) {
+                                          case 'PRIORITY FOLLOW UP':
+                                            priorityFollowUpSheet(context);
+                                            break;
+                                          case 'BROKEN PTP':
+                                            brokenPTPSheet(context);
+                                            break;
+                                          case 'UNTOUCHED CASES':
+                                            untouchedCasesSheet(context);
+                                            break;
+                                          case 'MY VISITS':
+                                            myVisitsSheet(context);
+                                            break;
+                                          case 'MY RECEIPTS':
+                                            myReceiptsSheet(context);
+                                            break;
+                                          case 'MY DEPOSISTS':
+                                            myDeposistsSheet(context);
+                                            break;
+                                          case 'YARDING & SELF- RELEASE':
+                                            yardingSelfReleaseSheet(context);
+                                            break;
+                                          default:
+                                            AppUtils.showToast('Yet to start');
+                                        }
+                                      },
+                                      child: index == 5
+                                          ? Card(
+                                              elevation: 0,
+                                              color: ColorResource.colorD3D7DE,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                    color: ColorResource
+                                                        .colorD3D7DE,
+                                                    width: 1),
+                                                borderRadius:
+                                                    BorderRadius.circular(75),
+                                              ),
+                                              child: Center(
+                                                child: CustomText(
+                                                  bloc.dashboardList[index]
+                                                      .title!,
+                                                  fontSize: FontSize.twelve,
+                                                  fontWeight: FontWeight.w700,
+                                                  color:
+                                                      ColorResource.color23375A,
+                                                ),
+                                              ),
+                                            )
+                                          : index == 6
+                                              ? Card(
+                                                  elevation: 0,
+                                                  color:
+                                                      ColorResource.colorffffff,
+                                                  shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                        width: 0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            75),
+                                                  ),
+                                                  child: Center(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10),
+                                                      child: CustomText(
+                                                        bloc
+                                                            .dashboardList[
+                                                                index]
+                                                            .title!,
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Card(
+                                                  elevation: 2,
+                                                  shape: RoundedRectangleBorder(
+                                                    // ignore: prefer_const_constructors
+                                                    side: BorderSide(
+                                                        color: ColorResource
+                                                            .colorDADADA,
+                                                        width: 0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(12, 7, 10, 8),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                          // height: 50,
+                                                          // color: ColorResource.color484848,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SizedBox(
+                                                                  // height: 40,
+                                                                  width: 105,
+                                                                  // color: ColorResource.color101010,
+                                                                  child:
+                                                                      CustomText(
+                                                                    bloc
+                                                                        .dashboardList[
+                                                                            index]
+                                                                        .title!,
+                                                                    fontSize:
+                                                                        FontSize
+                                                                            .twelve,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                  )),
+                                                              if (bloc
+                                                                      .dashboardList[
+                                                                          index]
+                                                                      .image! !=
+                                                                  '')
+                                                                Image.asset(bloc
+                                                                    .dashboardList[
+                                                                        index]
+                                                                    .image!),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        // const SizedBox(height: 4,),
+                                                        const Spacer(),
+                                                        Row(
+                                                          children: [
+                                                            CustomText(
+                                                              '40',
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: ColorResource
+                                                                  .color23375A,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 6,
+                                                            ),
+                                                            CustomText(
+                                                              'Customer',
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: ColorResource
+                                                                  .color23375A,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 3,
+                                                        ),
+                                                        CustomText(
+                                                          bloc
+                                                              .dashboardList[
+                                                                  index]
+                                                              .amountRs!,
+                                                          fontSize:
+                                                              FontSize.sixteen,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: ColorResource
+                                                              .color23375A,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                    ),
+                                  );
+                                },
+                                staggeredTileBuilder: (int index) =>
+                                    StaggeredTile.count(
+                                        2,
+                                        index == 5
+                                            ? 0.6
+                                            : index == 6
+                                                ? 0.7
+                                                : 1.3),
                                 mainAxisSpacing: 4.0,
                                 crossAxisSpacing: 4.0,
                               ),
-                          // const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 2),
-                            child: CustomButton(
-                              'HELP',
-                            fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.bold,
-                            textColor: ColorResource.color23375A,
-                            buttonBackgroundColor: ColorResource.colorBEC4CF,
-                            borderColor: ColorResource.colorBEC4CF,
-                            cardElevation: 0,
-                            cardShape: 75,
-                            isLeading: true,
-                            onTap: (){
-                              AppUtils.showToast('help');
-                            },
-                            trailingWidget: Row(
-                              children: [
-                               Image.asset(ImageResource.help),
-                              const SizedBox(width: 7,),
-                              ],
-                            ),
-                            ),
+                              // const SizedBox(height: 5),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 2),
+                                child: CustomButton(
+                                  'HELP',
+                                  fontSize: FontSize.sixteen,
+                                  fontWeight: FontWeight.bold,
+                                  textColor: ColorResource.color23375A,
+                                  buttonBackgroundColor:
+                                      ColorResource.colorBEC4CF,
+                                  borderColor: ColorResource.colorBEC4CF,
+                                  cardElevation: 0,
+                                  cardShape: 75,
+                                  isLeading: true,
+                                  onTap: () {
+                                    AppUtils.showToast('help');
+                                  },
+                                  trailingWidget: Row(
+                                    children: [
+                                      Image.asset(ImageResource.help),
+                                      const SizedBox(
+                                        width: 7,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          
-                        ],
-                      ),
-                    ),
-                  )));
+                        ),
+                      )));
             }));
   }
 
   Widget userActivity(
-    String header, 
-    String count, 
-    Color backgrountColor,
-    Color leadingColor) {
-    return Container(height: 55,width: 125,
-                          decoration: BoxDecoration(
-                            color: backgrountColor,
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 6,
-                                decoration:  BoxDecoration(
-                                    color: leadingColor,
-                                    borderRadius: const BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    topLeft: Radius.circular(10),
-                                  ),
-                                ),
-                              ),
-                              Expanded(child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 7),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomText(header,
-                                    color: ColorResource.color23375A,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w700,
-                                    ),
-                                    CustomText(count,
-                                    color: ColorResource.color23375A,
-                                    fontSize: FontSize.sixteen,
-                                    fontWeight: FontWeight.w700,
-                                    ),
-                                  ],
-                                ),
-                              ))
-                            ],
-                          ),
-                          );
+      String header, String count, Color backgrountColor, Color leadingColor) {
+    return Container(
+      height: 55,
+      width: 125,
+      decoration: BoxDecoration(
+          color: backgrountColor, borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Container(
+            width: 6,
+            decoration: BoxDecoration(
+              color: leadingColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                topLeft: Radius.circular(10),
+              ),
+            ),
+          ),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 7),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(
+                  header,
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.twelve,
+                  fontWeight: FontWeight.w700,
+                ),
+                CustomText(
+                  count,
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.sixteen,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
   }
 
   void priorityFollowUpSheet(BuildContext buildContext) {
@@ -446,64 +555,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: PriorityFollowUpBottomSheet(bloc));
+              // top: false,
+              bottom: false,
+              child: PriorityFollowUpBottomSheet(bloc));
         });
   }
 
-   void brokenPTPSheet(BuildContext buildContext) {
+  void brokenPTPSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: BrokenPTPBottomSheet(bloc));
+              // top: false,
+              bottom: false,
+              child: BrokenPTPBottomSheet(bloc));
         });
   }
 
-   void untouchedCasesSheet(BuildContext buildContext) {
+  void untouchedCasesSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: UntouchedCasesBottomSheet(bloc));
+              // top: false,
+              bottom: false,
+              child: UntouchedCasesBottomSheet(bloc));
         });
   }
 
- void myVisitsSheet(BuildContext buildContext) {
+  void myVisitsSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: MyVisitsBottomSheet(bloc));
+              // top: false,
+              bottom: false,
+              child: MyVisitsBottomSheet(bloc));
         });
   }
 
-void myReceiptsSheet(BuildContext buildContext) {
+  void myReceiptsSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: MyReceiptsBottomSheet(bloc));
+              // top: false,
+              bottom: false,
+              child: MyReceiptsBottomSheet(bloc));
         });
   }
 
-void myDeposistsSheet(BuildContext buildContext) {
+  void myDeposistsSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: MyDeposistsBottomSheet(bloc));
+              // top: false,
+              bottom: false,
+              child: MyDeposistsBottomSheet(bloc));
         });
   }
 
@@ -512,9 +621,9 @@ void myDeposistsSheet(BuildContext buildContext) {
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-            // top: false,
-            bottom: false,
-            child: YardingAndSelfRelease(bloc));
+              // top: false,
+              bottom: false,
+              child: YardingAndSelfRelease(bloc));
         });
   }
 }
