@@ -91,4 +91,6 @@ class StringResource {
   static const String repo = 'REPO';
   static const String captureImage = 'CAPTURE IMAGE';
   static const String otherFeedback = 'OTHER FEEDBACK';
+  static const String cheque = 'CHEQUE';
+  static const String cash = 'CASH';
 }

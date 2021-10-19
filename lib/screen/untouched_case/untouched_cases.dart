@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -9,6 +10,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/floating_action_button.dart';
 
 class UntouchedCasesBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
@@ -40,6 +42,12 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
                     child: Container(
                       padding: EdgeInsets.only(top: 16),
                       child: Scaffold(
+                        floatingActionButton: CustomFloatingActionButton(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                  context, AppRoutes.searchAllocationDetailsScreen);
+                            },
+                          ),
                         body: Column(
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [

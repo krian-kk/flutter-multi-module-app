@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
+import 'package:origa/screen/dashboard/tab_customer_met_notmet_invalid.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/floating_action_button.dart';
 
 class MyVisitsBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
@@ -39,16 +43,23 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                     onWillPop: () async => false,
                     child: Container(
                       padding: EdgeInsets.only(top: 16),
-                      child: Scaffold(
-                        body: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                             const BottomSheetAppbar(
-                              title: 'MY VISITS',
-                            ),
-                            Expanded(
-                              child: Padding(
+                      child: DefaultTabController(
+                        length: 3,
+                        child: Scaffold(
+                          floatingActionButton: CustomFloatingActionButton(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                  context, AppRoutes.searchAllocationDetailsScreen);
+                            },
+                          ),
+                          body: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                               const BottomSheetAppbar(
+                                title: 'MY VISITS',
+                              ),
+                              Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,12 +112,88 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                     spacing: 7,
                                     children: _buildFilterOptions(),
                                   ),
-                                    // Expanded(child: CaseLists.buildListView(widget.bloc))
+                                  
                                   ],
                                 ),
                               ),
-                            )
-                          ],
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                          decoration: const BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: ColorResource.colorD8D8D8))),
+                                          child: const TabBar(
+                                            isScrollable: true,
+                                            indicatorColor: ColorResource.colorD5344C,
+                                            labelStyle: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: ColorResource.color23375A,
+                                                fontSize: FontSize.fourteen,
+                                                fontStyle: FontStyle.normal),
+                                            indicatorWeight: 5.0,
+                                            labelColor: ColorResource.color23375A,
+                                            unselectedLabelColor:
+                                                ColorResource.colorC4C4C4,
+                                            tabs: [
+                                              Tab(text: StringResource.customerMet),
+                                              Tab(text: StringResource.customerNotMet),
+                                              Tab(text: StringResource.invalid)
+                                            ],
+                                            
+                                          ),
+                                        ),
+                                       Expanded(
+                                         child: TabBarView(
+                                           physics: const NeverScrollableScrollPhysics(),
+                                            children: [
+                                              CustomerMetNotmetInvalidTab(widget.bloc),
+                                              CustomerMetNotmetInvalidTab(widget.bloc),
+                                              CustomerMetNotmetInvalidTab(widget.bloc),
+                                            ],
+                                          ),
+                                       ),
+                            //   Expanded(child: Container(color: ColorResource.color101010,
+                            //  child: DefaultTabController(
+                            //           length: 3,
+                            //           // ignore: prefer_const_literals_to_create_immutables
+                            //           child: Column(children: [
+                            //             Container(
+                            //               decoration: const BoxDecoration(
+                            //                   border: Border(
+                            //                       bottom: BorderSide(
+                            //                           color: ColorResource.colorD8D8D8))),
+                            //               child: const TabBar(
+                            //                 isScrollable: true,
+                            //                 indicatorColor: ColorResource.colorD5344C,
+                            //                 labelStyle: TextStyle(
+                            //                     fontWeight: FontWeight.w700,
+                            //                     color: ColorResource.color23375A,
+                            //                     fontSize: FontSize.fourteen,
+                            //                     fontStyle: FontStyle.normal),
+                            //                 indicatorWeight: 5.0,
+                            //                 labelColor: ColorResource.color23375A,
+                            //                 unselectedLabelColor:
+                            //                     ColorResource.colorC4C4C4,
+                            //                 tabs: [
+                            //                   Tab(text: StringResource.customerMet),
+                            //                   Tab(text: StringResource.customerNotMet),
+                            //                   Tab(text: StringResource.invalid)
+                            //                 ],
+                                            
+                            //               ),
+                            //             ),
+                            //             const TabBarView(
+                            //               children: [
+                            //                 Text('NK1'),
+                            //                 Text('NK2'),
+                            //                 Text('NK3'),
+                            //               ],
+                            //             ),
+                            //           ]),
+                            //         ),
+                            //   )),
+                            ],
+                          ),
                         ),
                       ),
                     ),

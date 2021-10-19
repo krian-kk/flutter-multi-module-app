@@ -51,6 +51,7 @@ dependencies:
   sticky_headers: ^0.2.0
   url_launcher: ^6.0.11
   webview_flutter: ^2.0.14
+  percent_indicator: ^3.4.0
 
 dev_dependencies:
   dio: ^4.0.0
@@ -94,11 +95,11 @@ flutter:
     - assets/direction.png
     - assets/active_person.png
     - assets/money.png
-    - assets/Vector.png
     - assets/arrow_down.png
     - assets/calendar.png
     - assets/arrow_drop_down.png
     - assets/upload.png
+    - assets/navigate_vector.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/image_resource.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
@@ -26,31 +27,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       dashboardList.addAll([
         DashboardListModel(
           title: 'PRIORITY FOLLOW UP',
-          image: 'assets/Vector.png',
+          image: ImageResource.vectorArrow,
           count: 'Count',
           countNum: '200',
           amount: 'Amount',
           amountRs: '₹ 3,97,553.67'
         ),
         DashboardListModel(
-            title: 'BROKEN PTP',
-            image: 'assets/Vector.png',
-            count: 'Count',
-            countNum: '200',
-            amount: 'Amount',
-            amountRs: '₹ 3,97,553.67'
-        ),
-        DashboardListModel(
             title: 'UNTOUCHED CASES',
-            image: 'assets/Vector.png',
+            image: ImageResource.vectorArrow,
             count: 'Count',
             countNum: '200',
             amount: 'Amount',
             amountRs: '₹ 3,97,553.67'
         ),
         DashboardListModel(
-            title: 'MY VISITS',
-            image: 'assets/Vector.png',
+            title: 'BROKEN PTP',
+            image: ImageResource.vectorArrow,
             count: 'Count',
             countNum: '200',
             amount: 'Amount',
@@ -58,23 +51,31 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         ),
         DashboardListModel(
             title: 'MY RECEIPTS',
-            image: 'assets/Vector.png',
+            image: ImageResource.vectorArrow,
             count: 'Count',
             countNum: '200',
             amount: 'Amount',
             amountRs: '₹ 3,97,553.67'
         ),
         DashboardListModel(
-            title: 'MTDRE RESOLUTION PROGRESS',
-            image: 'assets/Vector.png',
+            title: 'MY VISITS',
+            image: ImageResource.vectorArrow,
+            count: 'Count',
+            countNum: '200',
+            amount: 'Amount',
+            amountRs: '₹ 3,97,553.67'
+        ),
+        DashboardListModel(
+            title: 'MY DEPOSISTS',
+            image: '',
             count: '',
             countNum: '',
             amount: '',
             amountRs: ''
         ),
         DashboardListModel(
-          title: 'MY DEPOSISTS',
-          image: 'assets/Vector.png',
+          title: 'YARDING & SELF- RELEASE',
+          image: '',
           count: '',
           countNum: '',
           amount: '',

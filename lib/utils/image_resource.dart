@@ -35,5 +35,6 @@ class ImageResource {
   static const String calendar = 'assets/calendar.png';
   static const String downArrow = 'assets/arrow_down.png';
   static const String dropDownArrow = 'assets/arrow_drop_down.png';
+  static const String help = 'assets/help.png';
   static const String upload = 'assets/upload.png';
 }
