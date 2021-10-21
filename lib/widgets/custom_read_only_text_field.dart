@@ -33,6 +33,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final bool isFill;
   final Color cursorColor;
   final Function(bool)? validatorCallBack;
+  final double height;
 
   // ignore: avoid_unused_constructor_parameters
 
@@ -56,6 +57,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
       this.highlightColor = ColorResource.colorDADADA,
       this.focusNode,
       this.focusTextColor,
+      this.height = 40,
       this.keyBoardType = TextInputType.name,
       this.descriptionText,
       this.oncomplete,
@@ -91,7 +93,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
     return Align(
       alignment: Alignment.topCenter,
       child: SizedBox(
-        height: widget.isLabel ? null : 40,
+        height: widget.isLabel ? null : widget.height,
         child: TextFormField(
           textInputAction: TextInputAction.done,
           cursorHeight: 17,

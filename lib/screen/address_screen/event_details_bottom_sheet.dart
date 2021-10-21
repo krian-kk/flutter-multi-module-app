@@ -9,28 +9,24 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 
-class CustomCaptureImageBottomSheet extends StatefulWidget {
-  CustomCaptureImageBottomSheet(
+class CustomEventDetailsBottomSheet extends StatefulWidget {
+  CustomEventDetailsBottomSheet(
     this.cardTitle, {
     Key? key,
   }) : super(key: key);
   final String cardTitle;
 
   @override
-  State<CustomCaptureImageBottomSheet> createState() =>
-      _CustomCaptureImageBottomSheetState();
+  State<CustomEventDetailsBottomSheet> createState() =>
+      _CustomEventDetailsBottomSheetState();
 }
 
-class _CustomCaptureImageBottomSheetState
-    extends State<CustomCaptureImageBottomSheet> {
-  TextEditingController remarksControlller = TextEditingController();
-
+class _CustomEventDetailsBottomSheetState
+    extends State<CustomEventDetailsBottomSheet> {
   @override
   void initState() {
     super.initState();
-    remarksControlller.text = 'ABC';
   }
 
   @override
@@ -116,29 +112,6 @@ class _CustomCaptureImageBottomSheetState
                       ),
                     ),
                     SizedBox(height: 11),
-                    CustomButton(
-                      Languages.of(context)!.customUpload,
-                      fontWeight: FontWeight.w700,
-                      trailingWidget: Image.asset(ImageResource.upload),
-                      fontSize: FontSize.sixteen,
-                      buttonBackgroundColor: ColorResource.color23375A,
-                      borderColor: ColorResource.colorDADADA,
-                      cardShape: 50,
-                      cardElevation: 1,
-                      isLeading: true,
-                      onTap: () async {
-                        final result = await FilePicker.platform.pickFiles();
-                        if (result == null) return;
-                        print(result);
-                      },
-                    ),
-                    SizedBox(height: 15),
-                    Flexible(
-                        child: CustomReadOnlyTextField(
-                      Languages.of(context)!.remarks,
-                      remarksControlller,
-                      isLabel: true,
-                    )),
                     SizedBox(height: 15),
                   ],
                 ),
@@ -161,23 +134,12 @@ class _CustomCaptureImageBottomSheetState
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
-                  SizedBox(width: 25),
-                  SizedBox(
-                    width: 191,
+                    width: 190,
                     child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
+                      Languages.of(context)!.okay.toUpperCase(),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
                       // onTap: () => bloc.add(ClickMessageEvent()),

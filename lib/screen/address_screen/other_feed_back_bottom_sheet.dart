@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -6,33 +6,40 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_expanstion_tile.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
-class CustomOtsBottomSheet extends StatefulWidget {
-  CustomOtsBottomSheet(
+class CustomOtherFeedBackBottomSheet extends StatefulWidget {
+  CustomOtherFeedBackBottomSheet(
     this.cardTitle, {
     Key? key,
   }) : super(key: key);
   final String cardTitle;
 
   @override
-  State<CustomOtsBottomSheet> createState() => _CustomOtsBottomSheetState();
+  State<CustomOtherFeedBackBottomSheet> createState() =>
+      _CustomOtherFeedBackBottomSheetState();
 }
 
-class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
-  TextEditingController otsProposedAmountControlller = TextEditingController();
-  TextEditingController otsPaymentDateControlller = TextEditingController();
-  TextEditingController otsPaymentTimeControlller = TextEditingController();
+class _CustomOtherFeedBackBottomSheetState
+    extends State<CustomOtherFeedBackBottomSheet> {
+  TextEditingController dateControlller = TextEditingController();
+  TextEditingController timeControlller = TextEditingController();
+  TextEditingController modelMakeControlller = TextEditingController();
+  TextEditingController registrationNoControlller = TextEditingController();
+  TextEditingController chassisNoControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    otsProposedAmountControlller.text = '0';
-    otsPaymentDateControlller.text = '12-1-2021';
-    otsPaymentTimeControlller.text = '7:00';
+    dateControlller.text = '12-1-2021';
+    timeControlller.text = '7:00';
+    modelMakeControlller.text = '123';
+    registrationNoControlller.text = '123';
+    chassisNoControlller.text = '123';
     remarksControlller.text = 'ABC';
   }
 
@@ -71,10 +78,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   children: <Widget>[
                     Container(
                       width: double.infinity,
-                      decoration: new BoxDecoration(
+                      decoration: BoxDecoration(
                           color: ColorResource.colorF7F8FA,
                           borderRadius:
-                              new BorderRadius.all(Radius.circular(10.0))),
+                              BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 14),
@@ -100,7 +107,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                             ),
                             SizedBox(height: 17),
                             CustomText(
-                              Languages.of(context)!.overdueAmount,
+                              'Overdue Amount',
                               fontWeight: FontWeight.w400,
                               fontSize: FontSize.twelve,
                               fontStyle: FontStyle.normal,
@@ -119,87 +126,181 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       ),
                     ),
                     SizedBox(height: 11),
-                    SizedBox(height: 15),
                     Flexible(
-                        child: CustomReadOnlyTextField(
-                      Languages.of(context)!.otsProposedAmount,
-                      otsProposedAmountControlller,
-                      isLabel: true,
-                    )),
-                    SizedBox(height: 17),
-                    Row(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Flexible(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.otsPaymentDate,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                otsPaymentDateControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () async {
-                                      pickDate(
-                                          context, otsPaymentDateControlller);
-                                    },
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                    )),
-                                // focusColor: ColorResource.colorE5EAF6,
-                              ),
-                            ),
-                          ],
-                        )),
-                        SizedBox(width: 7),
-                        Flexible(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.otsPaymentTime,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                otsPaymentTimeControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () async {
-                                      pickTime(
-                                          context, otsPaymentTimeControlller);
-                                    },
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                    )),
-                              ),
-                            ),
-                          ],
-                        )),
+                        CustomText(
+                          Languages.of(context)!.date,
+                          fontSize: FontSize.twelve,
+                          fontWeight: FontWeight.w400,
+                          color: ColorResource.color666666,
+                          fontStyle: FontStyle.normal,
+                        ),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 44) / 2,
+                          child: CustomReadOnlyTextField(
+                            '',
+                            dateControlller,
+                            suffixWidget: GestureDetector(
+                                onTap: () => pickDate(context, dateControlller),
+                                child: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                )),
+                          ),
+                        ),
+                      ],
+                    )),
+                    SizedBox(height: 25),
+                    CustomText(
+                      'Customer Met Category',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                      fontStyle: FontStyle.normal,
+                    ),
+                    SizedBox(height: 10),
+                    CustomExpansionTile(
+                      titleText: 'ABC',
+                      childrenWidget: [
+                        CustomText('dlkdjlkjdlkjdkljdkljdlkjdkljdlkjdjl')
                       ],
                     ),
-                    SizedBox(height: 15),
-                    Flexible(
-                        child: CustomReadOnlyTextField(
-                      Languages.of(context)!.remarks,
-                      remarksControlller,
-                      isLabel: true,
-                    )),
+                    SizedBox(height: 11),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: ColorResource.colorE7E7E7,
+                          // ignore: unnecessary_new
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(22, 11, 17, 11),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              'ABC',
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              color: ColorResource.color000000,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            Image.asset(ImageResource.expandedDownShape)
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: ColorResource.colorE7E7E7,
+                          // ignore: unnecessary_new
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(22, 11, 17, 11),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              'VEHICLE AVAILABLE',
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              color: ColorResource.color000000,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            Image.asset(ImageResource.expandedDownShape)
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: ColorResource.colorE7E7E7,
+                          // ignore: unnecessary_new
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(22, 11, 17, 11),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              'COLLECTOR FEEDDBACK',
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              color: ColorResource.color000000,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            Image.asset(ImageResource.expandedDownShape)
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 25),
+                    GestureDetector(
+                      onTap: () {},
+                      child: SizedBox(
+                        width: double.infinity,
+                        // height: 56,
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                width: 0.5,
+                                color: ColorResource.colorDADADA,
+                              ),
+                            ),
+                            color: ColorResource.color23375A,
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(ImageResource.upload),
+                                      SizedBox(width: 5),
+                                      CustomText(
+                                        'UPLOAD AUDIO FILE',
+                                        color: ColorResource.colorFFFFFF,
+                                        fontSize: FontSize.sixteen,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                      )
+                                    ],
+                                  ),
+                                  CustomText(
+                                    'UPTO 5MB',
+                                    lineHeight: 1,
+                                    color: ColorResource.colorFFFFFF,
+                                    fontSize: FontSize.twelve,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w700,
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                    ),
+                    // CustomButton(
+                    //   'UPLOAD AUDIO FILE',
+                    //   fontWeight: FontWeight.w700,
+                    //   trailingWidget: Image.asset(ImageResource.upload),
+                    //   fontSize: FontSize.sixteen,
+                    //   buttonBackgroundColor: ColorResource.color23375A,
+                    //   borderColor: ColorResource.colorDADADA,
+                    //   cardShape: 50,
+                    //   cardElevation: 1,
+                    //   isLeading: true,
+                    // ),
                     SizedBox(height: 15),
                   ],
                 ),
@@ -211,7 +312,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             decoration: BoxDecoration(
               color: ColorResource.colorFFFFFF,
               boxShadow: [
-                new BoxShadow(
+                BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
                   offset: Offset(1.0, 1.0),

@@ -20,7 +20,7 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.89,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 13),
@@ -220,19 +220,19 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
   }
 }
 
-Route _createRoute() {
-  return PageRouteBuilder(
-    transitionDuration: Duration(microseconds: 3),
-    pageBuilder: (context, animation, secondaryAnimation) => AddressScreen(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(0.0, 1.0);
-      const end = Offset.zero;
-      final tween = Tween(begin: begin, end: end);
-      final offsetAnimation = animation.drive(tween);
-      return SlideTransition(
-        position: offsetAnimation,
-        child: child,
-      );
-    },
-  );
-}
+// Route _createRoute() {
+//   return PageRouteBuilder(
+//     transitionDuration: Duration(microseconds: 3),
+//     pageBuilder: (context, animation, secondaryAnimation) => AddressScreen(),
+//     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+//       const begin = Offset(0.0, 1.0);
+//       const end = Offset.zero;
+//       final tween = Tween(begin: begin, end: end);
+//       final offsetAnimation = animation.drive(tween);
+//       return SlideTransition(
+//         position: offsetAnimation,
+//         child: child,
+//       );
+//     },
+//   );
+// }

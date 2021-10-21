@@ -6,6 +6,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/customer_not_met_model.dart';
 import 'package:origa/screen/address_screen/customer_met_screen.dart';
 import 'package:origa/screen/address_screen/customer_not_met_screen.dart';
+import 'package:origa/screen/address_screen/event_details_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -166,6 +167,8 @@ class _AddressScreenState extends State<AddressScreen>
                                     Expanded(
                                         child: CustomButton(
                                       Languages.of(context)!.eventDetails,
+                                      onTap: () =>
+                                          openEventDetailsBottomSheet(context),
                                       textColor: ColorResource.color23375A,
                                       borderColor: ColorResource.color23375A,
                                       buttonBackgroundColor:
@@ -204,27 +207,6 @@ class _AddressScreenState extends State<AddressScreen>
                                     Tab(text: StringResource.customerNotMet),
                                     Tab(text: StringResource.invalid)
                                   ],
-                                  // tabs: [
-                                  //   SizedBox(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.22,
-                                  //       child: Tab(
-                                  //           text: StringResource.customerMet)),
-                                  //   SizedBox(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.33,
-                                  //       child: Tab(
-                                  //           text:
-                                  //               StringResource.customerNotMet)),
-                                  //   SizedBox(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.22,
-                                  //       child:
-                                  //           Tab(text: StringResource.invalid))
-                                  // ],
                                 ),
                               ),
                               Container(
@@ -270,15 +252,20 @@ class _AddressScreenState extends State<AddressScreen>
                 width: double.infinity,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-                  child: Container(
-                    decoration: BoxDecoration(),
-                    child: CustomButton(
-                      Languages.of(context)!.done.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      onTap: () {},
-                      cardShape: 5,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 190,
+                        child: CustomButton(
+                          Languages.of(context)!.done.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          onTap: () {},
+                          cardShape: 5,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )
@@ -311,9 +298,8 @@ class _AddressScreenState extends State<AddressScreen>
                             fontSize: FontSize.sixteen,
                           ))),
                       SizedBox(width: 25),
-                      Container(
+                      SizedBox(
                         width: 191,
-                        decoration: BoxDecoration(),
                         child: CustomButton(
                           Languages.of(context)!.submit.toUpperCase(),
                           fontSize: FontSize.sixteen,
@@ -327,6 +313,24 @@ class _AddressScreenState extends State<AddressScreen>
                 ),
               ),
       ),
+    );
+  }
+
+  openEventDetailsBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return CustomEventDetailsBottomSheet(
+            Languages.of(context)!.eventDetails.toUpperCase());
+      },
     );
   }
 }

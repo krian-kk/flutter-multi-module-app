@@ -37,4 +37,7 @@ class ImageResource {
   static const String dropDownArrow = 'assets/arrow_drop_down.png';
   static const String help = 'assets/help.png';
   static const String upload = 'assets/upload.png';
+  static const String vector = 'assets/Vector.png';
+  static const String downShape = 'assets/down_shape.png';
+  static const String expandedDownShape = 'assets/expanded_down_shape.png';
 }
