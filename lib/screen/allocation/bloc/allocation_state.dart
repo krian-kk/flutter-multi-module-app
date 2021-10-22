@@ -9,3 +9,5 @@ class AllocationLoadingState extends AllocationState {}
 class AllocationLoadedState extends AllocationState {}
 
 class MapViewState extends AllocationState {}
+
+class MessageState extends AllocationState {}

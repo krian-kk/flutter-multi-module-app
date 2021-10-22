@@ -70,6 +70,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
      if (event is MapViewEvent) {
       yield MapViewState();
     }
+
+    if (event is MessageEvent) {
+      yield MessageState();
+    }
   }
 
 

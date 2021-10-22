@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
+import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/my_deposists/my_deposists.dart';
 import 'package:origa/screen/my_recipts/my_receipts.dart';
 import 'package:origa/screen/my_visit/my_visits.dart';
@@ -91,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           child: userActivity(
                                             StringResource.customerMet,
                                             '20',
-                                            ColorResource.colorBEC4CF,
+                                            ColorResource.colorE0ECDF,
                                             ColorResource.color73C170,
                                           ),
                                         )),
@@ -104,7 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           child: userActivity(
                                             StringResource.customerNotMet,
                                             '10',
-                                            ColorResource.colorBEC4CF,
+                                            ColorResource.colorF2EEDC,
                                             ColorResource.colorE5C55B,
                                           ),
                                         )),
@@ -113,12 +114,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                     Expanded(
                                         flex: 3,
-                                        child: Container(
-                                          child: userActivity(
-                                            StringResource.invalid,
-                                            '10',
-                                            ColorResource.colorBEC4CF,
-                                            ColorResource.colorF1BCC4,
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            // Navigator.push(context, CupertinoPageRoute(builder: (context)=>MessageChatRoomScreen()));
+                                          },
+                                          child: Container(
+                                            child: userActivity(
+                                              StringResource.invalid,
+                                              '10',
+                                              ColorResource.colorF4ECEF,
+                                              ColorResource.colorF1BCC4,
+                                            ),
                                           ),
                                         )),
                                   ],

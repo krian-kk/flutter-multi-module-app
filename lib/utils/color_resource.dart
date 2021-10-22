@@ -18,6 +18,10 @@ class ColorResource {
   static const Color color73C170 = Color(0xFF73C170);
   static const Color colorE5C55B = Color(0xFFE5C55B);
   static const Color colorF1BCC4 = Color(0xffF1BCC4);
+  static const Color colorE0ECDF = Color(0xffE0ECDF);
+  static const Color colorF2EEDC = Color(0xffF2EEDC);
+  static const Color colorF4ECEF = Color(0xffF4ECEF);
+  static const Color colorFFDBD0 = Color(0xffFFDBD0);
 
   static const Color color0066cc = Color(0xff0066cc);
   static const Color color1c1d22 = Color(0xff1c1d22);
