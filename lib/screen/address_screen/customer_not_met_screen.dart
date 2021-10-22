@@ -34,6 +34,7 @@ class CustomerNotMetScreen extends StatefulWidget {
 
 class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   TextEditingController loanDurationController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -91,7 +92,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                       )),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: TextField(
                       //controller: loanDurationController,

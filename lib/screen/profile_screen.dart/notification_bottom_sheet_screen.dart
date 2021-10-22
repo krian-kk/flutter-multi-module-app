@@ -53,100 +53,99 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                         children: [
                           SizedBox(height: 15),
                           ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: bloc.notificationList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 10.0),
-                                      child: CustomText(
-                                        bloc.notificationList[index].date,
-                                        color: ColorResource.color484848,
-                                        fontSize: FontSize.ten,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: bloc.notificationList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10.0),
+                                    child: CustomText(
+                                      bloc.notificationList[index].date,
+                                      color: ColorResource.color484848,
+                                      fontSize: FontSize.ten,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                    ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: bloc.notificationList[index]
-                                            .listOfNotification.length,
-                                        itemBuilder: (BuildContext context,
-                                            int innerIndex) {
-                                          return Container(
-                                            margin: EdgeInsets.only(bottom: 20),
-                                            width: double.infinity,
-                                            decoration: new BoxDecoration(
-                                                boxShadow: [
-                                                  new BoxShadow(
-                                                    color: ColorResource
-                                                        .color000000
-                                                        .withOpacity(.25),
-                                                    blurRadius: 2.0,
-                                                    offset: Offset(1.0, 1.0),
-                                                  ),
-                                                ],
-                                                border: Border.all(
-                                                    color: ColorResource
-                                                        .colorDADADA,
-                                                    width: 0.5),
-                                                color:
-                                                    ColorResource.colorF7F8FA,
-                                                borderRadius:
-                                                    new BorderRadius.all(
-                                                        Radius.circular(10.0))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      14, 8, 30, 12),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  CustomText(
-                                                    bloc
-                                                        .notificationList[index]
-                                                        .listOfNotification[
-                                                            innerIndex]
-                                                        .headText
-                                                        .toString(),
-                                                    color: ColorResource
-                                                        .color101010,
-                                                    fontSize: FontSize.sixteen,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                  CustomText(
-                                                    bloc
-                                                        .notificationList[index]
-                                                        .listOfNotification[
-                                                            innerIndex]
-                                                        .subText
-                                                        .toString(),
-                                                    color: ColorResource
-                                                        .color484848,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ],
-                                              ),
+                                  ),
+                                  ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: bloc.notificationList[index]
+                                          .listOfNotification.length,
+                                      itemBuilder: (BuildContext context,
+                                          int innerIndex) {
+                                        return Container(
+                                          margin: EdgeInsets.only(bottom: 20),
+                                          width: double.infinity,
+                                          decoration: new BoxDecoration(
+                                              boxShadow: [
+                                                new BoxShadow(
+                                                  color: ColorResource
+                                                      .color000000
+                                                      .withOpacity(.25),
+                                                  blurRadius: 2.0,
+                                                  offset: Offset(1.0, 1.0),
+                                                ),
+                                              ],
+                                              border: Border.all(
+                                                  color:
+                                                      ColorResource.colorDADADA,
+                                                  width: 0.5),
+                                              color: ColorResource.colorF7F8FA,
+                                              borderRadius:
+                                                  new BorderRadius.all(
+                                                      Radius.circular(10.0))),
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                14, 8, 30, 12),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                CustomText(
+                                                  bloc
+                                                      .notificationList[index]
+                                                      .listOfNotification[
+                                                          innerIndex]
+                                                      .headText
+                                                      .toString(),
+                                                  color:
+                                                      ColorResource.color101010,
+                                                  fontSize: FontSize.sixteen,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                CustomText(
+                                                  bloc
+                                                      .notificationList[index]
+                                                      .listOfNotification[
+                                                          innerIndex]
+                                                      .subText
+                                                      .toString(),
+                                                  color:
+                                                      ColorResource.color484848,
+                                                  fontSize: FontSize.fourteen,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                        }),
-                                  ],
-                                );
-                              }),
+                                          ),
+                                        );
+                                      }),
+                                ],
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -168,17 +167,22 @@ class NotificationBottomSheetScreen extends StatelessWidget {
               ],
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-              child: Container(
-                decoration: new BoxDecoration(),
-                child: CustomButton(
-                  Languages.of(context)!.read.toUpperCase(),
-                  cardShape: 5,
-                  leadingWidget: CircleAvatar(
-                    radius: 13,
-                    backgroundColor: ColorResource.colorFFFFFF,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 11.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 190,
+                    child: CustomButton(
+                      Languages.of(context)!.read.toUpperCase(),
+                      cardShape: 5,
+                      leadingWidget: CircleAvatar(
+                        radius: 13,
+                        backgroundColor: ColorResource.colorFFFFFF,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

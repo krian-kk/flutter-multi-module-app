@@ -258,4 +258,14 @@ abstract class Languages {
   String get shifted;
 
   String get addressNotFound;
+
+  String get callCustomer;
+
+  String get agentContactNo;
+
+  String get customerContactNo;
+
+  String get serviceProvidersList;
+
+  String get callersId;
 }

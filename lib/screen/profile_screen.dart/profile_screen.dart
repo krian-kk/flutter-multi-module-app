@@ -304,24 +304,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: ColorResource.colorFFFFFF,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-                  child: Container(
-                    decoration: BoxDecoration(),
-                    child: CustomButton(
-                      Languages.of(context)!.message,
-                      onTap: () => bloc.add(ClickMessageEvent()),
-                      cardShape: 5,
-                      isTrailing: true,
-                      leadingWidget: CircleAvatar(
-                        radius: 13,
-                        backgroundColor: ColorResource.colorFFFFFF,
-                        child: CustomText('2',
-                            fontSize: FontSize.twelve,
-                            lineHeight: 1,
-                            color: ColorResource.colorEA6D48,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: CustomButton(
+                          Languages.of(context)!.message,
+                          onTap: () => bloc.add(ClickMessageEvent()),
+                          cardShape: 5,
+                          isTrailing: true,
+                          leadingWidget: CircleAvatar(
+                            radius: 13,
+                            backgroundColor: ColorResource.colorFFFFFF,
+                            child: CustomText('2',
+                                fontSize: FontSize.twelve,
+                                lineHeight: 1,
+                                color: ColorResource.colorEA6D48,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
