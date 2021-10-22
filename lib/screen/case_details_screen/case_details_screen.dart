@@ -423,6 +423,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       child: CustomButton(
                                                         Languages.of(context)!
                                                             .sendSms,
+                                                        fontSize:
+                                                            FontSize.twelve,
                                                         borderColor:
                                                             ColorResource
                                                                 .color23375A,
@@ -456,6 +458,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       child: CustomButton(
                                                         StringResource
                                                             .sendWHATSAPP,
+                                                        fontSize:
+                                                            FontSize.twelve,
                                                         borderColor:
                                                             ColorResource
                                                                 .color23375A,

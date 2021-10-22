@@ -172,6 +172,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     Expanded(
                                         child: CustomButton(
                                       Languages.of(context)!.eventDetails,
+                                      fontSize: FontSize.twelve,
                                       textColor: ColorResource.color23375A,
                                       borderColor: ColorResource.color23375A,
                                       buttonBackgroundColor:

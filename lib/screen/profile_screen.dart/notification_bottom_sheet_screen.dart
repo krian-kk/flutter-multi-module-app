@@ -175,6 +175,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                     width: 190,
                     child: CustomButton(
                       Languages.of(context)!.read.toUpperCase(),
+                      fontSize: FontSize.sixteen,
                       cardShape: 5,
                       leadingWidget: CircleAvatar(
                         radius: 13,

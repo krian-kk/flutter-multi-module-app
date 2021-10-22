@@ -156,6 +156,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                           Languages.of(context)!.addNewContact.toUpperCase(),
                           textColor: ColorResource.color23375A,
                           borderColor: ColorResource.color23375A,
+                          fontSize: FontSize.twelve,
                           cardShape: 75,
                           buttonBackgroundColor: ColorResource.colorFFFFFF,
                         ),
@@ -181,6 +182,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                           onTap: () => openBottomSheet(
                               context, StringResource.otherFeedback),
                           cardShape: 75,
+                          fontSize: FontSize.twelve,
                           textColor: ColorResource.color23375A,
                           borderColor: ColorResource.color23375A,
                           buttonBackgroundColor: ColorResource.colorFFFFFF,

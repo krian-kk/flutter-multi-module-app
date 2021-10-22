@@ -311,6 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: CustomButton(
                           Languages.of(context)!.message,
                           onTap: () => bloc.add(ClickMessageEvent()),
+                          fontSize: FontSize.sixteen,
                           cardShape: 5,
                           isTrailing: true,
                           leadingWidget: CircleAvatar(

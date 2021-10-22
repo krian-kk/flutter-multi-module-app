@@ -264,7 +264,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                       Languages.of(context)!.submit.toUpperCase(),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
-
                       // onTap: () => bloc.add(ClickMessageEvent()),
                       cardShape: 5,
                     ),
