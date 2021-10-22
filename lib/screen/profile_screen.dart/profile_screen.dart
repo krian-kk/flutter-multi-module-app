@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
 import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
@@ -447,34 +448,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.87,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.message.toUpperCase(),
-                              color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(ImageResource.close))
-                          ],
-                        ),
-                        SizedBox(height: 60),
-                      ],
-                    ),
-                  ),
+                  height: MediaQuery.of(context).size.height * 0.86,
+                  child: MessageChatRoomScreen()
                 )));
   }
 

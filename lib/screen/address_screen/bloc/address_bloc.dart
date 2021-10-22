@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/models/event_detail_model.dart';
+import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 
@@ -10,6 +12,9 @@ part 'address_state.dart';
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
   String selectedCustomerNotMetClip = '';
   String selectedInvalidClip = '';
+
+   List<OtherFeedbackExpandModel> expandOtherFeedback = [];
+   List<EventExpandModel> expandEvent = [];
 
   List<CustomerMetGridModel> customerMetGridList = [];
   AddressBloc() : super(AddressInitial()) {
@@ -25,6 +30,18 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
           CustomerMetGridModel(
               ImageResource.collections, StringResource.collections),
           CustomerMetGridModel(ImageResource.ots, StringResource.ots),
+        ]);
+
+        expandEvent.addAll([
+          EventExpandModel(header: 'FIELD ALLOCATION', date: '7 Sep 2021', colloctorID: 'AGENT | HAR_fos4', remarks: 'XYZ'),
+          EventExpandModel(header: 'TELECALLING | PTP', date: '12 May 2021', colloctorID: 'AGENT | HAR_fos4', remarks: 'XYZ'),
+          EventExpandModel(header: 'FTELECALLING', date: '23 Oct 2021', colloctorID: 'AGENT | HAR_fos4', remarks: 'XYZ'),
+        ]);
+
+        expandOtherFeedback.addAll([
+          OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
+          OtherFeedbackExpandModel(header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
+          OtherFeedbackExpandModel(header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
         ]);
         emit.call(AddressLoadedState());
       }

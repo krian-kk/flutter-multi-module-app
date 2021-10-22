@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/other_feedback_model.dart';
+import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -12,8 +14,9 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
+  final AddressBloc bloc;
   CustomOtherFeedBackBottomSheet(
-    this.cardTitle, {
+    this.cardTitle, this.bloc, {
     Key? key,
   }) : super(key: key);
   final String cardTitle;
@@ -71,239 +74,168 @@ class _CustomOtherFeedBackBottomSheetState
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: ColorResource.colorF7F8FA,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 14),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              'DEBASISH PATNAIK',
-                              fontWeight: FontWeight.w700,
-                              fontSize: FontSize.fourteen,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color333333,
-                            ),
-                            SizedBox(height: 7),
-                            CustomText(
-                              'TVSF_BFRT6458922993',
-                              fontWeight: FontWeight.w400,
-                              fontSize: FontSize.fourteen,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color333333,
-                            ),
-                            SizedBox(height: 17),
-                            CustomText(
-                              'Overdue Amount',
-                              fontWeight: FontWeight.w400,
-                              fontSize: FontSize.twelve,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color666666,
-                            ),
-                            SizedBox(height: 9),
-                            CustomText(
-                              '397553.67',
-                              fontWeight: FontWeight.w700,
-                              fontSize: FontSize.twentyFour,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color333333,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 11),
-                    Flexible(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomText(
-                          Languages.of(context)!.date,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w400,
-                          color: ColorResource.color666666,
-                          fontStyle: FontStyle.normal,
-                        ),
-                        SizedBox(
-                          width: (MediaQuery.of(context).size.width - 44) / 2,
-                          child: CustomReadOnlyTextField(
-                            '',
-                            dateControlller,
-                            suffixWidget: GestureDetector(
-                                onTap: () => pickDate(context, dateControlller),
-                                child: ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                )),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: ColorResource.colorF7F8FA,
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(10.0))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 14),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomText(
+                            'DEBASISH PATNAIK',
+                            fontWeight: FontWeight.w700,
+                            fontSize: FontSize.fourteen,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color333333,
                           ),
-                        ),
-                      ],
-                    )),
-                    SizedBox(height: 25),
-                    CustomText(
-                      'Customer Met Category',
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                      fontStyle: FontStyle.normal,
+                          SizedBox(height: 7),
+                          CustomText(
+                            'TVSF_BFRT6458922993',
+                            fontWeight: FontWeight.w400,
+                            fontSize: FontSize.fourteen,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color333333,
+                          ),
+                          SizedBox(height: 17),
+                          CustomText(
+                            'Overdue Amount',
+                            fontWeight: FontWeight.w400,
+                            fontSize: FontSize.twelve,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color666666,
+                          ),
+                          SizedBox(height: 9),
+                          CustomText(
+                            '397553.67',
+                            fontWeight: FontWeight.w700,
+                            fontSize: FontSize.twentyFour,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color333333,
+                          )
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 10),
-                    CustomExpansionTile(
-                      titleText: 'ABC',
-                      childrenWidget: [
-                        CustomText('dlkdjlkjdlkjdkljdkljdlkjdkljdlkjdjl')
-                      ],
+                  ),
+                  SizedBox(height: 11),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                  CustomText(
+                    Languages.of(context)!.date,
+                    fontSize: FontSize.twelve,
+                    fontWeight: FontWeight.w400,
+                    color: ColorResource.color666666,
+                    fontStyle: FontStyle.normal,
+                  ),
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width - 44) / 2,
+                    child: CustomReadOnlyTextField(
+                      '',
+                      dateControlller,
+                      suffixWidget: GestureDetector(
+                          onTap: () => pickDate(context, dateControlller),
+                          child: ImageIcon(
+                            AssetImage(ImageResource.calendar),
+                          )),
                     ),
-                    SizedBox(height: 11),
-                    Container(
+                  ),
+                    ],
+                  ),
+                  SizedBox(height: 25),
+                  CustomText(
+                    'Customer Met Category',
+                    fontSize: FontSize.fourteen,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                    fontStyle: FontStyle.normal,
+                  ),
+                  SizedBox(height: 10),
+                  // CustomExpansionTile(
+                  //   titleText: 'ABC',
+                  //   childrenWidget: [
+                  //     CustomText('dlkdjlkjdlkjdkljdkljdlkjdkljdlkjdjl')
+                  //   ],
+                  // ),
+                  Expanded(child: Container(
+                    child: ListView.builder(
+                      itemCount: widget.bloc.expandOtherFeedback.length,
+                      itemBuilder: (context, int index)=>
+                      expandList(widget.bloc.expandOtherFeedback, index),
+                    ),
+                  )),
+                  // SizedBox(height: 25),
+                  GestureDetector(
+                    onTap: () {},
+                    child: SizedBox(
                       width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: ColorResource.colorE7E7E7,
-                          // ignore: unnecessary_new
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(22, 11, 17, 11),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              'ABC',
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color000000,
-                              fontStyle: FontStyle.normal,
+                      // height: 56,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: BorderSide(
+                              width: 0.5,
+                              color: ColorResource.colorDADADA,
                             ),
-                            Image.asset(ImageResource.expandedDownShape)
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: ColorResource.colorE7E7E7,
-                          // ignore: unnecessary_new
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(22, 11, 17, 11),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              'VEHICLE AVAILABLE',
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color000000,
-                              fontStyle: FontStyle.normal,
+                          ),
+                          color: ColorResource.color23375A,
+                          elevation: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(ImageResource.upload),
+                                    SizedBox(width: 5),
+                                    CustomText(
+                                      'UPLOAD AUDIO FILE',
+                                      color: ColorResource.colorFFFFFF,
+                                      fontSize: FontSize.sixteen,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                    )
+                                  ],
+                                ),
+                                CustomText(
+                                  'UPTO 5MB',
+                                  lineHeight: 1,
+                                  color: ColorResource.colorFFFFFF,
+                                  fontSize: FontSize.twelve,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w700,
+                                )
+                              ],
                             ),
-                            Image.asset(ImageResource.expandedDownShape)
-                          ],
-                        ),
-                      ),
+                          )),
                     ),
-                    SizedBox(height: 12),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: ColorResource.colorE7E7E7,
-                          // ignore: unnecessary_new
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(22, 11, 17, 11),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              'COLLECTOR FEEDDBACK',
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color000000,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            Image.asset(ImageResource.expandedDownShape)
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 25),
-                    GestureDetector(
-                      onTap: () {},
-                      child: SizedBox(
-                        width: double.infinity,
-                        // height: 56,
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(
-                                width: 0.5,
-                                color: ColorResource.colorDADADA,
-                              ),
-                            ),
-                            color: ColorResource.color23375A,
-                            elevation: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(ImageResource.upload),
-                                      SizedBox(width: 5),
-                                      CustomText(
-                                        'UPLOAD AUDIO FILE',
-                                        color: ColorResource.colorFFFFFF,
-                                        fontSize: FontSize.sixteen,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700,
-                                      )
-                                    ],
-                                  ),
-                                  CustomText(
-                                    'UPTO 5MB',
-                                    lineHeight: 1,
-                                    color: ColorResource.colorFFFFFF,
-                                    fontSize: FontSize.twelve,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                  )
-                                ],
-                              ),
-                            )),
-                      ),
-                    ),
-                    // CustomButton(
-                    //   'UPLOAD AUDIO FILE',
-                    //   fontWeight: FontWeight.w700,
-                    //   trailingWidget: Image.asset(ImageResource.upload),
-                    //   fontSize: FontSize.sixteen,
-                    //   buttonBackgroundColor: ColorResource.color23375A,
-                    //   borderColor: ColorResource.colorDADADA,
-                    //   cardShape: 50,
-                    //   cardElevation: 1,
-                    //   isLeading: true,
-                    // ),
-                    SizedBox(height: 15),
-                  ],
-                ),
+                  ),
+                  // CustomButton(
+                  //   'UPLOAD AUDIO FILE',
+                  //   fontWeight: FontWeight.w700,
+                  //   trailingWidget: Image.asset(ImageResource.upload),
+                  //   fontSize: FontSize.sixteen,
+                  //   buttonBackgroundColor: ColorResource.color23375A,
+                  //   borderColor: ColorResource.colorDADADA,
+                  //   cardShape: 50,
+                  //   cardElevation: 1,
+                  //   isLeading: true,
+                  // ),
+                  SizedBox(height: 15),
+                ],
               ),
             ),
           ),
@@ -424,5 +356,65 @@ class _CustomOtherFeedBackBottomSheetState
     final hours = newTime.hour.toString().padLeft(2, '0');
     final minutes = newTime.minute.toString().padLeft(2, '0');
     setState(() => controller.text = '$hours:$minutes');
+  }
+
+   expandList(List<OtherFeedbackExpandModel> expandedList, int index) {
+    int listcount = index;
+    listcount++;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 12,),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0),
+            color: ColorResource.colorE7E7E7,
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.grey.withOpacity(0.2),
+            //     spreadRadius: 2,
+            //     blurRadius: 3,
+            //     offset: Offset(0, 3), // changes position of shadow
+            //   ),
+            // ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 14, 0),
+            child: Theme(
+              data: ThemeData().copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                tilePadding: const EdgeInsetsDirectional.all(0),
+                expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                expandedAlignment: Alignment.centerLeft,
+                title: CustomText(
+                      expandedList[index].header,
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                iconColor: ColorResource.color000000,
+                collapsedIconColor: ColorResource.color000000,
+                children: [
+                  CustomText(
+                    expandedList[index].subtitle,
+                    fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                  ),
+                  SizedBox(height: 13,)
+                  
+                ],
+                onExpansionChanged: (bool status) {
+                  setState(() {
+                    // ignore: lines_longer_than_80_chars
+                    expandedList[index].expanded = !expandedList[index].expanded;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -70,7 +70,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                             switch (widget
                                 .bloc.customerMetGridList[innerIndex].title) {
                               case StringResource.ptp:
-                                openBottomSheet(context, StringResource.ptp);
+                                openBottomSheet(context, StringResource.ptp,);
                                 break;
                               case StringResource.rtp:
                                 openBottomSheet(context, StringResource.rtp);
@@ -265,7 +265,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                 Languages.of(context)!.captureImage);
           case StringResource.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
-                Languages.of(context)!.otherFeedBack);
+                Languages.of(context)!.otherFeedBack, widget.bloc);
           default:
             return Scaffold(
               body: Center(

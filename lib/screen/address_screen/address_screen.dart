@@ -329,7 +329,7 @@ class _AddressScreenState extends State<AddressScreen>
       ),
       builder: (BuildContext context) {
         return CustomEventDetailsBottomSheet(
-            Languages.of(context)!.eventDetails.toUpperCase());
+            Languages.of(context)!.eventDetails.toUpperCase(), bloc);
       },
     );
   }
