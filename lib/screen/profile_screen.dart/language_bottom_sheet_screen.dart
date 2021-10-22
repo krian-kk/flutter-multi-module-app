@@ -137,18 +137,23 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                 ],
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-                child: Container(
-                  decoration: new BoxDecoration(),
-                  child: CustomButton(
-                    Languages.of(context)!.okay.toUpperCase(),
-                    onTap: () => Navigator.pop(context),
-                    cardShape: 5,
-                    leadingWidget: CircleAvatar(
-                      radius: 13,
-                      backgroundColor: ColorResource.colorFFFFFF,
+                padding: EdgeInsets.symmetric(vertical: 11.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 190,
+                      child: CustomButton(
+                        Languages.of(context)!.okay.toUpperCase(),
+                        onTap: () => Navigator.pop(context),
+                        cardShape: 5,
+                        leadingWidget: CircleAvatar(
+                          radius: 13,
+                          backgroundColor: ColorResource.colorFFFFFF,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),

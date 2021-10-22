@@ -384,4 +384,19 @@ class LanguageEn extends Languages {
 
   @override
   String get addressNotFound => 'ADDRESS NOT FOUND';
+
+  @override
+  String get callCustomer => 'CALL CUSTOMER';
+
+  @override
+  String get agentContactNo => 'Agent Contact No*';
+
+  @override
+  String get customerContactNo => 'Customer Contact No*';
+
+  @override
+  String get serviceProvidersList => 'Service Provider’s  List';
+
+  @override
+  String get callersId => 'Caller ID’s';
 }

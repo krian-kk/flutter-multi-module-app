@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/customer_not_met_model.dart';
 import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
+import 'package:origa/screen/phone_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/phone_screen/unreachable_screen.dart';
@@ -14,6 +15,8 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_drop_down_button.dart';
+import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhoneScreen extends StatefulWidget {
@@ -137,33 +140,34 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 Row(
                                   children: [
                                     Expanded(
-                                        child: SizedBox(
-                                            width: 10,
-                                            child: Container(
-                                                decoration: new BoxDecoration(
+                                        child: GestureDetector(
+                                      onTap: () =>
+                                          callCustomerBottomSheet(context),
+                                      child: SizedBox(
+                                          width: 10,
+                                          child: Container(
+                                              decoration: new BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorBEC4CF,
+                                                  borderRadius:
+                                                      new BorderRadius.all(
+                                                          new Radius.circular(
+                                                              75.0))),
+                                              child: Row(
+                                                children: [
+                                                  Image.asset(
+                                                      ImageResource.phone),
+                                                  SizedBox(width: 12),
+                                                  CustomText(
+                                                    Languages.of(context)!.call,
+                                                    fontSize: FontSize.fourteen,
+                                                    fontWeight: FontWeight.w700,
                                                     color: ColorResource
-                                                        .colorBEC4CF,
-                                                    borderRadius:
-                                                        new BorderRadius.all(
-                                                            new Radius.circular(
-                                                                75.0))),
-                                                child: Row(
-                                                  children: [
-                                                    Image.asset(
-                                                        ImageResource.phone),
-                                                    SizedBox(width: 12),
-                                                    CustomText(
-                                                      Languages.of(context)!
-                                                          .call,
-                                                      fontSize:
-                                                          FontSize.fourteen,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: ColorResource
-                                                          .color23375A,
-                                                    )
-                                                  ],
-                                                )))),
+                                                        .color23375A,
+                                                  )
+                                                ],
+                                              ))),
+                                    )),
                                     SizedBox(width: 67),
                                     Expanded(
                                         child: CustomButton(
@@ -261,16 +265,21 @@ class _PhoneScreenState extends State<PhoneScreen>
                 ),
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
-                  child: Container(
-                    decoration: BoxDecoration(),
-                    child: CustomButton(
-                      Languages.of(context)!.done.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      onTap: () {},
-                      cardShape: 5,
-                    ),
+                  padding: EdgeInsets.symmetric(vertical: 11.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 190,
+                        child: CustomButton(
+                          Languages.of(context)!.done.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          onTap: () {},
+                          cardShape: 5,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )
@@ -303,9 +312,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                             fontSize: FontSize.sixteen,
                           ))),
                       SizedBox(width: 25),
-                      Container(
+                      SizedBox(
                         width: 191,
-                        decoration: BoxDecoration(),
                         child: CustomButton(
                           Languages.of(context)!.submit.toUpperCase(),
                           fontSize: FontSize.sixteen,
@@ -320,5 +328,24 @@ class _PhoneScreenState extends State<PhoneScreen>
               ),
       ),
     );
+  }
+
+  void callCustomerBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+        context: buildContext,
+        isScrollControlled: true,
+        isDismissible: false,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: CallCustomerBottomSheet(),
+          );
+        });
   }
 }

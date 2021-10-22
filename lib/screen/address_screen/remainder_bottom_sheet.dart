@@ -222,9 +222,8 @@ class _CustomRemainderBottomSheetState
                         fontSize: FontSize.sixteen,
                       ))),
                   SizedBox(width: 25),
-                  Container(
+                  SizedBox(
                     width: 191,
-                    decoration: BoxDecoration(),
                     child: CustomButton(
                       Languages.of(context)!.submit.toUpperCase(),
                       fontSize: FontSize.sixteen,

@@ -37,6 +37,16 @@ class CustomDropDownButton extends StatefulWidget {
 }
 
 class _CustomDropDownButtonState extends State<CustomDropDownButton> {
+  late String? selectedValue;
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      selectedValue = widget.listOfItems[0];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +62,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           fontStyle: FontStyle.normal,
         ),
         DropdownButton<String>(
-          value: widget.listOfItems[0],
+          value: selectedValue,
           icon: widget.icon,
           iconSize: 24,
           isExpanded: widget.isExpanded,
@@ -69,7 +79,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           focusNode: widget.focusNode,
           onChanged: (newValue) {
             setState(() {
-              // widget.value = newValue!;
+              selectedValue = newValue;
             });
           },
           autofocus: widget.autoFocus,

@@ -6,6 +6,7 @@ import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/screen/address_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/address_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/remainder_bottom_sheet.dart';
@@ -69,7 +70,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                             switch (widget
                                 .bloc.customerMetGridList[innerIndex].title) {
                               case StringResource.ptp:
-                                openBottomSheet(context, StringResource.ptp);
+                                openBottomSheet(context, StringResource.ptp,);
                                 break;
                               case StringResource.rtp:
                                 openBottomSheet(context, StringResource.rtp);
@@ -260,6 +261,9 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
           case StringResource.captureImage:
             return CustomCaptureImageBottomSheet(
                 Languages.of(context)!.captureImage);
+          case StringResource.otherFeedback:
+            return CustomOtherFeedBackBottomSheet(
+                Languages.of(context)!.otherFeedBack, widget.bloc);
           default:
             return Scaffold(
               body: Center(
