@@ -268,4 +268,6 @@ abstract class Languages {
   String get serviceProvidersList;
 
   String get callersId;
+
+  String get customerMetCategory;
 }

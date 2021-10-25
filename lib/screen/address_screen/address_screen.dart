@@ -292,6 +292,7 @@ class _AddressScreenState extends State<AddressScreen>
                           child: Center(
                               child: CustomText(
                             Languages.of(context)!.cancel.toUpperCase(),
+                            onTap: () => Navigator.pop(context),
                             color: ColorResource.colorEA6D48,
                             fontWeight: FontWeight.w600,
                             fontStyle: FontStyle.normal,

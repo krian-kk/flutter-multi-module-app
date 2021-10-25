@@ -70,7 +70,10 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                             switch (widget
                                 .bloc.customerMetGridList[innerIndex].title) {
                               case StringResource.ptp:
-                                openBottomSheet(context, StringResource.ptp,);
+                                openBottomSheet(
+                                  context,
+                                  StringResource.ptp,
+                                );
                                 break;
                               case StringResource.rtp:
                                 openBottomSheet(context, StringResource.rtp);
@@ -154,11 +157,11 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         width: 165,
                         child: CustomButton(
                           Languages.of(context)!.addNewContact.toUpperCase(),
-                          textColor: ColorResource.color23375A,
+                          textColor: ColorResource.colorFFFFFF,
                           borderColor: ColorResource.color23375A,
                           fontSize: FontSize.twelve,
                           cardShape: 75,
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          buttonBackgroundColor: ColorResource.color23375A,
                         ),
                       ),
                       SizedBox(

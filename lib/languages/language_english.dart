@@ -399,4 +399,7 @@ class LanguageEn extends Languages {
 
   @override
   String get callersId => 'Caller ID’s';
+
+  @override
+  String get customerMetCategory => 'Customer Met Category';
 }

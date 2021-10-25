@@ -15,8 +15,6 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_drop_down_button.dart';
-import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhoneScreen extends StatefulWidget {
@@ -61,17 +59,17 @@ class _PhoneScreenState extends State<PhoneScreen>
         backgroundColor: ColorResource.colorF7F8FA,
         body: Column(
           children: [
-            CustomAppbar(
-              titleString: Languages.of(context)!.caseDetials,
-              titleSpacing: 21,
-              iconEnumValues: IconEnum.back,
-              onItemSelected: (value) {
-                if (value == 'IconEnum.back') {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                }
-              },
-            ),
+            // CustomAppbar(
+            //   titleString: Languages.of(context)!.caseDetials,
+            //   titleSpacing: 21,
+            //   iconEnumValues: IconEnum.back,
+            //   onItemSelected: (value) {
+            //     if (value == 'IconEnum.back') {
+            //       Navigator.pop(context);
+            //       Navigator.pop(context);
+            //     }
+            //   },
+            // ),
             BlocListener<PhoneBloc, PhoneState>(
               bloc: bloc,
               listener: (context, state) {},
@@ -307,6 +305,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                           child: Center(
                               child: CustomText(
                             Languages.of(context)!.cancel.toUpperCase(),
+                            onTap: () => Navigator.pop(context),
                             color: ColorResource.colorEA6D48,
                             fontWeight: FontWeight.w600,
                             fontStyle: FontStyle.normal,

@@ -6,6 +6,7 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -53,24 +54,27 @@ class _CustomCollectionsBottomSheetState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  widget.cardTitle,
-                  color: ColorResource.color101010,
-                  fontWeight: FontWeight.w700,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
-                ),
-                GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Image.asset(ImageResource.close))
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       CustomText(
+          //         widget.cardTitle,
+          //         color: ColorResource.color101010,
+          //         fontWeight: FontWeight.w700,
+          //         fontSize: FontSize.sixteen,
+          //         fontStyle: FontStyle.normal,
+          //       ),
+          //       GestureDetector(
+          //           onTap: () => Navigator.pop(context),
+          //           child: Image.asset(ImageResource.close))
+          //     ],
+          //   ),
+          // ),
+          BottomSheetAppbar(
+              title: widget.cardTitle,
+              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -165,6 +169,7 @@ class _CustomCollectionsBottomSheetState
                                         pickDate(context, dateControlller),
                                     child: ImageIcon(
                                       AssetImage(ImageResource.calendar),
+                                      color: ColorResource.colorC4C4C4,
                                     )),
                                 // focusColor: ColorResource.colorE5EAF6,
                               ),
@@ -229,6 +234,7 @@ class _CustomCollectionsBottomSheetState
                       child: Center(
                           child: CustomText(
                         Languages.of(context)!.cancel.toUpperCase(),
+                        onTap: () => Navigator.pop(context),
                         color: ColorResource.colorEA6D48,
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.normal,

@@ -72,6 +72,7 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
                             onTap: () {},
                             child: ImageIcon(
                               AssetImage(ImageResource.calendar),
+                              color: ColorResource.colorC4C4C4,
                             ),
                           ),
                           labelText: StringResource.loanDuration,

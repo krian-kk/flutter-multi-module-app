@@ -68,7 +68,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                     child: TextField(
                       //controller: loanDurationController,
                       decoration: new InputDecoration(
-                          labelText: 'Write your remarks here',
+                          hintText: 'Write your remarks here',
                           focusColor: ColorResource.colorE5EAF6,
                           labelStyle:
                               new TextStyle(color: const Color(0xFF424242))),
@@ -97,9 +97,9 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         width: 165,
                         child: CustomButton(
                           Languages.of(context)!.addNewContact.toUpperCase(),
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          buttonBackgroundColor: ColorResource.color23375A,
                           borderColor: ColorResource.color23375A,
-                          textColor: ColorResource.color23375A,
+                          textColor: ColorResource.colorFFFFFF,
                           fontSize: FontSize.twelve,
                           fontWeight: FontWeight.w700,
                           cardShape: 75,
@@ -117,6 +117,19 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           cardShape: 75,
                         ),
                       ),
+                      SizedBox(
+                        width: 165,
+                        child: CustomButton(
+                          Languages.of(context)!.otherFeedBack.toUpperCase(),
+                          // onTap: () => openBottomSheet(
+                          //     context, StringResource.otherFeedback),
+                          cardShape: 75,
+                          fontSize: FontSize.twelve,
+                          textColor: ColorResource.color23375A,
+                          borderColor: ColorResource.color23375A,
+                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(height: 120)

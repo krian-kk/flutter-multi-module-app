@@ -6,10 +6,10 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
   CustomCaptureImageBottomSheet(
@@ -40,24 +40,27 @@ class _CustomCaptureImageBottomSheetState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  widget.cardTitle,
-                  color: ColorResource.color101010,
-                  fontWeight: FontWeight.w700,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
-                ),
-                GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Image.asset(ImageResource.close))
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       CustomText(
+          //         widget.cardTitle,
+          //         color: ColorResource.color101010,
+          //         fontWeight: FontWeight.w700,
+          //         fontSize: FontSize.sixteen,
+          //         fontStyle: FontStyle.normal,
+          //       ),
+          //       GestureDetector(
+          //           onTap: () => Navigator.pop(context),
+          //           child: Image.asset(ImageResource.close))
+          //     ],
+          //   ),
+          // ),
+          BottomSheetAppbar(
+              title: widget.cardTitle,
+              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -168,6 +171,7 @@ class _CustomCaptureImageBottomSheetState
                       child: Center(
                           child: CustomText(
                         Languages.of(context)!.cancel.toUpperCase(),
+                        onTap: () => Navigator.pop(context),
                         color: ColorResource.colorEA6D48,
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.normal,

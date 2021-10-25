@@ -78,13 +78,14 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         onTap: () => pickDate(context, loanDurationController),
                         child: ImageIcon(
                           AssetImage(ImageResource.calendar),
+                          color: ColorResource.colorC4C4C4,
                         ),
                       ),
                     ),
                   ),
                   SizedBox(height: 27),
                   Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.bottomLeft,
                       child: CustomText(
                         Languages.of(context)!.remarks.toUpperCase(),
                         color: ColorResource.color666666,
@@ -96,8 +97,10 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                     width: double.infinity,
                     child: TextField(
                       //controller: loanDurationController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 3,
                       decoration: new InputDecoration(
-                          labelText: 'Write your remarks here',
+                          hintText: 'Write your remarks here',
                           focusColor: ColorResource.colorE5EAF6,
                           labelStyle:
                               new TextStyle(color: const Color(0xFF424242))),
@@ -117,6 +120,36 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                     isLeading: true,
                     // onTap: () => pickImage(source, cameraDialogueContext)
                     trailingWidget: Image.asset(ImageResource.capturImage),
+                  ),
+                  SizedBox(height: 20),
+                  Wrap(
+                    spacing: 15,
+                    children: [
+                      SizedBox(
+                        width: 165,
+                        child: CustomButton(
+                          Languages.of(context)!.addNewContact.toUpperCase(),
+                          buttonBackgroundColor: ColorResource.color23375A,
+                          borderColor: ColorResource.color23375A,
+                          textColor: ColorResource.colorFFFFFF,
+                          fontSize: FontSize.twelve,
+                          fontWeight: FontWeight.w700,
+                          cardShape: 75,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 157,
+                        child: CustomButton(
+                          Languages.of(context)!.repo.toUpperCase(),
+                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          borderColor: ColorResource.color23375A,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.twelve,
+                          fontWeight: FontWeight.w700,
+                          cardShape: 75,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 120)
                 ],

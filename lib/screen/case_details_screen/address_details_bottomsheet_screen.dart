@@ -142,8 +142,13 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                   ),
                                   Align(
                                       alignment: Alignment.topRight,
-                                      child: Image.asset(
-                                          ImageResource.activePerson)),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 10),
+                                          Image.asset(
+                                              ImageResource.activePerson),
+                                        ],
+                                      )),
                                 ],
                               ),
                               SizedBox(height: 15),
