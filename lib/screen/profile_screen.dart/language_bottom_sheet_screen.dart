@@ -147,6 +147,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                         Languages.of(context)!.okay.toUpperCase(),
                         onTap: () => Navigator.pop(context),
                         cardShape: 5,
+                        fontSize: FontSize.sixteen,
                         leadingWidget: CircleAvatar(
                           radius: 13,
                           backgroundColor: ColorResource.colorFFFFFF,

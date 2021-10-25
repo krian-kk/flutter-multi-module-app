@@ -78,6 +78,7 @@ class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
                           Languages.of(context)!.addNewContact,
                           textColor: ColorResource.colorFFFFFF,
                           borderColor: ColorResource.color23375A,
+                          fontSize: FontSize.twelve,
                           cardShape: 75,
                           buttonBackgroundColor: ColorResource.color23375A,
                         ),
@@ -85,7 +86,8 @@ class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
                       SizedBox(height: 11),
                       Expanded(
                         child: CustomButton(
-                          Languages.of(context)!.eventDetails,
+                          Languages.of(context)!.otherFeedBack,
+                          fontSize: FontSize.twelve,
                           textColor: ColorResource.color23375A,
                           borderColor: ColorResource.color23375A,
                           cardShape: 75,

@@ -8,7 +8,6 @@ import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_screen/bloc/map_event.dart';
 import 'package:origa/screen/map_screen/map_screen.dart';
-import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -52,9 +51,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
       listener: (BuildContext context, AllocationState state) {
         if (state is MapViewState) {
           mapView(context);
-        }
-         if (state is MessageState) {
-          messageShowBottomSheet();
         }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
@@ -105,8 +101,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           ),
                         ),
                         onTap: () {
-                          bloc.add(MessageEvent());
-                          // AppUtils.showToast('Message');
+                          AppUtils.showToast('Message');
                         },
                       ),
                     ),
@@ -457,26 +452,5 @@ class _AllocationScreenState extends State<AllocationScreen> {
         builder: (BuildContext context) {
           return MapView(bloc);
         });
-  }
-
-
-  messageShowBottomSheet() {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.86,
-                  child: MessageChatRoomScreen()
-                )));
   }
 }

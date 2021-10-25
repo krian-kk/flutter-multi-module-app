@@ -30,6 +30,7 @@ class _CustomCollectionsBottomSheetState
   TextEditingController dateControlller = TextEditingController();
   TextEditingController chequeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
+  String selectedPaymentModeButton = '';
 
   @override
   void initState() {
@@ -295,19 +296,22 @@ class _CustomCollectionsBottomSheetState
     list.forEach((element) {
       widgets.add(InkWell(
         onTap: () {
-          // widget.bloc.selectedInvalidClip = element.clipTitle;
-          setState(() {});
+          setState(() {
+            selectedPaymentModeButton = element.title;
+          });
         },
         child: Container(
           width: 150,
           height: 50,
           decoration: BoxDecoration(
-              color: ColorResource.color23375A,
+              color: element.title == selectedPaymentModeButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorBEC4CF,
               boxShadow: [
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0), // shadow direction: bottom right
+                  offset: Offset(1.0, 1.0),
                 )
               ],
               borderRadius: BorderRadius.all(Radius.circular(50.0))),

@@ -1,6 +1,7 @@
 //import 'package:easy_localization/easy_localization.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,18 +10,21 @@ import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
-
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:origa/utils/app_theme.dart';
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_event.dart';
 import 'bloc.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   Bloc.observer = EchoBlocDelegate();
+  await Hive.initFlutter();
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) {
       return AuthenticationBloc()..add(AppStarted());
@@ -68,33 +72,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: _locale,
-      supportedLocales: const [Locale('en', ''), Locale('hi', '')],
-      localizationsDelegates: const [
-        AppLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      localeResolutionCallback:
-          (Locale? locale, Iterable<Locale> supportedLocales) {
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale?.languageCode &&
-              supportedLocale.countryCode == locale?.countryCode) {
-            return supportedLocale;
-          }
-        }
-        return supportedLocales.first;
-      },
-      onGenerateRoute: getRoute,
-      debugShowCheckedModeBanner: false,
-      // ignore: prefer_double_quotes
+    return DynamicTheme(
+      themeCollection: AppThemes().getThemeCollections(),
+      builder: (BuildContext context, ThemeData theme) {
+        return MaterialApp(
+          locale: _locale,
+          supportedLocales: const [Locale('en', ''), Locale('hi', '')],
+          localizationsDelegates: const [
+            AppLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
+          localeResolutionCallback:
+              (Locale? locale, Iterable<Locale> supportedLocales) {
+            for (Locale supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale?.languageCode &&
+                  supportedLocale.countryCode == locale?.countryCode) {
+                return supportedLocale;
+              }
+            }
+            return supportedLocales.first;
+          },
+          onGenerateRoute: getRoute,
+          debugShowCheckedModeBanner: false,
+          // ignore: prefer_double_quotes
 
-      home: addAuthBloc(
-        context,
-        SplashScreen(),
-      ),
+          home: addAuthBloc(
+            context,
+            SplashScreen(),
+          ),
+        );
+      },
     );
   }
 }
