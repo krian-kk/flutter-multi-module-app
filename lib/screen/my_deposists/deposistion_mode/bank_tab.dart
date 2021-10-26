@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -54,9 +55,9 @@ class _BankTabState extends State<BankTab> {
                    child: Column(
                      children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 13),
+                        padding: EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'Bank Name*',
+                          Languages.of(context)!.bankName,
                           bankNameController,
                           isLabel: true,
                           isEnable: false,
@@ -65,7 +66,7 @@ class _BankTabState extends State<BankTab> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'Branch Name*',
+                          Languages.of(context)!.branchName,
                           branchController,
                           isLabel: true,
                           isEnable: false,
@@ -74,7 +75,7 @@ class _BankTabState extends State<BankTab> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'IFSC Code*',
+                          Languages.of(context)!.ifscCode,
                           ifscCodeController,
                           isLabel: true,
                           isEnable: false,
@@ -87,7 +88,7 @@ class _BankTabState extends State<BankTab> {
                             Expanded(
                               flex: 1,
                               child: CustomReadOnlyTextField(
-                                'Receipt Amount*',
+                                Languages.of(context)!.receiptAmount,
                                 receiptController,
                                 isLabel: true,
                                 isEnable: false,
@@ -97,11 +98,11 @@ class _BankTabState extends State<BankTab> {
                              Expanded(
                                flex: 1,
                                child: CustomReadOnlyTextField(
-                                'Deposit Amount*',
+                                Languages.of(context)!.depositAmount,
                                 depositController,
                                 isLabel: true,
                                 isEnable: false,
-                                                         ),
+                              ),
                              ),
                           ],
                         ),
@@ -109,7 +110,7 @@ class _BankTabState extends State<BankTab> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'Reference*',
+                          Languages.of(context)!.reference,
                           referenceController,
                           isLabel: true,
                           isEnable: false,
@@ -117,7 +118,7 @@ class _BankTabState extends State<BankTab> {
                       ),
                       const SizedBox(height: 7,),
                       CustomButton(
-                        'UPLOAD DEPOSIT SLIP',
+                        Languages.of(context)!.uploadDepositSlip,
                         fontWeight: FontWeight.w700,
                         fontSize: FontSize.sixteen,
                         buttonBackgroundColor: ColorResource.color23375A,

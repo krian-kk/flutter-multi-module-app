@@ -45,7 +45,7 @@ class DepositionMode extends StatelessWidget {
                                     Expanded(
                                       flex: 4,
                                       child: CustomButton(
-                                        'CANCEL',
+                                        Languages.of(context)!.cancel.toUpperCase(),
                                         fontSize: FontSize.sixteen,
                                         textColor: ColorResource.colorEA6D48,
                                         fontWeight: FontWeight.w600,
@@ -60,7 +60,7 @@ class DepositionMode extends StatelessWidget {
                                     Expanded(
                                       flex: 5,
                                       child: CustomButton(
-                                        'SUBMIT',
+                                        Languages.of(context)!.submit.toUpperCase(),
                                         fontSize: FontSize.sixteen,
                                         fontWeight: FontWeight.w600,
                                         cardShape: 5,          
@@ -74,8 +74,8 @@ class DepositionMode extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               // ignore: prefer_const_literals_to_create_immutables
                               children: [
-                                 const BottomSheetAppbar(
-                                  title: 'DEPOSITION MODE',
+                                  BottomSheetAppbar(
+                                  title: Languages.of(context)!.depositionMode,
                                 ),
                                 SizedBox(height: 7,),
                                 Container(
@@ -84,7 +84,7 @@ class DepositionMode extends StatelessWidget {
                                                 border: Border(
                                                     bottom: BorderSide(
                                                         color: ColorResource.colorD8D8D8))),
-                                            child:  TabBar(
+                                            child: TabBar(
                                               isScrollable: false,
                                               indicatorColor: ColorResource.colorD5344C,
                                               labelStyle: TextStyle(
@@ -97,8 +97,8 @@ class DepositionMode extends StatelessWidget {
                                               unselectedLabelColor:
                                                   ColorResource.colorC4C4C4,
                                               tabs: [
-                                                Tab(text:'BANK'),
-                                                Tab(text: 'COMPANY BRANCH'),
+                                                Tab(text: Languages.of(context)!.bank),
+                                                Tab(text: Languages.of(context)!.companybranch),
                                               ],
                                               
                                             ),

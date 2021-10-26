@@ -9,6 +9,120 @@ abstract class Languages {
 
   String get splashScreen;
 
+  String get userName;
+
+  String get password;
+
+  String get signin;
+
+  String get resetPassword;
+
+  String get loginViaDiffrentUser;
+
+  String get hignPriority;
+
+  String get allocation;
+
+  String get dashboard;
+
+  String get profile;
+
+  String get areYouAtOffice;
+
+  String get yes;
+
+  String get no;
+
+  String get searchbasedOn;
+
+  String get priority;
+
+  String get buildRoute;
+
+  String get mapView;
+
+  String get message;
+
+  String get followUpDate;
+
+  String get change;
+
+  String get all;
+
+  String get under5km;
+
+  String get more5km;
+
+  String get mtdResolutionProgress;
+
+  String get customer;
+
+  String get amount;
+
+  String get priorityFollowUp;
+
+  String get untouchedCases;
+
+  String get brokenPTP;
+
+  String get myReceipts;
+
+  String get myVisits;
+
+  String get myDeposists;
+
+  String get yardingSelfRelease;
+
+  String get help;
+
+  String get count;
+
+  String get today;
+
+  String get weekly;
+
+  String get monthly;
+
+  String get cheque;
+
+  String get cash;
+
+  String get loanAccountNumber;
+
+  String get receiptDate;
+
+  String get selected;
+
+  String get enterDepositionDetails;
+
+  String get bank;
+
+  String get companybranch;
+
+  String get branchName;
+
+  String get branchLocation;
+
+  String get receiptAmount;
+
+  String get depositAmount;
+
+  String get yarding;
+
+  String get selfRelease;
+
+  String get yardName;
+
+  String get remark;
+
+  String get uploadDepositSlip;
+
+  String get send;
+
+  String get typeYourMessage;
+
+  String get depositionMode;
+
   String get cancel;
 
   String get search;
@@ -46,6 +160,12 @@ abstract class Languages {
   String get emiStartDate;
 
   String get bankName;
+
+  String get ifscCode;
+
+  String get repoStatus;
+
+  String get repoDate;
 
   String get repaymentInfo;
 
@@ -95,30 +215,6 @@ abstract class Languages {
 
   String get select;
 
-  String get allocation;
-
-  String get dashboard;
-
-  String get profile;
-
-  String get areYouAtOffice;
-
-  String get yes;
-
-  String get no;
-
-  String get searchbasedOn;
-
-  String get priority;
-
-  String get buildRoute;
-
-  String get mapView;
-
-  String get message;
-
-  String get followUpDate;
-
   String get error;
 
   String get homeAddress;
@@ -143,14 +239,6 @@ abstract class Languages {
 
   String get kannada;
 
-  String get change;
-
-  String get all;
-
-  String get under5km;
-
-  String get more5km;
-
   String get read;
 
   String get addressDetails;
@@ -170,18 +258,6 @@ abstract class Languages {
   String get uploadPhoto;
 
   String get logout;
-
-  String get userName;
-
-  String get password;
-
-  String get signin;
-
-  String get resetPassword;
-
-  String get loginViaDiffrentUser;
-
-  String get hignPriority;
 
   String get choiceOtherLanguages;
 
@@ -223,7 +299,7 @@ abstract class Languages {
 
   String get time;
 
-  String get cheque;
+  String get refCheque;
 
   String get otsPaymentDate;
 

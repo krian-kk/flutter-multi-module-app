@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
@@ -64,7 +65,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
                                 child: CustomButton(
-                                  'ENTER DEPOSITION DETAILS',
+                                  Languages.of(context)!.enterDepositionDetails,
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
                                   onTap: (){
@@ -77,8 +78,8 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               // ignore: prefer_const_literals_to_create_immutables
                               children: [
-                                 const BottomSheetAppbar(
-                                  title: 'MY DEPOSISTS',
+                                  BottomSheetAppbar(
+                                  title: Languages.of(context)!.myDeposists,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -96,7 +97,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   CustomText(
-                                                  'COUNT',
+                                                  Languages.of(context)!.count,
                                                   fontSize: FontSize.ten,
                                                   color: ColorResource.color101010,),
                                                   CustomText('200', 
@@ -113,7 +114,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   CustomText(
-                                                  'AMOUNT',
+                                                  Languages.of(context)!.amount,
                                                   fontSize: FontSize.ten,
                                                   color: ColorResource.color101010,),
                                                   CustomText('₹ 3,97,553.67', 
@@ -143,10 +144,10 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                 border: Border(
                                                     bottom: BorderSide(
                                                         color: ColorResource.colorD8D8D8))),
-                                            child: const TabBar(
+                                            child: TabBar(
                                               isScrollable: false,
                                               indicatorColor: ColorResource.colorD5344C,
-                                              labelStyle: TextStyle(
+                                              labelStyle: const TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                   color: ColorResource.color23375A,
                                                   fontSize: FontSize.fourteen,
@@ -156,8 +157,8 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                               unselectedLabelColor:
                                                   ColorResource.colorC4C4C4,
                                               tabs: [
-                                                Tab(text: StringResource.cheque),
-                                                Tab(text: StringResource.cash),
+                                              Tab(text: Languages.of(context)!.cheque),
+                                              Tab(text: Languages.of(context)!.cash)
                                               ],
                                               
                                             ),
