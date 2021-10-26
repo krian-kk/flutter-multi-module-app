@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -7,7 +8,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
+// import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class WidgetUtils {
@@ -145,7 +146,7 @@ class WidgetUtils {
                                                 BorderRadius.circular(30)),
                                         child: Center(
                                           child: CustomText(
-                                            StringResource.new_,
+                                            Languages.of(context)!.new_,
                                             color: ColorResource.colorffffff,
                                             fontSize: FontSize.ten,
                                             lineHeight: 1,
@@ -192,7 +193,7 @@ class WidgetUtils {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  StringResource.followUpDate,
+                                  Languages.of(context)!.followUpDate,
                                   fontSize: FontSize.fourteen,
                                   color: ColorResource.color101010,
                                   fontWeight: FontWeight.w400,
@@ -214,7 +215,7 @@ class WidgetUtils {
                                       child: Row(
                                         children: [
                                           CustomText(
-                                            StringResource.view,
+                                            Languages.of(context)!.view,
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color23375A,
                                             fontWeight: FontWeight.w700,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -50,7 +51,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'Date',
+                          Languages.of(context)!.date,
                           dateController,
                           isLabel: true,
                           isEnable: false,
@@ -59,7 +60,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'Time*',
+                          Languages.of(context)!.time,
                           timeController,
                           isLabel: true,
                           isEnable: false,
@@ -68,7 +69,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
-                          'Remarks*',
+                         Languages.of(context)!.remark,
                           remarksController,
                           isLabel: true,
                           isEnable: false,
@@ -76,7 +77,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                       ),
                       const SizedBox(height: 7,),
                       CustomButton(
-                        'UPLOAD DEPOSIT SLIP',
+                        Languages.of(context)!.uploadDepositSlip,
                         fontWeight: FontWeight.w700,
                         fontSize: FontSize.sixteen,
                         buttonBackgroundColor: ColorResource.color23375A,

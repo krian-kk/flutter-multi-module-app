@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
 import 'package:origa/screen/message_screen/message.dart';
@@ -90,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                            StringResource.customerMet,
+                                            Languages.of(context)!.customerMet,
                                             '20',
                                             ColorResource.colorE0ECDF,
                                             ColorResource.color73C170,
@@ -103,7 +104,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            StringResource.customerNotMet,
+                                            Languages.of(context)!.customerNotMet,
                                             '10',
                                             ColorResource.colorF2EEDC,
                                             ColorResource.colorE5C55B,
@@ -120,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           },
                                           child: Container(
                                             child: userActivity(
-                                              StringResource.invalid,
+                                              Languages.of(context)!.invalid,
                                               '10',
                                               ColorResource.colorF4ECEF,
                                               ColorResource.colorF1BCC4,
@@ -146,7 +147,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      'MTD RESOLUTION PROGRESS',
+                                      Languages.of(context)!.mtdResolutionProgress,
                                       fontSize: FontSize.twelve,
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color23375A,
@@ -155,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       height: 5,
                                     ),
                                     CustomText(
-                                      'CUSTOMER',
+                                      Languages.of(context)!.customer.toUpperCase(),
                                       color: ColorResource.color23375A,
                                       fontSize: FontSize.ten,
                                       fontWeight: FontWeight.w700,
@@ -207,7 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      'AMOUNT',
+                                      Languages.of(context)!.amount.toUpperCase(),
                                       color: ColorResource.color23375A,
                                       fontSize: FontSize.ten,
                                       fontWeight: FontWeight.w700,
@@ -262,31 +263,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     padding: const EdgeInsets.all(2.0),
                                     child: GestureDetector(
                                       onTap: () {
-                                        switch (
-                                            bloc.dashboardList[index].title) {
-                                          case 'PRIORITY FOLLOW UP':
+                                        switch (index) {
+                                          case 0:
                                             priorityFollowUpSheet(context);
                                             break;
-                                          case 'BROKEN PTP':
-                                            brokenPTPSheet(context);
-                                            break;
-                                          case 'UNTOUCHED CASES':
+                                          case 1:
                                             untouchedCasesSheet(context);
                                             break;
-                                          case 'MY VISITS':
-                                            myVisitsSheet(context);
+                                          case 2:
+                                            brokenPTPSheet(context);
                                             break;
-                                          case 'MY RECEIPTS':
+                                          case 3:
                                             myReceiptsSheet(context);
                                             break;
-                                          case 'MY DEPOSISTS':
+                                          case 4:
+                                            myVisitsSheet(context);
+                                            break;
+                                          case 5:
                                             myDeposistsSheet(context);
                                             break;
-                                          case 'YARDING & SELF- RELEASE':
+                                          case 6:
                                             yardingSelfReleaseSheet(context);
                                             break;
                                           default:
-                                            AppUtils.showToast('Yet to start');
+                                            AppUtils.showToast('');
                                         }
                                       },
                                       child: index == 5

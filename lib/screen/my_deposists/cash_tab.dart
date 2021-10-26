@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -51,7 +52,7 @@ class _CashResultsState extends State<CashResults> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  CustomText(
-                                 'COUNT',
+                                 Languages.of(context)!.count,
                                  fontSize: FontSize.ten,
                                  color: ColorResource.color101010,),
                                  CustomText('200', 
@@ -68,7 +69,7 @@ class _CashResultsState extends State<CashResults> {
                                crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  CustomText(
-                                 'AMOUNT',
+                                 Languages.of(context)!.amount,
                                  fontSize: FontSize.ten,
                                  color: ColorResource.color101010,),
                                  CustomText('₹ 3,97,553.67', 
@@ -121,7 +122,7 @@ class _CashResultsState extends State<CashResults> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                             child: CustomText(
-                              'LOAN ACCOUNT NUMBER',
+                              Languages.of(context)!.loanAccountNumber,
                               fontSize: FontSize.twelve,
                               color: ColorResource.color101010,
                             ),
@@ -202,7 +203,7 @@ class _CashResultsState extends State<CashResults> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  'RECEIPT DATE',
+                                  Languages.of(context)!.receiptDate,
                                   fontSize: FontSize.fourteen,
                                   color: ColorResource.color101010,
                                   fontWeight: FontWeight.w400,
@@ -220,7 +221,7 @@ class _CashResultsState extends State<CashResults> {
                               width: 123,
                               height: 47,
                               child: CustomButton(
-                                'SELECTED',
+                                Languages.of(context)!.selected,
                                 fontSize: FontSize.twelve,
                               ),
                             )
