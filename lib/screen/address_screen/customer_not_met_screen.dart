@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/screen/address_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -33,131 +35,204 @@ class CustomerNotMetScreen extends StatefulWidget {
 }
 
 class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
-  TextEditingController loanDurationController = TextEditingController();
+  // TextEditingController nextActionDateController = TextEditingController();
+  // TextEditingController remarksController = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  late FocusNode nextActionDateFocusNode;
+  late FocusNode remarksFocusNode;
 
   @override
   void initState() {
     super.initState();
-    loanDurationController.text = '21-09-2021';
+    // nextActionDateController.text = '21-09-2021';
+    nextActionDateFocusNode = FocusNode();
+    remarksFocusNode = FocusNode();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Wrap(
-                    runSpacing: 10,
-                    spacing: 10,
-                    children: _buildSelectedClip(),
-                  ),
-                  SizedBox(height: 25),
-                  CustomText(
-                    Languages.of(context)!.nextActionDate.toUpperCase(),
-                    color: ColorResource.color666666,
-                    fontSize: FontSize.twelve,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                  SizedBox(
-                    width: (MediaQuery.of(context).size.width - 62) / 2,
-                    child: CustomReadOnlyTextField(
-                      '',
-                      loanDurationController,
-                      suffixWidget: GestureDetector(
-                        onTap: () => pickDate(context, loanDurationController),
-                        child: ImageIcon(
-                          AssetImage(ImageResource.calendar),
-                          color: ColorResource.colorC4C4C4,
-                        ),
+    return Form(
+      key: formKey,
+      autovalidate: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: SingleChildScrollView(
+                reverse: MediaQuery.of(context).viewInsets.bottom != 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Wrap(
+                        runSpacing: 10,
+                        spacing: 10,
+                        children: _buildSelectedClip(),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 27),
-                  Align(
-                      alignment: Alignment.bottomLeft,
-                      child: CustomText(
-                        Languages.of(context)!.remarks.toUpperCase(),
+                      SizedBox(height: 25),
+                      CustomText(
+                        Languages.of(context)!.nextActionDate.toUpperCase(),
                         color: ColorResource.color666666,
                         fontSize: FontSize.twelve,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
-                      )),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextField(
-                      //controller: loanDurationController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 3,
-                      decoration: new InputDecoration(
-                          hintText: 'Write your remarks here',
-                          focusColor: ColorResource.colorE5EAF6,
-                          labelStyle:
-                              new TextStyle(color: const Color(0xFF424242))),
-                    ),
-                  ),
-                  TextField(),
-                  SizedBox(height: 19),
-                  CustomButton(
-                    Languages.of(context)!.captureImage.toUpperCase(),
-                    cardShape: 75.0,
-                    textColor: ColorResource.color23375A,
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w700,
-                    padding: 15.0,
-                    borderColor: ColorResource.colorBEC4CF,
-                    buttonBackgroundColor: ColorResource.colorBEC4CF,
-                    isLeading: true,
-                    // onTap: () => pickImage(source, cameraDialogueContext)
-                    trailingWidget: Image.asset(ImageResource.capturImage),
-                  ),
-                  SizedBox(height: 20),
-                  Wrap(
-                    spacing: 15,
-                    children: [
-                      SizedBox(
-                        width: 165,
-                        child: CustomButton(
-                          Languages.of(context)!.addNewContact.toUpperCase(),
-                          buttonBackgroundColor: ColorResource.color23375A,
-                          borderColor: ColorResource.color23375A,
-                          textColor: ColorResource.colorFFFFFF,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w700,
-                          cardShape: 75,
-                        ),
                       ),
                       SizedBox(
-                        width: 157,
-                        child: CustomButton(
-                          Languages.of(context)!.repo.toUpperCase(),
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
-                          borderColor: ColorResource.color23375A,
-                          textColor: ColorResource.color23375A,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w700,
-                          cardShape: 75,
+                        width: (MediaQuery.of(context).size.width - 62) / 2,
+                        child: CustomReadOnlyTextField(
+                          '',
+                          widget.bloc.customerNotMetNextActionDateController,
+                          focusNode: nextActionDateFocusNode,
+                          suffixWidget: GestureDetector(
+                            onTap: () => pickDate(
+                                context,
+                                widget.bloc
+                                    .customerNotMetNextActionDateController),
+                            child: ImageIcon(
+                              AssetImage(ImageResource.calendar),
+                              color: ColorResource.colorC4C4C4,
+                            ),
+                          ),
+                          // validationRules: ['required'],
+                          onEditing: () {
+                            nextActionDateFocusNode.unfocus();
+                            remarksFocusNode.requestFocus();
+                          },
                         ),
                       ),
+                      SizedBox(height: 27),
+                      Align(
+                          alignment: Alignment.bottomLeft,
+                          child: CustomText(
+                            Languages.of(context)!.remarks.toUpperCase(),
+                            color: ColorResource.color666666,
+                            fontSize: FontSize.twelve,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          )),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormField(
+                          // keyboardType: TextInputType.multiline,
+                          // minLines: 2,
+                          controller:
+                              widget.bloc.customerNotMetRemarksController,
+                          focusNode: remarksFocusNode,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          // maxLines: null,
+                          // onFieldSubmitted: (s) {
+                          //   remarksFocusNode.unfocus();
+                          // },
+                          // onChanged: (S) {
+                          //   remarksFocusNode.unfocus();
+                          // },
+                          // textInputAction: TextInputAction.newline,
+                          decoration: new InputDecoration(
+                              hintText:
+                                  Languages.of(context)!.writeYourRemarksHere,
+                              focusColor: ColorResource.colorE5EAF6,
+                              labelStyle: new TextStyle(
+                                  color: const Color(0xFF424242))),
+                        ),
+                      ),
+                      TextField(),
+                      SizedBox(height: 19),
+                      CustomButton(
+                        Languages.of(context)!.captureImage.toUpperCase(),
+                        cardShape: 75.0,
+                        textColor: ColorResource.color23375A,
+                        fontSize: FontSize.sixteen,
+                        onTap: () => openBottomSheet(
+                            context, StringResource.captureImage),
+                        fontWeight: FontWeight.w700,
+                        padding: 15.0,
+                        borderColor: ColorResource.colorBEC4CF,
+                        buttonBackgroundColor: ColorResource.colorBEC4CF,
+                        isLeading: true,
+                        // onTap: () => pickImage(source, cameraDialogueContext)
+                        trailingWidget: Image.asset(ImageResource.capturImage),
+                      ),
+                      SizedBox(height: 20),
+                      Wrap(
+                        spacing: 15,
+                        children: [
+                          SizedBox(
+                            width: 165,
+                            child: CustomButton(
+                              Languages.of(context)!
+                                  .addNewContact
+                                  .toUpperCase(),
+                              buttonBackgroundColor: ColorResource.color23375A,
+                              borderColor: ColorResource.color23375A,
+                              textColor: ColorResource.colorFFFFFF,
+                              fontSize: FontSize.twelve,
+                              fontWeight: FontWeight.w700,
+                              cardShape: 75,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 157,
+                            child: CustomButton(
+                              Languages.of(context)!.repo.toUpperCase(),
+                              buttonBackgroundColor: ColorResource.colorFFFFFF,
+                              borderColor: ColorResource.color23375A,
+                              textColor: ColorResource.color23375A,
+                              fontSize: FontSize.twelve,
+                              fontWeight: FontWeight.w700,
+                              cardShape: 75,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 120),
                     ],
                   ),
-                  SizedBox(height: 120)
-                ],
+                ),
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  openBottomSheet(BuildContext buildContext, String cardTitle) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
         ),
-      ],
+      ),
+      builder: (BuildContext context) {
+        switch (cardTitle) {
+          case StringResource.captureImage:
+            return CustomCaptureImageBottomSheet(
+                Languages.of(context)!.captureImage);
+          default:
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+        }
+      },
     );
   }
 

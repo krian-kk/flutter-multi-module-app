@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -184,8 +185,10 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                               )))),
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.addressScreen);
+                                      // Navigator.pushNamed(
+                                      //     context, AppRoutes.addressScreen);
+                                      Navigator.pop(context);
+                                      addressBottomSheet(context);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -223,6 +226,25 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void addressBottomSheet(BuildContext buildContext) {
+  showCupertinoModalPopup(
+      context: buildContext,
+      builder: (BuildContext context) {
+        return SafeArea(
+          // top: false,
+          bottom: false,
+          child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.89,
+              child: AddressScreen()),
+          // child: Container(
+          //   width: double.infinity,
+          //   height: 300,
+          //   color: ColorResource.colorFFFFFF,
+          // )
+        );
+      });
 }
 
 // Route _createRoute() {

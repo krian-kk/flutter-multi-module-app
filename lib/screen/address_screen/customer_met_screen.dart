@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, must_be_immutable, prefer_const_constructors_in_immutables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
@@ -36,9 +38,7 @@ class CustomerMetScreen extends StatefulWidget {
 class _CustomerMetScreenState extends State<CustomerMetScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     setState(() {});
   }
 
@@ -50,7 +50,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
         Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 0, 14, 25),
+              padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,43 +193,43 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 30)
+                  SizedBox(height: 120)
                 ],
               ),
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              new BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 191,
-                  child: CustomButton(
-                    Languages.of(context)!.done.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
-                    cardShape: 5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // Container(
+        //   decoration: BoxDecoration(
+        //     color: ColorResource.colorFFFFFF,
+        //     boxShadow: [
+        //       new BoxShadow(
+        //         color: ColorResource.color000000.withOpacity(.25),
+        //         blurRadius: 2.0,
+        //         offset: Offset(1.0, 1.0),
+        //       ),
+        //     ],
+        //   ),
+        //   width: double.infinity,
+        //   child: Padding(
+        //     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         SizedBox(
+        //           width: 191,
+        //           child: CustomButton(
+        //             Languages.of(context)!.done.toUpperCase(),
+        //             fontSize: FontSize.sixteen,
+        //             fontWeight: FontWeight.w600,
+        //             // onTap: () => bloc.add(ClickMessageEvent()),
+        //             cardShape: 5,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

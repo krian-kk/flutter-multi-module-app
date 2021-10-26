@@ -55,7 +55,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To take user profile image</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To choose user profile image</string>
+	<string>Explain why your app uses photo library</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to capture audio for image picker plugin</string>
 </dict>

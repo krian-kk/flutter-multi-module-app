@@ -7,6 +7,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +41,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.88,
+      height: MediaQuery.of(context).size.height * 0.89,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -55,54 +56,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      width: double.infinity,
-                      decoration: new BoxDecoration(
-                          color: ColorResource.colorF7F8FA,
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(10.0))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 14),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              'DEBASISH PATNAIK',
-                              fontWeight: FontWeight.w700,
-                              fontSize: FontSize.fourteen,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color333333,
-                            ),
-                            SizedBox(height: 7),
-                            CustomText(
-                              'TVSF_BFRT6458922993',
-                              fontWeight: FontWeight.w400,
-                              fontSize: FontSize.fourteen,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color333333,
-                            ),
-                            SizedBox(height: 17),
-                            CustomText(
-                              Languages.of(context)!.overdueAmount,
-                              fontWeight: FontWeight.w400,
-                              fontSize: FontSize.twelve,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color666666,
-                            ),
-                            SizedBox(height: 9),
-                            CustomText(
-                              '397553.67',
-                              fontWeight: FontWeight.w700,
-                              fontSize: FontSize.twentyFour,
-                              fontStyle: FontStyle.normal,
-                              color: ColorResource.color333333,
-                            )
-                          ],
-                        ),
-                      ),
+                    CustomLoanUserDetails(
+                      userName: 'DEBASISH PATNAIK',
+                      userId: 'TVSF_BFRT6458922993',
+                      userAmount: 397553.67,
                     ),
                     SizedBox(height: 11),
                     SizedBox(height: 15),

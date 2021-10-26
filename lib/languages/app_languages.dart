@@ -65,8 +65,6 @@ abstract class Languages {
 
   String get otherLoanOf;
 
-  String get debasishPatnaik;
-
   String get view;
 
   String get customerMet;
@@ -223,7 +221,7 @@ abstract class Languages {
 
   String get time;
 
-  String get cheque;
+  String get refCheque;
 
   String get otsPaymentDate;
 
@@ -270,4 +268,10 @@ abstract class Languages {
   String get callersId;
 
   String get customerMetCategory;
+
+  String get connected;
+
+  String get unreachable;
+
+  String get writeYourRemarksHere;
 }

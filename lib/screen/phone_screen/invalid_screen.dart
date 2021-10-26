@@ -30,78 +30,91 @@ class PhoneThirdTabScreen extends StatefulWidget {
 }
 
 class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Wrap(
-                    runSpacing: 10,
-                    spacing: 10,
-                    children: _buildSelectedClip(),
-                  ),
-                  SizedBox(height: 27),
-                  CustomText(
-                    Languages.of(context)!.remarks,
-                    color: ColorResource.color666666,
-                    fontWeight: FontWeight.w400,
-                    fontSize: FontSize.twelve,
-                    fontStyle: FontStyle.normal,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextField(
-                      //controller: loanDurationController,
-                      decoration: new InputDecoration(
-                          labelText: 'Write your remarks here',
-                          focusColor: ColorResource.colorE5EAF6,
-                          labelStyle:
-                              new TextStyle(color: const Color(0xFF424242))),
+    return Form(
+      key: formKey,
+      autovalidate: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Wrap(
+                      runSpacing: 10,
+                      spacing: 10,
+                      children: _buildSelectedClip(),
                     ),
-                  ),
-                  TextField(),
-                  SizedBox(height: 19),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: CustomButton(
-                          Languages.of(context)!.addNewContact,
-                          textColor: ColorResource.colorFFFFFF,
-                          borderColor: ColorResource.color23375A,
-                          fontSize: FontSize.twelve,
-                          cardShape: 75,
-                          buttonBackgroundColor: ColorResource.color23375A,
-                        ),
+                    SizedBox(height: 27),
+                    CustomText(
+                      Languages.of(context)!.remarks,
+                      color: ColorResource.color666666,
+                      fontWeight: FontWeight.w400,
+                      fontSize: FontSize.twelve,
+                      fontStyle: FontStyle.normal,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextFormField(
+                        controller: widget.bloc.invalidRemarksController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                        decoration: new InputDecoration(
+                            hintText:
+                                Languages.of(context)!.writeYourRemarksHere,
+                            focusColor: ColorResource.colorE5EAF6,
+                            labelStyle:
+                                new TextStyle(color: const Color(0xFF424242))),
                       ),
-                      SizedBox(height: 11),
-                      Expanded(
-                        child: CustomButton(
-                          Languages.of(context)!.otherFeedBack,
-                          fontSize: FontSize.twelve,
-                          textColor: ColorResource.color23375A,
-                          borderColor: ColorResource.color23375A,
-                          cardShape: 75,
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
+                    ),
+                    TextField(),
+                    SizedBox(height: 19),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            Languages.of(context)!.addNewContact,
+                            textColor: ColorResource.colorFFFFFF,
+                            borderColor: ColorResource.color23375A,
+                            fontSize: FontSize.twelve,
+                            cardShape: 75,
+                            buttonBackgroundColor: ColorResource.color23375A,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(height: 11),
+                        Expanded(
+                          child: CustomButton(
+                            Languages.of(context)!.otherFeedBack,
+                            fontSize: FontSize.twelve,
+                            textColor: ColorResource.color23375A,
+                            borderColor: ColorResource.color23375A,
+                            cardShape: 75,
+                            buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 120)
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -37,7 +37,7 @@ class _CustomEventDetailsBottomSheetState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.88,
+      height: MediaQuery.of(context).size.height * 0.89,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -125,6 +125,7 @@ class _CustomEventDetailsBottomSheetState
                     width: 190,
                     child: CustomButton(
                       Languages.of(context)!.okay.toUpperCase(),
+                      onTap: () => Navigator.pop(context),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
                       // onTap: () => bloc.add(ClickMessageEvent()),

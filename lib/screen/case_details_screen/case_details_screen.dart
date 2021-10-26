@@ -419,36 +419,32 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 children: [
                                                   Expanded(
                                                     flex: 2,
-                                                    child: Container(
-                                                      child: CustomButton(
-                                                        Languages.of(context)!
-                                                            .sendSms,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        borderColor:
-                                                            ColorResource
-                                                                .color23375A,
-                                                        onTap: () async {
+                                                    child: CustomButton(
+                                                      Languages.of(context)!
+                                                          .sendSms,
+                                                      fontSize: FontSize.twelve,
+                                                      borderColor: ColorResource
+                                                          .color23375A,
+                                                      onTap: () async {
+                                                        const uri =
+                                                            'sms:+39 348 060 888?body=hello%20there';
+                                                        if (await canLaunch(
+                                                            uri)) {
+                                                          await launch(uri);
+                                                        } else {
                                                           const uri =
-                                                              'sms:+39 348 060 888?body=hello%20there';
+                                                              'sms:0039-222-060-888?body=hello%20there';
                                                           if (await canLaunch(
                                                               uri)) {
                                                             await launch(uri);
                                                           } else {
-                                                            const uri =
-                                                                'sms:0039-222-060-888?body=hello%20there';
-                                                            if (await canLaunch(
-                                                                uri)) {
-                                                              await launch(uri);
-                                                            } else {
-                                                              throw 'Could not launch $uri';
-                                                            }
+                                                            throw 'Could not launch $uri';
                                                           }
-                                                        },
-                                                        buttonBackgroundColor:
-                                                            ColorResource
-                                                                .color23375A,
-                                                      ),
+                                                        }
+                                                      },
+                                                      buttonBackgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
                                                     ),
                                                   ),
                                                   SizedBox(width: 5),
@@ -470,13 +466,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                     .whatsApp),
                                                         onTap: () async {
                                                           const url =
-                                                              "https://wa.me/?text=Hey buddy, try this super cool new app!";
-                                                          if (await canLaunch(
-                                                              url)) {
-                                                            await launch(url);
-                                                          } else {
-                                                            throw 'Could not launch $url';
-                                                          }
+                                                              "https://wa.me/?text=Origa";
+
+                                                          await launch(url);
                                                         },
                                                         buttonBackgroundColor:
                                                             ColorResource
@@ -501,7 +493,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                   CustomText(
-                                    Languages.of(context)!.debasishPatnaik,
+                                    'DEBASISH PATNAIK',
                                     color: ColorResource.color333333,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,

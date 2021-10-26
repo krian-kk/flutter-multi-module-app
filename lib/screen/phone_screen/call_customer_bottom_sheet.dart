@@ -23,6 +23,17 @@ class CallCustomerBottomSheet extends StatefulWidget {
 class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   TextEditingController agentContactNoControlller = TextEditingController();
 
+  List<String> customerContactNoDropdownList = [
+    '6524869550',
+    '6524869534',
+    '6524869456',
+    '6524861234'
+  ];
+
+  List<String> serviceProviderListDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
+
+  List<String> callersIDDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
+
   @override
   void initState() {
     super.initState();
@@ -136,12 +147,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       Flexible(
                           child: CustomDropDownButton(
                         Languages.of(context)!.customerContactNo,
-                        const [
-                          '6524869550',
-                          '6524869534',
-                          '6524869456',
-                          '6524861234'
-                        ],
+                        customerContactNoDropdownList,
                         icon: ImageIcon(
                           AssetImage(ImageResource.downShape),
                         ),
@@ -152,7 +158,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                   Flexible(
                       child: CustomDropDownButton(
                     Languages.of(context)!.serviceProvidersList,
-                    const ['ABC', 'DEF', 'GHI', 'JKL'],
+                    serviceProviderListDropdownList,
                     icon: ImageIcon(
                       AssetImage(ImageResource.downShape),
                     ),
@@ -161,7 +167,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                   Flexible(
                       child: CustomDropDownButton(
                     Languages.of(context)!.callersId,
-                    const ['ABC', 'DEF', 'GHI', 'JKL'],
+                    callersIDDropdownList,
                     icon: ImageIcon(
                       AssetImage(ImageResource.downShape),
                     ),
