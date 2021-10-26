@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
@@ -56,8 +57,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
-                               const BottomSheetAppbar(
-                                title: 'MY VISITS',
+                                BottomSheetAppbar(
+                                title: Languages.of(context)!.myVisits,
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -75,7 +76,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                'COUNT',
+                                                Languages.of(context)!.count.toUpperCase(),
                                                 fontSize: FontSize.ten,
                                                 color: ColorResource.color101010,),
                                                 CustomText('200', 
@@ -92,7 +93,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                'AMOUNT',
+                                                Languages.of(context)!.amount.toUpperCase(),
                                                 fontSize: FontSize.ten,
                                                 color: ColorResource.color101010,),
                                                 CustomText('₹ 3,97,553.67', 
@@ -122,10 +123,10 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                               border: Border(
                                                   bottom: BorderSide(
                                                       color: ColorResource.colorD8D8D8))),
-                                          child: const TabBar(
+                                          child: TabBar(
                                             isScrollable: true,
                                             indicatorColor: ColorResource.colorD5344C,
-                                            labelStyle: TextStyle(
+                                            labelStyle: const TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 color: ColorResource.color23375A,
                                                 fontSize: FontSize.fourteen,
@@ -135,9 +136,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                             unselectedLabelColor:
                                                 ColorResource.colorC4C4C4,
                                             tabs: [
-                                              Tab(text: StringResource.customerMet),
-                                              Tab(text: StringResource.customerNotMet),
-                                              Tab(text: StringResource.invalid)
+                                              Tab(text: Languages.of(context)!.customerMet),
+                                              Tab(text: Languages.of(context)!.customerNotMet),
+                                              Tab(text: Languages.of(context)!.invalid)
                                             ],
                                             
                                           ),

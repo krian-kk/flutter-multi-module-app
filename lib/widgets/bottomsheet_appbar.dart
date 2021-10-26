@@ -5,8 +5,8 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class BottomSheetAppbar extends StatelessWidget {
-  final String? title;
-  const BottomSheetAppbar({Key? key, this.title}) : super(key: key);
+  final String title;
+  const BottomSheetAppbar({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class BottomSheetAppbar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(title!,
+                CustomText(title,
                 fontSize: FontSize.sixteen,
                 fontWeight: FontWeight.w700,
                 color: ColorResource.color101010,

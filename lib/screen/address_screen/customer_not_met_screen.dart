@@ -92,10 +92,27 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                       )),
+                      Container(
+    child: new ConstrainedBox(
+        constraints: BoxConstraints(
+            maxHeight: 300.0,
+        ),
+        child: TextField(
+          style: TextStyle(
+              decoration: TextDecoration.underline,
+              ),
+                    maxLines: null,
+                ),
+            ),
+        ),
                   SizedBox(
                     width: double.infinity,
                     child: TextField(
                       //controller: loanDurationController,
+                      // keyboardType: TextInputType.multiline,
+                        textInputAction: TextInputAction.newline,
+                        minLines: 1,
+                        maxLines: 5,
                       decoration: new InputDecoration(
                           labelText: 'Write your remarks here',
                           focusColor: ColorResource.colorE5EAF6,
@@ -103,7 +120,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               new TextStyle(color: const Color(0xFF424242))),
                     ),
                   ),
-                  TextField(),
+                  // TextField(),
                   SizedBox(height: 19),
                   CustomButton(
                     Languages.of(context)!.captureImage.toUpperCase(),

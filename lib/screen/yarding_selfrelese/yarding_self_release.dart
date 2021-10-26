@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
@@ -57,7 +58,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
                                 child: CustomButton(
-                                  'ENTER DEPOSITION DETAILS',
+                                  Languages.of(context)!.enterDepositionDetails,
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
                                   onTap: (){
@@ -70,10 +71,10 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
-                               const BottomSheetAppbar(
-                                title: 'YARDING & SELF-RELEASE',
+                                BottomSheetAppbar(
+                                title: Languages.of(context)!.yardingSelfRelease,
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -115,7 +116,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                     Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                                                       child: CustomText(
-                                                        'LOAN ACCOUNT NUMBER',
+                                                        Languages.of(context)!.loanAccountNumber,
                                                         fontSize: FontSize.twelve,
                                                         color: ColorResource.color101010,
                                                       ),
@@ -196,7 +197,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           CustomText(
-                                                            'REPO DATE',
+                                                            Languages.of(context)!.repoDate,
                                                             fontSize: FontSize.fourteen,
                                                             color: ColorResource.color101010,
                                                             fontWeight: FontWeight.w400,
@@ -214,7 +215,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                         width: 123,
                                                         height: 47,
                                                         child: CustomButton(
-                                                          'SELECTED',
+                                                          Languages.of(context)!.select.toUpperCase(),
                                                           fontSize: FontSize.twelve,
                                                         ),
                                                       )

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/case_list_widget.dart';
@@ -51,8 +52,8 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
                         body: Column(
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
-                             const BottomSheetAppbar(
-                              title: 'BROKEN PTP',
+                              BottomSheetAppbar(
+                              title: Languages.of(context)!.brokenPTP,
                             ),
                             Expanded(
                               child: Padding(
@@ -70,7 +71,7 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
                                                crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                'COUNT',
+                                                Languages.of(context)!.count.toUpperCase(),
                                                 fontSize: FontSize.ten,
                                                 color: ColorResource.color101010,),
                                                 CustomText('200', 
@@ -87,7 +88,7 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                'AMOUNT',
+                                                Languages.of(context)!.amount.toUpperCase(),
                                                 fontSize: FontSize.ten,
                                                 color: ColorResource.color101010,),
                                                 CustomText('₹ 3,97,553.67', 

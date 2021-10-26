@@ -8,6 +8,192 @@ class LanguageEn extends Languages {
   String get splashScreen => 'splashScreen';
 
   @override
+  String get signin => 'sign in';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get resetPassword => 'Reset password via OTP';
+
+  @override
+  String get loginViaDiffrentUser => 'Login via diffrent user';
+
+  @override
+  String get allocation => 'Allocation';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get areYouAtOffice => 'Are you at Office ?';
+
+  @override
+  String get yes => 'YES';
+
+  @override
+  String get no => 'NO';
+
+  @override
+  String get pincode => 'Pincode';
+
+  @override
+  String get priority => 'Priority';
+
+  @override
+  String get buildRoute => 'Build Route';
+
+  @override
+  String get mapView => 'Map View';
+
+  @override
+  String get hignPriority => 'High Priority';
+
+  @override
+  String get searchbasedOn => 'SEARCH BASED ON';
+
+  @override
+  String get message => 'MESSAGE';
+
+  @override
+  String get followUpDate => 'Follow Up Date';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get under5km => 'Under 5Km';
+
+  @override
+  String get more5km => '5Km-10Km';
+
+  @override
+  String get mtdResolutionProgress => 'MTD RESOLUTION PROGRESS';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get priorityFollowUp => 'PRIORITY FOLLOW UP';
+
+  @override
+  String get untouchedCases => 'UNTOUCHED CASES';
+
+  @override
+  String get brokenPTP => 'BROKEN PTP';
+
+  @override
+  String get myReceipts => 'MY RECEIPTS';
+
+  @override
+  String get myVisits => 'MY VISITS';
+
+  @override
+  String get myDeposists => 'MY DEPOSISTS';
+
+  @override
+  String get yardingSelfRelease => 'YARDING & SELF- RELEASE';
+
+  @override
+  String get help => 'Help';
+
+  @override
+  String get count => 'Count';
+
+  @override
+  String get today => 'TODAY';
+
+  @override
+  String get weekly => 'WEEKLY';
+
+  @override
+  String get monthly => 'MONTHLY';
+
+  @override
+  String get cheque => 'CHEQUE';
+
+  @override
+  String get cash => 'CASH';
+
+  @override
+  String get loanAccountNumber => 'LOAN ACCOUNT NUMBER';
+
+  @override
+  String get receiptDate => 'RECEIPT DATE';
+
+  @override
+  String get selected => 'SELECTED';
+
+  @override
+  String get enterDepositionDetails => 'ENTER DEPOSITION DETAILS';
+
+  @override
+  String get depositionMode => 'DEPOSITION MODE';
+
+  @override
+  String get bank => 'BANK';
+
+  @override
+  String get companybranch => 'COMPANY BRANCH';
+
+  @override
+  String get branchName => 'Branch Name*';
+
+  @override
+  String get bankName => 'Bank Name*';
+
+  @override
+  String get ifscCode => 'IFSC Code*';
+
+  @override
+  String get branchLocation => 'Branch Location*';
+
+  @override
+  String get receiptAmount => 'Receipt Amount*';
+
+  @override
+  String get depositAmount => 'Deposit Amount*';
+
+  @override
+  String get yarding => 'YARDING';
+
+  @override
+  String get repoDate => 'REPO DATE';
+
+  @override
+  String get selfRelease => 'SELF RELEASE';
+
+  @override
+  String get repoStatus => 'REPO STATUS';
+
+  @override
+  String get yardName => 'Yard Name*';
+
+  @override
+  String get remark => 'Remarks';
+
+  @override
+  String get uploadDepositSlip => 'UPLOAD DEPOSIT SLIP';
+
+  @override
+  String get send => 'SEND';
+
+  @override
+  String get typeYourMessage => 'Type your message';
+
+  @override
   String get cancel => 'cancel';
 
   @override
@@ -26,13 +212,7 @@ class LanguageEn extends Languages {
   String get dpdBucket => 'DPD/Bucket';
 
   @override
-  String get walletLimit => 'Wallet Limit';
-
-  @override
   String get status => 'Status';
-
-  @override
-  String get pincode => 'Pincode';
 
   @override
   String get customerID => 'Customer ID';
@@ -63,9 +243,6 @@ class LanguageEn extends Languages {
 
   @override
   String get emiStartDate => 'EMI Start Date';
-
-  @override
-  String get bankName => 'Bank Name';
 
   @override
   String get repaymentInfo => 'REPAYMENT INFO';
@@ -143,42 +320,6 @@ class LanguageEn extends Languages {
   String get select => 'select';
 
   @override
-  String get allocation => 'Allocation';
-
-  @override
-  String get dashboard => 'Dashboard';
-
-  @override
-  String get profile => 'Profile';
-
-  @override
-  String get areYouAtOffice => 'Are you at Office ?';
-
-  @override
-  String get yes => 'YES';
-
-  @override
-  String get no => 'NO';
-
-  @override
-  String get searchbasedOn => 'SEARCH BASED ON';
-
-  @override
-  String get priority => 'Priority';
-
-  @override
-  String get buildRoute => 'Build Route';
-
-  @override
-  String get mapView => 'Map View';
-
-  @override
-  String get message => 'MESSAGE';
-
-  @override
-  String get followUpDate => 'Follow Up Date';
-
-  @override
   String get error => 'error';
 
   @override
@@ -215,18 +356,6 @@ class LanguageEn extends Languages {
   String get kannada => 'ಕನ್ನಡ  / KANNADA';
 
   @override
-  String get change => 'Change';
-
-  @override
-  String get all => 'All';
-
-  @override
-  String get under5km => 'Under 5Km';
-
-  @override
-  String get more5km => '5Km-10Km';
-
-  @override
   String get read => 'read';
 
   @override
@@ -252,24 +381,6 @@ class LanguageEn extends Languages {
 
   @override
   String get choiceOtherLanguages => 'Choose other LANGUAGE';
-
-  @override
-  String get userName => 'User Name';
-
-  @override
-  String get password => 'Password';
-
-  @override
-  String get signin => 'SIGN IN';
-
-  @override
-  String get resetPassword => 'Reset password via OTP';
-
-  @override
-  String get loginViaDiffrentUser => 'Login via diffrent user';
-
-  @override
-  String get hignPriority => 'High Priority';
 
   @override
   String get addAProfilePhoto => 'Add a PROFILE PHOTO';
@@ -332,7 +443,7 @@ class LanguageEn extends Languages {
   String get time => 'Time*';
 
   @override
-  String get cheque => 'REF/CHEQUE NO.';
+  String get refCheque => 'REF/CHEQUE NO.';
 
   @override
   String get otsProposedAmount => 'OTS Proposed Amount*';
@@ -399,4 +510,5 @@ class LanguageEn extends Languages {
 
   @override
   String get callersId => 'Caller ID’s';
+  
 }
