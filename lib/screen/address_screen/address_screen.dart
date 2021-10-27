@@ -9,6 +9,7 @@ import 'package:origa/screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/address_screen/event_details_bottom_sheet.dart';
 import 'package:origa/screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -53,163 +54,152 @@ class _AddressScreenState extends State<AddressScreen>
     return SafeArea(
       top: false,
       child: Scaffold(
-        backgroundColor: ColorResource.colorF7F8FA,
-        body: Column(
-          children: [
-            CustomAppbar(
-              titleString: Languages.of(context)!.caseDetials,
-              titleSpacing: 21,
-              iconEnumValues: IconEnum.back,
-              onItemSelected: (value) {
-                if (value == 'IconEnum.back') {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                }
-              },
-            ),
-            BlocListener<AddressBloc, AddressState>(
-              bloc: bloc,
-              listener: (context, state) {},
-              child: BlocBuilder<AddressBloc, AddressState>(
-                bloc: bloc,
-                builder: (context, state) {
-                  return Expanded(
-                      child: Container(
-                    decoration: new BoxDecoration(
-                        color: ColorResource.colorFFFFFF,
-                        boxShadow: [
-                          new BoxShadow(
-                            color: ColorResource.colorCACACA.withOpacity(.25),
-                            blurRadius: 20.0,
-                            offset: Offset(1.0, 1.0),
-                          ),
-                        ],
-                        borderRadius: new BorderRadius.vertical(
-                            top: Radius.circular(30))),
-                    width: double.infinity,
-                    child: SingleChildScrollView(
-                      physics: NeverScrollableScrollPhysics(),
-                      child: Column(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        // backgroundColor: ColorResource.colorF7F8FA,
+        body: DefaultTabController(
+          length: 3,
+          child: Container(
+            decoration: new BoxDecoration(
+                color: ColorResource.colorFFFFFF,
+                boxShadow: [
+                  new BoxShadow(
+                    color: ColorResource.colorCACACA.withOpacity(.25),
+                    blurRadius: 20.0,
+                    offset: Offset(1.0, 1.0),
+                  ),
+                ],
+                borderRadius:
+                    new BorderRadius.vertical(top: Radius.circular(30))),
+            width: double.infinity,
+            child: Column(
+              children: [
+                // CustomAppbar(
+                //   titleString: Languages.of(context)!.caseDetials,
+                //   titleSpacing: 21,
+                //   iconEnumValues: IconEnum.back,
+                //   onItemSelected: (value) {
+                //     if (value == 'IconEnum.back') {
+                //       Navigator.pop(context);
+                //       Navigator.pop(context);
+                //     }
+                //   },
+                // ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomText(
-                                      'ADDRESS 01',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
-                                      color: ColorResource.color23375A,
-                                    ),
-                                    Wrap(
-                                      spacing: 27,
-                                      children: [
-                                        Image.asset(ImageResource.activePerson),
-                                        GestureDetector(
-                                            onTap: () => Navigator.pop(context),
-                                            child: Image.asset(
-                                                ImageResource.close))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Flexible(
-                                  child: SizedBox(
-                                    width: 255,
-                                    child: CustomText(
-                                      '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
-                                      color: ColorResource.color23375A,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        child: SizedBox(
-                                            width: 10,
-                                            child: Container(
-                                                decoration: new BoxDecoration(
-                                                    color: ColorResource
-                                                        .colorBEC4CF,
-                                                    borderRadius:
-                                                        new BorderRadius.all(
-                                                            new Radius.circular(
-                                                                75.0))),
-                                                child: Row(
-                                                  children: [
-                                                    Image.asset(ImageResource
-                                                        .direction),
-                                                    SizedBox(width: 12),
-                                                    CustomText(
-                                                      Languages.of(context)!
-                                                          .viewMap,
-                                                      fontSize:
-                                                          FontSize.fourteen,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: ColorResource
-                                                          .color23375A,
-                                                    )
-                                                  ],
-                                                )))),
-                                    SizedBox(width: 40),
-                                    Expanded(
-                                        child: CustomButton(
-                                      Languages.of(context)!.eventDetails,
-                                      onTap: () =>
-                                          openEventDetailsBottomSheet(context),
-                                      textColor: ColorResource.color23375A,
-                                      borderColor: ColorResource.color23375A,
-                                      buttonBackgroundColor:
-                                          ColorResource.colorFFFFFF,
-                                    ))
-                                  ],
-                                )
-                              ],
-                            ),
+                          CustomText(
+                            'ADDRESS 01',
+                            fontWeight: FontWeight.w700,
+                            fontSize: FontSize.fourteen,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color23375A,
                           ),
-                          DefaultTabController(
-                            length: 3,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            child: Column(children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: ColorResource.colorD8D8D8))),
-                                child: TabBar(
-                                  isScrollable: true,
-                                  controller: _controller,
-                                  indicatorColor: ColorResource.colorD5344C,
-                                  labelStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal),
-                                  indicatorWeight: 5.0,
-                                  labelColor: ColorResource.color23375A,
-                                  unselectedLabelColor:
-                                      ColorResource.colorC4C4C4,
-                                  // ignore: prefer_const_literals_to_create_immutables
-                                  tabs: [
-                                    Tab(text: StringResource.customerMet),
-                                    Tab(text: StringResource.customerNotMet),
-                                    Tab(text: StringResource.invalid)
-                                  ],
-                                ),
-                              ),
-                              Container(
+                          Wrap(
+                            spacing: 27,
+                            children: [
+                              Image.asset(ImageResource.activePerson),
+                              GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Image.asset(ImageResource.close))
+                            ],
+                          )
+                        ],
+                      ),
+                      Flexible(
+                        child: SizedBox(
+                          width: 255,
+                          child: CustomText(
+                            '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+                            fontWeight: FontWeight.w400,
+                            fontSize: FontSize.fourteen,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color23375A,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: SizedBox(
+                                  width: 10,
+                                  child: Container(
+                                      decoration: new BoxDecoration(
+                                          color: ColorResource.colorBEC4CF,
+                                          borderRadius: new BorderRadius.all(
+                                              new Radius.circular(75.0))),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(ImageResource.direction),
+                                          SizedBox(width: 12),
+                                          CustomText(
+                                            Languages.of(context)!.viewMap,
+                                            fontSize: FontSize.fourteen,
+                                            fontWeight: FontWeight.w700,
+                                            color: ColorResource.color23375A,
+                                          )
+                                        ],
+                                      )))),
+                          SizedBox(width: 40),
+                          Expanded(
+                              child: CustomButton(
+                            Languages.of(context)!.eventDetails,
+                            onTap: () => openEventDetailsBottomSheet(context),
+                            textColor: ColorResource.color23375A,
+                            borderColor: ColorResource.color23375A,
+                            buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          ))
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom:
+                              BorderSide(color: ColorResource.colorD8D8D8))),
+                  child: TabBar(
+                    isScrollable: true,
+                    controller: _controller,
+                    indicatorColor: ColorResource.colorD5344C,
+                    labelStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color23375A,
+                        fontSize: FontSize.fourteen,
+                        fontStyle: FontStyle.normal),
+                    indicatorWeight: 5.0,
+                    labelColor: ColorResource.color23375A,
+                    unselectedLabelColor: ColorResource.colorC4C4C4,
+                    onTap: (index) {},
+                    // ignore: prefer_const_literals_to_create_immutables
+                    tabs: [
+                      Tab(text: Languages.of(context)!.customerMet),
+                      Tab(text: Languages.of(context)!.customerNotMet),
+                      Tab(text: Languages.of(context)!.invalid)
+                    ],
+                  ),
+                ),
+                BlocListener<AddressBloc, AddressState>(
+                  bloc: bloc,
+                  listener: (context, state) {},
+                  child: BlocBuilder<AddressBloc, AddressState>(
+                    bloc: bloc,
+                    builder: (context, state) {
+                      return Expanded(
+                          child: SingleChildScrollView(
+                        // physics: NeverScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            Column(children: [
+                              SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.65,
                                 child: TabBarView(
@@ -225,16 +215,16 @@ class _AddressScreenState extends State<AddressScreen>
                                   ],
                                 ),
                               ),
-                            ]),
-                          )
-                        ],
-                      ),
-                    ),
-                  ));
-                },
-              ),
-            )
-          ],
+                            ])
+                          ],
+                        ),
+                      ));
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
         bottomNavigationBar: _controller.index == 0
             ? Container(
@@ -261,7 +251,7 @@ class _AddressScreenState extends State<AddressScreen>
                           Languages.of(context)!.done.toUpperCase(),
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w600,
-                          onTap: () {},
+                          onTap: () => Navigator.pop(context),
                           cardShape: 5,
                         ),
                       ),
@@ -292,6 +282,7 @@ class _AddressScreenState extends State<AddressScreen>
                           child: Center(
                               child: CustomText(
                             Languages.of(context)!.cancel.toUpperCase(),
+                            onTap: () => Navigator.pop(context),
                             color: ColorResource.colorEA6D48,
                             fontWeight: FontWeight.w600,
                             fontStyle: FontStyle.normal,
@@ -304,6 +295,28 @@ class _AddressScreenState extends State<AddressScreen>
                           Languages.of(context)!.submit.toUpperCase(),
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w600,
+                          onTap: () {
+                            if (_controller.index == 1) {
+                              if ((bloc.customerNotMetNextActionDateController ==
+                                          '' ||
+                                      bloc.customerNotMetNextActionDateController
+                                          .text.isEmpty) ||
+                                  (bloc.customerNotMetRemarksController.text ==
+                                          '' ||
+                                      bloc.customerNotMetRemarksController.text
+                                          .isEmpty)) {
+                                AppUtils.showSnackBar(
+                                    context,
+                                    'All are the Required Field Please Enter Any Text!'
+                                        .toUpperCase(),
+                                    true);
+                              } else {
+                                print('Successfull');
+                              }
+                            } else {
+                              print(bloc.customerNotMetRemarksController.text);
+                            }
+                          },
                           // onTap: () => bloc.add(ClickMessageEvent()),
                           cardShape: 5,
                         ),

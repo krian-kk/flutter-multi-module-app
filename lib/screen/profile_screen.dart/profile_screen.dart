@@ -200,69 +200,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   itemCount: bloc.profileNavigationList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return Container(
-                                      width: double.infinity,
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 5.0),
-                                      decoration: new BoxDecoration(
-                                          color: ColorResource.colorF8F9FB,
-                                          borderRadius: new BorderRadius.all(
-                                              Radius.circular(10.0))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 21, vertical: 14),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: bloc
-                                                  .profileNavigationList[index]
-                                                  .onTap,
-                                              child: Row(
-                                                children: [
-                                                  CustomText(
-                                                    bloc
-                                                        .profileNavigationList[
-                                                            index]
-                                                        .title
-                                                        .toUpperCase(),
-                                                    lineHeight: 1,
-                                                    fontSize: FontSize.sixteen,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Visibility(
-                                                    visible: bloc
-                                                        .profileNavigationList[
-                                                            index]
-                                                        .count,
-                                                    child: CircleAvatar(
-                                                      backgroundColor:
-                                                          ColorResource
-                                                              .color23375A,
-                                                      radius: 13,
-                                                      child: Center(
-                                                        child: CustomText('2',
-                                                            lineHeight: 1,
-                                                            fontSize:
-                                                                FontSize.twelve,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: ColorResource
-                                                                .colorFFFFFF),
-                                                      ),
+                                    return GestureDetector(
+                                      onTap: bloc
+                                          .profileNavigationList[index].onTap,
+                                      // onTap: () => bloc
+                                      //     .profileNavigationList[index].onTap,
+                                      child: Container(
+                                        width: double.infinity,
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5.0),
+                                        decoration: new BoxDecoration(
+                                            color: ColorResource.colorF8F9FB,
+                                            borderRadius: new BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 21, vertical: 14),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                child: Row(
+                                                  children: [
+                                                    CustomText(
+                                                      bloc
+                                                          .profileNavigationList[
+                                                              index]
+                                                          .title
+                                                          .toUpperCase(),
+                                                      lineHeight: 1,
+                                                      fontSize:
+                                                          FontSize.sixteen,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: ColorResource
+                                                          .color23375A,
                                                     ),
-                                                  )
-                                                ],
+                                                    SizedBox(width: 5),
+                                                    Visibility(
+                                                      visible: bloc
+                                                          .profileNavigationList[
+                                                              index]
+                                                          .count,
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            ColorResource
+                                                                .color23375A,
+                                                        radius: 13,
+                                                        child: Center(
+                                                          child: CustomText('2',
+                                                              lineHeight: 1,
+                                                              fontSize: FontSize
+                                                                  .twelve,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: ColorResource
+                                                                  .colorFFFFFF),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Image.asset(
-                                                ImageResource.forwardArrow)
-                                          ],
+                                              Image.asset(
+                                                  ImageResource.forwardArrow)
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
@@ -303,7 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 color: ColorResource.colorFFFFFF,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+                  padding: EdgeInsets.symmetric(vertical: 11.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -448,9 +455,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.86,
-                  child: MessageChatRoomScreen()
-                )));
+                    height: MediaQuery.of(context).size.height * 0.86,
+                    child: MessageChatRoomScreen())));
   }
 
   void notificationShowBottomSheet(BuildContext context) {

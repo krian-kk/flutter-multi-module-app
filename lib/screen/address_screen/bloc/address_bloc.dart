@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/event_detail_model.dart';
@@ -12,9 +13,14 @@ part 'address_state.dart';
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
   String selectedCustomerNotMetClip = '';
   String selectedInvalidClip = '';
+  TextEditingController customerNotMetNextActionDateController =
+      TextEditingController();
+  TextEditingController customerNotMetRemarksController =
+      TextEditingController();
+  TextEditingController invalidRemarksController = TextEditingController();
 
-   List<OtherFeedbackExpandModel> expandOtherFeedback = [];
-   List<EventExpandModel> expandEvent = [];
+  List<OtherFeedbackExpandModel> expandOtherFeedback = [];
+  List<EventExpandModel> expandEvent = [];
 
   List<CustomerMetGridModel> customerMetGridList = [];
   AddressBloc() : super(AddressInitial()) {
@@ -33,15 +39,29 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         ]);
 
         expandEvent.addAll([
-          EventExpandModel(header: 'FIELD ALLOCATION', date: '7 Sep 2021', colloctorID: 'AGENT | HAR_fos4', remarks: 'XYZ'),
-          EventExpandModel(header: 'TELECALLING | PTP', date: '12 May 2021', colloctorID: 'AGENT | HAR_fos4', remarks: 'XYZ'),
-          EventExpandModel(header: 'FTELECALLING', date: '23 Oct 2021', colloctorID: 'AGENT | HAR_fos4', remarks: 'XYZ'),
+          EventExpandModel(
+              header: 'FIELD ALLOCATION',
+              date: '7 Sep 2021',
+              colloctorID: 'AGENT | HAR_fos4',
+              remarks: 'XYZ'),
+          EventExpandModel(
+              header: 'TELECALLING | PTP',
+              date: '12 May 2021',
+              colloctorID: 'AGENT | HAR_fos4',
+              remarks: 'XYZ'),
+          EventExpandModel(
+              header: 'FTELECALLING',
+              date: '23 Oct 2021',
+              colloctorID: 'AGENT | HAR_fos4',
+              remarks: 'XYZ'),
         ]);
 
         expandOtherFeedback.addAll([
           OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
-          OtherFeedbackExpandModel(header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
-          OtherFeedbackExpandModel(header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
+          OtherFeedbackExpandModel(
+              header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
+          OtherFeedbackExpandModel(
+              header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
         ]);
         emit.call(AddressLoadedState());
       }

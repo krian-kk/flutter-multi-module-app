@@ -272,9 +272,6 @@ class LanguageEn extends Languages {
   String get otherLoanOf => 'OTHER LOAN OF';
 
   @override
-  String get debasishPatnaik => 'DEBASISH PATNAIK';
-
-  @override
   String get view => 'VIEW';
 
   @override
@@ -380,7 +377,7 @@ class LanguageEn extends Languages {
   String get uploadPhoto => 'UPLOAD PHOTO';
 
   @override
-  String get choiceOtherLanguages => 'Choose other LANGUAGE';
+  String get choiceOtherLanguages => 'Choose Other LANGUAGE';
 
   @override
   String get addAProfilePhoto => 'Add a PROFILE PHOTO';
@@ -398,7 +395,7 @@ class LanguageEn extends Languages {
   String get entryRestricted => 'ENTRY RESTRICTED';
 
   @override
-  String get addNewContact => 'ADD New contact';
+  String get addNewContact => 'Add New contact';
 
   @override
   String get repo => 'REPO';
@@ -410,10 +407,10 @@ class LanguageEn extends Languages {
   String get submit => 'SUBMIT';
 
   @override
-  String get nextActionDate => 'NEXT Action Date*';
+  String get nextActionDate => 'Next Action Date*';
 
   @override
-  String get nextActionTime => 'NEXT Action Time*';
+  String get nextActionTime => 'Next Action Time*';
 
   @override
   String get remarks => 'REMARKS*';
@@ -510,5 +507,16 @@ class LanguageEn extends Languages {
 
   @override
   String get callersId => 'Caller ID’s';
-  
+
+  @override
+  String get customerMetCategory => 'Customer Met Category';
+
+  @override
+  String get connected => 'Connected';
+
+  @override
+  String get unreachable => 'Unreachable';
+
+  @override
+  String get writeYourRemarksHere => 'Write your remarks here';
 }

@@ -113,7 +113,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
 
           onEditingComplete: () {
             setState(() {});
-            FocusScope.of(context).requestFocus(FocusNode());
+            FocusScope.of(context).unfocus();
+            // FocusScope.of(context).requestFocus(FocusNode());
             if (widget.onEditing != null) {
               widget.onEditing!();
             }
@@ -135,7 +136,9 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
           },
           onChanged: (q) {
             setState(() {});
+            // FocusScope.of(context).unfocus();
           },
+
           // ignore: prefer_const_literals_to_create_immutables
           // inputFormatters: [
           //   // if (widget.maximumWordCount != null)

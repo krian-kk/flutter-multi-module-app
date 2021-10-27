@@ -8,6 +8,7 @@ import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -15,7 +16,8 @@ import 'package:origa/widgets/custom_text.dart';
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final AddressBloc bloc;
   CustomEventDetailsBottomSheet(
-    this.cardTitle, this.bloc, {
+    this.cardTitle,
+    this.bloc, {
     Key? key,
   }) : super(key: key);
   final String cardTitle;
@@ -35,39 +37,23 @@ class _CustomEventDetailsBottomSheetState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.88,
+      height: MediaQuery.of(context).size.height * 0.89,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  widget.cardTitle,
-                  color: ColorResource.color101010,
-                  fontWeight: FontWeight.w700,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
-                ),
-                GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Image.asset(ImageResource.close))
-              ],
-            ),
-          ),
+          BottomSheetAppbar(
+              title: widget.cardTitle,
+              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
                   color: ColorResource.colorF7F8FA,
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(10.0))),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15, vertical: 14),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,11 +95,12 @@ class _CustomEventDetailsBottomSheetState
               ),
             ),
           ),
-          Expanded(child: Container(
+          Expanded(
+              child: Container(
             child: ListView.builder(
               itemCount: widget.bloc.expandEvent.length,
-              itemBuilder: (context, int index)=>
-              expandList(widget.bloc.expandEvent, index),
+              itemBuilder: (context, int index) =>
+                  expandList(widget.bloc.expandEvent, index),
             ),
           )),
           Container(
@@ -138,6 +125,7 @@ class _CustomEventDetailsBottomSheetState
                     width: 190,
                     child: CustomButton(
                       Languages.of(context)!.okay.toUpperCase(),
+                      onTap: () => Navigator.pop(context),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
                       // onTap: () => bloc.add(ClickMessageEvent()),
@@ -207,27 +195,28 @@ class _CustomEventDetailsBottomSheetState
                   CustomText(
                     expandedList[index].colloctorID,
                     fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
                   ),
                   SizedBox(height: 8),
                   CustomText(
                     'REMARKS',
                     fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
                   ),
                   CustomText(
                     expandedList[index].remarks,
                     fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
                   ),
                 ],
                 onExpansionChanged: (bool status) {
                   setState(() {
                     // ignore: lines_longer_than_80_chars
-                    expandedList[index].expanded = !expandedList[index].expanded;
+                    expandedList[index].expanded =
+                        !expandedList[index].expanded;
                   });
                 },
               ),
@@ -237,5 +226,4 @@ class _CustomEventDetailsBottomSheetState
       ],
     );
   }
-
 }

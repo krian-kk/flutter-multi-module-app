@@ -26,7 +26,7 @@ class PhoneFirstTapScreen extends StatelessWidget {
         Flexible(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 0, 14, 25),
+              padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +83,7 @@ class PhoneFirstTapScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CustomButton(
-                          'ADD New contact',
+                          Languages.of(context)!.addNewContact,
                           textColor: ColorResource.colorFFFFFF,
                           borderColor: ColorResource.color23375A,
                           cardShape: 75,
@@ -93,7 +93,7 @@ class PhoneFirstTapScreen extends StatelessWidget {
                       SizedBox(height: 11),
                       Expanded(
                         child: CustomButton(
-                          'Event Details',
+                          Languages.of(context)!.otherFeedBack,
                           textColor: ColorResource.color23375A,
                           borderColor: ColorResource.color23375A,
                           cardShape: 75,

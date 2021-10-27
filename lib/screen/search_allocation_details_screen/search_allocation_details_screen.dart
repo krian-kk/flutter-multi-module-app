@@ -86,64 +86,46 @@ class _SearchAllocationDetailsScreenState
                             children: [
                               Column(
                                 children: [
-                                  SizedBox(
-                                    height: 50,
-                                    child: CustomTextField(
-                                      Languages.of(context)!.accountNo + '.',
-                                      accountNoController,
-                                      isFill: true,
-                                      isBorder: true,
-                                    ),
+                                  CustomTextField(
+                                    Languages.of(context)!.accountNo + '.',
+                                    accountNoController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
-                                  SizedBox(
-                                    height: 50,
-                                    child: CustomTextField(
-                                      Languages.of(context)!.customerName,
-                                      customerNameController,
-                                      isFill: true,
-                                      isBorder: true,
-                                    ),
+                                  CustomTextField(
+                                    Languages.of(context)!.customerName,
+                                    customerNameController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
-                                  SizedBox(
-                                    height: 50,
-                                    child: CustomTextField(
-                                      Languages.of(context)!.dpdBucket,
-                                      bucketController,
-                                      isFill: true,
-                                      isBorder: true,
-                                    ),
+                                  CustomTextField(
+                                    Languages.of(context)!.dpdBucket,
+                                    bucketController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
-                                  SizedBox(
-                                    height: 50,
-                                    child: CustomTextField(
-                                      Languages.of(context)!.status,
-                                      statusController,
-                                      isFill: true,
-                                      isBorder: true,
-                                    ),
+                                  CustomTextField(
+                                    Languages.of(context)!.status,
+                                    statusController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
-                                  SizedBox(
-                                    height: 50,
-                                    child: CustomTextField(
-                                      Languages.of(context)!.pincode,
-                                      pincodeController,
-                                      isFill: true,
-                                      isBorder: true,
-                                    ),
+                                  CustomTextField(
+                                    Languages.of(context)!.pincode,
+                                    pincodeController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
-                                  SizedBox(
-                                    height: 50,
-                                    child: CustomTextField(
-                                      Languages.of(context)!.myRecentActivity,
-                                      customerIDController,
-                                      isFill: true,
-                                      isBorder: true,
-                                    ),
+                                  CustomTextField(
+                                    Languages.of(context)!.myRecentActivity,
+                                    customerIDController,
+                                    isFill: true,
+                                    isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
                                   GestureDetector(
@@ -224,8 +206,10 @@ class _SearchAllocationDetailsScreenState
                     customerIDController.text.isNotEmpty) {
                   Navigator.pop(context);
                 } else {
-                  AppUtils.showToast('Please Enter Any Field1',
-                      gravity: ToastGravity.CENTER);
+                  AppUtils.showSnackBar(context,
+                      'Please Enter Any One Field.'.toUpperCase(), false);
+                  // AppUtils.showToast('Please Enter Any One Field.',
+                  //     gravity: ToastGravity.CENTER);
                 }
               },
             ),

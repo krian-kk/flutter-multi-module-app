@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
-import 'package:origa/screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/phone_screen/phone_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -199,9 +198,12 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                                 ],
                                               )))),
                                   GestureDetector(
-                                    // onTap: () => broPTPSheet(context),
-                                    onTap: () => Navigator.pushNamed(
-                                        context, AppRoutes.phoneScreen),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      phoneBottomSheet(context);
+                                    },
+                                    // onTap: () => Navigator.pushNamed(
+                                    //     context, AppRoutes.phoneScreen),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -217,7 +219,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                         const SizedBox(width: 10),
                                         Image.asset(ImageResource.viewShape,
                                             height: 20),
-                                        SizedBox(width: 10)
+                                        // SizedBox(width: 10)
                                       ],
                                     ),
                                   ),
@@ -239,7 +241,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
     );
   }
 
-  void broPTPSheet(BuildContext buildContext) {
+  void phoneBottomSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
@@ -248,7 +250,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
             bottom: false,
             child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,
-                child: AddressScreen()),
+                child: PhoneScreen()),
             // child: Container(
             //   width: double.infinity,
             //   height: 300,

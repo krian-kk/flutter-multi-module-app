@@ -64,13 +64,13 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 10.0),
+                                        vertical: 8, horizontal: 10.0),
                                     child: CustomText(
                                       bloc.notificationList[index].date,
                                       color: ColorResource.color484848,
                                       fontSize: FontSize.ten,
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                   ListView.builder(
@@ -84,19 +84,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                           margin: EdgeInsets.only(bottom: 20),
                                           width: double.infinity,
                                           decoration: new BoxDecoration(
-                                              boxShadow: [
-                                                new BoxShadow(
-                                                  color: ColorResource
-                                                      .color000000
-                                                      .withOpacity(.25),
-                                                  blurRadius: 2.0,
-                                                  offset: Offset(1.0, 1.0),
-                                                ),
-                                              ],
-                                              border: Border.all(
-                                                  color:
-                                                      ColorResource.colorDADADA,
-                                                  width: 0.5),
                                               color: ColorResource.colorF7F8FA,
                                               borderRadius:
                                                   new BorderRadius.all(
@@ -175,6 +162,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                     width: 190,
                     child: CustomButton(
                       Languages.of(context)!.read.toUpperCase(),
+                      onTap: () => Navigator.pop(context),
                       fontSize: FontSize.sixteen,
                       cardShape: 5,
                       leadingWidget: CircleAvatar(
