@@ -93,4 +93,5 @@ class StringResource {
   static const String otherFeedback = 'OTHER FEEDBACK';
   static const String cheque = 'CHEQUE';
   static const String cash = 'CASH';
+  static const String searchToastError = 'Please Enter Any One Field.';
 }

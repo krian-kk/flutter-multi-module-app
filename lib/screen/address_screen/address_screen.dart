@@ -178,7 +178,11 @@ class _AddressScreenState extends State<AddressScreen>
                     indicatorWeight: 5.0,
                     labelColor: ColorResource.color23375A,
                     unselectedLabelColor: ColorResource.colorC4C4C4,
-                    onTap: (index) {},
+                    onTap: (index) {
+                      bloc.customerNotMetNextActionDateFocusNode.unfocus();
+                      bloc.customerNotMetRemarksFocusNode.unfocus();
+                      bloc.invalidRemarksFocusNode.unfocus();
+                    },
                     // ignore: prefer_const_literals_to_create_immutables
                     tabs: [
                       Tab(text: Languages.of(context)!.customerMet),

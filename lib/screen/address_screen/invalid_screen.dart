@@ -74,6 +74,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                       width: double.infinity,
                       child: TextFormField(
                         controller: widget.bloc.invalidRemarksController,
+                        focusNode: widget.bloc.invalidRemarksFocusNode,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';

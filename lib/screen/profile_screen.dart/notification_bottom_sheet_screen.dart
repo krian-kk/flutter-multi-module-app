@@ -6,6 +6,7 @@ import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -28,24 +29,29 @@ class NotificationBottomSheetScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        Languages.of(context)!.notification.toUpperCase(),
-                        fontSize: FontSize.fourteen,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                        color: ColorResource.color23375A,
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Image.asset(ImageResource.close))
-                    ],
+                  BottomSheetAppbar(
+                    title: Languages.of(context)!.notification.toUpperCase(),
+                    color: ColorResource.color23375A,
+                    padding: EdgeInsets.all(0),
                   ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     CustomText(
+                  //       Languages.of(context)!.notification.toUpperCase(),
+                  //       fontSize: FontSize.fourteen,
+                  //       fontWeight: FontWeight.w700,
+                  //       fontStyle: FontStyle.normal,
+                  //       color: ColorResource.color23375A,
+                  //     ),
+                  //     Spacer(),
+                  //     GestureDetector(
+                  //         onTap: () {
+                  //           Navigator.pop(context);
+                  //         },
+                  //         child: Image.asset(ImageResource.close))
+                  //   ],
+                  // ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(

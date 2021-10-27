@@ -40,16 +40,22 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
   final formKey = GlobalKey<FormState>();
 
-  late FocusNode nextActionDateFocusNode;
-  late FocusNode remarksFocusNode;
+  // late FocusNode nextActionDateFocusNode;
+  // late FocusNode remarksFocusNode;
 
   @override
   void initState() {
     super.initState();
-    // nextActionDateController.text = '21-09-2021';
-    nextActionDateFocusNode = FocusNode();
-    remarksFocusNode = FocusNode();
+    widget.bloc.customerNotMetNextActionDateController.text =
+        DateTime.now().day.toString();
+    // nextActionDateFocusNode = FocusNode();
+    // remarksFocusNode = FocusNode();
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -90,7 +96,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         child: CustomReadOnlyTextField(
                           '',
                           widget.bloc.customerNotMetNextActionDateController,
-                          focusNode: nextActionDateFocusNode,
+                          focusNode: widget.bloc.invalidRemarksFocusNode,
+                          isReadOnly: true,
                           suffixWidget: GestureDetector(
                             onTap: () => pickDate(
                                 context,
@@ -103,8 +110,10 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           ),
                           // validationRules: ['required'],
                           onEditing: () {
-                            nextActionDateFocusNode.unfocus();
-                            remarksFocusNode.requestFocus();
+                            widget.bloc.customerNotMetNextActionDateFocusNode
+                                .unfocus();
+                            widget.bloc.customerNotMetRemarksFocusNode
+                                .requestFocus();
                           },
                         ),
                       ),
@@ -125,7 +134,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           // minLines: 2,
                           controller:
                               widget.bloc.customerNotMetRemarksController,
-                          focusNode: remarksFocusNode,
+                          focusNode: widget.bloc.customerNotMetRemarksFocusNode,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter some text';

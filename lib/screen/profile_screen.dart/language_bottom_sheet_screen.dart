@@ -8,6 +8,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -52,24 +53,29 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          Languages.of(context)!.launguage.toUpperCase(),
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          color: ColorResource.color23375A,
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Image.asset(ImageResource.close))
-                      ],
+                    BottomSheetAppbar(
+                      title: Languages.of(context)!.launguage.toUpperCase(),
+                      padding: EdgeInsets.all(0),
+                      color: ColorResource.color23375A,
                     ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     CustomText(
+                    //       Languages.of(context)!.launguage.toUpperCase(),
+                    //       fontSize: FontSize.fourteen,
+                    //       fontWeight: FontWeight.w700,
+                    //       fontStyle: FontStyle.normal,
+                    //       color: ColorResource.color23375A,
+                    //     ),
+                    //     Spacer(),
+                    //     GestureDetector(
+                    //         onTap: () {
+                    //           Navigator.pop(context);
+                    //         },
+                    //         child: Image.asset(ImageResource.close))
+                    //   ],
+                    // ),
                     SizedBox(height: 14),
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),

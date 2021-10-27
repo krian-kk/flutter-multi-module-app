@@ -9,7 +9,8 @@ import 'package:origa/widgets/custom_text.dart';
 class BottomSheetAppbar extends StatelessWidget {
   final String? title;
   final EdgeInsetsGeometry? padding;
-  const BottomSheetAppbar({Key? key, this.title, this.padding})
+  final Color? color;
+  const BottomSheetAppbar({Key? key, this.title, this.padding, this.color})
       : super(key: key);
 
   @override
@@ -23,14 +24,17 @@ class BottomSheetAppbar extends StatelessWidget {
               title!,
               fontSize: FontSize.sixteen,
               fontWeight: FontWeight.w700,
-              color: ColorResource.color101010,
+              color: color ?? ColorResource.color101010,
               fontStyle: FontStyle.normal,
             ),
             InkWell(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Image.asset(ImageResource.close)),
+                child: Image.asset(
+                  ImageResource.close,
+                  color: color,
+                )),
           ],
         ));
   }

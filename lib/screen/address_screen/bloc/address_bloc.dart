@@ -19,6 +19,10 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       TextEditingController();
   TextEditingController invalidRemarksController = TextEditingController();
 
+  FocusNode customerNotMetNextActionDateFocusNode = FocusNode();
+  FocusNode customerNotMetRemarksFocusNode = FocusNode();
+  FocusNode invalidRemarksFocusNode = FocusNode();
+
   List<OtherFeedbackExpandModel> expandOtherFeedback = [];
   List<EventExpandModel> expandEvent = [];
 

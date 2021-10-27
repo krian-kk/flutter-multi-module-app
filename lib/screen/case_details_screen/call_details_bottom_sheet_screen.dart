@@ -219,7 +219,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                                         const SizedBox(width: 10),
                                         Image.asset(ImageResource.viewShape,
                                             height: 20),
-                                        // SizedBox(width: 10)
+                                        SizedBox(width: 5)
                                       ],
                                     ),
                                   ),
