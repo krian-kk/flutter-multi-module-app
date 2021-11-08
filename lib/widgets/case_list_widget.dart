@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -14,10 +15,10 @@ import 'package:origa/widgets/custom_text.dart';
 
 
 class CaseLists {
-  static Widget buildListView(DashboardBloc bloc) {
+  static Widget buildListView(List<CaseListModel> caseList) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: bloc.caseList.length,
+        itemCount: caseList.length,
         itemBuilder: (BuildContext context, int index) {
         int listCount = index +1;
           return Column(
@@ -50,7 +51,7 @@ class CaseLists {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                         child: CustomText(
-                          bloc.caseList[index].loanID!,
+                          caseList[index].loanID!,
                           fontSize: FontSize.twelve,
                           color: ColorResource.color101010,
                         ),
@@ -69,7 +70,7 @@ class CaseLists {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  bloc.caseList[index].amount!,
+                                  caseList[index].amount!,
                                   fontSize: FontSize.eighteen,
                                   color: ColorResource.color101010,
                                   fontWeight: FontWeight.w700,
@@ -78,7 +79,7 @@ class CaseLists {
                                   height: 3.0,
                                 ),
                                 CustomText(
-                                  bloc.caseList[index].customerName!,
+                                  caseList[index].customerName!,
                                   fontSize: FontSize.sixteen,
                                   color: ColorResource.color101010,
                                   fontWeight: FontWeight.w400,
@@ -86,7 +87,7 @@ class CaseLists {
                               ],
                             ),
                             const Spacer(),
-                            bloc.caseList[index].newlyAdded!
+                            caseList[index].newlyAdded!
                                 ? Container(
                                     width: 55,
                                     height: 19,
@@ -117,7 +118,7 @@ class CaseLists {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: CustomText(
-                            bloc.caseList[index].address!,
+                            caseList[index].address!,
                             color: ColorResource.color484848,
                             fontSize: FontSize.fourteen,
                           ),
@@ -150,7 +151,7 @@ class CaseLists {
                             Row(
                               children: [
                                 CustomText(
-                                  bloc.caseList[index].date!,
+                                  caseList[index].date!,
                                   fontSize: FontSize.fourteen,
                                   color: ColorResource.color101010,
                                   fontWeight: FontWeight.w700,

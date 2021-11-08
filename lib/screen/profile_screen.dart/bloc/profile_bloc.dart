@@ -7,6 +7,7 @@ import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -16,12 +17,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   List<ProfileNavigation> profileNavigationList = [];
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
-  int languageValue = 0;
+  dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
+
       profileNavigationList.addAll([
         ProfileNavigation(
             title: StringResource.notification,

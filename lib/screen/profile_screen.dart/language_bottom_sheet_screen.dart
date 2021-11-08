@@ -8,10 +8,12 @@ import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageBottomSheetScreen extends StatefulWidget {
   const LanguageBottomSheetScreen({
@@ -28,17 +30,33 @@ class LanguageBottomSheetScreen extends StatefulWidget {
 
 class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   List<LanguageModel> languageList = [];
+  String? setLanguageCode;
+  int? _currVal;
+
+  @override
+  initState() {
+    super.initState();
+    getLanguageCode();
+  }
+
+  void getLanguageCode() async{
+   final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _currVal = prefs.getInt('mainLanguage') ?? 0;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    int? index;
     languageList = [
       LanguageModel(StringResource.english, true,
-          Languages.of(context)!.defaultLaunguage),
+          Languages.of(context)!.defaultLaunguage, 'en'),
       LanguageModel(StringResource.hindi, true,
-          Languages.of(context)!.choiceOtherLanguages),
+          Languages.of(context)!.choiceOtherLanguages, 'hi'),
       LanguageModel(StringResource.tamil, false,
-          Languages.of(context)!.choiceOtherLanguages),
+          Languages.of(context)!.choiceOtherLanguages, 'ta'),
       LanguageModel(StringResource.kannadam, false,
-          Languages.of(context)!.choiceOtherLanguages)
+          Languages.of(context)!.choiceOtherLanguages, 'ka')
     ];
     return SingleChildScrollView(
       child: SizedBox(
@@ -79,32 +97,47 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                     )
                                   : SizedBox(),
                               SizedBox(height: 6),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {});
-                                  widget.bloc.languageValue = i;
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  margin: EdgeInsets.symmetric(vertical: 5.0),
-                                  decoration: new BoxDecoration(
-                                      color: ColorResource.colorF8F9FB,
-                                      borderRadius: new BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  child: ListTile(
-                                    title: CustomText(
-                                      languageList[i].language,
-                                      lineHeight: 1,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w400,
-                                      color: ColorResource.color484848,
-                                    ),
-                                    leading: (widget.bloc.languageValue == i)
-                                        ? Image.asset(ImageResource.radioOn)
-                                        : Image.asset(ImageResource.radioOff),
-                                  ),
-                                ),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: new BoxDecoration(
+                                    color: ColorResource.colorF8F9FB,
+                                    borderRadius: new BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                          child: RadioListTile(
+                                            activeColor: ColorResource.color23375A,
+                                            title: CustomText(
+                                              languageList[i].language,
+                                              lineHeight: 1,
+                                              fontSize: FontSize.fourteen,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w400,
+                                              color: ColorResource.color484848,
+                                            ),
+                                            groupValue: _currVal,
+                                            value: i,
+                                            onChanged: (int? val) async {
+                                              // print(val);
+                                              setState(() {
+                                                _currVal = val!;
+                                                setLanguageCode = languageList[i].languageCode;
+                                                index = i;
+                                              });
+                                            },
+                                          ),
+                                // ListTile(
+                                //   title: CustomText(
+                                //     languageList[i].language,
+                                //     lineHeight: 1,
+                                //     fontSize: FontSize.fourteen,
+                                //     fontStyle: FontStyle.normal,
+                                //     fontWeight: FontWeight.w400,
+                                //     color: ColorResource.color484848,
+                                //   ),
+                                //   leading: (widget.bloc.languageValue== i)
+                                //       ? Image.asset(ImageResource.radioOn)
+                                //       : Image.asset(ImageResource.radioOff),
+                                // ),
                               ),
                             ],
                           );
@@ -134,7 +167,10 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       width: 190,
                       child: CustomButton(
                         Languages.of(context)!.okay.toUpperCase(),
-                        onTap: () => Navigator.pop(context),
+                        onTap: () {
+                          changeLanguage(context, setLanguageCode!);
+                          PreferenceHelper.setPreference('mainLanguage', index??0);
+                          Navigator.pop(context);},
                         cardShape: 5,
                         fontSize: FontSize.sixteen,
                         leadingWidget: CircleAvatar(

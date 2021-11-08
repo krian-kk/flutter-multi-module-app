@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:origa/models/dashboard_model.dart';
-import 'package:origa/screen/dashboard/case_list_widget.dart';
+import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
 
@@ -21,17 +22,22 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
-    if (event is DashboardEvent) {
+    if (event is DashboardInitialEvent) {
       yield DashboardLoadingState();
 
+// dashboardList.clear();
       dashboardList.addAll([
         DashboardListModel(
-            title: 'PRIORITY FOLLOW UP',
-            image: ImageResource.vectorArrow,
-            count: 'Count',
-            countNum: '200',
-            amount: 'Amount',
-            amountRs: '₹ 3,97,553.67'),
+          title: 'PRIORITY FOLLOW UP',
+          image: ImageResource.vectorArrow,
+          count: 'Count',
+          countNum: '200',
+          amount: 'Amount',
+          amountRs: '₹ 3,97,553.67',
+          // onTap: (){
+          //   print('object');
+          // },
+        ),
         DashboardListModel(
             title: 'UNTOUCHED CASES',
             image: ImageResource.vectorArrow,
@@ -75,7 +81,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             amount: '',
             amountRs: ''),
       ]);
-
+// caseList.clear();
       caseList.addAll([
         CaseListModel(
           newlyAdded: true,
@@ -108,6 +114,34 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PriorityFollowEvent) {
       yield PriorityFollowState();
+    }
+
+    if (event is UntouchedCasesEvent) {
+      yield UntouchedCasesState();
+    }
+
+    if (event is BrokenPTPEvent) {
+      yield BrokenPTPState();
+    }
+
+    if (event is MyReceiptsEvent) {
+      yield MyReceiptsState();
+    }
+
+    if (event is MyVisitsEvent) {
+      yield MyVisitsState();
+    }
+
+    if (event is MyDeposistsEvent) {
+      yield MyDeposistsState();
+    }
+
+    if (event is YardingAndSelfReleaseEvent) {
+      yield YardingAndSelfReleaseState();
+    }
+
+    if (event is HelpEvent) {
+      yield HelpState();
     }
   }
 }

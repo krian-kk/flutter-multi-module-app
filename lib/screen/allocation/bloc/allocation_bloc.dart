@@ -34,9 +34,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
-    if (event is AllocationEvent) {
+    if (event is AllocationInitialEvent) {
       yield AllocationLoadingState();
-
+      // print('--------------NK-------');
       allocationList.addAll([
         AllocationListModel(
           newlyAdded: true,

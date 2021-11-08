@@ -55,11 +55,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) {
-          // TODO: implement listener
+          if (state is PriorityFollowState) {
+            priorityFollowUpSheet(context);
+          }
+
+          if (state is UntouchedCasesState) {
+            untouchedCasesSheet(context);
+          }
+
+          if (state is BrokenPTPState) {
+            brokenPTPSheet(context);
+          }
+
+          if (state is MyReceiptsState) {
+            myReceiptsSheet(context);
+          }
+
+          if (state is MyVisitsState) {
+            myVisitsSheet(context);
+          }
+
+          if (state is MyDeposistsState) {
+            myDeposistsSheet(context);
+          }
+
+          if (state is YardingAndSelfReleaseState) {
+            yardingSelfReleaseSheet(context);
+          }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
             bloc: bloc,
             builder: (BuildContext context, DashboardState state) {
+              if (state is DashboardLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return Scaffold(
                   backgroundColor: ColorResource.colorF7F8FA,
                   body: SafeArea(
@@ -91,10 +122,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                            Languages.of(context)!.customerMet,
-                                            '20',
-                                            ColorResource.colorE0ECDF,
-                                            ColorResource.color73C170,
+                                            header: Languages.of(context)!
+                                                .customerMet,
+                                            count: '20',
+                                            backgrountColor:
+                                                ColorResource.colorE0ECDF,
+                                            leadingColor:
+                                                ColorResource.color73C170,
                                           ),
                                         )),
                                     const SizedBox(
@@ -104,11 +138,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            Languages.of(context)!
+                                            header: Languages.of(context)!
                                                 .customerNotMet,
-                                            '10',
-                                            ColorResource.colorF2EEDC,
-                                            ColorResource.colorE5C55B,
+                                            count: '10',
+                                            backgrountColor:
+                                                ColorResource.colorF2EEDC,
+                                            leadingColor:
+                                                ColorResource.colorE5C55B,
                                           ),
                                         )),
                                     const SizedBox(
@@ -122,10 +158,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           },
                                           child: Container(
                                             child: userActivity(
-                                              Languages.of(context)!.invalid,
-                                              '10',
-                                              ColorResource.colorF4ECEF,
-                                              ColorResource.colorF1BCC4,
+                                              header: Languages.of(context)!
+                                                  .invalid,
+                                              count: '10',
+                                              backgrountColor:
+                                                  ColorResource.colorF4ECEF,
+                                              leadingColor:
+                                                  ColorResource.colorF1BCC4,
                                             ),
                                           ),
                                         )),
@@ -271,25 +310,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       onTap: () {
                                         switch (index) {
                                           case 0:
-                                            priorityFollowUpSheet(context);
+                                            bloc.add(PriorityFollowEvent());
                                             break;
                                           case 1:
-                                            untouchedCasesSheet(context);
+                                            bloc.add(UntouchedCasesEvent());
                                             break;
                                           case 2:
-                                            brokenPTPSheet(context);
+                                            bloc.add(BrokenPTPEvent());
                                             break;
                                           case 3:
-                                            myReceiptsSheet(context);
+                                            bloc.add(MyReceiptsEvent());
                                             break;
                                           case 4:
-                                            myVisitsSheet(context);
+                                            bloc.add(MyVisitsEvent());
                                             break;
                                           case 5:
-                                            myDeposistsSheet(context);
+                                            bloc.add(MyDeposistsEvent());
                                             break;
                                           case 6:
-                                            yardingSelfReleaseSheet(context);
+                                            bloc.add(
+                                                YardingAndSelfReleaseEvent());
                                             break;
                                           default:
                                             AppUtils.showToast('');
@@ -517,7 +557,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget userActivity(
-      String header, String count, Color backgrountColor, Color leadingColor) {
+      {String? header,
+      String? count,
+      Color? backgrountColor,
+      required Color leadingColor}) {
     return Container(
       height: 55,
       width: 125,
@@ -543,13 +586,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(
-                  header,
+                  header!,
                   color: ColorResource.color23375A,
                   fontSize: FontSize.twelve,
                   fontWeight: FontWeight.w700,
                 ),
                 CustomText(
-                  count,
+                  count!,
                   color: ColorResource.color23375A,
                   fontSize: FontSize.sixteen,
                   fontWeight: FontWeight.w700,
@@ -580,7 +623,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return SafeArea(
               // top: false,
               bottom: false,
-              child: BrokenPTPBottomSheet(bloc));
+              child: BrokenPTPBottomSheet());
         });
   }
 
@@ -613,7 +656,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return SafeArea(
               // top: false,
               bottom: false,
-              child: MyReceiptsBottomSheet(bloc));
+              child: MyReceiptsBottomSheet());
         });
   }
 

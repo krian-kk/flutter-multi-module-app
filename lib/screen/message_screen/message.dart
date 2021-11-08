@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/message_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -44,8 +45,8 @@ class _MessageChatRoomScreenState extends State<MessageChatRoomScreen> {
             Column(
               children: [
                 const SizedBox(height: 13,),
-                const BottomSheetAppbar(
-                       title: 'MESSAGE',
+                 BottomSheetAppbar(
+                       title: Languages.of(context)!.message.toUpperCase()
                     ),
                     const SizedBox(height: 5,),
                    Padding(
@@ -175,7 +176,7 @@ class _MessageChatRoomScreenState extends State<MessageChatRoomScreen> {
                     Expanded(
                       flex: 3,
                       child: CustomTextField(
-                       'Type your message',
+                       Languages.of(context)!.typeYourMessage,
                         messageController,
                         isBorder: true,
                         borderColor: ColorResource.colorDADADA,
@@ -196,7 +197,7 @@ class _MessageChatRoomScreenState extends State<MessageChatRoomScreen> {
                           ),
                           child: Center(
                             child: CustomText(
-                              'SEND',
+                              Languages.of(context)!.send.toUpperCase(),
                               fontSize: FontSize.sixteen,
                               color: ColorResource.colorffffff,
                               fontWeight: FontWeight.w600,
