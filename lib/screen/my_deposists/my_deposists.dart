@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/screen/dashboard/case_list_widget.dart';
-import 'package:origa/screen/dashboard/tab_customer_met_notmet_invalid.dart';
+import 'package:origa/widgets/case_list_widget.dart';
+import 'package:origa/widgets/tab_customer_met_notmet_invalid.dart';
+import 'package:origa/screen/my_deposists/bloc/mydeposists_bloc.dart';
 import 'package:origa/screen/my_deposists/deposistion_mode/deposistion_mode.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -29,9 +31,11 @@ class MyDeposistsBottomSheet extends StatefulWidget {
 }
 
 class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
+  late MydeposistsBloc bloc;
   @override
   void initState() {
     // TODO: implement initState
+    bloc = MydeposistsBloc()..add(MydeposistsInitialEvent());
     super.initState();
   }
 
@@ -48,141 +52,157 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
           builder: (BuildContext context, StateSetter setState) {
         return WillPopScope(
           onWillPop: () async => false,
-          child: Container(
-            padding: EdgeInsets.only(top: 16),
-            child: DefaultTabController(
-              length: 2,
-              child: SafeArea(
-                child: Scaffold(
-                  // floatingActionButton: CustomFloatingActionButton(
-                  //   onTap: () async {
-                  //     await Navigator.pushNamed(
-                  //         context, AppRoutes.searchAllocationDetailsScreen);
-                  //   },
-                  // ),
-                  bottomNavigationBar: Container(
-                    height: 66,
-                    color: ColorResource.colorFFFFFF,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
-                      child: CustomButton(
-                        Languages.of(context)!.enterDepositionDetails,
-                        fontSize: FontSize.sixteen,
-                        fontWeight: FontWeight.w600,
-                        onTap: () {
-                          depositionModeSheet(context);
-                        },
-                      ),
-                    ),
-                  ),
-                  body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      BottomSheetAppbar(
-                        title: Languages.of(context)!.myDeposists,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
-                        child: Column(
+          child: BlocListener<MydeposistsBloc, MydeposistsState>(
+            bloc: bloc,
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            child: BlocBuilder<MydeposistsBloc, MydeposistsState>(
+              bloc: bloc,
+              builder: (context, state) {
+                return Container(
+                  padding: EdgeInsets.only(top: 16),
+                  child: DefaultTabController(
+                    length: 2,
+                    child: SafeArea(
+                      child: Scaffold(
+                        // floatingActionButton: CustomFloatingActionButton(
+                        //   onTap: () async {
+                        //     await Navigator.pushNamed(
+                        //         context, AppRoutes.searchAllocationDetailsScreen);
+                        //   },
+                        // ),
+                        bottomNavigationBar: Container(
+                          height: 66,
+                          color: ColorResource.colorFFFFFF,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
+                            child: CustomButton(
+                              Languages.of(context)!.enterDepositionDetails,
+                              fontSize: FontSize.sixteen,
+                              fontWeight: FontWeight.w600,
+                              onTap: () {
+                                depositionModeSheet(context);
+                              },
+                            ),
+                          ),
+                        ),
+                        body: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
+                            BottomSheetAppbar(
+                              title: Languages.of(context)!.myDeposists,
+                            ),
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
-                                        CustomText(
-                                          Languages.of(context)!.count,
-                                          fontSize: FontSize.ten,
-                                          color: ColorResource.color101010,
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                Languages.of(context)!.count,
+                                                fontSize: FontSize.ten,
+                                                color:
+                                                    ColorResource.color101010,
+                                              ),
+                                              CustomText(
+                                                '200',
+                                                fontSize: FontSize.fourteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        CustomText(
-                                          '200',
-                                          fontSize: FontSize.fourteen,
-                                          color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w700,
+                                        Expanded(
+                                          flex: 7,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                Languages.of(context)!.amount,
+                                                fontSize: FontSize.ten,
+                                                color:
+                                                    ColorResource.color101010,
+                                              ),
+                                              CustomText(
+                                                '₹ 3,97,553.67',
+                                                fontSize: FontSize.fourteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 7,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!.amount,
-                                          fontSize: FontSize.ten,
-                                          color: ColorResource.color101010,
-                                        ),
-                                        CustomText(
-                                          '₹ 3,97,553.67',
-                                          fontSize: FontSize.fourteen,
-                                          color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ],
-                                    ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Wrap(
+                                    runSpacing: 0,
+                                    spacing: 7,
+                                    children: _buildFilterOptions(),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 12,
+                            Container(
+                              // width: MediaQuery.of(context).size.width,
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: ColorResource.colorD8D8D8))),
+                              child: TabBar(
+                                isScrollable: false,
+                                indicatorColor: ColorResource.colorD5344C,
+                                labelStyle: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: ColorResource.color23375A,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal),
+                                indicatorWeight: 5.0,
+                                labelColor: ColorResource.color23375A,
+                                unselectedLabelColor: ColorResource.colorC4C4C4,
+                                tabs: [
+                                  Tab(text: Languages.of(context)!.cheque),
+                                  Tab(text: Languages.of(context)!.cash)
+                                ],
+                              ),
                             ),
-                            Wrap(
-                              runSpacing: 0,
-                              spacing: 7,
-                              children: _buildFilterOptions(),
+                            Expanded(
+                              child: TabBarView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: [
+                                  ChegueResults(widget.bloc),
+                                  CashResults(widget.bloc),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Container(
-                        // width: MediaQuery.of(context).size.width,
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: ColorResource.colorD8D8D8))),
-                        child: TabBar(
-                          isScrollable: false,
-                          indicatorColor: ColorResource.colorD5344C,
-                          labelStyle: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
-                              fontStyle: FontStyle.normal),
-                          indicatorWeight: 5.0,
-                          labelColor: ColorResource.color23375A,
-                          unselectedLabelColor: ColorResource.colorC4C4C4,
-                          tabs: [
-                            Tab(text: Languages.of(context)!.cheque),
-                            Tab(text: Languages.of(context)!.cash)
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: TabBarView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            ChegueResults(widget.bloc),
-                            CashResults(widget.bloc),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         );

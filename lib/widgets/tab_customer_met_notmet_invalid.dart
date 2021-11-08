@@ -2,16 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/screen/dashboard/case_list_widget.dart';
+import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomerMetNotmetInvalidTab extends StatefulWidget {
-  final DashboardBloc bloc;
-  CustomerMetNotmetInvalidTab(this.bloc, {Key? key}) : super(key: key);
+  // final DashboardBloc bloc;
+  final List<CaseListModel> caseList;
+  CustomerMetNotmetInvalidTab(this.caseList, {Key? key}) : super(key: key);
 
   @override
   _CustomerMetNotmetInvalidTabState createState() => _CustomerMetNotmetInvalidTabState();
@@ -50,7 +52,7 @@ class _CustomerMetNotmetInvalidTabState extends State<CustomerMetNotmetInvalidTa
                                  Languages.of(context)!.count.toUpperCase(),
                                  fontSize: FontSize.ten,
                                  color: ColorResource.color101010,),
-                                 CustomText('200', 
+                                 CustomText(widget.caseList.length.toString(), 
                                  fontSize: FontSize.fourteen,
                                  color: ColorResource.color101010,
                                  fontWeight: FontWeight.w700,
@@ -78,7 +80,7 @@ class _CustomerMetNotmetInvalidTabState extends State<CustomerMetNotmetInvalidTa
                          ],
                        ),
                      ),
-                     Expanded(child: CaseLists.buildListView(widget.bloc))
+                     Expanded(child: CaseLists.buildListView(widget.caseList))
                    ],
                  ),
                ),

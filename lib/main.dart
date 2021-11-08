@@ -25,7 +25,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   Bloc.observer = EchoBlocDelegate();
-  await Hive.initFlutter();
+  // await Hive.initFlutter();
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) {
       return AuthenticationBloc()..add(AppStarted());
@@ -35,10 +35,10 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  // static void setLocale(BuildContext context, Locale newLocale) {
-  //   final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-  //   state!.setLocale(newLocale);
-  // }
+  static void setLocale(BuildContext context, Locale newLocale) {
+    final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(newLocale);
+  }
 
   @override
   State<StatefulWidget> createState() => _MyAppState();
@@ -55,11 +55,11 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  // void setLocale(Locale locale) {
-  //   setState(() {
-  //     _locale = locale;
-  //   });
-  // }
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, ThemeData theme) {
         return MaterialApp(
           locale: _locale,
-          supportedLocales: const [Locale('en', ''), Locale('hi', '')],
+          supportedLocales: const [Locale('en', ''), Locale('hi', ''), Locale('ta', '')],
           localizationsDelegates: const [
             AppLocalizationsDelegate(),
             GlobalMaterialLocalizations.delegate,

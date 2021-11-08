@@ -41,10 +41,10 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildSplashScreen();
     case AppRoutes.homeTabScreen:
       return _buildHomeTabScreen(settings);
-    case AppRoutes.dashboardScreen:
-      return _buildDashboardScreen();
-    case AppRoutes.allocationScreen:
-      return _buildAllocationScreen();
+    // case AppRoutes.dashboardScreen:
+    //   return _buildDashboardScreen();
+    // case AppRoutes.allocationScreen:
+    //   return _buildAllocationScreen();
     case AppRoutes.searchAllocationDetailsScreen:
       return _buildSearchAllocationDetailsScreen();
     case AppRoutes.caseDetailsScreen:
@@ -87,19 +87,19 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
 //   );
 // }
 
-Route<dynamic> _buildAllocationScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildAllocationPage()),
-  );
-}
+// Route<dynamic> _buildAllocationScreen() {
+//   return MaterialPageRoute(
+//     builder: (context) =>
+//         addAuthBloc(context, PageBuilder.buildAllocationPage()),
+//   );
+// }
 
-Route<dynamic> _buildDashboardScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildDashboardPage()),
-  );
-}
+// Route<dynamic> _buildDashboardScreen() {
+//   return MaterialPageRoute(
+//     builder: (context) =>
+//         addAuthBloc(context, PageBuilder.buildDashboardPage()),
+//   );
+// }
 
 Route<dynamic> _buildSearchAllocationDetailsScreen() {
   return MaterialPageRoute(
@@ -157,21 +157,21 @@ class PageBuilder {
     );
   }
 
-  static Widget buildDashboardPage() {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<DashboardBloc>(context)..add(DashboardInitialEvent()),
-      child: DashboardScreen(),
-    );
-  }
+  // static Widget buildDashboardPage() {
+  //   return BlocProvider(
+  //     create: (BuildContext context) =>
+  //         BlocProvider.of<DashboardBloc>(context)..add(DashboardInitialEvent()),
+  //     child: DashboardScreen(),
+  //   );
+  // }
 
-  static Widget buildAllocationPage() {
-    return BlocProvider(
-      create: (BuildContext context) => BlocProvider.of<AllocationBloc>(context)
-        ..add(AllocationInitialEvent()),
-      child: AllocationScreen(),
-    );
-  }
+  // static Widget buildAllocationPage() {
+  //   return BlocProvider(
+  //     create: (BuildContext context) => BlocProvider.of<AllocationBloc>(context)
+  //       ..add(AllocationInitialEvent()),
+  //     child: AllocationScreen(),
+  //   );
+  // }
 
   static Widget buildSearchAllocationDetailsPage() {
     return BlocProvider(
