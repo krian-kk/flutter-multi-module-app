@@ -120,7 +120,7 @@ class _SearchAllocationDetailsScreenState
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    Languages.of(context)!.myRecentActivity,
+                                    Languages.of(context)!.customerID,
                                     customerIDController,
                                     isFill: true,
                                     isBorder: true,
@@ -162,8 +162,7 @@ class _SearchAllocationDetailsScreenState
                                             : ImageResource.checkOff),
                                         const SizedBox(width: 13),
                                         CustomText(
-                                          Languages.of(context)!
-                                              .showOnlyTopResults,
+                                          Languages.of(context)!.showOnlyStar,
                                           color: ColorResource.color000000,
                                           fontSize: FontSize.sixteen,
                                           fontStyle: FontStyle.normal,

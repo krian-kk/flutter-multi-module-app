@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
+import 'package:origa/utils/string_resource.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -23,19 +24,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ProfileLoadingState();
       profileNavigationList.addAll([
         ProfileNavigation(
-            title: 'Notification',
+            title: StringResource.notification,
             count: true,
             onTap: () {
               this.add(ClickNotificationEvent());
             }),
         ProfileNavigation(
-            title: 'Select Launguage',
+            title: StringResource.selectLanguage,
             count: false,
             onTap: () {
               this.add(ClickChangeLaunguageEvent());
             }),
         ProfileNavigation(
-            title: 'Change Password',
+            title: StringResource.changePassword,
             count: false,
             onTap: () {
               this.add(ClickChangePassswordEvent());

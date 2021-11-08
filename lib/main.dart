@@ -12,7 +12,6 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:origa/utils/app_theme.dart';
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_event.dart';

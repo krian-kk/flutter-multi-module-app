@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/customer_not_met_model.dart';
 import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/screen/phone_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/phone_screen/connected_screen.dart';
@@ -12,6 +11,7 @@ import 'package:origa/screen/phone_screen/unreachable_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -26,13 +26,10 @@ class _PhoneScreenState extends State<PhoneScreen>
     with SingleTickerProviderStateMixin {
   late PhoneBloc bloc;
   late TabController _controller;
-  int currentIndex = 0;
 
   _handleTabSelection() {
     if (_controller.indexIsChanging) {
-      setState(() {
-        currentIndex = _controller.index;
-      });
+      setState(() {});
     }
   }
 
@@ -138,7 +135,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       Image.asset(ImageResource.phone),
                                       SizedBox(width: 12),
                                       CustomText(
-                                        Languages.of(context)!.call,
+                                        StringResource.call.toUpperCase(),
                                         fontSize: FontSize.fourteen,
                                         fontWeight: FontWeight.w700,
                                         color: ColorResource.color23375A,
@@ -172,6 +169,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                   physics: NeverScrollableScrollPhysics(),
                   isScrollable: true,
                   indicatorColor: ColorResource.colorD5344C,
+                  onTap: (index) {
+                    bloc.unreachableNextActionDateFocusNode.unfocus();
+                    bloc.unreachableRemarksFocusNode.unfocus();
+                    bloc.invalidRemarksFocusNode.unfocus();
+                  },
                   labelStyle: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color23375A,
@@ -239,7 +241,7 @@ class _PhoneScreenState extends State<PhoneScreen>
             ],
           ),
         ),
-        bottomNavigationBar: currentIndex == 0
+        bottomNavigationBar: _controller.index == 0
             ? Container(
                 height: 75,
                 decoration: BoxDecoration(
@@ -304,13 +306,23 @@ class _PhoneScreenState extends State<PhoneScreen>
                       SizedBox(width: 25),
                       SizedBox(
                         width: 191,
-                        child: CustomButton(
-                          Languages.of(context)!.submit.toUpperCase(),
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
-                          // onTap: () => bloc.add(ClickMessageEvent()),
-                          cardShape: 5,
-                        ),
+                        child: _controller.index == 1
+                            ? CustomButton(
+                                Languages.of(context)!.submit.toUpperCase(),
+                                // isEnabled: (bloc.selectedUnreadableClip == ''),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                // onTap: () => bloc.add(ClickMessageEvent()),
+                                cardShape: 5,
+                              )
+                            : CustomButton(
+                                Languages.of(context)!.submit.toUpperCase(),
+                                // isEnabled: (bloc.selectedInvalidClip != ''),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                // onTap: () => bloc.add(ClickMessageEvent()),
+                                cardShape: 5,
+                              ),
                       ),
                     ],
                   ),

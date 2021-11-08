@@ -154,35 +154,34 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               Row(
+                                mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Flexible(
-                                      child: SizedBox(
-                                          width: 150,
-                                          child: Container(
-                                              decoration: new BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorBEC4CF,
-                                                  borderRadius:
-                                                      new BorderRadius.all(
-                                                          new Radius.circular(
-                                                              75.0))),
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                      ImageResource.direction),
-                                                  SizedBox(width: 12),
-                                                  CustomText(
-                                                    Languages.of(context)!
-                                                        .viewMap,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                  )
-                                                ],
-                                              )))),
+                                  SizedBox(
+                                      child: Container(
+                                          decoration: new BoxDecoration(
+                                              color: ColorResource.colorBEC4CF,
+                                              borderRadius: new BorderRadius
+                                                      .all(
+                                                  new Radius.circular(75.0))),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  ImageResource.direction),
+                                              SizedBox(width: 12),
+                                              CustomText(
+                                                Languages.of(context)!.viewMap,
+                                                fontSize: FontSize.fourteen,
+                                                fontWeight: FontWeight.w700,
+                                                color:
+                                                    ColorResource.color23375A,
+                                              ),
+                                              SizedBox(width: 12),
+                                            ],
+                                          ))),
+                                  Spacer(),
+                                  SizedBox(width: 5),
                                   GestureDetector(
                                     onTap: () {
                                       // Navigator.pushNamed(

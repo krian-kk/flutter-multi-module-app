@@ -167,36 +167,35 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               Row(
+                                mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Flexible(
-                                      child: SizedBox(
-                                          width: 150,
-                                          child: Container(
-                                              decoration: new BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorBEC4CF,
-                                                  borderRadius:
-                                                      new BorderRadius.all(
-                                                          new Radius.circular(
-                                                              75.0))),
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                      ImageResource.phone),
-                                                  SizedBox(width: 12),
-                                                  CustomText(
-                                                    Languages.of(context)!.call,
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                    lineHeight: 1,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ],
-                                              )))),
+                                  SizedBox(
+                                      child: Container(
+                                          decoration: new BoxDecoration(
+                                              color: ColorResource.colorBEC4CF,
+                                              borderRadius: new BorderRadius
+                                                      .all(
+                                                  new Radius.circular(75.0))),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(ImageResource.phone),
+                                              SizedBox(width: 12),
+                                              CustomText(
+                                                Languages.of(context)!.call,
+                                                color:
+                                                    ColorResource.color23375A,
+                                                lineHeight: 1,
+                                                fontSize: FontSize.fourteen,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              SizedBox(width: 12),
+                                            ],
+                                          ))),
+                                  Spacer(),
+                                  SizedBox(width: 5),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.pop(context);

@@ -104,7 +104,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            Languages.of(context)!.customerNotMet,
+                                            Languages.of(context)!
+                                                .customerNotMet,
                                             '10',
                                             ColorResource.colorF2EEDC,
                                             ColorResource.colorE5C55B,
@@ -116,7 +117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     Expanded(
                                         flex: 3,
                                         child: GestureDetector(
-                                          onTap: (){
+                                          onTap: () {
                                             // Navigator.push(context, CupertinoPageRoute(builder: (context)=>MessageChatRoomScreen()));
                                           },
                                           child: Container(
@@ -147,7 +148,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      Languages.of(context)!.mtdResolutionProgress,
+                                      Languages.of(context)!
+                                          .mtdResolutionProgress,
                                       fontSize: FontSize.twelve,
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color23375A,
@@ -156,7 +158,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       height: 5,
                                     ),
                                     CustomText(
-                                      Languages.of(context)!.customer.toUpperCase(),
+                                      Languages.of(context)!
+                                          .customer
+                                          .toUpperCase(),
                                       color: ColorResource.color23375A,
                                       fontSize: FontSize.ten,
                                       fontWeight: FontWeight.w700,
@@ -208,7 +212,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      Languages.of(context)!.amount.toUpperCase(),
+                                      Languages.of(context)!
+                                          .amount
+                                          .toUpperCase(),
                                       color: ColorResource.color23375A,
                                       fontSize: FontSize.ten,
                                       fontWeight: FontWeight.w700,

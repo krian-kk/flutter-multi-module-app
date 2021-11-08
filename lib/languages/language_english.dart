@@ -221,7 +221,7 @@ class LanguageEn extends Languages {
   String get myRecentActivity => 'My Recent Activity';
 
   @override
-  String get showOnlyTopResults => 'Show Only Top Results';
+  String get showOnlyStar => 'Show only STAR ( High Priority )';
 
   @override
   String get new_ => 'NEW';
@@ -519,4 +519,34 @@ class LanguageEn extends Languages {
 
   @override
   String get writeYourRemarksHere => 'Write your remarks here';
+
+  @override
+  String get selectLanguage => 'SELECT LANGUAGE';
+
+  @override
+  String get doesNotExist => 'DOES NOT EXIST';
+
+  @override
+  String get incorrectNumber => 'INCORRECT NUMBER';
+
+  @override
+  String get numberNotWorking => 'NUMBER NOT WORKING';
+
+  @override
+  String get notOperational => 'NOT OPERATIONAL';
+
+  @override
+  String get lineBusy => 'LINE BUSY';
+
+  @override
+  String get switchOff => 'SWITCH OFF';
+
+  @override
+  String get rnr => 'RNR';
+
+  @override
+  String get outOfNetwork => 'OUT OF NETWORK';
+
+  @override
+  String get disConnecting => 'DISCONNECTING';
 }

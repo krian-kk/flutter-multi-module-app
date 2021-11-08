@@ -2,20 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/language.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-
-List<SelectedClipModel> selectedClipList = [
-  SelectedClipModel('DOES NOT EXIST'),
-  SelectedClipModel('INCORRECT NUMBER'),
-  SelectedClipModel('NUMBER NOT WORKING'),
-  SelectedClipModel('NOT OPERATIONAL'),
-];
 
 class PhoneThirdTabScreen extends StatefulWidget {
   const PhoneThirdTabScreen(
@@ -33,94 +26,104 @@ class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidate: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Wrap(
-                      runSpacing: 10,
-                      spacing: 10,
-                      children: _buildSelectedClip(),
-                    ),
-                    SizedBox(height: 27),
-                    CustomText(
-                      Languages.of(context)!.remarks,
-                      color: ColorResource.color666666,
-                      fontWeight: FontWeight.w400,
-                      fontSize: FontSize.twelve,
-                      fontStyle: FontStyle.normal,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextFormField(
-                        controller: widget.bloc.invalidRemarksController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        decoration: new InputDecoration(
-                            hintText:
-                                Languages.of(context)!.writeYourRemarksHere,
-                            focusColor: ColorResource.colorE5EAF6,
-                            labelStyle:
-                                new TextStyle(color: const Color(0xFF424242))),
+    List<SelectedClipModel> selectedClipList = [
+      SelectedClipModel(Languages.of(context)!.doesNotExist.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.incorrectNumber.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.numberNotWorking.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
+    ];
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Form(
+        key: formKey,
+        autovalidate: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Wrap(
+                        runSpacing: 10,
+                        spacing: 10,
+                        children: _buildSelectedClip(selectedClipList),
                       ),
-                    ),
-                    TextField(),
-                    SizedBox(height: 19),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            Languages.of(context)!.addNewContact,
-                            textColor: ColorResource.colorFFFFFF,
-                            borderColor: ColorResource.color23375A,
-                            fontSize: FontSize.twelve,
-                            cardShape: 75,
-                            buttonBackgroundColor: ColorResource.color23375A,
-                          ),
+                      SizedBox(height: 27),
+                      CustomText(
+                        Languages.of(context)!.remarks,
+                        color: ColorResource.color666666,
+                        fontWeight: FontWeight.w400,
+                        fontSize: FontSize.twelve,
+                        fontStyle: FontStyle.normal,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormField(
+                          focusNode: widget.bloc.invalidRemarksFocusNode,
+                          controller: widget.bloc.invalidRemarksController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          decoration: new InputDecoration(
+                              hintText:
+                                  Languages.of(context)!.writeYourRemarksHere,
+                              focusColor: ColorResource.colorE5EAF6,
+                              labelStyle: new TextStyle(
+                                  color: const Color(0xFF424242))),
                         ),
-                        SizedBox(height: 11),
-                        Expanded(
-                          child: CustomButton(
-                            Languages.of(context)!.otherFeedBack,
-                            fontSize: FontSize.twelve,
-                            textColor: ColorResource.color23375A,
-                            borderColor: ColorResource.color23375A,
-                            cardShape: 75,
-                            buttonBackgroundColor: ColorResource.colorFFFFFF,
+                      ),
+                      // TextField(),
+                      SizedBox(height: 19),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              StringResource.addNewContact.toUpperCase(),
+                              textColor: ColorResource.colorFFFFFF,
+                              borderColor: ColorResource.color23375A,
+                              fontSize: FontSize.twelve,
+                              cardShape: 75,
+                              buttonBackgroundColor: ColorResource.color23375A,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 120)
-                  ],
+                          SizedBox(height: 11),
+                          Expanded(
+                            child: CustomButton(
+                              Languages.of(context)!.otherFeedBack,
+                              fontSize: FontSize.twelve,
+                              textColor: ColorResource.color23375A,
+                              borderColor: ColorResource.color23375A,
+                              cardShape: 75,
+                              buttonBackgroundColor: ColorResource.colorFFFFFF,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 120)
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  List<Widget> _buildSelectedClip() {
+  List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-    selectedClipList.forEach((element) {
+    list.forEach((element) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.selectedInvalidClip = element.clipTitle;

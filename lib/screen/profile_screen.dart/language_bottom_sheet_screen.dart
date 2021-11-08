@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -58,24 +59,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       padding: EdgeInsets.all(0),
                       color: ColorResource.color23375A,
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     CustomText(
-                    //       Languages.of(context)!.launguage.toUpperCase(),
-                    //       fontSize: FontSize.fourteen,
-                    //       fontWeight: FontWeight.w700,
-                    //       fontStyle: FontStyle.normal,
-                    //       color: ColorResource.color23375A,
-                    //     ),
-                    //     Spacer(),
-                    //     GestureDetector(
-                    //         onTap: () {
-                    //           Navigator.pop(context);
-                    //         },
-                    //         child: Image.asset(ImageResource.close))
-                    //   ],
-                    // ),
                     SizedBox(height: 14),
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
