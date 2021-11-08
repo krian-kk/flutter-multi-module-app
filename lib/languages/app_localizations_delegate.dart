@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'language_arabic.dart';
+import 'package:origa/languages/language_hindi.dart';
+import 'language_tamil.dart';
 import 'language_english.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
@@ -8,7 +9,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
 
   @override
   bool isSupported(Locale locale) =>
-      ['en', 'hi' /*, 'ar', 'hi'*/].contains(locale.languageCode);
+      ['en', 'hi', 'ta'].contains(locale.languageCode);
 
   @override
   Future<Languages> load(Locale locale) => _load(locale);
@@ -17,10 +18,10 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
     switch (locale.languageCode) {
       case 'en':
         return LanguageEn();
-      /*  case 'ar':
-        return LanguageAr();
       case 'hi':
-        return LanguageHi();*/
+        return LanguageHi();
+      case 'ta':
+        return LanguageTa();
       default:
         return LanguageEn();
     }

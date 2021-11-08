@@ -116,156 +116,165 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 ],
               ),
             ),
-            body: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 9.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Visibility(
-                    visible: areyouatOffice,
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                      decoration: BoxDecoration(
-                        color: ColorResource.colorffffff,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: ColorResource.colorECECEC, width: 1.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(ImageResource.location),
-                          const SizedBox(
-                            width: 13.0,
+            body: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 10,),
+                      Visibility(
+                        visible: areyouatOffice,
+                        child: Container(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                          decoration: BoxDecoration(
+                            color: ColorResource.colorffffff,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: ColorResource.colorECECEC, width: 1.0),
                           ),
-                          CustomText(
-                            Languages.of(context)!.areYouAtOffice,
-                            fontSize: FontSize.twelve,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                          const SizedBox(
-                            width: 15.0,
-                          ),
-                          Container(
-                              width: 80,
-                              height: 40,
-                              child: CustomButton(
-                                Languages.of(context)!.yes,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(ImageResource.location),
+                              const SizedBox(
+                                width: 13.0,
+                              ),
+                              CustomText(
+                                Languages.of(context)!.areYouAtOffice,
                                 fontSize: FontSize.twelve,
-                                borderColor: ColorResource.colorEA6D48,
-                                buttonBackgroundColor:
-                                    ColorResource.colorEA6D48,
-                                cardShape: 5,
-                                onTap: () {
-                                  setState(() {
-                                    areyouatOffice = false;
-                                  });
-                                },
-                              )),
-                          const SizedBox(
-                            width: 6.0,
+                                fontWeight: FontWeight.w700,
+                                color: ColorResource.color000000,
+                              ),
+                              const SizedBox(
+                                width: 15.0,
+                              ),
+                              Container(
+                                  width: 80,
+                                  height: 40,
+                                  child: CustomButton(
+                                    Languages.of(context)!.yes,
+                                    fontSize: FontSize.twelve,
+                                    borderColor: ColorResource.colorEA6D48,
+                                    buttonBackgroundColor:
+                                        ColorResource.colorEA6D48,
+                                    cardShape: 5,
+                                    onTap: () {
+                                      setState(() {
+                                        areyouatOffice = false;
+                                      });
+                                    },
+                                  )),
+                              const SizedBox(
+                                width: 6.0,
+                              ),
+                              Container(
+                                  width: 80,
+                                  height: 40,
+                                  child: CustomButton(
+                                    Languages.of(context)!.no,
+                                    fontSize: FontSize.twelve,
+                                    textColor: ColorResource.color23375A,
+                                    buttonBackgroundColor:
+                                        ColorResource.colorffffff,
+                                    cardShape: 5,
+                                    onTap: () {
+                                      setState(() {
+                                        areyouatOffice = false;
+                                      });
+                                    },
+                                  )),
+                            ],
                           ),
-                          Container(
-                              width: 80,
-                              height: 40,
-                              child: CustomButton(
-                                Languages.of(context)!.no,
-                                fontSize: FontSize.twelve,
-                                textColor: ColorResource.color23375A,
-                                buttonBackgroundColor:
-                                    ColorResource.colorffffff,
-                                cardShape: 5,
-                                onTap: () {
-                                  setState(() {
-                                    areyouatOffice = false;
-                                  });
-                                },
-                              )),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(35, 55, 90, 0.27),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          Languages.of(context)!.searchbasedOn,
-                          fontSize: FontSize.ten,
-                          color: ColorResource.color000000,
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(35, 55, 90, 0.27),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        // const SizedBox(height: 10.0,),
-                        CustomText(
-                          Languages.of(context)!.pincode + ' 636808',
-                          fontSize: FontSize.fourteen,
-                          color: ColorResource.color000000,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15.0,
-                  ),
-                  Wrap(
-                    runSpacing: 0,
-                    spacing: 10,
-                    children: _buildFilterOptions(),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  bloc.showFilterDistance
-                      ? _buildBuildRoute()
-                      : Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(
-                              '10 ' + Languages.of(context)!.allocation,
+                              Languages.of(context)!.searchbasedOn,
+                              fontSize: FontSize.ten,
+                              color: ColorResource.color000000,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            // const SizedBox(height: 10.0,),
+                            CustomText(
+                              Languages.of(context)!.pincode + ' 636808',
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color000000,
                               fontWeight: FontWeight.w700,
                             ),
-                            const SizedBox(
-                              width: 9.0,
-                            ),
-                            Container(
-                                height: 20,
-                                width: 20,
-                                child: Image.asset(ImageResource.star)),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            CustomText(
-                              bloc.allocationList.length.toString() +
-                                  " " +
-                                  Languages.of(context)!.hignPriority,
-                              fontSize: FontSize.ten,
-                              color: ColorResource.color101010,
-                              fontWeight: FontWeight.w700,
-                            ),
                           ],
                         ),
-                  const SizedBox(
-                    height: 8.0,
+                      ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      Wrap(
+                        runSpacing: 0,
+                        spacing: 10,
+                        children: _buildFilterOptions(),
+                      ),
+                      const SizedBox(
+                        height: 13.0,
+                      ),
+                      bloc.showFilterDistance
+                          ? _buildBuildRoute()
+                          : Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomText(
+                                  '10 ' + Languages.of(context)!.allocation,
+                                  fontSize: FontSize.fourteen,
+                                  color: ColorResource.color000000,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                const SizedBox(
+                                  width: 9.0,
+                                ),
+                                Container(
+                                    height: 20,
+                                    width: 20,
+                                    child: Image.asset(ImageResource.star)),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                CustomText(
+                                  bloc.allocationList.length.toString() +
+                                      " " +
+                                      Languages.of(context)!.hignPriority,
+                                  fontSize: FontSize.ten,
+                                  color: ColorResource.color101010,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ],
+                            ),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      // Expanded(child: WidgetUtils.buildListView(bloc)),
+                    ],
                   ),
-                  Expanded(child: WidgetUtils.buildListView(bloc))
-                ],
-              ),
+                ),
+                 Expanded(child: Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                   child: WidgetUtils.buildListView(bloc),
+                 )),
+              ],
             ),
           );
         },

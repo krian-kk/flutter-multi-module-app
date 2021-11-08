@@ -7,7 +7,7 @@ class DashboardListModel {
   String? countNum;
   String? amount;
   String?  amountRs;
-  GestureTapCallback? onTap;
+  // GestureTapCallback? onTap;
 
   DashboardListModel({
     this.title,
@@ -16,7 +16,7 @@ class DashboardListModel {
     this.countNum,
     this.amount,
     this.amountRs,
-    this.onTap,
+    // this.onTap,
   });
 }
 
