@@ -1,11 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
 
 part 'profile_event.dart';

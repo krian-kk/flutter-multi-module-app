@@ -512,10 +512,10 @@ class LanguageEn extends Languages {
   String get customerMetCategory => 'Customer Met Category';
 
   @override
-  String get connected => 'Connected';
+  String get connected => '  Connected  ';
 
   @override
-  String get unreachable => 'Unreachable';
+  String get unreachable => '  Unreachable  ';
 
   @override
   String get writeYourRemarksHere => 'Write your remarks here';

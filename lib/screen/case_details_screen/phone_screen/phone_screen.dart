@@ -185,22 +185,22 @@ class _PhoneScreenState extends State<PhoneScreen>
                   labelColor: ColorResource.color23375A,
                   unselectedLabelColor: ColorResource.colorC4C4C4,
                   // ignore: prefer_const_literals_to_create_immutables
-                  // tabs: [
-                  //   Tab(text: StringResource.connected),
-                  //   Tab(text: StringResource.unreachable),
-                  //   Tab(text: StringResource.invalid)
-                  // ],
                   tabs: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.27,
-                        child: Tab(text: Languages.of(context)!.connected)),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.27,
-                        child: Tab(text: Languages.of(context)!.unreachable)),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.22,
-                        child: Tab(text: Languages.of(context)!.invalid))
+                    Tab(text: Languages.of(context)!.connected),
+                    Tab(text: Languages.of(context)!.unreachable),
+                    Tab(text: Languages.of(context)!.invalid)
                   ],
+                  // tabs: [
+                  //   SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.27,
+                  //       child: Tab(text: Languages.of(context)!.connected)),
+                  //   SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.27,
+                  //       child: Tab(text: Languages.of(context)!.unreachable)),
+                  //   SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.22,
+                  //       child: Tab(text: Languages.of(context)!.invalid))
+                  // ],
                 ),
               ),
 

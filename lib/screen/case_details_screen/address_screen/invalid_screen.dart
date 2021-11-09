@@ -114,7 +114,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         spacing: 15,
                         children: [
                           SizedBox(
-                            width: 165,
+                            width: 179,
                             child: CustomButton(
                               StringResource.addNewContact.toUpperCase(),
                               buttonBackgroundColor: ColorResource.color23375A,
