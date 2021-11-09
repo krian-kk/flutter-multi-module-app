@@ -6,8 +6,8 @@ class DashboardListModel {
   String? count;
   String? countNum;
   String? amount;
-  String?  amountRs;
-  // GestureTapCallback? onTap;
+  String? amountRs;
+  GestureTapCallback? onTap;
 
   DashboardListModel({
     this.title,
@@ -20,7 +20,6 @@ class DashboardListModel {
   });
 }
 
-
 class CaseListModel {
   bool? newlyAdded;
   String? amount;
@@ -31,12 +30,12 @@ class CaseListModel {
   GestureTapCallback? onTap;
 
   CaseListModel({
-     this.newlyAdded,
-     this.amount,
-     this.customerName,
-     this.address,
-     this.date,
-     this.loanID,
-     this.onTap,
+    this.newlyAdded,
+    this.amount,
+    this.customerName,
+    this.address,
+    this.date,
+    this.loanID,
+    this.onTap,
   });
 }

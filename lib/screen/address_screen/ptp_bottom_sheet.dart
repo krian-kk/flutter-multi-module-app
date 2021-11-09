@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -35,8 +37,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   @override
   void initState() {
     super.initState();
-    ptpDateControlller.text = "12-1-2021";
-    ptpTimeControlller.text = "7:00";
+    DateTime currentDateTime = DateTime.now();
+    final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+
+    ptpDateControlller.text =
+        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+
+    ptpTimeControlller.text = '$hours:$minutes';
     ptpAmountControlller.text = "0";
     referenceControlller.text = "ABC";
     remarksControlller.text = "ABC";
@@ -90,13 +98,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               child: CustomReadOnlyTextField(
                                 '',
                                 ptpDateControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () =>
-                                        pickDate(context, ptpDateControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                isReadOnly: true,
+                                onTapped: () =>
+                                    pickDate(context, ptpDateControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                               ),
                             ),
                           ],
@@ -120,13 +128,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               child: CustomReadOnlyTextField(
                                 '',
                                 ptpTimeControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () =>
-                                        pickTime(context, ptpTimeControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                isReadOnly: true,
+                                onTapped: () =>
+                                    pickTime(context, ptpTimeControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                               ),
                             ),
                           ],

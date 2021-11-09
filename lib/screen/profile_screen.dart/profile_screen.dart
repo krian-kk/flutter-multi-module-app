@@ -18,7 +18,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -35,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future pickImage(
       ImageSource source, BuildContext cameraDialogueContext) async {
+    Navigator.pop(cameraDialogueContext);
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
@@ -43,7 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } on PlatformException catch (e) {
       print(e.message);
     }
-    Navigator.pop(cameraDialogueContext);
   }
 
   @override
@@ -183,8 +183,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     borderRadius: new BorderRadius.all(
                                         Radius.circular(10.0))),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 16, 15, 4),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 16.0,
+                                  ),
                                   child: CustomText(
                                     '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
                                     fontSize: FontSize.fourteen,
@@ -294,6 +296,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Center(
                             child: CustomText(
                               Languages.of(context)!.logout.toUpperCase(),
+                              onTap: () {},
                               fontSize: FontSize.twelve,
                               color: ColorResource.color23375A,
                               fontWeight: FontWeight.w700,

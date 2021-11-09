@@ -1,14 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -52,9 +52,7 @@ class _SearchAllocationDetailsScreenState
         body: BlocListener<SearchAllocationDetailsBloc,
             SearchAllocationDetailsState>(
           bloc: bloc,
-          listener: (context, state) {
-            // TODO: implement listener
-          },
+          listener: (context, state) {},
           child: BlocBuilder<SearchAllocationDetailsBloc,
               SearchAllocationDetailsState>(
             bloc: bloc,
@@ -122,7 +120,7 @@ class _SearchAllocationDetailsScreenState
                                   ),
                                   const SizedBox(height: 19),
                                   CustomTextField(
-                                    Languages.of(context)!.myRecentActivity,
+                                    Languages.of(context)!.customerID,
                                     customerIDController,
                                     isFill: true,
                                     isBorder: true,
@@ -164,8 +162,7 @@ class _SearchAllocationDetailsScreenState
                                             : ImageResource.checkOff),
                                         const SizedBox(width: 13),
                                         CustomText(
-                                          Languages.of(context)!
-                                              .showOnlyTopResults,
+                                          Languages.of(context)!.showOnlyStar,
                                           color: ColorResource.color000000,
                                           fontSize: FontSize.sixteen,
                                           fontStyle: FontStyle.normal,
@@ -193,7 +190,7 @@ class _SearchAllocationDetailsScreenState
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
             child: CustomButton(
-              Languages.of(context)!.search,
+              Languages.of(context)!.search.toUpperCase(),
               fontSize: FontSize.sixteen,
               fontWeight: FontWeight.w600,
               cardShape: 5,
@@ -207,7 +204,7 @@ class _SearchAllocationDetailsScreenState
                   Navigator.pop(context);
                 } else {
                   AppUtils.showSnackBar(context,
-                      'Please Enter Any One Field.'.toUpperCase(), false);
+                      StringResource.searchToastError.toUpperCase(), false);
                   // AppUtils.showToast('Please Enter Any One Field.',
                   //     gravity: ToastGravity.CENTER);
                 }

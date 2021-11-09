@@ -37,21 +37,23 @@ class _CompanyBranchState extends State<CompanyBranch> {
     depositController.text = '100';
     referenceController.text = '100';
   }
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
-     builder: (BuildContext context, StateSetter setState) {
-       return Scaffold(
-         backgroundColor: ColorResource.colorffffff,
-         body: Column(
-           // ignore: prefer_const_literals_to_create_immutables
-           children: [
-             Expanded(
-               child: Padding(
-                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                 child: SingleChildScrollView(
-                   child: Column(
-                     children: [
+        builder: (BuildContext context, StateSetter setState) {
+      return Scaffold(
+        backgroundColor: ColorResource.colorffffff,
+        body: Column(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
@@ -83,16 +85,18 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 isEnable: false,
                               ),
                             ),
-                            const SizedBox(width: 7,),
-                             Expanded(
-                               flex: 1,
-                               child: CustomReadOnlyTextField(
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: CustomReadOnlyTextField(
                                 Languages.of(context)!.depositAmount,
                                 depositController,
                                 isLabel: true,
                                 isEnable: false,
-                                                         ),
-                             ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -105,7 +109,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           isEnable: false,
                         ),
                       ),
-                      const SizedBox(height: 7,),
+                      const SizedBox(
+                        height: 7,
+                      ),
                       CustomButton(
                         Languages.of(context)!.uploadDepositSlip,
                         fontWeight: FontWeight.w700,
@@ -115,15 +121,14 @@ class _CompanyBranchState extends State<CompanyBranch> {
                         isLeading: true,
                         trailingWidget: Image.asset(ImageResource.upload),
                       )
-                     ],
-                   ),
-                 ),
-               ),
-             )
-           ],
-         ),
-       );
-     }
-    );
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }

@@ -25,7 +25,7 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   late BitmapDescriptor customIcon;
-   late Position position;
+  late Position position;
   final Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = LatLng(28.644800, 77.216721);
   final Set<Marker> _markers = {};
@@ -98,7 +98,7 @@ class _MapViewState extends State<MapView> {
   //   });
   // }
 
- void _onAddMarkerButtonPressed() async {
+  void _onAddMarkerButtonPressed() async {
     final CameraPosition _position1 = CameraPosition(
       bearing: 192.833,
       target: LatLng(position.latitude, position.longitude),
@@ -120,6 +120,7 @@ class _MapViewState extends State<MapView> {
       );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -127,46 +128,47 @@ class _MapViewState extends State<MapView> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.82,
         child: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                return WillPopScope(
-                  onWillPop: () async => false,
-                  child: Column(
-                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
-                        child: CustomAppbar(
-                          titleString: Languages.of(context)!.mapView,
-                          showClose: true,
-                          onItemSelected: (value){
-                            Navigator.pop(context);
-                          },
-                        ),
+            builder: (BuildContext context, StateSetter setState) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
+                    child: CustomAppbar(
+                      titleString: Languages.of(context)!.mapView,
+                      showClose: true,
+                      onItemSelected: (value) {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: const CameraPosition(
+                        target: _center,
+                        zoom: 11.0,
                       ),
-                      Expanded(
-                        child: GoogleMap(
-                          onMapCreated: _onMapCreated,
-                          initialCameraPosition: const CameraPosition(
-                            target: _center,
-                            zoom: 11.0,
-                          ),
-                          mapType: _currentMapType,
-                          markers: _markers,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                        ),
-                      ),
-                    ],
-                  )
-                  );
-                  }),
+                      mapType: _currentMapType,
+                      markers: _markers,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                    ),
+                  ),
+                ],
+              ));
+        }),
       ),
     );
   }
 
-   Widget tapButton(Function onTap, IconData icon) {
+  Widget tapButton(Function onTap, IconData icon) {
     return FloatingActionButton(
-      onPressed: (){onTap();},
+      onPressed: () {
+        onTap();
+      },
       mini: true,
       materialTapTargetSize: MaterialTapTargetSize.padded,
       backgroundColor: Color(0xFF188D3D),
@@ -175,5 +177,4 @@ class _MapViewState extends State<MapView> {
       ),
     );
   }
-
 }

@@ -34,8 +34,13 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   @override
   void initState() {
     super.initState();
-    dateControlller.text = '12-1-2021';
-    timeControlller.text = '7:00';
+    DateTime currentDateTime = DateTime.now();
+    final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+
+    dateControlller.text =
+        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    timeControlller.text = '$hours:$minutes';
     modelMakeControlller.text = '123';
     registrationNoControlller.text = '123';
     chassisNoControlller.text = '123';
@@ -86,13 +91,13 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               child: CustomReadOnlyTextField(
                                 '',
                                 dateControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () =>
-                                        pickDate(context, dateControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                isReadOnly: true,
+                                onTapped: () =>
+                                    pickDate(context, dateControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                               ),
                             ),
                           ],
@@ -116,13 +121,12 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               child: CustomReadOnlyTextField(
                                 '',
                                 timeControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () =>
-                                        pickTime(context, timeControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                onTapped: () =>
+                                    pickTime(context, timeControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                               ),
                             ),
                           ],

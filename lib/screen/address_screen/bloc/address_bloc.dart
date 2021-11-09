@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
@@ -18,6 +17,10 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   TextEditingController customerNotMetRemarksController =
       TextEditingController();
   TextEditingController invalidRemarksController = TextEditingController();
+
+  FocusNode customerNotMetNextActionDateFocusNode = FocusNode();
+  FocusNode customerNotMetRemarksFocusNode = FocusNode();
+  FocusNode invalidRemarksFocusNode = FocusNode();
 
   List<OtherFeedbackExpandModel> expandOtherFeedback = [];
   List<EventExpandModel> expandEvent = [];

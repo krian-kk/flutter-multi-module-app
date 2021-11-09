@@ -39,7 +39,10 @@ class _CustomCollectionsBottomSheetState
   @override
   void initState() {
     super.initState();
-    dateControlller.text = '12-1-2021';
+    DateTime currentDateTime = DateTime.now();
+
+    dateControlller.text =
+        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
     chequeControlller.text = '123';
     remarksControlller.text = 'ABC';
   }
@@ -122,13 +125,13 @@ class _CustomCollectionsBottomSheetState
                               CustomReadOnlyTextField(
                                 '',
                                 dateControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () =>
-                                        pickDate(context, dateControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                isReadOnly: true,
+                                onTapped: () =>
+                                    pickDate(context, dateControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                                 // focusColor: ColorResource.colorE5EAF6,
                               ),
                             ],

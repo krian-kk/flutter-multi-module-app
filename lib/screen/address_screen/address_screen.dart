@@ -138,9 +138,9 @@ class _AddressScreenState extends State<AddressScreen>
                                       child: Row(
                                         children: [
                                           Image.asset(ImageResource.direction),
-                                          SizedBox(width: 12),
+                                          SizedBox(width: 10),
                                           CustomText(
-                                            Languages.of(context)!.viewMap,
+                                            StringResource.viewMap,
                                             fontSize: FontSize.fourteen,
                                             fontWeight: FontWeight.w700,
                                             color: ColorResource.color23375A,
@@ -178,7 +178,11 @@ class _AddressScreenState extends State<AddressScreen>
                     indicatorWeight: 5.0,
                     labelColor: ColorResource.color23375A,
                     unselectedLabelColor: ColorResource.colorC4C4C4,
-                    onTap: (index) {},
+                    onTap: (index) {
+                      bloc.customerNotMetNextActionDateFocusNode.unfocus();
+                      bloc.customerNotMetRemarksFocusNode.unfocus();
+                      bloc.invalidRemarksFocusNode.unfocus();
+                    },
                     // ignore: prefer_const_literals_to_create_immutables
                     tabs: [
                       Tab(text: Languages.of(context)!.customerMet),
@@ -291,35 +295,52 @@ class _AddressScreenState extends State<AddressScreen>
                       SizedBox(width: 25),
                       SizedBox(
                         width: 191,
-                        child: CustomButton(
-                          Languages.of(context)!.submit.toUpperCase(),
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
-                          onTap: () {
-                            if (_controller.index == 1) {
-                              if ((bloc.customerNotMetNextActionDateController ==
-                                          '' ||
-                                      bloc.customerNotMetNextActionDateController
-                                          .text.isEmpty) ||
-                                  (bloc.customerNotMetRemarksController.text ==
-                                          '' ||
-                                      bloc.customerNotMetRemarksController.text
-                                          .isEmpty)) {
-                                AppUtils.showSnackBar(
-                                    context,
-                                    'All are the Required Field Please Enter Any Text!'
-                                        .toUpperCase(),
-                                    true);
-                              } else {
-                                print('Successfull');
-                              }
-                            } else {
-                              print(bloc.customerNotMetRemarksController.text);
-                            }
-                          },
-                          // onTap: () => bloc.add(ClickMessageEvent()),
-                          cardShape: 5,
-                        ),
+                        child: _controller.index == 1
+                            ? CustomButton(
+                                Languages.of(context)!.submit.toUpperCase(),
+                                // isEnabled: (bloc.selectedUnreadableClip == ''),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                // onTap: () => bloc.add(ClickMessageEvent()),
+                                cardShape: 5,
+                              )
+                            : CustomButton(
+                                Languages.of(context)!.submit.toUpperCase(),
+                                // isEnabled: (bloc.selectedInvalidClip != ''),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                // onTap: () => bloc.add(ClickMessageEvent()),
+                                cardShape: 5,
+                              ),
+                        // child: CustomButton(
+                        //   Languages.of(context)!.submit.toUpperCase(),
+                        //   fontSize: FontSize.sixteen,
+                        //   fontWeight: FontWeight.w600,
+                        //   onTap: () {
+                        //     if (_controller.index == 1) {
+                        //       if ((bloc.customerNotMetNextActionDateController ==
+                        //                   '' ||
+                        //               bloc.customerNotMetNextActionDateController
+                        //                   .text.isEmpty) ||
+                        //           (bloc.customerNotMetRemarksController.text ==
+                        //                   '' ||
+                        //               bloc.customerNotMetRemarksController.text
+                        //                   .isEmpty)) {
+                        //         AppUtils.showSnackBar(
+                        //             context,
+                        //             'All are the Required Field Please Enter Any Text!'
+                        //                 .toUpperCase(),
+                        //             true);
+                        //       } else {
+                        //         print('Successfull');
+                        //       }
+                        //     } else {
+                        //       print(bloc.customerNotMetRemarksController.text);
+                        //     }
+                        //   },
+                        //   // onTap: () => bloc.add(ClickMessageEvent()),
+                        //   cardShape: 5,
+                        // ),
                       ),
                     ],
                   ),

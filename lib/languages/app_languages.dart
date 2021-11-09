@@ -143,7 +143,7 @@ abstract class Languages {
 
   String get myRecentActivity;
 
-  String get showOnlyTopResults;
+  String get showOnlyStar;
 
   String get new_;
 
@@ -350,4 +350,24 @@ abstract class Languages {
   String get unreachable;
 
   String get writeYourRemarksHere;
+
+  String get selectLanguage;
+
+  String get doesNotExist;
+
+  String get incorrectNumber;
+
+  String get numberNotWorking;
+
+  String get notOperational;
+
+  String get lineBusy;
+
+  String get switchOff;
+
+  String get rnr;
+
+  String get outOfNetwork;
+
+  String get disConnecting;
 }

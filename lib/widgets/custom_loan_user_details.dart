@@ -10,11 +10,15 @@ class CustomLoanUserDetails extends StatefulWidget {
   final String userName;
   final String userId;
   final double userAmount;
+  final Color? color;
+  final double? marginTop;
   const CustomLoanUserDetails({
     Key? key,
     required this.userName,
     required this.userId,
     required this.userAmount,
+    this.marginTop,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -26,8 +30,9 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      margin: EdgeInsets.only(top: widget.marginTop ?? 0),
       decoration: BoxDecoration(
-          color: ColorResource.colorF7F8FA,
+          color: widget.color ?? ColorResource.colorF7F8FA,
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),

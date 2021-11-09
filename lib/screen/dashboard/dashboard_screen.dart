@@ -59,11 +59,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             priorityFollowUpSheet(context);
           }
 
-           if (state is UntouchedCasesState) {
+          if (state is UntouchedCasesState) {
             untouchedCasesSheet(context);
           }
 
-           if (state is BrokenPTPState) {
+          if (state is BrokenPTPState) {
             brokenPTPSheet(context);
           }
 
@@ -80,18 +80,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is YardingAndSelfReleaseState) {
-             yardingSelfReleaseSheet(context);
+            yardingSelfReleaseSheet(context);
           }
-                                            
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
             bloc: bloc,
             builder: (BuildContext context, DashboardState state) {
-               if (state is DashboardLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+              if (state is DashboardLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return Scaffold(
                   backgroundColor: ColorResource.colorF7F8FA,
                   body: SafeArea(
@@ -123,10 +122,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                           header: Languages.of(context)!.customerMet,
-                                            count:'20',
-                                           backgrountColor: ColorResource.colorE0ECDF,
-                                            leadingColor: ColorResource.color73C170,
+                                            header: Languages.of(context)!
+                                                .customerMet,
+                                            count: '20',
+                                            backgrountColor:
+                                                ColorResource.colorE0ECDF,
+                                            leadingColor:
+                                                ColorResource.color73C170,
                                           ),
                                         )),
                                     const SizedBox(
@@ -136,10 +138,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                           header: Languages.of(context)!.customerNotMet,
+                                            header: Languages.of(context)!
+                                                .customerNotMet,
                                             count: '10',
-                                            backgrountColor: ColorResource.colorF2EEDC,
-                                            leadingColor: ColorResource.colorE5C55B,
+                                            backgrountColor:
+                                                ColorResource.colorF2EEDC,
+                                            leadingColor:
+                                                ColorResource.colorE5C55B,
                                           ),
                                         )),
                                     const SizedBox(
@@ -148,15 +153,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     Expanded(
                                         flex: 3,
                                         child: GestureDetector(
-                                          onTap: (){
+                                          onTap: () {
                                             // Navigator.push(context, CupertinoPageRoute(builder: (context)=>MessageChatRoomScreen()));
                                           },
                                           child: Container(
                                             child: userActivity(
-                                              header:Languages.of(context)!.invalid,
-                                              count:'10',
-                                              backgrountColor:ColorResource.colorF4ECEF,
-                                              leadingColor: ColorResource.colorF1BCC4,
+                                              header: Languages.of(context)!
+                                                  .invalid,
+                                              count: '10',
+                                              backgrountColor:
+                                                  ColorResource.colorF4ECEF,
+                                              leadingColor:
+                                                  ColorResource.colorF1BCC4,
                                             ),
                                           ),
                                         )),
@@ -179,7 +187,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      Languages.of(context)!.mtdResolutionProgress,
+                                      Languages.of(context)!
+                                          .mtdResolutionProgress,
                                       fontSize: FontSize.twelve,
                                       fontWeight: FontWeight.w700,
                                       color: ColorResource.color23375A,
@@ -188,7 +197,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       height: 5,
                                     ),
                                     CustomText(
-                                      Languages.of(context)!.customer.toUpperCase(),
+                                      Languages.of(context)!
+                                          .customer
+                                          .toUpperCase(),
                                       color: ColorResource.color23375A,
                                       fontSize: FontSize.ten,
                                       fontWeight: FontWeight.w700,
@@ -240,7 +251,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      Languages.of(context)!.amount.toUpperCase(),
+                                      Languages.of(context)!
+                                          .amount
+                                          .toUpperCase(),
                                       color: ColorResource.color23375A,
                                       fontSize: FontSize.ten,
                                       fontWeight: FontWeight.w700,
@@ -297,25 +310,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       onTap: () {
                                         switch (index) {
                                           case 0:
-                                          bloc.add(PriorityFollowEvent());
+                                            bloc.add(PriorityFollowEvent());
                                             break;
                                           case 1:
-                                          bloc.add(UntouchedCasesEvent());
+                                            bloc.add(UntouchedCasesEvent());
                                             break;
                                           case 2:
-                                          bloc.add(BrokenPTPEvent());
+                                            bloc.add(BrokenPTPEvent());
                                             break;
                                           case 3:
-                                          bloc.add(MyReceiptsEvent());
+                                            bloc.add(MyReceiptsEvent());
                                             break;
                                           case 4:
-                                          bloc.add(MyVisitsEvent());
+                                            bloc.add(MyVisitsEvent());
                                             break;
                                           case 5:
-                                          bloc.add(MyDeposistsEvent());
+                                            bloc.add(MyDeposistsEvent());
                                             break;
                                           case 6:
-                                          bloc.add(YardingAndSelfReleaseEvent());
+                                            bloc.add(
+                                                YardingAndSelfReleaseEvent());
                                             break;
                                           default:
                                             AppUtils.showToast('');
@@ -543,7 +557,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget userActivity(
-      {String? header, String? count, Color? backgrountColor, required Color leadingColor}) {
+      {String? header,
+      String? count,
+      Color? backgrountColor,
+      required Color leadingColor}) {
     return Container(
       height: 55,
       width: 125,
