@@ -233,7 +233,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
 
