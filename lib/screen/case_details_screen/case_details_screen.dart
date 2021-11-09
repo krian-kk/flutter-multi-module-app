@@ -495,7 +495,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ),
                                                     SizedBox(height: 11),
                                                     CustomText(
-                                                      StringResource
+                                                      Languages.of(context)!
                                                           .overdueAmount,
                                                       color: ColorResource
                                                           .color666666,

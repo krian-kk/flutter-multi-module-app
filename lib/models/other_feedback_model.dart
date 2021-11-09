@@ -4,7 +4,7 @@ class OtherFeedbackExpandModel {
   String subtitle;
 
   OtherFeedbackExpandModel({
-    this.expanded: false,
+    this.expanded = false,
     required this.header,
     required this.subtitle,
   });

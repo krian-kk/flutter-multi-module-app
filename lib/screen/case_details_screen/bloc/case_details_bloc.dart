@@ -2,14 +2,55 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/http/response/case_details_response.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
+import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/multi_details_model.dart';
+import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 
 part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
-  double launguageValue = 0;
+  // double launguageValue = 0;
+
+  // Address Details Screen
+  String addressSelectedCustomerNotMetClip = '';
+  String addressSelectedInvalidClip = '';
+
+  TextEditingController addressInvalidRemarksController =
+      TextEditingController();
+  TextEditingController addressCustomerNotMetNextActionDateController =
+      TextEditingController();
+  TextEditingController addressCustomerNotMetRemarksController =
+      TextEditingController();
+  FocusNode addressInvalidRemarksFocusNode = FocusNode();
+  FocusNode addressCustomerNotMetNextActionDateFocusNode = FocusNode();
+  FocusNode addressCustomerNotMetRemarksFocusNode = FocusNode();
+
+  List<CustomerMetGridModel> addressCustomerMetGridList = [];
+  List<OtherFeedbackExpandModel> expandOtherFeedback = [];
+  List<EventExpandModel> expandEvent = [];
+
+  // Phone Details screen
+
+  String phoneSelectedUnreadableClip = '';
+  String phoneSelectedInvalidClip = '';
+  List<CustomerMetGridModel> phoneCustomerMetGridList = [];
+
+  TextEditingController phoneUnreachableNextActionDateController =
+      TextEditingController();
+  TextEditingController phoneUnreachableRemarksController =
+      TextEditingController();
+  TextEditingController phoneInvalidRemarksController = TextEditingController();
+
+  FocusNode phoneUnreachableNextActionDateFocusNode = FocusNode();
+  FocusNode phoneUnreachableRemarksFocusNode = FocusNode();
+  FocusNode phoneInvalidRemarksFocusNode = FocusNode();
+
+  // Case Details Screen
 
   List<MultiAddressDetailsModel> multiAddressDetilsList = [];
   List<MultiCallDetailsModel> multiCallDetilsList = [];
@@ -35,8 +76,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         Map<String, dynamic> jsonData = caseDetailsData["data"];
 
         caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
-
-        // print(caseDetailsDatas);
 
         loanAmountController.text =
             caseDetailsResult.result?.caseDetails!.loanAmt.toString() as String;
@@ -64,6 +103,53 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         // message = weatherData["data"];
         // yield SevenDaysFailureState();
       }
+
+      addressCustomerMetGridList.addAll([
+        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp),
+        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp),
+        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute),
+        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder),
+        CustomerMetGridModel(
+            ImageResource.collections, StringResource.collections),
+        CustomerMetGridModel(ImageResource.ots, StringResource.ots),
+      ]);
+
+      expandEvent.addAll([
+        EventExpandModel(
+            header: 'FIELD ALLOCATION',
+            date: '7 Sep 2021',
+            colloctorID: 'AGENT | HAR_fos4',
+            remarks: 'XYZ'),
+        EventExpandModel(
+            header: 'TELECALLING | PTP',
+            date: '12 May 2021',
+            colloctorID: 'AGENT | HAR_fos4',
+            remarks: 'XYZ'),
+        EventExpandModel(
+            header: 'FTELECALLING',
+            date: '23 Oct 2021',
+            colloctorID: 'AGENT | HAR_fos4',
+            remarks: 'XYZ'),
+      ]);
+
+      expandOtherFeedback.addAll([
+        OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
+        OtherFeedbackExpandModel(
+            header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
+        OtherFeedbackExpandModel(
+            header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
+      ]);
+
+      phoneCustomerMetGridList.addAll([
+        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp),
+        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp),
+        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute),
+        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder),
+        CustomerMetGridModel(
+            ImageResource.collections, StringResource.collections),
+        CustomerMetGridModel(ImageResource.ots, StringResource.ots),
+      ]);
+
       multiAddressDetilsList.addAll([
         MultiAddressDetailsModel('Address 01',
             '2/345, 6th Main Road Gomathipuram, Madurai - 625032'),

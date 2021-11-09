@@ -8,8 +8,6 @@ part 'search_allocation_details_state.dart';
 class SearchAllocationDetailsBloc
     extends Bloc<SearchAllocationDetailsEvent, SearchAllocationDetailsState> {
   SearchAllocationDetailsBloc() : super(SearchAllocationDetailsInitial()) {
-    on<SearchAllocationDetailsEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<SearchAllocationDetailsEvent>((event, emit) {});
   }
 }

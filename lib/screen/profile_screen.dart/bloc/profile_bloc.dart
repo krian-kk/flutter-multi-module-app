@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
@@ -26,22 +25,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       profileNavigationList.addAll([
         ProfileNavigation(
-            title: StringResource.notification,
+            title: Languages.of(event.context)!.notification,
             count: true,
             onTap: () {
-              this.add(ClickNotificationEvent());
+              add(ClickNotificationEvent());
             }),
         ProfileNavigation(
-            title: StringResource.selectLanguage,
+            title: Languages.of(event.context)!.selectLanguage,
             count: false,
             onTap: () {
-              this.add(ClickChangeLaunguageEvent());
+              add(ClickChangeLaunguageEvent());
             }),
         ProfileNavigation(
-            title: StringResource.changePassword,
+            title: Languages.of(event.context)!.changePassword,
             count: false,
             onTap: () {
-              this.add(ClickChangePassswordEvent());
+              add(ClickChangePassswordEvent());
             })
       ]);
       notificationList.addAll([

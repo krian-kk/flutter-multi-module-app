@@ -231,7 +231,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
           // widget.bloc.selectedInvalidClip = element.clipTitle;
@@ -275,7 +275,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 

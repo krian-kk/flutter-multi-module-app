@@ -10,6 +10,5 @@ class Language extends Selectable {
   Language(this.name, this.languageCode, this.locationCode);
 
   @override
-  // TODO: implement displayName
   String get displayName => name;
 }

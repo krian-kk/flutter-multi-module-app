@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   File? image;
   @override
   void initState() {
-    bloc = ProfileBloc()..add(ProfileInitialEvent());
+    bloc = ProfileBloc()..add(ProfileInitialEvent(context));
     super.initState();
   }
 

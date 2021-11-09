@@ -76,7 +76,7 @@ class _SearchAllocationDetailsScreenState
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      child: Container(
+                      child: SizedBox(
                         height: MediaQuery.of(context).size.height,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),

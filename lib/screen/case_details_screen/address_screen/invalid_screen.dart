@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
-import 'package:origa/screen/address_screen/capture_image_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -18,7 +18,7 @@ class AddressInvalidScreen extends StatefulWidget {
       : super(key: key);
 
   final BuildContext context;
-  final AddressBloc bloc;
+  final CaseDetailsBloc bloc;
 
   @override
   State<AddressInvalidScreen> createState() => _AddressInvalidScreenState();
@@ -75,8 +75,9 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: TextFormField(
-                          controller: widget.bloc.invalidRemarksController,
-                          focusNode: widget.bloc.invalidRemarksFocusNode,
+                          controller:
+                              widget.bloc.addressInvalidRemarksController,
+                          focusNode: widget.bloc.addressInvalidRemarksFocusNode,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter some text';
@@ -194,17 +195,18 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.selectedCustomerNotMetClip = element.clipTitle;
+          widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.selectedCustomerNotMetClip
+            color: element.clipTitle ==
+                    widget.bloc.addressSelectedCustomerNotMetClip
                 ? ColorResource.colorF1BCC4
                 : ColorResource.colorE7E7E7,
           ),
@@ -217,7 +219,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 }

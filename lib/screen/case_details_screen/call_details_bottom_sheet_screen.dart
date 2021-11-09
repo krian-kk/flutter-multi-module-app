@@ -2,9 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/router.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/phone_screen/phone_screen.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -50,7 +49,6 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
               width: double.infinity,
               decoration: new BoxDecoration(
                   color: ColorResource.colorF7F8FA,
-                  // ignore: unnecessary_new
                   borderRadius: new BorderRadius.all(Radius.circular(10.0))),
               child: Padding(
                 padding:
@@ -249,7 +247,7 @@ class CallDetailsBottomSheetScreen extends StatelessWidget {
             bottom: false,
             child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,
-                child: PhoneScreen()),
+                child: PhoneScreen(bloc: bloc)),
             // child: Container(
             //   width: double.infinity,
             //   height: 300,

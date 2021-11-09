@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/my_deposists/deposistion_mode/bank_tab.dart';
 import 'package:origa/screen/my_deposists/deposistion_mode/company_branch.dart';

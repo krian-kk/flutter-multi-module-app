@@ -102,6 +102,9 @@ class _CustomCollectionsBottomSheetState
                           child: CustomDropDownButton(
                             Languages.of(context)!.amountCollected,
                             amountCollectionDropDownList,
+                            // onChanged: (newValue) {
+                            //   print(newValue);
+                            // },
                             icon: ImageIcon(
                               AssetImage(ImageResource.dropDownArrow),
                             ),
@@ -260,7 +263,7 @@ class _CustomCollectionsBottomSheetState
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
           setState(() {
@@ -307,7 +310,7 @@ class _CustomCollectionsBottomSheetState
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 }

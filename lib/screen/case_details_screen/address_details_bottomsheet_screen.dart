@@ -1,17 +1,15 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/router.dart';
-import 'package:origa/screen/address_screen/address_screen.dart';
+import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class AddressDetailsBottomSheetScreen extends StatelessWidget {
+class AddressDetailsBottomSheetScreen extends StatefulWidget {
   const AddressDetailsBottomSheetScreen({
     Key? key,
     required this.bloc,
@@ -19,6 +17,13 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
 
   final CaseDetailsBloc bloc;
 
+  @override
+  State<AddressDetailsBottomSheetScreen> createState() =>
+      _AddressDetailsBottomSheetScreenState();
+}
+
+class _AddressDetailsBottomSheetScreenState
+    extends State<AddressDetailsBottomSheetScreen> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -51,7 +56,6 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
               width: double.infinity,
               decoration: new BoxDecoration(
                   color: ColorResource.colorF7F8FA,
-                  // ignore: unnecessary_new
                   borderRadius: new BorderRadius.all(Radius.circular(10.0))),
               child: Padding(
                 padding:
@@ -102,7 +106,7 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: bloc.multiAddressDetilsList.length,
+              itemCount: widget.bloc.multiAddressDetilsList.length,
               itemBuilder: (context, i) {
                 return SizedBox(
                   child: Column(
@@ -111,7 +115,8 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomText(
-                        bloc.multiAddressDetilsList[i].title.toUpperCase(),
+                        widget.bloc.multiAddressDetilsList[i].title
+                            .toUpperCase(),
                         fontWeight: FontWeight.w700,
                         fontSize: FontSize.fourteen,
                         color: ColorResource.color23375A,
@@ -134,7 +139,8 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                 children: [
                                   Flexible(
                                     child: CustomText(
-                                      bloc.multiAddressDetilsList[i].address,
+                                      widget.bloc.multiAddressDetilsList[i]
+                                          .address,
                                       fontSize: FontSize.fourteen,
                                       fontWeight: FontWeight.w400,
                                       fontStyle: FontStyle.normal,
@@ -187,7 +193,7 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
                                       // Navigator.pushNamed(
                                       //     context, AppRoutes.addressScreen);
                                       Navigator.pop(context);
-                                      addressBottomSheet(context);
+                                      addressBottomSheet(context, widget.bloc);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -227,7 +233,7 @@ class AddressDetailsBottomSheetScreen extends StatelessWidget {
   }
 }
 
-void addressBottomSheet(BuildContext buildContext) {
+void addressBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc) {
   showCupertinoModalPopup(
       context: buildContext,
       builder: (BuildContext context) {
@@ -236,7 +242,7 @@ void addressBottomSheet(BuildContext buildContext) {
           bottom: false,
           child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.89,
-              child: AddressScreen()),
+              child: AddressScreen(bloc: bloc)),
           // child: Container(
           //   width: double.infinity,
           //   height: 300,
