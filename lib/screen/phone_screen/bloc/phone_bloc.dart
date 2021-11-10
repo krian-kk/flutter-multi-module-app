@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -12,6 +11,10 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
   String selectedUnreadableClip = '';
   String selectedInvalidClip = '';
   List<CustomerMetGridModel> customerMetGridList = [];
+
+  FocusNode unreachableNextActionDateFocusNode = FocusNode();
+  FocusNode unreachableRemarksFocusNode = FocusNode();
+  FocusNode invalidRemarksFocusNode = FocusNode();
 
   TextEditingController unreachableNextActionDateController =
       TextEditingController();

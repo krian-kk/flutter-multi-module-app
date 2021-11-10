@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -83,7 +84,7 @@ class PhoneFirstTapScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CustomButton(
-                          Languages.of(context)!.addNewContact,
+                          StringResource.addNewContact.toUpperCase(),
                           textColor: ColorResource.colorFFFFFF,
                           borderColor: ColorResource.color23375A,
                           cardShape: 75,

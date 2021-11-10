@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -69,7 +67,7 @@ class _YardingTabState extends State<YardingTab> {
                           Languages.of(context)!.yardName,
                           yardNameController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -78,7 +76,7 @@ class _YardingTabState extends State<YardingTab> {
                           Languages.of(context)!.date,
                           dateController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -87,7 +85,7 @@ class _YardingTabState extends State<YardingTab> {
                           Languages.of(context)!.time,
                           timeController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -96,7 +94,7 @@ class _YardingTabState extends State<YardingTab> {
                           Languages.of(context)!.remark,
                           remarksController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       const SizedBox(height: 7,),

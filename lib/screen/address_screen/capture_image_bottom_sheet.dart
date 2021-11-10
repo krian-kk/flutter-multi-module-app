@@ -88,8 +88,8 @@ class _CustomCaptureImageBottomSheetState
                       isLeading: true,
                       onTap: () async {
                         final result = await FilePicker.platform.pickFiles(
-                          // type: FileType.custom,
-                          allowedExtensions: ['doc'],
+                          type: FileType.image,
+                          // allowedExtensions: ['doc'],
                         );
                         if (result == null) return;
                         print(result);

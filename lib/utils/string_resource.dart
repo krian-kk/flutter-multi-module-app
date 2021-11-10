@@ -11,12 +11,12 @@ class StringResource {
   static const String dpdBucket = 'DPD/Bucket';
   static const String status = 'Status';
   static const String pincode = 'Pincode';
+  static const String selectLanguage = 'SELECT LANGUAGE';
 
   static const String customerID = 'Customer ID';
   static const String myRecentActivity = 'My Recent Activity';
   static const String showOnlyTopResults = 'Show Only Top Results';
-  static const String sEARCH = 'SEARCH';
-  static const String nEW = 'NEW';
+
   static const String overdueAmount = 'Overdue Amount';
   static const String loanAmount = 'Loan Amount';
   static const String loanDuration = 'Loan Duration';
@@ -31,12 +31,10 @@ class StringResource {
   static const String referenceLender = 'Reference Lender';
   static const String referenceURL = 'Reference URL';
   static const String caseDetials = 'CASE DETAILS';
-  static const String sendSMS = 'SEND SMS';
+  static const String sendSms = 'SEND SMS';
 
-  static const String sendWHATSAPP = 'SEND WHATSAPP';
-  static const String oTHERLOANOF = 'OTHER LOAN OF';
-  static const String dEBASISHPATNAIK = 'DEBASISH PATNAIK';
-  static const String vIEW = 'VIEW';
+  static const String sendWhatsapp = 'SEND WHATSAPP';
+
   static const String customerMet = 'Customer Met';
   static const String customerNotMet = 'Customer Not Met';
   static const String invalid = 'Invalid';
@@ -93,4 +91,8 @@ class StringResource {
   static const String otherFeedback = 'OTHER FEEDBACK';
   static const String cheque = 'CHEQUE';
   static const String cash = 'CASH';
+  static const String searchToastError = 'Please Enter Any One Field.';
+  static const String addNewContact = 'ADD New contact';
+  static const String call = 'call';
+  static const String viewMap = 'VIEW MAP';
 }

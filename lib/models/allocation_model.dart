@@ -10,12 +10,12 @@ class AllocationListModel {
   GestureTapCallback? onTap;
 
   AllocationListModel({
-     this.newlyAdded,
-     this.amount,
-     this.customerName,
-     this.address,
-     this.date,
-     this.loanID,
-     this.onTap,
+    this.newlyAdded,
+    this.amount,
+    this.customerName,
+    this.address,
+    this.date,
+    this.loanID,
+    this.onTap,
   });
 }

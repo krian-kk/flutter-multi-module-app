@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -37,6 +38,15 @@ class _CompanyBranchState extends State<CompanyBranch> {
     depositController.text = '100';
     referenceController.text = '100';
   }
+
+  Future getFiles() async {
+     FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['jpg', 'pdf', 'doc'],
+        );
+
+        print(result);
+  }
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
@@ -58,7 +68,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           Languages.of(context)!.bankName,
                           bankNameController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -67,7 +77,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           Languages.of(context)!.branchName,
                           branchController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -80,7 +90,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 Languages.of(context)!.receiptAmount,
                                 receiptController,
                                 isLabel: true,
-                                isEnable: false,
+                                isEnable: true,
                               ),
                             ),
                             const SizedBox(width: 7,),
@@ -90,7 +100,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 Languages.of(context)!.depositAmount,
                                 depositController,
                                 isLabel: true,
-                                isEnable: false,
+                                isEnable: true,
                                                          ),
                              ),
                           ],
@@ -102,7 +112,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           Languages.of(context)!.reference,
                           referenceController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       const SizedBox(height: 7,),
@@ -114,6 +124,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
                         cardShape: 50,
                         isLeading: true,
                         trailingWidget: Image.asset(ImageResource.upload),
+                        onTap: (){
+                          getFiles();
+                        },
                       )
                      ],
                    ),

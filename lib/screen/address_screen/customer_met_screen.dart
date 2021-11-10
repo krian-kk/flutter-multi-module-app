@@ -156,7 +156,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                       SizedBox(
                         width: 165,
                         child: CustomButton(
-                          Languages.of(context)!.addNewContact.toUpperCase(),
+                          StringResource.addNewContact.toUpperCase(),
                           textColor: ColorResource.colorFFFFFF,
                           borderColor: ColorResource.color23375A,
                           fontSize: FontSize.twelve,

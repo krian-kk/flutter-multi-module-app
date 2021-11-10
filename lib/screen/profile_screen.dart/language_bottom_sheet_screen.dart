@@ -30,7 +30,8 @@ class LanguageBottomSheetScreen extends StatefulWidget {
 class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   List<LanguageModel> languageList = [];
   String? setLanguageCode;
-  int? _currVal;
+  int? ratioIndex;
+  //  int? selectedLanguagesIndex;
 
   @override
   initState() {
@@ -41,12 +42,14 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   void getLanguageCode() async{
    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _currVal = prefs.getInt('mainLanguage') ?? 0;
+      ratioIndex = prefs.getInt('mainLanguage') ?? 0;
+      setLanguageCode = prefs.getString('mainLanguageCode') ?? 'en';
+      // print('_currVal');
+      // print(setLanguageCode);
     });
   }
   @override
   Widget build(BuildContext context) {
-    int? index;
     languageList = [
       LanguageModel(StringResource.english, true,
           Languages.of(context)!.defaultLaunguage, 'en'),
@@ -126,14 +129,14 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                               fontWeight: FontWeight.w400,
                                               color: ColorResource.color484848,
                                             ),
-                                            groupValue: _currVal,
+                                            groupValue: ratioIndex,
                                             value: i,
                                             onChanged: (int? val) async {
                                               // print(val);
                                               setState(() {
-                                                _currVal = val!;
+                                                // selectedLanguagesIndex = val;
+                                                ratioIndex = val!;
                                                 setLanguageCode = languageList[i].languageCode;
-                                                index = i;
                                               });
                                             },
                                           ),
@@ -180,8 +183,10 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       child: CustomButton(
                         Languages.of(context)!.okay.toUpperCase(),
                         onTap: () {
-                          changeLanguage(context, setLanguageCode!);
-                          PreferenceHelper.setPreference('mainLanguage', index??0);
+                          // changeLanguage(context, setLanguageCode!);
+                          // PreferenceHelper.setPreference('mainLanguage', ratioIndex??0);
+                          // PreferenceHelper.setPreference('mainLanguageCode', setLanguageCode);
+                          // print(selectedLanguagesIndex);
                           Navigator.pop(context);},
                         cardShape: 5,
                         fontSize: FontSize.sixteen,

@@ -33,8 +33,13 @@ class _CustomRemainderBottomSheetState
   @override
   void initState() {
     super.initState();
-    nextActionDateControlller.text = '12-1-2021';
-    nextActionTimeControlller.text = '7:00';
+    DateTime currentDateTime = DateTime.now();
+    final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+
+    nextActionDateControlller.text =
+        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    nextActionTimeControlller.text = '$hours:$minutes';
     remarksControlller.text = 'ABC';
   }
 
@@ -82,13 +87,13 @@ class _CustomRemainderBottomSheetState
                               child: CustomReadOnlyTextField(
                                 '',
                                 nextActionDateControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () => pickDate(
-                                        context, nextActionDateControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                isReadOnly: true,
+                                onTapped: () => pickDate(
+                                    context, nextActionDateControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                               ),
                             ),
                           ],
@@ -112,13 +117,13 @@ class _CustomRemainderBottomSheetState
                               child: CustomReadOnlyTextField(
                                 '',
                                 nextActionTimeControlller,
-                                suffixWidget: GestureDetector(
-                                    onTap: () => pickTime(
-                                        context, nextActionTimeControlller),
-                                    child: ImageIcon(
-                                      AssetImage(ImageResource.calendar),
-                                      color: ColorResource.colorC4C4C4,
-                                    )),
+                                isReadOnly: true,
+                                onTapped: () => pickTime(
+                                    context, nextActionTimeControlller),
+                                suffixWidget: ImageIcon(
+                                  AssetImage(ImageResource.calendar),
+                                  color: ColorResource.colorC4C4C4,
+                                ),
                               ),
                             ),
                           ],

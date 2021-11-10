@@ -13,14 +13,6 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
-List<SelectedClipModel> selectedClipList = [
-  SelectedClipModel('LINE BUSY'),
-  SelectedClipModel('SWITCH OFF'),
-  SelectedClipModel('RNR'),
-  SelectedClipModel('OUT OF NETWORK'),
-  SelectedClipModel('DISCONNECTING'),
-];
-
 class PhoneSecondTabScreen extends StatefulWidget {
   const PhoneSecondTabScreen({
     Key? key,
@@ -40,127 +32,135 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
 
   final formKey = GlobalKey<FormState>();
 
-  late FocusNode nextActionDateFocusNode;
-  late FocusNode remarksFocusNode;
-
   @override
   void initState() {
-    widget.bloc.unreachableNextActionDateController.text = '21-09-2021';
-    nextActionDateFocusNode = FocusNode();
-    remarksFocusNode = FocusNode();
+    widget.bloc.unreachableNextActionDateController.text =
+        DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidate: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Wrap(
-                      runSpacing: 10,
-                      spacing: 10,
-                      children: _buildSelectedClip(),
-                    ),
-                    SizedBox(height: 25),
-                    CustomText(
-                      Languages.of(context)!.nextActionDate.toUpperCase(),
-                      color: ColorResource.color666666,
-                      fontSize: FontSize.twelve,
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                    ),
-                    SizedBox(
-                      width: (MediaQuery.of(context).size.width - 62) / 2,
-                      child: CustomReadOnlyTextField(
-                        '',
-                        widget.bloc.unreachableNextActionDateController,
-                        focusNode: nextActionDateFocusNode,
-                        suffixWidget: GestureDetector(
-                          onTap: () => pickDate(context,
+    List<SelectedClipModel> selectedClipList = [
+      SelectedClipModel(Languages.of(context)!.lineBusy.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.switchOff.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.rnr.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.outOfNetwork.toUpperCase()),
+      SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
+    ];
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Form(
+        key: formKey,
+        autovalidate: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Wrap(
+                        runSpacing: 10,
+                        spacing: 10,
+                        children: _buildSelectedClip(selectedClipList),
+                      ),
+                      SizedBox(height: 25),
+                      CustomText(
+                        Languages.of(context)!.nextActionDate.toUpperCase(),
+                        color: ColorResource.color666666,
+                        fontSize: FontSize.twelve,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                      SizedBox(
+                        width: (MediaQuery.of(context).size.width - 62) / 2,
+                        child: CustomReadOnlyTextField(
+                          '',
+                          widget.bloc.unreachableNextActionDateController,
+                          focusNode:
+                              widget.bloc.unreachableNextActionDateFocusNode,
+                          isReadOnly: true,
+                          onTapped: () => pickDate(context,
                               widget.bloc.unreachableNextActionDateController),
-                          child: ImageIcon(
+                          suffixWidget: ImageIcon(
                             AssetImage(ImageResource.calendar),
                             color: ColorResource.colorC4C4C4,
                           ),
+                          onEditing: () {
+                            widget.bloc.unreachableNextActionDateFocusNode
+                                .unfocus();
+                            widget.bloc.unreachableRemarksFocusNode
+                                .requestFocus();
+                          },
                         ),
-                        onEditing: () {
-                          nextActionDateFocusNode.unfocus();
-                          remarksFocusNode.requestFocus();
-                        },
                       ),
-                    ),
-                    SizedBox(height: 27),
-                    CustomText(
-                      Languages.of(context)!.remarks,
-                      color: ColorResource.color666666,
-                      fontWeight: FontWeight.w400,
-                      fontSize: FontSize.twelve,
-                      fontStyle: FontStyle.normal,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextFormField(
-                        focusNode: remarksFocusNode,
-                        controller: widget.bloc.unreachableRemarksController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        decoration: new InputDecoration(
-                            hintText:
-                                Languages.of(context)!.writeYourRemarksHere,
-                            focusColor: ColorResource.colorE5EAF6,
-                            labelStyle:
-                                new TextStyle(color: const Color(0xFF424242))),
+                      SizedBox(height: 27),
+                      CustomText(
+                        Languages.of(context)!.remarks,
+                        color: ColorResource.color666666,
+                        fontWeight: FontWeight.w400,
+                        fontSize: FontSize.twelve,
+                        fontStyle: FontStyle.normal,
                       ),
-                    ),
-                    TextField(),
-                    SizedBox(height: 19),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            Languages.of(context)!.addNewContact,
-                            textColor: ColorResource.colorFFFFFF,
-                            borderColor: ColorResource.color23375A,
-                            cardShape: 75,
-                            buttonBackgroundColor: ColorResource.color23375A,
-                          ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormField(
+                          focusNode: widget.bloc.unreachableRemarksFocusNode,
+                          controller: widget.bloc.unreachableRemarksController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          decoration: new InputDecoration(
+                              hintText:
+                                  Languages.of(context)!.writeYourRemarksHere,
+                              focusColor: ColorResource.colorE5EAF6,
+                              labelStyle: new TextStyle(
+                                  color: const Color(0xFF424242))),
                         ),
-                        SizedBox(height: 11),
-                        Expanded(
-                          child: CustomButton(
-                            Languages.of(context)!.otherFeedBack,
-                            textColor: ColorResource.color23375A,
-                            borderColor: ColorResource.color23375A,
-                            cardShape: 75,
-                            buttonBackgroundColor: ColorResource.colorFFFFFF,
+                      ),
+                      // TextField(),
+                      SizedBox(height: 19),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              StringResource.addNewContact.toUpperCase(),
+                              textColor: ColorResource.colorFFFFFF,
+                              borderColor: ColorResource.color23375A,
+                              cardShape: 75,
+                              buttonBackgroundColor: ColorResource.color23375A,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 120)
-                  ],
+                          SizedBox(height: 11),
+                          Expanded(
+                            child: CustomButton(
+                              Languages.of(context)!.otherFeedBack,
+                              textColor: ColorResource.color23375A,
+                              borderColor: ColorResource.color23375A,
+                              cardShape: 75,
+                              buttonBackgroundColor: ColorResource.colorFFFFFF,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 120)
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -202,19 +202,19 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
     });
   }
 
-  List<Widget> _buildSelectedClip() {
+  List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-    selectedClipList.forEach((element) {
+    list.forEach((element) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.selectedInvalidClip = element.clipTitle;
+          widget.bloc.selectedUnreadableClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.selectedInvalidClip
+            color: element.clipTitle == widget.bloc.selectedUnreadableClip
                 ? ColorResource.colorFFB800.withOpacity(0.67)
                 : ColorResource.colorE7E7E7,
           ),

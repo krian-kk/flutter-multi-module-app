@@ -32,21 +32,14 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
 class _CustomOtherFeedBackBottomSheetState
     extends State<CustomOtherFeedBackBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
-  TextEditingController timeControlller = TextEditingController();
-  TextEditingController modelMakeControlller = TextEditingController();
-  TextEditingController registrationNoControlller = TextEditingController();
-  TextEditingController chassisNoControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    dateControlller.text = '12-1-2021';
-    timeControlller.text = '7:00';
-    modelMakeControlller.text = '123';
-    registrationNoControlller.text = '123';
-    chassisNoControlller.text = '123';
-    remarksControlller.text = 'ABC';
+    DateTime currentDateTime = DateTime.now();
+
+    dateControlller.text =
+        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
   }
 
   @override
@@ -90,12 +83,12 @@ class _CustomOtherFeedBackBottomSheetState
                           child: CustomReadOnlyTextField(
                             '',
                             dateControlller,
-                            suffixWidget: GestureDetector(
-                                onTap: () => pickDate(context, dateControlller),
-                                child: ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
-                                )),
+                            isReadOnly: true,
+                            onTapped: () => pickDate(context, dateControlller),
+                            suffixWidget: ImageIcon(
+                              AssetImage(ImageResource.calendar),
+                              color: ColorResource.colorC4C4C4,
+                            ),
                           ),
                         ),
                       ],

@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -33,6 +34,15 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
     timeController.text = '23:48';
     remarksController.text = 'NKS';
   }
+
+   Future getFiles() async {
+     FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['jpg', 'pdf', 'doc'],
+        );
+
+        print(result);
+  }
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
@@ -54,7 +64,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           Languages.of(context)!.date,
                           dateController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -63,7 +73,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           Languages.of(context)!.time,
                           timeController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -72,7 +82,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                          Languages.of(context)!.remark,
                           remarksController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       const SizedBox(height: 7,),
@@ -84,6 +94,9 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                         cardShape: 50,
                         isLeading: true,
                         trailingWidget: Image.asset(ImageResource.upload),
+                        onTap: (){
+                          getFiles();
+                        },
                       )
                      ],
                    ),

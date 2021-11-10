@@ -33,9 +33,10 @@ class DialogUtils {
             child: CustomText(
               okBtnText,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                  color: Colors.blue,
-                  fontSize: FontSize.fourteen),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2!
+                  .copyWith(color: Colors.blue, fontSize: FontSize.fourteen),
             ),
             onPressed: () {
               okBtnFunction(okBtnText);
@@ -67,7 +68,6 @@ class DialogUtils {
                 okBtnFunction(otherButton);
               },
             ),
-
         ],
       ),
     );

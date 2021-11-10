@@ -33,7 +33,10 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
 
   @override
   void initState() {
-    nextActionDateControlller.text = '12-1-2021';
+    DateTime currentDateTime = DateTime.now();
+
+    nextActionDateControlller.text =
+        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
     remarksControlller.text = 'ABC';
     super.initState();
   }
@@ -81,13 +84,13 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                             child: CustomReadOnlyTextField(
                               '',
                               nextActionDateControlller,
-                              suffixWidget: GestureDetector(
-                                  onTap: () => pickDate(
-                                      context, nextActionDateControlller),
-                                  child: ImageIcon(
-                                    AssetImage(ImageResource.calendar),
-                                    color: ColorResource.colorC4C4C4,
-                                  )),
+                              isReadOnly: true,
+                              onTapped: () =>
+                                  pickDate(context, nextActionDateControlller),
+                              suffixWidget: ImageIcon(
+                                AssetImage(ImageResource.calendar),
+                                color: ColorResource.colorC4C4C4,
+                              ),
                             ),
                           ),
                         ],

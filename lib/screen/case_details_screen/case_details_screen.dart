@@ -12,6 +12,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,28 +26,20 @@ class CaseDetailsScreen extends StatefulWidget {
 
 class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   late CaseDetailsBloc bloc;
-  late TextEditingController bankNameController = TextEditingController();
-  late TextEditingController emiStartStateController = TextEditingController();
-  late TextEditingController loanAmountController = TextEditingController();
-  late TextEditingController loanDurationController = TextEditingController();
-  late TextEditingController posController = TextEditingController();
-  late TextEditingController schemeCodeController = TextEditingController();
-  late TextEditingController productController = TextEditingController();
-  late TextEditingController batchNoController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+
     bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
 
-    loanAmountController.text = '67793';
-    loanDurationController.text = '24';
-    posController.text = '128974';
-    schemeCodeController.text = '34';
-    emiStartStateController.text = '08-09-2017';
-    bankNameController.text = 'TVS';
-    productController.text = '2W';
-    batchNoController.text = 'HAR_50CASES-16102020_015953';
+    // loanDurationController.text = '24';
+    // posController.text = '128974';
+    // schemeCodeController.text = '34';
+    // emiStartStateController.text = '08-09-2017';
+    // bankNameController.text = 'TVS';
+    // productController.text = '2W';
+    // batchNoController.text = 'HAR_50CASES-16102020_015953';
   }
 
   @override
@@ -109,76 +102,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     children: [
                                       Align(
                                         alignment: Alignment.bottomCenter,
-                                        child: Container(
-                                          decoration: new BoxDecoration(
-                                              color: ColorResource.colorD4F5CF,
-                                              borderRadius:
-                                                  new BorderRadius.all(
-                                                      Radius.circular(10.0))),
-                                          margin: EdgeInsets.only(top: 10),
-                                          width: double.infinity,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                CustomText(
-                                                  'DEBASISH PATNAIK',
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color333333,
-                                                ),
-                                                const SizedBox(height: 11),
-                                                CustomText(
-                                                  Languages.of(context)!
-                                                      .accountNo,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: FontSize.twelve,
-                                                  lineHeight: 1,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color666666,
-                                                ),
-                                                const SizedBox(height: 7),
-                                                CustomText(
-                                                  'TVSF_BFRT6524869550',
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: FontSize.fourteen,
-                                                  lineHeight: 1,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color333333,
-                                                ),
-                                                const SizedBox(height: 13),
-                                                CustomText(
-                                                  Languages.of(context)!
-                                                      .overdueAmount,
-                                                  fontWeight: FontWeight.w400,
-                                                  lineHeight: 1,
-                                                  fontSize: FontSize.twelve,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color666666,
-                                                ),
-                                                const SizedBox(height: 7),
-                                                CustomText(
-                                                  '397553.67',
-                                                  fontWeight: FontWeight.w700,
-                                                  lineHeight: 1,
-                                                  fontSize: FontSize.twentyFour,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color333333,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                        child: CustomLoanUserDetails(
+                                          userName: 'DEBASISH PATNAIK',
+                                          userId: 'TVSF_BFRT6458922993',
+                                          userAmount: 397553.67,
+                                          color: ColorResource.colorD4F5CF,
+                                          marginTop: 10,
                                         ),
                                       ),
                                       Container(
@@ -203,7 +132,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   const SizedBox(height: 16),
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.loanAmount,
-                                    loanAmountController,
+                                    bloc.loanAmountController,
                                     isLabel: true,
                                     isEnable: false,
                                   ),
@@ -214,7 +143,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                         child: SizedBox(
                                           child: CustomReadOnlyTextField(
                                             Languages.of(context)!.loanDuration,
-                                            loanDurationController,
+                                            bloc.loanDurationController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
@@ -225,7 +154,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                         child: SizedBox(
                                           child: CustomReadOnlyTextField(
                                             Languages.of(context)!.pos,
-                                            posController,
+                                            bloc.posController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
@@ -239,7 +168,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       Flexible(
                                         child: CustomReadOnlyTextField(
                                           Languages.of(context)!.schemeCode,
-                                          schemeCodeController,
+                                          bloc.schemeCodeController,
                                           isLabel: true,
                                           isEnable: false,
                                         ),
@@ -248,7 +177,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       Flexible(
                                         child: CustomReadOnlyTextField(
                                           Languages.of(context)!.emiStartDate,
-                                          emiStartStateController,
+                                          bloc.emiStartDateController,
                                           isLabel: true,
                                           isEnable: false,
                                         ),
@@ -258,21 +187,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   const SizedBox(height: 15),
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.bankName,
-                                    bankNameController,
+                                    bloc.bankNameController,
                                     isLabel: true,
                                     isEnable: false,
                                   ),
                                   SizedBox(height: 17),
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.product,
-                                    productController,
+                                    bloc.productController,
                                     isLabel: true,
                                     isEnable: false,
                                   ),
                                   SizedBox(height: 17),
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.batchNo,
-                                    batchNoController,
+                                    bloc.batchNoController,
                                     isLabel: true,
                                     isEnable: false,
                                   ),
@@ -420,8 +349,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   Expanded(
                                                     flex: 2,
                                                     child: CustomButton(
-                                                      Languages.of(context)!
-                                                          .sendSms,
+                                                      StringResource.sendSms
+                                                          .toUpperCase(),
                                                       fontSize: FontSize.twelve,
                                                       borderColor: ColorResource
                                                           .color23375A,
@@ -450,30 +379,27 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   SizedBox(width: 5),
                                                   Expanded(
                                                     flex: 3,
-                                                    child: Container(
-                                                      child: CustomButton(
-                                                        StringResource
-                                                            .sendWHATSAPP,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        borderColor:
-                                                            ColorResource
-                                                                .color23375A,
-                                                        isLeading: true,
-                                                        trailingWidget:
-                                                            Image.asset(
-                                                                ImageResource
-                                                                    .whatsApp),
-                                                        onTap: () async {
-                                                          const url =
-                                                              "https://wa.me/?text=Origa";
+                                                    child: CustomButton(
+                                                      StringResource
+                                                          .sendWhatsapp
+                                                          .toUpperCase(),
+                                                      fontSize: FontSize.twelve,
+                                                      borderColor: ColorResource
+                                                          .color23375A,
+                                                      isLeading: true,
+                                                      trailingWidget:
+                                                          Image.asset(
+                                                              ImageResource
+                                                                  .whatsApp),
+                                                      onTap: () async {
+                                                        const url =
+                                                            "https://wa.me/?text=Origa";
 
-                                                          await launch(url);
-                                                        },
-                                                        buttonBackgroundColor:
-                                                            ColorResource
-                                                                .color23375A,
-                                                      ),
+                                                        await launch(url);
+                                                      },
+                                                      buttonBackgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
                                                     ),
                                                   ),
                                                 ],
@@ -503,6 +429,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: 2,
+                                      // bloc.caseDetailsResult.result
+                                      //         ?.otherLoanDetails?.length ??
+                                      //     0,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Column(
