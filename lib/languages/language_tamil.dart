@@ -56,25 +56,25 @@ class LanguageTa extends Languages {
   String get hignPriority => 'அதி முக்கியத்துவம்';
 
   @override
-  String get searchbasedOn => 'அடிப்படையில் தேடவும்';
+  String get searchbasedOn => 'அடிப்படையில் தேடல்';
 
   @override
   String get message => 'செய்தி';
 
   @override
-  String get followUpDate => 'Follow Up Date';
+  String get followUpDate => 'பின்தொடரும் தேதி';
 
   @override
   String get change => 'மாற்றம்';
 
   @override
-  String get all => 'அனைத்து';
+  String get all => 'அனைத்தும்';
 
   @override
-  String get under5km => '5 கிமீ கீழ்';
+  String get under5km => '5கிமீ கீழ்';
 
   @override
-  String get more5km => '5Km-10Km';
+  String get more5km => '5கிமீ-10கிமீ';
 
   @override
   String get mtdResolutionProgress => 'MTD தீர்மானம் முன்னேற்றம்';
@@ -110,16 +110,16 @@ class LanguageTa extends Languages {
   String get help => 'உதவி';
 
   @override
-  String get count => 'எண்ணுங்கள்';
+  String get count => 'மொத்தம்';
 
   @override
   String get today => 'இன்று';
 
   @override
-  String get weekly => 'வாரந்தோறும்';
+  String get weekly => 'வாரம்';
 
   @override
-  String get monthly => 'மாதாந்திர';
+  String get monthly => 'மாதம்';
 
   @override
   String get cheque => 'காசோலை';
@@ -173,10 +173,10 @@ class LanguageTa extends Languages {
   String get repoDate => 'ரெப்போ தேதி';
 
   @override
-  String get selfRelease => '';
+  String get selfRelease => 'சுய வெளியீடு';
 
   @override
-  String get repoStatus => 'சுய வெளியீடு';
+  String get repoStatus => 'ரெப்போ நிலை';
 
   @override
   String get yardName => 'முற்றத்தின் பெயர்*';
@@ -227,7 +227,7 @@ class LanguageTa extends Languages {
   String get new_ => 'புதியது';
 
   @override
-  String get overdueAmount => 'காலாவதியான தொகை';
+  String get overdueAmount => 'தாமதமான தொகை';
 
   @override
   String get loanAmount => 'கடன்தொகை';
@@ -272,7 +272,7 @@ class LanguageTa extends Languages {
   String get otherLoanOf => 'மற்ற கடன்';
 
   @override
-  String get view => 'VIEW';
+  String get view => 'விவரம்';
 
   @override
   String get customerMet => 'வாடிக்கையாளர் சந்திப்பு';
@@ -341,7 +341,7 @@ class LanguageTa extends Languages {
   String get defaultLaunguage => 'இயல்பு மொழி';
 
   @override
-  String get english => 'ENGLISH';
+  String get english => 'ஆங்கிலம் / ENGLISH';
 
   @override
   String get hindi => 'हिन्दी  / HINDI';
@@ -386,7 +386,7 @@ class LanguageTa extends Languages {
   String get declinedCall => 'நிராகரிக்கப்பட்ட அழைப்பு';
 
   @override
-  String get leftMessage => 'இடது செய்தி';
+  String get leftMessage => 'செய்தியை விட்டுச் சென்றது';
 
   @override
   String get doorLocked => 'கதவு பூட்டப்பட்டது';
@@ -458,7 +458,7 @@ class LanguageTa extends Languages {
   String get disputeReason => 'சர்ச்சை காரணம்*';
 
   @override
-  String get modelMake => 'மாடல் மேக்*';
+  String get modelMake => 'மாதிரி தயாரிக்கவும்*';
 
   @override
   String get registrationNo => 'பதிவு எண்*';
@@ -473,7 +473,7 @@ class LanguageTa extends Languages {
   String get eventDetails => 'நிகழ்வு விவரங்கள்';
 
   @override
-  String get pickUp => 'பிக்-அப்';
+  String get pickUp => 'எடு';
 
   @override
   String get selfPay => 'சுய ஊதியம்';

@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -39,6 +40,16 @@ class _BankTabState extends State<BankTab> {
     depositController.text = '100';
     referenceController.text = '100';
   }
+
+  Future getFiles() async {
+     FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['jpg', 'pdf', 'doc'],
+        );
+
+        print(result);
+  }
+  
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
@@ -60,7 +71,7 @@ class _BankTabState extends State<BankTab> {
                           Languages.of(context)!.bankName,
                           bankNameController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -69,7 +80,7 @@ class _BankTabState extends State<BankTab> {
                           Languages.of(context)!.branchName,
                           branchController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -78,7 +89,7 @@ class _BankTabState extends State<BankTab> {
                           Languages.of(context)!.ifscCode,
                           ifscCodeController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       Padding(
@@ -91,7 +102,7 @@ class _BankTabState extends State<BankTab> {
                                 Languages.of(context)!.receiptAmount,
                                 receiptController,
                                 isLabel: true,
-                                isEnable: false,
+                                isEnable: true,
                               ),
                             ),
                             const SizedBox(width: 7,),
@@ -101,7 +112,7 @@ class _BankTabState extends State<BankTab> {
                                 Languages.of(context)!.depositAmount,
                                 depositController,
                                 isLabel: true,
-                                isEnable: false,
+                                isEnable: true,
                               ),
                              ),
                           ],
@@ -113,7 +124,7 @@ class _BankTabState extends State<BankTab> {
                           Languages.of(context)!.reference,
                           referenceController,
                           isLabel: true,
-                          isEnable: false,
+                          isEnable: true,
                         ),
                       ),
                       const SizedBox(height: 7,),
@@ -125,6 +136,9 @@ class _BankTabState extends State<BankTab> {
                         cardShape: 50,
                         isLeading: true,
                         trailingWidget: Image.asset(ImageResource.upload),
+                        onTap: (){
+                          getFiles();
+                        },
                       )
                      ],
                    ),

@@ -6,6 +6,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -136,12 +137,9 @@ class _MapViewState extends State<MapView> {
                 children: [
                   Container(
                     padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
-                    child: CustomAppbar(
-                      titleString: Languages.of(context)!.mapView,
-                      showClose: true,
-                      onItemSelected: (value) {
-                        Navigator.pop(context);
-                      },
+                    child: BottomSheetAppbar(
+                      title: Languages.of(context)!.mapView,
+                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
                     ),
                   ),
                   Expanded(
