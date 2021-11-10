@@ -3,26 +3,26 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class PhoneThirdTabScreen extends StatefulWidget {
-  const PhoneThirdTabScreen(
+class PhonenInvalidScreen extends StatefulWidget {
+  const PhonenInvalidScreen(
       {Key? key, required this.context, required this.bloc})
       : super(key: key);
 
   final BuildContext context;
-  final PhoneBloc bloc;
+  final CaseDetailsBloc bloc;
 
   @override
-  State<PhoneThirdTabScreen> createState() => _PhoneThirdTabScreenState();
+  State<PhonenInvalidScreen> createState() => _PhonenInvalidScreenState();
 }
 
-class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
+class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -65,8 +65,8 @@ class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: TextFormField(
-                          focusNode: widget.bloc.invalidRemarksFocusNode,
-                          controller: widget.bloc.invalidRemarksController,
+                          focusNode: widget.bloc.phoneInvalidRemarksFocusNode,
+                          controller: widget.bloc.phoneInvalidRemarksController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter some text';
@@ -123,17 +123,17 @@ class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.selectedInvalidClip = element.clipTitle;
+          widget.bloc.phoneSelectedInvalidClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.selectedInvalidClip
+            color: element.clipTitle == widget.bloc.phoneSelectedInvalidClip
                 ? ColorResource.colorF1BCC4
                 : ColorResource.colorE7E7E7,
           ),
@@ -146,7 +146,7 @@ class _PhoneThirdTabScreenState extends State<PhoneThirdTabScreen> {
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 }

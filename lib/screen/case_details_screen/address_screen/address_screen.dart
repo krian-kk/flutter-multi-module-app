@@ -1,25 +1,22 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors
+// ignore_for_file: unnecessary_new, prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/customer_not_met_model.dart';
-import 'package:origa/screen/address_screen/customer_met_screen.dart';
-import 'package:origa/screen/address_screen/customer_not_met_screen.dart';
-import 'package:origa/screen/address_screen/event_details_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/invalid_screen.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
-import 'package:origa/utils/app_utils.dart';
+import 'package:origa/screen/case_details_screen/address_screen/customer_met_screen.dart';
+import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
+import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/event_details_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class AddressScreen extends StatefulWidget {
-  AddressScreen({Key? key}) : super(key: key);
+  final CaseDetailsBloc bloc;
+  AddressScreen({Key? key, required this.bloc}) : super(key: key);
 
   @override
   _AddressScreenState createState() => _AddressScreenState();
@@ -27,12 +24,10 @@ class AddressScreen extends StatefulWidget {
 
 class _AddressScreenState extends State<AddressScreen>
     with SingleTickerProviderStateMixin {
-  late AddressBloc bloc;
   late TabController _controller;
 
   @override
   void initState() {
-    bloc = AddressBloc()..add(AddressInitialEvent());
     super.initState();
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
@@ -46,11 +41,11 @@ class _AddressScreenState extends State<AddressScreen>
 
   @override
   Widget build(BuildContext context) {
-    List<CustomerMetNotButtonModel> customerMetNotButtonList = [
-      CustomerMetNotButtonModel(Languages.of(context)!.leftMessage),
-      CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
-      CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
-    ];
+    // List<CustomerMetNotButtonModel> customerMetNotButtonList = [
+    //   CustomerMetNotButtonModel(Languages.of(context)!.leftMessage),
+    //   CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
+    //   CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
+    // ];
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -179,9 +174,11 @@ class _AddressScreenState extends State<AddressScreen>
                     labelColor: ColorResource.color23375A,
                     unselectedLabelColor: ColorResource.colorC4C4C4,
                     onTap: (index) {
-                      bloc.customerNotMetNextActionDateFocusNode.unfocus();
-                      bloc.customerNotMetRemarksFocusNode.unfocus();
-                      bloc.invalidRemarksFocusNode.unfocus();
+                      widget.bloc.addressCustomerNotMetNextActionDateFocusNode
+                          .unfocus();
+                      widget.bloc.addressCustomerNotMetRemarksFocusNode
+                          .unfocus();
+                      widget.bloc.addressInvalidRemarksFocusNode.unfocus();
                     },
                     // ignore: prefer_const_literals_to_create_immutables
                     tabs: [
@@ -191,41 +188,32 @@ class _AddressScreenState extends State<AddressScreen>
                     ],
                   ),
                 ),
-                BlocListener<AddressBloc, AddressState>(
-                  bloc: bloc,
-                  listener: (context, state) {},
-                  child: BlocBuilder<AddressBloc, AddressState>(
-                    bloc: bloc,
-                    builder: (context, state) {
-                      return Expanded(
-                          child: SingleChildScrollView(
-                        // physics: NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            Column(children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.65,
-                                child: TabBarView(
-                                  controller: _controller,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: [
-                                    CustomerMetScreen(
-                                        bloc: bloc, context: context),
-                                    CustomerNotMetScreen(
-                                        context: context, bloc: bloc),
-                                    AddressInvalidScreen(
-                                        context: context, bloc: bloc),
-                                  ],
-                                ),
-                              ),
-                            ])
-                          ],
+
+                Expanded(
+                    child: SingleChildScrollView(
+                  // physics: NeverScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Column(children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.65,
+                          child: TabBarView(
+                            controller: _controller,
+                            physics: NeverScrollableScrollPhysics(),
+                            children: [
+                              CustomerMetScreen(
+                                  bloc: widget.bloc, context: context),
+                              CustomerNotMetScreen(
+                                  context: context, bloc: widget.bloc),
+                              AddressInvalidScreen(
+                                  context: context, bloc: widget.bloc),
+                            ],
+                          ),
                         ),
-                      ));
-                    },
+                      ])
+                    ],
                   ),
-                )
+                ))
               ],
             ),
           ),
@@ -312,35 +300,6 @@ class _AddressScreenState extends State<AddressScreen>
                                 // onTap: () => bloc.add(ClickMessageEvent()),
                                 cardShape: 5,
                               ),
-                        // child: CustomButton(
-                        //   Languages.of(context)!.submit.toUpperCase(),
-                        //   fontSize: FontSize.sixteen,
-                        //   fontWeight: FontWeight.w600,
-                        //   onTap: () {
-                        //     if (_controller.index == 1) {
-                        //       if ((bloc.customerNotMetNextActionDateController ==
-                        //                   '' ||
-                        //               bloc.customerNotMetNextActionDateController
-                        //                   .text.isEmpty) ||
-                        //           (bloc.customerNotMetRemarksController.text ==
-                        //                   '' ||
-                        //               bloc.customerNotMetRemarksController.text
-                        //                   .isEmpty)) {
-                        //         AppUtils.showSnackBar(
-                        //             context,
-                        //             'All are the Required Field Please Enter Any Text!'
-                        //                 .toUpperCase(),
-                        //             true);
-                        //       } else {
-                        //         print('Successfull');
-                        //       }
-                        //     } else {
-                        //       print(bloc.customerNotMetRemarksController.text);
-                        //     }
-                        //   },
-                        //   // onTap: () => bloc.add(ClickMessageEvent()),
-                        //   cardShape: 5,
-                        // ),
                       ),
                     ],
                   ),
@@ -353,6 +312,7 @@ class _AddressScreenState extends State<AddressScreen>
   openEventDetailsBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
       isScrollControlled: true,
+      enableDrag: false,
       isDismissible: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,
@@ -363,7 +323,7 @@ class _AddressScreenState extends State<AddressScreen>
       ),
       builder: (BuildContext context) {
         return CustomEventDetailsBottomSheet(
-            Languages.of(context)!.eventDetails.toUpperCase(), bloc);
+            Languages.of(context)!.eventDetails.toUpperCase(), widget.bloc);
       },
     );
   }

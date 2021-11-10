@@ -370,4 +370,8 @@ abstract class Languages {
   String get outOfNetwork;
 
   String get disConnecting;
+
+  String get address;
+
+  String get phoneNumber;
 }

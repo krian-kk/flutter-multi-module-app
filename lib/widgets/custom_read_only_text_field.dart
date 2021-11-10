@@ -5,6 +5,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/validator.dart';
 
+// ignore: must_be_immutable
 class CustomReadOnlyTextField extends StatefulWidget {
   final String hintText;
   final bool obscureText;
@@ -43,7 +44,8 @@ class CustomReadOnlyTextField extends StatefulWidget {
       @required this.hintText,
       // ignore: invalid_required_positional_param
       @required this.controller,
-      {this.obscureText = false,
+      {Key? key,
+      this.obscureText = false,
       this.suffixWidget,
       this.prefixWidget,
       this.isEnable = true,
@@ -68,7 +70,8 @@ class CustomReadOnlyTextField extends StatefulWidget {
       this.isBorder = true,
       this.isFill = false,
       this.cursorColor = ColorResource.color666666,
-      this.validationRules = const []});
+      this.validationRules = const []})
+      : super(key: key);
 
   @override
   _CustomReadOnlyTextFieldState createState() =>
@@ -232,7 +235,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

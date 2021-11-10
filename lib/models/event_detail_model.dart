@@ -6,7 +6,7 @@ class EventExpandModel {
   String remarks;
 
   EventExpandModel({
-    this.expanded: false,
+    this.expanded = false,
     required this.header,
     required this.date,
     required this.colloctorID,

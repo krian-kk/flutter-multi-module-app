@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
-import 'package:origa/screen/address_screen/capture_image_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -22,7 +22,7 @@ class CustomerNotMetScreen extends StatefulWidget {
   }) : super(key: key);
 
   final BuildContext context;
-  final AddressBloc bloc;
+  final CaseDetailsBloc bloc;
 
   @override
   State<CustomerNotMetScreen> createState() => _CustomerNotMetScreenState();
@@ -40,7 +40,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.customerNotMetNextActionDateController.text =
+    widget.bloc.addressCustomerNotMetNextActionDateController.text =
         DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
     // nextActionDateFocusNode = FocusNode();
     // remarksFocusNode = FocusNode();
@@ -96,22 +96,25 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           width: (MediaQuery.of(context).size.width - 62) / 2,
                           child: CustomReadOnlyTextField(
                             '',
-                            widget.bloc.customerNotMetNextActionDateController,
-                            focusNode: widget.bloc.invalidRemarksFocusNode,
+                            widget.bloc
+                                .addressCustomerNotMetNextActionDateController,
+                            focusNode:
+                                widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,
                             onTapped: () => pickDate(
                                 context,
                                 widget.bloc
-                                    .customerNotMetNextActionDateController),
+                                    .addressCustomerNotMetNextActionDateController),
                             suffixWidget: ImageIcon(
                               AssetImage(ImageResource.calendar),
                               color: ColorResource.colorC4C4C4,
                             ),
                             // validationRules: ['required'],
                             onEditing: () {
-                              widget.bloc.customerNotMetNextActionDateFocusNode
+                              widget.bloc
+                                  .addressCustomerNotMetNextActionDateFocusNode
                                   .unfocus();
-                              widget.bloc.customerNotMetRemarksFocusNode
+                              widget.bloc.addressCustomerNotMetRemarksFocusNode
                                   .requestFocus();
                             },
                           ),
@@ -131,10 +134,10 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           child: TextFormField(
                             // keyboardType: TextInputType.multiline,
                             // minLines: 2,
-                            controller:
-                                widget.bloc.customerNotMetRemarksController,
-                            focusNode:
-                                widget.bloc.customerNotMetRemarksFocusNode,
+                            controller: widget
+                                .bloc.addressCustomerNotMetRemarksController,
+                            focusNode: widget
+                                .bloc.addressCustomerNotMetRemarksFocusNode,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter some text';
@@ -180,7 +183,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           spacing: 15,
                           children: [
                             SizedBox(
-                              width: 165,
+                              width: 179,
                               child: CustomButton(
                                 StringResource.addNewContact.toUpperCase(),
                                 buttonBackgroundColor:
@@ -223,6 +226,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   openBottomSheet(BuildContext buildContext, String cardTitle) {
     showModalBottomSheet(
       isScrollControlled: true,
+      enableDrag: false,
       isDismissible: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,
@@ -249,17 +253,17 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.selectedInvalidClip = element.clipTitle;
+          widget.bloc.addressSelectedInvalidClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.selectedInvalidClip
+            color: element.clipTitle == widget.bloc.addressSelectedInvalidClip
                 ? ColorResource.colorFFB800.withOpacity(0.67)
                 : ColorResource.colorE7E7E7,
           ),
@@ -272,7 +276,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 

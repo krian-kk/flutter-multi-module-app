@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
@@ -27,9 +28,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc bloc;
   File? image;
+
   @override
   void initState() {
-    bloc = ProfileBloc()..add(ProfileInitialEvent());
+    bloc = ProfileBloc()..add(ProfileInitialEvent(context));
     super.initState();
   }
 
@@ -48,6 +50,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<ProfileNavigation> profileNavigationList = [
+      ProfileNavigation(
+          title: Languages.of(context)!.notification,
+          notificationCount: 3,
+          onTap: () {
+            bloc.add(ClickNotificationEvent());
+          }),
+      ProfileNavigation(
+          title: Languages.of(context)!.selectLanguage,
+          onTap: () {
+            bloc.add(ClickChangeLaunguageEvent());
+          }),
+      ProfileNavigation(
+          title: Languages.of(context)!.changePassword,
+          onTap: () {
+            bloc.add(ClickChangePassswordEvent());
+          })
+    ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
       listener: (context, state) {
@@ -199,12 +219,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: bloc.profileNavigationList.length,
+                                  itemCount: profileNavigationList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return GestureDetector(
-                                      onTap: bloc
-                                          .profileNavigationList[index].onTap,
+                                      onTap: profileNavigationList[index].onTap,
                                       // onTap: () => bloc
                                       //     .profileNavigationList[index].onTap,
                                       child: Container(
@@ -226,8 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 child: Row(
                                                   children: [
                                                     CustomText(
-                                                      bloc
-                                                          .profileNavigationList[
+                                                      profileNavigationList[
                                                               index]
                                                           .title
                                                           .toUpperCase(),
@@ -242,29 +260,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           .color23375A,
                                                     ),
                                                     SizedBox(width: 5),
-                                                    Visibility(
-                                                      visible: bloc
-                                                          .profileNavigationList[
-                                                              index]
-                                                          .count,
-                                                      child: CircleAvatar(
-                                                        backgroundColor:
-                                                            ColorResource
-                                                                .color23375A,
-                                                        radius: 13,
-                                                        child: Center(
-                                                          child: CustomText('2',
-                                                              lineHeight: 1,
-                                                              fontSize: FontSize
-                                                                  .twelve,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              color: ColorResource
-                                                                  .colorFFFFFF),
-                                                        ),
-                                                      ),
-                                                    )
+                                                    profileNavigationList[index]
+                                                                .notificationCount ==
+                                                            null
+                                                        ? SizedBox()
+                                                        : CircleAvatar(
+                                                            backgroundColor:
+                                                                ColorResource
+                                                                    .color23375A,
+                                                            radius: 13,
+                                                            child: Center(
+                                                              child: CustomText(
+                                                                  profileNavigationList[
+                                                                          index]
+                                                                      .notificationCount
+                                                                      .toString(),
+                                                                  lineHeight: 1,
+                                                                  fontSize:
+                                                                      FontSize
+                                                                          .twelve,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: ColorResource
+                                                                      .colorFFFFFF),
+                                                            ),
+                                                          )
                                                   ],
                                                 ),
                                               ),
@@ -352,6 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
+        enableDrag: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
         shape: RoundedRectangleBorder(
@@ -430,6 +452,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
+        enableDrag: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
         shape: RoundedRectangleBorder(
@@ -448,6 +471,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         isDismissible: false,
         isScrollControlled: true,
+        enableDrag: false,
         backgroundColor: ColorResource.colorFFFFFF,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -462,10 +486,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: MessageChatRoomScreen())));
   }
 
-  void notificationShowBottomSheet(BuildContext context) {
+  notificationShowBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
+        enableDrag: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
         shape: RoundedRectangleBorder(

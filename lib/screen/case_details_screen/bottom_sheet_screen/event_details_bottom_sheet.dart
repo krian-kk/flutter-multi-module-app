@@ -1,21 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/event_detail_model.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
-import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
-  final AddressBloc bloc;
+  final CaseDetailsBloc bloc;
   CustomEventDetailsBottomSheet(
     this.cardTitle,
     this.bloc, {
@@ -98,8 +95,6 @@ class _CustomEventDetailsBottomSheetState
   }
 
   expandList(List<EventExpandModel> expandedList, int index) {
-    int listcount = index;
-    listcount++;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
