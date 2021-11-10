@@ -102,6 +102,9 @@ class _CustomCollectionsBottomSheetState
                           child: CustomDropDownButton(
                             Languages.of(context)!.amountCollected,
                             amountCollectionDropDownList,
+                            // onChanged: (newValue) {
+                            //   print(newValue);
+                            // },
                             icon: ImageIcon(
                               AssetImage(ImageResource.dropDownArrow),
                             ),
@@ -166,7 +169,19 @@ class _CustomCollectionsBottomSheetState
                       remarksControlller,
                       isLabel: true,
                     ),
-                    SizedBox(height: 15)
+                    SizedBox(height: 15),
+                    CustomButton(
+                      Languages.of(context)!.customUpload,
+                      fontWeight: FontWeight.w700,
+                      trailingWidget: Image.asset(ImageResource.upload),
+                      fontSize: FontSize.sixteen,
+                      buttonBackgroundColor: ColorResource.color23375A,
+                      borderColor: ColorResource.colorDADADA,
+                      cardShape: 50,
+                      cardElevation: 1,
+                      isLeading: true,
+                    ),
+                    SizedBox(height: 15),
                   ],
                 ),
               ),
@@ -260,7 +275,7 @@ class _CustomCollectionsBottomSheetState
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
           setState(() {
@@ -307,7 +322,7 @@ class _CustomCollectionsBottomSheetState
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 }

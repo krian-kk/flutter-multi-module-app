@@ -39,8 +39,8 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     getLanguageCode();
   }
 
-  void getLanguageCode() async{
-   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  void getLanguageCode() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       ratioIndex = prefs.getInt('mainLanguage') ?? 0;
       setLanguageCode = prefs.getString('mainLanguageCode') ?? 'en';
@@ -48,6 +48,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
       // print(setLanguageCode);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     languageList = [

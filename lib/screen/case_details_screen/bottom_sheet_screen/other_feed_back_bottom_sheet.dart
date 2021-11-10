@@ -3,20 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/other_feedback_model.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_expanstion_tile.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
-  final AddressBloc bloc;
+  final CaseDetailsBloc bloc;
   CustomOtherFeedBackBottomSheet(
     this.cardTitle,
     this.bloc, {
@@ -156,17 +155,6 @@ class _CustomOtherFeedBackBottomSheetState
                             )),
                       ),
                     ),
-                    // CustomButton(
-                    //   'UPLOAD AUDIO FILE',
-                    //   fontWeight: FontWeight.w700,
-                    //   trailingWidget: Image.asset(ImageResource.upload),
-                    //   fontSize: FontSize.sixteen,
-                    //   buttonBackgroundColor: ColorResource.color23375A,
-                    //   borderColor: ColorResource.colorDADADA,
-                    //   cardShape: 50,
-                    //   cardElevation: 1,
-                    //   isLeading: true,
-                    // ),
                     SizedBox(height: 15),
                   ],
                 ),
@@ -294,8 +282,6 @@ class _CustomOtherFeedBackBottomSheetState
   }
 
   expandList(List<OtherFeedbackExpandModel> expandedList, int index) {
-    int listcount = index;
-    listcount++;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -306,14 +292,6 @@ class _CustomOtherFeedBackBottomSheetState
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
             color: ColorResource.colorE7E7E7,
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey.withOpacity(0.2),
-            //     spreadRadius: 2,
-            //     blurRadius: 3,
-            //     offset: Offset(0, 3), // changes position of shadow
-            //   ),
-            // ],
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 0, 14, 0),

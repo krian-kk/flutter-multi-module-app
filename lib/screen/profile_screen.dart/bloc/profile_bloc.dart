@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
 
 part 'profile_event.dart';
@@ -14,7 +11,7 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
-  List<ProfileNavigation> profileNavigationList = [];
+
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
@@ -24,26 +21,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
 
-      profileNavigationList.addAll([
-        ProfileNavigation(
-            title: StringResource.notification,
-            count: true,
-            onTap: () {
-              this.add(ClickNotificationEvent());
-            }),
-        ProfileNavigation(
-            title: StringResource.selectLanguage,
-            count: false,
-            onTap: () {
-              this.add(ClickChangeLaunguageEvent());
-            }),
-        ProfileNavigation(
-            title: StringResource.changePassword,
-            count: false,
-            onTap: () {
-              this.add(ClickChangePassswordEvent());
-            })
-      ]);
+      // profileNavigationList.addAll([
+      //   ProfileNavigation(
+      //       title: Languages.of(event.context)!.notification,
+      //       count: true,
+      //       onTap: () {
+      //         add(ClickNotificationEvent());
+      //       }),
+      //   ProfileNavigation(
+      //       title: Languages.of(event.context)!.selectLanguage,
+      //       count: false,
+      //       onTap: () {
+      //         add(ClickChangeLaunguageEvent());
+      //       }),
+      //   ProfileNavigation(
+      //       title: Languages.of(event.context)!.changePassword,
+      //       count: false,
+      //       onTap: () {
+      //         add(ClickChangePassswordEvent());
+      //       })
+      // ]);
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
           NotificationChildModel('Mr. Debashish Sr. Manager',

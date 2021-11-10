@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -13,28 +13,28 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
-class PhoneSecondTabScreen extends StatefulWidget {
-  const PhoneSecondTabScreen({
+class PhoneUnreachableScreen extends StatefulWidget {
+  const PhoneUnreachableScreen({
     Key? key,
     required this.context,
     required this.bloc,
   }) : super(key: key);
 
   final BuildContext context;
-  final PhoneBloc bloc;
+  final CaseDetailsBloc bloc;
 
   @override
-  State<PhoneSecondTabScreen> createState() => _PhoneSecondTabScreenState();
+  State<PhoneUnreachableScreen> createState() => _PhoneUnreachableScreenState();
 }
 
-class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
+class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   // TextEditingController nextActionDateController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    widget.bloc.unreachableNextActionDateController.text =
+    widget.bloc.phoneUnreachableNextActionDateController.text =
         DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
     super.initState();
   }
@@ -82,20 +82,22 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
                         width: (MediaQuery.of(context).size.width - 62) / 2,
                         child: CustomReadOnlyTextField(
                           '',
-                          widget.bloc.unreachableNextActionDateController,
-                          focusNode:
-                              widget.bloc.unreachableNextActionDateFocusNode,
+                          widget.bloc.phoneUnreachableNextActionDateController,
+                          focusNode: widget
+                              .bloc.phoneUnreachableNextActionDateFocusNode,
                           isReadOnly: true,
-                          onTapped: () => pickDate(context,
-                              widget.bloc.unreachableNextActionDateController),
+                          onTapped: () => pickDate(
+                              context,
+                              widget.bloc
+                                  .phoneUnreachableNextActionDateController),
                           suffixWidget: ImageIcon(
                             AssetImage(ImageResource.calendar),
                             color: ColorResource.colorC4C4C4,
                           ),
                           onEditing: () {
-                            widget.bloc.unreachableNextActionDateFocusNode
+                            widget.bloc.phoneUnreachableNextActionDateFocusNode
                                 .unfocus();
-                            widget.bloc.unreachableRemarksFocusNode
+                            widget.bloc.phoneUnreachableRemarksFocusNode
                                 .requestFocus();
                           },
                         ),
@@ -111,8 +113,10 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: TextFormField(
-                          focusNode: widget.bloc.unreachableRemarksFocusNode,
-                          controller: widget.bloc.unreachableRemarksController,
+                          focusNode:
+                              widget.bloc.phoneUnreachableRemarksFocusNode,
+                          controller:
+                              widget.bloc.phoneUnreachableRemarksController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter some text';
@@ -204,17 +208,17 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-    list.forEach((element) {
+    for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.selectedUnreadableClip = element.clipTitle;
+          widget.bloc.phoneSelectedUnreadableClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.selectedUnreadableClip
+            color: element.clipTitle == widget.bloc.phoneSelectedUnreadableClip
                 ? ColorResource.colorFFB800.withOpacity(0.67)
                 : ColorResource.colorE7E7E7,
           ),
@@ -227,7 +231,7 @@ class _PhoneSecondTabScreenState extends State<PhoneSecondTabScreen> {
           ),
         ),
       ));
-    });
+    }
     return widgets;
   }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -18,7 +19,7 @@ class CustomDropDownButton extends StatefulWidget {
   final Color? focusColor;
   final FocusNode? focusNode;
   final bool autoFocus;
-  final Function? onChanged;
+  final OnChange? onChanged;
 
   const CustomDropDownButton(this.labelText, this.listOfItems,
       {Key? key,
@@ -82,6 +83,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               selectedValue = newValue;
             });
           },
+          // onChanged: widget.onChanged,
           autofocus: widget.autoFocus,
           focusColor: widget.focusColor,
           hint: widget.hintWidget,

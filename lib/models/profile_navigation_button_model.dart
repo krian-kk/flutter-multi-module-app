@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 class ProfileNavigation {
   String title;
-  bool count;
+  int? notificationCount;
   GestureTapCallback? onTap;
-  ProfileNavigation({required this.title, required this.count, this.onTap});
+  ProfileNavigation({
+    required this.title,
+    this.onTap,
+    this.notificationCount,
+  });
 }

@@ -284,7 +284,7 @@ class LanguageEn extends Languages {
   String get logout => 'logout';
 
   @override
-  String get invalid => 'Invalid';
+  String get invalid => ' Invalid ';
 
   @override
   String get ptp => 'PTP';
@@ -512,10 +512,10 @@ class LanguageEn extends Languages {
   String get customerMetCategory => 'Customer Met Category';
 
   @override
-  String get connected => 'Connected';
+  String get connected => '   Connected   ';
 
   @override
-  String get unreachable => 'Unreachable';
+  String get unreachable => '   Unreachable   ';
 
   @override
   String get writeYourRemarksHere => 'Write your remarks here';
@@ -549,4 +549,10 @@ class LanguageEn extends Languages {
 
   @override
   String get disConnecting => 'DISCONNECTING';
+
+  @override
+  String get address => 'ADDRESS ';
+
+  @override
+  String get phoneNumber => 'PHONE NUMBER ';
 }

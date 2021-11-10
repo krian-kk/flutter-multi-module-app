@@ -549,4 +549,10 @@ class LanguageTa extends Languages {
 
   @override
   String get disConnecting => 'துண்டிக்கிறது';
+
+  @override
+  String get address => 'முகவரி ';
+
+  @override
+  String get phoneNumber => 'தொலைபேசி எண் ';
 }

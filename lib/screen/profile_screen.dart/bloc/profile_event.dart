@@ -3,7 +3,10 @@ part of 'profile_bloc.dart';
 @immutable
 abstract class ProfileEvent {}
 
-class ProfileInitialEvent extends ProfileEvent {}
+class ProfileInitialEvent extends ProfileEvent {
+  final BuildContext context;
+  ProfileInitialEvent(this.context);
+}
 
 class ClickNotificationEvent extends ProfileEvent {}
 

@@ -1,19 +1,17 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, must_be_immutable, prefer_const_constructors_in_immutables
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/address_screen/bloc/address_bloc.dart';
-import 'package:origa/screen/address_screen/capture_image_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/collections_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/dispute_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/other_feed_back_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/ots_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/ptp_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/remainder_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/repo_bottom_sheet.dart';
-import 'package:origa/screen/address_screen/rtp_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/collections_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/other_feed_back_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/ots_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/ptp_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/remainder_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/repo_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/rtp_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -28,7 +26,7 @@ class CustomerMetScreen extends StatefulWidget {
     required this.context,
   }) : super(key: key);
 
-  final AddressBloc bloc;
+  final CaseDetailsBloc bloc;
   final BuildContext context;
 
   @override
@@ -57,7 +55,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GridView.builder(
-                    itemCount: widget.bloc.customerMetGridList.length,
+                    itemCount: widget.bloc.addressCustomerMetGridList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -67,8 +65,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         padding: const EdgeInsets.all(4.5),
                         child: GestureDetector(
                           onTap: () {
-                            switch (widget
-                                .bloc.customerMetGridList[innerIndex].title) {
+                            switch (widget.bloc
+                                .addressCustomerMetGridList[innerIndex].title) {
                               case StringResource.ptp:
                                 openBottomSheet(
                                   context,
@@ -116,10 +114,14 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                               // ignore: prefer_const_literals_to_create_immutables
                               children: [
                                 Image.asset(widget
-                                    .bloc.customerMetGridList[innerIndex].icon),
+                                    .bloc
+                                    .addressCustomerMetGridList[innerIndex]
+                                    .icon),
                                 SizedBox(height: 8),
                                 CustomText(
-                                  widget.bloc.customerMetGridList[innerIndex]
+                                  widget
+                                      .bloc
+                                      .addressCustomerMetGridList[innerIndex]
                                       .title,
                                   color: ColorResource.color000000,
                                   fontSize: FontSize.twelve,
@@ -154,7 +156,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     runSpacing: 4,
                     children: [
                       SizedBox(
-                        width: 165,
+                        width: 179,
                         child: CustomButton(
                           StringResource.addNewContact.toUpperCase(),
                           textColor: ColorResource.colorFFFFFF,
@@ -238,6 +240,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
+      enableDrag: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,
       shape: const RoundedRectangleBorder(

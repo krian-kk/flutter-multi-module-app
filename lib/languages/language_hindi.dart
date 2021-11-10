@@ -548,4 +548,10 @@ class LanguageHi extends Languages {
 
   @override
   String get disConnecting => 'डिस्कनेक्ट कर रहा है';
+
+  @override
+  String get address => 'पता ';
+
+  @override
+  String get phoneNumber => 'फ़ोन नंबर ';
 }

@@ -1,13 +1,13 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/phone_screen/bloc/phone_bloc.dart';
-import 'package:origa/screen/phone_screen/call_customer_bottom_sheet.dart';
-import 'package:origa/screen/phone_screen/connected_screen.dart';
-import 'package:origa/screen/phone_screen/invalid_screen.dart';
-import 'package:origa/screen/phone_screen/unreachable_screen.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/call_customer_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -16,7 +16,8 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhoneScreen extends StatefulWidget {
-  PhoneScreen({Key? key}) : super(key: key);
+  final CaseDetailsBloc bloc;
+  PhoneScreen({Key? key, required this.bloc}) : super(key: key);
 
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -24,7 +25,6 @@ class PhoneScreen extends StatefulWidget {
 
 class _PhoneScreenState extends State<PhoneScreen>
     with SingleTickerProviderStateMixin {
-  late PhoneBloc bloc;
   late TabController _controller;
 
   _handleTabSelection() {
@@ -35,7 +35,6 @@ class _PhoneScreenState extends State<PhoneScreen>
 
   @override
   void initState() {
-    bloc = PhoneBloc()..add(PhoneInitialEvent());
     super.initState();
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
@@ -119,6 +118,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                       ),
                     ),
                     Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                             child: GestureDetector(
@@ -143,12 +143,13 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     ],
                                   ))),
                         )),
-                        SizedBox(width: 67),
+                        SizedBox(width: 40),
                         Expanded(
                             child: SizedBox(
                           height: 50,
                           child: CustomButton(
                             Languages.of(context)!.eventDetails,
+                            onTap: () => openEventDetailsBottomSheet(context),
                             fontSize: FontSize.twelve,
                             textColor: ColorResource.color23375A,
                             borderColor: ColorResource.color23375A,
@@ -170,9 +171,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                   isScrollable: true,
                   indicatorColor: ColorResource.colorD5344C,
                   onTap: (index) {
-                    bloc.unreachableNextActionDateFocusNode.unfocus();
-                    bloc.unreachableRemarksFocusNode.unfocus();
-                    bloc.invalidRemarksFocusNode.unfocus();
+                    widget.bloc.phoneUnreachableNextActionDateFocusNode
+                        .unfocus();
+                    widget.bloc.phoneUnreachableRemarksFocusNode.unfocus();
+                    widget.bloc.phoneInvalidRemarksFocusNode.unfocus();
                   },
                   labelStyle: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -183,61 +185,50 @@ class _PhoneScreenState extends State<PhoneScreen>
                   labelColor: ColorResource.color23375A,
                   unselectedLabelColor: ColorResource.colorC4C4C4,
                   // ignore: prefer_const_literals_to_create_immutables
-                  // tabs: [
-                  //   Tab(text: StringResource.connected),
-                  //   Tab(text: StringResource.unreachable),
-                  //   Tab(text: StringResource.invalid)
-                  // ],
                   tabs: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.27,
-                        child: Tab(text: Languages.of(context)!.connected)),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.27,
-                        child: Tab(text: Languages.of(context)!.unreachable)),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.22,
-                        child: Tab(text: Languages.of(context)!.invalid))
+                    Tab(text: Languages.of(context)!.connected),
+                    Tab(text: Languages.of(context)!.unreachable),
+                    Tab(text: Languages.of(context)!.invalid)
                   ],
+                  // tabs: [
+                  //   SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.27,
+                  //       child: Tab(text: Languages.of(context)!.connected)),
+                  //   SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.27,
+                  //       child: Tab(text: Languages.of(context)!.unreachable)),
+                  //   SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.22,
+                  //       child: Tab(text: Languages.of(context)!.invalid))
+                  // ],
                 ),
               ),
-              BlocListener<PhoneBloc, PhoneState>(
-                bloc: bloc,
-                listener: (context, state) {},
-                child: BlocBuilder<PhoneBloc, PhoneState>(
-                  bloc: bloc,
-                  builder: (context, state) {
-                    return Expanded(
-                        child: Container(
-                      child: SingleChildScrollView(
-                        // physics: NeverScrollableScrollPhysics(),
-                        child: Column(
+
+              Expanded(
+                  child: SingleChildScrollView(
+                // physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    Column(children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.65,
+                        child: TabBarView(
+                          physics: NeverScrollableScrollPhysics(),
+                          controller: _controller,
                           children: [
-                            Column(children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.65,
-                                child: TabBarView(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  controller: _controller,
-                                  children: [
-                                    PhoneFirstTapScreen(
-                                        bloc: bloc, context: context),
-                                    PhoneSecondTabScreen(
-                                        bloc: bloc, context: context),
-                                    PhoneThirdTabScreen(
-                                        bloc: bloc, context: context),
-                                  ],
-                                ),
-                              ),
-                            ])
+                            PhoneConnectedScreen(
+                                bloc: widget.bloc, context: context),
+                            PhoneUnreachableScreen(
+                                bloc: widget.bloc, context: context),
+                            PhonenInvalidScreen(
+                                bloc: widget.bloc, context: context),
                           ],
                         ),
                       ),
-                    ));
-                  },
+                    ])
+                  ],
                 ),
-              )
+              ))
             ],
           ),
         ),
@@ -334,6 +325,7 @@ class _PhoneScreenState extends State<PhoneScreen>
 
   void callCustomerBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
+        enableDrag: false,
         context: buildContext,
         isScrollControlled: true,
         isDismissible: false,
@@ -349,5 +341,24 @@ class _PhoneScreenState extends State<PhoneScreen>
             child: CallCustomerBottomSheet(),
           );
         });
+  }
+
+  openEventDetailsBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+      enableDrag: false,
+      isScrollControlled: true,
+      isDismissible: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return CustomEventDetailsBottomSheet(
+            Languages.of(context)!.eventDetails.toUpperCase(), widget.bloc);
+      },
+    );
   }
 }
