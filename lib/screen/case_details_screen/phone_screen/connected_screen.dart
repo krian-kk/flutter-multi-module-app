@@ -167,6 +167,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   openBottomSheet(BuildContext buildContext, String cardTitle) {
     showModalBottomSheet(
       isScrollControlled: true,
+      enableDrag: false,
       isDismissible: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,

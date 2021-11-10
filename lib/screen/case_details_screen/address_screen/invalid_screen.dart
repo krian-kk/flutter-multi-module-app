@@ -169,6 +169,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   openBottomSheet(BuildContext buildContext, String cardTitle) {
     showModalBottomSheet(
       isScrollControlled: true,
+      enableDrag: false,
       isDismissible: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,

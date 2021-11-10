@@ -1,8 +1,8 @@
-class MultiAddressDetailsModel {
-  String title;
-  String address;
-  MultiAddressDetailsModel(this.title, this.address);
-}
+// class MultiAddressDetailsModel {
+//   String title;
+//   String address;
+//   MultiAddressDetailsModel(this.title, this.address);
+// }
 
 class MultiCallDetailsModel {
   String title;

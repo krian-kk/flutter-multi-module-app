@@ -33,30 +33,30 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
   final double? titleSpacing;
   GlobalKey<_CustomAppbarState> _myKey = GlobalKey();
 
-  CustomAppbar(
-      {Key? key,
-      this.titleString,
-      this.subTitle,
-      this.actionIndex = 0,
-      this.iconEnumValues = IconEnum.empty,
-      this.showNotification = false,
-      this.showDownload = false,
-      this.clear,
-      this.showFilter = false,
-      this.showClose = false,
-      this.showSettings = false,
-      this.showTextButton = false,
-      this.textButtonString = '',
-      this.isAuthentication = false,
-      this.showSearch = false,
-      this.onItemSelected,
-      this.onChanged,
-      this.notificationCount = 0,
-      this.backgroundColor = Colors.transparent,
-      this.style,
-      this.titleSpacing,
-      this.controller})
-      : super(key: key);
+  CustomAppbar({
+    Key? key,
+    this.titleString,
+    this.subTitle,
+    this.actionIndex = 0,
+    this.iconEnumValues = IconEnum.empty,
+    this.showNotification = false,
+    this.showDownload = false,
+    this.clear,
+    this.showFilter = false,
+    this.showClose = false,
+    this.showSettings = false,
+    this.showTextButton = false,
+    this.textButtonString = '',
+    this.isAuthentication = false,
+    this.showSearch = false,
+    this.onItemSelected,
+    this.onChanged,
+    this.notificationCount = 0,
+    this.backgroundColor = Colors.transparent,
+    this.style,
+    this.titleSpacing,
+    this.controller,
+  }) : super(key: key);
 
   @override
   _CustomAppbarState createState() => _CustomAppbarState();

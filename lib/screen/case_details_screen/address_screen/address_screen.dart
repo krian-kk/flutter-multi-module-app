@@ -312,6 +312,7 @@ class _AddressScreenState extends State<AddressScreen>
   openEventDetailsBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
       isScrollControlled: true,
+      enableDrag: false,
       isDismissible: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,

@@ -10,6 +10,7 @@ class CustomLoanUserDetails extends StatefulWidget {
   final String userName;
   final String userId;
   final double userAmount;
+  final bool isAccountNo;
   final Color? color;
   final double? marginTop;
   const CustomLoanUserDetails({
@@ -18,6 +19,7 @@ class CustomLoanUserDetails extends StatefulWidget {
     required this.userId,
     required this.userAmount,
     this.marginTop,
+    this.isAccountNo = false,
     this.color,
   }) : super(key: key);
 
@@ -42,16 +44,31 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomText(
-              widget.userName,
+              widget.userName.toUpperCase(),
               fontWeight: FontWeight.w700,
               fontSize: FontSize.fourteen,
               fontStyle: FontStyle.normal,
               color: ColorResource.color333333,
             ),
-            SizedBox(height: 7),
+            SizedBox(height: widget.isAccountNo ? 9 : 7),
+            widget.isAccountNo
+                ? Column(
+                    children: [
+                      CustomText(
+                        Languages.of(context)!.accountNo,
+                        fontWeight: FontWeight.w400,
+                        fontSize: FontSize.twelve,
+                        fontStyle: FontStyle.normal,
+                        color: ColorResource.color666666,
+                      ),
+                      SizedBox(height: 7)
+                    ],
+                  )
+                : SizedBox(),
             CustomText(
-              widget.userId,
-              fontWeight: FontWeight.w400,
+              widget.userId.toUpperCase(),
+              fontWeight:
+                  widget.isAccountNo ? FontWeight.w700 : FontWeight.w400,
               fontSize: FontSize.fourteen,
               fontStyle: FontStyle.normal,
               color: ColorResource.color333333,
@@ -67,6 +84,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
             SizedBox(height: 9),
             CustomText(
               widget.userAmount.toString(),
+              lineHeight: 1,
               fontWeight: FontWeight.w700,
               fontSize: FontSize.twentyFour,
               fontStyle: FontStyle.normal,

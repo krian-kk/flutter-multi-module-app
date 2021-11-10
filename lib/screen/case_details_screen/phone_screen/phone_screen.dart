@@ -325,6 +325,7 @@ class _PhoneScreenState extends State<PhoneScreen>
 
   void callCustomerBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
+        enableDrag: false,
         context: buildContext,
         isScrollControlled: true,
         isDismissible: false,
@@ -344,6 +345,7 @@ class _PhoneScreenState extends State<PhoneScreen>
 
   openEventDetailsBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
+      enableDrag: false,
       isScrollControlled: true,
       isDismissible: false,
       context: buildContext,

@@ -103,9 +103,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       Align(
                                         alignment: Alignment.bottomCenter,
                                         child: CustomLoanUserDetails(
-                                          userName: 'DEBASISH PATNAIK',
-                                          userId: 'TVSF_BFRT6458922993',
-                                          userAmount: 397553.67,
+                                          userName: bloc.caseDetailsResult
+                                                  .result?.caseDetails?.cust ??
+                                              '',
+                                          userId: bloc.caseDetailsResult.result
+                                                  ?.caseDetails?.accNo ??
+                                              '',
+                                          userAmount: bloc.caseDetailsResult
+                                                  .result?.caseDetails?.due
+                                                  ?.toDouble() ??
+                                              0,
+                                          isAccountNo: true,
                                           color: ColorResource.colorD4F5CF,
                                           marginTop: 10,
                                         ),
@@ -419,7 +427,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                   CustomText(
-                                    'DEBASISH PATNAIK',
+                                    bloc.caseDetailsResult.result?.caseDetails
+                                            ?.cust
+                                            ?.toUpperCase() ??
+                                        '', //--------------- doubt -----------
                                     color: ColorResource.color333333,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -428,10 +439,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   ListView.builder(
                                       physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemCount: 2,
-                                      // bloc.caseDetailsResult.result
-                                      //         ?.otherLoanDetails?.length ??
-                                      //     0,
+                                      itemCount: bloc.caseDetailsResult.result
+                                              ?.otherLoanDetails?.length ??
+                                          0,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Column(
@@ -483,7 +493,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ),
                                                     SizedBox(height: 5),
                                                     CustomText(
-                                                      'TVSF_BFRT6458922993',
+                                                      bloc
+                                                          .caseDetailsResult
+                                                          .result!
+                                                          .otherLoanDetails![
+                                                              index]
+                                                          .cust!
+                                                          .toUpperCase(), // ----------- doubt ---------------
                                                       color: ColorResource
                                                           .color333333,
                                                       fontSize:
@@ -512,7 +528,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               .spaceBetween,
                                                       children: [
                                                         CustomText(
-                                                          '408559.17',
+                                                          bloc
+                                                              .caseDetailsResult
+                                                              .result!
+                                                              .otherLoanDetails![
+                                                                  index]
+                                                              .due
+                                                              .toString(),
                                                           color: ColorResource
                                                               .color333333,
                                                           fontSize:
@@ -658,6 +680,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   void addressDetailsShowBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
+        enableDrag: false,
         isDismissible: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
@@ -675,6 +698,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   void callDetailsShowBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
+        enableDrag: false,
         isDismissible: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,

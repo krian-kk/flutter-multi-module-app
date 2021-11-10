@@ -52,8 +52,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   // Case Details Screen
 
-  List<MultiAddressDetailsModel> multiAddressDetilsList = [];
-  List<MultiCallDetailsModel> multiCallDetilsList = [];
   CaseDetailsApiModel caseDetailsResult = CaseDetailsApiModel();
 
   late TextEditingController loanAmountController = TextEditingController();
@@ -150,16 +148,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots),
       ]);
 
-      multiAddressDetilsList.addAll([
-        MultiAddressDetailsModel('Address 01',
-            '2/345, 6th Main Road Gomathipuram, Madurai - 625032'),
-        MultiAddressDetailsModel(
-            'Address 02', '2/345, 6th Main Road Gomathipuram, Madurai - 625032')
-      ]);
-      multiCallDetilsList.addAll([
-        MultiCallDetailsModel('PHONE NUMBER 01', '9841021453', true),
-        MultiCallDetailsModel('PHONE NUMBER 02', '9841021453', false)
-      ]);
+      // multiCallDetilsList.addAll([
+      //   MultiCallDetailsModel('PHONE NUMBER 01', '9841021453', true),
+      //   MultiCallDetailsModel('PHONE NUMBER 02', '9841021453', false)
+      // ]);
 
       yield CaseDetailsLoadedState();
     }

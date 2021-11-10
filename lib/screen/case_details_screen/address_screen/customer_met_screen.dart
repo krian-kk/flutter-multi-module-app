@@ -240,6 +240,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
+      enableDrag: false,
       context: buildContext,
       backgroundColor: ColorResource.colorFFFFFF,
       shape: const RoundedRectangleBorder(
