@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -120,27 +118,28 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                     color: ColorResource.colorF8F9FB,
                                     borderRadius: new BorderRadius.all(
                                         Radius.circular(10.0))),
-                                          child: RadioListTile(
-                                            activeColor: ColorResource.color23375A,
-                                            title: CustomText(
-                                              languageList[i].language,
-                                              lineHeight: 1,
-                                              fontSize: FontSize.fourteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w400,
-                                              color: ColorResource.color484848,
-                                            ),
-                                            groupValue: ratioIndex,
-                                            value: i,
-                                            onChanged: (int? val) async {
-                                              // print(val);
-                                              setState(() {
-                                                // selectedLanguagesIndex = val;
-                                                ratioIndex = val!;
-                                                setLanguageCode = languageList[i].languageCode;
-                                              });
-                                            },
-                                          ),
+                                child: RadioListTile(
+                                  activeColor: ColorResource.color23375A,
+                                  title: CustomText(
+                                    languageList[i].language,
+                                    lineHeight: 1,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorResource.color484848,
+                                  ),
+                                  groupValue: ratioIndex,
+                                  value: i,
+                                  onChanged: (int? val) async {
+                                    // print(val);
+                                    setState(() {
+                                      // selectedLanguagesIndex = val;
+                                      ratioIndex = val!;
+                                      setLanguageCode =
+                                          languageList[i].languageCode;
+                                    });
+                                  },
+                                ),
                                 // ListTile(
                                 //   title: CustomText(
                                 //     languageList[i].language,
@@ -188,7 +187,8 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                           // PreferenceHelper.setPreference('mainLanguage', ratioIndex??0);
                           // PreferenceHelper.setPreference('mainLanguageCode', setLanguageCode);
                           // print(selectedLanguagesIndex);
-                          Navigator.pop(context);},
+                          Navigator.pop(context);
+                        },
                         cardShape: 5,
                         fontSize: FontSize.sixteen,
                         leadingWidget: CircleAvatar(

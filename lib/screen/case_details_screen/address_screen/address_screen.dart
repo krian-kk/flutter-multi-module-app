@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
@@ -11,8 +13,12 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'dart:async';
+
+import 'package:permission_handler/permission_handler.dart';
 
 class AddressScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
@@ -123,25 +129,28 @@ class _AddressScreenState extends State<AddressScreen>
                       Row(
                         children: [
                           Expanded(
-                              child: SizedBox(
-                                  width: 10,
-                                  child: Container(
-                                      decoration: new BoxDecoration(
-                                          color: ColorResource.colorBEC4CF,
-                                          borderRadius: new BorderRadius.all(
-                                              new Radius.circular(75.0))),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(ImageResource.direction),
-                                          SizedBox(width: 10),
-                                          CustomText(
-                                            StringResource.viewMap,
-                                            fontSize: FontSize.fourteen,
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorResource.color23375A,
-                                          )
-                                        ],
-                                      )))),
+                              child: GestureDetector(
+                            onTap: () => openViewMapBottomSheet(context),
+                            child: SizedBox(
+                                width: 10,
+                                child: Container(
+                                    decoration: new BoxDecoration(
+                                        color: ColorResource.colorBEC4CF,
+                                        borderRadius: new BorderRadius.all(
+                                            new Radius.circular(75.0))),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(ImageResource.direction),
+                                        SizedBox(width: 10),
+                                        CustomText(
+                                          StringResource.viewMap,
+                                          fontSize: FontSize.fourteen,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color23375A,
+                                        )
+                                      ],
+                                    ))),
+                          )),
                           SizedBox(width: 40),
                           Expanded(
                               child: CustomButton(
@@ -327,4 +336,172 @@ class _AddressScreenState extends State<AddressScreen>
       },
     );
   }
+
+  openViewMapBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      enableDrag: false,
+      isDismissible: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return CustomMapViewBottomSheet();
+        // return CustomEventDetailsBottomSheet(
+        //   Languages.of(context)!.eventDetails.toUpperCase(),
+        //   widget.bloc,
+        // );
+      },
+    );
+  }
+}
+
+class CustomMapViewBottomSheet extends StatefulWidget {
+  CustomMapViewBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  _CustomMapViewBottomSheetState createState() =>
+      _CustomMapViewBottomSheetState();
+}
+
+class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
+  late BitmapDescriptor customIcon;
+  late Position position;
+  final Completer<GoogleMapController> _controller = Completer();
+  static const LatLng _center = LatLng(28.644800, 77.216721);
+  final Set<Marker> _markers = {};
+  MapType _currentMapType = MapType.normal;
+  late String addressLine;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+        .then((d) {
+      customIcon = d;
+    });
+    getCurrentLocation();
+    super.initState();
+  }
+
+  Future getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission != PermissionStatus.granted) {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission != PermissionStatus.granted) getLocation();
+      return;
+    }
+    getLocation();
+  }
+
+  void getLocation() async {
+    Position res = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    setState(() {
+      position = res;
+    });
+    // print("------------------Nandhu---------------");
+    // print(position.latitude);
+    _onAddMarkerButtonPressed();
+  }
+
+  _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+
+  // void _onMapTypeButtonPressed() {
+  //   setState(() {
+  //     _currentMapType = _currentMapType == MapType.normal
+  //         ? MapType.satellite
+  //         : MapType.normal;
+  //   });
+  // }
+
+  void _onAddMarkerButtonPressed() async {
+    final CameraPosition _position1 = CameraPosition(
+      bearing: 192.833,
+      target: LatLng(position.latitude, position.longitude),
+      tilt: 59.440,
+      zoom: 16.0,
+    );
+    print(_position1);
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
+    setState(() {
+      _markers.add(
+        Marker(
+          markerId: const MarkerId("current location"),
+          position: LatLng(position.latitude, position.longitude),
+          infoWindow: const InfoWindow(
+            title: 'current location',
+          ),
+          icon: customIcon,
+        ),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.82,
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
+                    child: BottomSheetAppbar(
+                      title: Languages.of(context)!.mapView,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                    ),
+                  ),
+                  Expanded(
+                    child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: const CameraPosition(
+                        target: _center,
+                        zoom: 11.0,
+                      ),
+                      mapType: _currentMapType,
+                      markers: _markers,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                    ),
+                  ),
+                ],
+              ));
+        }),
+      ),
+    );
+  }
+
+  // Widget tapButton(Function onTap, IconData icon) {
+  //   return FloatingActionButton(
+  //     onPressed: () {
+  //       onTap();
+  //     },
+  //     mini: true,
+  //     materialTapTargetSize: MaterialTapTargetSize.padded,
+  //     backgroundColor: Color(0xFF188D3D),
+  //     child: Icon(
+  //       icon,
+  //     ),
+  //   );
+  // }
 }

@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace, prefer_const_constructors_in_immutables
 
+import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -26,12 +29,16 @@ class CaseDetailsScreen extends StatefulWidget {
 
 class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   late CaseDetailsBloc bloc;
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     super.initState();
+    subscription =
+        Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
 
     bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
+    getConnectivty();
 
     // loanDurationController.text = '24';
     // posController.text = '128974';
@@ -40,6 +47,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     // bankNameController.text = 'TVS';
     // productController.text = '2W';
     // batchNoController.text = 'HAR_50CASES-16102020_015953';
+  }
+
+  getConnectivty() async {
+    final result = await Connectivity().checkConnectivity();
+    showConnectivitySnackBar(result);
+  }
+
+  void showConnectivitySnackBar(ConnectivityResult result) {
+    print(result);
   }
 
   @override

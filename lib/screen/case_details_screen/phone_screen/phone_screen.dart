@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/event_details_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/call_customer_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
@@ -323,7 +323,7 @@ class _PhoneScreenState extends State<PhoneScreen>
     );
   }
 
-  void callCustomerBottomSheet(BuildContext buildContext) {
+  callCustomerBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
         enableDrag: false,
         context: buildContext,
