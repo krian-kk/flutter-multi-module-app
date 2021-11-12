@@ -54,6 +54,7 @@ class _AddressScreenState extends State<AddressScreen>
     // ];
     return SafeArea(
       top: false,
+      bottom: false,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,

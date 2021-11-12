@@ -225,7 +225,7 @@ abstract class Languages {
 
   String get changePassword;
 
-  String get launguage;
+  String get languages;
 
   String get defaultLaunguage;
 

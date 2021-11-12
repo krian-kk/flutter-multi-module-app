@@ -335,7 +335,7 @@ class LanguageTa extends Languages {
   String get changePassword => 'கடவுச்சொல்லை மாற்று';
 
   @override
-  String get launguage => 'மொழி';
+  String get languages => 'மொழிகள்';
 
   @override
   String get defaultLaunguage => 'இயல்பு மொழி';

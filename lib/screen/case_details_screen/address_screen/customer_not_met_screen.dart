@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
@@ -33,6 +34,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   // TextEditingController remarksController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  String selectedOptionBottomSheetButton = '';
 
   // late FocusNode nextActionDateFocusNode;
   // late FocusNode remarksFocusNode;
@@ -58,6 +60,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
       SelectedClipModel(Languages.of(context)!.leftMessage.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.doorLocked.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.entryRestricted.toUpperCase()),
+    ];
+
+    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.repo, StringResource.repo),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -181,34 +190,39 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         SizedBox(height: 20),
                         Wrap(
                           spacing: 15,
-                          children: [
-                            SizedBox(
-                              width: 179,
-                              child: CustomButton(
-                                StringResource.addNewContact.toUpperCase(),
-                                buttonBackgroundColor:
-                                    ColorResource.color23375A,
-                                borderColor: ColorResource.color23375A,
-                                textColor: ColorResource.colorFFFFFF,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w700,
-                                cardShape: 75,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 157,
-                              child: CustomButton(
-                                Languages.of(context)!.repo.toUpperCase(),
-                                buttonBackgroundColor:
-                                    ColorResource.colorFFFFFF,
-                                borderColor: ColorResource.color23375A,
-                                textColor: ColorResource.color23375A,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w700,
-                                cardShape: 75,
-                              ),
-                            ),
-                          ],
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                          ),
+                          // children: [
+                          //   SizedBox(
+                          //     width: 179,
+                          //     child: CustomButton(
+                          //       StringResource.addNewContact.toUpperCase(),
+                          //       buttonBackgroundColor:
+                          //           ColorResource.color23375A,
+                          //       borderColor: ColorResource.color23375A,
+                          //       textColor: ColorResource.colorFFFFFF,
+                          //       fontSize: FontSize.twelve,
+                          //       fontWeight: FontWeight.w700,
+                          //       cardShape: 75,
+                          //     ),
+                          //   ),
+                          //   SizedBox(
+                          //     width: 157,
+                          //     child: CustomButton(
+                          //       Languages.of(context)!.repo.toUpperCase(),
+                          //       buttonBackgroundColor:
+                          //           ColorResource.colorFFFFFF,
+                          //       borderColor: ColorResource.color23375A,
+                          //       textColor: ColorResource.color23375A,
+                          //       fontSize: FontSize.twelve,
+                          //       fontWeight: FontWeight.w700,
+                          //       cardShape: 75,
+                          //     ),
+                          //   ),
+                          // ],
                         ),
                         SizedBox(height: 120),
                       ],
@@ -249,6 +263,47 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         }
       },
     );
+  }
+
+  List<Widget> _buildOptionBottomSheetOpenButton(
+      List<OptionBottomSheetButtonModel> list, BuildContext context) {
+    List<Widget> widgets = [];
+    for (var element in list) {
+      widgets.add(InkWell(
+        onTap: () {
+          setState(() {
+            selectedOptionBottomSheetButton = element.title;
+          });
+          // openBottomSheet(
+          //   context,
+          //   element.stringResourceValue,
+          // );
+        },
+        child: Container(
+          height: 45,
+          decoration: BoxDecoration(
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorFFFFFF,
+              border: Border.all(color: ColorResource.color23375A, width: 0.5),
+              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+            child: CustomText(
+              element.title.toString().toUpperCase(),
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.colorFFFFFF
+                  : ColorResource.color23375A,
+              fontWeight: FontWeight.w700,
+              // lineHeight: 1,
+              fontSize: FontSize.thirteen,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {

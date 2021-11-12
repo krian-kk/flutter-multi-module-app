@@ -48,6 +48,7 @@ class _PhoneScreenState extends State<PhoneScreen>
     //   CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
     // ];
     return SafeArea(
+      bottom: false,
       top: false,
       child: Scaffold(
         // backgroundColor: ColorResource.colorF7F8FA,

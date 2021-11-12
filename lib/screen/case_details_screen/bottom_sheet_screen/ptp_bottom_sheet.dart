@@ -34,6 +34,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
   TextEditingController loanDurationController = TextEditingController();
 
+  String selectedPaymentModeButton = '';
+
   @override
   void initState() {
     super.initState();
@@ -235,13 +237,17 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       widgets.add(InkWell(
         onTap: () {
           // widget.bloc.selectedInvalidClip = element.clipTitle;
-          setState(() {});
+          setState(() {
+            selectedPaymentModeButton = element.title;
+          });
         },
         child: Container(
           width: 150,
           height: 50,
           decoration: BoxDecoration(
-              color: ColorResource.color23375A,
+              color: element.title == selectedPaymentModeButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorBEC4CF,
               boxShadow: [
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
@@ -315,6 +321,59 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       controller.text = formattedDate;
     });
   }
+
+  // List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
+  //   List<Widget> widgets = [];
+  //   for (var element in list) {
+  //     widgets.add(InkWell(
+  //       onTap: () {
+  //         setState(() {
+  //           selectedPaymentModeButton = element.title;
+  //         });
+  //       },
+  //       child: Container(
+  //         width: 150,
+  //         height: 50,
+  //         decoration: BoxDecoration(
+  //             color: element.title == selectedPaymentModeButton
+  //                 ? ColorResource.color23375A
+  //                 : ColorResource.colorBEC4CF,
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: ColorResource.color000000.withOpacity(0.2),
+  //                 blurRadius: 2.0,
+  //                 offset: Offset(1.0, 1.0),
+  //               )
+  //             ],
+  //             borderRadius: BorderRadius.all(Radius.circular(50.0))),
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(5.0),
+  //           child: Row(
+  //             children: [
+  //               CircleAvatar(
+  //                 radius: 20,
+  //                 backgroundColor: ColorResource.colorFFFFFF,
+  //                 child: Center(
+  //                   child: Image.asset(ImageResource.money),
+  //                 ),
+  //               ),
+  //               SizedBox(width: 7),
+  //               CustomText(
+  //                 element.title,
+  //                 color: ColorResource.colorFFFFFF,
+  //                 fontWeight: FontWeight.w700,
+  //                 lineHeight: 1,
+  //                 fontSize: FontSize.sixteen,
+  //                 fontStyle: FontStyle.normal,
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ));
+  //   }
+  //   return widgets;
+  // }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
@@ -26,6 +27,7 @@ class AddressInvalidScreen extends StatefulWidget {
 
 class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   final formKey = GlobalKey<FormState>();
+  String selectedOptionBottomSheetButton = '';
 
   @override
   void initState() {
@@ -39,6 +41,15 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
       SelectedClipModel(Languages.of(context)!.wrongAddress),
       SelectedClipModel(Languages.of(context)!.shifted),
       SelectedClipModel(Languages.of(context)!.addressNotFound),
+    ];
+
+    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.repo, StringResource.repo),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -112,48 +123,56 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                       SizedBox(height: 20),
                       Wrap(
                         spacing: 15,
-                        children: [
-                          SizedBox(
-                            width: 179,
-                            child: CustomButton(
-                              StringResource.addNewContact.toUpperCase(),
-                              buttonBackgroundColor: ColorResource.color23375A,
-                              borderColor: ColorResource.color23375A,
-                              textColor: ColorResource.colorFFFFFF,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w700,
-                              cardShape: 75,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 157,
-                            child: CustomButton(
-                              Languages.of(context)!.repo.toUpperCase(),
-                              buttonBackgroundColor: ColorResource.colorFFFFFF,
-                              borderColor: ColorResource.color23375A,
-                              textColor: ColorResource.color23375A,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w700,
-                              cardShape: 75,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 165,
-                            child: CustomButton(
-                              Languages.of(context)!
-                                  .otherFeedBack
-                                  .toUpperCase(),
-                              // onTap: () => openBottomSheet(
-                              //     context, StringResource.otherFeedback),
-                              cardShape: 75,
-                              fontSize: FontSize.twelve,
-                              textColor: ColorResource.color23375A,
-                              borderColor: ColorResource.color23375A,
-                              buttonBackgroundColor: ColorResource.colorFFFFFF,
-                            ),
-                          )
-                        ],
+                        runSpacing: 8,
+                        children: _buildOptionBottomSheetOpenButton(
+                          optionBottomSheetButtonList,
+                          context,
+                        ),
                       ),
+                      // Wrap(
+                      //   spacing: 15,
+                      //   children: [
+                      //     SizedBox(
+                      //       width: 179,
+                      //       child: CustomButton(
+                      //         StringResource.addNewContact.toUpperCase(),
+                      //         buttonBackgroundColor: ColorResource.color23375A,
+                      //         borderColor: ColorResource.color23375A,
+                      //         textColor: ColorResource.colorFFFFFF,
+                      //         fontSize: FontSize.twelve,
+                      //         fontWeight: FontWeight.w700,
+                      //         cardShape: 75,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 157,
+                      //       child: CustomButton(
+                      //         Languages.of(context)!.repo.toUpperCase(),
+                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
+                      //         borderColor: ColorResource.color23375A,
+                      //         textColor: ColorResource.color23375A,
+                      //         fontSize: FontSize.twelve,
+                      //         fontWeight: FontWeight.w700,
+                      //         cardShape: 75,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 165,
+                      //       child: CustomButton(
+                      //         Languages.of(context)!
+                      //             .otherFeedBack
+                      //             .toUpperCase(),
+                      //         // onTap: () => openBottomSheet(
+                      //         //     context, StringResource.otherFeedback),
+                      //         cardShape: 75,
+                      //         fontSize: FontSize.twelve,
+                      //         textColor: ColorResource.color23375A,
+                      //         borderColor: ColorResource.color23375A,
+                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
                       SizedBox(height: 120)
                     ],
                   ),
@@ -164,6 +183,47 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildOptionBottomSheetOpenButton(
+      List<OptionBottomSheetButtonModel> list, BuildContext context) {
+    List<Widget> widgets = [];
+    for (var element in list) {
+      widgets.add(InkWell(
+        onTap: () {
+          setState(() {
+            selectedOptionBottomSheetButton = element.title;
+          });
+          // openBottomSheet(
+          //   context,
+          //   element.stringResourceValue,
+          // );
+        },
+        child: Container(
+          height: 45,
+          decoration: BoxDecoration(
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorFFFFFF,
+              border: Border.all(color: ColorResource.color23375A, width: 0.5),
+              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+            child: CustomText(
+              element.title.toString().toUpperCase(),
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.colorFFFFFF
+                  : ColorResource.color23375A,
+              fontWeight: FontWeight.w700,
+              // lineHeight: 1,
+              fontSize: FontSize.thirteen,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
   }
 
   openBottomSheet(BuildContext buildContext, String cardTitle) {
