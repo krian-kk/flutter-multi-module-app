@@ -227,7 +227,7 @@ abstract class Languages {
 
   String get languages;
 
-  String get defaultLaunguage;
+  String get defaultLanguage;
 
   String get english;
 

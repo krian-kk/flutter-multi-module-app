@@ -338,7 +338,7 @@ class LanguageEn extends Languages {
   String get languages => 'LANGUAGES';
 
   @override
-  String get defaultLaunguage => 'Default Launguage';
+  String get defaultLanguage => 'Default Language';
 
   @override
   String get english => 'ENGLISH';

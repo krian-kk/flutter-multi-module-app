@@ -338,7 +338,7 @@ class LanguageTa extends Languages {
   String get languages => 'மொழிகள்';
 
   @override
-  String get defaultLaunguage => 'இயல்பு மொழி';
+  String get defaultLanguage => 'இயல்பு மொழி';
 
   @override
   String get english => 'ஆங்கிலம் / ENGLISH';

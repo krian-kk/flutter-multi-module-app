@@ -42,8 +42,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     setState(() {
       ratioIndex = prefs.getInt('mainLanguage') ?? 0;
       setLanguageCode = prefs.getString('mainLanguageCode') ?? 'en';
-      // print('_currVal');
-      // print(setLanguageCode);
     });
   }
 
@@ -51,7 +49,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   Widget build(BuildContext context) {
     languageList = [
       LanguageModel(StringResource.english, true,
-          Languages.of(context)!.defaultLaunguage, 'en'),
+          Languages.of(context)!.defaultLanguage, 'en'),
       LanguageModel(StringResource.hindi, true,
           Languages.of(context)!.choiceOtherLanguages, 'hi'),
       LanguageModel(StringResource.tamil, false,
@@ -78,24 +76,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       color: ColorResource.color23375A,
                       padding: EdgeInsets.all(0),
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     CustomText(
-                    //       Languages.of(context)!.launguage.toUpperCase(),
-                    //       fontSize: FontSize.fourteen,
-                    //       fontWeight: FontWeight.w700,
-                    //       fontStyle: FontStyle.normal,
-                    //       color: ColorResource.color23375A,
-                    //     ),
-                    //     Spacer(),
-                    //     GestureDetector(
-                    //         onTap: () {
-                    //           Navigator.pop(context);
-                    //         },
-                    //         child: Image.asset(ImageResource.close))
-                    //   ],
-                    // ),
                     SizedBox(height: 14),
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
@@ -136,28 +116,13 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                   groupValue: ratioIndex,
                                   value: i,
                                   onChanged: (int? val) async {
-                                    // print(val);
                                     setState(() {
-                                      // selectedLanguagesIndex = val;
                                       ratioIndex = val!;
                                       setLanguageCode =
                                           languageList[i].languageCode;
                                     });
                                   },
                                 ),
-                                // ListTile(
-                                //   title: CustomText(
-                                //     languageList[i].language,
-                                //     lineHeight: 1,
-                                //     fontSize: FontSize.fourteen,
-                                //     fontStyle: FontStyle.normal,
-                                //     fontWeight: FontWeight.w400,
-                                //     color: ColorResource.color484848,
-                                //   ),
-                                //   leading: (widget.bloc.languageValue== i)
-                                //       ? Image.asset(ImageResource.radioOn)
-                                //       : Image.asset(ImageResource.radioOff),
-                                // ),
                               ),
                             ],
                           );

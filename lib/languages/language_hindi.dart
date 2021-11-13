@@ -338,7 +338,7 @@ class LanguageHi extends Languages {
   String get languages => 'भाषाओं';
 
   @override
-  String get defaultLaunguage => 'डिफ़ॉल्ट भाषा';
+  String get defaultLanguage => 'डिफ़ॉल्ट भाषा';
 
   @override
   String get english => 'ENGLISH';
