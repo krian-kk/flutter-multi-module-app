@@ -2,14 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,8 +42,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     setState(() {
       ratioIndex = prefs.getInt('mainLanguage') ?? 0;
       setLanguageCode = prefs.getString('mainLanguageCode') ?? 'en';
-      // print('_currVal');
-      // print(setLanguageCode);
     });
   }
 
@@ -53,7 +49,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   Widget build(BuildContext context) {
     languageList = [
       LanguageModel(StringResource.english, true,
-          Languages.of(context)!.defaultLaunguage, 'en'),
+          Languages.of(context)!.defaultLanguage, 'en'),
       LanguageModel(StringResource.hindi, true,
           Languages.of(context)!.choiceOtherLanguages, 'hi'),
       LanguageModel(StringResource.tamil, false,
@@ -75,23 +71,10 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          Languages.of(context)!.launguage.toUpperCase(),
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          color: ColorResource.color23375A,
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Image.asset(ImageResource.close))
-                      ],
+                    BottomSheetAppbar(
+                      title: Languages.of(context)!.languages.toUpperCase(),
+                      color: ColorResource.color23375A,
+                      padding: EdgeInsets.all(0),
                     ),
                     SizedBox(height: 14),
                     ListView.builder(
@@ -120,40 +103,26 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                     color: ColorResource.colorF8F9FB,
                                     borderRadius: new BorderRadius.all(
                                         Radius.circular(10.0))),
-                                          child: RadioListTile(
-                                            activeColor: ColorResource.color23375A,
-                                            title: CustomText(
-                                              languageList[i].language,
-                                              lineHeight: 1,
-                                              fontSize: FontSize.fourteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w400,
-                                              color: ColorResource.color484848,
-                                            ),
-                                            groupValue: ratioIndex,
-                                            value: i,
-                                            onChanged: (int? val) async {
-                                              // print(val);
-                                              setState(() {
-                                                // selectedLanguagesIndex = val;
-                                                ratioIndex = val!;
-                                                setLanguageCode = languageList[i].languageCode;
-                                              });
-                                            },
-                                          ),
-                                // ListTile(
-                                //   title: CustomText(
-                                //     languageList[i].language,
-                                //     lineHeight: 1,
-                                //     fontSize: FontSize.fourteen,
-                                //     fontStyle: FontStyle.normal,
-                                //     fontWeight: FontWeight.w400,
-                                //     color: ColorResource.color484848,
-                                //   ),
-                                //   leading: (widget.bloc.languageValue== i)
-                                //       ? Image.asset(ImageResource.radioOn)
-                                //       : Image.asset(ImageResource.radioOff),
-                                // ),
+                                child: RadioListTile(
+                                  activeColor: ColorResource.color23375A,
+                                  title: CustomText(
+                                    languageList[i].language,
+                                    lineHeight: 1,
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorResource.color484848,
+                                  ),
+                                  groupValue: ratioIndex,
+                                  value: i,
+                                  onChanged: (int? val) async {
+                                    setState(() {
+                                      ratioIndex = val!;
+                                      setLanguageCode =
+                                          languageList[i].languageCode;
+                                    });
+                                  },
+                                ),
                               ),
                             ],
                           );
@@ -188,7 +157,8 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                           // PreferenceHelper.setPreference('mainLanguage', ratioIndex??0);
                           // PreferenceHelper.setPreference('mainLanguageCode', setLanguageCode);
                           // print(selectedLanguagesIndex);
-                          Navigator.pop(context);},
+                          Navigator.pop(context);
+                        },
                         cardShape: 5,
                         fontSize: FontSize.sixteen,
                         leadingWidget: CircleAvatar(

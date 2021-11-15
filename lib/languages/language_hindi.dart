@@ -341,10 +341,10 @@ class LanguageHi extends Languages {
   String get changePassword => 'पासवर्ड बदलें';
 
   @override
-  String get launguage => 'भाषा';
+  String get languages => 'भाषाओं';
 
   @override
-  String get defaultLaunguage => 'डिफ़ॉल्ट भाषा';
+  String get defaultLanguage => 'डिफ़ॉल्ट भाषा';
 
   @override
   String get english => 'ENGLISH';
@@ -560,4 +560,14 @@ class LanguageHi extends Languages {
 
   @override
   String get phoneNumber => 'फ़ोन नंबर ';
+
+  @override
+  String get letsConnectWithManager => 'आइए प्रबंधक से जुड़ें';
+
+  @override
+  String get noAllocation => 'कोई आवंटन नहीं';
+
+  @override
+  String get noAllocationMessage =>
+      'अभी तक कोई आवंटन आवंटित नहीं हुआ है, अपने प्रबंधक देबाशीष से संपर्क करें,';
 }

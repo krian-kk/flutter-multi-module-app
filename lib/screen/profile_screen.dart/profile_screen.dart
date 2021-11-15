@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           notificationShowBottomSheet(context);
         }
         if (state is ClickChangeLaunguageState) {
-          launguageBottomSheet();
+          languageBottomSheet();
         }
         if (state is ClickMessageState) {
           messageShowBottomSheet();
@@ -454,7 +454,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )));
   }
 
-  launguageBottomSheet() {
+  languageBottomSheet() {
     showModalBottomSheet(
         context: context,
         isDismissible: false,

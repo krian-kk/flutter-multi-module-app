@@ -14,13 +14,13 @@ class CustomText extends StatefulWidget {
   final bool isSingleLine;
   final int? maxLines;
   final FontWeight? fontWeight;
-  final FontStyle? fontStyle;
+  final FontStyle fontStyle;
   final double? letterSpacing;
   final TextStyle? style;
 
   CustomText(String text,
       {this.fontWeight = FontWeight.w400,
-      this.fontStyle,
+      this.fontStyle = FontStyle.normal,
       this.fontSize = FontSize.fourteen,
       this.font = Font.latoMedium,
       this.color = ColorResource.color1c1d22,

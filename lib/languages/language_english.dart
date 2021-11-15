@@ -341,10 +341,10 @@ class LanguageEn extends Languages {
   String get changePassword => 'Change Password';
 
   @override
-  String get launguage => 'Launguage';
+  String get languages => 'LANGUAGES';
 
   @override
-  String get defaultLaunguage => 'Default Launguage';
+  String get defaultLanguage => 'Default Language';
 
   @override
   String get english => 'ENGLISH';
@@ -561,4 +561,14 @@ class LanguageEn extends Languages {
 
   @override
   String get phoneNumber => 'PHONE NUMBER ';
+
+  @override
+  String get letsConnectWithManager => 'Lets Connect with Manager';
+
+  @override
+  String get noAllocation => 'No Allocation';
+
+  @override
+  String get noAllocationMessage =>
+      'Thier is No Allocation assign yet, check with your Manager manager,';
 }

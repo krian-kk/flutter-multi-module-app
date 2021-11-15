@@ -70,8 +70,8 @@ class StringResource {
   static const String changeLanguage = 'Change language';
   static const String changePassword = 'Change Password';
   static const String logout = 'LOGOUT';
-  static const String launguage = 'launguage';
-  static const String defaultLaunguage = 'default launguage';
+  static const String language = 'language';
+  static const String defaultLanguage = 'default language';
   static const String english = 'ENGLISH';
   static const String hindi = 'हिन्दी  / HINDI';
   static const String tamil = 'தமிழ்  / TAMIL';

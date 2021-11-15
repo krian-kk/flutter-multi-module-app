@@ -1,7 +1,6 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileState {}
+class ProfileState extends BaseEquatable {}
 
 class ProfileInitial extends ProfileState {}
 

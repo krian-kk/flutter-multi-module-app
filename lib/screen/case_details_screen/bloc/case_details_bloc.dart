@@ -4,7 +4,6 @@ import 'package:origa/http/response/case_details_response.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/event_detail_model.dart';
-import 'package:origa/models/multi_details_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -70,10 +69,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield CaseDetailsLoadingState();
       Map<String, dynamic> caseDetailsData =
           await getCaseDetailsData('5f80375a86527c46deba2e5d');
+
       if (caseDetailsData["success"] == true) {
         Map<String, dynamic> jsonData = caseDetailsData["data"];
 
         caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
+        print(caseDetailsResult);
 
         loanAmountController.text =
             caseDetailsResult.result?.caseDetails!.loanAmt.toString() as String;
