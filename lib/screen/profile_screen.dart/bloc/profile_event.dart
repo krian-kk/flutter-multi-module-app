@@ -16,3 +16,5 @@ class ClickChangePassswordEvent extends ProfileEvent {}
 class ClickMessageEvent extends ProfileEvent {}
 
 class ChangeProfileImageEvent extends ProfileEvent {}
+
+class LoginEvent extends ProfileEvent {}

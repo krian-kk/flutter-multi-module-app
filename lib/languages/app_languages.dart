@@ -257,6 +257,10 @@ abstract class Languages {
 
   String get logout;
 
+  String get rememberMe;
+
+  String get passwordNotMatch;
+
   String get choiceOtherLanguages;
 
   String get declinedCall;

@@ -11,3 +11,7 @@ class AllocationLoadedState extends AllocationState {}
 class MapViewState extends AllocationState {}
 
 class MessageState extends AllocationState {}
+
+class NavigateSearchPageState extends AllocationState {}
+
+class FilterSelectOptionState extends AllocationState {}

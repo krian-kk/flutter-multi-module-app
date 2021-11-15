@@ -24,9 +24,63 @@ class CaseLists {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if(index == 0)
+              Padding(
+                                  padding: const EdgeInsets.fromLTRB(5.0, 5.0 ,5.0,0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CustomText(
+                                              Languages.of(context)!
+                                                  .count
+                                                  .toUpperCase(),
+                                              fontSize: FontSize.ten,
+                                              color: ColorResource.color101010,
+                                            ),
+                                            CustomText(
+                                              caseList.length.toString(),
+                                              fontSize: FontSize.fourteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 7,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CustomText(
+                                              Languages.of(context)!
+                                                  .amount
+                                                  .toUpperCase(),
+                                              fontSize: FontSize.ten,
+                                              color: ColorResource.color101010,
+                                            ),
+                                            CustomText(
+                                              '₹ 3,97,553.67',
+                                              fontSize: FontSize.fourteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Container(
+                  margin: (index == caseList.length -1) ? const EdgeInsets.only(bottom: 70):EdgeInsets.zero,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: ColorResource.colorffffff,

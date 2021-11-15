@@ -69,10 +69,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield CaseDetailsLoadingState();
       Map<String, dynamic> caseDetailsData =
           await getCaseDetailsData('5f80375a86527c46deba2e5d');
+
       if (caseDetailsData["success"] == true) {
         Map<String, dynamic> jsonData = caseDetailsData["data"];
 
         caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
+        print(caseDetailsResult);
 
         loanAmountController.text =
             caseDetailsResult.result?.caseDetails!.loanAmt.toString() as String;

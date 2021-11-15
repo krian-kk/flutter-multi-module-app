@@ -17,3 +17,5 @@ class ClickChangePasswordState extends ProfileState {}
 class ClickMessageState extends ProfileState {}
 
 class ChangeProfileImageState extends ProfileState {}
+
+class LoginState extends ProfileState {}

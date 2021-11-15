@@ -11,11 +11,12 @@ part 'allocation_state.dart';
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationBloc() : super(AllocationInitial());
 
-  String selectedOption = StringResource.priority;
+  int selectedOption = 0;
 
   String selectedDistance = StringResource.all;
 
   bool showFilterDistance = false;
+  bool isShowSearchPincode = false;
 
    List<String> selectOptions = [
     StringResource.priority,
@@ -73,6 +74,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
     if (event is MessageEvent) {
       yield MessageState();
+    }
+
+    if (event is NavigateSearchPageEvent) {
+      yield NavigateSearchPageState();
+    }
+
+    if (event is FilterSelectOptionEvent) {
+      yield FilterSelectOptionState();
+      selectedOption = 0;
     }
   }
 

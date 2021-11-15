@@ -12,6 +12,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/login_bloc.dart';
 
@@ -33,14 +34,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late FocusNode username;
   late FocusNode passwords;
+  bool _obscureText = true;
+  bool _isChecked = false;
 
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent());
     username = FocusNode();
     passwords = FocusNode();
+    _loadUserNamePassword();
     super.initState();
   }
+
+  // _passwordVisibleOrNot the password show status
+  void _passwordVisibleOrNot() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,42 +87,78 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Image.asset(ImageResource.login),
                         const SizedBox(
-                          height: 17,
+                          height: 20,
                         ),
                         CustomTextField(
                                   Languages.of(context)!.userName,
                                   userName,
                                   isFill: true,
                                   isBorder: true,
-                                  errorborderColor: ColorResource.colorF8F9FB,
-                                  borderColor: ColorResource.colorF8F9FB,
+                                  isLabel: true,
+                                  errorborderColor: ColorResource.color23375A,
+                                  borderColor: ColorResource.color23375A,
                                   validationRules: ['required'],
                                   focusNode: username,
                                   onEditing: () {
                                     username.unfocus();
                                     _formKey.currentState!.validate();
                                   },
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  // onChange: (){
+                                  //    _formKey.currentState!.validate();
+                                  // },
                                   validatorCallBack: (bool values) {},
                                 ),
                         const SizedBox(
-                          height: 20,
+                          height: 23,
                         ),
                         CustomTextField(
                                   Languages.of(context)!.password,
                                   password,
-                                  obscureText: true,
+                                  obscureText: _obscureText,
                                   isFill: true,
                                   isBorder: true,
-                                  borderColor: ColorResource.colorF8F9FB,
-                                  errorborderColor: ColorResource.colorF8F9FB,
+                                  isLabel: true,
+                                  borderColor: ColorResource.color23375A,
+                                  errorborderColor: ColorResource.color23375A,
                                    validationRules: ['required'],
                                    focusNode: passwords,
                                    onEditing: () {
+                                      print('object');
                                     passwords.unfocus();
                                     _formKey.currentState!.validate();
                                   },
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  // onChange: (){
+                                  //    _formKey.currentState!.validate();
+                                  // },
                                   validatorCallBack: (bool values) {},
+                                  suffixWidget: InkWell(
+                                    onTap: _passwordVisibleOrNot,
+                                    child: Icon(
+                                            _obscureText 
+                                            ? Icons.visibility_off 
+                                            : Icons.visibility,
+                                            color: ColorResource.color23375A,
+                                        ),
+                                    ),
                                 ),
+                        
+                        Row(
+                          children: [
+                            Checkbox(value: _isChecked, 
+                            activeColor: ColorResource.color23375A,
+                            onChanged: (bool? newValue){
+                              final bool isValid = _formKey.currentState!.validate();
+                              if (!isValid) {
+                                return;
+                              } else {
+                              _handleRemeberme(newValue!);
+                              }
+                              }),
+                            CustomText(Languages.of(context)!.rememberMe, color: ColorResource.color23375A,)
+                          ],
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -176,10 +224,51 @@ class _LoginScreenState extends State<LoginScreen> {
       if (userName.text == 'origa' && password.text == '1234') {
         bloc.add(HomeTabEvent());
       } else {
-        AppUtils.showToast("Password doesn't match");
+        AppUtils.showToast(Languages.of(context)!.passwordNotMatch);
       }
       // bloc.add(HomeTabEvent());
     }
     _formKey.currentState!.save();
   }
+
+    _handleRemeberme(bool value) {
+    _isChecked = value;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('username', userName.text);
+        prefs.setString('password', password.text);
+      },
+    );
+    setState(() {
+      _isChecked = value;
+    });
+  }
+
+  void _loadUserNamePassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _username = _prefs.getString("username") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+
+      if (_remeberMe) {
+        setState(() {
+          _isChecked = true;
+        });
+        userName.text = _username;
+        password.text = _password;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void dispose() {
+  // Clean up the focus node when the Form is disposed
+  userName.dispose();
+  password.dispose();
+  super.dispose();
+}
 }

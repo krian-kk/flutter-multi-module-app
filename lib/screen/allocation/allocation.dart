@@ -56,6 +56,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is MessageState) {
           messageShowBottomSheet();
         }
+        if (state is FilterSelectOptionState) {
+        }
+        if (state is NavigateSearchPageState) {
+           Navigator.pushNamed(
+                          context, AppRoutes.searchAllocationDetailsScreen);
+        }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
@@ -114,8 +120,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   const Spacer(),
                   CustomFloatingActionButton(
                     onTap: () async {
-                      await Navigator.pushNamed(
-                          context, AppRoutes.searchAllocationDetailsScreen);
+                      bloc.add(NavigateSearchPageEvent());
                     },
                   ),
                 ],
@@ -199,75 +204,54 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(35, 55, 90, 0.27),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.searchbasedOn,
-                              fontSize: FontSize.ten,
-                              color: ColorResource.color000000,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            // const SizedBox(height: 10.0,),
-                            CustomText(
-                              Languages.of(context)!.pincode + ' 636808',
-                              fontSize: FontSize.fourteen,
-                              color: ColorResource.color000000,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ],
+                      Visibility(
+                        visible: bloc.isShowSearchPincode,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(bottom: 15),
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(35, 55, 90, 0.27),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.searchbasedOn,
+                                fontSize: FontSize.ten,
+                                color: ColorResource.color000000,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              // const SizedBox(height: 10.0,),
+                              CustomText(
+                                Languages.of(context)!.pincode + ' 636808',
+                                fontSize: FontSize.fourteen,
+                                color: ColorResource.color000000,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 15.0,
-                      ),
-                      Wrap(
-                        runSpacing: 0,
-                        spacing: 10,
-                        children: _buildFilterOptions(),
+                      // const SizedBox(
+                      //   height: 15.0,
+                      // ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Wrap(
+                          runSpacing: 0,
+                          spacing: 10,
+                          children: _buildFilterOptions(),
+                        ),
                       ),
                       const SizedBox(
                         height: 13.0,
                       ),
                       bloc.showFilterDistance
                           ? _buildBuildRoute()
-                          : Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CustomText(
-                                  '10 ' + Languages.of(context)!.allocation,
-                                  fontSize: FontSize.fourteen,
-                                  color: ColorResource.color000000,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                const SizedBox(
-                                  width: 9.0,
-                                ),
-                                Container(
-                                    height: 20,
-                                    width: 20,
-                                    child: Image.asset(ImageResource.star)),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                CustomText(
-                                  bloc.allocationList.length.toString() +
-                                      " " +
-                                      Languages.of(context)!.hignPriority,
-                                  fontSize: FontSize.ten,
-                                  color: ColorResource.color101010,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ],
-                            ),
+                          : SizedBox(),
                       const SizedBox(
                         height: 8.0,
                       ),
@@ -289,25 +273,32 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   List<Widget> _buildFilterOptions() {
     List<Widget> widgets = [];
-    bloc.selectOptions.forEach((element) {
-      widgets.add(_buildFilterWidget(element));
+    bloc.selectOptions.asMap().forEach((index, element) {
+      widgets.add(_buildFilterWidget(index, element));
     });
     return widgets;
   }
 
-  Widget _buildFilterWidget(String option) {
+  Widget _buildFilterWidget(int index, String element) {
     return InkWell(
       onTap: () {
+        print(element);
+        print(index);
         setState(() {
-          bloc.selectedOption = option;
+          bloc.selectedOption = index;
         });
-        switch (option) {
-          case 'Build Route':
+        switch (index) {
+          case 0:
+            setState(() {
+              bloc.showFilterDistance = false;
+            });
+            break;
+          case 1:
             setState(() {
               bloc.showFilterDistance = true;
             });
             break;
-          case 'Map View':
+          case 2:
             bloc.add(MapViewEvent());
             setState(() {
               bloc.showFilterDistance = false;
@@ -327,7 +318,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         //     bloc.showFilterDistance = false;
         //   });
         // }
-        print(option);
+        // print(option);
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
@@ -336,16 +327,16 @@ class _AllocationScreenState extends State<AllocationScreen> {
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
           borderRadius: BorderRadius.circular(5),
-          color: option == bloc.selectedOption
+          color: index == bloc.selectedOption
               ? ColorResource.color23375A
               : Colors.white,
         ),
         child: Center(
           child: CustomText(
-            option,
+            element,
             fontSize: FontSize.twelve,
             fontWeight: FontWeight.w700,
-            color: option == bloc.selectedOption
+            color: index == bloc.selectedOption
                 ? Colors.white
                 : ColorResource.color000000,
           ),
@@ -473,6 +464,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         context: context,
         isDismissible: false,
         isScrollControlled: true,
+        enableDrag: false,
         backgroundColor: ColorResource.colorFFFFFF,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

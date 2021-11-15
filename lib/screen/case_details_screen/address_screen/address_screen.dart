@@ -375,7 +375,6 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
   final Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = LatLng(28.644800, 77.216721);
   final Set<Marker> _markers = {};
-  MapType _currentMapType = MapType.normal;
   late String addressLine;
 
   @override
@@ -479,7 +478,7 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
                         target: _center,
                         zoom: 11.0,
                       ),
-                      mapType: _currentMapType,
+                      mapType: MapType.normal,
                       markers: _markers,
                       myLocationButtonEnabled: true,
                       myLocationEnabled: true,
