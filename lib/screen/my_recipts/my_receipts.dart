@@ -266,7 +266,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 11),
           width: 100,
           // height: 35,
           decoration: BoxDecoration(

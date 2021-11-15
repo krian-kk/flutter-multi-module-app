@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
+import 'package:origa/router.dart';
 import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
@@ -82,6 +83,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         if (state is ChangeProfileImageState) {
           profileImageShowBottomSheet();
+        }
+
+        if (state is LoginState) {
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.loginScreen, (route) => false);
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -303,8 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 22),
                       GestureDetector(
-                        // onTap: () =>
-                        //     Navigator.popUntil(context, (route) => false),
+                        onTap: () =>bloc.add(LoginEvent()),
                         child: Container(
                           width: 125,
                           height: 40,
@@ -317,7 +321,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Center(
                             child: CustomText(
                               Languages.of(context)!.logout.toUpperCase(),
-                              onTap: () {},
+                              // onTap: () {
+                              //   bloc.add(LoginEvent());
+                              // },
                               fontSize: FontSize.twelve,
                               color: ColorResource.color23375A,
                               fontWeight: FontWeight.w700,

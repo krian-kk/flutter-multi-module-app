@@ -10,7 +10,8 @@ class BottomSheetAppbar extends StatelessWidget {
   final String? title;
   final EdgeInsetsGeometry? padding;
   final Color? color;
-  const BottomSheetAppbar({Key? key, this.title, this.padding, this.color})
+  final GestureTapCallback? onTap;
+  const BottomSheetAppbar({Key? key, this.title, this.padding, this.color, this.onTap})
       : super(key: key);
 
   @override
@@ -28,9 +29,13 @@ class BottomSheetAppbar extends StatelessWidget {
               fontStyle: FontStyle.normal,
             ),
             InkWell(
-                onTap: () {
+                onTap: onTap ??
+                (){
                   Navigator.pop(context);
                 },
+                // () {
+                //   Navigator.pop(context);
+                // },
                 child: Image.asset(
                   ImageResource.close,
                   color: color,

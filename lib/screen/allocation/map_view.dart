@@ -127,7 +127,7 @@ class _MapViewState extends State<MapView> {
     return SafeArea(
       bottom: false,
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.82,
+        height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return WillPopScope(
@@ -140,6 +140,10 @@ class _MapViewState extends State<MapView> {
                     child: BottomSheetAppbar(
                       title: Languages.of(context)!.mapView,
                       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                      onTap: (){
+                        widget.bloc.add(FilterSelectOptionEvent());
+                        Navigator.pop(context);
+                      },
                     ),
                   ),
                   Expanded(

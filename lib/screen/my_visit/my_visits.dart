@@ -259,8 +259,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
-          width: 90,
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 11),
+          width: 100,
           // height: 35,
           decoration: BoxDecoration(
             border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
