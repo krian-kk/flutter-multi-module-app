@@ -17,6 +17,12 @@ class LanguageEn extends Languages {
   String get userName => 'User Name';
 
   @override
+  String get rememberMe => 'Remember Me';
+
+  @override
+  String get passwordNotMatch => "Password doesn't match";
+
+  @override
   String get resetPassword => 'Reset password via OTP';
 
   @override

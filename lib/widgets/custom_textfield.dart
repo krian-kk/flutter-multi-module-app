@@ -30,10 +30,12 @@ class CustomTextField extends StatefulWidget {
   List<String> validationRules = [];
   Function? oncomplete;
   final Function? onEditing;
+  final Function? onChange;
   final bool isBorder;
   final bool isFill;
   final Color cursorColor;
   final Function(bool)? validatorCallBack;
+  final AutovalidateMode? autovalidateMode;
 
   // ignore: avoid_unused_constructor_parameters
 
@@ -63,10 +65,12 @@ class CustomTextField extends StatefulWidget {
       this.oncomplete,
       this.validatorCallBack,
       this.onEditing,
+      this.onChange,
       this.inputformaters,
       this.isLabel = false,
       this.isBorder = false,
       this.isFill = false,
+      this.autovalidateMode,
       this.cursorColor = ColorResource.color666666,
       this.validationRules = const []});
 
@@ -91,7 +95,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       textInputAction: TextInputAction.done,
-
+      autovalidateMode: widget.autovalidateMode,
       validator: (String? value) {
         if (widget.validationRules.isNotEmpty) {
           final ValidationState validationStatus =
@@ -128,6 +132,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       },
       onChanged: (q) {
         setState(() {});
+        if (widget.onChange != null) {
+          widget.onChange!();
+        }
       },
       // ignore: prefer_const_literals_to_create_immutables
       // inputFormatters: [
@@ -153,7 +160,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : widget.textColor),
 
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(25, 20, 20, 20),
+        contentPadding: EdgeInsets.fromLTRB(25, 15, 20, 15),
         fillColor: ColorResource.colorFFFFFF,
         filled: widget.isFill,
         hintText: widget.hintText,
@@ -161,6 +168,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: ColorResource.color101010.withOpacity(0.3),
           fontSize: FontSize.sixteen,
         ),
+        suffixIcon: widget.suffixWidget,
         labelText: widget.isLabel ? widget.hintText : null,
         isDense: false,
         counterText: widget.descriptionText,
@@ -177,7 +185,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         labelStyle: TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
-            fontSize: FontSize.twelve,
+            fontSize: FontSize.fourteen,
             color: ColorResource.color666666),
 
         // Theme.of(context).textTheme.subtitle1!.copyWith(
@@ -187,7 +195,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusedBorder: widget.isBorder
             ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(color: widget.borderColor!))
+                borderSide: BorderSide(color: widget.borderColor!,width: 0.5))
             : InputBorder.none,
         border: widget.isBorder
             ? OutlineInputBorder(
@@ -197,7 +205,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         enabledBorder: widget.isBorder
             ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(color: widget.borderColor!))
+                borderSide: BorderSide(color: widget.borderColor!, width: 0.5))
             : InputBorder.none,
         disabledBorder: widget.isBorder
             ? OutlineInputBorder(

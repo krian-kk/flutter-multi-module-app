@@ -69,6 +69,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ChangeProfileImageEvent) {
       yield ChangeProfileImageState();
     }
+    if (event is LoginEvent) {
+      yield LoginState();
+    }
   }
   // {
   //   on<ProfileEvent>((event, emit) {

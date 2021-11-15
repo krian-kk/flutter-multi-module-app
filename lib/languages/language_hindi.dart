@@ -17,6 +17,12 @@ class LanguageHi extends Languages {
   String get userName => 'उपयोगकर्ता नाम';
 
   @override
+  String get rememberMe => 'मुझे याद रखें';
+
+  @override
+  String get passwordNotMatch => "पासवर्ड मेल नहीं खाता";
+
+  @override
   String get resetPassword => 'ओटीपी के माध्यम से पासवर्ड रीसेट करें';
 
   @override

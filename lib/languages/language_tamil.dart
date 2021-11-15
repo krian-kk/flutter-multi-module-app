@@ -17,6 +17,12 @@ class LanguageTa extends Languages {
   String get userName => 'பயனர் பெயர்';
 
   @override
+  String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
+
+  @override
+  String get passwordNotMatch => "கடவுச்சொல் பொருந்தவில்லை";
+
+  @override
   String get resetPassword => 'OTP வழியாக கடவுச்சொல்லை மீட்டமைக்கவும்';
 
   @override
