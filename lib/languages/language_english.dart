@@ -555,4 +555,14 @@ class LanguageEn extends Languages {
 
   @override
   String get phoneNumber => 'PHONE NUMBER ';
+
+  @override
+  String get letsConnectWithManager => 'Lets Connect with Manager';
+
+  @override
+  String get noAllocation => 'No Allocation';
+
+  @override
+  String get noAllocationMessage =>
+      'Thier is No Allocation assign yet, check with your Manager manager,';
 }

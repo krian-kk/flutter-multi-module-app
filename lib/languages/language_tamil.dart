@@ -555,4 +555,14 @@ class LanguageTa extends Languages {
 
   @override
   String get phoneNumber => 'தொலைபேசி எண் ';
+
+  @override
+  String get letsConnectWithManager => 'மேலாளருடன் இணைவோம்';
+
+  @override
+  String get noAllocation => 'ஒதுக்கீடு இல்லை';
+
+  @override
+  String get noAllocationMessage =>
+      'உங்களுக்கு இன்னும் ஒதுக்கீடு வழங்கப்படவில்லை, உங்கள் மேலாளர் manager சரிபார்க்கவும்,';
 }

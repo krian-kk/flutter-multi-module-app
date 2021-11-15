@@ -374,4 +374,10 @@ abstract class Languages {
   String get address;
 
   String get phoneNumber;
+
+  String get letsConnectWithManager;
+
+  String get noAllocation;
+
+  String get noAllocationMessage;
 }

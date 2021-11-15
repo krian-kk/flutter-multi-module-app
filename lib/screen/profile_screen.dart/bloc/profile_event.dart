@@ -1,7 +1,6 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileEvent {}
+class ProfileEvent extends BaseEquatable {}
 
 class ProfileInitialEvent extends ProfileEvent {
   final BuildContext context;

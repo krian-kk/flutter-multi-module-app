@@ -554,4 +554,14 @@ class LanguageHi extends Languages {
 
   @override
   String get phoneNumber => 'फ़ोन नंबर ';
+
+  @override
+  String get letsConnectWithManager => 'आइए प्रबंधक से जुड़ें';
+
+  @override
+  String get noAllocation => 'कोई आवंटन नहीं';
+
+  @override
+  String get noAllocationMessage =>
+      'अभी तक कोई आवंटन आवंटित नहीं हुआ है, अपने प्रबंधक देबाशीष से संपर्क करें,';
 }

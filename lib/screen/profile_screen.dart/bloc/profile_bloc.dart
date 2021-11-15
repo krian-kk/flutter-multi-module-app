@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
+import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/preference_helper.dart';
 
 part 'profile_event.dart';
