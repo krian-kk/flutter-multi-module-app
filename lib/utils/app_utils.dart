@@ -64,4 +64,11 @@ class AppUtils {
         textColor: Colors.white,
         fontSize: 14.0);
   }
+
+  static showDivider(){
+   return Divider(
+      color: ColorResource.colorDADADA,
+       thickness: 0.5,
+       );
+  }
 }

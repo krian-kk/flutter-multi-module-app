@@ -95,4 +95,5 @@ class StringResource {
   static const String addNewContact = 'ADD New contact';
   static const String call = 'call';
   static const String viewMap = 'VIEW MAP';
+  static const String autoCalling = 'Auto Calling';
 }
