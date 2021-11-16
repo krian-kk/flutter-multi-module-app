@@ -20,6 +20,7 @@ class AppRoutes {
   static const String homeTabScreen = 'homeTab_screen';
   static const String dashboardScreen = 'dashboard_screen';
   static const String allocationScreen = 'allocation_screen';
+  static const String allocationTelecallerScreen = 'allocation_telecaller_screen';
   static const String searchAllocationDetailsScreen =
       'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
@@ -225,7 +226,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
 

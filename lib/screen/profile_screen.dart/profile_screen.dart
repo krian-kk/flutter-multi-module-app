@@ -476,8 +476,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
-        isScrollControlled: true,
         enableDrag: false,
+        isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

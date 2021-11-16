@@ -21,6 +21,7 @@ import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/widget_utils.dart';
 
 import 'bloc/allocation_bloc.dart';
+import 'custom_card_list.dart';
 
 class AllocationScreen extends StatefulWidget {
   // AuthenticationBloc authenticationBloc;
@@ -40,7 +41,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   void initState() {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent());
-    mapBloc = MapBloc()..add(MapInitialEvent());
+    // mapBloc = MapBloc()..add(MapInitialEvent());
   }
 
   @override
@@ -208,11 +209,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                         visible: bloc.isShowSearchPincode,
                         child: Container(
                           width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(bottom: 15),
+                          margin: const EdgeInsets.only(bottom: 15),
                           padding:
                               const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(35, 55, 90, 0.27),
+                            color: const Color.fromRGBO(35, 55, 90, 0.27),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
@@ -252,16 +253,16 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       bloc.showFilterDistance
                           ? _buildBuildRoute()
                           : SizedBox(),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      // const SizedBox(
+                      //   height: 5.0,
+                      // ),
                       // Expanded(child: WidgetUtils.buildListView(bloc)),
                     ],
                   ),
                 ),
                  Expanded(child: Padding(
                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                   child: WidgetUtils.buildListView(bloc),
+                   child: CustomCardList.buildListView(bloc),
                  )),
               ],
             ),
@@ -446,8 +447,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   void mapView(BuildContext buildContext) {
     showModalBottomSheet(
-        isScrollControlled: true,
         isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
         context: buildContext,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -463,10 +465,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
-        isScrollControlled: true,
         enableDrag: false,
+        isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
