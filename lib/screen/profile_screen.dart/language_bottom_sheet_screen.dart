@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
@@ -74,11 +72,11 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                     BottomSheetAppbar(
                       title: Languages.of(context)!.languages.toUpperCase(),
                       color: ColorResource.color23375A,
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                     ),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: languageList.length,
                         itemBuilder: (context, i) {
@@ -94,14 +92,15 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                       fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     )
-                                  : SizedBox(),
-                              SizedBox(height: 6),
+                                  : const SizedBox(),
+                              const SizedBox(height: 6),
                               Container(
                                 width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: new BoxDecoration(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: const BoxDecoration(
                                     color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
+                                    borderRadius: BorderRadius.all(
                                         Radius.circular(10.0))),
                                 child: RadioListTile(
                                   activeColor: ColorResource.color23375A,
@@ -133,18 +132,18 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
             ),
             Container(
               width: double.infinity,
-              decoration: new BoxDecoration(
+              decoration: BoxDecoration(
                 color: ColorResource.colorFFFFFF,
                 boxShadow: [
                   BoxShadow(
                     color: ColorResource.color000000.withOpacity(0.2),
                     blurRadius: 2.0,
-                    offset: Offset(1.0, 1.0),
+                    offset: const Offset(1.0, 1.0),
                   )
                 ],
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 11.0),
+                padding: const EdgeInsets.symmetric(vertical: 11.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -161,7 +160,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                         },
                         cardShape: 5,
                         fontSize: FontSize.sixteen,
-                        leadingWidget: CircleAvatar(
+                        leadingWidget: const CircleAvatar(
                           radius: 13,
                           backgroundColor: ColorResource.colorFFFFFF,
                         ),

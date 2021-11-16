@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/validator.dart';
 
+@immutable
 class CustomTextField extends StatefulWidget {
   final String hintText;
   final bool obscureText;
@@ -28,7 +28,7 @@ class CustomTextField extends StatefulWidget {
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
   List<String> validationRules = [];
-  Function? oncomplete;
+  final Function? oncomplete;
   final Function? onEditing;
   final Function? onChange;
   final bool isBorder;
@@ -37,15 +37,9 @@ class CustomTextField extends StatefulWidget {
   final Function(bool)? validatorCallBack;
   final AutovalidateMode? autovalidateMode;
 
-  // ignore: avoid_unused_constructor_parameters
-
-  CustomTextField(
-
-      // ignore: invalid_required_positional_param
-      @required this.hintText,
-      // ignore: invalid_required_positional_param
-      @required this.controller,
-      {this.obscureText = false,
+  CustomTextField(this.hintText, this.controller,
+      {Key? key,
+      this.obscureText = false,
       this.suffixWidget,
       this.prefixWidget,
       this.isEnable = true,
@@ -72,7 +66,8 @@ class CustomTextField extends StatefulWidget {
       this.isFill = false,
       this.autovalidateMode,
       this.cursorColor = ColorResource.color666666,
-      this.validationRules = const []});
+      this.validationRules = const []})
+      : super(key: key);
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -136,7 +131,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
           widget.onChange!();
         }
       },
-      // ignore: prefer_const_literals_to_create_immutables
       // inputFormatters: [
       //   // if (widget.maximumWordCount != null)
       //   //   LengthLimitingTextInputFormatter(widget.maximumWordCount),
@@ -160,7 +154,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : widget.textColor),
 
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(25, 15, 20, 15),
+        contentPadding: const EdgeInsets.fromLTRB(25, 15, 20, 15),
         fillColor: ColorResource.colorFFFFFF,
         filled: widget.isFill,
         hintText: widget.hintText,
@@ -182,7 +176,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             fontStyle: FontStyle.normal,
             fontSize: 12),
         // errorText: validatePassword(widget.controller.text.trim()),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
             fontSize: FontSize.fourteen,
@@ -195,7 +189,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusedBorder: widget.isBorder
             ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(color: widget.borderColor!,width: 0.5))
+                borderSide: BorderSide(color: widget.borderColor!, width: 0.5))
             : InputBorder.none,
         border: widget.isBorder
             ? OutlineInputBorder(
@@ -239,7 +233,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

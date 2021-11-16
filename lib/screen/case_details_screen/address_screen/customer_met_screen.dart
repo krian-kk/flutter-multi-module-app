@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, must_be_immutable, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -69,8 +67,9 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     itemCount: widget.bloc.addressCustomerMetGridList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
                     itemBuilder: (BuildContext context, int innerIndex) {
                       return Padding(
                         padding: const EdgeInsets.all(4.5),
@@ -106,29 +105,28 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                             }
                           },
                           child: Container(
-                            decoration: new BoxDecoration(
+                            decoration: BoxDecoration(
                                 color: ColorResource.colorF8F9FB,
                                 boxShadow: [
                                   BoxShadow(
                                     color: ColorResource.color000000
                                         .withOpacity(0.2),
                                     blurRadius: 2.0,
-                                    offset: Offset(1.0,
+                                    offset: const Offset(1.0,
                                         1.0), // shadow direction: bottom right
                                   )
                                 ],
-                                borderRadius: new BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0))),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              // ignore: prefer_const_literals_to_create_immutables
                               children: [
                                 Image.asset(widget
                                     .bloc
                                     .addressCustomerMetGridList[innerIndex]
                                     .icon),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomText(
                                   widget
                                       .bloc
@@ -146,7 +144,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   CustomButton(
                     Languages.of(context)!.captureImage.toUpperCase(),
                     cardShape: 75.0,
@@ -161,7 +159,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         openBottomSheet(context, StringResource.captureImage),
                     trailingWidget: Image.asset(ImageResource.capturImage),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Wrap(
                     spacing: 15,
                     runSpacing: 8,
@@ -173,7 +171,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     //   SizedBox(
                     //     width: 179,
                     //     child: CustomButton(
-                    //       StringResource.addNewContact.toUpperCase(),
+                    //       StringResource.addContact.toUpperCase(),
                     //       textColor: ColorResource.colorFFFFFF,
                     //       borderColor: ColorResource.color23375A,
                     //       fontSize: FontSize.twelve,
@@ -210,7 +208,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     //   )
                     // ],
                   ),
-                  SizedBox(height: 120)
+                  const SizedBox(height: 120)
                 ],
               ),
             ),
@@ -220,7 +218,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
         //   decoration: BoxDecoration(
         //     color: ColorResource.colorFFFFFF,
         //     boxShadow: [
-        //       new BoxShadow(
+        //        BoxShadow(
         //         color: ColorResource.color000000.withOpacity(.25),
         //         blurRadius: 2.0,
         //         offset: Offset(1.0, 1.0),
@@ -273,7 +271,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                   ? ColorResource.color23375A
                   : ColorResource.colorFFFFFF,
               border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
             child: CustomText(
@@ -338,12 +336,13 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     BottomSheetAppbar(
                         title:
                             Languages.of(context)!.addNewContact.toUpperCase(),
-                        padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
+                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    const Expanded(
+                        child: Center(child: CircularProgressIndicator())),
                   ],
                 ));
           default:
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),

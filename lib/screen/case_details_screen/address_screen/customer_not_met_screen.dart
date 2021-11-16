@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -93,7 +91,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           spacing: 10,
                           children: _buildSelectedClip(selectedClipList),
                         ),
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         CustomText(
                           Languages.of(context)!.nextActionDate.toUpperCase(),
                           color: ColorResource.color666666,
@@ -114,7 +112,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                 context,
                                 widget.bloc
                                     .addressCustomerNotMetNextActionDateController),
-                            suffixWidget: ImageIcon(
+                            suffixWidget: const ImageIcon(
                               AssetImage(ImageResource.calendar),
                               color: ColorResource.colorC4C4C4,
                             ),
@@ -128,7 +126,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             },
                           ),
                         ),
-                        SizedBox(height: 27),
+                        const SizedBox(height: 27),
                         Align(
                             alignment: Alignment.bottomLeft,
                             child: CustomText(
@@ -161,16 +159,16 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             //   remarksFocusNode.unfocus();
                             // },
                             // textInputAction: TextInputAction.newline,
-                            decoration: new InputDecoration(
+                            decoration: InputDecoration(
                                 hintText:
                                     Languages.of(context)!.writeYourRemarksHere,
                                 focusColor: ColorResource.colorE5EAF6,
-                                labelStyle: new TextStyle(
-                                    color: const Color(0xFF424242))),
+                                labelStyle:
+                                    const TextStyle(color: Color(0xFF424242))),
                           ),
                         ),
                         // TextField(),
-                        SizedBox(height: 19),
+                        const SizedBox(height: 19),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),
                           cardShape: 75.0,
@@ -187,7 +185,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           trailingWidget:
                               Image.asset(ImageResource.capturImage),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Wrap(
                           spacing: 15,
                           runSpacing: 8,
@@ -224,7 +222,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           //   ),
                           // ],
                         ),
-                        SizedBox(height: 120),
+                        const SizedBox(height: 120),
                       ],
                     ),
                   ),
@@ -255,7 +253,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
             return CustomCaptureImageBottomSheet(
                 Languages.of(context)!.captureImage);
           default:
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -286,7 +284,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                   ? ColorResource.color23375A
                   : ColorResource.colorFFFFFF,
               border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
             child: CustomText(
@@ -346,11 +344,11 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,

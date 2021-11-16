@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,7 +20,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class AddressScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  AddressScreen({Key? key, required this.bloc}) : super(key: key);
+  const AddressScreen({Key? key, required this.bloc}) : super(key: key);
 
   @override
   _AddressScreenState createState() => _AddressScreenState();
@@ -62,17 +60,17 @@ class _AddressScreenState extends State<AddressScreen>
         body: DefaultTabController(
           length: 3,
           child: Container(
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
                 color: ColorResource.colorFFFFFF,
                 boxShadow: [
-                  new BoxShadow(
+                  BoxShadow(
                     color: ColorResource.colorCACACA.withOpacity(.25),
                     blurRadius: 20.0,
-                    offset: Offset(1.0, 1.0),
+                    offset: const Offset(1.0, 1.0),
                   ),
                 ],
                 borderRadius:
-                    new BorderRadius.vertical(top: Radius.circular(30))),
+                    const BorderRadius.vertical(top: Radius.circular(30))),
             width: double.infinity,
             child: Column(
               children: [
@@ -97,7 +95,7 @@ class _AddressScreenState extends State<AddressScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
+                          const CustomText(
                             'ADDRESS 01',
                             fontWeight: FontWeight.w700,
                             fontSize: FontSize.fourteen,
@@ -115,7 +113,7 @@ class _AddressScreenState extends State<AddressScreen>
                           )
                         ],
                       ),
-                      Flexible(
+                      const Flexible(
                         child: SizedBox(
                           width: 255,
                           child: CustomText(
@@ -135,15 +133,15 @@ class _AddressScreenState extends State<AddressScreen>
                             child: SizedBox(
                                 width: 10,
                                 child: Container(
-                                    decoration: new BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color: ColorResource.colorBEC4CF,
-                                        borderRadius: new BorderRadius.all(
-                                            new Radius.circular(75.0))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(75.0))),
                                     child: Row(
                                       children: [
                                         Image.asset(ImageResource.direction),
-                                        SizedBox(width: 10),
-                                        CustomText(
+                                        const SizedBox(width: 10),
+                                        const CustomText(
                                           StringResource.viewMap,
                                           fontSize: FontSize.fourteen,
                                           fontWeight: FontWeight.w700,
@@ -152,7 +150,7 @@ class _AddressScreenState extends State<AddressScreen>
                                       ],
                                     ))),
                           )),
-                          SizedBox(width: 40),
+                          const SizedBox(width: 40),
                           Expanded(
                               child: CustomButton(
                             Languages.of(context)!.eventDetails,
@@ -167,7 +165,7 @@ class _AddressScreenState extends State<AddressScreen>
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       border: Border(
                           bottom:
                               BorderSide(color: ColorResource.colorD8D8D8))),
@@ -175,7 +173,7 @@ class _AddressScreenState extends State<AddressScreen>
                     isScrollable: true,
                     controller: _controller,
                     indicatorColor: ColorResource.colorD5344C,
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         fontWeight: FontWeight.w700,
                         color: ColorResource.color23375A,
                         fontSize: FontSize.fourteen,
@@ -190,7 +188,6 @@ class _AddressScreenState extends State<AddressScreen>
                           .unfocus();
                       widget.bloc.addressInvalidRemarksFocusNode.unfocus();
                     },
-                    // ignore: prefer_const_literals_to_create_immutables
                     tabs: [
                       Tab(text: Languages.of(context)!.customerMet),
                       Tab(text: Languages.of(context)!.customerNotMet),
@@ -209,7 +206,7 @@ class _AddressScreenState extends State<AddressScreen>
                           height: MediaQuery.of(context).size.height * 0.65,
                           child: TabBarView(
                             controller: _controller,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             children: [
                               CustomerMetScreen(
                                   bloc: widget.bloc, context: context),
@@ -234,16 +231,17 @@ class _AddressScreenState extends State<AddressScreen>
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
                   boxShadow: [
-                    new BoxShadow(
+                    BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
-                      offset: Offset(1.0, 1.0),
+                      offset: const Offset(1.0, 1.0),
                     ),
                   ],
                 ),
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 85, vertical: 11.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -266,16 +264,17 @@ class _AddressScreenState extends State<AddressScreen>
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
                   boxShadow: [
-                    new BoxShadow(
+                    BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
-                      offset: Offset(1.0, 1.0),
+                      offset: const Offset(1.0, 1.0),
                     ),
                   ],
                 ),
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -290,7 +289,7 @@ class _AddressScreenState extends State<AddressScreen>
                             fontStyle: FontStyle.normal,
                             fontSize: FontSize.sixteen,
                           ))),
-                      SizedBox(width: 25),
+                      const SizedBox(width: 25),
                       SizedBox(
                         width: 191,
                         child: _controller.index == 1
@@ -351,7 +350,7 @@ class _AddressScreenState extends State<AddressScreen>
         ),
       ),
       builder: (BuildContext context) {
-        return CustomMapViewBottomSheet();
+        return const CustomMapViewBottomSheet();
         // return CustomEventDetailsBottomSheet(
         //   Languages.of(context)!.eventDetails.toUpperCase(),
         //   widget.bloc,
@@ -362,7 +361,7 @@ class _AddressScreenState extends State<AddressScreen>
 }
 
 class CustomMapViewBottomSheet extends StatefulWidget {
-  CustomMapViewBottomSheet({Key? key}) : super(key: key);
+  const CustomMapViewBottomSheet({Key? key}) : super(key: key);
 
   @override
   _CustomMapViewBottomSheetState createState() =>
@@ -385,7 +384,7 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+            const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
         .then((d) {
       customIcon = d;
     });
@@ -395,9 +394,11 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
 
   Future getCurrentLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if (permission != PermissionStatus.granted) {
+    if (permission.toString() == PermissionStatus.granted.toString()) {
       LocationPermission permission = await Geolocator.requestPermission();
-      if (permission != PermissionStatus.granted) getLocation();
+      if (permission.toString() != PermissionStatus.granted.toString()) {
+        getLocation();
+      }
       return;
     }
     getLocation();
@@ -467,8 +468,8 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
                     padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
                     child: BottomSheetAppbar(
                       title: Languages.of(context)!.mapView,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 16),
                     ),
                   ),
                   Expanded(

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/other_feedback_model.dart';
@@ -16,7 +14,7 @@ import 'package:intl/intl.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  CustomOtherFeedBackBottomSheet(
+  const CustomOtherFeedBackBottomSheet(
     this.cardTitle,
     this.bloc, {
     Key? key,
@@ -50,7 +48,7 @@ class _CustomOtherFeedBackBottomSheetState
         children: [
           BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -59,12 +57,12 @@ class _CustomOtherFeedBackBottomSheetState
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomLoanUserDetails(
+                    const CustomLoanUserDetails(
                       userName: 'DEBASISH PATNAIK',
                       userId: 'TVSF_BFRT6458922993',
                       userAmount: 397553.67,
                     ),
-                    SizedBox(height: 11),
+                    const SizedBox(height: 11),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +82,7 @@ class _CustomOtherFeedBackBottomSheetState
                             dateControlller,
                             isReadOnly: true,
                             onTapped: () => pickDate(context, dateControlller),
-                            suffixWidget: ImageIcon(
+                            suffixWidget: const ImageIcon(
                               AssetImage(ImageResource.calendar),
                               color: ColorResource.colorC4C4C4,
                             ),
@@ -92,7 +90,7 @@ class _CustomOtherFeedBackBottomSheetState
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     CustomText(
                       Languages.of(context)!.customerMetCategory,
                       fontSize: FontSize.fourteen,
@@ -100,15 +98,15 @@ class _CustomOtherFeedBackBottomSheetState
                       color: ColorResource.color000000,
                       fontStyle: FontStyle.normal,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: widget.bloc.expandOtherFeedback.length,
                       itemBuilder: (context, int index) =>
                           expandList(widget.bloc.expandOtherFeedback, index),
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     GestureDetector(
                       onTap: () {},
                       child: SizedBox(
@@ -117,7 +115,7 @@ class _CustomOtherFeedBackBottomSheetState
                         child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(
+                              side: const BorderSide(
                                 width: 0.5,
                                 color: ColorResource.colorDADADA,
                               ),
@@ -132,8 +130,8 @@ class _CustomOtherFeedBackBottomSheetState
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Image.asset(ImageResource.upload),
-                                      SizedBox(width: 5),
-                                      CustomText(
+                                      const SizedBox(width: 5),
+                                      const CustomText(
                                         'UPLOAD AUDIO FILE',
                                         color: ColorResource.colorFFFFFF,
                                         fontSize: FontSize.sixteen,
@@ -142,7 +140,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       )
                                     ],
                                   ),
-                                  CustomText(
+                                  const CustomText(
                                     'UPTO 5MB',
                                     lineHeight: 1,
                                     color: ColorResource.colorFFFFFF,
@@ -155,7 +153,7 @@ class _CustomOtherFeedBackBottomSheetState
                             )),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),
@@ -169,13 +167,14 @@ class _CustomOtherFeedBackBottomSheetState
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
             ),
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -190,7 +189,7 @@ class _CustomOtherFeedBackBottomSheetState
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  SizedBox(width: 25),
+                  const SizedBox(width: 25),
                   SizedBox(
                     width: 191,
                     child: CustomButton(
@@ -221,11 +220,11 @@ class _CustomOtherFeedBackBottomSheetState
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
@@ -249,18 +248,18 @@ class _CustomOtherFeedBackBottomSheetState
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    final initialTime = TimeOfDay(hour: 9, minute: 0);
+    const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: initialTime,
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
@@ -316,13 +315,12 @@ class _CustomOtherFeedBackBottomSheetState
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 13,
                   )
                 ],
                 onExpansionChanged: (bool status) {
                   setState(() {
-                    // ignore: lines_longer_than_80_chars
                     expandedList[index].expanded =
                         !expandedList[index].expanded;
                   });

@@ -17,7 +17,23 @@ Future<Map<String, dynamic>> getCaseDetailsData(String id) async {
     }));
 
     return {"success": true, "data": response.data};
-  } on DioError catch (e) {
-    return {"success": false, "data": e.message};
+  } catch (e) {
+    print(e);
+    // if (DioErrorType.receiveTimeout == e.type ||
+    //     DioErrorType.connectTimeout == e.type) {
+    //   // throw CommunicationTimeoutException(
+    //   //     "Server is not reachable. Please verify your internet connection and try again");
+    // } else if (DioErrorType.response == e.type) {
+    //   // 4xx 5xx response
+    //   // throw exception...
+    // } else if (DioErrorType.other == e.type) {
+    //   if (e.message.contains('SocketException')) {
+    //     print("SocketException");
+    //     //  throw CommunicationTimeoutException('blabla');
+    //   }
+    // } else {
+    //   // throw CommunicationException("Problem connecting to the server. Please try again.");
+    // }
+    return {"success": false, "data": e};
   }
 }

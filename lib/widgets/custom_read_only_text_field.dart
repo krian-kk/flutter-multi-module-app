@@ -1,11 +1,9 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/validator.dart';
 
-// ignore: must_be_immutable
 class CustomReadOnlyTextField extends StatefulWidget {
   final String hintText;
   final bool obscureText;
@@ -36,14 +34,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final Function(bool)? validatorCallBack;
   final double height;
 
-  // ignore: avoid_unused_constructor_parameters
-
-  CustomReadOnlyTextField(
-
-      // ignore: invalid_required_positional_param
-      @required this.hintText,
-      // ignore: invalid_required_positional_param
-      @required this.controller,
+  CustomReadOnlyTextField(this.hintText, this.controller,
       {Key? key,
       this.obscureText = false,
       this.suffixWidget,
@@ -142,7 +133,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             // FocusScope.of(context).unfocus();
           },
 
-          // ignore: prefer_const_literals_to_create_immutables
           // inputFormatters: [
           //   // if (widget.maximumWordCount != null)
           //   //   LengthLimitingTextInputFormatter(widget.maximumWordCount),
@@ -173,7 +163,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               labelText: widget.isLabel ? widget.hintText : null,
               isDense: true,
               counterText: widget.descriptionText,
-              contentPadding: EdgeInsets.fromLTRB(0, 10, 0, 11),
+              contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 11),
               errorMaxLines: 1,
               suffixIcon: widget.suffixWidget,
               errorStyle: Theme.of(context)
@@ -187,7 +177,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   fontStyle: FontStyle.normal,
                   fontSize: 14),
               // errorText: validatePassword(widget.controller.text.trim()),
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
                   fontSize: FontSize.twelve,
@@ -198,24 +188,24 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               //         ? ColorResource.color333333
               //         : ColorResource.color666666),
               focusedBorder: widget.isBorder
-                  ? UnderlineInputBorder(
+                  ? const UnderlineInputBorder(
                       borderSide: BorderSide(color: ColorResource.colorE5EAF6))
                   : null,
               border: widget.isBorder
-                  ? UnderlineInputBorder(
+                  ? const UnderlineInputBorder(
                       borderSide: BorderSide(color: ColorResource.colorE5EAF6))
                   : null,
               enabledBorder: widget.isBorder
-                  ? UnderlineInputBorder(
+                  ? const UnderlineInputBorder(
                       borderSide: BorderSide(color: ColorResource.colorE5EAF6))
                   : null,
               disabledBorder: widget.isBorder
-                  ? UnderlineInputBorder(
+                  ? const UnderlineInputBorder(
                       borderSide: BorderSide(color: ColorResource.colorE5EAF6))
                   : null,
               errorBorder: widget.isBorder
-                  ? UnderlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red))
+                  ? const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red))
                   : null),
         ),
       ),

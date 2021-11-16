@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/event_detail_model.dart';
@@ -13,7 +11,7 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  CustomEventDetailsBottomSheet(
+  const CustomEventDetailsBottomSheet(
     this.cardTitle,
     this.bloc, {
     Key? key,
@@ -41,9 +39,9 @@ class _CustomEventDetailsBottomSheetState
         children: [
           BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.0),
             child: CustomLoanUserDetails(
               userName: 'DEBASISH PATNAIK',
               userId: 'TVSF_BFRT6458922993',
@@ -64,13 +62,14 @@ class _CustomEventDetailsBottomSheetState
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
             ),
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -149,7 +148,7 @@ class _CustomEventDetailsBottomSheetState
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   CustomText(
                     Languages.of(context)!.remarks.replaceAll('*', ''),
                     fontSize: FontSize.fourteen,
@@ -165,7 +164,6 @@ class _CustomEventDetailsBottomSheetState
                 ],
                 onExpansionChanged: (bool status) {
                   setState(() {
-                    // ignore: lines_longer_than_80_chars
                     expandedList[index].expanded =
                         !expandedList[index].expanded;
                   });

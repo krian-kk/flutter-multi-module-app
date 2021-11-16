@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -17,7 +15,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhoneConnectedScreen extends StatefulWidget {
@@ -60,8 +57,9 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                     itemCount: widget.bloc.phoneCustomerMetGridList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
                     itemBuilder: (BuildContext context, int innerIndex) {
                       return Padding(
                         padding: const EdgeInsets.all(4.5),
@@ -97,27 +95,26 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                             }
                           },
                           child: Container(
-                            decoration: new BoxDecoration(
+                            decoration: BoxDecoration(
                                 color: ColorResource.colorF8F9FB,
                                 boxShadow: [
                                   BoxShadow(
                                     color: ColorResource.color000000
                                         .withOpacity(0.2),
                                     blurRadius: 2.0,
-                                    offset: Offset(1.0,
+                                    offset: const Offset(1.0,
                                         1.0), // shadow direction: bottom right
                                   )
                                 ],
-                                borderRadius: new BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0))),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              // ignore: prefer_const_literals_to_create_immutables
                               children: [
                                 Image.asset(widget.bloc
                                     .phoneCustomerMetGridList[innerIndex].icon),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomText(
                                   widget
                                       .bloc
@@ -134,7 +131,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Wrap(
                     spacing: 15,
                     runSpacing: 8,
@@ -171,7 +168,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                   //     ),
                   //   ],
                   // ),
-                  SizedBox(height: 100)
+                  const SizedBox(height: 100)
                 ],
               ),
             ),
@@ -203,7 +200,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                   ? ColorResource.color23375A
                   : ColorResource.colorFFFFFF,
               border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
             child: CustomText(
@@ -268,12 +265,13 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                     BottomSheetAppbar(
                         title:
                             Languages.of(context)!.addNewContact.toUpperCase(),
-                        padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
+                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    const Expanded(
+                        child: Center(child: CircularProgressIndicator())),
                   ],
                 ));
           default:
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),

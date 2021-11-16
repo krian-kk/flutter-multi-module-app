@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
@@ -31,7 +29,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                   BottomSheetAppbar(
                     title: Languages.of(context)!.notification.toUpperCase(),
                     color: ColorResource.color23375A,
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                   ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,9 +54,9 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(height: 15),
+                          const SizedBox(height: 15),
                           ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: bloc.notificationList.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -79,20 +77,21 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                     ),
                                   ),
                                   ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: bloc.notificationList[index]
                                           .listOfNotification.length,
                                       itemBuilder: (BuildContext context,
                                           int innerIndex) {
                                         return Container(
-                                          margin: EdgeInsets.only(bottom: 20),
+                                          margin:
+                                              const EdgeInsets.only(bottom: 20),
                                           width: double.infinity,
-                                          decoration: new BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               color: ColorResource.colorF7F8FA,
-                                              borderRadius:
-                                                  new BorderRadius.all(
-                                                      Radius.circular(10.0))),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0))),
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 14, 8, 30, 12),
@@ -148,18 +147,20 @@ class NotificationBottomSheetScreen extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
               color: ColorResource.colorFFFFFF,
               boxShadow: [
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0), // shadow direction: bottom right
+                  offset:
+                      const Offset(1.0, 1.0), // shadow direction: bottom right
                 )
               ],
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 11.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 11.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -170,7 +171,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                       onTap: () => Navigator.pop(context),
                       fontSize: FontSize.sixteen,
                       cardShape: 5,
-                      leadingWidget: CircleAvatar(
+                      leadingWidget: const CircleAvatar(
                         radius: 13,
                         backgroundColor: ColorResource.colorFFFFFF,
                       ),
