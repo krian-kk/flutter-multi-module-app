@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -35,7 +33,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
       margin: EdgeInsets.only(top: widget.marginTop ?? 0),
       decoration: BoxDecoration(
           color: widget.color ?? ColorResource.colorF7F8FA,
-          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
         child: Column(
@@ -61,10 +59,10 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
                         fontStyle: FontStyle.normal,
                         color: ColorResource.color666666,
                       ),
-                      SizedBox(height: 7)
+                      const SizedBox(height: 7)
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
             CustomText(
               widget.userId.toUpperCase(),
               fontWeight:
@@ -73,7 +71,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
               fontStyle: FontStyle.normal,
               color: ColorResource.color333333,
             ),
-            SizedBox(height: 17),
+            const SizedBox(height: 17),
             CustomText(
               Languages.of(context)!.overdueAmount,
               fontWeight: FontWeight.w400,
@@ -81,7 +79,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
               fontStyle: FontStyle.normal,
               color: ColorResource.color666666,
             ),
-            SizedBox(height: 9),
+            const SizedBox(height: 9),
             CustomText(
               widget.userAmount.toString(),
               lineHeight: 1,

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -86,14 +84,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
 
         if (state is LoginState) {
-          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.loginScreen, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context, AppRoutes.loginScreen, (route) => false);
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: bloc,
         builder: (context, state) {
           if (state is ProfileLoadedState) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
@@ -109,19 +108,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Container(
                         width: double.infinity,
-                        decoration: new BoxDecoration(
+                        decoration: BoxDecoration(
                             color: ColorResource.colorFFFFFF,
                             boxShadow: [
                               BoxShadow(
                                 color:
                                     ColorResource.color000000.withOpacity(0.2),
                                 blurRadius: 2.0,
-                                offset: Offset(
+                                offset: const Offset(
                                     1.0, 1.0), // shadow direction: bottom right
                               )
                             ],
                             borderRadius:
-                                new BorderRadius.all(Radius.circular(10.0))),
+                                const BorderRadius.all(Radius.circular(10.0))),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 19.0),
@@ -134,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () =>
                                         bloc.add(ChangeProfileImageEvent()),
                                     child: image == null
-                                        ? CircleAvatar(
+                                        ? const CircleAvatar(
                                             radius: 25,
                                             backgroundImage: AssetImage(
                                                 ImageResource.profile))
@@ -143,12 +142,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             backgroundImage:
                                                 FileImage(File(image!.path))),
                                   ),
-                                  SizedBox(width: 13),
+                                  const SizedBox(width: 13),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
+                                    children: const [
                                       CustomText(
                                         'USER ID  1004',
                                         fontSize: FontSize.eighteen,
@@ -175,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   )
                                 ],
                               ),
-                              SizedBox(height: 30),
+                              const SizedBox(height: 30),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -199,16 +198,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Container(
                                 width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: new BoxDecoration(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: const BoxDecoration(
                                     color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
+                                    borderRadius: BorderRadius.all(
                                         Radius.circular(10.0))),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 20,
                                     vertical: 16.0,
                                   ),
@@ -222,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: profileNavigationList.length,
                                   itemBuilder:
@@ -233,11 +233,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       //     .profileNavigationList[index].onTap,
                                       child: Container(
                                         width: double.infinity,
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5.0),
-                                        decoration: new BoxDecoration(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 5.0),
+                                        decoration: const BoxDecoration(
                                             color: ColorResource.colorF8F9FB,
-                                            borderRadius: new BorderRadius.all(
+                                            borderRadius: BorderRadius.all(
                                                 Radius.circular(10.0))),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
@@ -264,11 +264,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       color: ColorResource
                                                           .color23375A,
                                                     ),
-                                                    SizedBox(width: 5),
+                                                    const SizedBox(width: 5),
                                                     profileNavigationList[index]
                                                                 .notificationCount ==
                                                             null
-                                                        ? SizedBox()
+                                                        ? const SizedBox()
                                                         : CircleAvatar(
                                                             backgroundColor:
                                                                 ColorResource
@@ -308,16 +308,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 22),
                       GestureDetector(
-                        onTap: () =>bloc.add(LoginEvent()),
+                        onTap: () => bloc.add(LoginEvent()),
                         child: Container(
                           width: 125,
                           height: 40,
-                          decoration: new BoxDecoration(
+                          decoration: BoxDecoration(
                               color: ColorResource.colorFFFFFF,
                               border: Border.all(
                                   color: ColorResource.color23375A, width: 0.5),
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(75.0))),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(75.0))),
                           child: Center(
                             child: CustomText(
                               Languages.of(context)!.logout.toUpperCase(),
@@ -340,7 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 color: ColorResource.colorFFFFFF,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 11.0),
+                  padding: const EdgeInsets.symmetric(vertical: 11.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -352,7 +352,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontSize: FontSize.sixteen,
                           cardShape: 5,
                           isTrailing: true,
-                          leadingWidget: CircleAvatar(
+                          leadingWidget: const CircleAvatar(
                             radius: 13,
                             backgroundColor: ColorResource.colorFFFFFF,
                             child: CustomText('2',
@@ -382,7 +382,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         enableDrag: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -409,7 +409,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context);
@@ -417,7 +417,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: Image.asset(ImageResource.close))
                           ],
                         ),
-                        SizedBox(height: 60),
+                        const SizedBox(height: 60),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),
                           cardShape: 75.0,
@@ -433,7 +433,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           trailingWidget:
                               Image.asset(ImageResource.capturImage),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         CustomButton(
                           Languages.of(context)!.uploadPhoto,
                           textColor: ColorResource.color23375A,
@@ -461,7 +461,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         enableDrag: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -479,7 +479,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isScrollControlled: true,
         enableDrag: false,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -499,7 +499,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         enableDrag: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -63,7 +61,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                         spacing: 10,
                         children: _buildSelectedClip(selectedClipList),
                       ),
-                      SizedBox(height: 27),
+                      const SizedBox(height: 27),
                       CustomText(
                         Languages.of(context)!.remarks,
                         color: ColorResource.color666666,
@@ -82,16 +80,16 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                             }
                             return null;
                           },
-                          decoration: new InputDecoration(
+                          decoration: InputDecoration(
                               hintText:
                                   Languages.of(context)!.writeYourRemarksHere,
                               focusColor: ColorResource.colorE5EAF6,
-                              labelStyle: new TextStyle(
-                                  color: const Color(0xFF424242))),
+                              labelStyle:
+                                  const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
                       // TextField(),
-                      SizedBox(height: 19),
+                      const SizedBox(height: 19),
                       Wrap(
                         spacing: 15,
                         runSpacing: 8,
@@ -126,7 +124,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                       //     ),
                       //   ],
                       // ),
-                      SizedBox(height: 120)
+                      const SizedBox(height: 120)
                     ],
                   ),
                 ),
@@ -159,7 +157,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                   ? ColorResource.color23375A
                   : ColorResource.colorFFFFFF,
               border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
             child: CustomText(
@@ -205,12 +203,13 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                     BottomSheetAppbar(
                         title:
                             Languages.of(context)!.addNewContact.toUpperCase(),
-                        padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
+                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    const Expanded(
+                        child: Center(child: CircularProgressIndicator())),
                   ],
                 ));
           default:
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),

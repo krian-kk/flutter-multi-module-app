@@ -170,7 +170,7 @@ class PageBuilder {
       create: (BuildContext context) =>
           BlocProvider.of<SearchAllocationDetailsBloc>(context)
             ..add(SearchAllocationDetailsInitialEvent()),
-      child: SearchAllocationDetailsScreen(),
+      child: const SearchAllocationDetailsScreen(),
     );
   }
 
@@ -179,7 +179,7 @@ class PageBuilder {
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
             ..add(CaseDetailsInitialEvent()),
-      child: CaseDetailsScreen(),
+      child: const CaseDetailsScreen(),
     );
   }
 

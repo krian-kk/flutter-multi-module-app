@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,21 +51,20 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
                     width: double.infinity,
-                    // ignore: unnecessary_new
                     decoration: BoxDecoration(
                         color: ColorResource.colorFFFFFF,
                         boxShadow: [
                           BoxShadow(
                             color: ColorResource.color000000.withOpacity(0.2),
                             blurRadius: 2.0,
-                            offset: Offset(1.0, 1.0),
+                            offset: const Offset(1.0, 1.0),
                           )
                         ],
                         border: Border.all(
                           color: ColorResource.colorDADADA,
                           width: 0.5,
                         ),
-                        borderRadius: BorderRadius.all(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(10.0),
                         )),
                     child: Padding(
@@ -83,7 +80,6 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                           Container(
                             height: 65,
                             width: double.infinity,
-                            // ignore: unnecessary_new
                             decoration: BoxDecoration(
                                 color:
                                     ColorResource.colorBEC4CF.withOpacity(0.3),
@@ -91,12 +87,12 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                                   color: ColorResource.colorDADADA,
                                   width: 0.5,
                                 ),
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 )),
-                            child: SizedBox(),
+                            child: const SizedBox(),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 14,
                           ),
                           Align(
@@ -108,7 +104,7 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                               fontSize: FontSize.eighteen,
                             ),
                           ),
-                          SizedBox(height: 13),
+                          const SizedBox(height: 13),
                           CustomText(
                             Languages.of(context)!
                                 .noAllocationMessage
@@ -117,13 +113,13 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                             fontWeight: FontWeight.w400,
                             fontSize: FontSize.sixteen,
                           ),
-                          CustomText(
+                          const CustomText(
                             '9841021453',
                             color: ColorResource.color000000,
                             fontWeight: FontWeight.w700,
                             fontSize: FontSize.sixteen,
                           ),
-                          SizedBox(height: 25),
+                          const SizedBox(height: 25),
                           CustomButton(
                             Languages.of(context)!.letsConnectWithManager,
                             buttonBackgroundColor: ColorResource.colorBEC4CF,
@@ -133,7 +129,7 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                             fontWeight: FontWeight.w700,
                             textColor: ColorResource.color23375A,
                           ),
-                          SizedBox(height: 21)
+                          const SizedBox(height: 21)
                         ],
                       ),
                     ),
@@ -149,7 +145,7 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
         width: double.infinity,
         color: ColorResource.colorFFFFFF,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 11.0),
+          padding: const EdgeInsets.symmetric(vertical: 11.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

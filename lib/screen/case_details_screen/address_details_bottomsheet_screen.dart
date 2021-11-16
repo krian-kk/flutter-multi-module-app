@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors
-
 import 'package:flutter/cupertino.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
@@ -34,11 +32,11 @@ class _AddressDetailsBottomSheetScreenState
         children: [
           BottomSheetAppbar(
             title: Languages.of(context)!.addressDetails.toUpperCase(),
-            padding: EdgeInsets.fromLTRB(21, 13, 21, 12),
+            padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
             color: ColorResource.color23375A,
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(21, 0, 21, 12),
+            padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
             child: CustomLoanUserDetails(
               userName:
                   widget.bloc.caseDetailsResult.result?.caseDetails?.cust ?? '',
@@ -78,10 +76,11 @@ class _AddressDetailsBottomSheetScreenState
                     //   ],
                     // ),
                     ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: widget.bloc.caseDetailsResult.result!
-                          .addressDetails!.length,
+                      itemCount: widget.bloc.caseDetailsResult.result
+                              ?.addressDetails?.length ??
+                          0,
                       itemBuilder: (context, i) {
                         return SizedBox(
                           child: Column(
@@ -105,13 +104,13 @@ class _AddressDetailsBottomSheetScreenState
                                 color: ColorResource.color23375A,
                                 fontStyle: FontStyle.normal,
                               ),
-                              SizedBox(height: 7),
+                              const SizedBox(height: 7),
                               Container(
                                 width: double.infinity,
-                                decoration: new BoxDecoration(
+                                decoration: const BoxDecoration(
                                     color: ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
-                                        new Radius.circular(10.0))),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(20, 12, 12, 12),
@@ -141,14 +140,14 @@ class _AddressDetailsBottomSheetScreenState
                                               alignment: Alignment.topRight,
                                               child: Row(
                                                 children: [
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Image.asset(ImageResource
                                                       .activePerson),
                                                 ],
                                               )),
                                         ],
                                       ),
-                                      SizedBox(height: 15),
+                                      const SizedBox(height: 15),
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
@@ -156,19 +155,18 @@ class _AddressDetailsBottomSheetScreenState
                                         children: [
                                           SizedBox(
                                               child: Container(
-                                                  decoration: new BoxDecoration(
+                                                  decoration: const BoxDecoration(
                                                       color: ColorResource
                                                           .colorBEC4CF,
                                                       borderRadius:
-                                                          new BorderRadius.all(
-                                                              new Radius
-                                                                      .circular(
+                                                          BorderRadius.all(
+                                                              Radius.circular(
                                                                   75.0))),
                                                   child: Row(
                                                     children: [
                                                       Image.asset(ImageResource
                                                           .direction),
-                                                      SizedBox(width: 12),
+                                                      const SizedBox(width: 12),
                                                       CustomText(
                                                         Languages.of(context)!
                                                             .viewMap,
@@ -179,11 +177,11 @@ class _AddressDetailsBottomSheetScreenState
                                                         color: ColorResource
                                                             .color23375A,
                                                       ),
-                                                      SizedBox(width: 12),
+                                                      const SizedBox(width: 12),
                                                     ],
                                                   ))),
-                                          Spacer(),
-                                          SizedBox(width: 5),
+                                          const Spacer(),
+                                          const SizedBox(width: 5),
                                           GestureDetector(
                                             onTap: () {
                                               // Navigator.pushNamed(
@@ -210,7 +208,7 @@ class _AddressDetailsBottomSheetScreenState
                                                 Image.asset(
                                                     ImageResource.viewShape,
                                                     height: 20),
-                                                SizedBox(width: 5)
+                                                const SizedBox(width: 5)
                                               ],
                                             ),
                                           ),
@@ -220,7 +218,7 @@ class _AddressDetailsBottomSheetScreenState
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 15)
+                              const SizedBox(height: 15)
                             ],
                           ),
                         );

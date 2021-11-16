@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -15,7 +13,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
-  CustomCollectionsBottomSheet(
+  const CustomCollectionsBottomSheet(
     this.cardTitle, {
     Key? key,
   }) : super(key: key);
@@ -80,7 +78,7 @@ class _CustomCollectionsBottomSheetState
           // ),
           BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -89,12 +87,12 @@ class _CustomCollectionsBottomSheetState
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomLoanUserDetails(
+                    const CustomLoanUserDetails(
                       userName: 'DEBASISH PATNAIK',
                       userId: 'TVSF_BFRT6458922993',
                       userAmount: 397553.67,
                     ),
-                    SizedBox(height: 11),
+                    const SizedBox(height: 11),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -105,12 +103,12 @@ class _CustomCollectionsBottomSheetState
                             // onChanged: (newValue) {
                             //   print(newValue);
                             // },
-                            icon: ImageIcon(
+                            icon: const ImageIcon(
                               AssetImage(ImageResource.dropDownArrow),
                             ),
                           ),
                         ),
-                        SizedBox(width: 7),
+                        const SizedBox(width: 7),
                         Flexible(
                             child: SizedBox(
                           child: Column(
@@ -131,7 +129,7 @@ class _CustomCollectionsBottomSheetState
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickDate(context, dateControlller),
-                                suffixWidget: ImageIcon(
+                                suffixWidget: const ImageIcon(
                                   AssetImage(ImageResource.calendar),
                                   color: ColorResource.colorC4C4C4,
                                 ),
@@ -142,7 +140,7 @@ class _CustomCollectionsBottomSheetState
                         )),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomText(
                       Languages.of(context)!.paymentMode,
                       fontSize: FontSize.fourteen,
@@ -150,26 +148,26 @@ class _CustomCollectionsBottomSheetState
                       fontStyle: FontStyle.normal,
                       color: ColorResource.color101010,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Wrap(
                       runSpacing: 10,
                       spacing: 18,
                       children: _buildPaymentButton(paymentModeButtonList),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Flexible(
                         child: CustomReadOnlyTextField(
                       Languages.of(context)!.refCheque,
                       chequeControlller,
                       isLabel: true,
                     )),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomReadOnlyTextField(
                       Languages.of(context)!.remarks,
                       remarksControlller,
                       isLabel: true,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomButton(
                       Languages.of(context)!.customUpload,
                       fontWeight: FontWeight.w700,
@@ -181,7 +179,7 @@ class _CustomCollectionsBottomSheetState
                       cardElevation: 1,
                       isLeading: true,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),
@@ -192,16 +190,17 @@ class _CustomCollectionsBottomSheetState
             decoration: BoxDecoration(
               color: ColorResource.colorFFFFFF,
               boxShadow: [
-                new BoxShadow(
+                BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
             ),
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -216,7 +215,7 @@ class _CustomCollectionsBottomSheetState
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  SizedBox(width: 25),
+                  const SizedBox(width: 25),
                   SizedBox(
                     width: 191,
                     child: CustomButton(
@@ -247,11 +246,11 @@ class _CustomCollectionsBottomSheetState
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
@@ -293,10 +292,10 @@ class _CustomCollectionsBottomSheetState
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 )
               ],
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
@@ -308,7 +307,7 @@ class _CustomCollectionsBottomSheetState
                     child: Image.asset(ImageResource.money),
                   ),
                 ),
-                SizedBox(width: 7),
+                const SizedBox(width: 7),
                 CustomText(
                   element.title,
                   color: ColorResource.colorFFFFFF,

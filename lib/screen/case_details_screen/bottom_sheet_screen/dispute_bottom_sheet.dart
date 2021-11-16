@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -14,7 +12,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomDisputeBottomSheet extends StatefulWidget {
-  CustomDisputeBottomSheet(
+  const CustomDisputeBottomSheet(
     this.cardTitle, {
     Key? key,
   }) : super(key: key);
@@ -49,7 +47,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
         children: [
           BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -58,12 +56,12 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomLoanUserDetails(
+                    const CustomLoanUserDetails(
                       userName: 'DEBASISH PATNAIK',
                       userId: 'TVSF_BFRT6458922993',
                       userAmount: 397553.67,
                     ),
-                    SizedBox(height: 11),
+                    const SizedBox(height: 11),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +82,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                             isReadOnly: true,
                             onTapped: () =>
                                 pickDate(context, nextActionDateControlller),
-                            suffixWidget: ImageIcon(
+                            suffixWidget: const ImageIcon(
                               AssetImage(ImageResource.calendar),
                               color: ColorResource.colorC4C4C4,
                             ),
@@ -92,21 +90,21 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Flexible(
                         child: CustomReadOnlyTextField(
                       Languages.of(context)!.remarks,
                       remarksControlller,
                       isLabel: true,
                     )),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Flexible(
                       child: CustomDropDownButton(
                         Languages.of(context)!.disputeReason,
                         disputeDropDownList,
                       ),
                     ),
-                    SizedBox(height: 15)
+                    const SizedBox(height: 15)
                   ],
                 ),
               ),
@@ -117,16 +115,17 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
             decoration: BoxDecoration(
               color: ColorResource.colorFFFFFF,
               boxShadow: [
-                new BoxShadow(
+                BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
             ),
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -141,7 +140,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  SizedBox(width: 25),
+                  const SizedBox(width: 25),
                   SizedBox(
                     width: 191,
                     child: CustomButton(
@@ -172,11 +171,11 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,

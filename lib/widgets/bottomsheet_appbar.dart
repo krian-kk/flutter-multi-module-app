@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -11,13 +9,14 @@ class BottomSheetAppbar extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? color;
   final GestureTapCallback? onTap;
-  const BottomSheetAppbar({Key? key, this.title, this.padding, this.color, this.onTap})
+  const BottomSheetAppbar(
+      {Key? key, this.title, this.padding, this.color, this.onTap})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: padding ?? EdgeInsets.fromLTRB(25, 0, 20, 0),
+        padding: padding ?? const EdgeInsets.fromLTRB(25, 0, 20, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,9 +29,9 @@ class BottomSheetAppbar extends StatelessWidget {
             ),
             InkWell(
                 onTap: onTap ??
-                (){
-                  Navigator.pop(context);
-                },
+                    () {
+                      Navigator.pop(context);
+                    },
                 // () {
                 //   Navigator.pop(context);
                 // },

@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -17,7 +15,7 @@ import 'package:origa/widgets/custom_text.dart';
 
 class PhoneScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  PhoneScreen({Key? key, required this.bloc}) : super(key: key);
+  const PhoneScreen({Key? key, required this.bloc}) : super(key: key);
 
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -54,16 +52,16 @@ class _PhoneScreenState extends State<PhoneScreen>
         // backgroundColor: ColorResource.colorF7F8FA,
         backgroundColor: Colors.transparent,
         body: Container(
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
               color: ColorResource.colorFFFFFF,
               boxShadow: [
-                new BoxShadow(
+                BoxShadow(
                     color: ColorResource.colorCACACA.withOpacity(.25),
                     blurRadius: 30.0,
-                    offset: Offset(1.0, 1.0)),
+                    offset: const Offset(1.0, 1.0)),
               ],
               borderRadius:
-                  new BorderRadius.vertical(top: Radius.circular(30))),
+                  const BorderRadius.vertical(top: Radius.circular(30))),
           width: double.infinity,
           child: Column(
             children: [
@@ -106,7 +104,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                         )
                       ],
                     ),
-                    Flexible(
+                    const Flexible(
                       child: SizedBox(
                         width: 255,
                         child: CustomText(
@@ -127,14 +125,14 @@ class _PhoneScreenState extends State<PhoneScreen>
                           child: SizedBox(
                               width: 10,
                               child: Container(
-                                  decoration: new BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       color: ColorResource.colorBEC4CF,
-                                      borderRadius: new BorderRadius.all(
-                                          new Radius.circular(75.0))),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(75.0))),
                                   child: Row(
                                     children: [
                                       Image.asset(ImageResource.phone),
-                                      SizedBox(width: 12),
+                                      const SizedBox(width: 12),
                                       CustomText(
                                         StringResource.call.toUpperCase(),
                                         fontSize: FontSize.fourteen,
@@ -144,7 +142,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     ],
                                   ))),
                         )),
-                        SizedBox(width: 40),
+                        const SizedBox(width: 40),
                         Expanded(
                             child: SizedBox(
                           height: 50,
@@ -163,12 +161,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                 ),
               ),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(color: ColorResource.colorD8D8D8))),
                 child: TabBar(
                   controller: _controller,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   isScrollable: true,
                   indicatorColor: ColorResource.colorD5344C,
                   onTap: (index) {
@@ -177,7 +175,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                     widget.bloc.phoneUnreachableRemarksFocusNode.unfocus();
                     widget.bloc.phoneInvalidRemarksFocusNode.unfocus();
                   },
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color23375A,
                       fontSize: FontSize.fourteen,
@@ -185,7 +183,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                   indicatorWeight: 5.0,
                   labelColor: ColorResource.color23375A,
                   unselectedLabelColor: ColorResource.colorC4C4C4,
-                  // ignore: prefer_const_literals_to_create_immutables
                   tabs: [
                     Tab(text: Languages.of(context)!.connected),
                     Tab(text: Languages.of(context)!.unreachable),
@@ -214,7 +211,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.65,
                         child: TabBarView(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           controller: _controller,
                           children: [
                             PhoneConnectedScreen(
@@ -239,16 +236,16 @@ class _PhoneScreenState extends State<PhoneScreen>
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
                   boxShadow: [
-                    new BoxShadow(
+                    BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
-                      offset: Offset(1.0, 1.0),
+                      offset: const Offset(1.0, 1.0),
                     ),
                   ],
                 ),
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 11.0),
+                  padding: const EdgeInsets.symmetric(vertical: 11.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -271,16 +268,17 @@ class _PhoneScreenState extends State<PhoneScreen>
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
                   boxShadow: [
-                    new BoxShadow(
+                    BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
-                      offset: Offset(1.0, 1.0),
+                      offset: const Offset(1.0, 1.0),
                     ),
                   ],
                 ),
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -295,7 +293,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                             fontStyle: FontStyle.normal,
                             fontSize: FontSize.sixteen,
                           ))),
-                      SizedBox(width: 25),
+                      const SizedBox(width: 25),
                       SizedBox(
                         width: 191,
                         child: _controller.index == 1
@@ -339,7 +337,7 @@ class _PhoneScreenState extends State<PhoneScreen>
         builder: (BuildContext context) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
-            child: CallCustomerBottomSheet(),
+            child: const CallCustomerBottomSheet(),
           );
         });
   }

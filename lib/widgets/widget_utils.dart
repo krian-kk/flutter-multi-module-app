@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/allocation_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -55,7 +52,7 @@ class WidgetUtils {
                             const SizedBox(
                               width: 7,
                             ),
-                            CustomText(
+                            const CustomText(
                               '2.4km 20min',
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
@@ -67,36 +64,36 @@ class WidgetUtils {
                           ],
                         )),
                   )),
-                  if (index == 0 && bloc.showFilterDistance == false)
-                          Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CustomText(
-                                  '10 ' + Languages.of(context)!.allocation,
-                                  fontSize: FontSize.fourteen,
-                                  color: ColorResource.color000000,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                const SizedBox(
-                                  width: 9.0,
-                                ),
-                                Container(
-                                    height: 20,
-                                    width: 20,
-                                    child: Image.asset(ImageResource.star)),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                CustomText(
-                                  bloc.allocationList.length.toString() +
-                                      " " +
-                                      Languages.of(context)!.hignPriority,
-                                  fontSize: FontSize.ten,
-                                  color: ColorResource.color101010,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ],
-                            ),
+              if (index == 0 && bloc.showFilterDistance == false)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      '10 ' + Languages.of(context)!.allocation,
+                      fontSize: FontSize.fourteen,
+                      color: ColorResource.color000000,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    const SizedBox(
+                      width: 9.0,
+                    ),
+                    SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(ImageResource.star)),
+                    const SizedBox(
+                      width: 5.0,
+                    ),
+                    CustomText(
+                      bloc.allocationList.length.toString() +
+                          " " +
+                          Languages.of(context)!.hignPriority,
+                      fontSize: FontSize.ten,
+                      color: ColorResource.color101010,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
               Stack(
                 children: [
                   Padding(
@@ -104,24 +101,27 @@ class WidgetUtils {
                         ? const EdgeInsets.only(bottom: 20)
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
-                      onTap: (){
-                         Navigator.pushNamed(context,
-                                            AppRoutes.caseDetailsScreen);
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.caseDetailsScreen);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: (index == bloc.allocationList.length -1) ? const EdgeInsets.only(bottom: 70):EdgeInsets.zero,
+                        margin: (index == bloc.allocationList.length - 1)
+                            ? const EdgeInsets.only(bottom: 70)
+                            : EdgeInsets.zero,
                         decoration: BoxDecoration(
                           color: ColorResource.colorffffff,
                           border: Border.all(
                               color: ColorResource.colorDADADA, width: 0.5),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
-                            BoxShadow(
+                            const BoxShadow(
                               color: Color.fromRGBO(0, 0, 0, 0.25),
                               // spreadRadius: 1,
                               blurRadius: 2,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
@@ -132,7 +132,7 @@ class WidgetUtils {
                               height: 2.0,
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 2),
                               child: CustomText(
                                 bloc.allocationList[index].loanID!,
@@ -140,18 +140,19 @@ class WidgetUtils {
                                 color: ColorResource.color101010,
                               ),
                             ),
-                            Divider(
+                            const Divider(
                               color: ColorResource.colorDADADA,
                               thickness: 0.5,
                             ),
                             // const SizedBox(height: 6.0,),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(23, 0, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       CustomText(
                                         bloc.allocationList[index].amount!,
@@ -163,7 +164,8 @@ class WidgetUtils {
                                         height: 3.0,
                                       ),
                                       CustomText(
-                                        bloc.allocationList[index].customerName!,
+                                        bloc.allocationList[index]
+                                            .customerName!,
                                         fontSize: FontSize.sixteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w400,
@@ -189,16 +191,17 @@ class WidgetUtils {
                                             ),
                                           ),
                                         )
-                                      : SizedBox(),
+                                      : const SizedBox(),
                                 ],
                               ),
                             ),
-                    
+
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 6),
                               child: Container(
-                                padding: EdgeInsets.fromLTRB(20, 12, 15, 12),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 12, 15, 12),
                                 decoration: BoxDecoration(
                                   color: ColorResource.colorF8F9FB,
                                   borderRadius: BorderRadius.circular(10),
@@ -224,7 +227,7 @@ class WidgetUtils {
                             ),
                             //  const SizedBox(height: 5,),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(23, 5, 14, 13),
+                              padding: const EdgeInsets.fromLTRB(23, 5, 14, 13),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -269,11 +272,11 @@ class WidgetUtils {
                     ),
                   ),
                   bloc.showFilterDistance
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Container(
                           alignment: Alignment.topRight,
                           width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Image.asset(ImageResource.star),
                         ),
                 ],

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -49,7 +47,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
       children: [
         BottomSheetAppbar(
           title: Languages.of(context)!.callCustomer,
-          padding: EdgeInsets.fromLTRB(23, 16, 15, 5),
+          padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
         ),
         Expanded(
           child: Padding(
@@ -59,12 +57,12 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CustomLoanUserDetails(
+                  const CustomLoanUserDetails(
                     userName: 'DEBASISH PATNAIK',
                     userId: 'TVSF_BFRT6458922993',
                     userAmount: 397553.67,
                   ),
-                  SizedBox(height: 18),
+                  const SizedBox(height: 18),
                   Row(
                     children: [
                       Flexible(
@@ -88,36 +86,36 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                           ),
                         ],
                       )),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Flexible(
                           child: CustomDropDownButton(
                         Languages.of(context)!.customerContactNo,
                         customerContactNoDropdownList,
-                        icon: ImageIcon(
+                        icon: const ImageIcon(
                           AssetImage(ImageResource.downShape),
                         ),
                       )),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Flexible(
                       child: CustomDropDownButton(
                     Languages.of(context)!.serviceProvidersList,
                     serviceProviderListDropdownList,
-                    icon: ImageIcon(
+                    icon: const ImageIcon(
                       AssetImage(ImageResource.downShape),
                     ),
                   )),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Flexible(
                       child: CustomDropDownButton(
                     Languages.of(context)!.callersId,
                     callersIDDropdownList,
-                    icon: ImageIcon(
+                    icon: const ImageIcon(
                       AssetImage(ImageResource.downShape),
                     ),
                   )),
-                  SizedBox(height: 15)
+                  const SizedBox(height: 15)
                 ],
               ),
             ),
@@ -131,13 +129,13 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
               BoxShadow(
                 color: ColorResource.color000000.withOpacity(.25),
                 blurRadius: 2.0,
-                offset: Offset(1.0, 1.0),
+                offset: const Offset(1.0, 1.0),
               ),
             ],
           ),
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -151,7 +149,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       fontStyle: FontStyle.normal,
                       fontSize: FontSize.sixteen,
                     ))),
-                SizedBox(width: 25),
+                const SizedBox(width: 25),
                 SizedBox(
                   width: 191,
                   child: CustomButton(
