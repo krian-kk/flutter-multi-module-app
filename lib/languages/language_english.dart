@@ -571,4 +571,13 @@ class LanguageEn extends Languages {
   @override
   String get noAllocationMessage =>
       'Thier is No Allocation assign yet, check with your Manager manager,';
+
+  @override
+  String get caseView => 'Case View';
+
+  @override
+  String get stop => 'Stop';
+
+  @override
+  String get startCalling => 'Start Calling';
 }

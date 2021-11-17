@@ -570,4 +570,13 @@ class LanguageHi extends Languages {
   @override
   String get noAllocationMessage =>
       'अभी तक कोई आवंटन आवंटित नहीं हुआ है, अपने प्रबंधक देबाशीष से संपर्क करें,';
+
+  @override
+  String get caseView => 'मामला दृश्य';
+
+  @override
+  String get stop => 'विराम';
+
+  @override
+  String get startCalling => 'कॉल करना शुरू करें';
 }

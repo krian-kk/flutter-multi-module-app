@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/Telecaller/screens/allocation_T/auto_calling.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 
@@ -50,12 +54,15 @@ class _AllocationTelecallerScreenState
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CustomFloatingActionButton(
-                onTap: () async {
-                  bloc.add(NavigateSearchPageTEvent());
-                },
+            floatingActionButton: Visibility(
+              visible: bloc.isEnableSearchButton,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: CustomFloatingActionButton(
+                  onTap: () async {
+                    bloc.add(NavigateSearchPageTEvent());
+                  },
+                ),
               ),
             ),
             body: Column(
@@ -87,13 +94,54 @@ class _AllocationTelecallerScreenState
                     ],
                   ),
                 ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 0.0),
-                  child: CustomCardList.buildListView(bloc),
-                )),
+                if (bloc.selectedOption == 0)
+                  Expanded(child: CustomCardList.buildListView(bloc)),
+                if (bloc.selectedOption == 1)
+                  Expanded(child: AutoCalling.buildAutoCalling(context, bloc)),
               ],
+            ),
+            bottomNavigationBar: Visibility(
+              visible: bloc.isEnableStartCallButton,
+              child: Container(
+                height: 88,
+                decoration: const BoxDecoration(
+                    color: ColorResource.colorffffff,
+                    border: Border(
+                        top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: CustomButton(
+                          Languages.of(context)!.stop.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          textColor: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          buttonBackgroundColor: ColorResource.colorffffff,
+                          borderColor: ColorResource.colorffffff,
+                          onTap: () {
+                            // Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: CustomButton(
+                          Languages.of(context)!.startCalling.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          trailingWidget: Image.asset(ImageResource.vector),
+                          isLeading: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           );
         },
@@ -117,6 +165,14 @@ class _AllocationTelecallerScreenState
         setState(() {
           bloc.selectedOption = index;
         });
+        if (index == 0) {
+          bloc.isEnableSearchButton = true;
+          bloc.isEnableStartCallButton = false;
+        }
+        if (index == 1) {
+          bloc.isEnableSearchButton = false;
+          bloc.isEnableStartCallButton = true;
+        }
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),

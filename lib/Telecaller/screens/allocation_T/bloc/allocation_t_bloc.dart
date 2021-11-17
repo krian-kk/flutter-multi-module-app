@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/string_resource.dart';
 
@@ -11,7 +12,10 @@ class AllocationTBloc extends Bloc<AllocationTEvent, AllocationTState> {
   AllocationTBloc() : super(AllocationTInitial());
 
   int selectedOption = 0;
+  bool isEnableSearchButton = true;
+  bool isEnableStartCallButton = false;
   List<AllocationListModel> allocationList = [];
+  List<AutoCallingModel> mobileNumberList = [];
 
   List<String> selectOptions = [
     StringResource.priority,
@@ -56,6 +60,19 @@ class AllocationTBloc extends Bloc<AllocationTEvent, AllocationTState> {
           loanID: 'TVS / TVSF_BFRT6524869550',
           ),
       ]); 
+
+      mobileNumberList.addAll([
+        AutoCallingModel(
+          mobileNumber: '9876321230',
+          callResponse: 'Declined Call',
+        ),
+         AutoCallingModel(
+          mobileNumber: '9876321230',
+        ), 
+        AutoCallingModel(
+          mobileNumber: '9876321230',
+        ),
+      ]);
 
       yield AllocationTLoadedState();     
     }

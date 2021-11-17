@@ -384,4 +384,10 @@ abstract class Languages {
   String get noAllocation;
 
   String get noAllocationMessage;
+
+  String get caseView;
+
+  String get stop;
+
+  String get startCalling;
 }
