@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace, prefer_const_constructors_in_immutables
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
-  CaseDetailsScreen({Key? key}) : super(key: key);
+  const CaseDetailsScreen({Key? key}) : super(key: key);
 
   @override
   _CaseDetailsScreenState createState() => _CaseDetailsScreenState();
@@ -26,12 +26,16 @@ class CaseDetailsScreen extends StatefulWidget {
 
 class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   late CaseDetailsBloc bloc;
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     super.initState();
+    // subscription =
+    //     Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
 
     bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
+    // getConnectivty();
 
     // loanDurationController.text = '24';
     // posController.text = '128974';
@@ -41,6 +45,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     // productController.text = '2W';
     // batchNoController.text = 'HAR_50CASES-16102020_015953';
   }
+
+  // getConnectivty() async {
+  //   final result = await Connectivity().checkConnectivity();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +68,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           bloc: bloc,
           builder: (context, state) {
             if (state is CaseDetailsLoadingState) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else {
@@ -119,12 +127,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(left: 12),
+                                        margin: const EdgeInsets.only(left: 12),
                                         width: 55,
                                         height: 18,
-                                        decoration: new BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             color: ColorResource.colorD5344C,
-                                            borderRadius: new BorderRadius.all(
+                                            borderRadius: BorderRadius.all(
                                                 Radius.circular(30.0))),
                                         child: Center(
                                           child: CustomText(
@@ -199,21 +207,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     isLabel: true,
                                     isEnable: false,
                                   ),
-                                  SizedBox(height: 17),
+                                  const SizedBox(height: 17),
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.product,
                                     bloc.productController,
                                     isLabel: true,
                                     isEnable: false,
                                   ),
-                                  SizedBox(height: 17),
+                                  const SizedBox(height: 17),
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.batchNo,
                                     bloc.batchNoController,
                                     isLabel: true,
                                     isEnable: false,
                                   ),
-                                  SizedBox(height: 23),
+                                  const SizedBox(height: 23),
                                   CustomText(
                                     Languages.of(context)!.repaymentInfo,
                                     fontSize: FontSize.sixteen,
@@ -223,12 +231,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   const SizedBox(height: 5),
                                   Container(
                                     width: double.infinity,
-                                    decoration: new BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: ColorResource.colorFFFFFF,
                                         border: Border.all(
                                             color: ColorResource.colorDADADA,
                                             width: 0.5),
-                                        borderRadius: new BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10.0))),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -236,14 +244,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.all(6.0),
+                                          margin: const EdgeInsets.all(6.0),
                                           width: double.infinity,
                                           height: 97,
-                                          decoration: new BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               color: ColorResource.colorF7F8FA,
-                                              borderRadius:
-                                                  new BorderRadius.all(
-                                                      Radius.circular(10.0))),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0))),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 15.0),
@@ -252,7 +259,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: [
+                                              children: const [
                                                 CustomText(
                                                   StringResource
                                                       .beneficiaryDetails,
@@ -262,7 +269,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   color:
                                                       ColorResource.color666666,
                                                 ),
-                                                const SizedBox(height: 9),
+                                                SizedBox(height: 9),
                                                 CustomText(
                                                   'TVSF FINANCE',
                                                   fontWeight: FontWeight.w700,
@@ -271,7 +278,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   fontSize: FontSize.fourteen,
                                                   fontStyle: FontStyle.normal,
                                                 ),
-                                                const SizedBox(height: 7),
+                                                SizedBox(height: 7),
                                                 CustomText(
                                                   'SBI_BFRT6458922993',
                                                   fontWeight: FontWeight.w700,
@@ -302,7 +309,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                              CustomText(
+                                              const CustomText(
                                                 'Bank Name',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
@@ -321,7 +328,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                              CustomText(
+                                              const CustomText(
                                                 'Name',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
@@ -340,7 +347,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                              CustomText(
+                                              const CustomText(
                                                 'URL',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
@@ -384,7 +391,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               .color23375A,
                                                     ),
                                                   ),
-                                                  SizedBox(width: 5),
+                                                  const SizedBox(width: 5),
                                                   Expanded(
                                                     flex: 3,
                                                     child: CustomButton(
@@ -437,7 +444,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                   ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: bloc.caseDetailsResult.result
                                               ?.otherLoanDetails?.length ??
@@ -449,14 +457,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           children: [
                                             Container(
                                               width: double.infinity,
-                                              decoration: new BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   boxShadow: [
-                                                    new BoxShadow(
+                                                    BoxShadow(
                                                       color: ColorResource
                                                           .color000000
                                                           .withOpacity(.25),
                                                       blurRadius: 2.0,
-                                                      offset: Offset(1.0, 1.0),
+                                                      offset: const Offset(
+                                                          1.0, 1.0),
                                                     ),
                                                   ],
                                                   border: Border.all(
@@ -466,8 +475,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   color:
                                                       ColorResource.colorF7F8FA,
                                                   borderRadius:
-                                                      new BorderRadius.all(
-                                                          new Radius.circular(
+                                                      const BorderRadius.all(
+                                                          Radius.circular(
                                                               10.0))),
                                               child: Padding(
                                                 padding:
@@ -491,7 +500,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
-                                                    SizedBox(height: 5),
+                                                    const SizedBox(height: 5),
                                                     CustomText(
                                                       bloc
                                                           .caseDetailsResult
@@ -509,7 +518,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       fontWeight:
                                                           FontWeight.w700,
                                                     ),
-                                                    SizedBox(height: 11),
+                                                    const SizedBox(height: 11),
                                                     CustomText(
                                                       Languages.of(context)!
                                                           .overdueAmount,
@@ -521,7 +530,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
-                                                    SizedBox(height: 5),
+                                                    const SizedBox(height: 5),
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -586,9 +595,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 bottomNavigationBar: Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.15,
-                  decoration: new BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: ColorResource.colorFFFFFF,
-                      borderRadius: new BorderRadius.only(
+                      borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(28.0),
                           topRight: Radius.circular(28.0))),
                   child: Padding(
@@ -603,20 +612,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   bloc.add(ClickAddressBottomSheetEvent()),
                               child: Container(
                                 height: 50,
-                                decoration: new BoxDecoration(
+                                decoration: BoxDecoration(
                                     border: Border.all(
                                         color: ColorResource.color23375A,
                                         width: 0.5),
-                                    borderRadius: new BorderRadius.all(
-                                        new Radius.circular(10.0))),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0, vertical: 5.0),
                                   child: Row(
                                     children: [
                                       Image.asset(ImageResource.direction),
-                                      SizedBox(width: 8),
-                                      Expanded(
+                                      const SizedBox(width: 8),
+                                      const Expanded(
                                           child: CustomText(
                                         'ADDRESS \nDETAILS',
                                         fontSize: FontSize.twelve,
@@ -630,27 +639,27 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                           Expanded(
                             child: GestureDetector(
                               onTap: () =>
                                   bloc.add(ClickCallBottomSheetEvent()),
                               child: Container(
                                 height: 50,
-                                decoration: new BoxDecoration(
+                                decoration: BoxDecoration(
                                     border: Border.all(
                                         color: ColorResource.color23375A,
                                         width: 0.5),
-                                    borderRadius: new BorderRadius.all(
-                                        new Radius.circular(10.0))),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0, vertical: 5.0),
                                   child: Row(
                                     children: [
                                       Image.asset(ImageResource.phone),
-                                      SizedBox(width: 8),
-                                      Expanded(
+                                      const SizedBox(width: 8),
+                                      const Expanded(
                                           child: CustomText(
                                         'CALL \nDETAILS',
                                         fontSize: FontSize.twelve,
@@ -684,7 +693,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         isDismissible: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -702,7 +711,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         isDismissible: false,
         isScrollControlled: true,
         backgroundColor: ColorResource.colorFFFFFF,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),

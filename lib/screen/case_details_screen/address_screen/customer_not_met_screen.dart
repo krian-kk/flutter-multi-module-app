@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
@@ -33,6 +32,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   // TextEditingController remarksController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  String selectedOptionBottomSheetButton = '';
 
   // late FocusNode nextActionDateFocusNode;
   // late FocusNode remarksFocusNode;
@@ -59,6 +59,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
       SelectedClipModel(Languages.of(context)!.doorLocked.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.entryRestricted.toUpperCase()),
     ];
+
+    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.repo, StringResource.repo),
+    ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
@@ -84,7 +91,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           spacing: 10,
                           children: _buildSelectedClip(selectedClipList),
                         ),
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         CustomText(
                           Languages.of(context)!.nextActionDate.toUpperCase(),
                           color: ColorResource.color666666,
@@ -105,7 +112,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                 context,
                                 widget.bloc
                                     .addressCustomerNotMetNextActionDateController),
-                            suffixWidget: ImageIcon(
+                            suffixWidget: const ImageIcon(
                               AssetImage(ImageResource.calendar),
                               color: ColorResource.colorC4C4C4,
                             ),
@@ -119,7 +126,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             },
                           ),
                         ),
-                        SizedBox(height: 27),
+                        const SizedBox(height: 27),
                         Align(
                             alignment: Alignment.bottomLeft,
                             child: CustomText(
@@ -152,16 +159,16 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             //   remarksFocusNode.unfocus();
                             // },
                             // textInputAction: TextInputAction.newline,
-                            decoration: new InputDecoration(
+                            decoration: InputDecoration(
                                 hintText:
                                     Languages.of(context)!.writeYourRemarksHere,
                                 focusColor: ColorResource.colorE5EAF6,
-                                labelStyle: new TextStyle(
-                                    color: const Color(0xFF424242))),
+                                labelStyle:
+                                    const TextStyle(color: Color(0xFF424242))),
                           ),
                         ),
                         // TextField(),
-                        SizedBox(height: 19),
+                        const SizedBox(height: 19),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),
                           cardShape: 75.0,
@@ -178,39 +185,44 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           trailingWidget:
                               Image.asset(ImageResource.capturImage),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Wrap(
                           spacing: 15,
-                          children: [
-                            SizedBox(
-                              width: 179,
-                              child: CustomButton(
-                                StringResource.addNewContact.toUpperCase(),
-                                buttonBackgroundColor:
-                                    ColorResource.color23375A,
-                                borderColor: ColorResource.color23375A,
-                                textColor: ColorResource.colorFFFFFF,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w700,
-                                cardShape: 75,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 157,
-                              child: CustomButton(
-                                Languages.of(context)!.repo.toUpperCase(),
-                                buttonBackgroundColor:
-                                    ColorResource.colorFFFFFF,
-                                borderColor: ColorResource.color23375A,
-                                textColor: ColorResource.color23375A,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w700,
-                                cardShape: 75,
-                              ),
-                            ),
-                          ],
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                          ),
+                          // children: [
+                          //   SizedBox(
+                          //     width: 179,
+                          //     child: CustomButton(
+                          //       StringResource.addNewContact.toUpperCase(),
+                          //       buttonBackgroundColor:
+                          //           ColorResource.color23375A,
+                          //       borderColor: ColorResource.color23375A,
+                          //       textColor: ColorResource.colorFFFFFF,
+                          //       fontSize: FontSize.twelve,
+                          //       fontWeight: FontWeight.w700,
+                          //       cardShape: 75,
+                          //     ),
+                          //   ),
+                          //   SizedBox(
+                          //     width: 157,
+                          //     child: CustomButton(
+                          //       Languages.of(context)!.repo.toUpperCase(),
+                          //       buttonBackgroundColor:
+                          //           ColorResource.colorFFFFFF,
+                          //       borderColor: ColorResource.color23375A,
+                          //       textColor: ColorResource.color23375A,
+                          //       fontSize: FontSize.twelve,
+                          //       fontWeight: FontWeight.w700,
+                          //       cardShape: 75,
+                          //     ),
+                          //   ),
+                          // ],
                         ),
-                        SizedBox(height: 120),
+                        const SizedBox(height: 120),
                       ],
                     ),
                   ),
@@ -241,7 +253,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
             return CustomCaptureImageBottomSheet(
                 Languages.of(context)!.captureImage);
           default:
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -249,6 +261,47 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         }
       },
     );
+  }
+
+  List<Widget> _buildOptionBottomSheetOpenButton(
+      List<OptionBottomSheetButtonModel> list, BuildContext context) {
+    List<Widget> widgets = [];
+    for (var element in list) {
+      widgets.add(InkWell(
+        onTap: () {
+          setState(() {
+            selectedOptionBottomSheetButton = element.title;
+          });
+          // openBottomSheet(
+          //   context,
+          //   element.stringResourceValue,
+          // );
+        },
+        child: Container(
+          height: 45,
+          decoration: BoxDecoration(
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorFFFFFF,
+              border: Border.all(color: ColorResource.color23375A, width: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+            child: CustomText(
+              element.title.toString().toUpperCase(),
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.colorFFFFFF
+                  : ColorResource.color23375A,
+              fontWeight: FontWeight.w700,
+              // lineHeight: 1,
+              fontSize: FontSize.thirteen,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
@@ -291,11 +344,11 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,

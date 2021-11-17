@@ -20,6 +20,7 @@ class AppRoutes {
   static const String homeTabScreen = 'homeTab_screen';
   static const String dashboardScreen = 'dashboard_screen';
   static const String allocationScreen = 'allocation_screen';
+  static const String allocationTelecallerScreen = 'allocation_telecaller_screen';
   static const String searchAllocationDetailsScreen =
       'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
@@ -170,7 +171,7 @@ class PageBuilder {
       create: (BuildContext context) =>
           BlocProvider.of<SearchAllocationDetailsBloc>(context)
             ..add(SearchAllocationDetailsInitialEvent()),
-      child: SearchAllocationDetailsScreen(),
+      child: const SearchAllocationDetailsScreen(),
     );
   }
 
@@ -179,7 +180,7 @@ class PageBuilder {
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
             ..add(CaseDetailsInitialEvent()),
-      child: CaseDetailsScreen(),
+      child: const CaseDetailsScreen(),
     );
   }
 

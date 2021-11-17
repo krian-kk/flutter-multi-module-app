@@ -1,13 +1,13 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhonenInvalidScreen extends StatefulWidget {
@@ -24,6 +24,7 @@ class PhonenInvalidScreen extends StatefulWidget {
 
 class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
     List<SelectedClipModel> selectedClipList = [
@@ -31,6 +32,12 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
       SelectedClipModel(Languages.of(context)!.incorrectNumber.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.numberNotWorking.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
+    ];
+    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -54,7 +61,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                         spacing: 10,
                         children: _buildSelectedClip(selectedClipList),
                       ),
-                      SizedBox(height: 27),
+                      const SizedBox(height: 27),
                       CustomText(
                         Languages.of(context)!.remarks,
                         color: ColorResource.color666666,
@@ -73,43 +80,51 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                             }
                             return null;
                           },
-                          decoration: new InputDecoration(
+                          decoration: InputDecoration(
                               hintText:
                                   Languages.of(context)!.writeYourRemarksHere,
                               focusColor: ColorResource.colorE5EAF6,
-                              labelStyle: new TextStyle(
-                                  color: const Color(0xFF424242))),
+                              labelStyle:
+                                  const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
                       // TextField(),
-                      SizedBox(height: 19),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: CustomButton(
-                              StringResource.addNewContact.toUpperCase(),
-                              textColor: ColorResource.colorFFFFFF,
-                              borderColor: ColorResource.color23375A,
-                              fontSize: FontSize.twelve,
-                              cardShape: 75,
-                              buttonBackgroundColor: ColorResource.color23375A,
-                            ),
-                          ),
-                          SizedBox(height: 11),
-                          Expanded(
-                            child: CustomButton(
-                              Languages.of(context)!.otherFeedBack,
-                              fontSize: FontSize.twelve,
-                              textColor: ColorResource.color23375A,
-                              borderColor: ColorResource.color23375A,
-                              cardShape: 75,
-                              buttonBackgroundColor: ColorResource.colorFFFFFF,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 19),
+                      Wrap(
+                        spacing: 15,
+                        runSpacing: 8,
+                        children: _buildOptionBottomSheetOpenButton(
+                          optionBottomSheetButtonList,
+                          context,
+                        ),
                       ),
-                      SizedBox(height: 120)
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Expanded(
+                      //       child: CustomButton(
+                      //         StringResource.addNewContact.toUpperCase(),
+                      //         textColor: ColorResource.colorFFFFFF,
+                      //         borderColor: ColorResource.color23375A,
+                      //         fontSize: FontSize.twelve,
+                      //         cardShape: 75,
+                      //         buttonBackgroundColor: ColorResource.color23375A,
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: 11),
+                      //     Expanded(
+                      //       child: CustomButton(
+                      //         Languages.of(context)!.otherFeedBack,
+                      //         fontSize: FontSize.twelve,
+                      //         textColor: ColorResource.color23375A,
+                      //         borderColor: ColorResource.color23375A,
+                      //         cardShape: 75,
+                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      const SizedBox(height: 120)
                     ],
                   ),
                 ),
@@ -118,6 +133,89 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  List<Widget> _buildOptionBottomSheetOpenButton(
+      List<OptionBottomSheetButtonModel> list, BuildContext context) {
+    List<Widget> widgets = [];
+    for (var element in list) {
+      widgets.add(InkWell(
+        onTap: () {
+          setState(() {
+            selectedOptionBottomSheetButton = element.title;
+          });
+          openBottomSheet(
+            context,
+            element.stringResourceValue,
+          );
+        },
+        child: Container(
+          height: 45,
+          decoration: BoxDecoration(
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorFFFFFF,
+              border: Border.all(color: ColorResource.color23375A, width: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+            child: CustomText(
+              element.title.toString().toUpperCase(),
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.colorFFFFFF
+                  : ColorResource.color23375A,
+              fontWeight: FontWeight.w700,
+              // lineHeight: 1,
+              fontSize: FontSize.thirteen,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
+  }
+
+  openBottomSheet(BuildContext buildContext, String cardTitle) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      enableDrag: false,
+      isDismissible: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        switch (cardTitle) {
+          case StringResource.otherFeedback:
+            return CustomOtherFeedBackBottomSheet(
+                Languages.of(context)!.otherFeedBack, widget.bloc);
+          case StringResource.addNewContact:
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                        title:
+                            Languages.of(context)!.addNewContact.toUpperCase(),
+                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    const Expanded(
+                        child: Center(child: CircularProgressIndicator())),
+                  ],
+                ));
+          default:
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+        }
+      },
     );
   }
 

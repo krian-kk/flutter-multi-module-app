@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -68,7 +66,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           iconSize: 24,
           isExpanded: widget.isExpanded,
           style: widget.style ??
-              TextStyle(
+              const TextStyle(
                   color: ColorResource.color333333,
                   fontWeight: FontWeight.w700,
                   fontSize: FontSize.fourteen,

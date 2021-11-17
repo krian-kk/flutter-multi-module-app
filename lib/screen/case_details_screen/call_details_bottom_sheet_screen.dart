@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/cupertino.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -33,11 +31,11 @@ class _CallDetailsBottomSheetScreenState
         children: [
           BottomSheetAppbar(
             title: Languages.of(context)!.callDetails.toUpperCase(),
-            padding: EdgeInsets.fromLTRB(21, 13, 21, 12),
+            padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
             color: ColorResource.color23375A,
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(21, 0, 21, 12),
+            padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
             child: CustomLoanUserDetails(
               userName:
                   widget.bloc.caseDetailsResult.result?.caseDetails?.cust ?? '',
@@ -58,10 +56,11 @@ class _CallDetailsBottomSheetScreenState
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: widget
-                          .bloc.caseDetailsResult.result!.callDetails!.length,
+                      itemCount: widget.bloc.caseDetailsResult.result
+                              ?.callDetails?.length ??
+                          0,
                       itemBuilder: (context, i) {
                         return SizedBox(
                           child: Column(
@@ -84,18 +83,18 @@ class _CallDetailsBottomSheetScreenState
                                 fontStyle: FontStyle.normal,
                                 color: ColorResource.color23375A,
                               ),
-                              SizedBox(height: 7),
+                              const SizedBox(height: 7),
                               Container(
                                 width: double.infinity,
-                                decoration: new BoxDecoration(
+                                decoration: const BoxDecoration(
                                     color: ColorResource.colorF8F9FB,
                                     // color: widget
                                     //         .bloc.multiCallDetilsList[i].isDeclinded
                                     //     ? ColorResource.colorD5344C
                                     //         .withOpacity(0.17)
                                     //     : ColorResource.colorF8F9FB,
-                                    borderRadius: new BorderRadius.all(
-                                        new Radius.circular(10.0))),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(20, 12, 12, 12),
@@ -123,7 +122,7 @@ class _CallDetailsBottomSheetScreenState
                                                   color:
                                                       ColorResource.color484848,
                                                 ),
-                                                SizedBox(width: 10),
+                                                const SizedBox(width: 10),
                                                 // widget.bloc.multiCallDetilsList[i]
                                                 //         .isDeclinded
                                                 //     ? CustomText(
@@ -145,7 +144,7 @@ class _CallDetailsBottomSheetScreenState
                                                   ImageResource.activePerson)),
                                         ],
                                       ),
-                                      SizedBox(height: 15),
+                                      const SizedBox(height: 15),
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
@@ -153,19 +152,18 @@ class _CallDetailsBottomSheetScreenState
                                         children: [
                                           SizedBox(
                                               child: Container(
-                                                  decoration: new BoxDecoration(
+                                                  decoration: const BoxDecoration(
                                                       color: ColorResource
                                                           .colorBEC4CF,
                                                       borderRadius:
-                                                          new BorderRadius.all(
-                                                              new Radius
-                                                                      .circular(
+                                                          BorderRadius.all(
+                                                              Radius.circular(
                                                                   75.0))),
                                                   child: Row(
                                                     children: [
                                                       Image.asset(
                                                           ImageResource.phone),
-                                                      SizedBox(width: 12),
+                                                      const SizedBox(width: 12),
                                                       CustomText(
                                                         Languages.of(context)!
                                                             .call,
@@ -179,11 +177,11 @@ class _CallDetailsBottomSheetScreenState
                                                         fontWeight:
                                                             FontWeight.w700,
                                                       ),
-                                                      SizedBox(width: 40),
+                                                      const SizedBox(width: 40),
                                                     ],
                                                   ))),
-                                          Spacer(),
-                                          SizedBox(width: 5),
+                                          const Spacer(),
+                                          const SizedBox(width: 5),
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.pop(context);
@@ -207,7 +205,7 @@ class _CallDetailsBottomSheetScreenState
                                                 Image.asset(
                                                     ImageResource.viewShape,
                                                     height: 20),
-                                                SizedBox(width: 5)
+                                                const SizedBox(width: 5)
                                               ],
                                             ),
                                           ),
@@ -217,7 +215,7 @@ class _CallDetailsBottomSheetScreenState
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 15)
+                              const SizedBox(height: 15)
                             ],
                           ),
                         );

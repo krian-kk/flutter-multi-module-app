@@ -100,6 +100,59 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                Languages.of(context)!.count,
+                                                fontSize: FontSize.ten,
+                                                color:
+                                                    ColorResource.color101010,
+                                              ),
+                                              CustomText(
+                                                '200',
+                                                fontSize: FontSize.fourteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 7,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                Languages.of(context)!.amount,
+                                                fontSize: FontSize.ten,
+                                                color:
+                                                    ColorResource.color101010,
+                                              ),
+                                              CustomText(
+                                                '₹ 3,97,553.67',
+                                                fontSize: FontSize.fourteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   const SizedBox(
                                     height: 12,
                                   ),

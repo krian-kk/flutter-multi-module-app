@@ -14,13 +14,14 @@ class CustomText extends StatefulWidget {
   final bool isSingleLine;
   final int? maxLines;
   final FontWeight? fontWeight;
-  final FontStyle? fontStyle;
+  final FontStyle fontStyle;
   final double? letterSpacing;
   final TextStyle? style;
 
-  CustomText(String text,
-      {this.fontWeight = FontWeight.w400,
-      this.fontStyle,
+  const CustomText(String text,
+      {Key? key,
+      this.fontWeight = FontWeight.w400,
+      this.fontStyle = FontStyle.normal,
       this.fontSize = FontSize.fourteen,
       this.font = Font.latoMedium,
       this.color = ColorResource.color1c1d22,
@@ -32,8 +33,8 @@ class CustomText extends StatefulWidget {
       this.letterSpacing,
       this.style,
       this.maxLines})
-      // ignore: prefer_initializing_formals
-      : text = text;
+      : text = text,
+        super(key: key);
 
   @override
   _CustomTextState createState() => _CustomTextState();
@@ -42,10 +43,8 @@ class CustomText extends StatefulWidget {
 class _CustomTextState extends State<CustomText> {
   @override
   Widget build(BuildContext context) {
-    // ignore: unnecessary_this
-    final Text textWidget = Text(this.widget.text,
-        // ignore: unnecessary_this
-        textAlign: this.widget.textAlign,
+    final Text textWidget = Text(widget.text,
+        textAlign: widget.textAlign,
         overflow: widget.isSingleLine ? TextOverflow.ellipsis : null,
         maxLines: widget.maxLines,
         style: TextStyle(

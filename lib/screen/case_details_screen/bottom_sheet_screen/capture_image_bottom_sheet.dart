@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -13,7 +11,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
-  CustomCaptureImageBottomSheet(
+  const CustomCaptureImageBottomSheet(
     this.cardTitle, {
     Key? key,
   }) : super(key: key);
@@ -61,7 +59,7 @@ class _CustomCaptureImageBottomSheetState
           // ),
           BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -70,12 +68,12 @@ class _CustomCaptureImageBottomSheetState
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomLoanUserDetails(
+                    const CustomLoanUserDetails(
                       userName: 'DEBASISH PATNAIK',
                       userId: 'TVSF_BFRT6458922993',
                       userAmount: 397553.67,
                     ),
-                    SizedBox(height: 11),
+                    const SizedBox(height: 11),
                     CustomButton(
                       Languages.of(context)!.customUpload,
                       fontWeight: FontWeight.w700,
@@ -95,7 +93,7 @@ class _CustomCaptureImageBottomSheetState
                         print(result);
                       },
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Flexible(
                         child: CustomReadOnlyTextField(
                       Languages.of(context)!.remarks,
@@ -103,7 +101,7 @@ class _CustomCaptureImageBottomSheetState
                       isLabel: true,
                       // validationRules: ['required'],
                     )),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),
@@ -117,13 +115,14 @@ class _CustomCaptureImageBottomSheetState
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
             ),
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -138,7 +137,7 @@ class _CustomCaptureImageBottomSheetState
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  SizedBox(width: 25),
+                  const SizedBox(width: 25),
                   SizedBox(
                     width: 191,
                     child: CustomButton(

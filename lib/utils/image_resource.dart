@@ -40,4 +40,5 @@ class ImageResource {
   static const String vector = 'assets/Vector.png';
   static const String downShape = 'assets/down_shape.png';
   static const String expandedDownShape = 'assets/expanded_down_shape.png';
+  static const String star1 = 'assets/svg/star.svg';
 }

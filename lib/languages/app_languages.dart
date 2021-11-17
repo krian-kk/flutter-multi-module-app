@@ -225,9 +225,9 @@ abstract class Languages {
 
   String get changePassword;
 
-  String get launguage;
+  String get languages;
 
-  String get defaultLaunguage;
+  String get defaultLanguage;
 
   String get english;
 
@@ -378,4 +378,16 @@ abstract class Languages {
   String get address;
 
   String get phoneNumber;
+
+  String get letsConnectWithManager;
+
+  String get noAllocation;
+
+  String get noAllocationMessage;
+
+  String get caseView;
+
+  String get stop;
+
+  String get startCalling;
 }

@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:origa/http/response/case_details_response.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/event_detail_model.dart';
-import 'package:origa/models/multi_details_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -15,6 +16,7 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   // double launguageValue = 0;
+  Box caseDetailsApiBox = Hive.box('CaseDetailsApiResultBox');
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -68,38 +70,59 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
-      Map<String, dynamic> caseDetailsData =
-          await getCaseDetailsData('5f80375a86527c46deba2e5d');
-      if (caseDetailsData["success"] == true) {
-        Map<String, dynamic> jsonData = caseDetailsData["data"];
 
-        caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
-
-        loanAmountController.text =
-            caseDetailsResult.result?.caseDetails!.loanAmt.toString() as String;
-        loanDurationController.text =
-            caseDetailsResult.result?.caseDetails!.loanDuration.toString()
-                as String;
-        posController.text =
-            caseDetailsResult.result?.caseDetails!.pos.toString() as String;
-        schemeCodeController.text =
-            caseDetailsResult.result?.caseDetails!.schemeCode.toString()
-                as String;
-        emiStartDateController.text =
-            caseDetailsResult.result?.caseDetails!.emiStartDate.toString()
-                as String;
-        bankNameController.text =
-            caseDetailsResult.result?.caseDetails!.bankName.toString()
-                as String;
-        productController.text =
-            caseDetailsResult.result?.caseDetails!.product.toString() as String;
-        batchNoController.text =
-            caseDetailsResult.result?.caseDetails!.batchNo.toString() as String;
-
-        // yield SevenDaysLoadedState();
+      //check internet
+      final result = await Connectivity().checkConnectivity();
+      if (result == ConnectivityResult.none) {
+        print("djkdld");
       } else {
-        // message = weatherData["data"];
-        // yield SevenDaysFailureState();
+        Map<String, dynamic> caseDetailsData =
+            await getCaseDetailsData('5f80375a86527c46deba2e5d');
+
+        if (caseDetailsData["success"] == true) {
+          Map<String, dynamic> jsonData = caseDetailsData["data"];
+          print(jsonData);
+
+          caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
+          caseDetailsApiBox.clear();
+          caseDetailsApiBox.add(caseDetailsResult.toJson());
+          if (caseDetailsApiBox.isEmpty) {
+            print("is Empty");
+          } else {
+            // loanAmountController.text = caseDetailsApiBox
+            //     .getAt(0)['result']['caseDetails']['loanAmt']
+            //     .toString();
+          }
+
+          loanAmountController.text =
+              caseDetailsResult.result?.caseDetails!.loanAmt.toString()
+                  as String;
+          loanDurationController.text =
+              caseDetailsResult.result?.caseDetails!.loanDuration.toString()
+                  as String;
+          posController.text =
+              caseDetailsResult.result?.caseDetails!.pos.toString() as String;
+          schemeCodeController.text =
+              caseDetailsResult.result?.caseDetails!.schemeCode.toString()
+                  as String;
+          emiStartDateController.text =
+              caseDetailsResult.result?.caseDetails!.emiStartDate.toString()
+                  as String;
+          bankNameController.text =
+              caseDetailsResult.result?.caseDetails!.bankName.toString()
+                  as String;
+          productController.text =
+              caseDetailsResult.result?.caseDetails!.product.toString()
+                  as String;
+          batchNoController.text =
+              caseDetailsResult.result?.caseDetails!.batchNo.toString()
+                  as String;
+
+          // yield SevenDaysLoadedState();
+        } else {
+          // message = weatherData["data"];
+          // yield SevenDaysFailureState();
+        }
       }
 
       addressCustomerMetGridList.addAll([

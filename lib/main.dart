@@ -8,17 +8,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
+import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:origa/utils/app_theme.dart';
+import 'package:path_provider/path_provider.dart';
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_event.dart';
 import 'bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+  await Hive.openBox('CaseDetailsApiResultBox');
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -77,7 +82,11 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, ThemeData theme) {
         return MaterialApp(
           locale: _locale,
-          supportedLocales: const [Locale('en', ''), Locale('hi', ''), Locale('ta', '')],
+          supportedLocales: const [
+            Locale('en', ''),
+            Locale('hi', ''),
+            Locale('ta', '')
+          ],
           localizationsDelegates: const [
             AppLocalizationsDelegate(),
             GlobalMaterialLocalizations.delegate,

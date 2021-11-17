@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, must_be_immutable, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/collections_bottom_sheet.dart';
@@ -16,6 +15,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -34,6 +34,7 @@ class CustomerMetScreen extends StatefulWidget {
 }
 
 class _CustomerMetScreenState extends State<CustomerMetScreen> {
+  String selectedOptionBottomSheetButton = '';
   @override
   void initState() {
     super.initState();
@@ -42,6 +43,14 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.repo, StringResource.repo),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
+    ];
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -58,8 +67,9 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     itemCount: widget.bloc.addressCustomerMetGridList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
                     itemBuilder: (BuildContext context, int innerIndex) {
                       return Padding(
                         padding: const EdgeInsets.all(4.5),
@@ -95,29 +105,28 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                             }
                           },
                           child: Container(
-                            decoration: new BoxDecoration(
+                            decoration: BoxDecoration(
                                 color: ColorResource.colorF8F9FB,
                                 boxShadow: [
                                   BoxShadow(
                                     color: ColorResource.color000000
                                         .withOpacity(0.2),
                                     blurRadius: 2.0,
-                                    offset: Offset(1.0,
+                                    offset: const Offset(1.0,
                                         1.0), // shadow direction: bottom right
                                   )
                                 ],
-                                borderRadius: new BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0))),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              // ignore: prefer_const_literals_to_create_immutables
                               children: [
                                 Image.asset(widget
                                     .bloc
                                     .addressCustomerMetGridList[innerIndex]
                                     .icon),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomText(
                                   widget
                                       .bloc
@@ -135,7 +144,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   CustomButton(
                     Languages.of(context)!.captureImage.toUpperCase(),
                     cardShape: 75.0,
@@ -150,52 +159,56 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         openBottomSheet(context, StringResource.captureImage),
                     trailingWidget: Image.asset(ImageResource.capturImage),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Wrap(
-                    spacing: 11,
-                    runSpacing: 4,
-                    children: [
-                      SizedBox(
-                        width: 179,
-                        child: CustomButton(
-                          StringResource.addNewContact.toUpperCase(),
-                          textColor: ColorResource.colorFFFFFF,
-                          borderColor: ColorResource.color23375A,
-                          fontSize: FontSize.twelve,
-                          cardShape: 75,
-                          buttonBackgroundColor: ColorResource.color23375A,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 157,
-                        child: CustomButton(
-                          Languages.of(context)!.repo.toUpperCase(),
-                          onTap: () =>
-                              openBottomSheet(context, StringResource.repo),
-                          textColor: ColorResource.color23375A,
-                          borderColor: ColorResource.color23375A,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w700,
-                          cardShape: 75,
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 165,
-                        child: CustomButton(
-                          Languages.of(context)!.otherFeedBack.toUpperCase(),
-                          onTap: () => openBottomSheet(
-                              context, StringResource.otherFeedback),
-                          cardShape: 75,
-                          fontSize: FontSize.twelve,
-                          textColor: ColorResource.color23375A,
-                          borderColor: ColorResource.color23375A,
-                          buttonBackgroundColor: ColorResource.colorFFFFFF,
-                        ),
-                      )
-                    ],
+                    spacing: 15,
+                    runSpacing: 8,
+                    children: _buildOptionBottomSheetOpenButton(
+                      optionBottomSheetButtonList,
+                      context,
+                    ),
+                    // children: [
+                    //   SizedBox(
+                    //     width: 179,
+                    //     child: CustomButton(
+                    //       StringResource.addContact.toUpperCase(),
+                    //       textColor: ColorResource.colorFFFFFF,
+                    //       borderColor: ColorResource.color23375A,
+                    //       fontSize: FontSize.twelve,
+                    //       cardShape: 75,
+                    //       buttonBackgroundColor: ColorResource.color23375A,
+                    //     ),
+                    //   ),
+                    //   SizedBox(
+                    //     width: 157,
+                    //     child: CustomButton(
+                    //       Languages.of(context)!.repo.toUpperCase(),
+                    //       onTap: () =>
+                    //           openBottomSheet(context, StringResource.repo),
+                    //       textColor: ColorResource.color23375A,
+                    //       borderColor: ColorResource.color23375A,
+                    //       fontSize: FontSize.twelve,
+                    //       fontWeight: FontWeight.w700,
+                    //       cardShape: 75,
+                    //       buttonBackgroundColor: ColorResource.colorFFFFFF,
+                    //     ),
+                    //   ),
+                    //   SizedBox(
+                    //     width: 165,
+                    //     child: CustomButton(
+                    //       Languages.of(context)!.otherFeedBack.toUpperCase(),
+                    //       onTap: () => openBottomSheet(
+                    //           context, StringResource.otherFeedback),
+                    //       cardShape: 75,
+                    //       fontSize: FontSize.twelve,
+                    //       textColor: ColorResource.color23375A,
+                    //       borderColor: ColorResource.color23375A,
+                    //       buttonBackgroundColor: ColorResource.colorFFFFFF,
+                    //     ),
+                    //   )
+                    // ],
                   ),
-                  SizedBox(height: 120)
+                  const SizedBox(height: 120)
                 ],
               ),
             ),
@@ -205,7 +218,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
         //   decoration: BoxDecoration(
         //     color: ColorResource.colorFFFFFF,
         //     boxShadow: [
-        //       new BoxShadow(
+        //        BoxShadow(
         //         color: ColorResource.color000000.withOpacity(.25),
         //         blurRadius: 2.0,
         //         offset: Offset(1.0, 1.0),
@@ -234,6 +247,48 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
         // ),
       ],
     );
+  }
+
+  List<Widget> _buildOptionBottomSheetOpenButton(
+      List<OptionBottomSheetButtonModel> list, BuildContext context) {
+    List<Widget> widgets = [];
+    for (var element in list) {
+      widgets.add(InkWell(
+        onTap: () {
+          setState(() {
+            selectedOptionBottomSheetButton = element.title;
+          });
+
+          openBottomSheet(
+            context,
+            element.stringResourceValue,
+          );
+        },
+        child: Container(
+          height: 45,
+          decoration: BoxDecoration(
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorFFFFFF,
+              border: Border.all(color: ColorResource.color23375A, width: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+            child: CustomText(
+              element.title.toString().toUpperCase(),
+              color: element.title == selectedOptionBottomSheetButton
+                  ? ColorResource.colorFFFFFF
+                  : ColorResource.color23375A,
+              fontWeight: FontWeight.w700,
+              // lineHeight: 1,
+              fontSize: FontSize.thirteen,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
   }
 
   openBottomSheet(BuildContext buildContext, String cardTitle) {
@@ -272,8 +327,22 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
           case StringResource.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
                 Languages.of(context)!.otherFeedBack, widget.bloc);
+          case StringResource.addNewContact:
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                        title:
+                            Languages.of(context)!.addNewContact.toUpperCase(),
+                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    const Expanded(
+                        child: Center(child: CircularProgressIndicator())),
+                  ],
+                ));
           default:
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),

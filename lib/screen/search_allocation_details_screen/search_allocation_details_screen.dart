@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -16,10 +14,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
 class SearchAllocationDetailsScreen extends StatefulWidget {
-  // final AllocationBloc allocationBloc;
-  SearchAllocationDetailsScreen(
-    // this.allocationBloc,
-     {Key? key}) : super(key: key);
+  const SearchAllocationDetailsScreen({Key? key}) : super(key: key);
 
   @override
   _SearchAllocationDetailsScreenState createState() =>
@@ -196,7 +191,7 @@ class _SearchAllocationDetailsScreenState
           width: double.infinity,
           color: ColorResource.colorFFFFFF,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
+            padding: const EdgeInsets.symmetric(horizontal: 85, vertical: 11.0),
             child: CustomButton(
               Languages.of(context)!.search.toUpperCase(),
               fontSize: FontSize.sixteen,

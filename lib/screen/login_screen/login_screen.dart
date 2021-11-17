@@ -14,6 +14,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../device_info.dart';
 import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -178,6 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         GestureDetector(
                           onTap: () {
                             AppUtils.showToast('Reset Password');
+                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>DeviceInfo()));
                           },
                           child: CustomText(
                             'Reset password via OTP',

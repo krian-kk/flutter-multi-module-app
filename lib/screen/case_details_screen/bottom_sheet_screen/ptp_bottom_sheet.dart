@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -16,7 +14,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
-  CustomPtpBottomSheet(
+  const CustomPtpBottomSheet(
     this.cardTitle, {
     Key? key,
   }) : super(key: key);
@@ -33,6 +31,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController referenceControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
   TextEditingController loanDurationController = TextEditingController();
+
+  String selectedPaymentModeButton = '';
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         children: [
           BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -72,12 +72,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomLoanUserDetails(
+                    const CustomLoanUserDetails(
                       userName: 'DEBASISH PATNAIK',
                       userId: 'TVSF_BFRT6458922993',
                       userAmount: 397553.67,
                     ),
-                    SizedBox(height: 11),
+                    const SizedBox(height: 11),
                     Row(
                       children: [
                         Flexible(
@@ -101,7 +101,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickDate(context, ptpDateControlller),
-                                suffixWidget: ImageIcon(
+                                suffixWidget: const ImageIcon(
                                   AssetImage(ImageResource.calendar),
                                   color: ColorResource.colorC4C4C4,
                                 ),
@@ -109,7 +109,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             ),
                           ],
                         )),
-                        SizedBox(width: 7),
+                        const SizedBox(width: 7),
                         Flexible(
                             child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -131,7 +131,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickTime(context, ptpTimeControlller),
-                                suffixWidget: ImageIcon(
+                                suffixWidget: const ImageIcon(
                                   AssetImage(ImageResource.calendar),
                                   color: ColorResource.colorC4C4C4,
                                 ),
@@ -141,14 +141,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                         )),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Flexible(
                         child: CustomReadOnlyTextField(
                       Languages.of(context)!.ptpAmount,
                       ptpAmountControlller,
                       isLabel: true,
                     )),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomText(
                       Languages.of(context)!.paymentMode,
                       fontSize: FontSize.fourteen,
@@ -156,25 +156,25 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                       fontStyle: FontStyle.normal,
                       color: ColorResource.color101010,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Wrap(
                       runSpacing: 10,
                       spacing: 18,
                       children: _buildPaymentButton(paymentModeButtonList),
                     ),
-                    SizedBox(height: 21),
+                    const SizedBox(height: 21),
                     CustomReadOnlyTextField(
                       Languages.of(context)!.reference,
                       referenceControlller,
                       isLabel: true,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     CustomReadOnlyTextField(
                       Languages.of(context)!.remarks,
                       remarksControlller,
                       isLabel: true,
                     ),
-                    SizedBox(height: 15)
+                    const SizedBox(height: 15)
                   ],
                 ),
               ),
@@ -188,13 +188,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(.25),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
             ),
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -209,7 +210,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  SizedBox(width: 25),
+                  const SizedBox(width: 25),
                   SizedBox(
                     width: 191,
                     child: CustomButton(
@@ -235,21 +236,26 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       widgets.add(InkWell(
         onTap: () {
           // widget.bloc.selectedInvalidClip = element.clipTitle;
-          setState(() {});
+          setState(() {
+            selectedPaymentModeButton = element.title;
+          });
         },
         child: Container(
           width: 150,
           height: 50,
           decoration: BoxDecoration(
-              color: ColorResource.color23375A,
+              color: element.title == selectedPaymentModeButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorBEC4CF,
               boxShadow: [
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0), // shadow direction: bottom right
+                  offset:
+                      const Offset(1.0, 1.0), // shadow direction: bottom right
                 )
               ],
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
@@ -261,7 +267,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     child: Image.asset(ImageResource.money),
                   ),
                 ),
-                SizedBox(width: 7),
+                const SizedBox(width: 7),
                 CustomText(
                   element.title,
                   color: ColorResource.colorFFFFFF,
@@ -290,11 +296,11 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
@@ -316,20 +322,73 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     });
   }
 
+  // List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
+  //   List<Widget> widgets = [];
+  //   for (var element in list) {
+  //     widgets.add(InkWell(
+  //       onTap: () {
+  //         setState(() {
+  //           selectedPaymentModeButton = element.title;
+  //         });
+  //       },
+  //       child: Container(
+  //         width: 150,
+  //         height: 50,
+  //         decoration: BoxDecoration(
+  //             color: element.title == selectedPaymentModeButton
+  //                 ? ColorResource.color23375A
+  //                 : ColorResource.colorBEC4CF,
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: ColorResource.color000000.withOpacity(0.2),
+  //                 blurRadius: 2.0,
+  //                 offset: Offset(1.0, 1.0),
+  //               )
+  //             ],
+  //             borderRadius: BorderRadius.all(Radius.circular(50.0))),
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(5.0),
+  //           child: Row(
+  //             children: [
+  //               CircleAvatar(
+  //                 radius: 20,
+  //                 backgroundColor: ColorResource.colorFFFFFF,
+  //                 child: Center(
+  //                   child: Image.asset(ImageResource.money),
+  //                 ),
+  //               ),
+  //               SizedBox(width: 7),
+  //               CustomText(
+  //                 element.title,
+  //                 color: ColorResource.colorFFFFFF,
+  //                 fontWeight: FontWeight.w700,
+  //                 lineHeight: 1,
+  //                 fontSize: FontSize.sixteen,
+  //                 fontStyle: FontStyle.normal,
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ));
+  //   }
+  //   return widgets;
+  // }
+
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    final initialTime = TimeOfDay(hour: 9, minute: 0);
+    const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: initialTime,
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(fontSize: 10.0),
                 headline1: TextStyle(fontSize: 8.0),
               ),
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
                 onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
