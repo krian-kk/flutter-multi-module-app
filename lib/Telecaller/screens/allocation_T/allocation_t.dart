@@ -13,12 +13,13 @@ import 'custom_card_list.dart';
 class AllocationTelecallerScreen extends StatefulWidget {
   const AllocationTelecallerScreen({Key? key}) : super(key: key);
 
-
   @override
-  _AllocationTelecallerScreenState createState() => _AllocationTelecallerScreenState();
+  _AllocationTelecallerScreenState createState() =>
+      _AllocationTelecallerScreenState();
 }
 
-class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen> {
+class _AllocationTelecallerScreenState
+    extends State<AllocationTelecallerScreen> {
   late AllocationTBloc bloc;
   String version = "";
 
@@ -36,8 +37,7 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
       bloc: bloc,
       listener: (BuildContext context, AllocationTState state) {
         if (state is NavigateSearchPageTState) {
-           Navigator.pushNamed(
-                          context, AppRoutes.searchAllocationDetailsScreen);
+          Navigator.pushNamed(context, AppRoutes.searchAllocationDetailsScreen);
         }
       },
       child: BlocBuilder<AllocationTBloc, AllocationTState>(
@@ -61,8 +61,8 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
             body: Column(
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,10 +87,12 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
                     ],
                   ),
                 ),
-                 Expanded(child: Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                   child: CustomCardList.buildListView(bloc),
-                 )),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
+                  child: CustomCardList.buildListView(bloc),
+                )),
               ],
             ),
           );
@@ -140,5 +142,4 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
       ),
     );
   }
-
 }

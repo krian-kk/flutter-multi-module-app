@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/Telecaller/screens/allocation_T/allocation_t.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -238,7 +239,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                 children: <Widget>[
                                   AllocationScreen(),
                                   DashboardScreen(),
-                                  ProfileScreen(),
+                                  AllocationTelecallerScreen(),
                                 ]),
                           )
                         ])),
