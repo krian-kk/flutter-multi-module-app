@@ -571,4 +571,13 @@ class LanguageTa extends Languages {
   @override
   String get noAllocationMessage =>
       'உங்களுக்கு இன்னும் ஒதுக்கீடு வழங்கப்படவில்லை, உங்கள் மேலாளர் manager சரிபார்க்கவும்,';
+
+  @override
+  String get caseView => 'வழக்கு பார்வை';
+
+  @override
+  String get stop => 'நிறுத்து';
+
+  @override
+  String get startCalling => 'அழைப்பைத் தொடங்குங்கள்';
 }
