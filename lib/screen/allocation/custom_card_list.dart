@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/router.dart';
@@ -85,7 +86,8 @@ class CustomCardList {
                                   Container(
                                       height: 20,
                                       width: 20,
-                                      child: Image.asset(ImageResource.star)),
+                                      child: SvgPicture.asset(ImageResource.star1)
+                                      ),
                                   const SizedBox(
                                     width: 5.0,
                                   ),

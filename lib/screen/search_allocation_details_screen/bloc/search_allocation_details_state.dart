@@ -10,3 +10,9 @@ class SearchAllocationDetailsInitialState extends SearchAllocationDetailsState {
 
 class SearchAllocationDetailsLoadingState extends SearchAllocationDetailsState {
 }
+
+class SearchAllocationDetailsLoadedState extends SearchAllocationDetailsState {
+}
+
+// class ShowPincodeInAllocationState extends SearchAllocationDetailsState {
+// }
