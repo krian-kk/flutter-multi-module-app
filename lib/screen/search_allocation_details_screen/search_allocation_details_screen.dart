@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -50,7 +51,11 @@ class _SearchAllocationDetailsScreenState
         body: BlocListener<SearchAllocationDetailsBloc,
             SearchAllocationDetailsState>(
           bloc: bloc,
-          listener: (context, state) {},
+          listener: (context, state) {
+            // if (state is ShowPincodeInAllocationState) {
+              
+            // }
+          },
           child: BlocBuilder<SearchAllocationDetailsBloc,
               SearchAllocationDetailsState>(
             bloc: bloc,
@@ -199,6 +204,11 @@ class _SearchAllocationDetailsScreenState
                     statusController.text.isNotEmpty ||
                     pincodeController.text.isNotEmpty ||
                     customerIDController.text.isNotEmpty) {
+                      // bloc.add(ShowPincodeInAllocationEvent());
+                      setState(() {
+                      // widget.allocationBloc.isShowSearchPincode = true;
+                        
+                      });
                   Navigator.pop(context);
                 } else {
                   AppUtils.showSnackBar(context,

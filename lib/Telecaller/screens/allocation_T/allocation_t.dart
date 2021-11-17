@@ -97,7 +97,9 @@ class _AllocationTelecallerScreenState
                 if (bloc.selectedOption == 0)
                   Expanded(child: CustomCardList.buildListView(bloc)),
                 if (bloc.selectedOption == 1)
-                  Expanded(child: AutoCalling.buildAutoCalling(context, bloc)),
+                  Expanded(
+                      child: SingleChildScrollView(
+                          child: AutoCalling.buildAutoCalling(context, bloc))),
               ],
             ),
             bottomNavigationBar: Visibility(

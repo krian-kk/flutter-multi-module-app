@@ -5,3 +5,6 @@ class SearchAllocationDetailsEvent extends BaseEquatable {}
 
 class SearchAllocationDetailsInitialEvent extends SearchAllocationDetailsEvent {
 }
+
+// class ShowPincodeInAllocationEvent extends SearchAllocationDetailsEvent {
+// }
