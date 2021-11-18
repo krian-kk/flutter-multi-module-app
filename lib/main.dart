@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
-import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:hive/hive.dart';
@@ -23,7 +22,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  await Hive.openBox('CaseDetailsApiResultBox');
+  // await Hive.openBox<HiveCaseDetailModel>('CaseDetailsApiResultBox');
+  // Hive.registerAdapter(HiveCaseDetailModelAdapter());
+  // Hive.isAdapterRegistered(0);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

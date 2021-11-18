@@ -237,7 +237,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  AllocationTelecallerScreen(),
+                                  AllocationScreen(),
                                   DashboardScreen(),
                                   ProfileScreen(),
                                 ]),

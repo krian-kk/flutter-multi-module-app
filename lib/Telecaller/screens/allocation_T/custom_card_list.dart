@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/router.dart';
@@ -63,8 +64,9 @@ class CustomCardList {
                       padding: const EdgeInsets.only(bottom: 10, top: 19),
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(
-                              context, AppRoutes.caseDetailsTelecallerScreen);
+                          // Navigator.pushNamed(
+                          //     context, AppRoutes.caseDetailsTelecallerScreen);
+                          caseDetailsBottomSheet(context);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -248,6 +250,25 @@ class CustomCardList {
               ],
             ),
           );
+        });
+  }
+
+  static caseDetailsBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+        isDismissible: false,
+        // enableDrag: false,
+        isScrollControlled: true,
+        context: buildContext,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        ),
+        backgroundColor: ColorResource.colorFFFFFF,
+        builder: (BuildContext context) {
+          // return SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.89,
+          // );
+          return CaseDetailsTelecallerScreen();
         });
   }
 }
