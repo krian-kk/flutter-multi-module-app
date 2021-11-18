@@ -16,7 +16,7 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   // double launguageValue = 0;
-  Box caseDetailsApiBox = Hive.box('CaseDetailsApiResultBox');
+  // Box caseDetailsApiBox = Hive.box('CaseDetailsApiResultBox');
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -84,15 +84,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           print(jsonData);
 
           caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
-          caseDetailsApiBox.clear();
-          caseDetailsApiBox.add(caseDetailsResult.toJson());
-          if (caseDetailsApiBox.isEmpty) {
-            print("is Empty");
-          } else {
-            // loanAmountController.text = caseDetailsApiBox
-            //     .getAt(0)['result']['caseDetails']['loanAmt']
-            //     .toString();
-          }
+          // caseDetailsApiBox.clear();
+          // caseDetailsApiBox.add(caseDetailsResult.toJson());
+          // if (caseDetailsApiBox.isEmpty) {
+          //   print("is Empty");
+          // } else {
+          //   // loanAmountController.text = caseDetailsApiBox
+          //   //     .getAt(0)['result']['caseDetails']['loanAmt']
+          //   //     .toString();
+          // }
 
           loanAmountController.text =
               caseDetailsResult.result?.caseDetails!.loanAmt.toString()
