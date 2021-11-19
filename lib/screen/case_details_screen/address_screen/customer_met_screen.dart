@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -122,7 +123,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Image.asset(widget
+                                SvgPicture.asset(widget
                                     .bloc
                                     .addressCustomerMetGridList[innerIndex]
                                     .icon),
@@ -157,7 +158,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     isLeading: true,
                     onTap: () =>
                         openBottomSheet(context, StringResource.captureImage),
-                    trailingWidget: Image.asset(ImageResource.capturImage),
+                    trailingWidget:
+                        SvgPicture.asset(ImageResource.captureImage),
                   ),
                   const SizedBox(height: 20),
                   Wrap(

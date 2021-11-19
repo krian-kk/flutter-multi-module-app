@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/Telecaller/screens/phone_t_screen.dart/bloc/phone_telecaller_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -101,7 +102,7 @@ class _PhoneConnectedTelecallerScreenState
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Image.asset(widget.bloc
+                                SvgPicture.asset(widget.bloc
                                     .phoneCustomerMetGridList[innerIndex].icon),
                                 const SizedBox(height: 8),
                                 CustomText(

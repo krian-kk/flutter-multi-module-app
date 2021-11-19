@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -36,31 +37,32 @@ class _YardingTabState extends State<YardingTab> {
     timeController.text = '23:48';
     remarksController.text = 'NKS';
   }
-  
 
   Future getFiles() async {
-     FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['jpg', 'pdf', 'doc'],
-        );
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
 
-        print(result);
+    print(result);
   }
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
-     builder: (BuildContext context, StateSetter setState) {
-       return Scaffold(
-         backgroundColor: ColorResource.colorffffff,
-         body: Column(
-           // ignore: prefer_const_literals_to_create_immutables
-           children: [
-             Expanded(
-               child: Padding(
-                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                 child: SingleChildScrollView(
-                   child: Column(
-                     children: [
+        builder: (BuildContext context, StateSetter setState) {
+      return Scaffold(
+        backgroundColor: ColorResource.colorffffff,
+        body: Column(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
@@ -97,7 +99,9 @@ class _YardingTabState extends State<YardingTab> {
                           isEnable: true,
                         ),
                       ),
-                      const SizedBox(height: 7,),
+                      const SizedBox(
+                        height: 7,
+                      ),
                       CustomButton(
                         Languages.of(context)!.uploadDepositSlip,
                         fontWeight: FontWeight.w700,
@@ -105,20 +109,19 @@ class _YardingTabState extends State<YardingTab> {
                         buttonBackgroundColor: ColorResource.color23375A,
                         cardShape: 50,
                         isLeading: true,
-                        trailingWidget: Image.asset(ImageResource.upload),
-                        onTap: (){
+                        trailingWidget: SvgPicture.asset(ImageResource.upload),
+                        onTap: () {
                           getFiles();
                         },
                       )
-                     ],
-                   ),
-                 ),
-               ),
-             )
-           ],
-         ),
-       );
-     }
-    );
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }

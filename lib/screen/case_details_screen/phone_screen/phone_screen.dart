@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/bottom_sheet_screen/event_details_bottom_sheet.dart';
@@ -96,10 +97,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                         Wrap(
                           spacing: 27,
                           children: [
-                            Image.asset(ImageResource.activePerson),
-                            GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                child: Image.asset(ImageResource.close))
+                            SvgPicture.asset(ImageResource.activePerson),
+                            InkWell(
+                              onTap: () => Navigator.pop(context),
+                              child: SvgPicture.asset(ImageResource.close),
+                            )
                           ],
                         )
                       ],

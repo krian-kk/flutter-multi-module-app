@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
@@ -43,7 +44,7 @@ class CustomCardList {
                         Container(
                             height: 20,
                             width: 20,
-                            child: Image.asset(ImageResource.star)),
+                            child: SvgPicture.asset(ImageResource.star)),
                         const SizedBox(
                           width: 5.0,
                         ),
@@ -225,7 +226,7 @@ class CustomCardList {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                            Image.asset(
+                                            SvgPicture.asset(
                                                 ImageResource.forwardArrow)
                                           ],
                                         ),
@@ -243,7 +244,7 @@ class CustomCardList {
                       alignment: Alignment.topRight,
                       width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Image.asset(ImageResource.star),
+                      child: SvgPicture.asset(ImageResource.star),
                     ),
                   ],
                 ),

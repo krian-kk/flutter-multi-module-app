@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
@@ -116,7 +117,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         onTap: () => openBottomSheet(
                             context, StringResource.captureImage),
                         // onTap: () => pickImage(source, cameraDialogueContext)
-                        trailingWidget: Image.asset(ImageResource.capturImage),
+                        trailingWidget:
+                            SvgPicture.asset(ImageResource.captureImage),
                       ),
                       const SizedBox(height: 20),
                       Wrap(

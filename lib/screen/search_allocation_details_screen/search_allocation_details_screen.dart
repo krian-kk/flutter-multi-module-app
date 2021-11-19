@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
@@ -53,7 +54,7 @@ class _SearchAllocationDetailsScreenState
           bloc: bloc,
           listener: (context, state) {
             // if (state is ShowPincodeInAllocationState) {
-              
+
             // }
           },
           child: BlocBuilder<SearchAllocationDetailsBloc,
@@ -129,7 +130,7 @@ class _SearchAllocationDetailsScreenState
                                     isBorder: true,
                                   ),
                                   const SizedBox(height: 19),
-                                  GestureDetector(
+                                  InkWell(
                                     onTap: () {
                                       setState(() {
                                         value1 = !value1;
@@ -137,7 +138,7 @@ class _SearchAllocationDetailsScreenState
                                     },
                                     child: Row(
                                       children: [
-                                        Image.asset(value1
+                                        SvgPicture.asset(value1
                                             ? ImageResource.checkOn
                                             : ImageResource.checkOff),
                                         const SizedBox(width: 13),
@@ -152,7 +153,7 @@ class _SearchAllocationDetailsScreenState
                                       ],
                                     ),
                                   ),
-                                  GestureDetector(
+                                  InkWell(
                                     onTap: () {
                                       setState(() {
                                         value2 = !value2;
@@ -160,7 +161,7 @@ class _SearchAllocationDetailsScreenState
                                     },
                                     child: Row(
                                       children: [
-                                        Image.asset(value2
+                                        SvgPicture.asset(value2
                                             ? ImageResource.checkOn
                                             : ImageResource.checkOff),
                                         const SizedBox(width: 13),
@@ -204,11 +205,10 @@ class _SearchAllocationDetailsScreenState
                     statusController.text.isNotEmpty ||
                     pincodeController.text.isNotEmpty ||
                     customerIDController.text.isNotEmpty) {
-                      // bloc.add(ShowPincodeInAllocationEvent());
-                      setState(() {
-                      // widget.allocationBloc.isShowSearchPincode = true;
-                        
-                      });
+                  // bloc.add(ShowPincodeInAllocationEvent());
+                  setState(() {
+                    // widget.allocationBloc.isShowSearchPincode = true;
+                  });
                   Navigator.pop(context);
                 } else {
                   AppUtils.showSnackBar(context,

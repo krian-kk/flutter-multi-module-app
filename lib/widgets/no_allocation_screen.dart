@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -137,7 +138,7 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                   fontSize: FontSize.sixteen,
                   cardShape: 5,
                   isLeading: true,
-                  trailingWidget: Image.asset(ImageResource.vector),
+                  trailingWidget: SvgPicture.asset(ImageResource.vector),
                 ),
               ),
             ],

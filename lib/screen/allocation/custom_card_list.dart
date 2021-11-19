@@ -86,7 +86,7 @@ class CustomCardList {
                       Container(
                           height: 20,
                           width: 20,
-                          child: SvgPicture.asset(ImageResource.star1)),
+                          child: SvgPicture.asset(ImageResource.star)),
                       const SizedBox(
                         width: 5.0,
                       ),
@@ -257,7 +257,7 @@ class CustomCardList {
                                           const SizedBox(
                                             width: 10,
                                           ),
-                                          Image.asset(
+                                          SvgPicture.asset(
                                               ImageResource.forwardArrow)
                                         ],
                                       ),
@@ -277,7 +277,7 @@ class CustomCardList {
                           alignment: Alignment.topRight,
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Image.asset(ImageResource.star),
+                          child: SvgPicture.asset(ImageResource.star),
                         ),
                 ],
               ),

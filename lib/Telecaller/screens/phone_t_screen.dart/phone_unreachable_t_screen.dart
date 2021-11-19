@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/Telecaller/screens/phone_t_screen.dart/bloc/phone_telecaller_bloc.dart';
@@ -97,10 +98,14 @@ class _PhoneUnreachableTelecallerScreenState
                               context,
                               widget.bloc
                                   .phoneUnreachableNextActionDateController),
-                          suffixWidget: const ImageIcon(
-                            AssetImage(ImageResource.calendar),
-                            color: ColorResource.colorC4C4C4,
+                          suffixWidget: SvgPicture.asset(
+                            ImageResource.calendar,
+                            fit: BoxFit.scaleDown,
                           ),
+                          //  const ImageIcon(
+                          //   AssetImage(ImageResource.calendar),
+                          //   color: ColorResource.colorC4C4C4,
+                          // ),
                           onEditing: () {
                             widget.bloc.phoneUnreachableNextActionDateFocusNode
                                 .unfocus();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
@@ -112,9 +113,9 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                 context,
                                 widget.bloc
                                     .addressCustomerNotMetNextActionDateController),
-                            suffixWidget: const ImageIcon(
-                              AssetImage(ImageResource.calendar),
-                              color: ColorResource.colorC4C4C4,
+                            suffixWidget: SvgPicture.asset(
+                              ImageResource.calendar,
+                              fit: BoxFit.scaleDown,
                             ),
                             // validationRules: ['required'],
                             onEditing: () {
@@ -183,7 +184,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           isLeading: true,
                           // onTap: () => pickImage(source, cameraDialogueContext)
                           trailingWidget:
-                              Image.asset(ImageResource.capturImage),
+                              SvgPicture.asset(ImageResource.captureImage),
                         ),
                         const SizedBox(height: 20),
                         Wrap(

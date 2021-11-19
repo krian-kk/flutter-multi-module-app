@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -92,9 +93,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickDate(context, dateControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                               ),
                             ),
@@ -121,9 +122,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                 timeControlller,
                                 onTapped: () =>
                                     pickTime(context, timeControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                               ),
                             ),
@@ -156,7 +157,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                     CustomButton(
                       Languages.of(context)!.customUpload,
                       fontWeight: FontWeight.w700,
-                      trailingWidget: Image.asset(ImageResource.upload),
+                      trailingWidget: SvgPicture.asset(ImageResource.upload),
                       fontSize: FontSize.sixteen,
                       buttonBackgroundColor: ColorResource.color23375A,
                       borderColor: ColorResource.colorDADADA,

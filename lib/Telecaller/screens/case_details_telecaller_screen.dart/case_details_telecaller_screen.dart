@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/bloc/casedetails_telecaller_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -371,7 +372,7 @@ class _CaseDetailsTelecallerScreenState
                                                           .color23375A,
                                                       isLeading: true,
                                                       trailingWidget:
-                                                          Image.asset(
+                                                          SvgPicture.asset(
                                                               ImageResource
                                                                   .whatsApp),
                                                       onTap: () async {
@@ -542,9 +543,9 @@ class _CaseDetailsTelecallerScreenState
                                                             ),
                                                             const SizedBox(
                                                                 width: 10),
-                                                            Image.asset(
+                                                            SvgPicture.asset(
                                                                 ImageResource
-                                                                    .viewShape)
+                                                                    .forwardArrow)
                                                           ],
                                                         )
                                                       ],

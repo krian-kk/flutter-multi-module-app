@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -101,9 +102,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickDate(context, ptpDateControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                               ),
                             ),
@@ -131,9 +132,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickTime(context, ptpTimeControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                               ),
                             ),
@@ -264,7 +265,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   radius: 20,
                   backgroundColor: ColorResource.colorFFFFFF,
                   child: Center(
-                    child: Image.asset(ImageResource.money),
+                    child: SvgPicture.asset(ImageResource.money),
                   ),
                 ),
                 const SizedBox(width: 7),

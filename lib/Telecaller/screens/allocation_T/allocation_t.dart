@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/Telecaller/screens/allocation_T/auto_calling.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -136,7 +137,8 @@ class _AllocationTelecallerScreenState
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w600,
                           cardShape: 5,
-                          trailingWidget: Image.asset(ImageResource.vector),
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.vector),
                           isLeading: true,
                         ),
                       ),

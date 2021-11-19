@@ -34,6 +34,7 @@ class CasedetailsTelecallerBloc
         bankNameController.text = 'TVS';
         productController.text = '2W';
         batchNoController.text = 'HAR_50CASES-16102020_015953';
+
         final result = await Connectivity().checkConnectivity();
         if (result == ConnectivityResult.none) {
         } else {

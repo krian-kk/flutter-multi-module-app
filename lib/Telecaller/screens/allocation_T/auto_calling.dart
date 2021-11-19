@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -37,7 +38,7 @@ class AutoCalling {
                     const SizedBox(
                       width: 15,
                     ),
-                    Image.asset(ImageResource.activePerson),
+                    SvgPicture.asset(ImageResource.activePerson),
                     const Spacer(),
                     InkWell(
                       onTap: () => Navigator.pushNamed(
@@ -53,7 +54,7 @@ class AutoCalling {
                           const SizedBox(
                             width: 10,
                           ),
-                          Image.asset(ImageResource.forwardArrow),
+                          SvgPicture.asset(ImageResource.forwardArrow),
                         ],
                       ),
                     )
@@ -240,7 +241,7 @@ class AutoCalling {
                         const SizedBox(
                           height: 13,
                         ),
-                        Image.asset(
+                        SvgPicture.asset(
                           ImageResource.downArrow,
                           width: 15,
                         ),

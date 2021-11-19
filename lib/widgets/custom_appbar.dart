@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -155,7 +156,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
     return Visibility(
       visible: widget.showClose!,
       child: GestureDetector(
-        child: Image.asset(ImageResource.close),
+        child: SvgPicture.asset(ImageResource.close),
         onTap: () {
           setState(() {
             widget.onItemSelected!('close');

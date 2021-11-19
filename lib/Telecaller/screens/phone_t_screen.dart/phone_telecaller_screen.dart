@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/Telecaller/screens/phone_t_screen.dart/bloc/phone_telecaller_bloc.dart';
 import 'package:origa/Telecaller/screens/phone_t_screen.dart/phone_connected_t_screen.dart';
 import 'package:origa/Telecaller/screens/phone_t_screen.dart/phone_invalid_telecaller_screen.dart';
@@ -114,12 +115,12 @@ class _PhoneTelecallerScreenState extends State<PhoneTelecallerScreen>
                                         Wrap(
                                           spacing: 27,
                                           children: [
-                                            Image.asset(
+                                            SvgPicture.asset(
                                                 ImageResource.activePerson),
-                                            GestureDetector(
+                                            InkWell(
                                                 onTap: () =>
                                                     Navigator.pop(context),
-                                                child: Image.asset(
+                                                child: SvgPicture.asset(
                                                     ImageResource.close))
                                           ],
                                         )
