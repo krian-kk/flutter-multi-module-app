@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -57,11 +58,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is MessageState) {
           messageShowBottomSheet();
         }
-        if (state is FilterSelectOptionState) {
-        }
+        if (state is FilterSelectOptionState) {}
         if (state is NavigateSearchPageState) {
-           Navigator.pushNamed(
-                          context, AppRoutes.searchAllocationDetailsScreen, arguments: bloc);
+          Navigator.pushNamed(context, AppRoutes.searchAllocationDetailsScreen,
+              arguments: bloc);
         }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
@@ -130,17 +130,19 @@ class _AllocationScreenState extends State<AllocationScreen> {
             body: Column(
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Visibility(
                         visible: areyouatOffice,
                         child: Container(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 5.0),
                           decoration: BoxDecoration(
                             color: ColorResource.colorffffff,
                             borderRadius: BorderRadius.circular(10),
@@ -150,7 +152,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(ImageResource.location),
+                              SvgPicture.asset(ImageResource.location),
                               const SizedBox(
                                 width: 13.0,
                               ),
@@ -210,8 +212,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           margin: const EdgeInsets.only(bottom: 15),
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(35, 55, 90, 0.27),
                             borderRadius: BorderRadius.circular(10),
@@ -250,9 +252,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       const SizedBox(
                         height: 13.0,
                       ),
-                      bloc.showFilterDistance
-                          ? _buildBuildRoute()
-                          : SizedBox(),
+                      bloc.showFilterDistance ? _buildBuildRoute() : SizedBox(),
                       // const SizedBox(
                       //   height: 5.0,
                       // ),
@@ -260,10 +260,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     ],
                   ),
                 ),
-                 Expanded(child: Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                   child: CustomCardList.buildListView(bloc),
-                 )),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
+                  child: CustomCardList.buildListView(bloc),
+                )),
               ],
             ),
           );
@@ -358,7 +360,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             const SizedBox(
               width: 5,
             ),
-            Image.asset(ImageResource.location2),
+            SvgPicture.asset(ImageResource.location2),
             const SizedBox(
               width: 8,
             ),
@@ -461,7 +463,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         });
   }
 
-    messageShowBottomSheet() {
+  messageShowBottomSheet() {
     showModalBottomSheet(
         context: context,
         isDismissible: false,

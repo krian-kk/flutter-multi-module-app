@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 
@@ -60,7 +61,7 @@ class _CustomTextState extends State<CustomText> {
             fontWeight: widget.fontWeight));
 
     if (widget.onTap != null) {
-      return GestureDetector(
+      return InkWell(
         onTap: widget.onTap,
         child: textWidget,
       );

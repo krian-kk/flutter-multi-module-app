@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 
@@ -17,7 +18,7 @@ class _CustomFloatingActionButtonState
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      child: Image.asset(ImageResource.search),
+      child: SvgPicture.asset(ImageResource.search),
       // elevation: 15,
       splashColor: ColorResource.colorEA6D48,
       foregroundColor: ColorResource.colorEA6D48,

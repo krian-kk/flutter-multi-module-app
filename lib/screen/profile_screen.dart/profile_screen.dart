@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
@@ -294,7 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              Image.asset(
+                                              SvgPicture.asset(
                                                   ImageResource.forwardArrow)
                                             ],
                                           ),
@@ -414,7 +415,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
-                                child: Image.asset(ImageResource.close))
+                                child: SvgPicture.asset(ImageResource.close))
                           ],
                         ),
                         const SizedBox(height: 60),
@@ -431,7 +432,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onTap: () => pickImage(ImageSource.camera, context),
                           // onTap: () => pickImage(source, cameraDialogueContext)
                           trailingWidget:
-                              Image.asset(ImageResource.capturImage),
+                              SvgPicture.asset(ImageResource.captureImage),
                         ),
                         const SizedBox(height: 20),
                         CustomButton(
@@ -446,7 +447,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
                           trailingWidget:
-                              Image.asset(ImageResource.uploadPhoto),
+                              SvgPicture.asset(ImageResource.uploadPhoto),
                         ),
                       ],
                     ),

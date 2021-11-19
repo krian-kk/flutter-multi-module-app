@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -58,24 +59,6 @@ class _CustomCollectionsBottomSheetState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       CustomText(
-          //         widget.cardTitle,
-          //         color: ColorResource.color101010,
-          //         fontWeight: FontWeight.w700,
-          //         fontSize: FontSize.sixteen,
-          //         fontStyle: FontStyle.normal,
-          //       ),
-          //       GestureDetector(
-          //           onTap: () => Navigator.pop(context),
-          //           child: Image.asset(ImageResource.close))
-          //     ],
-          //   ),
-          // ),
           BottomSheetAppbar(
               title: widget.cardTitle,
               padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
@@ -103,9 +86,7 @@ class _CustomCollectionsBottomSheetState
                             // onChanged: (newValue) {
                             //   print(newValue);
                             // },
-                            icon: const ImageIcon(
-                              AssetImage(ImageResource.dropDownArrow),
-                            ),
+                            icon: SvgPicture.asset(ImageResource.dropDownArrow),
                           ),
                         ),
                         const SizedBox(width: 7),
@@ -129,9 +110,9 @@ class _CustomCollectionsBottomSheetState
                                 isReadOnly: true,
                                 onTapped: () =>
                                     pickDate(context, dateControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                                 // focusColor: ColorResource.colorE5EAF6,
                               ),
@@ -171,7 +152,7 @@ class _CustomCollectionsBottomSheetState
                     CustomButton(
                       Languages.of(context)!.customUpload,
                       fontWeight: FontWeight.w700,
-                      trailingWidget: Image.asset(ImageResource.upload),
+                      trailingWidget: SvgPicture.asset(ImageResource.upload),
                       fontSize: FontSize.sixteen,
                       buttonBackgroundColor: ColorResource.color23375A,
                       borderColor: ColorResource.colorDADADA,
@@ -304,7 +285,7 @@ class _CustomCollectionsBottomSheetState
                   radius: 20,
                   backgroundColor: ColorResource.colorFFFFFF,
                   child: Center(
-                    child: Image.asset(ImageResource.money),
+                    child: SvgPicture.asset(ImageResource.money),
                   ),
                 ),
                 const SizedBox(width: 7),

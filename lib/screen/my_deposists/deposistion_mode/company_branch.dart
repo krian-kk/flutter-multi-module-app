@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/widgets/case_list_widget.dart';
@@ -40,28 +41,30 @@ class _CompanyBranchState extends State<CompanyBranch> {
   }
 
   Future getFiles() async {
-     FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['jpg', 'pdf', 'doc'],
-        );
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
 
-        print(result);
+    print(result);
   }
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
-     builder: (BuildContext context, StateSetter setState) {
-       return Scaffold(
-         backgroundColor: ColorResource.colorffffff,
-         body: Column(
-           // ignore: prefer_const_literals_to_create_immutables
-           children: [
-             Expanded(
-               child: Padding(
-                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                 child: SingleChildScrollView(
-                   child: Column(
-                     children: [
+        builder: (BuildContext context, StateSetter setState) {
+      return Scaffold(
+        backgroundColor: ColorResource.colorffffff,
+        body: Column(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 13),
                         child: CustomReadOnlyTextField(
@@ -93,16 +96,18 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 isEnable: true,
                               ),
                             ),
-                            const SizedBox(width: 7,),
-                             Expanded(
-                               flex: 1,
-                               child: CustomReadOnlyTextField(
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: CustomReadOnlyTextField(
                                 Languages.of(context)!.depositAmount,
                                 depositController,
                                 isLabel: true,
                                 isEnable: true,
-                                                         ),
-                             ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -115,7 +120,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           isEnable: true,
                         ),
                       ),
-                      const SizedBox(height: 7,),
+                      const SizedBox(
+                        height: 7,
+                      ),
                       CustomButton(
                         Languages.of(context)!.uploadDepositSlip,
                         fontWeight: FontWeight.w700,
@@ -123,20 +130,19 @@ class _CompanyBranchState extends State<CompanyBranch> {
                         buttonBackgroundColor: ColorResource.color23375A,
                         cardShape: 50,
                         isLeading: true,
-                        trailingWidget: Image.asset(ImageResource.upload),
-                        onTap: (){
+                        trailingWidget: SvgPicture.asset(ImageResource.upload),
+                        onTap: () {
                           getFiles();
                         },
                       )
-                     ],
-                   ),
-                 ),
-               ),
-             )
-           ],
-         ),
-       );
-     }
-    );
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }

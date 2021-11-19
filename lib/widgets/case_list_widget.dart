@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/dashboard_model.dart';
@@ -13,79 +14,74 @@ import 'package:origa/utils/image_resource.dart';
 // import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-
 class CaseLists {
   static Widget buildListView(List<CaseListModel> caseList) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: caseList.length,
         itemBuilder: (BuildContext context, int index) {
-        int listCount = index +1;
+          int listCount = index + 1;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if(index == 0)
-              Padding(
-                                  padding: const EdgeInsets.fromLTRB(5.0, 5.0 ,5.0,0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              Languages.of(context)!
-                                                  .count
-                                                  .toUpperCase(),
-                                              fontSize: FontSize.ten,
-                                              color: ColorResource.color101010,
-                                            ),
-                                            CustomText(
-                                              caseList.length.toString(),
-                                              fontSize: FontSize.fourteen,
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 7,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              Languages.of(context)!
-                                                  .amount
-                                                  .toUpperCase(),
-                                              fontSize: FontSize.ten,
-                                              color: ColorResource.color101010,
-                                            ),
-                                            CustomText(
-                                              '₹ 3,97,553.67',
-                                              fontSize: FontSize.fourteen,
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+              if (index == 0)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              Languages.of(context)!.count.toUpperCase(),
+                              fontSize: FontSize.ten,
+                              color: ColorResource.color101010,
+                            ),
+                            CustomText(
+                              caseList.length.toString(),
+                              fontSize: FontSize.fourteen,
+                              color: ColorResource.color101010,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              Languages.of(context)!.amount.toUpperCase(),
+                              fontSize: FontSize.ten,
+                              color: ColorResource.color101010,
+                            ),
+                            CustomText(
+                              '₹ 3,97,553.67',
+                              fontSize: FontSize.fourteen,
+                              color: ColorResource.color101010,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Container(
-                  margin: (index == caseList.length -1) ? const EdgeInsets.only(bottom: 70):EdgeInsets.zero,
+                  margin: (index == caseList.length - 1)
+                      ? const EdgeInsets.only(bottom: 70)
+                      : EdgeInsets.zero,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: ColorResource.colorffffff,
-                    border:
-                        Border.all(color: ColorResource.colorDADADA, width: 0.5),
+                    border: Border.all(
+                        color: ColorResource.colorDADADA, width: 0.5),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -103,7 +99,8 @@ class CaseLists {
                         height: 2.0,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                         child: CustomText(
                           caseList[index].loanID!,
                           fontSize: FontSize.twelve,
@@ -148,7 +145,8 @@ class CaseLists {
                                     // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                     decoration: BoxDecoration(
                                         color: ColorResource.colorD5344C,
-                                        borderRadius: BorderRadius.circular(30)),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
                                     child: Center(
                                       child: CustomText(
                                         Languages.of(context)!.new_,
@@ -164,7 +162,8 @@ class CaseLists {
                       ),
 
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                         child: Container(
                           padding: EdgeInsets.fromLTRB(20, 12, 15, 12),
                           decoration: BoxDecoration(
@@ -227,7 +226,8 @@ class CaseLists {
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      Image.asset(ImageResource.forwardArrow)
+                                      SvgPicture.asset(
+                                          ImageResource.forwardArrow)
                                     ],
                                   ),
                                 ),

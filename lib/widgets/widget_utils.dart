@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -80,7 +81,7 @@ class WidgetUtils {
                     SizedBox(
                         height: 20,
                         width: 20,
-                        child: Image.asset(ImageResource.star)),
+                        child: SvgPicture.asset(ImageResource.star)),
                     const SizedBox(
                       width: 5.0,
                     ),
@@ -257,7 +258,7 @@ class WidgetUtils {
                                           const SizedBox(
                                             width: 10,
                                           ),
-                                          Image.asset(
+                                          SvgPicture.asset(
                                               ImageResource.forwardArrow)
                                         ],
                                       ),
@@ -277,7 +278,7 @@ class WidgetUtils {
                           alignment: Alignment.topRight,
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Image.asset(ImageResource.star),
+                          child: SvgPicture.asset(ImageResource.star),
                         ),
                 ],
               ),

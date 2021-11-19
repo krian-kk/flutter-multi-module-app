@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -54,15 +55,14 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       bloc: bloc,
       listener: (context, state) {
-       if (state is HomeTabState) {
-         Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
-       }
+        if (state is HomeTabState) {
+          Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         bloc: bloc,
@@ -82,82 +82,86 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 35,
                         ),
-                        Image.asset(ImageResource.origa),
+                        SvgPicture.asset(ImageResource.origa),
                         const SizedBox(
                           height: 17,
                         ),
-                        Image.asset(ImageResource.login),
+                        SvgPicture.asset(ImageResource.login),
                         const SizedBox(
                           height: 20,
                         ),
                         CustomTextField(
-                                  Languages.of(context)!.userName,
-                                  userName,
-                                  isFill: true,
-                                  isBorder: true,
-                                  isLabel: true,
-                                  errorborderColor: ColorResource.color23375A,
-                                  borderColor: ColorResource.color23375A,
-                                  validationRules: ['required'],
-                                  focusNode: username,
-                                  onEditing: () {
-                                    username.unfocus();
-                                    _formKey.currentState!.validate();
-                                  },
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                                  // onChange: (){
-                                  //    _formKey.currentState!.validate();
-                                  // },
-                                  validatorCallBack: (bool values) {},
-                                ),
+                          Languages.of(context)!.userName,
+                          userName,
+                          isFill: true,
+                          isBorder: true,
+                          isLabel: true,
+                          errorborderColor: ColorResource.color23375A,
+                          borderColor: ColorResource.color23375A,
+                          validationRules: ['required'],
+                          focusNode: username,
+                          onEditing: () {
+                            username.unfocus();
+                            _formKey.currentState!.validate();
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          // onChange: (){
+                          //    _formKey.currentState!.validate();
+                          // },
+                          validatorCallBack: (bool values) {},
+                        ),
                         const SizedBox(
                           height: 23,
                         ),
                         CustomTextField(
-                                  Languages.of(context)!.password,
-                                  password,
-                                  obscureText: _obscureText,
-                                  isFill: true,
-                                  isBorder: true,
-                                  isLabel: true,
-                                  borderColor: ColorResource.color23375A,
-                                  errorborderColor: ColorResource.color23375A,
-                                   validationRules: ['required'],
-                                   focusNode: passwords,
-                                   onEditing: () {
-                                      print('object');
-                                    passwords.unfocus();
-                                    _formKey.currentState!.validate();
-                                  },
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                                  // onChange: (){
-                                  //    _formKey.currentState!.validate();
-                                  // },
-                                  validatorCallBack: (bool values) {},
-                                  suffixWidget: InkWell(
-                                    onTap: _passwordVisibleOrNot,
-                                    child: Icon(
-                                            _obscureText 
-                                            ? Icons.visibility_off 
-                                            : Icons.visibility,
-                                            color: ColorResource.color23375A,
-                                        ),
-                                    ),
-                                ),
-                        
+                          Languages.of(context)!.password,
+                          password,
+                          obscureText: _obscureText,
+                          isFill: true,
+                          isBorder: true,
+                          isLabel: true,
+                          borderColor: ColorResource.color23375A,
+                          errorborderColor: ColorResource.color23375A,
+                          validationRules: ['required'],
+                          focusNode: passwords,
+                          onEditing: () {
+                            print('object');
+                            passwords.unfocus();
+                            _formKey.currentState!.validate();
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          // onChange: (){
+                          //    _formKey.currentState!.validate();
+                          // },
+                          validatorCallBack: (bool values) {},
+                          suffixWidget: InkWell(
+                            onTap: _passwordVisibleOrNot,
+                            child: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: ColorResource.color23375A,
+                            ),
+                          ),
+                        ),
                         Row(
                           children: [
-                            Checkbox(value: _isChecked, 
-                            activeColor: ColorResource.color23375A,
-                            onChanged: (bool? newValue){
-                              final bool isValid = _formKey.currentState!.validate();
-                              if (!isValid) {
-                                return;
-                              } else {
-                              _handleRemeberme(newValue!);
-                              }
-                              }),
-                            CustomText(Languages.of(context)!.rememberMe, color: ColorResource.color23375A,)
+                            Checkbox(
+                                value: _isChecked,
+                                activeColor: ColorResource.color23375A,
+                                onChanged: (bool? newValue) {
+                                  final bool isValid =
+                                      _formKey.currentState!.validate();
+                                  if (!isValid) {
+                                    return;
+                                  } else {
+                                    _handleRemeberme(newValue!);
+                                  }
+                                }),
+                            CustomText(
+                              Languages.of(context)!.rememberMe,
+                              color: ColorResource.color23375A,
+                            )
                           ],
                         ),
                         const SizedBox(
@@ -167,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           'SIGN IN',
                           buttonBackgroundColor: ColorResource.color23375A,
                           onTap: () {
-                              _signIn();
+                            _signIn();
                           },
                           cardShape: 85,
                           fontSize: FontSize.sixteen,
@@ -233,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
   }
 
-    _handleRemeberme(bool value) {
+  _handleRemeberme(bool value) {
     _isChecked = value;
     SharedPreferences.getInstance().then(
       (prefs) {
@@ -268,9 +272,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-  // Clean up the focus node when the Form is disposed
-  userName.dispose();
-  password.dispose();
-  super.dispose();
-}
+    // Clean up the focus node when the Form is disposed
+    userName.dispose();
+    password.dispose();
+    super.dispose();
+  }
 }

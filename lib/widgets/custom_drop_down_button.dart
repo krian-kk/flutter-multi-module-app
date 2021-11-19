@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -10,7 +11,7 @@ class CustomDropDownButton extends StatefulWidget {
   final String labelText;
   final List<String> listOfItems;
   final Widget? hintWidget;
-  final Widget icon;
+  final Widget? icon;
   final Widget? underline;
   final bool isExpanded;
   final TextStyle? style;
@@ -22,7 +23,7 @@ class CustomDropDownButton extends StatefulWidget {
   const CustomDropDownButton(this.labelText, this.listOfItems,
       {Key? key,
       this.hintWidget,
-      this.icon = const ImageIcon(AssetImage(ImageResource.downArrow)),
+      this.icon,
       this.underline,
       this.isExpanded = true,
       this.style,
@@ -62,7 +63,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
         ),
         DropdownButton<String>(
           value: selectedValue,
-          icon: widget.icon,
+          icon: widget.icon ?? SvgPicture.asset(ImageResource.downArrow),
           iconSize: 24,
           isExpanded: widget.isExpanded,
           style: widget.style ??

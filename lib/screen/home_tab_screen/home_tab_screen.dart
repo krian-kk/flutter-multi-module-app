@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/Telecaller/screens/allocation_T/allocation_t.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -133,7 +135,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Image.asset(
+                                              SvgPicture.asset(
                                                   ImageResource.allocation),
                                               const SizedBox(
                                                 height: 3,
@@ -150,7 +152,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Image.asset(
+                                              SvgPicture.asset(
                                                   ImageResource.dashboard),
                                               const SizedBox(
                                                 height: 3,
@@ -176,13 +178,13 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                                               const EdgeInsets
                                                                       .only(
                                                                   left: 5),
-                                                          child: Image.asset(
+                                                          child: SvgPicture.asset(
                                                               ImageResource
-                                                                  .profile),
+                                                                  .homeTabProfile),
                                                         )
-                                                      : Image.asset(
+                                                      : SvgPicture.asset(
                                                           ImageResource
-                                                              .profile),
+                                                              .homeTabProfile),
                                                   const SizedBox(
                                                     height: 3,
                                                   ),
