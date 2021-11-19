@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
@@ -76,25 +77,28 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 backgroundColor: ColorResource.colorF7F8FA,
                 body: Column(
                   children: [
-                    CustomAppbar(
-                      titleString: Languages.of(context)!.caseDetials,
-                      titleSpacing: 21,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: CustomAppbar(
+                        titleString: Languages.of(context)!.caseDetials,
+                        titleSpacing: 10,
 
-                      iconEnumValues: IconEnum.back,
+                        iconEnumValues: IconEnum.back,
 
-                      // showClose: true,
+                        // showClose: true,
 
-                      onItemSelected: (value) {
-                        if (value == 'IconEnum.back') {
-                          Navigator.pop(context);
-                        }
+                        onItemSelected: (value) {
+                          if (value == 'IconEnum.back') {
+                            Navigator.pop(context);
+                          }
 
-                        // else if (value == 'close') {
+                          // else if (value == 'close') {
 
-                        // Navigator.pop(context);
+                          // Navigator.pop(context);
 
-                        // }
-                      },
+                          // }
+                        },
+                      ),
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -126,6 +130,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           marginTop: 10,
                                         ),
                                       ),
+                                      if(bloc.caseDetailsResult.result?.caseDetails?.collSubStatus=='new')
                                       Container(
                                         margin: const EdgeInsets.only(left: 12),
                                         width: 55,
@@ -259,7 +264,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: const [
+                                              children:  [
                                                 CustomText(
                                                   StringResource
                                                       .beneficiaryDetails,
@@ -271,7 +276,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 ),
                                                 SizedBox(height: 9),
                                                 CustomText(
-                                                  'TVSF FINANCE',
+                                                  bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.benefeciaryAcc_Name??'',
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       ColorResource.color333333,
@@ -280,7 +285,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 ),
                                                 SizedBox(height: 7),
                                                 CustomText(
-                                                  'SBI_BFRT6458922993',
+                                                  bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.repaymentIfscCode??'',
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       ColorResource.color333333,
@@ -309,8 +314,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                              const CustomText(
-                                                'Bank Name',
+                                               CustomText(
+                                                bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.repayBankName??'',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -328,8 +333,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                              const CustomText(
-                                                'Name',
+                                               CustomText(
+                                                bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.refLender??'',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -347,8 +352,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                              const CustomText(
-                                                'URL',
+                                               CustomText(
+                                                bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.ref_url??'',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -446,6 +451,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   ListView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       itemCount: bloc.caseDetailsResult.result
                                               ?.otherLoanDetails?.length ??
@@ -455,6 +461,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
+                                            const SizedBox(height: 10,),
                                             Container(
                                               width: double.infinity,
                                               decoration: BoxDecoration(
