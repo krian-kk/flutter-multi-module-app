@@ -46,8 +46,7 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
             child:  Scaffold(
                   floatingActionButton: CustomFloatingActionButton(
                     onTap: () async {
-                      await Navigator.pushNamed(
-                          context, AppRoutes.searchAllocationDetailsScreen);
+                       widget.bloc.add(NavigateSearchEvent());
                     },
                   ),
                   body: Column(

@@ -90,6 +90,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pushNamed(
                       context, AppRoutes.caseDetailsScreen);
           }
+
+          if (state is NavigateSearchState) {
+                Navigator.pushNamed(
+                      context, AppRoutes.caseDetailsScreen);
+          }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
             bloc: bloc,

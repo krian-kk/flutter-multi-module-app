@@ -53,8 +53,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                   child: Scaffold(
                     floatingActionButton: CustomFloatingActionButton(
                       onTap: () async {
-                        await Navigator.pushNamed(
-                            context, AppRoutes.searchAllocationDetailsScreen);
+                        widget.bloc.add(NavigateSearchEvent());
                       },
                     ),
                     body: Column(
