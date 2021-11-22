@@ -109,9 +109,7 @@ class CustomCardList {
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.caseDetailsScreen,
-                            arguments: true);
+                        bloc.add(NavigateCaseDetailEvent());
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

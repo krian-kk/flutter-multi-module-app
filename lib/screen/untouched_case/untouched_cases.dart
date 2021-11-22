@@ -7,14 +7,8 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
-import 'package:origa/widgets/custom_appbar.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
-
-import 'bloc/untouchedcases_bloc.dart';
 
 class UntouchedCasesBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
@@ -26,11 +20,11 @@ class UntouchedCasesBottomSheet extends StatefulWidget {
 }
 
 class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
-  late UntouchedcasesBloc bloc;
+  // late UntouchedcasesBloc bloc;
   @override
   void initState() {
     // TODO: implement initState
-    bloc = UntouchedcasesBloc()..add(UntouchedcasesInitialEvent());
+    // bloc = UntouchedcasesBloc()..add(UntouchedcasesInitialEvent());
     super.initState();
   }
 
@@ -49,45 +43,29 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
           onWillPop: () async => false,
           child: Container(
             padding: EdgeInsets.only(top: 16),
-            child: BlocListener<UntouchedcasesBloc, UntouchedcasesState>(
-              bloc: bloc,
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              child: BlocBuilder<UntouchedcasesBloc, UntouchedcasesState>(
-                bloc: bloc,
-                builder: (context, state) {
-                  if (state is UntouchedcasesLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                  return Scaffold(
-                    floatingActionButton: CustomFloatingActionButton(
-                      onTap: () async {
-                        await Navigator.pushNamed(
-                            context, AppRoutes.searchAllocationDetailsScreen);
-                      },
-                    ),
-                    body: Column(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        BottomSheetAppbar(
-                          title: Languages.of(context)!.untouchedCases,
+            child:  Scaffold(
+                  floatingActionButton: CustomFloatingActionButton(
+                    onTap: () async {
+                       widget.bloc.add(NavigateSearchEvent());
+                    },
+                  ),
+                  body: Column(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      BottomSheetAppbar(
+                        title: Languages.of(context)!.untouchedCases,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 5),
+                          child: CaseLists.buildListView(widget.bloc),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(bloc.caseList),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                      )
+                    ],
+                  ),
+                ),
+             
           ),
         );
       }),

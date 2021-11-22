@@ -80,6 +80,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield NavigateSearchPageState();
     }
 
+    if (event is NavigateCaseDetailEvent) {
+      yield NavigateCaseDetailState();
+    }
+
     if (event is FilterSelectOptionEvent) {
       yield FilterSelectOptionState();
       selectedOption = 0;

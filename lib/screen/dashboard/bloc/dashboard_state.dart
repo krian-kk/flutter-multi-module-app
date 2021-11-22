@@ -23,4 +23,8 @@ class MyDeposistsState extends DashboardState {}
 
 class YardingAndSelfReleaseState extends DashboardState {}
 
+class NavigateCaseDetailState extends DashboardState {}
+
+class NavigateSearchState extends DashboardState {}
+
 class HelpState extends DashboardState {}

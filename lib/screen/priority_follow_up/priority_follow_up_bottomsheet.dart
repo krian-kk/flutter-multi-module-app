@@ -14,8 +14,6 @@ import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 
-import 'bloc/priorityfollowup_bloc.dart';
-
 class PriorityFollowUpBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
   PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
@@ -27,11 +25,11 @@ class PriorityFollowUpBottomSheet extends StatefulWidget {
 
 class _PriorityFollowUpBottomSheetState
     extends State<PriorityFollowUpBottomSheet> {
-  late PriorityfollowupBloc bloc;
+  // late PriorityfollowupBloc bloc;
   @override
   void initState() {
     // TODO: implement initState
-    bloc = PriorityfollowupBloc()..add(PriorityFollowUpInitialEvent());
+    // bloc = PriorityfollowupBloc()..add(PriorityFollowUpInitialEvent());
     super.initState();
   }
 
@@ -50,45 +48,29 @@ class _PriorityFollowUpBottomSheetState
           onWillPop: () async => false,
           child: Container(
             padding: EdgeInsets.only(top: 16),
-            child: BlocListener<PriorityfollowupBloc, PriorityfollowupState>(
-              bloc: bloc,
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              child: BlocBuilder<PriorityfollowupBloc, PriorityfollowupState>(
-                bloc: bloc,
-                builder: (context, state) {
-                  if (state is PriorityfollowupLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                  return Scaffold(
-                    floatingActionButton: CustomFloatingActionButton(
-                      onTap: () async {
-                        await Navigator.pushNamed(
-                            context, AppRoutes.searchAllocationDetailsScreen);
-                      },
-                    ),
-                    body: Column(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        BottomSheetAppbar(
-                          title: Languages.of(context)!.priorityFollowUp,
+            child: Scaffold(
+                  floatingActionButton: CustomFloatingActionButton(
+                    onTap: () async {
+                      widget.bloc.add(NavigateSearchEvent());
+                    },
+                  ),
+                  body: Column(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      BottomSheetAppbar(
+                        title: Languages.of(context)!.priorityFollowUp,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 5),
+                          child: CaseLists.buildListView(widget.bloc),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(bloc.caseList),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                      )
+                    ],
+                  ),
+                ),
+             
           ),
         );
       }),
