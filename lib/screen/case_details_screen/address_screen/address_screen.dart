@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -105,10 +106,10 @@ class _AddressScreenState extends State<AddressScreen>
                           Wrap(
                             spacing: 27,
                             children: [
-                              Image.asset(ImageResource.activePerson),
-                              GestureDetector(
+                              SvgPicture.asset(ImageResource.activePerson),
+                              InkWell(
                                   onTap: () => Navigator.pop(context),
-                                  child: Image.asset(ImageResource.close))
+                                  child: SvgPicture.asset(ImageResource.close))
                             ],
                           )
                         ],

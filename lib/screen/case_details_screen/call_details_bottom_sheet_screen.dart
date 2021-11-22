@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
@@ -140,7 +142,7 @@ class _CallDetailsBottomSheetScreenState
                                           ),
                                           Align(
                                               alignment: Alignment.topRight,
-                                              child: Image.asset(
+                                              child: SvgPicture.asset(
                                                   ImageResource.activePerson)),
                                         ],
                                       ),
@@ -182,7 +184,7 @@ class _CallDetailsBottomSheetScreenState
                                                   ))),
                                           const Spacer(),
                                           const SizedBox(width: 5),
-                                          GestureDetector(
+                                          InkWell(
                                             onTap: () {
                                               Navigator.pop(context);
                                               phoneBottomSheet(context);
@@ -202,9 +204,10 @@ class _CallDetailsBottomSheetScreenState
                                                       ColorResource.color23375A,
                                                 ),
                                                 const SizedBox(width: 10),
-                                                Image.asset(
-                                                    ImageResource.viewShape,
-                                                    height: 20),
+                                                SvgPicture.asset(
+                                                  ImageResource.forwardArrow,
+                                                  fit: BoxFit.scaleDown,
+                                                ),
                                                 const SizedBox(width: 5)
                                               ],
                                             ),

@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -57,24 +59,6 @@ class _AddressDetailsBottomSheetScreenState
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     CustomText(
-                    //       Languages.of(context)!.addressDetails.toUpperCase(),
-                    //       fontSize: FontSize.fourteen,
-                    //       fontWeight: FontWeight.w700,
-                    //       fontStyle: FontStyle.normal,
-                    //       color: ColorResource.color23375A,
-                    //     ),
-                    //     Spacer(),
-                    //     GestureDetector(
-                    //         onTap: () {
-                    //           Navigator.pop(context);
-                    //         },
-                    //         child: Image.asset(ImageResource.close))
-                    //   ],
-                    // ),
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -141,7 +125,7 @@ class _AddressDetailsBottomSheetScreenState
                                               child: Row(
                                                 children: [
                                                   const SizedBox(width: 10),
-                                                  Image.asset(ImageResource
+                                                  SvgPicture.asset(ImageResource
                                                       .activePerson),
                                                 ],
                                               )),
@@ -182,10 +166,8 @@ class _AddressDetailsBottomSheetScreenState
                                                   ))),
                                           const Spacer(),
                                           const SizedBox(width: 5),
-                                          GestureDetector(
+                                          InkWell(
                                             onTap: () {
-                                              // Navigator.pushNamed(
-                                              //     context, AppRoutes.addressScreen);
                                               Navigator.pop(context);
                                               addressBottomSheet(
                                                   context, widget.bloc);
@@ -205,9 +187,10 @@ class _AddressDetailsBottomSheetScreenState
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                                 const SizedBox(width: 10),
-                                                Image.asset(
-                                                    ImageResource.viewShape,
-                                                    height: 20),
+                                                SvgPicture.asset(
+                                                  ImageResource.forwardArrow,
+                                                  fit: BoxFit.scaleDown,
+                                                ),
                                                 const SizedBox(width: 5)
                                               ],
                                             ),

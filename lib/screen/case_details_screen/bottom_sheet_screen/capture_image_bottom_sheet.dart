@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -39,24 +40,6 @@ class _CustomCaptureImageBottomSheetState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(23, 16, 15, 5),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       CustomText(
-          //         widget.cardTitle,
-          //         color: ColorResource.color101010,
-          //         fontWeight: FontWeight.w700,
-          //         fontSize: FontSize.sixteen,
-          //         fontStyle: FontStyle.normal,
-          //       ),
-          //       GestureDetector(
-          //           onTap: () => Navigator.pop(context),
-          //           child: Image.asset(ImageResource.close))
-          //     ],
-          //   ),
-          // ),
           BottomSheetAppbar(
               title: widget.cardTitle,
               padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
@@ -77,7 +60,7 @@ class _CustomCaptureImageBottomSheetState
                     CustomButton(
                       Languages.of(context)!.customUpload,
                       fontWeight: FontWeight.w700,
-                      trailingWidget: Image.asset(ImageResource.upload),
+                      trailingWidget: SvgPicture.asset(ImageResource.upload),
                       fontSize: FontSize.sixteen,
                       buttonBackgroundColor: ColorResource.color23375A,
                       borderColor: ColorResource.colorDADADA,

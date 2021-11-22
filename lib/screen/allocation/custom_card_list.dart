@@ -68,40 +68,39 @@ class CustomCardList {
                           ],
                         )),
                   )),
-                  if (index == 0 && bloc.showFilterDistance == false)
-                          Padding(
-                            padding: const EdgeInsets.only(top:8.0),
-                            child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CustomText(
-                                    '10 ' + Languages.of(context)!.allocation,
-                                    fontSize: FontSize.fourteen,
-                                    color: ColorResource.color000000,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  const SizedBox(
-                                    width: 9.0,
-                                  ),
-                                  Container(
-                                      height: 20,
-                                      width: 20,
-                                      child: SvgPicture.asset(ImageResource.star1)
-                                      ),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  CustomText(
-                                    bloc.allocationList.length.toString() +
-                                        " " +
-                                        Languages.of(context)!.hignPriority,
-                                    fontSize: FontSize.ten,
-                                    color: ColorResource.color101010,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ],
-                              ),
-                          ),
+              if (index == 0 && bloc.showFilterDistance == false)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        '10 ' + Languages.of(context)!.allocation,
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color000000,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      const SizedBox(
+                        width: 9.0,
+                      ),
+                      Container(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(ImageResource.star)),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      CustomText(
+                        bloc.allocationList.length.toString() +
+                            " " +
+                            Languages.of(context)!.hignPriority,
+                        fontSize: FontSize.ten,
+                        color: ColorResource.color101010,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                ),
               Stack(
                 children: [
                   Padding(
@@ -109,13 +108,14 @@ class CustomCardList {
                         ? const EdgeInsets.only(bottom: 20)
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
-                      onTap: (){
-                         Navigator.pushNamed(context,
-                                            AppRoutes.caseDetailsScreen);
+                      onTap: () {
+                        bloc.add(NavigateCaseDetailEvent());
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: (index == bloc.allocationList.length -1) ? const EdgeInsets.only(bottom: 70):EdgeInsets.zero,
+                        margin: (index == bloc.allocationList.length - 1)
+                            ? const EdgeInsets.only(bottom: 70)
+                            : EdgeInsets.zero,
                         decoration: BoxDecoration(
                           color: ColorResource.colorffffff,
                           border: Border.all(
@@ -126,7 +126,8 @@ class CustomCardList {
                               color: Color.fromRGBO(0, 0, 0, 0.25),
                               // spreadRadius: 1,
                               blurRadius: 2,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
@@ -153,7 +154,8 @@ class CustomCardList {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       CustomText(
                                         bloc.allocationList[index].amount!,
@@ -165,7 +167,8 @@ class CustomCardList {
                                         height: 3.0,
                                       ),
                                       CustomText(
-                                        bloc.allocationList[index].customerName!,
+                                        bloc.allocationList[index]
+                                            .customerName!,
                                         fontSize: FontSize.sixteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w400,
@@ -195,7 +198,7 @@ class CustomCardList {
                                 ],
                               ),
                             ),
-                    
+
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 6),
@@ -215,7 +218,7 @@ class CustomCardList {
                             const SizedBox(
                               height: 5,
                             ),
-                           Padding(
+                            Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 15,
                               ),
@@ -253,7 +256,7 @@ class CustomCardList {
                                           const SizedBox(
                                             width: 10,
                                           ),
-                                          Image.asset(
+                                          SvgPicture.asset(
                                               ImageResource.forwardArrow)
                                         ],
                                       ),
@@ -273,7 +276,7 @@ class CustomCardList {
                           alignment: Alignment.topRight,
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Image.asset(ImageResource.star),
+                          child: SvgPicture.asset(ImageResource.star),
                         ),
                 ],
               ),

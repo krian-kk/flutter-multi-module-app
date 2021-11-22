@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -35,7 +36,7 @@ class BottomSheetAppbar extends StatelessWidget {
                 // () {
                 //   Navigator.pop(context);
                 // },
-                child: Image.asset(
+                child: SvgPicture.asset(
                   ImageResource.close,
                   color: color,
                 )),

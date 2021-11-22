@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -88,9 +89,9 @@ class _CustomRemainderBottomSheetState
                                 isReadOnly: true,
                                 onTapped: () => pickDate(
                                     context, nextActionDateControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                               ),
                             ),
@@ -118,9 +119,9 @@ class _CustomRemainderBottomSheetState
                                 isReadOnly: true,
                                 onTapped: () => pickTime(
                                     context, nextActionTimeControlller),
-                                suffixWidget: const ImageIcon(
-                                  AssetImage(ImageResource.calendar),
-                                  color: ColorResource.colorC4C4C4,
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
                                 ),
                               ),
                             ),

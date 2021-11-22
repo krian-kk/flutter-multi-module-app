@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:origa/Telecaller/screens/allocation_T/auto_calling.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -17,12 +18,13 @@ import 'custom_card_list.dart';
 class AllocationTelecallerScreen extends StatefulWidget {
   const AllocationTelecallerScreen({Key? key}) : super(key: key);
 
-
   @override
-  _AllocationTelecallerScreenState createState() => _AllocationTelecallerScreenState();
+  _AllocationTelecallerScreenState createState() =>
+      _AllocationTelecallerScreenState();
 }
 
-class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen> {
+class _AllocationTelecallerScreenState
+    extends State<AllocationTelecallerScreen> {
   late AllocationTBloc bloc;
   String version = "";
 
@@ -40,8 +42,7 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
       bloc: bloc,
       listener: (BuildContext context, AllocationTState state) {
         if (state is NavigateSearchPageTState) {
-           Navigator.pushNamed(
-                          context, AppRoutes.searchAllocationDetailsScreen);
+          Navigator.pushNamed(context, AppRoutes.searchAllocationDetailsScreen);
         }
       },
       child: BlocBuilder<AllocationTBloc, AllocationTState>(
@@ -68,8 +69,8 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
             body: Column(
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -95,53 +96,56 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
                   ),
                 ),
                 if (bloc.selectedOption == 0)
-                 Expanded(child: CustomCardList.buildListView(bloc)),
+                  Expanded(child: CustomCardList.buildListView(bloc)),
                 if (bloc.selectedOption == 1)
-                Expanded(child: SingleChildScrollView(child: AutoCalling.buildAutoCalling(context, bloc))),
+                  Expanded(
+                      child: SingleChildScrollView(
+                          child: AutoCalling.buildAutoCalling(context, bloc))),
               ],
             ),
             bottomNavigationBar: Visibility(
               visible: bloc.isEnableStartCallButton,
               child: Container(
-                  height: 88,
-                  decoration: const BoxDecoration(
+                height: 88,
+                decoration: const BoxDecoration(
                     color: ColorResource.colorffffff,
-                      border: Border(
-                          top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: CustomButton(
-                            Languages.of(context)!.stop.toUpperCase(),
-                            fontSize: FontSize.sixteen,
-                            textColor: ColorResource.colorEA6D48,
-                            fontWeight: FontWeight.w600,
-                            cardShape: 5,
-                            buttonBackgroundColor: ColorResource.colorffffff,
-                            borderColor: ColorResource.colorffffff,
-                            onTap: () {
-                              // Navigator.pop(context);
-                            },
-                          ),
+                    border: Border(
+                        top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: CustomButton(
+                          Languages.of(context)!.stop.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          textColor: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          buttonBackgroundColor: ColorResource.colorffffff,
+                          borderColor: ColorResource.colorffffff,
+                          onTap: () {
+                            // Navigator.pop(context);
+                          },
                         ),
-                        Expanded(
-                          flex: 5,
-                          child: CustomButton(
-                            Languages.of(context)!.startCalling.toUpperCase(),
-                            fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
-                            cardShape: 5,
-                            trailingWidget: Image.asset(ImageResource.vector),
-                            isLeading: true,
-                          ),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: CustomButton(
+                          Languages.of(context)!.startCalling.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.vector),
+                          isLeading: true,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
             ),
           );
         },
@@ -168,11 +172,11 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
         if (index == 0) {
           bloc.isEnableSearchButton = true;
           bloc.isEnableStartCallButton = false;
-        } 
+        }
         if (index == 1) {
           bloc.isEnableSearchButton = false;
           bloc.isEnableStartCallButton = true;
-        } 
+        }
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
@@ -198,5 +202,4 @@ class _AllocationTelecallerScreenState extends State<AllocationTelecallerScreen>
       ),
     );
   }
-
 }

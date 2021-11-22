@@ -14,11 +14,10 @@ import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 
-import 'bloc/borkenptp_bloc.dart';
 
 class BrokenPTPBottomSheet extends StatefulWidget {
-  // final DashboardBloc bloc;
-  // BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  final DashboardBloc bloc;
+  BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _BrokenPTPBottomSheetState createState() => _BrokenPTPBottomSheetState();
@@ -26,12 +25,12 @@ class BrokenPTPBottomSheet extends StatefulWidget {
 
 class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
 
-  late BrokenptpBloc bloc;
+  // late BrokenptpBloc bloc;
 
   @override
   void initState() {
     // TODO: implement initState
-    bloc = BrokenptpBloc()..add(BrokenptpInitialEvent());
+    // bloc = BrokenptpBloc()..add(BrokenptpInitialEvent());
     super.initState();
   }
 
@@ -50,45 +49,30 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
           onWillPop: () async => false,
           child: Container(
             padding: EdgeInsets.only(top: 16),
-            child: BlocListener<BrokenptpBloc, BrokenptpState>(
-              bloc: bloc,
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              child: BlocBuilder<BrokenptpBloc, BrokenptpState>(
-                bloc: bloc,
-                builder: (context, state) {
-                  if (state is BrokenptpLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                  return Scaffold(
-                    floatingActionButton: CustomFloatingActionButton(
-                      onTap: () async {
-                        await Navigator.pushNamed(
-                            context, AppRoutes.searchAllocationDetailsScreen);
-                      },
-                    ),
-                    body: Column(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        BottomSheetAppbar(
-                          title: Languages.of(context)!.brokenPTP,
+            child:  Scaffold(
+                  floatingActionButton: CustomFloatingActionButton(
+                    onTap: () async {
+                      await Navigator.pushNamed(
+                          context, AppRoutes.searchAllocationDetailsScreen);
+                    },
+                  ),
+                  body: Column(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      BottomSheetAppbar(
+                        title: Languages.of(context)!.brokenPTP,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 5),
+                          child: CaseLists.buildListView(widget.bloc),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(bloc.caseList),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                      )
+                    ],
+                  ),
+                ),
+            
           ),
         );
       }),

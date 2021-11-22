@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
@@ -97,9 +98,9 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                               context,
                               widget.bloc
                                   .phoneUnreachableNextActionDateController),
-                          suffixWidget: const ImageIcon(
-                            AssetImage(ImageResource.calendar),
-                            color: ColorResource.colorC4C4C4,
+                          suffixWidget: SvgPicture.asset(
+                            ImageResource.calendar,
+                            fit: BoxFit.scaleDown,
                           ),
                           onEditing: () {
                             widget.bloc.phoneUnreachableNextActionDateFocusNode

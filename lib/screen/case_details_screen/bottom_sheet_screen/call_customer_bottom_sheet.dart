@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -91,9 +92,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                           child: CustomDropDownButton(
                         Languages.of(context)!.customerContactNo,
                         customerContactNoDropdownList,
-                        icon: const ImageIcon(
-                          AssetImage(ImageResource.downShape),
-                        ),
+                        icon: SvgPicture.asset(ImageResource.downShape),
                       )),
                     ],
                   ),
@@ -102,18 +101,14 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       child: CustomDropDownButton(
                     Languages.of(context)!.serviceProvidersList,
                     serviceProviderListDropdownList,
-                    icon: const ImageIcon(
-                      AssetImage(ImageResource.downShape),
-                    ),
+                    icon: SvgPicture.asset(ImageResource.downShape),
                   )),
                   const SizedBox(height: 20),
                   Flexible(
                       child: CustomDropDownButton(
                     Languages.of(context)!.callersId,
                     callersIDDropdownList,
-                    icon: const ImageIcon(
-                      AssetImage(ImageResource.downShape),
-                    ),
+                    icon: SvgPicture.asset(ImageResource.downShape),
                   )),
                   const SizedBox(height: 15)
                 ],
@@ -139,16 +134,19 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                    width: 95,
-                    child: Center(
-                        child: CustomText(
-                      Languages.of(context)!.done.toUpperCase(),
-                      color: ColorResource.colorEA6D48,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.normal,
-                      fontSize: FontSize.sixteen,
-                    ))),
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
+                      width: 95,
+                      child: Center(
+                          child: CustomText(
+                        Languages.of(context)!.done.toUpperCase(),
+                        color: ColorResource.colorEA6D48,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        fontSize: FontSize.sixteen,
+                      ))),
+                ),
                 const SizedBox(width: 25),
                 SizedBox(
                   width: 191,
@@ -157,7 +155,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
                     isLeading: true,
-                    trailingWidget: Image.asset(ImageResource.vector),
+                    trailingWidget: SvgPicture.asset(ImageResource.vector),
                     // onTap: () => bloc.add(ClickMessageEvent()),
                     cardShape: 5,
                   ),

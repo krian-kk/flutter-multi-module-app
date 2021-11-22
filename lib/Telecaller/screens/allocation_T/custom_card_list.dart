@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/router.dart';
@@ -24,51 +26,54 @@ class CustomCardList {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                    if (index == 0)
-                            Padding(
-                              padding: const EdgeInsets.only(top:6.0),
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CustomText(
-                                      '10 ' + Languages.of(context)!.allocation,
-                                      fontSize: FontSize.fourteen,
-                                      color: ColorResource.color000000,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    const SizedBox(
-                                      width: 9.0,
-                                    ),
-                                    Container(
-                                        height: 20,
-                                        width: 20,
-                                        child: Image.asset(ImageResource.star)),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    CustomText(
-                                      bloc.allocationList.length.toString() +
-                                          " " +
-                                          Languages.of(context)!.hignPriority,
-                                      fontSize: FontSize.ten,
-                                      color: ColorResource.color101010,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ],
-                                ),
-                            ),
+                if (index == 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          '10 ' + Languages.of(context)!.allocation,
+                          fontSize: FontSize.fourteen,
+                          color: ColorResource.color000000,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        const SizedBox(
+                          width: 9.0,
+                        ),
+                        Container(
+                            height: 20,
+                            width: 20,
+                            child: SvgPicture.asset(ImageResource.star)),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        CustomText(
+                          bloc.allocationList.length.toString() +
+                              " " +
+                              Languages.of(context)!.hignPriority,
+                          fontSize: FontSize.ten,
+                          color: ColorResource.color101010,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ],
+                    ),
+                  ),
                 Stack(
                   children: [
                     Padding(
-                      padding:const EdgeInsets.only(bottom: 10, top: 19),
+                      padding: const EdgeInsets.only(bottom: 10, top: 19),
                       child: InkWell(
-                        onTap: (){
-                           Navigator.pushNamed(context,
-                                              AppRoutes.caseDetailsScreen);
+                        onTap: () {
+                          // Navigator.pushNamed(
+                          //     context, AppRoutes.caseDetailsTelecallerScreen);
+                          caseDetailsBottomSheet(context);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
-                          margin: (index == bloc.allocationList.length -1) ? const EdgeInsets.only(bottom: 90):EdgeInsets.zero,
+                          margin: (index == bloc.allocationList.length - 1)
+                              ? const EdgeInsets.only(bottom: 90)
+                              : EdgeInsets.zero,
                           decoration: BoxDecoration(
                             color: ColorResource.colorffffff,
                             border: Border.all(
@@ -79,7 +84,8 @@ class CustomCardList {
                                 color: Color.fromRGBO(0, 0, 0, 0.25),
                                 // spreadRadius: 1,
                                 blurRadius: 2,
-                                offset: Offset(0, 1), // changes position of shadow
+                                offset:
+                                    Offset(0, 1), // changes position of shadow
                               ),
                             ],
                           ),
@@ -105,7 +111,8 @@ class CustomCardList {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         CustomText(
                                           bloc.allocationList[index].amount!,
@@ -117,7 +124,8 @@ class CustomCardList {
                                           height: 3.0,
                                         ),
                                         CustomText(
-                                          bloc.allocationList[index].customerName!,
+                                          bloc.allocationList[index]
+                                              .customerName!,
                                           fontSize: FontSize.sixteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w400,
@@ -131,13 +139,15 @@ class CustomCardList {
                                             height: 19,
                                             // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                             decoration: BoxDecoration(
-                                                color: ColorResource.colorD5344C,
+                                                color:
+                                                    ColorResource.colorD5344C,
                                                 borderRadius:
                                                     BorderRadius.circular(30)),
                                             child: Center(
                                               child: CustomText(
                                                 Languages.of(context)!.new_,
-                                                color: ColorResource.colorffffff,
+                                                color:
+                                                    ColorResource.colorffffff,
                                                 fontSize: FontSize.ten,
                                                 lineHeight: 1,
                                               ),
@@ -147,34 +157,37 @@ class CustomCardList {
                                   ],
                                 ),
                               ),
-                      
+
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 2),
                                 child: Wrap(
                                   children: [
-                                    for(var item in bloc.listOfContacts)
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10, right: 20),
-                                      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 6),
-                                      decoration: BoxDecoration(
-                                        color: ColorResource.colorF8F9FB,
-                                        borderRadius: BorderRadius.circular(30),
+                                    for (var item in bloc.listOfContacts)
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            top: 10, right: 20),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 17, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: ColorResource.colorF8F9FB,
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: CustomText(
+                                          item,
+                                          color: ColorResource.color484848,
+                                          fontSize: FontSize.fourteen,
+                                          lineHeight: 1.0,
+                                        ),
                                       ),
-                                      child: CustomText(
-                                        item,
-                                        color: ColorResource.color484848,
-                                        fontSize: FontSize.fourteen,
-                                        lineHeight: 1.0,
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),
                               const SizedBox(
                                 height: 5,
                               ),
-                               Padding(
+                              Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 15,
                                 ),
@@ -182,7 +195,8 @@ class CustomCardList {
                               ),
                               //  const SizedBox(height: 5,),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(23, 5, 14, 13),
+                                padding:
+                                    const EdgeInsets.fromLTRB(23, 5, 14, 13),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -212,7 +226,7 @@ class CustomCardList {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                            Image.asset(
+                                            SvgPicture.asset(
                                                 ImageResource.forwardArrow)
                                           ],
                                         ),
@@ -227,16 +241,35 @@ class CustomCardList {
                       ),
                     ),
                     Container(
-                            alignment: Alignment.topRight,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Image.asset(ImageResource.star),
-                          ),
+                      alignment: Alignment.topRight,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: SvgPicture.asset(ImageResource.star),
+                    ),
                   ],
                 ),
               ],
             ),
           );
+        });
+  }
+
+  static caseDetailsBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+        isDismissible: false,
+        // enableDrag: false,
+        isScrollControlled: true,
+        context: buildContext,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        ),
+        backgroundColor: ColorResource.colorFFFFFF,
+        builder: (BuildContext context) {
+          // return SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.89,
+          // );
+          return CaseDetailsTelecallerScreen();
         });
   }
 }

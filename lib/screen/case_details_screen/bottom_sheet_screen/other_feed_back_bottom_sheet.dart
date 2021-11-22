@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -82,9 +83,9 @@ class _CustomOtherFeedBackBottomSheetState
                             dateControlller,
                             isReadOnly: true,
                             onTapped: () => pickDate(context, dateControlller),
-                            suffixWidget: const ImageIcon(
-                              AssetImage(ImageResource.calendar),
-                              color: ColorResource.colorC4C4C4,
+                            suffixWidget: SvgPicture.asset(
+                              ImageResource.calendar,
+                              fit: BoxFit.scaleDown,
                             ),
                           ),
                         ),
@@ -129,7 +130,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset(ImageResource.upload),
+                                      SvgPicture.asset(ImageResource.upload),
                                       const SizedBox(width: 5),
                                       const CustomText(
                                         'UPLOAD AUDIO FILE',

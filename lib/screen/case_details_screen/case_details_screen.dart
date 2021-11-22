@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -408,7 +409,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                           .color23375A,
                                                       isLeading: true,
                                                       trailingWidget:
-                                                          Image.asset(
+                                                          SvgPicture.asset(
                                                               ImageResource
                                                                   .whatsApp),
                                                       onTap: () async {
@@ -579,9 +580,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             ),
                                                             const SizedBox(
                                                                 width: 10),
-                                                            Image.asset(
+                                                            SvgPicture.asset(
                                                                 ImageResource
-                                                                    .viewShape)
+                                                                    .forwardArrow)
                                                           ],
                                                         )
                                                       ],
