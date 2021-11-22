@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -51,270 +52,274 @@ class _AddressScreenState extends State<AddressScreen>
     //   CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
     //   CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
     // ];
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.transparent,
-        // backgroundColor: ColorResource.colorF7F8FA,
-        body: DefaultTabController(
-          length: 3,
-          child: Container(
-            decoration: BoxDecoration(
-                color: ColorResource.colorFFFFFF,
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorResource.colorCACACA.withOpacity(.25),
-                    blurRadius: 20.0,
-                    offset: const Offset(1.0, 1.0),
-                  ),
-                ],
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(30))),
-            width: double.infinity,
-            child: Column(
-              children: [
-                // CustomAppbar(
-                //   titleString: Languages.of(context)!.caseDetials,
-                //   titleSpacing: 21,
-                //   iconEnumValues: IconEnum.back,
-                //   onItemSelected: (value) {
-                //     if (value == 'IconEnum.back') {
-                //       Navigator.pop(context);
-                //       Navigator.pop(context);
-                //     }
-                //   },
-                // ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state is ClickAddressBottomSheetState) {}
+        if (state is ClickPopState) {
+          Navigator.pop(context);
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: Colors.transparent,
+            // backgroundColor: ColorResource.colorF7F8FA,
+            body: DefaultTabController(
+              length: 3,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: ColorResource.colorFFFFFF,
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorResource.colorCACACA.withOpacity(.25),
+                        blurRadius: 20.0,
+                        offset: const Offset(1.0, 1.0),
+                      ),
+                    ],
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(30))),
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const CustomText(
-                            'ADDRESS 01',
-                            fontWeight: FontWeight.w700,
-                            fontSize: FontSize.fourteen,
-                            fontStyle: FontStyle.normal,
-                            color: ColorResource.color23375A,
-                          ),
-                          Wrap(
-                            spacing: 27,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SvgPicture.asset(ImageResource.activePerson),
-                              InkWell(
-                                  onTap: () => Navigator.pop(context),
-                                  child: SvgPicture.asset(ImageResource.close))
+                              const CustomText(
+                                'ADDRESS 01',
+                                fontWeight: FontWeight.w700,
+                                fontSize: FontSize.fourteen,
+                                fontStyle: FontStyle.normal,
+                                color: ColorResource.color23375A,
+                              ),
+                              Wrap(
+                                spacing: 27,
+                                children: [
+                                  SvgPicture.asset(ImageResource.activePerson),
+                                  InkWell(
+                                      onTap: () =>
+                                          widget.bloc.add(ClickPopEvent()),
+                                      child:
+                                          SvgPicture.asset(ImageResource.close))
+                                ],
+                              )
+                            ],
+                          ),
+                          const Flexible(
+                            child: SizedBox(
+                              width: 255,
+                              child: CustomText(
+                                '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+                                fontWeight: FontWeight.w400,
+                                fontSize: FontSize.fourteen,
+                                fontStyle: FontStyle.normal,
+                                color: ColorResource.color23375A,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: GestureDetector(
+                                onTap: () => openViewMapBottomSheet(context),
+                                child: SizedBox(
+                                    width: 10,
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                            color: ColorResource.colorBEC4CF,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(75.0))),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                                ImageResource.direction),
+                                            const SizedBox(width: 10),
+                                            const CustomText(
+                                              StringResource.viewMap,
+                                              fontSize: FontSize.fourteen,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            )
+                                          ],
+                                        ))),
+                              )),
+                              const SizedBox(width: 40),
+                              Expanded(
+                                  child: CustomButton(
+                                Languages.of(context)!.eventDetails,
+                                onTap: () =>
+                                    openEventDetailsBottomSheet(context),
+                                textColor: ColorResource.color23375A,
+                                borderColor: ColorResource.color23375A,
+                                buttonBackgroundColor:
+                                    ColorResource.colorFFFFFF,
+                              ))
                             ],
                           )
                         ],
                       ),
-                      const Flexible(
-                        child: SizedBox(
-                          width: 255,
-                          child: CustomText(
-                            '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-                            fontWeight: FontWeight.w400,
-                            fontSize: FontSize.fourteen,
-                            fontStyle: FontStyle.normal,
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: ColorResource.colorD8D8D8))),
+                      child: TabBar(
+                        isScrollable: true,
+                        controller: _controller,
+                        indicatorColor: ColorResource.colorD5344C,
+                        labelStyle: const TextStyle(
+                            fontWeight: FontWeight.w700,
                             color: ColorResource.color23375A,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: GestureDetector(
-                            onTap: () => openViewMapBottomSheet(context),
-                            child: SizedBox(
-                                width: 10,
-                                child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: ColorResource.colorBEC4CF,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(75.0))),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(ImageResource.direction),
-                                        const SizedBox(width: 10),
-                                        const CustomText(
-                                          StringResource.viewMap,
-                                          fontSize: FontSize.fourteen,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color23375A,
-                                        )
-                                      ],
-                                    ))),
-                          )),
-                          const SizedBox(width: 40),
-                          Expanded(
-                              child: CustomButton(
-                            Languages.of(context)!.eventDetails,
-                            onTap: () => openEventDetailsBottomSheet(context),
-                            textColor: ColorResource.color23375A,
-                            borderColor: ColorResource.color23375A,
-                            buttonBackgroundColor: ColorResource.colorFFFFFF,
-                          ))
+                            fontSize: FontSize.fourteen,
+                            fontStyle: FontStyle.normal),
+                        indicatorWeight: 5.0,
+                        labelColor: ColorResource.color23375A,
+                        unselectedLabelColor: ColorResource.colorC4C4C4,
+                        onTap: (index) {
+                          widget
+                              .bloc.addressCustomerNotMetNextActionDateFocusNode
+                              .unfocus();
+                          widget.bloc.addressCustomerNotMetRemarksFocusNode
+                              .unfocus();
+                          widget.bloc.addressInvalidRemarksFocusNode.unfocus();
+                        },
+                        tabs: [
+                          Tab(text: Languages.of(context)!.customerMet),
+                          Tab(text: Languages.of(context)!.customerNotMet),
+                          Tab(text: Languages.of(context)!.invalid)
                         ],
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom:
-                              BorderSide(color: ColorResource.colorD8D8D8))),
-                  child: TabBar(
-                    isScrollable: true,
-                    controller: _controller,
-                    indicatorColor: ColorResource.colorD5344C,
-                    labelStyle: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: ColorResource.color23375A,
-                        fontSize: FontSize.fourteen,
-                        fontStyle: FontStyle.normal),
-                    indicatorWeight: 5.0,
-                    labelColor: ColorResource.color23375A,
-                    unselectedLabelColor: ColorResource.colorC4C4C4,
-                    onTap: (index) {
-                      widget.bloc.addressCustomerNotMetNextActionDateFocusNode
-                          .unfocus();
-                      widget.bloc.addressCustomerNotMetRemarksFocusNode
-                          .unfocus();
-                      widget.bloc.addressInvalidRemarksFocusNode.unfocus();
-                    },
-                    tabs: [
-                      Tab(text: Languages.of(context)!.customerMet),
-                      Tab(text: Languages.of(context)!.customerNotMet),
-                      Tab(text: Languages.of(context)!.invalid)
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                    child: SingleChildScrollView(
-                  // physics: NeverScrollableScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Column(children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.65,
-                          child: TabBarView(
-                            controller: _controller,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              CustomerMetScreen(
-                                  bloc: widget.bloc, context: context),
-                              CustomerNotMetScreen(
-                                  context: context, bloc: widget.bloc),
-                              AddressInvalidScreen(
-                                  context: context, bloc: widget.bloc),
-                            ],
-                          ),
-                        ),
-                      ])
-                    ],
-                  ),
-                ))
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: _controller.index == 0
-            ? Container(
-                height: 75,
-                decoration: BoxDecoration(
-                  color: ColorResource.colorFFFFFF,
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorResource.color000000.withOpacity(.25),
-                      blurRadius: 2.0,
-                      offset: const Offset(1.0, 1.0),
-                    ),
-                  ],
-                ),
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 85, vertical: 11.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 190,
-                        child: CustomButton(
-                          Languages.of(context)!.done.toUpperCase(),
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
-                          onTap: () => Navigator.pop(context),
-                          cardShape: 5,
-                        ),
                       ),
-                    ],
-                  ),
-                ),
-              )
-            : Container(
-                height: 75,
-                decoration: BoxDecoration(
-                  color: ColorResource.colorFFFFFF,
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorResource.color000000.withOpacity(.25),
-                      blurRadius: 2.0,
-                      offset: const Offset(1.0, 1.0),
                     ),
-                  ],
-                ),
-                width: double.infinity,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                          width: 95,
-                          child: Center(
-                              child: CustomText(
-                            Languages.of(context)!.cancel.toUpperCase(),
-                            onTap: () => Navigator.pop(context),
-                            color: ColorResource.colorEA6D48,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
-                            fontSize: FontSize.sixteen,
-                          ))),
-                      const SizedBox(width: 25),
-                      SizedBox(
-                        width: 191,
-                        child: _controller.index == 1
-                            ? CustomButton(
-                                Languages.of(context)!.submit.toUpperCase(),
-                                // isEnabled: (bloc.selectedUnreadableClip == ''),
-                                fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
-                                // onTap: () => bloc.add(ClickMessageEvent()),
-                                cardShape: 5,
-                              )
-                            : CustomButton(
-                                Languages.of(context)!.submit.toUpperCase(),
-                                // isEnabled: (bloc.selectedInvalidClip != ''),
-                                fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
-                                // onTap: () => bloc.add(ClickMessageEvent()),
-                                cardShape: 5,
+                    Expanded(
+                        child: SingleChildScrollView(
+                      // physics: NeverScrollableScrollPhysics(),
+                      child: Column(
+                        children: [
+                          Column(children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.65,
+                              child: TabBarView(
+                                controller: _controller,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: [
+                                  CustomerMetScreen(
+                                      bloc: widget.bloc, context: context),
+                                  CustomerNotMetScreen(
+                                      context: context, bloc: widget.bloc),
+                                  AddressInvalidScreen(
+                                      context: context, bloc: widget.bloc),
+                                ],
                               ),
+                            ),
+                          ])
+                        ],
                       ),
-                    ],
-                  ),
+                    ))
+                  ],
                 ),
               ),
+            ),
+            bottomNavigationBar: _controller.index == 0
+                ? Container(
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: ColorResource.colorFFFFFF,
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorResource.color000000.withOpacity(.25),
+                          blurRadius: 2.0,
+                          offset: const Offset(1.0, 1.0),
+                        ),
+                      ],
+                    ),
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 85, vertical: 11.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 190,
+                            child: CustomButton(
+                              Languages.of(context)!.done.toUpperCase(),
+                              fontSize: FontSize.sixteen,
+                              fontWeight: FontWeight.w600,
+                              onTap: () => Navigator.pop(context),
+                              cardShape: 5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: ColorResource.colorFFFFFF,
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorResource.color000000.withOpacity(.25),
+                          blurRadius: 2.0,
+                          offset: const Offset(1.0, 1.0),
+                        ),
+                      ],
+                    ),
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                              width: 95,
+                              child: Center(
+                                  child: CustomText(
+                                Languages.of(context)!.cancel.toUpperCase(),
+                                onTap: () => Navigator.pop(context),
+                                color: ColorResource.colorEA6D48,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                                fontSize: FontSize.sixteen,
+                              ))),
+                          const SizedBox(width: 25),
+                          SizedBox(
+                            width: 191,
+                            child: _controller.index == 1
+                                ? CustomButton(
+                                    Languages.of(context)!.submit.toUpperCase(),
+                                    // isEnabled: (bloc.selectedUnreadableClip == ''),
+                                    fontSize: FontSize.sixteen,
+                                    fontWeight: FontWeight.w600,
+                                    // onTap: () => bloc.add(ClickMessageEvent()),
+                                    cardShape: 5,
+                                  )
+                                : CustomButton(
+                                    Languages.of(context)!.submit.toUpperCase(),
+                                    // isEnabled: (bloc.selectedInvalidClip != ''),
+                                    fontSize: FontSize.sixteen,
+                                    fontWeight: FontWeight.w600,
+                                    // onTap: () => bloc.add(ClickMessageEvent()),
+                                    cardShape: 5,
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          );
+        },
       ),
     );
   }

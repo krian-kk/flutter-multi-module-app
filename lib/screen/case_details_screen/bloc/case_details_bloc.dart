@@ -164,13 +164,19 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //     result: Result.fromJson(caseDetailsHiveBox.get('c1')?.result));
       // print(caseDetailsTemp.result?.caseDetails?.bankName);
       addressCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp),
-        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp),
-        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute),
-        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder),
+        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
+            onTap: () => add(ClickPTPEvent())),
+        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp,
+            onTap: () => add(ClickRTPEvent())),
+        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute,
+            onTap: () => add(ClickDisputeEvent())),
+        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder,
+            onTap: () => add(ClickRemainderEvent())),
         CustomerMetGridModel(
-            ImageResource.collections, StringResource.collections),
-        CustomerMetGridModel(ImageResource.ots, StringResource.ots),
+            ImageResource.collections, StringResource.collections,
+            onTap: () => add(ClickCollectionsEvent())),
+        CustomerMetGridModel(ImageResource.ots, StringResource.ots,
+            onTap: () => add(ClickOTSEvent())),
       ]);
 
       expandEvent.addAll([
@@ -200,13 +206,19 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       ]);
 
       phoneCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp),
-        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp),
-        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute),
-        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder),
+        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
+            onTap: () => add(ClickPTPEvent())),
+        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp,
+            onTap: () => add(ClickRTPEvent())),
+        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute,
+            onTap: () => add(ClickDisputeEvent())),
+        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder,
+            onTap: () => add(ClickRemainderEvent())),
         CustomerMetGridModel(
-            ImageResource.collections, StringResource.collections),
-        CustomerMetGridModel(ImageResource.ots, StringResource.ots),
+            ImageResource.collections, StringResource.collections,
+            onTap: () => add(ClickCollectionsEvent())),
+        CustomerMetGridModel(ImageResource.ots, StringResource.ots,
+            onTap: () => add(ClickOTSEvent())),
       ]);
 
       // multiCallDetilsList.addAll([
@@ -221,6 +233,37 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickCallBottomSheetEvent) {
       yield ClickCallBottomSheetState();
+    }
+    if (event is ClickMainAddressBottomSheetEvent) {
+      yield ClickMainAddressBottomSheetState();
+    }
+    if (event is ClickMainCallBottomSheetEvent) {
+      yield ClickMainCallBottomSheetState();
+    }
+    if (event is ClickPopEvent) {
+      yield ClickPopState();
+    }
+    if (event is ClickPTPEvent) {
+      yield ClickPTPState();
+    }
+    if (event is ClickRTPEvent) {
+      yield ClickRTPState();
+    }
+    if (event is ClickDisputeEvent) {
+      yield ClickDisputeState();
+    }
+    if (event is ClickRemainderEvent) {
+      yield ClickRemainderState();
+    }
+    if (event is ClickCollectionsEvent) {
+      yield ClickCollectionsState();
+    }
+
+    if (event is ClickAddAddressEvent) {
+      yield ClickAddAddressState();
+    }
+    if (event is ClickOTSEvent) {
+      yield ClickOTSState();
     }
   }
 }

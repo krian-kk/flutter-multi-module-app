@@ -65,9 +65,10 @@ class CustomCardList {
                       padding: const EdgeInsets.only(bottom: 10, top: 19),
                       child: InkWell(
                         onTap: () {
-                          // Navigator.pushNamed(
-                          //     context, AppRoutes.caseDetailsTelecallerScreen);
-                          caseDetailsBottomSheet(context);
+                          Navigator.pushNamed(
+                              context, AppRoutes.caseDetailsScreen,
+                              arguments: false);
+                          // caseDetailsBottomSheet(context);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,

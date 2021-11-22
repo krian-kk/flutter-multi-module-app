@@ -61,12 +61,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is FilterSelectOptionState) {}
 
         if (state is NavigateCaseDetailState) {
-          Navigator.pushNamed(
-                            context, AppRoutes.caseDetailsScreen);
+          Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+              arguments: true);
         }
         if (state is NavigateSearchPageState) {
-          Navigator.pushNamed(context, AppRoutes.SearchScreen,
-              arguments: bloc);
+          Navigator.pushNamed(context, AppRoutes.SearchScreen, arguments: bloc);
         }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(

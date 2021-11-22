@@ -227,7 +227,8 @@ class AutoCalling {
                 ),
                 InkWell(
                   onTap: () {
-                    caseDetailsBottomSheet(context);
+                    Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+                        arguments: false);
                   },
                   child: SizedBox(
                     child: Column(
@@ -259,7 +260,8 @@ class AutoCalling {
       ),
     );
   }
-   static caseDetailsBottomSheet(BuildContext buildContext) {
+
+  static caseDetailsBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
         isDismissible: false,
         // enableDrag: false,

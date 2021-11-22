@@ -75,8 +75,8 @@ class CaseLists {
                 padding: const EdgeInsets.only(top: 20),
                 child: InkWell(
                   onTap: () {
-                      bloc.add(NavigateCaseDetailEvent());
-                    },
+                    bloc.add(NavigateCaseDetailEvent());
+                  },
                   child: Container(
                     margin: (index == bloc.caseList.length - 1)
                         ? const EdgeInsets.only(bottom: 70)

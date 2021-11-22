@@ -12,3 +12,23 @@ class CaseDetailsLoadedState extends CaseDetailsState {}
 class ClickAddressBottomSheetState extends CaseDetailsState {}
 
 class ClickCallBottomSheetState extends CaseDetailsState {}
+
+class ClickMainAddressBottomSheetState extends CaseDetailsState {}
+
+class ClickMainCallBottomSheetState extends CaseDetailsState {}
+
+class ClickPopState extends CaseDetailsState {}
+
+class ClickPTPState extends CaseDetailsState {}
+
+class ClickRTPState extends CaseDetailsState {}
+
+class ClickDisputeState extends CaseDetailsState {}
+
+class ClickRemainderState extends CaseDetailsState {}
+
+class ClickCollectionsState extends CaseDetailsState {}
+
+class ClickAddAddressState extends CaseDetailsState {}
+
+class ClickOTSState extends CaseDetailsState {}

@@ -134,10 +134,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () =>
                                         bloc.add(ChangeProfileImageEvent()),
                                     child: image == null
-                                        ? const CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: AssetImage(
-                                                ImageResource.profile))
+                                        ? Container(
+                                            child: SvgPicture.asset(
+                                                ImageResource
+                                                    .profileImagePicker),
+                                            width: 48,
+                                            height: 49.5,
+                                            decoration: BoxDecoration(
+                                              color: ColorResource.color23375A,
+                                              borderRadius:
+                                                  BorderRadius.circular(52.5),
+                                            ),
+                                          )
                                         : CircleAvatar(
                                             radius: 25,
                                             backgroundImage:
