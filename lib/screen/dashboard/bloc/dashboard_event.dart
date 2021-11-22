@@ -19,5 +19,9 @@ class MyDeposistsEvent extends DashboardEvent {}
 
 class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
+class NavigateCaseDetailEvent extends DashboardEvent {}
+
+class NavigateSearchEvent extends DashboardEvent {}
+
 class HelpEvent extends DashboardEvent {}
 

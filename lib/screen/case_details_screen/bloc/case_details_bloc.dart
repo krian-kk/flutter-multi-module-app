@@ -84,10 +84,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         // print(caseDetailsHiveBox.get('c1')?.status);
       } else {
         Map<String, dynamic> caseDetailsData =
-            await getCaseDetailsData('5f80375a86527c46deba2e5d');
+            await getCaseDetailsData('6181646813c5cf70dea671d2');
 
         if (caseDetailsData["success"] == true) {
           Map<String, dynamic> jsonData = caseDetailsData["data"];
+          print(jsonEncode(jsonData));
 
           caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
 
@@ -130,7 +131,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseDetailsResult.result?.caseDetails!.loanDuration.toString()
                   as String;
           posController.text =
-              caseDetailsResult.result?.caseDetails!.pos.toString() as String;
+              caseDetailsResult.result?.caseDetails!.pos.toString() ?? '';
           schemeCodeController.text =
               caseDetailsResult.result?.caseDetails!.schemeCode.toString()
                   as String;

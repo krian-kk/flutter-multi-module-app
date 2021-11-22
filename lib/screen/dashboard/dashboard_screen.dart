@@ -26,6 +26,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../router.dart';
+
 class DashboardScreen extends StatefulWidget {
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -82,6 +84,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           if (state is YardingAndSelfReleaseState) {
             yardingSelfReleaseSheet(context);
+          }
+
+          if (state is NavigateCaseDetailState) {
+                Navigator.pushNamed(
+                      context, AppRoutes.caseDetailsScreen);
           }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
@@ -624,7 +631,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return SafeArea(
               // top: false,
               bottom: false,
-              child: BrokenPTPBottomSheet());
+              child: BrokenPTPBottomSheet(bloc));
         });
   }
 
@@ -657,7 +664,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return SafeArea(
               // top: false,
               bottom: false,
-              child: MyReceiptsBottomSheet());
+              child: MyReceiptsBottomSheet(bloc));
         });
   }
 

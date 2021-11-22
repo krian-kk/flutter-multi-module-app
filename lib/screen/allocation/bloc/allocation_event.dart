@@ -10,4 +10,6 @@ class MessageEvent extends AllocationEvent {}
 
 class NavigateSearchPageEvent extends AllocationEvent {}
 
+class NavigateCaseDetailEvent extends AllocationEvent {}
+
 class FilterSelectOptionEvent extends AllocationEvent {}

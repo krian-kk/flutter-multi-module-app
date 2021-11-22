@@ -8,6 +8,7 @@ class CaseDetails {
   int? due;
   String? cust;
   String? accNo;
+  String? collSubStatus;
   String? bankName;
   String? batchNo;
   String? product;
@@ -27,6 +28,7 @@ class CaseDetails {
     this.due,
     this.cust,
     this.accNo,
+    this.collSubStatus,
     this.bankName,
     this.batchNo,
     this.product,
@@ -47,6 +49,7 @@ class CaseDetails {
         due: json['due'] as int?,
         cust: json['cust'] as String?,
         accNo: json['accNo'] as String?,
+        collSubStatus: json['collSubStatus'] as String?,
         bankName: json['bankName'] as String?,
         batchNo: json['batchNo'] as String?,
         product: json['product'] as String?,
@@ -76,6 +79,7 @@ class CaseDetails {
         'due': due,
         'cust': cust,
         'accNo': accNo,
+        'collSubStatus': collSubStatus,
         'bankName': bankName,
         'batchNo': batchNo,
         'product': product,

@@ -63,9 +63,14 @@ Route<dynamic> _buildSplashScreen() {
 
 Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
-    final AuthenticationBloc authBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildHomeTabScreen(authBloc));
+    String? loginType;
+    if (settings.arguments != null) {
+      loginType = settings.arguments.toString();
+    }
+
+    // final AuthenticationBloc authBloc =
+    //     BlocProvider.of<AuthenticationBloc>(context);
+    return addAuthBloc(context, PageBuilder.buildHomeTabScreen(loginType));
   });
 }
 
@@ -115,11 +120,11 @@ class PageBuilder {
     );
   }
 
-  static Widget buildHomeTabScreen(AuthenticationBloc authBloc) {
+  static Widget buildHomeTabScreen(String? loginType) {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<HomeTabBloc>(context)..add(HomeTabInitialEvent()),
-      child: HomeTabScreen(authBloc),
+      child: HomeTabScreen(loginType),
     );
   }
 

@@ -21,8 +21,8 @@ import 'bloc/home_tab_event.dart';
 
 // ignore: must_be_immutable
 class HomeTabScreen extends StatefulWidget {
-  AuthenticationBloc authenticationBloc;
-  HomeTabScreen(this.authenticationBloc);
+  final String? loginType;
+  HomeTabScreen(this.loginType);
   @override
   _HomeTabScreenState createState() => _HomeTabScreenState();
 }
@@ -44,6 +44,8 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
     bloc = HomeTabBloc()..add(HomeTabInitialEvent());
     // mapBloc = MapBloc()..add(MapInitialEvent());
     super.initState();
+    print('---------NK-------');
+    print(widget.loginType);
   }
 
   @override
@@ -238,9 +240,12 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
+                                  if(widget.loginType == 'fos')
                                   AllocationScreen(),
+                                  if(widget.loginType == 'tc')
+                                  const AllocationTelecallerScreen(),
                                   DashboardScreen(),
-                                  ProfileScreen(),
+                                  const ProfileScreen(),
                                 ]),
                           )
                         ])),

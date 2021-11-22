@@ -148,6 +148,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield YardingAndSelfReleaseState();     
     }
 
+    if (event is NavigateCaseDetailEvent) {
+      yield NavigateCaseDetailState();     
+    }
+
+    if (event is NavigateSearchEvent) {
+      yield NavigateSearchState();     
+    }
+
     if (event is HelpEvent) {
       yield HelpState();     
     }

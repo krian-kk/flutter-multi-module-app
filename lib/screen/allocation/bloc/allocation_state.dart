@@ -14,4 +14,6 @@ class MessageState extends AllocationState {}
 
 class NavigateSearchPageState extends AllocationState {}
 
+class NavigateCaseDetailState extends AllocationState {}
+
 class FilterSelectOptionState extends AllocationState {}

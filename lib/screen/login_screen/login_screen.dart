@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode passwords;
   bool _obscureText = true;
   bool _isChecked = false;
+  String? loginType;
 
   @override
   void initState() {
@@ -61,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
       bloc: bloc,
       listener: (context, state) {
         if (state is HomeTabState) {
-          Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+          Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen, arguments: loginType);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -227,7 +228,15 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!isValid) {
       return;
     } else {
-      if (userName.text == 'origa' && password.text == '1234') {
+      if (userName.text == 'fos' && password.text == '1234') {
+        setState(() {
+          loginType = 'fos';
+        });
+        bloc.add(HomeTabEvent());
+      } else if(userName.text == 'tc' && password.text == '1234') {
+        setState(() {
+          loginType = 'tc';
+        });
         bloc.add(HomeTabEvent());
       } else {
         AppUtils.showToast(Languages.of(context)!.passwordNotMatch);
