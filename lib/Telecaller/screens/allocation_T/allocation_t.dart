@@ -42,7 +42,7 @@ class _AllocationTelecallerScreenState
       bloc: bloc,
       listener: (BuildContext context, AllocationTState state) {
         if (state is NavigateSearchPageTState) {
-          Navigator.pushNamed(context, AppRoutes.searchAllocationDetailsScreen);
+          Navigator.pushNamed(context, AppRoutes.SearchScreen);
         }
       },
       child: BlocBuilder<AllocationTBloc, AllocationTState>(

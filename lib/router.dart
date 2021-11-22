@@ -11,8 +11,8 @@ import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/screen/login_screen/bloc/login_bloc.dart';
 import 'package:origa/screen/login_screen/login_screen.dart';
-import 'package:origa/screen/search_allocation_details_screen/bloc/search_allocation_details_bloc.dart';
-import 'package:origa/screen/search_allocation_details_screen/search_allocation_details_screen.dart';
+import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
+import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -26,7 +26,7 @@ class AppRoutes {
   static const String allocationScreen = 'allocation_screen';
   static const String allocationTelecallerScreen =
       'allocation_telecaller_screen';
-  static const String searchAllocationDetailsScreen =
+  static const String SearchScreen =
       'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
   static const String caseDetailsTelecallerScreen =
@@ -41,8 +41,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
     case AppRoutes.homeTabScreen:
       return _buildHomeTabScreen(settings);
 
-    case AppRoutes.searchAllocationDetailsScreen:
-      return _buildSearchAllocationDetailsScreen();
+    case AppRoutes.SearchScreen:
+      return _buildSearchScreen();
     case AppRoutes.caseDetailsScreen:
       return _buildCaseDetailsScreen();
     case AppRoutes.loginScreen:
@@ -82,10 +82,10 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
   });
 }
 
-Route<dynamic> _buildSearchAllocationDetailsScreen() {
+Route<dynamic> _buildSearchScreen() {
   return MaterialPageRoute(
     builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildSearchAllocationDetailsPage()),
+        addAuthBloc(context, PageBuilder.buildSearchScreenPage()),
   );
 }
 
@@ -136,12 +136,12 @@ class PageBuilder {
     );
   }
 
-  static Widget buildSearchAllocationDetailsPage() {
+  static Widget buildSearchScreenPage() {
     return BlocProvider(
       create: (BuildContext context) =>
-          BlocProvider.of<SearchAllocationDetailsBloc>(context)
-            ..add(SearchAllocationDetailsInitialEvent()),
-      child: const SearchAllocationDetailsScreen(),
+          BlocProvider.of<SearchScreenBloc>(context)
+            ..add(SearchScreenInitialEvent()),
+      child: const SearchScreen(),
     );
   }
 

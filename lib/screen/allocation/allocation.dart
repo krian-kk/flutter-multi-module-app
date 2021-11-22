@@ -65,7 +65,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             context, AppRoutes.caseDetailsScreen);
         }
         if (state is NavigateSearchPageState) {
-          Navigator.pushNamed(context, AppRoutes.searchAllocationDetailsScreen,
+          Navigator.pushNamed(context, AppRoutes.SearchScreen,
               arguments: bloc);
         }
       },
