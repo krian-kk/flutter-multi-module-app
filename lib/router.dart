@@ -44,7 +44,7 @@ Route<dynamic> getRoute(RouteSettings settings) {
     case AppRoutes.searchAllocationDetailsScreen:
       return _buildSearchAllocationDetailsScreen();
     case AppRoutes.caseDetailsScreen:
-      return _buildCaseDetailsScreen();
+      return _buildCaseDetailsScreen(settings);
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
     case AppRoutes.caseDetailsTelecallerScreen:
@@ -84,10 +84,10 @@ Route<dynamic> _buildSearchAllocationDetailsScreen() {
   );
 }
 
-Route<dynamic> _buildCaseDetailsScreen() {
+Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
   return MaterialPageRoute(
     builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildCaseDetailsPage()),
+        addAuthBloc(context, PageBuilder.buildCaseDetailsPage(settings)),
   );
 }
 
@@ -140,12 +140,12 @@ class PageBuilder {
     );
   }
 
-  static Widget buildCaseDetailsPage() {
+  static Widget buildCaseDetailsPage(RouteSettings settings) {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
             ..add(CaseDetailsInitialEvent()),
-      child: const CaseDetailsScreen(),
+      child: CaseDetailsScreen(settings.arguments as bool),
     );
   }
 

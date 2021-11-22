@@ -71,4 +71,6 @@ class ImageResource {
   static const String vector = 'assets/svg/Vector.svg';
   static const String downShape = 'assets/svg/down_shape.svg';
   static const String homeTabProfile = 'assets/svg/profile_home_tab.svg';
+  static const String profileImagePicker =
+      'assets/svg/profile_image_picker.svg';
 }

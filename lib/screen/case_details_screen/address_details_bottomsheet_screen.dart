@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
@@ -28,191 +29,223 @@ class _AddressDetailsBottomSheetScreenState
     extends State<AddressDetailsBottomSheetScreen> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Column(
-        children: [
-          BottomSheetAppbar(
-            title: Languages.of(context)!.addressDetails.toUpperCase(),
-            padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
-            color: ColorResource.color23375A,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
-            child: CustomLoanUserDetails(
-              userName:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.cust ?? '',
-              userId:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.accNo ??
-                      '',
-              userAmount: widget.bloc.caseDetailsResult.result?.caseDetails?.due
-                      ?.toDouble() ??
-                  0,
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 21, vertical: 13)
-                        .copyWith(top: 0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: widget.bloc.caseDetailsResult.result
-                              ?.addressDetails?.length ??
-                          0,
-                      itemBuilder: (context, i) {
-                        return SizedBox(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                (i + 1 > 9)
-                                    ? Languages.of(context)!
-                                            .address
-                                            .toUpperCase() +
-                                        '${i + 1}'
-                                    : Languages.of(context)!
-                                            .address
-                                            .toUpperCase() +
-                                        '0'
-                                            '${i + 1}',
-                                fontWeight: FontWeight.w700,
-                                fontSize: FontSize.fourteen,
-                                color: ColorResource.color23375A,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              const SizedBox(height: 7),
-                              Container(
-                                width: double.infinity,
-                                decoration: const BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 12, 12, 12),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: CustomText(
-                                              widget
-                                                  .bloc
-                                                  .caseDetailsResult
-                                                  .result!
-                                                  .addressDetails![i]['value']
-                                                  .toString()
-                                                  .toUpperCase(),
-                                              fontSize: FontSize.fourteen,
-                                              fontWeight: FontWeight.w400,
-                                              fontStyle: FontStyle.normal,
-                                              color: ColorResource.color484848,
-                                            ),
-                                          ),
-                                          Align(
-                                              alignment: Alignment.topRight,
-                                              child: Row(
-                                                children: [
-                                                  const SizedBox(width: 10),
-                                                  SvgPicture.asset(ImageResource
-                                                      .activePerson),
-                                                ],
-                                              )),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 15),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                              child: Container(
-                                                  decoration: const BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorBEC4CF,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  75.0))),
-                                                  child: Row(
-                                                    children: [
-                                                      Image.asset(ImageResource
-                                                          .direction),
-                                                      const SizedBox(width: 12),
-                                                      CustomText(
-                                                        Languages.of(context)!
-                                                            .viewMap,
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color23375A,
-                                                      ),
-                                                      const SizedBox(width: 12),
-                                                    ],
-                                                  ))),
-                                          const Spacer(),
-                                          const SizedBox(width: 5),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                              addressBottomSheet(
-                                                  context, widget.bloc);
-                                            },
-                                            child: Row(
+    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state is ClickMainAddressBottomSheetState) {
+          Navigator.pop(context);
+          addressBottomSheet(context, widget.bloc);
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: Column(
+              children: [
+                BottomSheetAppbar(
+                  title: Languages.of(context)!.addressDetails.toUpperCase(),
+                  padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
+                  color: ColorResource.color23375A,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
+                  child: CustomLoanUserDetails(
+                    userName: widget
+                            .bloc.caseDetailsResult.result?.caseDetails?.cust ??
+                        '',
+                    userId: widget.bloc.caseDetailsResult.result?.caseDetails
+                            ?.accNo ??
+                        '',
+                    userAmount: widget
+                            .bloc.caseDetailsResult.result?.caseDetails?.due
+                            ?.toDouble() ??
+                        0,
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 21, vertical: 13)
+                          .copyWith(top: 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: widget.bloc.caseDetailsResult.result
+                                    ?.addressDetails?.length ??
+                                0,
+                            itemBuilder: (context, i) {
+                              return SizedBox(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      (i + 1 > 9)
+                                          ? Languages.of(context)!
+                                                  .address
+                                                  .toUpperCase() +
+                                              '${i + 1}'
+                                          : Languages.of(context)!
+                                                  .address
+                                                  .toUpperCase() +
+                                              '0'
+                                                  '${i + 1}',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: FontSize.fourteen,
+                                      color: ColorResource.color23375A,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    const SizedBox(height: 7),
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: const BoxDecoration(
+                                          color: ColorResource.colorF8F9FB,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 12, 12, 12),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                CustomText(
-                                                  Languages.of(context)!.view,
-                                                  lineHeight: 1,
-                                                  color:
-                                                      ColorResource.color23375A,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.w700,
+                                                Flexible(
+                                                  child: CustomText(
+                                                    widget
+                                                        .bloc
+                                                        .caseDetailsResult
+                                                        .result!
+                                                        .addressDetails![i]
+                                                            ['value']
+                                                        .toString()
+                                                        .toUpperCase(),
+                                                    fontSize: FontSize.fourteen,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: ColorResource
+                                                        .color484848,
+                                                  ),
                                                 ),
-                                                const SizedBox(width: 10),
-                                                SvgPicture.asset(
-                                                  ImageResource.forwardArrow,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                                const SizedBox(width: 5)
+                                                Align(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: Row(
+                                                      children: [
+                                                        const SizedBox(
+                                                            width: 10),
+                                                        SvgPicture.asset(
+                                                            ImageResource
+                                                                .activePerson),
+                                                      ],
+                                                    )),
                                               ],
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                    child: Container(
+                                                        decoration: const BoxDecoration(
+                                                            color: ColorResource
+                                                                .colorBEC4CF,
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        75.0))),
+                                                        child: Row(
+                                                          children: [
+                                                            Image.asset(
+                                                                ImageResource
+                                                                    .direction),
+                                                            const SizedBox(
+                                                                width: 12),
+                                                            CustomText(
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .viewMap,
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: ColorResource
+                                                                  .color23375A,
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 12),
+                                                          ],
+                                                        ))),
+                                                const Spacer(),
+                                                const SizedBox(width: 5),
+                                                InkWell(
+                                                  onTap: () {
+                                                    widget.bloc.add(
+                                                        ClickMainAddressBottomSheetEvent());
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      CustomText(
+                                                        Languages.of(context)!
+                                                            .view,
+                                                        lineHeight: 1,
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                        fontSize:
+                                                            FontSize.fourteen,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      SvgPicture.asset(
+                                                        ImageResource
+                                                            .forwardArrow,
+                                                        fit: BoxFit.scaleDown,
+                                                      ),
+                                                      const SizedBox(width: 5)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    const SizedBox(height: 15)
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(height: 15)
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  ],
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -222,18 +255,9 @@ void addressBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc) {
   showCupertinoModalPopup(
       context: buildContext,
       builder: (BuildContext context) {
-        return SafeArea(
-          // top: false,
-          bottom: false,
-          child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.89,
-              child: AddressScreen(bloc: bloc)),
-          // child: Container(
-          //   width: double.infinity,
-          //   height: 300,
-          //   color: ColorResource.colorFFFFFF,
-          // )
-        );
+        return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: AddressScreen(bloc: bloc));
       });
 }
 

@@ -19,7 +19,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
-  const CaseDetailsScreen({Key? key}) : super(key: key);
+  final bool isAdderss;
+  const CaseDetailsScreen(this.isAdderss, {Key? key}) : super(key: key);
 
   @override
   _CaseDetailsScreenState createState() => _CaseDetailsScreenState();
@@ -34,7 +35,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     super.initState();
     // subscription =
     //     Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
-
+    print(widget.isAdderss);
     bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
     // getConnectivty();
 
@@ -606,70 +607,73 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     child: Align(
                       alignment: Alignment.center,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  bloc.add(ClickAddressBottomSheetEvent()),
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: ColorResource.color23375A,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 5.0),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(ImageResource.direction),
-                                      const SizedBox(width: 8),
-                                      const Expanded(
-                                          child: CustomText(
-                                        'ADDRESS \nDETAILS',
-                                        fontSize: FontSize.twelve,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        color: ColorResource.color23375A,
-                                      ))
-                                    ],
+                          widget.isAdderss
+                              ? GestureDetector(
+                                  onTap: () =>
+                                      bloc.add(ClickAddressBottomSheetEvent()),
+                                  child: Container(
+                                    height: 50,
+                                    width: (MediaQuery.of(context).size.width -
+                                            62) /
+                                        2,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: ColorResource.color23375A,
+                                            width: 0.5),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 5.0),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(ImageResource.direction),
+                                          const SizedBox(width: 8),
+                                          const Expanded(
+                                              child: CustomText(
+                                            'ADDRESS \nDETAILS',
+                                            fontSize: FontSize.twelve,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                            color: ColorResource.color23375A,
+                                          ))
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  bloc.add(ClickCallBottomSheetEvent()),
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: ColorResource.color23375A,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 5.0),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(ImageResource.phone),
-                                      const SizedBox(width: 8),
-                                      const Expanded(
-                                          child: CustomText(
-                                        'CALL \nDETAILS',
-                                        fontSize: FontSize.twelve,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        color: ColorResource.color23375A,
-                                      ))
-                                    ],
-                                  ),
+                                )
+                              : SizedBox(),
+                          SizedBox(width: widget.isAdderss ? 20 : 0),
+                          GestureDetector(
+                            onTap: () => bloc.add(ClickCallBottomSheetEvent()),
+                            child: Container(
+                              height: 50,
+                              width:
+                                  (MediaQuery.of(context).size.width - 62) / 2,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: ColorResource.color23375A,
+                                      width: 0.5),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10.0))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 5.0),
+                                child: Row(
+                                  children: [
+                                    Image.asset(ImageResource.phone),
+                                    const SizedBox(width: 8),
+                                    const Expanded(
+                                        child: CustomText(
+                                      'CALL \nDETAILS',
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                      color: ColorResource.color23375A,
+                                    ))
+                                  ],
                                 ),
                               ),
                             ),

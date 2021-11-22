@@ -110,7 +110,8 @@ class CustomCardList {
                     child: InkWell(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, AppRoutes.caseDetailsScreen);
+                            context, AppRoutes.caseDetailsScreen,
+                            arguments: true);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

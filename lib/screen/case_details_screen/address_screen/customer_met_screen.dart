@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/capture_image_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/collections_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/dispute_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/other_feed_back_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/ots_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/ptp_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/remainder_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/repo_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/rtp_bottom_sheet.dart';
+import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
+import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
+import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
+import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
+import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
+import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
+import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
+import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -52,202 +53,239 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
     ];
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GridView.builder(
-                    itemCount: widget.bloc.addressCustomerMetGridList.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                    itemBuilder: (BuildContext context, int innerIndex) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.5),
-                        child: GestureDetector(
-                          onTap: () {
-                            switch (widget.bloc
-                                .addressCustomerMetGridList[innerIndex].title) {
-                              case StringResource.ptp:
-                                openBottomSheet(
-                                  context,
-                                  StringResource.ptp,
-                                );
-                                break;
-                              case StringResource.rtp:
-                                openBottomSheet(context, StringResource.rtp);
-                                break;
-                              case StringResource.dispute:
-                                openBottomSheet(
-                                    context, StringResource.dispute);
-                                break;
-                              case StringResource.remainder:
-                                openBottomSheet(
-                                    context, StringResource.remainder);
-                                break;
-                              case StringResource.collections:
-                                openBottomSheet(
-                                    context, StringResource.collections);
-                                break;
-                              case StringResource.ots:
-                                openBottomSheet(context, StringResource.ots);
-                                break;
-                              default:
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: ColorResource.colorF8F9FB,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: ColorResource.color000000
-                                        .withOpacity(0.2),
-                                    blurRadius: 2.0,
-                                    offset: const Offset(1.0,
-                                        1.0), // shadow direction: bottom right
-                                  )
-                                ],
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10.0))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(widget
+    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state is ClickPTPState) {
+          openBottomSheet(context, StringResource.ptp);
+        }
+        if (state is ClickRTPState) {
+          openBottomSheet(context, StringResource.rtp);
+        }
+        if (state is ClickDisputeState) {
+          openBottomSheet(context, StringResource.dispute);
+        }
+        if (state is ClickRemainderState) {
+          openBottomSheet(context, StringResource.remainder);
+        }
+        if (state is ClickCollectionsState) {
+          openBottomSheet(context, StringResource.collections);
+        }
+        if (state is ClickOTSState) {
+          openBottomSheet(context, StringResource.ots);
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GridView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount:
+                              widget.bloc.addressCustomerMetGridList.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3),
+                          itemBuilder: (BuildContext context, int innerIndex) {
+                            return Padding(
+                              padding: const EdgeInsets.all(4.5),
+                              child: GestureDetector(
+                                onTap: widget
                                     .bloc
                                     .addressCustomerMetGridList[innerIndex]
-                                    .icon),
-                                const SizedBox(height: 8),
-                                CustomText(
-                                  widget
-                                      .bloc
-                                      .addressCustomerMetGridList[innerIndex]
-                                      .title,
-                                  color: ColorResource.color000000,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                )
-                              ],
-                            ),
-                          ),
+                                    .onTap,
+                                // () {
+                                //   switch (widget.bloc
+                                //       .addressCustomerMetGridList[innerIndex].title) {
+                                //     case StringResource.ptp:
+                                //       openBottomSheet(
+                                //         context,
+                                //         StringResource.ptp,
+                                //       );
+                                //       break;
+                                //     case StringResource.rtp:
+                                //       openBottomSheet(context, StringResource.rtp);
+                                //       break;
+                                //     case StringResource.dispute:
+                                //       openBottomSheet(
+                                //           context, StringResource.dispute);
+                                //       break;
+                                //     case StringResource.remainder:
+                                //       openBottomSheet(
+                                //           context, StringResource.remainder);
+                                //       break;
+                                //     case StringResource.collections:
+                                //       openBottomSheet(
+                                //           context, StringResource.collections);
+                                //       break;
+                                //     case StringResource.ots:
+                                //       openBottomSheet(context, StringResource.ots);
+                                //       break;
+                                //     default:
+                                //   }
+                                // },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: ColorResource.colorF8F9FB,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: ColorResource.color000000
+                                              .withOpacity(0.2),
+                                          blurRadius: 2.0,
+                                          offset: const Offset(1.0,
+                                              1.0), // shadow direction: bottom right
+                                        )
+                                      ],
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(widget
+                                          .bloc
+                                          .addressCustomerMetGridList[
+                                              innerIndex]
+                                          .icon),
+                                      const SizedBox(height: 8),
+                                      CustomText(
+                                        widget
+                                            .bloc
+                                            .addressCustomerMetGridList[
+                                                innerIndex]
+                                            .title,
+                                        color: ColorResource.color000000,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                  CustomButton(
-                    Languages.of(context)!.captureImage.toUpperCase(),
-                    cardShape: 75.0,
-                    textColor: ColorResource.color23375A,
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w700,
-                    padding: 15.0,
-                    borderColor: ColorResource.colorBEC4CF,
-                    buttonBackgroundColor: ColorResource.colorBEC4CF,
-                    isLeading: true,
-                    onTap: () =>
-                        openBottomSheet(context, StringResource.captureImage),
-                    trailingWidget:
-                        SvgPicture.asset(ImageResource.captureImage),
-                  ),
-                  const SizedBox(height: 20),
-                  Wrap(
-                    spacing: 15,
-                    runSpacing: 8,
-                    children: _buildOptionBottomSheetOpenButton(
-                      optionBottomSheetButtonList,
-                      context,
+                        const SizedBox(height: 30),
+                        CustomButton(
+                          Languages.of(context)!.captureImage.toUpperCase(),
+                          cardShape: 75.0,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w700,
+                          padding: 15.0,
+                          borderColor: ColorResource.colorBEC4CF,
+                          buttonBackgroundColor: ColorResource.colorBEC4CF,
+                          isLeading: true,
+                          onTap: () => openBottomSheet(
+                              context, StringResource.captureImage),
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.captureImage),
+                        ),
+                        const SizedBox(height: 20),
+                        Wrap(
+                          spacing: 15,
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                          ),
+                          // children: [
+                          //   SizedBox(
+                          //     width: 179,
+                          //     child: CustomButton(
+                          //       StringResource.addContact.toUpperCase(),
+                          //       textColor: ColorResource.colorFFFFFF,
+                          //       borderColor: ColorResource.color23375A,
+                          //       fontSize: FontSize.twelve,
+                          //       cardShape: 75,
+                          //       buttonBackgroundColor: ColorResource.color23375A,
+                          //     ),
+                          //   ),
+                          //   SizedBox(
+                          //     width: 157,
+                          //     child: CustomButton(
+                          //       Languages.of(context)!.repo.toUpperCase(),
+                          //       onTap: () =>
+                          //           openBottomSheet(context, StringResource.repo),
+                          //       textColor: ColorResource.color23375A,
+                          //       borderColor: ColorResource.color23375A,
+                          //       fontSize: FontSize.twelve,
+                          //       fontWeight: FontWeight.w700,
+                          //       cardShape: 75,
+                          //       buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          //     ),
+                          //   ),
+                          //   SizedBox(
+                          //     width: 165,
+                          //     child: CustomButton(
+                          //       Languages.of(context)!.otherFeedBack.toUpperCase(),
+                          //       onTap: () => openBottomSheet(
+                          //           context, StringResource.otherFeedback),
+                          //       cardShape: 75,
+                          //       fontSize: FontSize.twelve,
+                          //       textColor: ColorResource.color23375A,
+                          //       borderColor: ColorResource.color23375A,
+                          //       buttonBackgroundColor: ColorResource.colorFFFFFF,
+                          //     ),
+                          //   )
+                          // ],
+                        ),
+                        const SizedBox(height: 120)
+                      ],
                     ),
-                    // children: [
-                    //   SizedBox(
-                    //     width: 179,
-                    //     child: CustomButton(
-                    //       StringResource.addContact.toUpperCase(),
-                    //       textColor: ColorResource.colorFFFFFF,
-                    //       borderColor: ColorResource.color23375A,
-                    //       fontSize: FontSize.twelve,
-                    //       cardShape: 75,
-                    //       buttonBackgroundColor: ColorResource.color23375A,
-                    //     ),
-                    //   ),
-                    //   SizedBox(
-                    //     width: 157,
-                    //     child: CustomButton(
-                    //       Languages.of(context)!.repo.toUpperCase(),
-                    //       onTap: () =>
-                    //           openBottomSheet(context, StringResource.repo),
-                    //       textColor: ColorResource.color23375A,
-                    //       borderColor: ColorResource.color23375A,
-                    //       fontSize: FontSize.twelve,
-                    //       fontWeight: FontWeight.w700,
-                    //       cardShape: 75,
-                    //       buttonBackgroundColor: ColorResource.colorFFFFFF,
-                    //     ),
-                    //   ),
-                    //   SizedBox(
-                    //     width: 165,
-                    //     child: CustomButton(
-                    //       Languages.of(context)!.otherFeedBack.toUpperCase(),
-                    //       onTap: () => openBottomSheet(
-                    //           context, StringResource.otherFeedback),
-                    //       cardShape: 75,
-                    //       fontSize: FontSize.twelve,
-                    //       textColor: ColorResource.color23375A,
-                    //       borderColor: ColorResource.color23375A,
-                    //       buttonBackgroundColor: ColorResource.colorFFFFFF,
-                    //     ),
-                    //   )
-                    // ],
                   ),
-                  const SizedBox(height: 120)
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-        // Container(
-        //   decoration: BoxDecoration(
-        //     color: ColorResource.colorFFFFFF,
-        //     boxShadow: [
-        //        BoxShadow(
-        //         color: ColorResource.color000000.withOpacity(.25),
-        //         blurRadius: 2.0,
-        //         offset: Offset(1.0, 1.0),
-        //       ),
-        //     ],
-        //   ),
-        //   width: double.infinity,
-        //   child: Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         SizedBox(
-        //           width: 191,
-        //           child: CustomButton(
-        //             Languages.of(context)!.done.toUpperCase(),
-        //             fontSize: FontSize.sixteen,
-        //             fontWeight: FontWeight.w600,
-        //             // onTap: () => bloc.add(ClickMessageEvent()),
-        //             cardShape: 5,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-      ],
+              // Container(
+              //   decoration: BoxDecoration(
+              //     color: ColorResource.colorFFFFFF,
+              //     boxShadow: [
+              //        BoxShadow(
+              //         color: ColorResource.color000000.withOpacity(.25),
+              //         blurRadius: 2.0,
+              //         offset: Offset(1.0, 1.0),
+              //       ),
+              //     ],
+              //   ),
+              //   width: double.infinity,
+              //   child: Padding(
+              //     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         SizedBox(
+              //           width: 191,
+              //           child: CustomButton(
+              //             Languages.of(context)!.done.toUpperCase(),
+              //             fontSize: FontSize.sixteen,
+              //             fontWeight: FontWeight.w600,
+              //             // onTap: () => bloc.add(ClickMessageEvent()),
+              //             cardShape: 5,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -257,14 +295,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          setState(() {
-            selectedOptionBottomSheetButton = element.title;
-          });
-
-          openBottomSheet(
-            context,
-            element.stringResourceValue,
-          );
+          setState(() => selectedOptionBottomSheetButton = element.title);
+          openBottomSheet(context, element.stringResourceValue);
         },
         child: Container(
           height: 45,

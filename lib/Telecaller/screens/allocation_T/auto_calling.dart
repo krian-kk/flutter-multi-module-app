@@ -227,7 +227,8 @@ class AutoCalling {
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(
-                        context, AppRoutes.caseDetailsTelecallerScreen);
+                        context, AppRoutes.caseDetailsTelecallerScreen,
+                        arguments: false);
                   },
                   child: SizedBox(
                     child: Column(

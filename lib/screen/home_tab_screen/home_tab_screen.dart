@@ -140,7 +140,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                               const SizedBox(
                                                 height: 3,
                                               ),
-                                              CustomText(
+                                              const CustomText(
                                                 StringResource.allocation,
                                                 fontSize: FontSize.eight,
                                               ),
@@ -157,7 +157,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                               const SizedBox(
                                                 height: 3,
                                               ),
-                                              CustomText(
+                                              const CustomText(
                                                 StringResource.dashboard,
                                                 fontSize: FontSize.eight,
                                               ),
@@ -188,7 +188,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                                   const SizedBox(
                                                     height: 3,
                                                   ),
-                                                  CustomText(
+                                                  const CustomText(
                                                     StringResource.profile,
                                                     fontSize: FontSize.eight,
                                                   ),
@@ -240,7 +240,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                 children: <Widget>[
                                   AllocationScreen(),
                                   DashboardScreen(),
-                                  ProfileScreen(),
+                                  const ProfileScreen(),
                                 ]),
                           )
                         ])),

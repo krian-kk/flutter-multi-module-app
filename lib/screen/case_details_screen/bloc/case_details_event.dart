@@ -15,3 +15,29 @@ class LaunchWhatsappEvent extends CaseDetailsEvent {
 }
 
 class LaunchSMSEvent extends CaseDetailsEvent {}
+
+class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {}
+
+class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {}
+
+class ClickPopEvent extends CaseDetailsEvent {}
+
+class ClickPTPEvent extends CaseDetailsEvent {}
+
+class ClickRTPEvent extends CaseDetailsEvent {}
+
+class ClickDisputeEvent extends CaseDetailsEvent {}
+
+class ClickRemainderEvent extends CaseDetailsEvent {}
+
+class ClickCollectionsEvent extends CaseDetailsEvent {}
+
+class ClickOTSEvent extends CaseDetailsEvent {}
+
+class ClickCaptureImageEvent extends CaseDetailsEvent {}
+
+class ClickRepoEvent extends CaseDetailsEvent {}
+
+class ClickAddAddressEvent extends CaseDetailsEvent {}
+
+class ClickOtherFeedbackEvent extends CaseDetailsEvent {}

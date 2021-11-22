@@ -3,7 +3,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/other_feed_back_bottom_sheet.dart';
+import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';

@@ -213,7 +213,8 @@ class CaseLists {
                                 GestureDetector(
                                   onTap: () async {
                                     await Navigator.pushNamed(
-                                        context, AppRoutes.caseDetailsScreen);
+                                        context, AppRoutes.caseDetailsScreen,
+                                        arguments: false);
                                   },
                                   child: Row(
                                     children: [

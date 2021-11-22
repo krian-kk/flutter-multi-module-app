@@ -47,6 +47,7 @@ class _PhoneConnectedTelecallerScreenState
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GridView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: widget.bloc.phoneCustomerMetGridList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

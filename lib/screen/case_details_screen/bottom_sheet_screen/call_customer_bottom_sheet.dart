@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_model.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -12,9 +15,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
-  const CallCustomerBottomSheet({
-    Key? key,
-  }) : super(key: key);
+  dynamic blocObject;
+  CallCustomerBottomSheet({Key? key, this.blocObject}) : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -35,10 +37,24 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   List<String> callersIDDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
 
+  List<CaseListModel> caseDetaislListModel = [];
+  AllocationTBloc? allocationTBloc;
+  CaseDetailsBloc? caseDetailsBloc;
   @override
   void initState() {
     super.initState();
     agentContactNoControlller.text = '7002792169';
+    print(widget.blocObject);
+    if (widget.blocObject is AllocationTBloc) {
+      allocationTBloc = widget.blocObject;
+    } else if (widget.blocObject is CaseDetailsBloc) {
+      caseDetailsBloc = widget.blocObject;
+    }
+    if (allocationTBloc != null) {
+      print("Allocation");
+    } else if (caseDetailsBloc != null) {
+      print("CaseDetails");
+    }
   }
 
   @override
