@@ -32,3 +32,7 @@ class ClickCollectionsState extends CaseDetailsState {}
 class ClickAddAddressState extends CaseDetailsState {}
 
 class ClickOTSState extends CaseDetailsState {}
+
+class ClickPhoneDetailState extends CaseDetailsState {}
+
+class ClickCallCustomerState extends CaseDetailsState {}

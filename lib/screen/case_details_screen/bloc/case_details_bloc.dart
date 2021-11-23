@@ -265,5 +265,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickOTSEvent) {
       yield ClickOTSState();
     }
+
+    if (event is ClickPhoneDetailEvent) {
+      yield ClickPhoneDetailState();
+    }
+
+     if (event is ClickCallCustomerEvent) {
+      yield ClickCallCustomerState();
+    }
   }
 }

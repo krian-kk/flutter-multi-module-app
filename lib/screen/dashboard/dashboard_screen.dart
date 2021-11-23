@@ -29,6 +29,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../router.dart';
 
 class DashboardScreen extends StatefulWidget {
+  final String? loginType;
+  const DashboardScreen(this.loginType, {Key? key}) : super(key: key);
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -88,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           if (state is NavigateCaseDetailState) {
                 Navigator.pushNamed(
-                      context, AppRoutes.caseDetailsScreen);
+                      context, AppRoutes.caseDetailsScreen, arguments: true);
           }
 
           if (state is NavigateSearchState) {
@@ -114,9 +117,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
+                              const Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 13),
+                                     EdgeInsets.symmetric(horizontal: 13),
                                 child: CustomText(
                                   '15th Oct, 2020',
                                   fontSize: FontSize.twelve,
@@ -135,8 +138,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                            header: Languages.of(context)!
-                                                .customerMet,
+                                            header: widget.loginType == 'fos'? 
+                                            Languages.of(context)!.customerMet : 
+                                            Languages.of(context)!.connected.trim(),
                                             count: '20',
                                             backgrountColor:
                                                 ColorResource.colorE0ECDF,
@@ -151,8 +155,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            header: Languages.of(context)!
-                                                .customerNotMet,
+                                            header: widget.loginType == 'fos'? 
+                                             Languages.of(context)!
+                                                .customerNotMet : 
+                                                Languages.of(context)!.unreachable.trim(),
                                             count: '10',
                                             backgrountColor:
                                                 ColorResource.colorF2EEDC,
@@ -172,7 +178,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           child: Container(
                                             child: userActivity(
                                               header: Languages.of(context)!
-                                                  .invalid,
+                                                  .invalid.trim(),
                                               count: '10',
                                               backgrountColor:
                                                   ColorResource.colorF4ECEF,

@@ -11,3 +11,5 @@ class AllocationTLoadedState extends AllocationTState {}
 
 class NavigateSearchPageTState extends AllocationTState {}
 
+class NavigateCaseDetailTState extends AllocationTState {}
+

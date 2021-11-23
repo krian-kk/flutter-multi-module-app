@@ -73,4 +73,5 @@ class ImageResource {
   static const String homeTabProfile = 'assets/svg/profile_home_tab.svg';
   static const String profileImagePicker =
       'assets/svg/profile_image_picker.svg';
+  static const String declinedCall = 'assets/svg/declined.svg';
 }

@@ -390,4 +390,6 @@ abstract class Languages {
   String get stop;
 
   String get startCalling;
+
+  String get searchErrorMessage;
 }
