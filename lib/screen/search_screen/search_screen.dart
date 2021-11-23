@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -11,7 +10,6 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
-import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
@@ -20,12 +18,10 @@ class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
   @override
-  _SearchScreenState createState() =>
-      _SearchScreenState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState
-    extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen> {
   late SearchScreenBloc bloc;
 
   late TextEditingController accountNoController = TextEditingController();
@@ -41,24 +37,21 @@ class _SearchScreenState
   @override
   void initState() {
     super.initState();
-    bloc = SearchScreenBloc()
-      ..add(SearchScreenInitialEvent());
+    bloc = SearchScreenBloc()..add(SearchScreenInitialEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorResource.colorC5C8CE,
-      body: BlocListener<SearchScreenBloc,
-          SearchScreenState>(
+      body: BlocListener<SearchScreenBloc, SearchScreenState>(
         bloc: bloc,
         listener: (context, state) {
           // if (state is ShowPincodeInAllocationState) {
 
           // }
         },
-        child: BlocBuilder<SearchScreenBloc,
-            SearchScreenState>(
+        child: BlocBuilder<SearchScreenBloc, SearchScreenState>(
           bloc: bloc,
           builder: (context, state) {
             if (state is SearchScreenLoadingState) {
@@ -68,10 +61,14 @@ class _SearchScreenState
             }
             return Column(
               children: [
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: BottomSheetAppbar(title: Languages.of(context)!.searchAllocationDetails,),
+                  child: BottomSheetAppbar(
+                    title: Languages.of(context)!.searchAllocationDetails,
+                  ),
                 ),
                 // CustomAppbar(
                 //   titleString: Languages.of(context)!.searchAllocationDetails,
@@ -149,8 +146,7 @@ class _SearchScreenState
                                           : ImageResource.checkOff),
                                       const SizedBox(width: 13),
                                       CustomText(
-                                        Languages.of(context)!
-                                            .myRecentActivity,
+                                        Languages.of(context)!.myRecentActivity,
                                         color: ColorResource.color000000,
                                         fontSize: FontSize.sixteen,
                                         fontStyle: FontStyle.normal,

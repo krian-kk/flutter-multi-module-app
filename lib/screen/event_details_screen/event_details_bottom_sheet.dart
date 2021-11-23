@@ -34,61 +34,66 @@ class _CustomEventDetailsBottomSheetState
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.89,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          BottomSheetAppbar(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0),
-            child: CustomLoanUserDetails(
-              userName: 'DEBASISH PATNAIK',
-              userId: 'TVSF_BFRT6458922993',
-              userAmount: 397553.67,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                  .copyWith(bottom: 5),
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.0),
+              child: CustomLoanUserDetails(
+                userName: 'DEBASISH PATNAIK',
+                userId: 'TVSF_BFRT6458922993',
+                userAmount: 397553.67,
+              ),
+            ),
+            Expanded(
+                child: ListView.builder(
+              itemCount: widget.bloc.expandEvent.length,
+              itemBuilder: (context, int index) =>
+                  expandList(widget.bloc.expandEvent, index),
+            )),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
+            ],
           ),
-          Expanded(
-              child: ListView.builder(
-            itemCount: widget.bloc.expandEvent.length,
-            itemBuilder: (context, int index) =>
-                expandList(widget.bloc.expandEvent, index),
-          )),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 190,
+                  child: CustomButton(
+                    Languages.of(context)!.okay.toUpperCase(),
+                    onTap: () => Navigator.pop(context),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    cardShape: 5,
+                  ),
                 ),
               ],
             ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 190,
-                    child: CustomButton(
-                      Languages.of(context)!.okay.toUpperCase(),
-                      onTap: () => Navigator.pop(context),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      // onTap: () => bloc.add(ClickMessageEvent()),
-                      cardShape: 5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
-        ],
+        ),
       ),
     );
   }

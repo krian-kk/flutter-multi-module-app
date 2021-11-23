@@ -6,4 +6,8 @@ class AllocationTInitialEvent extends AllocationTEvent {}
 
 class NavigateSearchPageTEvent extends AllocationTEvent {}
 
+class ClickCaseDetailsEvent extends AllocationTEvent {}
+
+class ClickPhoneTelecallerEvent extends AllocationTEvent {}
+
 class NavigateCaseDetailTEvent extends AllocationTEvent {}

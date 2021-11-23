@@ -52,9 +52,7 @@ class RepoStatus extends StatelessWidget {
                           cardShape: 5,
                           buttonBackgroundColor: ColorResource.colorffffff,
                           borderColor: ColorResource.colorffffff,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                          onTap: () => Navigator.pop(context),
                         ),
                       ),
                       Expanded(

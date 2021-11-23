@@ -42,6 +42,10 @@ class ClickAddAddressEvent extends CaseDetailsEvent {}
 
 class ClickOtherFeedbackEvent extends CaseDetailsEvent {}
 
+class ClickViewMapEvent extends CaseDetailsEvent {}
+
+class ClickEventDetailsEvent extends CaseDetailsEvent {}
+
 class ClickPhoneDetailEvent extends CaseDetailsEvent {}
 
 class ClickCallCustomerEvent extends CaseDetailsEvent {}

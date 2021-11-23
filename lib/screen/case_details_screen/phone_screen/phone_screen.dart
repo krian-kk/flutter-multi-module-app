@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/event_details_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
+import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -165,7 +164,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 onTap: () {
                                   openEventDetailsBottomSheet(context);
                                 },
-                                    
                                 fontSize: FontSize.twelve,
                                 textColor: ColorResource.color23375A,
                                 borderColor: ColorResource.color23375A,

@@ -33,6 +33,10 @@ class ClickAddAddressState extends CaseDetailsState {}
 
 class ClickOTSState extends CaseDetailsState {}
 
+class ClickViewMapState extends CaseDetailsState {}
+
+class ClickEventDetailsState extends CaseDetailsState {}
+
 class ClickPhoneDetailState extends CaseDetailsState {}
 
 class ClickCallCustomerState extends CaseDetailsState {}

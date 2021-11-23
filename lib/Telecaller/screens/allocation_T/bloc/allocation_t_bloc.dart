@@ -84,5 +84,11 @@ class AllocationTBloc extends Bloc<AllocationTEvent, AllocationTState> {
     if (event is NavigateCaseDetailTEvent) {
       yield NavigateCaseDetailTState();
     }
+    if (event is ClickCaseDetailsEvent) {
+      yield ClickCaseDetailsState();
+    }
+    if (event is ClickPhoneTelecallerEvent) {
+      yield ClickPhoneTelecallerState();
+    }
   }
 }

@@ -23,8 +23,9 @@ class AutoCalling {
             padding: const EdgeInsets.fromLTRB(20, 17, 12, 17),
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             decoration: BoxDecoration(
-              color: element.callResponse != null ? 
-              ColorResource.colorF6ECEF : ColorResource.colorF8F9FB,
+              color: element.callResponse != null
+                  ? ColorResource.colorF6ECEF
+                  : ColorResource.colorF8F9FB,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -41,9 +42,9 @@ class AutoCalling {
                     const SizedBox(
                       width: 15,
                     ),
-                     element.callResponse != null ?
-                    SvgPicture.asset(ImageResource.declinedCall) :
-                    SvgPicture.asset(ImageResource.activePerson),
+                    element.callResponse != null
+                        ? SvgPicture.asset(ImageResource.declinedCall)
+                        : SvgPicture.asset(ImageResource.activePerson),
                     const Spacer(),
                     InkWell(
                       onTap: () {

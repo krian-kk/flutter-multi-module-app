@@ -31,24 +31,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                     color: ColorResource.color23375A,
                     padding: const EdgeInsets.all(0),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     CustomText(
-                  //       Languages.of(context)!.notification.toUpperCase(),
-                  //       fontSize: FontSize.fourteen,
-                  //       fontWeight: FontWeight.w700,
-                  //       fontStyle: FontStyle.normal,
-                  //       color: ColorResource.color23375A,
-                  //     ),
-                  //     Spacer(),
-                  //     GestureDetector(
-                  //         onTap: () {
-                  //           Navigator.pop(context);
-                  //         },
-                  //         child: Image.asset(ImageResource.close))
-                  //   ],
-                  // ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(

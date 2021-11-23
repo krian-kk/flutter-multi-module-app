@@ -139,8 +139,9 @@ class _MapViewState extends State<MapView> {
                     padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
                     child: BottomSheetAppbar(
                       title: Languages.of(context)!.mapView,
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                      onTap: (){
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 16),
+                      onTap: () {
                         widget.bloc.add(FilterSelectOptionEvent());
                         Navigator.pop(context);
                       },

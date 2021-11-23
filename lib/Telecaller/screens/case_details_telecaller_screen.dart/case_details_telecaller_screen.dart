@@ -585,6 +585,6 @@ class _CaseDetailsTelecallerScreenState
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 // CallDetailsBottomSheetScreen(bloc: bloc)
-                SizedBox()));
+                const SizedBox()));
   }
 }
