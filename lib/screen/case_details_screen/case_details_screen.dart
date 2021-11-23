@@ -51,11 +51,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           if (state is ClickCallBottomSheetState) {
             callDetailsShowBottomSheet(context);
           }
-
           if (state is ClickPhoneDetailState) {
             phoneBottomSheet(context);
           }
-
           if (state is ClickCallCustomerState) {
             callCustomerBottomSheet(context);
           }
