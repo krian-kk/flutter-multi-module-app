@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -84,7 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
                       child: Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Stack(
                           children: [
                             Column(
@@ -122,6 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   pincodeController,
                                   isFill: true,
                                   isBorder: true,
+                                  keyBoardType: TextInputType.number,
                                 ),
                                 const SizedBox(height: 19),
                                 CustomTextField(
@@ -205,16 +207,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   statusController.text.isNotEmpty ||
                   pincodeController.text.isNotEmpty ||
                   customerIDController.text.isNotEmpty) {
-                // bloc.add(ShowPincodeInAllocationEvent());
-                setState(() {
-                  // widget.allocationBloc.isShowSearchPincode = true;
-                });
                 Navigator.pop(context);
               } else {
-                AppUtils.showSnackBar(context,
-                    StringResource.searchToastError.toUpperCase(), false);
-                // AppUtils.showToast('Please Enter Any One Field.',
-                //     gravity: ToastGravity.CENTER);
+
+                // AppUtils.showSnackBar(context,
+                //     Languages.of(context)!.searchErrorMessage, true);
+                AppUtils.showToast(Languages.of(context)!.searchErrorMessage,
+                    gravity: ToastGravity.CENTER);
               }
             },
           ),

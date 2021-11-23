@@ -580,4 +580,7 @@ class LanguageEn extends Languages {
 
   @override
   String get startCalling => 'Start Calling';
+
+  @override
+  String get searchErrorMessage => 'You should fill atleast one field';
 }

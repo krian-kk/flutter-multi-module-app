@@ -14,3 +14,5 @@ class NavigateSearchPageTState extends AllocationTState {}
 class ClickCaseDetailsState extends AllocationTState {}
 
 class ClickPhoneTelecallerState extends AllocationTState {}
+
+class NavigateCaseDetailTState extends AllocationTState {}

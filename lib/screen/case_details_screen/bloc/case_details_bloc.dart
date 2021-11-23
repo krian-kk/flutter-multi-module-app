@@ -258,7 +258,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickCollectionsEvent) {
       yield ClickCollectionsState();
     }
-
     if (event is ClickAddAddressEvent) {
       yield ClickAddAddressState();
     }
@@ -267,6 +266,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickViewMapEvent) {
       yield ClickViewMapState();
+    }
+    if (event is ClickPhoneDetailEvent) {
+      yield ClickPhoneDetailState();
+    }
+
+    if (event is ClickCallCustomerEvent) {
+      yield ClickCallCustomerState();
     }
   }
 }

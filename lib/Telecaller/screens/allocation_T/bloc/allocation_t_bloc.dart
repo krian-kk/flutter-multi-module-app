@@ -79,13 +79,10 @@ class AllocationTBloc extends Bloc<AllocationTEvent, AllocationTState> {
     }
     if (event is NavigateSearchPageTEvent) {
       yield NavigateSearchPageTState();
+    }
 
-      ///API call---> Post/Put/Delete/Get/Multipart/local
-      /// it'll be return some values
-      ///valuesForDynamicBloc = API.repository();
-      ///
-      ///
-      ///yikd
+    if (event is NavigateCaseDetailTEvent) {
+      yield NavigateCaseDetailTState();
     }
     if (event is ClickCaseDetailsEvent) {
       yield ClickCaseDetailsState();
