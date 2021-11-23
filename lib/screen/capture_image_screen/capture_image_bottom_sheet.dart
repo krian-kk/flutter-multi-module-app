@@ -37,105 +37,112 @@ class _CustomCaptureImageBottomSheetState
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.89,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          BottomSheetAppbar(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const CustomLoanUserDetails(
-                      userName: 'DEBASISH PATNAIK',
-                      userId: 'TVSF_BFRT6458922993',
-                      userAmount: 397553.67,
-                    ),
-                    const SizedBox(height: 11),
-                    CustomButton(
-                      Languages.of(context)!.customUpload,
-                      fontWeight: FontWeight.w700,
-                      trailingWidget: SvgPicture.asset(ImageResource.upload),
-                      fontSize: FontSize.sixteen,
-                      buttonBackgroundColor: ColorResource.color23375A,
-                      borderColor: ColorResource.colorDADADA,
-                      cardShape: 50,
-                      cardElevation: 1,
-                      isLeading: true,
-                      onTap: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                          type: FileType.image,
-                          // allowedExtensions: ['doc'],
-                        );
-                        if (result == null) return;
-                        print(result);
-                      },
-                    ),
-                    const SizedBox(height: 15),
-                    Flexible(
-                        child: CustomReadOnlyTextField(
-                      Languages.of(context)!.remarks,
-                      remarksControlller,
-                      isLabel: true,
-                      // validationRules: ['required'],
-                    )),
-                    const SizedBox(height: 15),
-                  ],
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                  .copyWith(bottom: 5),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const CustomLoanUserDetails(
+                        userName: 'DEBASISH PATNAIK',
+                        userId: 'TVSF_BFRT6458922993',
+                        userAmount: 397553.67,
+                      ),
+                      const SizedBox(height: 11),
+                      CustomButton(
+                        Languages.of(context)!.customUpload,
+                        fontWeight: FontWeight.w700,
+                        trailingWidget: SvgPicture.asset(ImageResource.upload),
+                        fontSize: FontSize.sixteen,
+                        buttonBackgroundColor: ColorResource.color23375A,
+                        borderColor: ColorResource.colorDADADA,
+                        cardShape: 50,
+                        cardElevation: 1,
+                        isLeading: true,
+                        onTap: () async {
+                          final result = await FilePicker.platform.pickFiles(
+                            type: FileType.image,
+                            // allowedExtensions: ['doc'],
+                          );
+                          if (result == null) return;
+                          // print(result);
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      Flexible(
+                          child: CustomReadOnlyTextField(
+                        Languages.of(context)!.remarks,
+                        remarksControlller,
+                        isLabel: true,
+                        // validationRules: ['required'],
+                      )),
+                      const SizedBox(height: 15),
+                    ],
+                  ),
                 ),
               ),
             ),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
+            ],
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
-                ),
-              ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
                       width: 95,
                       child: Center(
                           child: CustomText(
                         Languages.of(context)!.cancel.toUpperCase(),
-                        onTap: () => Navigator.pop(context),
                         color: ColorResource.colorEA6D48,
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  const SizedBox(width: 25),
-                  SizedBox(
-                    width: 191,
-                    child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      // onTap: () => bloc.add(ClickMessageEvent()),
-                      cardShape: 5,
-                    ),
+                ),
+                const SizedBox(width: 25),
+                SizedBox(
+                  width: 191,
+                  child: CustomButton(
+                    Languages.of(context)!.submit.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    cardShape: 5,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

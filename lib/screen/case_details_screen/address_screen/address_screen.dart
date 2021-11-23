@@ -8,7 +8,7 @@ import 'package:origa/screen/case_details_screen/address_screen/customer_met_scr
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/bottom_sheet_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -58,6 +58,12 @@ class _AddressScreenState extends State<AddressScreen>
         if (state is ClickAddressBottomSheetState) {}
         if (state is ClickPopState) {
           Navigator.pop(context);
+        }
+        if (state is ClickViewMapState) {
+          openViewMapBottomSheet(context);
+        }
+        if (state is ClickEventDetailsState) {
+          openEventDetailsBottomSheet(context);
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -130,7 +136,8 @@ class _AddressScreenState extends State<AddressScreen>
                             children: [
                               Expanded(
                                   child: GestureDetector(
-                                onTap: () => openViewMapBottomSheet(context),
+                                onTap: () =>
+                                    widget.bloc.add(ClickViewMapEvent()),
                                 child: SizedBox(
                                     width: 10,
                                     child: Container(
@@ -157,7 +164,7 @@ class _AddressScreenState extends State<AddressScreen>
                                   child: CustomButton(
                                 Languages.of(context)!.eventDetails,
                                 onTap: () =>
-                                    openEventDetailsBottomSheet(context),
+                                    widget.bloc.add(ClickEventDetailsEvent()),
                                 textColor: ColorResource.color23375A,
                                 borderColor: ColorResource.color23375A,
                                 buttonBackgroundColor:
@@ -282,17 +289,19 @@ class _AddressScreenState extends State<AddressScreen>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                              width: 95,
-                              child: Center(
-                                  child: CustomText(
-                                Languages.of(context)!.cancel.toUpperCase(),
-                                onTap: () => Navigator.pop(context),
-                                color: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FontStyle.normal,
-                                fontSize: FontSize.sixteen,
-                              ))),
+                          InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: SizedBox(
+                                width: 95,
+                                child: Center(
+                                    child: CustomText(
+                                  Languages.of(context)!.cancel.toUpperCase(),
+                                  color: ColorResource.colorEA6D48,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: FontSize.sixteen,
+                                ))),
+                          ),
                           const SizedBox(width: 25),
                           SizedBox(
                             width: 191,
@@ -440,7 +449,6 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
       tilt: 59.440,
       zoom: 16.0,
     );
-    print(_position1);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
     setState(() {

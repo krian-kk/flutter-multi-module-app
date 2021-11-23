@@ -330,17 +330,19 @@ class _PhoneTelecallerScreenState extends State<PhoneTelecallerScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                          width: 95,
-                          child: Center(
-                              child: CustomText(
-                            Languages.of(context)!.cancel.toUpperCase(),
-                            onTap: () => Navigator.pop(context),
-                            color: ColorResource.colorEA6D48,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
-                            fontSize: FontSize.sixteen,
-                          ))),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: SizedBox(
+                            width: 95,
+                            child: Center(
+                                child: CustomText(
+                              Languages.of(context)!.cancel.toUpperCase(),
+                              color: ColorResource.colorEA6D48,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              fontSize: FontSize.sixteen,
+                            ))),
+                      ),
                       const SizedBox(width: 25),
                       SizedBox(
                         width: 191,

@@ -145,12 +145,11 @@ class PageBuilder {
   }
 
   static Widget buildCaseDetailsPage(RouteSettings settings) {
-    bool checkScreen = settings.arguments as bool;
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
             ..add(CaseDetailsInitialEvent()),
-      child: CaseDetailsScreen(checkScreen),
+      child: CaseDetailsScreen(settings.arguments as bool),
     );
   }
 

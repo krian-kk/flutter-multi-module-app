@@ -265,5 +265,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickOTSEvent) {
       yield ClickOTSState();
     }
+    if (event is ClickViewMapEvent) {
+      yield ClickViewMapState();
+    }
   }
 }

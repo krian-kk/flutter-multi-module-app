@@ -31,8 +31,10 @@ class _CallDetailsBottomSheetScreenState
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
-        Navigator.pop(context);
-        phoneBottomSheet(context);
+        if (state is ClickMainCallBottomSheetState) {
+          Navigator.pop(context);
+          phoneBottomSheet(context);
+        }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
@@ -271,6 +273,7 @@ class _CallDetailsBottomSheetScreenState
 
   void phoneBottomSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
+        semanticsDismissible: true,
         context: buildContext,
         builder: (BuildContext context) {
           return SizedBox(

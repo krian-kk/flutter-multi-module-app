@@ -11,3 +11,6 @@ class AllocationTLoadedState extends AllocationTState {}
 
 class NavigateSearchPageTState extends AllocationTState {}
 
+class ClickCaseDetailsState extends AllocationTState {}
+
+class ClickPhoneTelecallerState extends AllocationTState {}

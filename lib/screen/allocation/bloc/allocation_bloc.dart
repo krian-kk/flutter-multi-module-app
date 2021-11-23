@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:meta/meta.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -18,17 +17,17 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
 
-   List<String> selectOptions = [
+  List<String> selectOptions = [
     StringResource.priority,
     StringResource.buildRoute,
     StringResource.mapView,
-   ];
+  ];
 
-    List<String> filterBuildRoute = [
+  List<String> filterBuildRoute = [
     StringResource.all,
     StringResource.under5km,
     StringResource.more5km,
-   ];
+  ];
 
   List<AllocationListModel> allocationList = [];
   late Position currentLocation;
@@ -46,29 +45,29 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
           date: 'Today, Thu 18 Oct, 2021',
           loanID: 'TVS / TVSF_BFRT6524869550',
-          ),
-          AllocationListModel(
+        ),
+        AllocationListModel(
           newlyAdded: true,
           customerName: 'New User',
           amount: '₹ 5,54,433.67',
           address: '2/345, 6th Main Road, Bangalore - 534544',
           date: 'Thu, Thu 18 Oct, 2021',
           loanID: 'TVS / TVSF_BFRT6524869550',
-          ),
-          AllocationListModel(
+        ),
+        AllocationListModel(
           newlyAdded: true,
           customerName: 'Debashish Patnaik',
           amount: '₹ 8,97,553.67',
           address: '2/345, 1th Main Road Guindy, Chenai - 875032',
           date: 'Sat, Thu 18 Oct, 2021',
           loanID: 'TVS / TVSF_BFRT6524869550',
-          ),
-      ]); 
+        ),
+      ]);
 
-      yield AllocationLoadedState();     
+      yield AllocationLoadedState();
     }
 
-     if (event is MapViewEvent) {
+    if (event is MapViewEvent) {
       yield MapViewState();
     }
 
@@ -89,6 +88,4 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       selectedOption = 0;
     }
   }
-
-
 }

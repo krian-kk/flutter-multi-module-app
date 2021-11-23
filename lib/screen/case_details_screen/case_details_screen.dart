@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -34,24 +32,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    // subscription =
-    //     Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
-    print(widget.isAdderss);
     bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
-    // getConnectivty();
-
-    // loanDurationController.text = '24';
-    // posController.text = '128974';
-    // schemeCodeController.text = '34';
-    // emiStartStateController.text = '08-09-2017';
-    // bankNameController.text = 'TVS';
-    // productController.text = '2W';
-    // batchNoController.text = 'HAR_50CASES-16102020_015953';
   }
-
-  // getConnectivty() async {
-  //   final result = await Connectivity().checkConnectivity();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,24 +114,27 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           marginTop: 10,
                                         ),
                                       ),
-                                      if(bloc.caseDetailsResult.result?.caseDetails?.collSubStatus=='new')
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 12),
-                                        width: 55,
-                                        height: 18,
-                                        decoration: const BoxDecoration(
-                                            color: ColorResource.colorD5344C,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30.0))),
-                                        child: Center(
-                                          child: CustomText(
-                                            Languages.of(context)!.new_,
-                                            color: ColorResource.colorFFFFFF,
-                                            fontSize: FontSize.ten,
-                                            fontWeight: FontWeight.w700,
+                                      if (bloc.caseDetailsResult.result
+                                              ?.caseDetails?.collSubStatus ==
+                                          'new')
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 12),
+                                          width: 55,
+                                          height: 18,
+                                          decoration: const BoxDecoration(
+                                              color: ColorResource.colorD5344C,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30.0))),
+                                          child: Center(
+                                            child: CustomText(
+                                              Languages.of(context)!.new_,
+                                              color: ColorResource.colorFFFFFF,
+                                              fontSize: FontSize.ten,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
-                                        ),
-                                      )
+                                        )
                                     ],
                                   ),
                                   const SizedBox(height: 16),
@@ -266,8 +251,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children:  [
-                                                CustomText(
+                                              children: [
+                                                const CustomText(
                                                   StringResource
                                                       .beneficiaryDetails,
                                                   fontWeight: FontWeight.w400,
@@ -276,18 +261,30 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   color:
                                                       ColorResource.color666666,
                                                 ),
-                                                SizedBox(height: 9),
+                                                const SizedBox(height: 9),
                                                 CustomText(
-                                                  bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.benefeciaryAcc_Name??'',
+                                                  bloc
+                                                          .caseDetailsResult
+                                                          .result
+                                                          ?.caseDetails
+                                                          ?.repaymentInfo
+                                                          ?.benefeciaryAcc_Name ??
+                                                      '',
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       ColorResource.color333333,
                                                   fontSize: FontSize.fourteen,
                                                   fontStyle: FontStyle.normal,
                                                 ),
-                                                SizedBox(height: 7),
+                                                const SizedBox(height: 7),
                                                 CustomText(
-                                                  bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.repaymentIfscCode??'',
+                                                  bloc
+                                                          .caseDetailsResult
+                                                          .result
+                                                          ?.caseDetails
+                                                          ?.repaymentInfo
+                                                          ?.repaymentIfscCode ??
+                                                      '',
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       ColorResource.color333333,
@@ -316,8 +313,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                               CustomText(
-                                                bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.repayBankName??'',
+                                              CustomText(
+                                                bloc
+                                                        .caseDetailsResult
+                                                        .result
+                                                        ?.caseDetails
+                                                        ?.repaymentInfo
+                                                        ?.repayBankName ??
+                                                    '',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -335,8 +338,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                               CustomText(
-                                                bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.refLender??'',
+                                              CustomText(
+                                                bloc
+                                                        .caseDetailsResult
+                                                        .result
+                                                        ?.caseDetails
+                                                        ?.repaymentInfo
+                                                        ?.refLender ??
+                                                    '',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -354,8 +363,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color666666,
                                               ),
                                               const SizedBox(height: 4),
-                                               CustomText(
-                                                bloc.caseDetailsResult.result?.caseDetails?.repaymentInfo?.ref_url??'',
+                                              CustomText(
+                                                bloc
+                                                        .caseDetailsResult
+                                                        .result
+                                                        ?.caseDetails
+                                                        ?.repaymentInfo
+                                                        ?.ref_url ??
+                                                    '',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -453,7 +468,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   ListView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
-                                          padding: EdgeInsets.zero,
+                                      padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       itemCount: bloc.caseDetailsResult.result
                                               ?.otherLoanDetails?.length ??
@@ -463,7 +478,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const SizedBox(height: 10,),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
                                             Container(
                                               width: double.infinity,
                                               decoration: BoxDecoration(
@@ -601,94 +618,114 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     ),
                   ],
                 ),
-                bottomNavigationBar: Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  decoration: const BoxDecoration(
-                      color: ColorResource.colorFFFFFF,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(28.0),
-                          topRight: Radius.circular(28.0))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(21.0),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          widget.isAdderss
-                              ? GestureDetector(
-                                  onTap: () =>
-                                      bloc.add(ClickAddressBottomSheetEvent()),
-                                  child: Container(
-                                    height: 50,
-                                    width: (MediaQuery.of(context).size.width -
-                                            62) /
-                                        2,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: ColorResource.color23375A,
-                                            width: 0.5),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10.0))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(ImageResource.direction),
-                                          const SizedBox(width: 8),
-                                          const Expanded(
-                                              child: CustomText(
-                                            'ADDRESS \nDETAILS',
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                            color: ColorResource.color23375A,
-                                          ))
-                                        ],
+                bottomNavigationBar: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          color: ColorResource.colorFFFFFF,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(28.0),
+                              topRight: Radius.circular(28.0))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(21.0),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              widget.isAdderss
+                                  ? GestureDetector(
+                                      onTap: () => bloc
+                                          .add(ClickAddressBottomSheetEvent()),
+                                      child: Container(
+                                        height: 50,
+                                        width:
+                                            (MediaQuery.of(context).size.width -
+                                                    62) /
+                                                2,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color:
+                                                    ColorResource.color23375A,
+                                                width: 0.5),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10.0))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 5.0),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  ImageResource.direction),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                  child: CustomText(
+                                                Languages.of(context)!
+                                                    .addressDetails
+                                                    .toString()
+                                                    .toUpperCase()
+                                                    .replaceAll(' ', ' \n'),
+                                                fontSize: FontSize.twelve,
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                                color:
+                                                    ColorResource.color23375A,
+                                              ))
+                                            ],
+                                          ),
+                                        ),
                                       ),
+                                    )
+                                  : const SizedBox(),
+                              SizedBox(width: widget.isAdderss ? 20 : 0),
+                              GestureDetector(
+                                onTap: () =>
+                                    bloc.add(ClickCallBottomSheetEvent()),
+                                child: Container(
+                                  height: 50,
+                                  width:
+                                      (MediaQuery.of(context).size.width - 62) /
+                                          2,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: ColorResource.color23375A,
+                                          width: 0.5),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 5.0),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(ImageResource.phone),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                            child: CustomText(
+                                          Languages.of(context)!
+                                              .callDetails
+                                              .toUpperCase()
+                                              .toString()
+                                              .replaceAll(' ', ' \n'),
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                          color: ColorResource.color23375A,
+                                        ))
+                                      ],
                                     ),
                                   ),
-                                )
-                              : SizedBox(),
-                          SizedBox(width: widget.isAdderss ? 20 : 0),
-                          GestureDetector(
-                            onTap: () => bloc.add(ClickCallBottomSheetEvent()),
-                            child: Container(
-                              height: 50,
-                              width:
-                                  (MediaQuery.of(context).size.width - 62) / 2,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: ColorResource.color23375A,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0))),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 5.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(ImageResource.phone),
-                                    const SizedBox(width: 8),
-                                    const Expanded(
-                                        child: CustomText(
-                                      'CALL \nDETAILS',
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      color: ColorResource.color23375A,
-                                    ))
-                                  ],
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               );
             }

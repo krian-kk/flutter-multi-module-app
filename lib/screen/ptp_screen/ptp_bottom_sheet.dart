@@ -59,174 +59,181 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     ];
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.89,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          BottomSheetAppbar(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetAppbar(
               title: widget.cardTitle,
-              padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const CustomLoanUserDetails(
-                      userName: 'DEBASISH PATNAIK',
-                      userId: 'TVSF_BFRT6458922993',
-                      userAmount: 397553.67,
-                    ),
-                    const SizedBox(height: 11),
-                    Row(
-                      children: [
-                        Flexible(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.ptpDate,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                ptpDateControlller,
-                                isReadOnly: true,
-                                onTapped: () =>
-                                    pickDate(context, ptpDateControlller),
-                                suffixWidget: SvgPicture.asset(
-                                  ImageResource.calendar,
-                                  fit: BoxFit.scaleDown,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                  .copyWith(bottom: 5),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const CustomLoanUserDetails(
+                        userName: 'DEBASISH PATNAIK',
+                        userId: 'TVSF_BFRT6458922993',
+                        userAmount: 397553.67,
+                      ),
+                      const SizedBox(height: 11),
+                      Row(
+                        children: [
+                          Flexible(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.ptpDate,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w400,
+                                color: ColorResource.color666666,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              SizedBox(
+                                width: (MediaQuery.of(context).size.width) / 2,
+                                child: CustomReadOnlyTextField(
+                                  '',
+                                  ptpDateControlller,
+                                  isReadOnly: true,
+                                  onTapped: () =>
+                                      pickDate(context, ptpDateControlller),
+                                  suffixWidget: SvgPicture.asset(
+                                    ImageResource.calendar,
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )),
-                        const SizedBox(width: 7),
-                        Flexible(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.ptpTime,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                ptpTimeControlller,
-                                isReadOnly: true,
-                                onTapped: () =>
-                                    pickTime(context, ptpTimeControlller),
-                                suffixWidget: SvgPicture.asset(
-                                  ImageResource.calendar,
-                                  fit: BoxFit.scaleDown,
+                            ],
+                          )),
+                          const SizedBox(width: 7),
+                          Flexible(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.ptpTime,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w400,
+                                color: ColorResource.color666666,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              SizedBox(
+                                width: (MediaQuery.of(context).size.width) / 2,
+                                child: CustomReadOnlyTextField(
+                                  '',
+                                  ptpTimeControlller,
+                                  isReadOnly: true,
+                                  onTapped: () =>
+                                      pickTime(context, ptpTimeControlller),
+                                  suffixWidget: SvgPicture.asset(
+                                    ImageResource.calendar,
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Flexible(
-                        child: CustomReadOnlyTextField(
-                      Languages.of(context)!.ptpAmount,
-                      ptpAmountControlller,
-                      isLabel: true,
-                    )),
-                    const SizedBox(height: 15),
-                    CustomText(
-                      Languages.of(context)!.paymentMode,
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                      color: ColorResource.color101010,
-                    ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      runSpacing: 10,
-                      spacing: 18,
-                      children: _buildPaymentButton(paymentModeButtonList),
-                    ),
-                    const SizedBox(height: 21),
-                    CustomReadOnlyTextField(
-                      Languages.of(context)!.reference,
-                      referenceControlller,
-                      isLabel: true,
-                    ),
-                    const SizedBox(height: 20),
-                    CustomReadOnlyTextField(
-                      Languages.of(context)!.remarks,
-                      remarksControlller,
-                      isLabel: true,
-                    ),
-                    const SizedBox(height: 15)
-                  ],
+                            ],
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Flexible(
+                          child: CustomReadOnlyTextField(
+                        Languages.of(context)!.ptpAmount,
+                        ptpAmountControlller,
+                        isLabel: true,
+                      )),
+                      const SizedBox(height: 15),
+                      CustomText(
+                        Languages.of(context)!.paymentMode,
+                        fontSize: FontSize.fourteen,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                        color: ColorResource.color101010,
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        runSpacing: 10,
+                        spacing: 18,
+                        children: _buildPaymentButton(paymentModeButtonList),
+                      ),
+                      const SizedBox(height: 21),
+                      CustomReadOnlyTextField(
+                        Languages.of(context)!.reference,
+                        referenceControlller,
+                        isLabel: true,
+                      ),
+                      const SizedBox(height: 20),
+                      CustomReadOnlyTextField(
+                        Languages.of(context)!.remarks,
+                        remarksControlller,
+                        isLabel: true,
+                      ),
+                      const SizedBox(height: 15)
+                    ],
+                  ),
                 ),
               ),
             ),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
+            ],
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
-                ),
-              ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
                       width: 95,
                       child: Center(
                           child: CustomText(
                         Languages.of(context)!.cancel.toUpperCase(),
-                        onTap: () => Navigator.pop(context),
                         color: ColorResource.colorEA6D48,
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.normal,
                         fontSize: FontSize.sixteen,
                       ))),
-                  const SizedBox(width: 25),
-                  SizedBox(
-                    width: 191,
-                    child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      // onTap: () => bloc.add(ClickMessageEvent()),
-                      cardShape: 5,
-                    ),
+                ),
+                const SizedBox(width: 25),
+                SizedBox(
+                  width: 191,
+                  child: CustomButton(
+                    Languages.of(context)!.submit.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    cardShape: 5,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -322,59 +329,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       controller.text = formattedDate;
     });
   }
-
-  // List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-  //   List<Widget> widgets = [];
-  //   for (var element in list) {
-  //     widgets.add(InkWell(
-  //       onTap: () {
-  //         setState(() {
-  //           selectedPaymentModeButton = element.title;
-  //         });
-  //       },
-  //       child: Container(
-  //         width: 150,
-  //         height: 50,
-  //         decoration: BoxDecoration(
-  //             color: element.title == selectedPaymentModeButton
-  //                 ? ColorResource.color23375A
-  //                 : ColorResource.colorBEC4CF,
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: ColorResource.color000000.withOpacity(0.2),
-  //                 blurRadius: 2.0,
-  //                 offset: Offset(1.0, 1.0),
-  //               )
-  //             ],
-  //             borderRadius: BorderRadius.all(Radius.circular(50.0))),
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(5.0),
-  //           child: Row(
-  //             children: [
-  //               CircleAvatar(
-  //                 radius: 20,
-  //                 backgroundColor: ColorResource.colorFFFFFF,
-  //                 child: Center(
-  //                   child: Image.asset(ImageResource.money),
-  //                 ),
-  //               ),
-  //               SizedBox(width: 7),
-  //               CustomText(
-  //                 element.title,
-  //                 color: ColorResource.colorFFFFFF,
-  //                 fontWeight: FontWeight.w700,
-  //                 lineHeight: 1,
-  //                 fontSize: FontSize.sixteen,
-  //                 fontStyle: FontStyle.normal,
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ));
-  //   }
-  //   return widgets;
-  // }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
