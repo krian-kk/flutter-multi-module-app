@@ -4,6 +4,7 @@ import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dar
 import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
+import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -22,7 +23,8 @@ class AutoCalling {
             padding: const EdgeInsets.fromLTRB(20, 17, 12, 17),
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             decoration: BoxDecoration(
-              color: ColorResource.colorF6ECEF,
+              color: element.callResponse != null ? 
+              ColorResource.colorF6ECEF : ColorResource.colorF8F9FB,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -39,11 +41,14 @@ class AutoCalling {
                     const SizedBox(
                       width: 15,
                     ),
+                     element.callResponse != null ?
+                    SvgPicture.asset(ImageResource.declinedCall) :
                     SvgPicture.asset(ImageResource.activePerson),
                     const Spacer(),
                     InkWell(
-                      onTap: () => Navigator.pushNamed(
-                          context, AppRoutes.phoneTelecallerScreen),
+                      onTap: () {
+                        bloc.add(NavigateCaseDetailTEvent());
+                      },
                       child: Row(
                         children: [
                           CustomText(
@@ -175,7 +180,7 @@ class AutoCalling {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            'amount',
+                            '₹ 3,97,553.67',
                             fontSize: FontSize.eighteen,
                             color: ColorResource.color101010,
                             fontWeight: FontWeight.w700,
@@ -227,8 +232,7 @@ class AutoCalling {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                        arguments: false);
+                    bloc.add(NavigateCaseDetailTEvent());
                   },
                   child: SizedBox(
                     child: Column(

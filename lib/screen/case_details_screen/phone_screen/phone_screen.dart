@@ -131,26 +131,30 @@ class _PhoneScreenState extends State<PhoneScreen>
                           children: [
                             Expanded(
                                 child: GestureDetector(
-                              onTap: () => callCustomerBottomSheet(context),
+                              onTap: () {
+                                widget.bloc.add(ClickCallCustomerEvent());
+                              },
                               child: SizedBox(
                                   width: 10,
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                          color: ColorResource.colorBEC4CF,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(75.0))),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(ImageResource.phone),
-                                          const SizedBox(width: 12),
-                                          CustomText(
-                                            StringResource.call.toUpperCase(),
-                                            fontSize: FontSize.fourteen,
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorResource.color23375A,
-                                          )
-                                        ],
-                                      ))),
+                                  child: InkWell(
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                            color: ColorResource.colorBEC4CF,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(75.0))),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(ImageResource.phone),
+                                            const SizedBox(width: 12),
+                                            CustomText(
+                                              StringResource.call.toUpperCase(),
+                                              fontSize: FontSize.fourteen,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            )
+                                          ],
+                                        )),
+                                  )),
                             )),
                             const SizedBox(width: 40),
                             Expanded(
@@ -158,8 +162,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                               height: 50,
                               child: CustomButton(
                                 Languages.of(context)!.eventDetails,
-                                onTap: () =>
-                                    openEventDetailsBottomSheet(context),
+                                onTap: () {
+                                  openEventDetailsBottomSheet(context);
+                                },
+                                    
                                 fontSize: FontSize.twelve,
                                 textColor: ColorResource.color23375A,
                                 borderColor: ColorResource.color23375A,
@@ -337,25 +343,25 @@ class _PhoneScreenState extends State<PhoneScreen>
     );
   }
 
-  callCustomerBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-        enableDrag: false,
-        context: buildContext,
-        isScrollControlled: true,
-        isDismissible: false,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.89,
-            child: CallCustomerBottomSheet(blocObject: widget.bloc),
-          );
-        });
-  }
+  // callCustomerBottomSheet(BuildContext buildContext) {
+  //   showModalBottomSheet(
+  //       enableDrag: false,
+  //       context: buildContext,
+  //       isScrollControlled: true,
+  //       isDismissible: false,
+  //       backgroundColor: ColorResource.colorFFFFFF,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(
+  //           top: Radius.circular(20),
+  //         ),
+  //       ),
+  //       builder: (BuildContext context) {
+  //         return SizedBox(
+  //           height: MediaQuery.of(context).size.height * 0.89,
+  //           child: CallCustomerBottomSheet(blocObject: widget.bloc),
+  //         );
+  //       });
+  // }
 
   openEventDetailsBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(

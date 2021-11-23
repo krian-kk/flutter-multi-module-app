@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/bottom_sheet_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_screen.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -65,6 +68,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           }
           if (state is ClickCallBottomSheetState) {
             callDetailsShowBottomSheet(context);
+          }
+
+          if (state is ClickPhoneDetailState) {
+            phoneBottomSheet(context);
+          }
+
+          if (state is ClickCallCustomerState) {
+            callCustomerBottomSheet(context);
           }
         },
         child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -732,5 +743,35 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 CallDetailsBottomSheetScreen(bloc: bloc)));
+  }
+
+  void phoneBottomSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.89,
+              child: PhoneScreen(bloc: bloc));
+        });
+  }
+
+  callCustomerBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+        enableDrag: false,
+        context: buildContext,
+        isScrollControlled: true,
+        isDismissible: false,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: CallCustomerBottomSheet(blocObject: bloc),
+          );
+        });
   }
 }

@@ -579,4 +579,7 @@ class LanguageHi extends Languages {
 
   @override
   String get startCalling => 'कॉल करना शुरू करें';
+
+  @override
+  String get searchErrorMessage => 'आपको कम से कम एक फ़ील्ड भरना चाहिए';
 }

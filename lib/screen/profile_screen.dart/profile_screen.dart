@@ -42,7 +42,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
       final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+      setState(() {
+        this.image = imageTemporary;
+        print(image);
+      });
     } on PlatformException catch (e) {
       print(e.message);
     }
@@ -50,6 +53,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     List<ProfileNavigation> profileNavigationList = [
       ProfileNavigation(
           title: Languages.of(context)!.notification,

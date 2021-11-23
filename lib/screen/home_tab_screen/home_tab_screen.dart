@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/Telecaller/screens/allocation_T/allocation_t.dart';
-import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/screen/allocation/allocation.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
@@ -39,10 +37,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    // bloc = BlocProvider.of<HomeTabBloc>(context);
-    // allocationBloc = AllocationBloc()..add(AllocationInitialEvent());
     bloc = HomeTabBloc()..add(HomeTabInitialEvent());
-    // mapBloc = MapBloc()..add(MapInitialEvent());
     super.initState();
     print('---------NK-------');
     print(widget.loginType);
@@ -244,7 +239,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                   AllocationScreen(),
                                   if(widget.loginType == 'tc')
                                   const AllocationTelecallerScreen(),
-                                  DashboardScreen(),
+                                  DashboardScreen(widget.loginType),
                                   const ProfileScreen(),
                                 ]),
                           )

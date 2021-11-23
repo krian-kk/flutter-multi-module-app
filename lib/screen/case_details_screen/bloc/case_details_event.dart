@@ -41,3 +41,7 @@ class ClickRepoEvent extends CaseDetailsEvent {}
 class ClickAddAddressEvent extends CaseDetailsEvent {}
 
 class ClickOtherFeedbackEvent extends CaseDetailsEvent {}
+
+class ClickPhoneDetailEvent extends CaseDetailsEvent {}
+
+class ClickCallCustomerEvent extends CaseDetailsEvent {}

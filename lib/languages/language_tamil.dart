@@ -580,4 +580,7 @@ class LanguageTa extends Languages {
 
   @override
   String get startCalling => 'அழைப்பைத் தொடங்குங்கள்';
+
+  @override
+  String get searchErrorMessage => 'குறைந்தபட்சம் ஒரு புலத்தை நிரப்ப வேண்டும்';
 }
