@@ -52,14 +52,14 @@ class _AddressDetailsBottomSheetScreenState
                 Padding(
                   padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
                   child: CustomLoanUserDetails(
-                    userName: widget
-                            .bloc.caseDetailsResult.result?.caseDetails?.cust ??
-                        '',
-                    userId: widget.bloc.caseDetailsResult.result?.caseDetails
-                            ?.accNo ??
+                    userName:
+                        widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ??
+                            '',
+                    userId: widget
+                            .bloc.offlineCaseDetailsValue.caseDetails?.accNo ??
                         '',
                     userAmount: widget
-                            .bloc.caseDetailsResult.result?.caseDetails?.due
+                            .bloc.offlineCaseDetailsValue.caseDetails?.due
                             ?.toDouble() ??
                         0,
                   ),
@@ -76,8 +76,8 @@ class _AddressDetailsBottomSheetScreenState
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: widget.bloc.caseDetailsResult.result
-                                    ?.addressDetails?.length ??
+                            itemCount: widget.bloc.offlineCaseDetailsValue
+                                    .addressDetails?.length ??
                                 0,
                             itemBuilder: (context, i) {
                               return SizedBox(
@@ -124,8 +124,7 @@ class _AddressDetailsBottomSheetScreenState
                                                   child: CustomText(
                                                     widget
                                                         .bloc
-                                                        .caseDetailsResult
-                                                        .result!
+                                                        .offlineCaseDetailsValue
                                                         .addressDetails![i]
                                                             ['value']
                                                         .toString()

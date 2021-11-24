@@ -23,8 +23,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   Result offlineCaseDetailsValue = Result();
 
-  Box<CaseDetailsHiveModel> caseDetailsHiveBox =
-      Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox16');
+  var caseDetailsHiveBox =
+      Hive.openBox<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox19');
+  // var Box = Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox19');
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -62,7 +63,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   // Case Details Screen
 
-  CaseDetailsApiModel caseDetailsResult = CaseDetailsApiModel();
+  // CaseDetailsApiModel caseDetailsResult = CaseDetailsApiModel();
 
   late TextEditingController loanAmountController = TextEditingController();
   late TextEditingController bankNameController = TextEditingController();
@@ -82,28 +83,36 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //check internet
       final result = await Connectivity().checkConnectivity();
       if (result == ConnectivityResult.none) {
-        print("djkdld");
+        print('Please Connect Internet!');
         // print(caseDetailsHiveBox.get('c1')?.status);
       } else {
         Map<String, dynamic> caseDetailsData =
             await getCaseDetailsData('6181646813c5cf70dea671d2');
 
-        if (caseDetailsData["success"] == true) {
-          Map<String, dynamic> jsonData = caseDetailsData["data"];
+        if (caseDetailsData['success'] == true) {
+          Map<String, dynamic> jsonData = caseDetailsData['data'];
           // print("Api values => ${jsonData['result']}");
 
-          caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
+          // caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
 
-          dynamic values = caseDetailsResult.result?.toJson();
+          // dynamic values = caseDetailsResult.result?.toJson();
           // caseDetailsHiveBox.clear();
 
-          caseDetailsHiveBox.put(
+          caseDetailsHiveBox.then((value) => value.put(
               'c1',
               CaseDetailsHiveModel(
                 status: jsonData['status'],
                 message: jsonData['message'],
                 result: jsonData['result'],
-              ));
+              )));
+
+          // caseDetailsHiveBox.put(
+          //     'c1',
+          //     CaseDetailsHiveModel(
+          //       status: jsonData['status'],
+          //       message: jsonData['message'],
+          //       result: jsonData['result'],
+          //     ));
 
           // caseDetailsHiveBox.add();
 
@@ -126,30 +135,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           //   //     .toString();
           // }
 
-          loanAmountController.text =
-              caseDetailsResult.result?.caseDetails!.loanAmt.toString()
-                  as String;
-          loanDurationController.text =
-              caseDetailsResult.result?.caseDetails!.loanDuration.toString()
-                  as String;
-          posController.text =
-              caseDetailsResult.result?.caseDetails!.pos.toString() ?? '';
-          schemeCodeController.text =
-              caseDetailsResult.result?.caseDetails!.schemeCode.toString()
-                  as String;
-          emiStartDateController.text =
-              caseDetailsResult.result?.caseDetails!.emiStartDate.toString()
-                  as String;
-          bankNameController.text =
-              caseDetailsResult.result?.caseDetails!.bankName.toString()
-                  as String;
-          productController.text =
-              caseDetailsResult.result?.caseDetails!.product.toString()
-                  as String;
-          batchNoController.text =
-              caseDetailsResult.result?.caseDetails!.batchNo.toString()
-                  as String;
-
           // yield SevenDaysLoadedState();
         } else {
           // message = weatherData["data"];
@@ -158,9 +143,31 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
 
       // print(caseDetailsHiveBox.get('c1')?.result);
-      offlineCaseDetailsValue =
-          Result.fromJson(caseDetailsHiveBox.get('c1')?.result);
-      print("Offline values => ${offlineCaseDetailsValue.caseDetails?.cust}");
+      // caseDetailsHiveBox.then((value) =>
+      //     offlineCaseDetailsValue = Result.fromJson(value.get('c1')?.result));
+
+      await caseDetailsHiveBox.then((value) {
+        offlineCaseDetailsValue = Result.fromJson(value.get('c1')?.result);
+        // print(value.get('c1')?.result);
+        // print("OfflineCas => ${offlineCaseDetailsValue.caseDetails?.cust}");
+      });
+
+      loanAmountController.text =
+          offlineCaseDetailsValue.caseDetails!.loanAmt.toString();
+      loanDurationController.text =
+          offlineCaseDetailsValue.caseDetails!.loanDuration.toString();
+      posController.text = offlineCaseDetailsValue.caseDetails!.pos.toString();
+      schemeCodeController.text =
+          offlineCaseDetailsValue.caseDetails!.schemeCode.toString();
+      emiStartDateController.text =
+          offlineCaseDetailsValue.caseDetails!.emiStartDate.toString();
+      bankNameController.text =
+          offlineCaseDetailsValue.caseDetails!.bankName.toString();
+      productController.text =
+          offlineCaseDetailsValue.caseDetails!.product.toString();
+      batchNoController.text =
+          offlineCaseDetailsValue.caseDetails!.batchNo.toString();
+      // print("Offline values => ${offlineCaseDetailsValue.caseDetails?.cust}");
 
       // print(caseDetailsHiveBox.get('c1')?.message);
       // Result result1 = Result.fromJson(caseDetailsHiveBox.get('c1')?.result);

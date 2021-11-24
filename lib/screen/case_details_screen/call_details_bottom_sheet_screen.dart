@@ -41,11 +41,10 @@ class _CallDetailsBottomSheetScreenState
             padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
             child: CustomLoanUserDetails(
               userName:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.cust ?? '',
+                  widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
               userId:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.accNo ??
-                      '',
-              userAmount: widget.bloc.caseDetailsResult.result?.caseDetails?.due
+                  widget.bloc.offlineCaseDetailsValue.caseDetails?.accNo ?? '',
+              userAmount: widget.bloc.offlineCaseDetailsValue.caseDetails?.due
                       ?.toDouble() ??
                   0,
             ),
@@ -61,8 +60,8 @@ class _CallDetailsBottomSheetScreenState
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: widget.bloc.caseDetailsResult.result
-                              ?.callDetails?.length ??
+                      itemCount: widget.bloc.offlineCaseDetailsValue.callDetails
+                              ?.length ??
                           0,
                       itemBuilder: (context, i) {
                         return SizedBox(
@@ -116,8 +115,7 @@ class _CallDetailsBottomSheetScreenState
                                                 CustomText(
                                                   widget
                                                       .bloc
-                                                      .caseDetailsResult
-                                                      .result!
+                                                      .offlineCaseDetailsValue
                                                       .callDetails![i]['value'],
                                                   fontSize: FontSize.fourteen,
                                                   fontWeight: FontWeight.w400,
