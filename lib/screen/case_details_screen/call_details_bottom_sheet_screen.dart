@@ -43,8 +43,7 @@ class _CallDetailsBottomSheetScreenState
               userName:
                   widget.bloc.caseDetailsResult.result?.caseDetails?.cust ?? '',
               userId:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.accNo ??
-                      '',
+                  widget.bloc.caseDetailsResult.result?.caseDetails?.accNo ?? '',
               userAmount: widget.bloc.caseDetailsResult.result?.caseDetails?.due
                       ?.toDouble() ??
                   0,
@@ -61,8 +60,8 @@ class _CallDetailsBottomSheetScreenState
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: widget.bloc.caseDetailsResult.result
-                              ?.callDetails?.length ??
+                      itemCount: widget.bloc.caseDetailsResult.result?.callDetails
+                              ?.length ??
                           0,
                       itemBuilder: (context, i) {
                         return SizedBox(
@@ -116,9 +115,7 @@ class _CallDetailsBottomSheetScreenState
                                                 CustomText(
                                                   widget
                                                       .bloc
-                                                      .caseDetailsResult
-                                                      .result!
-                                                      .callDetails![i]['value'],
+                                                      .caseDetailsResult.result?.callDetails![i]['value'],
                                                   fontSize: FontSize.fourteen,
                                                   fontWeight: FontWeight.w400,
                                                   fontStyle: FontStyle.normal,

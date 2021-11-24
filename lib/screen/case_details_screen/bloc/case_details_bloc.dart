@@ -4,12 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:origa/http/response/case_details_response.dart';
+import 'package:origa/http/case_details_response.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/event_detail_model.dart';
-import 'package:origa/models/hive_model/case_details_h_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -20,11 +19,9 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   // double launguageValue = 0;
-
-  Result offlineCaseDetailsValue = Result();
-
-  Box<CaseDetailsHiveModel> caseDetailsHiveBox =
-      Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox16');
+  // Box caseDetailsApiBox = Hive.box('CaseDetailsApiResultBox');
+  // Box<CaseDetailsHiveModel> caseDetailsHiveBox =
+  //     Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox12');
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -79,52 +76,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
 
-      //check internet
-      final result = await Connectivity().checkConnectivity();
-      if (result == ConnectivityResult.none) {
-        print("djkdld");
-        // print(caseDetailsHiveBox.get('c1')?.status);
-      } else {
+      
         Map<String, dynamic> caseDetailsData =
             await getCaseDetailsData('6181646813c5cf70dea671d2');
 
         if (caseDetailsData["success"] == true) {
           Map<String, dynamic> jsonData = caseDetailsData["data"];
-          // print("Api values => ${jsonData['result']}");
+          print(jsonEncode(jsonData));
 
           caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
 
-          // dynamic values = caseDetailsResult.result?.toJson();
-          // caseDetailsHiveBox.clear();
-
-          caseDetailsHiveBox.put(
-              'c1',
-              CaseDetailsHiveModel(
-                status: jsonData['status'],
-                message: jsonData['message'],
-                result: jsonData['result'],
-              ));
-
-          // caseDetailsHiveBox.add();
-
-          // print(jsonEncode(caseDetailsHiveBox.values.first.result));
-          // var caseDetail = CaseDetailsApiModel(
-          //         message: caseDetailsHiveBox.values.first.message,
-          //         status: caseDetailsHiveBox.values.first.status,
-          //         result: Result.fromJson(
-          //             jsonDecode(caseDetailsHiveBox.values.first.result)))
-          //     .toJson();
-          // print(jsonEncode(caseDetail));
-
-          // caseDetailsApiBox.clear();
-          // caseDetailsApiBox.add(caseDetailsResult.toJson());
-          // if (caseDetailsApiBox.isEmpty) {
-          //   print("is Empty");
-          // } else {
-          //   // loanAmountController.text = caseDetailsApiBox
-          //   //     .getAt(0)['result']['caseDetails']['loanAmt']
-          //   //     .toString();
-          // }
+          dynamic values = caseDetailsResult.result?.toJson();
 
           loanAmountController.text =
               caseDetailsResult.result?.caseDetails!.loanAmt.toString()
@@ -149,27 +111,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           batchNoController.text =
               caseDetailsResult.result?.caseDetails!.batchNo.toString()
                   as String;
-
-          // yield SevenDaysLoadedState();
-        } else {
-          // message = weatherData["data"];
-          // yield SevenDaysFailureState();
         }
-      }
 
-      // print(caseDetailsHiveBox.get('c1')?.result);
-      offlineCaseDetailsValue =
-          Result.fromJson(caseDetailsHiveBox.get('c1')?.result);
-      print("Offline v';[alues => ${offlineCaseDetailsValue.caseDetails?.cust}");
-
-      // print(caseDetailsHiveBox.get('c1')?.message);
-      // Result result1 = Result.fromJson(caseDetailsHiveBox.get('c1')?.result);
-      // print(result1.caseDetails?.due);
-      // CaseDetailsApiModel caseDetailsTemp = CaseDetailsApiModel(
-      //     message: caseDetailsHiveBox.get('c1')?.message,
-      //     status: caseDetailsHiveBox.get('c1')?.status,
-      //     result: Result.fromJson(caseDetailsHiveBox.get('c1')?.result));
-      // print(caseDetailsTemp.result?.caseDetails?.bankName);
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
             onTap: () => add(ClickPTPEvent())),
@@ -185,6 +128,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
             onTap: () => add(ClickOTSEvent())),
       ]);
+
       expandEvent.addAll([
         EventExpandModel(
             header: 'FIELD ALLOCATION',
@@ -202,6 +146,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             colloctorID: 'AGENT | HAR_fos4',
             remarks: 'XYZ'),
       ]);
+
       expandOtherFeedback.addAll([
         OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
         OtherFeedbackExpandModel(
@@ -209,6 +154,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         OtherFeedbackExpandModel(
             header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
       ]);
+
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
             onTap: () => add(ClickPTPEvent())),
@@ -224,6 +170,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
             onTap: () => add(ClickOTSEvent())),
       ]);
+
+      // multiCallDetilsList.addAll([
+      //   MultiCallDetailsModel('PHONE NUMBER 01', '9841021453', true),
+      //   MultiCallDetailsModel('PHONE NUMBER 02', '9841021453', false)
+      // ]);
 
       yield CaseDetailsLoadedState();
     }

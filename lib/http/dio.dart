@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 
-import 'httpurls.dart';
+import 'http_url.dart';
 
 class DioHelper {
   Dio dio = Dio();

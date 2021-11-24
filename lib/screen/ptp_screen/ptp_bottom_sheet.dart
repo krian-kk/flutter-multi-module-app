@@ -46,9 +46,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
 
     ptpTimeControlller.text = '$hours:$minutes';
-    ptpAmountControlller.text = "0";
-    referenceControlller.text = "ABC";
-    remarksControlller.text = "ABC";
+    ptpAmountControlller.text = '0';
+    referenceControlller.text = 'ABC';
+    remarksControlller.text = 'ABC';
   }
 
   @override

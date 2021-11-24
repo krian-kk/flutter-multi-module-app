@@ -16,7 +16,7 @@ Future<Map<String, dynamic>> getCaseDetailsData(String id) async {
       return status == 200;
     }));
 
-    return {"success": true, "data": response.data};
+    return {'success': true, 'data': response.data};
   } catch (e) {
     print(e);
     // if (DioErrorType.receiveTimeout == e.type ||
@@ -34,6 +34,6 @@ Future<Map<String, dynamic>> getCaseDetailsData(String id) async {
     // } else {
     //   // throw CommunicationException("Problem connecting to the server. Please try again.");
     // }
-    return {"success": false, "data": e};
+    return {'success': false, 'data': e};
   }
 }
