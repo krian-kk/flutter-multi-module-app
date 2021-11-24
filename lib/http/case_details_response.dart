@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:origa/http/http_url.dart';
+import 'package:origa/http/httpurls.dart';
 
 Future<Map<String, dynamic>> getCaseDetailsData(String id) async {
   var dio = Dio();

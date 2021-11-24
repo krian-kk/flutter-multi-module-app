@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+part 'dynamic_table.g.dart';
+
 @HiveType(typeId: 0)
 class OrigoDynamicTable extends HiveObject {
   @HiveField(0)
