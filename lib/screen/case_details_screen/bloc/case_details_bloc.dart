@@ -20,9 +20,11 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   // double launguageValue = 0;
-  // Box caseDetailsApiBox = Hive.box('CaseDetailsApiResultBox');
-  // Box<CaseDetailsHiveModel> caseDetailsHiveBox =
-  //     Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox12');
+
+  Result offlineCaseDetailsValue = Result();
+
+  Box<CaseDetailsHiveModel> caseDetailsHiveBox =
+      Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox16');
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -88,20 +90,20 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
         if (caseDetailsData["success"] == true) {
           Map<String, dynamic> jsonData = caseDetailsData["data"];
-          print(jsonEncode(jsonData));
+          // print("Api values => ${jsonData['result']}");
 
           caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
 
-          dynamic values = caseDetailsResult.result?.toJson();
+          // dynamic values = caseDetailsResult.result?.toJson();
           // caseDetailsHiveBox.clear();
 
-          // caseDetailsHiveBox.put(
-          //     'c1',
-          //     CaseDetailsHiveModel(
-          //       status: caseDetailsResult.status!,
-          //       message: caseDetailsResult.message!,
-          //       result: values,
-          //     ));
+          caseDetailsHiveBox.put(
+              'c1',
+              CaseDetailsHiveModel(
+                status: jsonData['status'],
+                message: jsonData['message'],
+                result: jsonData['result'],
+              ));
 
           // caseDetailsHiveBox.add();
 
@@ -155,6 +157,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
       }
 
+      // print(caseDetailsHiveBox.get('c1')?.result);
+      offlineCaseDetailsValue =
+          Result.fromJson(caseDetailsHiveBox.get('c1')?.result);
+      print("Offline v';[alues => ${offlineCaseDetailsValue.caseDetails?.cust}");
+
       // print(caseDetailsHiveBox.get('c1')?.message);
       // Result result1 = Result.fromJson(caseDetailsHiveBox.get('c1')?.result);
       // print(result1.caseDetails?.due);
@@ -178,7 +185,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
             onTap: () => add(ClickOTSEvent())),
       ]);
-
       expandEvent.addAll([
         EventExpandModel(
             header: 'FIELD ALLOCATION',
@@ -196,7 +202,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             colloctorID: 'AGENT | HAR_fos4',
             remarks: 'XYZ'),
       ]);
-
       expandOtherFeedback.addAll([
         OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
         OtherFeedbackExpandModel(
@@ -204,7 +209,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         OtherFeedbackExpandModel(
             header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
       ]);
-
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
             onTap: () => add(ClickPTPEvent())),
@@ -220,11 +224,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
             onTap: () => add(ClickOTSEvent())),
       ]);
-
-      // multiCallDetilsList.addAll([
-      //   MultiCallDetailsModel('PHONE NUMBER 01', '9841021453', true),
-      //   MultiCallDetailsModel('PHONE NUMBER 02', '9841021453', false)
-      // ]);
 
       yield CaseDetailsLoadedState();
     }

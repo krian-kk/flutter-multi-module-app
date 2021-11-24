@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/hive_model/case_details_h_model.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -18,6 +21,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
@@ -33,8 +37,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   late StreamSubscription subscription;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
+  
     bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
   }
 
@@ -51,11 +56,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           if (state is ClickCallBottomSheetState) {
             callDetailsShowBottomSheet(context);
           }
-
           if (state is ClickPhoneDetailState) {
             phoneBottomSheet(context);
           }
-
           if (state is ClickCallCustomerState) {
             callCustomerBottomSheet(context);
           }
@@ -110,14 +113,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       Align(
                                         alignment: Alignment.bottomCenter,
                                         child: CustomLoanUserDetails(
-                                          userName: bloc.caseDetailsResult
-                                                  .result?.caseDetails?.cust ??
+                                          userName: bloc.offlineCaseDetailsValue
+                                                  .caseDetails?.cust ??
                                               '',
-                                          userId: bloc.caseDetailsResult.result
-                                                  ?.caseDetails?.accNo ??
+                                          userId: bloc.offlineCaseDetailsValue
+                                                  .caseDetails?.accNo ??
                                               '',
-                                          userAmount: bloc.caseDetailsResult
-                                                  .result?.caseDetails?.due
+                                          userAmount: bloc
+                                                  .offlineCaseDetailsValue
+                                                  .caseDetails
+                                                  ?.due
                                                   ?.toDouble() ??
                                               0,
                                           isAccountNo: true,
@@ -125,8 +130,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           marginTop: 10,
                                         ),
                                       ),
-                                      if (bloc.caseDetailsResult.result
-                                              ?.caseDetails?.collSubStatus ==
+                                      if (bloc.offlineCaseDetailsValue
+                                              .caseDetails?.collSubStatus ==
                                           'new')
                                         Container(
                                           margin:
@@ -679,7 +684,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     .addressDetails
                                                     .toString()
                                                     .toUpperCase()
-                                                    .replaceAll(' ', ' \n'),
+                                                    .replaceAll(' ', '\n'),
                                                 fontSize: FontSize.twelve,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
@@ -786,6 +791,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
+          return PhoneScreen(bloc: bloc);
           return SizedBox(
               height: MediaQuery.of(context).size.height * 0.89,
               child: PhoneScreen(bloc: bloc));
