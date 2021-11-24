@@ -441,8 +441,7 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
     setState(() {
       position = res;
     });
-    // print("------------------Nandhu---------------");
-    // print(position.latitude);
+
     _onAddMarkerButtonPressed();
   }
 
@@ -470,7 +469,7 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
     setState(() {
       _markers.add(
         Marker(
-          markerId: const MarkerId("current location"),
+          markerId: const MarkerId('current location'),
           position: LatLng(position.latitude, position.longitude),
           infoWindow: const InfoWindow(
             title: 'current location',

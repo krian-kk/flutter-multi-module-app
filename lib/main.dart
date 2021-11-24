@@ -22,9 +22,11 @@ import 'bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
-  await Hive.openBox<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox16');
-  Hive.registerAdapter(CaseDetailsHiveModelAdapter());
+  Hive
+    ..init(dir.path)
+    ..registerAdapter(CaseDetailsHiveModelAdapter());
+  // await Hive.openBox<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox19');
+  // Hive.registerAdapter(CaseDetailsHiveModelAdapter());
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

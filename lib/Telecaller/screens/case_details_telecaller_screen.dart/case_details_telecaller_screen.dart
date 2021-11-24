@@ -330,64 +330,143 @@ class _CaseDetailsTelecallerScreenState
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: CustomButton(
-                                                      StringResource.sendSms
-                                                          .toUpperCase(),
-                                                      fontSize: FontSize.twelve,
-                                                      borderColor: ColorResource
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      color: ColorResource
                                                           .color23375A,
-                                                      onTap: () async {
-                                                        const uri =
-                                                            'sms:+39 348 060 888?body=hello%20there';
-                                                        if (await canLaunch(
-                                                            uri)) {
-                                                          await launch(uri);
-                                                        } else {
-                                                          const uri =
-                                                              'sms:0039-222-060-888?body=hello%20there';
-                                                          if (await canLaunch(
-                                                              uri)) {
-                                                            await launch(uri);
-                                                          } else {
-                                                            throw 'Could not launch $uri';
-                                                          }
-                                                        }
-                                                      },
-                                                      buttonBackgroundColor:
-                                                          ColorResource
-                                                              .color23375A,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                          color: ColorResource
+                                                              .colorECECEC,
+                                                          width: 1.0),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            ImageResource
+                                                                .whatsApp),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        CustomText(
+                                                            StringResource
+                                                                .sendSms
+                                                                .toUpperCase(),
+                                                            lineHeight: 1.0,
+                                                            color: ColorResource
+                                                                .colorffffff),
+                                                      ],
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 5),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: CustomButton(
-                                                      StringResource
-                                                          .sendWhatsapp
-                                                          .toUpperCase(),
-                                                      fontSize: FontSize.twelve,
-                                                      borderColor: ColorResource
+                                                  const SizedBox(width: 10),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      color: ColorResource
                                                           .color23375A,
-                                                      isLeading: true,
-                                                      trailingWidget:
-                                                          SvgPicture.asset(
-                                                              ImageResource
-                                                                  .whatsApp),
-                                                      onTap: () async {
-                                                        const url =
-                                                            "https://wa.me/?text=Origa";
-
-                                                        await launch(url);
-                                                      },
-                                                      buttonBackgroundColor:
-                                                          ColorResource
-                                                              .color23375A,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                          color: ColorResource
+                                                              .colorECECEC,
+                                                          width: 1.0),
                                                     ),
-                                                  ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            ImageResource
+                                                                .whatsApp),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        CustomText(
+                                                          StringResource
+                                                              .sendWhatsapp
+                                                              .toUpperCase(),
+                                                          lineHeight: 1.0,
+                                                          color: ColorResource
+                                                              .colorffffff,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               )
+                                              // Row(
+                                              //   mainAxisAlignment:
+                                              //       MainAxisAlignment
+                                              //           .spaceBetween,
+                                              //   children: [
+                                              //     Expanded(
+                                              //       flex: 2,
+                                              //       child: CustomButton(
+                                              //         StringResource.sendSms
+                                              //             .toUpperCase(),
+                                              //         fontSize: FontSize.twelve,
+                                              //         borderColor: ColorResource
+                                              //             .color23375A,
+                                              //         onTap: () async {
+                                              //           const uri =
+                                              //               'sms:+39 348 060 888?body=hello%20there';
+                                              //           if (await canLaunch(
+                                              //               uri)) {
+                                              //             await launch(uri);
+                                              //           } else {
+                                              //             const uri =
+                                              //                 'sms:0039-222-060-888?body=hello%20there';
+                                              //             if (await canLaunch(
+                                              //                 uri)) {
+                                              //               await launch(uri);
+                                              //             } else {
+                                              //               throw 'Could not launch $uri';
+                                              //             }
+                                              //           }
+                                              //         },
+                                              //         buttonBackgroundColor:
+                                              //             ColorResource
+                                              //                 .color23375A,
+                                              //       ),
+                                              //     ),
+                                              //     const SizedBox(width: 5),
+                                              //     Expanded(
+                                              //       flex: 3,
+                                              //       child: CustomButton(
+                                              //         StringResource
+                                              //             .sendWhatsapp
+                                              //             .toUpperCase(),
+                                              //         fontSize: FontSize.twelve,
+                                              //         borderColor: ColorResource
+                                              //             .color23375A,
+                                              //         isLeading: true,
+                                              //         trailingWidget:
+                                              //             SvgPicture.asset(
+                                              //                 ImageResource
+                                              //                     .whatsApp),
+                                              //         onTap: () async {
+                                              //           const url =
+                                              //               'https://wa.me/?text=Origa';
+
+                                              //           await launch(url);
+                                              //         },
+                                              //         buttonBackgroundColor:
+                                              //             ColorResource
+                                              //                 .color23375A,
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // )
                                             ],
                                           ),
                                         )
