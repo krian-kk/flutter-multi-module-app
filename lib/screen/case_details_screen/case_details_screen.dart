@@ -108,15 +108,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       Align(
                                         alignment: Alignment.bottomCenter,
                                         child: CustomLoanUserDetails(
-                                          userName: bloc.offlineCaseDetailsValue
-                                                  .caseDetails?.cust ??
+                                          userName: bloc.caseDetailsResult.result?.caseDetails?.cust ??
                                               '',
-                                          userId: bloc.offlineCaseDetailsValue
-                                                  .caseDetails?.accNo ??
+                                          userId: bloc.caseDetailsResult.result?.caseDetails?.accNo ??
                                               '',
                                           userAmount: bloc
-                                                  .offlineCaseDetailsValue
-                                                  .caseDetails
+                                                  .caseDetailsResult.result?.caseDetails
                                                   ?.due
                                                   ?.toDouble() ??
                                               0,
@@ -125,8 +122,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           marginTop: 10,
                                         ),
                                       ),
-                                      if (bloc.offlineCaseDetailsValue
-                                              .caseDetails?.collSubStatus ==
+                                      if (bloc.caseDetailsResult.result?.caseDetails?.collSubStatus ==
                                           'new')
                                         Container(
                                           margin:
@@ -275,8 +271,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 const SizedBox(height: 9),
                                                 CustomText(
                                                   bloc
-                                                          .offlineCaseDetailsValue
-                                                          .caseDetails
+                                                          .caseDetailsResult
+                                                          .result
+                                                          ?.caseDetails
                                                           ?.repaymentInfo
                                                           ?.benefeciaryAcc_Name ??
                                                       '',
@@ -289,8 +286,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 const SizedBox(height: 7),
                                                 CustomText(
                                                   bloc
-                                                          .offlineCaseDetailsValue
-                                                          .caseDetails
+                                                          .caseDetailsResult
+                                                          .result
+                                                          ?.caseDetails
                                                           ?.repaymentInfo
                                                           ?.repaymentIfscCode ??
                                                       '',
@@ -324,8 +322,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               const SizedBox(height: 4),
                                               CustomText(
                                                 bloc
-                                                        .offlineCaseDetailsValue
-                                                        .caseDetails
+                                                        .caseDetailsResult
+                                                        .result
+                                                        ?.caseDetails
                                                         ?.repaymentInfo
                                                         ?.repayBankName ??
                                                     '',
@@ -348,8 +347,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               const SizedBox(height: 4),
                                               CustomText(
                                                 bloc
-                                                        .offlineCaseDetailsValue
-                                                        .caseDetails
+                                                        .caseDetailsResult
+                                                        .result
+                                                        ?.caseDetails
                                                         ?.repaymentInfo
                                                         ?.refLender ??
                                                     '',
@@ -372,8 +372,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               const SizedBox(height: 4),
                                               CustomText(
                                                 bloc
-                                                        .offlineCaseDetailsValue
-                                                        .caseDetails
+                                                        .caseDetailsResult
+                                                        .result
+                                                        ?.caseDetails
                                                         ?.repaymentInfo
                                                         ?.ref_url ??
                                                     '',
@@ -384,147 +385,67 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color333333,
                                               ),
                                               const SizedBox(height: 12),
-                                              // Row(
-                                              //   mainAxisAlignment:
-                                              //       MainAxisAlignment
-                                              //           .spaceBetween,
-                                              //   children: [
-                                              //     Expanded(
-                                              //       flex: 2,
-                                              //       child: CustomButton(
-                                              //         StringResource.sendSms
-                                              //             .toUpperCase(),
-                                              //         fontSize: FontSize.twelve,
-                                              //         borderColor: ColorResource
-                                              //             .color23375A,
-                                              //         onTap: () async {
-                                              //           const uri =
-                                              //               'sms:+39 348 060 888?body=hello%20there';
-                                              //           if (await canLaunch(
-                                              //               uri)) {
-                                              //             await launch(uri);
-                                              //           } else {
-                                              //             const uri =
-                                              //                 'sms:0039-222-060-888?body=hello%20there';
-                                              //             if (await canLaunch(
-                                              //                 uri)) {
-                                              //               await launch(uri);
-                                              //             } else {
-                                              //               throw 'Could not launch $uri';
-                                              //             }
-                                              //           }
-                                              //         },
-                                              //         buttonBackgroundColor:
-                                              //             ColorResource
-                                              //                 .color23375A,
-                                              //       ),
-                                              //     ),
-                                              //     const SizedBox(width: 5),
-                                              //     Expanded(
-                                              //       flex: 3,
-                                              //       child: CustomButton(
-                                              //         StringResource
-                                              //             .sendWhatsapp
-                                              //             .toUpperCase(),
-                                              //         fontSize: FontSize.twelve,
-                                              //         borderColor: ColorResource
-                                              //             .color23375A,
-                                              //         isLeading: true,
-                                              //         trailingWidget:
-                                              //             SvgPicture.asset(
-                                              //                 ImageResource
-                                              //                     .whatsApp),
-                                              //         onTap: () async {
-                                              //           const url =
-                                              //               "https://wa.me/?text=Origa";
-
-                                              //           await launch(url);
-                                              //         },
-                                              //         buttonBackgroundColor:
-                                              //             ColorResource
-                                              //                 .color23375A,
-                                              //       ),
-                                              //     ),
-                                              //   ],
-                                              // ),
-
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 10),
-                                                    decoration: BoxDecoration(
-                                                      color: ColorResource
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: CustomButton(
+                                                      StringResource.sendSms
+                                                          .toUpperCase(),
+                                                      fontSize: FontSize.twelve,
+                                                      borderColor: ColorResource
                                                           .color23375A,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          color: ColorResource
-                                                              .colorECECEC,
-                                                          width: 1.0),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            ImageResource
-                                                                .whatsApp),
-                                                        const SizedBox(
-                                                            width: 5),
-                                                        CustomText(
-                                                            StringResource
-                                                                .sendSms
-                                                                .toUpperCase(),
-                                                            lineHeight: 1.0,
-                                                            color: ColorResource
-                                                                .colorffffff),
-                                                      ],
+                                                      onTap: () async {
+                                                        const uri =
+                                                            'sms:+39 348 060 888?body=hello%20there';
+                                                        if (await canLaunch(
+                                                            uri)) {
+                                                          await launch(uri);
+                                                        } else {
+                                                          const uri =
+                                                              'sms:0039-222-060-888?body=hello%20there';
+                                                          if (await canLaunch(
+                                                              uri)) {
+                                                            await launch(uri);
+                                                          } else {
+                                                            throw 'Could not launch $uri';
+                                                          }
+                                                        }
+                                                      },
+                                                      buttonBackgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 10),
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 10),
-                                                    decoration: BoxDecoration(
-                                                      color: ColorResource
+                                                  const SizedBox(width: 5),
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: CustomButton(
+                                                      StringResource
+                                                          .sendWhatsapp
+                                                          .toUpperCase(),
+                                                      fontSize: FontSize.twelve,
+                                                      borderColor: ColorResource
                                                           .color23375A,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          color: ColorResource
-                                                              .colorECECEC,
-                                                          width: 1.0),
+                                                      isLeading: true,
+                                                      trailingWidget:
+                                                          SvgPicture.asset(
+                                                              ImageResource
+                                                                  .whatsApp),
+                                                      onTap: () async {
+                                                        const url =
+                                                            "https://wa.me/?text=Origa";
+
+                                                        await launch(url);
+                                                      },
+                                                      buttonBackgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
                                                     ),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            ImageResource
-                                                                .whatsApp),
-                                                        const SizedBox(
-                                                            width: 5),
-                                                        CustomText(
-                                                          StringResource
-                                                              .sendWhatsapp
-                                                              .toUpperCase(),
-                                                          lineHeight: 1.0,
-                                                          color: ColorResource
-                                                              .colorffffff,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
+                                                  ),
                                                 ],
                                               )
                                             ],
@@ -542,7 +463,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                   CustomText(
-                                    bloc.offlineCaseDetailsValue.caseDetails
+                                    bloc.caseDetailsResult.result?.caseDetails
                                             ?.cust
                                             ?.toUpperCase() ??
                                         '', //--------------- doubt -----------
@@ -556,15 +477,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           const NeverScrollableScrollPhysics(),
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
-                                      itemCount: bloc.offlineCaseDetailsValue
-                                              .otherLoanDetails?.length ??
+                                      itemCount: bloc.caseDetailsResult.result
+                                              ?.otherLoanDetails?.length ??
                                           0,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const SizedBox(height: 10),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
                                             Container(
                                               width: double.infinity,
                                               decoration: BoxDecoration(
@@ -613,7 +536,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     const SizedBox(height: 5),
                                                     CustomText(
                                                       bloc
-                                                          .offlineCaseDetailsValue
+                                                          .caseDetailsResult
+                                                          .result!
                                                           .otherLoanDetails![
                                                               index]
                                                           .cust!
@@ -647,7 +571,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       children: [
                                                         CustomText(
                                                           bloc
-                                                              .offlineCaseDetailsValue
+                                                              .caseDetailsResult
+                                                              .result!
                                                               .otherLoanDetails![
                                                                   index]
                                                               .due

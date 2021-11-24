@@ -53,13 +53,13 @@ class _AddressDetailsBottomSheetScreenState
                   padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
                   child: CustomLoanUserDetails(
                     userName:
-                        widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ??
+                        widget.bloc.caseDetailsResult.result?.caseDetails?.cust ??
                             '',
                     userId: widget
-                            .bloc.offlineCaseDetailsValue.caseDetails?.accNo ??
+                            .bloc.caseDetailsResult.result?.caseDetails?.accNo ??
                         '',
                     userAmount: widget
-                            .bloc.offlineCaseDetailsValue.caseDetails?.due
+                            .bloc.caseDetailsResult.result?.caseDetails?.due
                             ?.toDouble() ??
                         0,
                   ),
@@ -76,8 +76,7 @@ class _AddressDetailsBottomSheetScreenState
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: widget.bloc.offlineCaseDetailsValue
-                                    .addressDetails?.length ??
+                            itemCount: widget.bloc.caseDetailsResult.result?.addressDetails?.length ??
                                 0,
                             itemBuilder: (context, i) {
                               return SizedBox(
@@ -124,11 +123,7 @@ class _AddressDetailsBottomSheetScreenState
                                                   child: CustomText(
                                                     widget
                                                         .bloc
-                                                        .offlineCaseDetailsValue
-                                                        .addressDetails![i]
-                                                            ['value']
-                                                        .toString()
-                                                        .toUpperCase(),
+                                                        .caseDetailsResult.result!.addressDetails![i]['value'].toString().toUpperCase(),
                                                     fontSize: FontSize.fourteen,
                                                     fontWeight: FontWeight.w400,
                                                     fontStyle: FontStyle.normal,
