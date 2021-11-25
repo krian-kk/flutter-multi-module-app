@@ -1,6 +1,8 @@
 //import 'package:easy_localization/easy_localization.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'dart:io';
+
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
+import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:hive/hive.dart';
@@ -20,6 +23,12 @@ import 'bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Directory directory = await getApplicationDocumentsDirectory();
+  Hive
+    ..init(directory.path)
+    ..registerAdapter(OrigoDynamicTableAdapter());
+
+  await Hive.openBox<OrigoDynamicTable>('testBox4');
   // final dir = await getApplicationDocumentsDirectory();
   // Hive
   //   ..init(dir.path)

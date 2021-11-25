@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
@@ -37,7 +38,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   late MapBloc mapBloc;
   bool areyouatOffice = true;
   String version = "";
-
+  List<Result> resultList = [];
   @override
   void initState() {
     super.initState();
@@ -66,6 +67,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
         if (state is NavigateSearchPageState) {
           Navigator.pushNamed(context, AppRoutes.SearchScreen, arguments: bloc);
+        }
+        if (state is AllocationLoadedState) {
+          //List<Result>
+          if(state.successResponse is List<Result>){
+              resultList = state.successResponse;
+          }
         }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
@@ -268,7 +275,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 0.0),
-                  child: CustomCardList.buildListView(bloc),
+                  child: CustomCardList.buildListView(bloc,resultData: resultList),
                 )),
               ],
             ),
@@ -289,8 +296,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
   Widget _buildFilterWidget(int index, String element) {
     return InkWell(
       onTap: () {
-        print(element);
-        print(index);
         setState(() {
           bloc.selectedOption = index;
         });

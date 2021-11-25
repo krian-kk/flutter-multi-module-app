@@ -11,7 +11,7 @@ class OrigoDynamicTable extends HiveObject {
   late String message;
 
   @HiveField(2)
-  late dynamic result;
+  late List<dynamic> result;
 
   OrigoDynamicTable(
       {required this.status, required this.message, required this.result});

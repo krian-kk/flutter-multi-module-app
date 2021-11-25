@@ -1,9 +1,35 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/models/priority_case_list.dart';
 
 class APIRepository {
+
+  // get priority case list
+  static Future<Map<String, dynamic>> getpriorityCaseList() async {
+    dynamic? returnableValues;
+    try {
+      final Response response = await DioClient.dioConfig().get(
+        HttpUrl.priorityCaseList,
+      );
+      // print('response.data: ${response.data}');
+      // returnableValues = PriorityCaseListModel.fromJson(response.data);
+      // returnableValues = json.decode(response.toString());
+      returnableValues = response.data;
+      // print(returnableValues);
+    } on DioError catch (e) {
+      if (e.response != null) {
+        returnableValues = DioClient.errorHandling(e);
+      } else {
+        print(e.message);
+        returnableValues = 'Error sending request!';
+      }
+    }
+    return returnableValues;
+  }
+
   //File uploading---> File, Image etc
   //File data should be list model if you're sending single or more
   Future<dynamic> multipartFileUpload(

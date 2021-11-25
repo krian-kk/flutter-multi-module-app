@@ -19,7 +19,7 @@ class OrigoDynamicTableAdapter extends TypeAdapter<OrigoDynamicTable> {
     return OrigoDynamicTable(
       status: fields[0] as int,
       message: fields[1] as String,
-      result: fields[2] as dynamic,
+      result: (fields[2] as List).cast<dynamic>(),
     );
   }
 

@@ -1,6 +1,14 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/string_resource.dart';
 
@@ -32,39 +40,76 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List<AllocationListModel> allocationList = [];
   late Position currentLocation;
 
+  Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
+      Hive.openBox<OrigoDynamicTable>('testBox4');
+
+    List starCount = [];
+
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
       yield AllocationLoadingState();
-      // print('--------------NK-------');
-      allocationList.addAll([
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 3,97,553.67',
-          address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-          date: 'Today, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'New User',
-          amount: '₹ 5,54,433.67',
-          address: '2/345, 6th Main Road, Bangalore - 534544',
-          date: 'Thu, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 8,97,553.67',
-          address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-          date: 'Sat, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-      ]);
 
-      yield AllocationLoadedState();
+       List<Result> resultList = [];
+
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
+      offlineDatabaseBox.whenComplete(() {
+        offlineDatabaseBox.then((value) {
+              value.put('priority_caselist', 
+              OrigoDynamicTable(
+                message: priorityListData['message'],
+                status:priorityListData['status'],
+                result:  priorityListData['result'] as List<dynamic>,
+                ),
+              );
+              for (var element in value.get('priority_caselist')!.result) {
+                  resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+                  if(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase == true) {
+                    starCount.add(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+                  }
+             }
+        });
+      });
+      } else {
+        await offlineDatabaseBox.then((value) {
+            for (var element in value.get('priority_caselist')!.result) {
+                  resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+                  if(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase == true) {
+                    starCount.add(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+                  }
+             }
+          }
+        );
+      }
+      // allocationList.addAll([
+      //   AllocationListModel(
+      //     newlyAdded: true,
+      //     customerName: 'Debashish Patnaik',
+      //     amount: '₹ 3,97,553.67',
+      //     address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+      //     date: 'Today, Thu 18 Oct, 2021',
+      //     loanID: 'TVS / TVSF_BFRT6524869550',
+      //   ),
+      //   AllocationListModel(
+      //     newlyAdded: true,
+      //     customerName: 'New User',
+      //     amount: '₹ 5,54,433.67',
+      //     address: '2/345, 6th Main Road, Bangalore - 534544',
+      //     date: 'Thu, Thu 18 Oct, 2021',
+      //     loanID: 'TVS / TVSF_BFRT6524869550',
+      //   ),
+      //   AllocationListModel(
+      //     newlyAdded: true,
+      //     customerName: 'Debashish Patnaik',
+      //     amount: '₹ 8,97,553.67',
+      //     address: '2/345, 1th Main Road Guindy, Chenai - 875032',
+      //     date: 'Sat, Thu 18 Oct, 2021',
+      //     loanID: 'TVS / TVSF_BFRT6524869550',
+      //   ),
+      // ]);
+      yield AllocationLoadedState(successResponse: resultList);
     }
 
     if (event is MapViewEvent) {

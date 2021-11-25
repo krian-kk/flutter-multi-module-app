@@ -6,7 +6,10 @@ class AllocationInitial extends AllocationState {}
 
 class AllocationLoadingState extends AllocationState {}
 
-class AllocationLoadedState extends AllocationState {}
+class AllocationLoadedState extends AllocationState {
+  dynamic? successResponse;
+  AllocationLoadedState({this.successResponse});
+}
 
 class MapViewState extends AllocationState {}
 
