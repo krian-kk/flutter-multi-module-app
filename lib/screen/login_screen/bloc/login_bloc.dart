@@ -16,7 +16,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     // if (event is LoginEvent) {
     //   yield LoginLoadingState();
-    //   yield LoginLoadedState(); 
+    //   yield LoginLoadedState();
     // }
 
     if (event is HomeTabEvent) {

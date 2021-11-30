@@ -17,9 +17,7 @@ class HomeTabBloc extends Bloc<HomeTabEvent, HomeTabState> {
     if (event is HomeTabInitialEvent) {
       yield HomeTabLoadingState();
 
-      
-    
       yield HomeTabLoadedState();
+    }
   }
-}
 }

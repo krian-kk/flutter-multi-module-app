@@ -5,7 +5,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
-import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -15,7 +14,9 @@ import 'package:origa/widgets/custom_text.dart';
 
 class PhoneScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  const PhoneScreen({Key? key, required this.bloc}) : super(key: key);
+  final int index;
+  const PhoneScreen({Key? key, required this.bloc, required this.index})
+      : super(key: key);
 
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -52,7 +53,6 @@ class _PhoneScreenState extends State<PhoneScreen>
         removeBottom: true,
         removeTop: true,
         child: Scaffold(
-          //backgroundColor: ColorResource.colorF7F8FA,
           backgroundColor: Colors.transparent,
           body: Container(
             decoration: BoxDecoration(
@@ -68,17 +68,6 @@ class _PhoneScreenState extends State<PhoneScreen>
             width: double.infinity,
             child: Column(
               children: [
-                // CustomAppbar(
-                //   titleString: Languages.of(context)!.caseDetials,
-                //   titleSpacing: 21,
-                //   iconEnumValues: IconEnum.back,
-                //   onItemSelected: (value) {
-                //     if (value == 'IconEnum.back') {
-                //       Navigator.pop(context);
-                //       Navigator.pop(context);
-                //     }
-                //   },
-                // ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(22, 26, 22, 0),
                   child: Column(
@@ -91,7 +80,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CustomText(
-                            'Phone Number 01'.toUpperCase(),
+                            widget.bloc.offlineCaseDetailsValue
+                                .callDetails![widget.index]['cType']
+                                .toString()
+                                .toUpperCase(),
                             fontWeight: FontWeight.w700,
                             fontSize: FontSize.fourteen,
                             fontStyle: FontStyle.normal,
@@ -112,11 +104,14 @@ class _PhoneScreenState extends State<PhoneScreen>
                           )
                         ],
                       ),
-                      const Flexible(
+                      Flexible(
                         child: SizedBox(
                           width: 255,
                           child: CustomText(
-                            '9841021453',
+                            widget.bloc.offlineCaseDetailsValue
+                                .callDetails![widget.index]['value']
+                                .toString()
+                                .toUpperCase(),
                             fontWeight: FontWeight.w400,
                             fontSize: FontSize.fourteen,
                             fontStyle: FontStyle.normal,
@@ -160,9 +155,9 @@ class _PhoneScreenState extends State<PhoneScreen>
                             height: 50,
                             child: CustomButton(
                               Languages.of(context)!.eventDetails,
-                              onTap: () {
-                                openEventDetailsBottomSheet(context);
-                              },
+                              onTap: () => widget.bloc.add(
+                                  ClickOpenBottomSheetEvent(
+                                      StringResource.eventDetails)),
                               fontSize: FontSize.twelve,
                               textColor: ColorResource.color23375A,
                               borderColor: ColorResource.color23375A,
@@ -203,23 +198,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                       Tab(text: Languages.of(context)!.unreachable),
                       Tab(text: Languages.of(context)!.invalid)
                     ],
-                    // tabs: [
-                    //   SizedBox(
-                    //       width: MediaQuery.of(context).size.width * 0.27,
-                    //       child: Tab(text: Languages.of(context)!.connected)),
-                    //   SizedBox(
-                    //       width: MediaQuery.of(context).size.width * 0.27,
-                    //       child: Tab(text: Languages.of(context)!.unreachable)),
-                    //   SizedBox(
-                    //       width: MediaQuery.of(context).size.width * 0.22,
-                    //       child: Tab(text: Languages.of(context)!.invalid))
-                    // ],
                   ),
                 ),
-
                 Expanded(
                     child: SingleChildScrollView(
-                  // physics: NeverScrollableScrollPhysics(),
                   child: Column(
                     children: [
                       Column(children: [
@@ -317,15 +299,18 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   // isEnabled: (bloc.selectedUnreadableClip == ''),
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
-                                  // onTap: () => bloc.add(ClickMessageEvent()),
+                                  onTap: () => widget.bloc
+                                      .phoneUnreachableFormKey.currentState!
+                                      .validate(),
                                   cardShape: 5,
                                 )
                               : CustomButton(
                                   Languages.of(context)!.submit.toUpperCase(),
-                                  // isEnabled: (bloc.selectedInvalidClip != ''),
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
-                                  // onTap: () => bloc.add(ClickMessageEvent()),
+                                  onTap: () => widget
+                                      .bloc.phoneInvalidFormKey.currentState!
+                                      .validate(),
                                   cardShape: 5,
                                 ),
                         ),
@@ -358,22 +343,4 @@ class _PhoneScreenState extends State<PhoneScreen>
   //       });
   // }
 
-  openEventDetailsBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-      enableDrag: false,
-      isScrollControlled: true,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return CustomEventDetailsBottomSheet(
-            Languages.of(context)!.eventDetails.toUpperCase(), widget.bloc);
-      },
-    );
-  }
 }

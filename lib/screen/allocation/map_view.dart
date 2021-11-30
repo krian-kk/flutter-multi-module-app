@@ -18,7 +18,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MapView extends StatefulWidget {
   final AllocationBloc bloc;
-  MapView(this.bloc, {Key? key}) : super(key: key);
+  const MapView(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _MapViewState createState() => _MapViewState();

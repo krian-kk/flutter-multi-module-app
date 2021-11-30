@@ -5,12 +5,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_screen/bloc/map_event.dart';
 import 'package:origa/screen/map_screen/map_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
+import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -66,12 +68,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
               arguments: true);
         }
         if (state is NavigateSearchPageState) {
-          Navigator.pushNamed(context, AppRoutes.SearchScreen, arguments: bloc);
+          searchShowBottomSheet();
+          // var result = Navigator.pushNamed(context, AppRoutes.SearchScreen,
+          //     arguments: bloc);
         }
         if (state is AllocationLoadedState) {
           //List<Result>
-          if(state.successResponse is List<Result>){
-              resultList = state.successResponse;
+          if (state.successResponse is List<Result>) {
+            resultList = state.successResponse;
           }
         }
       },
@@ -176,7 +180,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               const SizedBox(
                                 width: 15.0,
                               ),
-                              Container(
+                              SizedBox(
                                   width: 80,
                                   height: 40,
                                   child: CustomButton(
@@ -263,7 +267,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       const SizedBox(
                         height: 13.0,
                       ),
-                      bloc.showFilterDistance ? _buildBuildRoute() : SizedBox(),
+                      bloc.showFilterDistance
+                          ? _buildBuildRoute()
+                          : const SizedBox(),
                       // const SizedBox(
                       //   height: 5.0,
                       // ),
@@ -275,7 +281,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 0.0),
-                  child: CustomCardList.buildListView(bloc,resultData: resultList),
+                  child: CustomCardList.buildListView(bloc,
+                      resultData: resultList),
                 )),
               ],
             ),
@@ -373,7 +380,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             const SizedBox(
               width: 8,
             ),
-            Container(
+            const SizedBox(
               width: 213,
               child: CustomText(
                 'No.1, ABC Street, Gandhi Nagar 1st phase',
@@ -383,7 +390,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 isSingleLine: true,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.only(right: 13),
               child: GestureDetector(
@@ -456,7 +463,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
     );
   }
 
-  void mapView(BuildContext buildContext) {
+  mapView(BuildContext buildContext) {
     showModalBottomSheet(
         isDismissible: false,
         enableDrag: false,
@@ -490,5 +497,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.86,
                     child: MessageChatRoomScreen())));
+  }
+
+  searchShowBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 1.0,
+                    child: SearchScreen(bloc: bloc))));
   }
 }

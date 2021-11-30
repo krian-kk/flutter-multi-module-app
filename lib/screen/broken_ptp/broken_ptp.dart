@@ -14,7 +14,6 @@ import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 
-
 class BrokenPTPBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
   BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
@@ -24,7 +23,6 @@ class BrokenPTPBottomSheet extends StatefulWidget {
 }
 
 class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
-
   // late BrokenptpBloc bloc;
 
   @override
@@ -49,29 +47,28 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
           onWillPop: () async => false,
           child: Container(
             padding: EdgeInsets.only(top: 16),
-            child:  Scaffold(
-                  floatingActionButton: CustomFloatingActionButton(
-                    onTap: () async {
-                      widget.bloc.add(NavigateSearchEvent());
-                    },
+            child: Scaffold(
+              floatingActionButton: CustomFloatingActionButton(
+                onTap: () async {
+                  widget.bloc.add(NavigateSearchEvent());
+                },
+              ),
+              body: Column(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  BottomSheetAppbar(
+                    title: Languages.of(context)!.brokenPTP,
                   ),
-                  body: Column(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      BottomSheetAppbar(
-                        title: Languages.of(context)!.brokenPTP,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 5),
-                          child: CaseLists.buildListView(widget.bloc),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-            
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5),
+                      child: CaseLists.buildListView(widget.bloc),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         );
       }),

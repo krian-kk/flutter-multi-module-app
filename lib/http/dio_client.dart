@@ -9,21 +9,20 @@ import 'package:origa/http/logging.dart';
 
 class DioClient {
   static dynamic dioConfig() {
-    Dio dio =  Dio(
+    Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
         connectTimeout: 5000,
         receiveTimeout: 5000,
         followRedirects: true,
         headers: (null != getTokenFromSharedValues() ||
-            '' != getTokenFromSharedValues())
+                '' != getTokenFromSharedValues())
             ? {
-          'authorization': 'Bearer ${getTokenFromSharedValues()}',
-        }
+                'authorization': 'Bearer ${getTokenFromSharedValues()}',
+              }
             : null,
         contentType: 'application/json',
       ),
-
     )..interceptors.add(Logging());
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {

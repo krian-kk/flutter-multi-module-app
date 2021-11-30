@@ -582,4 +582,10 @@ class LanguageHi extends Languages {
 
   @override
   String get searchErrorMessage => 'आपको कम से कम एक फ़ील्ड भरना चाहिए';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get email => 'Email';
 }

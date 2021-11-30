@@ -26,7 +26,8 @@ void main() async {
   Directory directory = await getApplicationDocumentsDirectory();
   Hive
     ..init(directory.path)
-    ..registerAdapter(OrigoDynamicTableAdapter());
+    ..registerAdapter(OrigoDynamicTableAdapter())
+    ..registerAdapter(OrigoMapDynamicTableAdapter());
 
   await Hive.openBox<OrigoDynamicTable>('testBox4');
   // final dir = await getApplicationDocumentsDirectory();
@@ -128,8 +129,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
 
 // import 'package:bloc/bloc.dart';
 // import 'package:easy_localization/easy_localization.dart';

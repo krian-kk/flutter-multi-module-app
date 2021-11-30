@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -32,10 +30,10 @@ class _AddressDetailsBottomSheetScreenState
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
-        if (state is ClickMainAddressBottomSheetState) {
-          Navigator.pop(context);
-          addressBottomSheet(context, widget.bloc);
-        }
+        // if (state is ClickMainAddressBottomSheetState) {
+        //   Navigator.pop(context);
+        //   addressBottomSheet(context, widget.bloc);
+        // }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
@@ -53,13 +51,13 @@ class _AddressDetailsBottomSheetScreenState
                   padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
                   child: CustomLoanUserDetails(
                     userName:
-                        widget.bloc.caseDetailsResult.result?.caseDetails?.cust ??
+                        widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ??
                             '',
                     userId: widget
-                            .bloc.caseDetailsResult.result?.caseDetails?.accNo ??
+                            .bloc.offlineCaseDetailsValue.caseDetails?.accNo ??
                         '',
                     userAmount: widget
-                            .bloc.caseDetailsResult.result?.caseDetails?.due
+                            .bloc.offlineCaseDetailsValue.caseDetails?.due
                             ?.toDouble() ??
                         0,
                   ),
@@ -76,7 +74,8 @@ class _AddressDetailsBottomSheetScreenState
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: widget.bloc.caseDetailsResult.result?.addressDetails?.length ??
+                            itemCount: widget.bloc.offlineCaseDetailsValue
+                                    .addressDetails?.length ??
                                 0,
                             itemBuilder: (context, i) {
                               return SizedBox(
@@ -86,16 +85,20 @@ class _AddressDetailsBottomSheetScreenState
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     CustomText(
-                                      (i + 1 > 9)
-                                          ? Languages.of(context)!
-                                                  .address
-                                                  .toUpperCase() +
-                                              '${i + 1}'
-                                          : Languages.of(context)!
-                                                  .address
-                                                  .toUpperCase() +
-                                              '0'
-                                                  '${i + 1}',
+                                      widget.bloc.offlineCaseDetailsValue
+                                          .addressDetails![i]['cType']
+                                          .toString()
+                                          .toUpperCase(),
+                                      // (i + 1 > 9)
+                                      //     ? Languages.of(context)!
+                                      //             .address
+                                      //             .toUpperCase() +
+                                      //         '${i + 1}'
+                                      //     : Languages.of(context)!
+                                      //             .address
+                                      //             .toUpperCase() +
+                                      //         '0'
+                                      //             '${i + 1}',
                                       fontWeight: FontWeight.w700,
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color23375A,
@@ -123,7 +126,11 @@ class _AddressDetailsBottomSheetScreenState
                                                   child: CustomText(
                                                     widget
                                                         .bloc
-                                                        .caseDetailsResult.result!.addressDetails![i]['value'].toString().toUpperCase(),
+                                                        .offlineCaseDetailsValue
+                                                        .addressDetails![i]
+                                                            ['value']
+                                                        .toString()
+                                                        .toUpperCase(),
                                                     fontSize: FontSize.fourteen,
                                                     fontWeight: FontWeight.w400,
                                                     fontStyle: FontStyle.normal,
@@ -189,7 +196,8 @@ class _AddressDetailsBottomSheetScreenState
                                                 InkWell(
                                                   onTap: () {
                                                     widget.bloc.add(
-                                                        ClickMainAddressBottomSheetEvent());
+                                                        ClickMainAddressBottomSheetEvent(
+                                                            i));
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -244,30 +252,3 @@ class _AddressDetailsBottomSheetScreenState
     );
   }
 }
-
-void addressBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc) {
-  showCupertinoModalPopup(
-      context: buildContext,
-      builder: (BuildContext context) {
-        return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.89,
-            child: AddressScreen(bloc: bloc));
-      });
-}
-
-// Route _createRoute() {
-//   return PageRouteBuilder(
-//     transitionDuration: Duration(microseconds: 3),
-//     pageBuilder: (context, animation, secondaryAnimation) => AddressScreen(),
-//     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-//       const begin = Offset(0.0, 1.0);
-//       const end = Offset.zero;
-//       final tween = Tween(begin: begin, end: end);
-//       final offsetAnimation = animation.drive(tween);
-//       return SlideTransition(
-//         position: offsetAnimation,
-//         child: child,
-//       );
-//     },
-//   );
-// }

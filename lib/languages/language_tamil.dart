@@ -583,4 +583,10 @@ class LanguageTa extends Languages {
 
   @override
   String get searchErrorMessage => 'குறைந்தபட்சம் ஒரு புலத்தை நிரப்ப வேண்டும்';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get email => 'Email';
 }

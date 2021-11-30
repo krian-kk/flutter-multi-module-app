@@ -3,7 +3,7 @@ import 'result.dart';
 class CaseDetailsApiModel {
   int? status;
   String? message;
-  Result? result;
+  CaseDetailsResultModel? result;
 
   CaseDetailsApiModel({this.status, this.message, this.result});
 
@@ -13,7 +13,8 @@ class CaseDetailsApiModel {
       message: json['message'] as String?,
       result: json['result'] == null
           ? null
-          : Result.fromJson(json['result'] as Map<String, dynamic>),
+          : CaseDetailsResultModel.fromJson(
+              json['result'] as Map<String, dynamic>),
     );
   }
 

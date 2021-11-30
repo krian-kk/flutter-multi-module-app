@@ -5,10 +5,6 @@ class CaseDetailsEvent extends BaseEquatable {}
 
 class CaseDetailsInitialEvent extends CaseDetailsEvent {}
 
-class ClickAddressBottomSheetEvent extends CaseDetailsEvent {}
-
-class ClickCallBottomSheetEvent extends CaseDetailsEvent {}
-
 class LaunchWhatsappEvent extends CaseDetailsEvent {
   final String whatsappUrlAddress;
   LaunchWhatsappEvent(this.whatsappUrlAddress);
@@ -16,36 +12,23 @@ class LaunchWhatsappEvent extends CaseDetailsEvent {
 
 class LaunchSMSEvent extends CaseDetailsEvent {}
 
-class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {}
+class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
+  final int index;
+  ClickMainAddressBottomSheetEvent(this.index);
+}
 
-class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {}
-
-class ClickPopEvent extends CaseDetailsEvent {}
-
-class ClickPTPEvent extends CaseDetailsEvent {}
-
-class ClickRTPEvent extends CaseDetailsEvent {}
-
-class ClickDisputeEvent extends CaseDetailsEvent {}
-
-class ClickRemainderEvent extends CaseDetailsEvent {}
-
-class ClickCollectionsEvent extends CaseDetailsEvent {}
-
-class ClickOTSEvent extends CaseDetailsEvent {}
-
-class ClickCaptureImageEvent extends CaseDetailsEvent {}
-
-class ClickRepoEvent extends CaseDetailsEvent {}
-
-class ClickAddAddressEvent extends CaseDetailsEvent {}
-
-class ClickOtherFeedbackEvent extends CaseDetailsEvent {}
+class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
+  final int index;
+  ClickMainCallBottomSheetEvent(this.index);
+}
 
 class ClickViewMapEvent extends CaseDetailsEvent {}
 
-class ClickEventDetailsEvent extends CaseDetailsEvent {}
-
-class ClickPhoneDetailEvent extends CaseDetailsEvent {}
-
 class ClickCallCustomerEvent extends CaseDetailsEvent {}
+
+class ClickCaseDetailsEvent extends CaseDetailsEvent {}
+
+class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
+  final String title;
+  ClickOpenBottomSheetEvent(this.title);
+}

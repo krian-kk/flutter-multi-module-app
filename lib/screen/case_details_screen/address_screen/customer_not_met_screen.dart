@@ -4,7 +4,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -32,7 +31,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   // TextEditingController nextActionDateController = TextEditingController();
   // TextEditingController remarksController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
   String selectedOptionBottomSheetButton = '';
 
   // late FocusNode nextActionDateFocusNode;
@@ -70,8 +68,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
-        key: formKey,
-        autovalidate: true,
+        key: widget.bloc.addressCustomerNotMetFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -175,8 +172,10 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
-                          onTap: () => openBottomSheet(
-                              context, StringResource.captureImage),
+                          onTap: () => widget.bloc.add(
+                              ClickOpenBottomSheetEvent(
+                                  StringResource.captureImage)),
+
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
@@ -236,34 +235,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     );
   }
 
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case StringResource.captureImage:
-            return CustomCaptureImageBottomSheet(
-                Languages.of(context)!.captureImage);
-          default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-        }
-      },
-    );
-  }
-
   List<Widget> _buildOptionBottomSheetOpenButton(
       List<OptionBottomSheetButtonModel> list, BuildContext context) {
     List<Widget> widgets = [];
@@ -273,10 +244,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          // openBottomSheet(
-          //   context,
-          //   element.stringResourceValue,
-          // );
+          widget.bloc
+              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
         },
         child: Container(
           height: 45,

@@ -583,4 +583,10 @@ class LanguageEn extends Languages {
 
   @override
   String get searchErrorMessage => 'You should fill atleast one field';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get email => 'Email';
 }

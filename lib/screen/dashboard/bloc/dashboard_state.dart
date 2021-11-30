@@ -28,3 +28,5 @@ class NavigateCaseDetailState extends DashboardState {}
 class NavigateSearchState extends DashboardState {}
 
 class HelpState extends DashboardState {}
+
+class ClickPriorityFollowUpState extends DashboardState {}

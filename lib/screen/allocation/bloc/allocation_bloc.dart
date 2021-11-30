@@ -6,8 +6,11 @@ import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -20,7 +23,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int selectedOption = 0;
 
+  BuildRouteModel buildRouteData = BuildRouteModel();
+
   String selectedDistance = StringResource.all;
+
+  SearchModel searchData = SearchModel();
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
@@ -43,45 +50,63 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
       Hive.openBox<OrigoDynamicTable>('testBox4');
 
-    List starCount = [];
+  List starCount = [];
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
       yield AllocationLoadingState();
 
-       List<Result> resultList = [];
+      List<Result> resultList = [];
 
       var connectivityResult = await (Connectivity().checkConnectivity());
-      if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
-      Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
-      offlineDatabaseBox.whenComplete(() {
-        offlineDatabaseBox.then((value) {
-              value.put('priority_caselist', 
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        Map<String, dynamic> priorityListData =
+            await APIRepository.getpriorityCaseList();
+        // Map<String, dynamic> getbuildRouteData =
+        //     await APIRepository.getBuildRouteList('', '', '');
+
+        // Build Route Api
+        Map<String, dynamic> getbuildRouteData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.buildRouteUrl + '5000');
+        buildRouteData = BuildRouteModel.fromJson(
+            getbuildRouteData['data'] as Map<String, dynamic>);
+
+        // =====
+
+        await offlineDatabaseBox.whenComplete(() {
+          offlineDatabaseBox.then((value) {
+            value.put(
+              'priority_caselist',
               OrigoDynamicTable(
                 message: priorityListData['message'],
-                status:priorityListData['status'],
-                result:  priorityListData['result'] as List<dynamic>,
-                ),
-              );
-              for (var element in value.get('priority_caselist')!.result) {
-                  resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-                  if(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase == true) {
-                    starCount.add(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
-                  }
-             }
+                status: priorityListData['status'],
+                result: priorityListData['result'] as List<dynamic>,
+              ),
+            );
+            for (var element in value.get('priority_caselist')!.result) {
+              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
+                  true) {
+                starCount.add(Result.fromJson(jsonDecode(jsonEncode(element)))
+                    .starredCase);
+              }
+            }
+          });
         });
-      });
       } else {
         await offlineDatabaseBox.then((value) {
-            for (var element in value.get('priority_caselist')!.result) {
-                  resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-                  if(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase == true) {
-                    starCount.add(Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
-                  }
-             }
+          for (var element in value.get('priority_caselist')!.result) {
+            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+                true) {
+              starCount.add(
+                  Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            }
           }
-        );
+        });
       }
       // allocationList.addAll([
       //   AllocationListModel(
@@ -131,6 +156,20 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is FilterSelectOptionEvent) {
       yield FilterSelectOptionState();
       selectedOption = 0;
+    }
+    if (event is ClickSearchButtonEvent) {
+      yield SearchScreenLoadedState();
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        print('Please Connect Internet!');
+        yield SearchFailedState('Please Connect Internet!');
+      } else {
+        // Map<String, dynamic> getSearchData =
+        //     await APIRepository.getSearchData(event.searchField);
+        Map<String, dynamic> getSearchData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.searchUrl + 'MOR000800314934');
+        searchData = SearchModel.fromJson(getSearchData['data']);
+        yield SearchScreenSuccessState(searchData);
+      }
     }
   }
 }
