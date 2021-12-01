@@ -65,7 +65,7 @@ class APIRepository {
                 .post(HttpUrl.register, data: requestBodydata);
           }
       }
-      returnValue = {'success': false, 'data': response!.data};
+      returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
       if (e.response != null) {

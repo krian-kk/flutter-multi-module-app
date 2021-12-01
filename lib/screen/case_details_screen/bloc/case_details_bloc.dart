@@ -101,6 +101,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
         if (caseDetailsData['success'] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
+
           // print("Api values => ${jsonData['result']}");
 
           // caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);

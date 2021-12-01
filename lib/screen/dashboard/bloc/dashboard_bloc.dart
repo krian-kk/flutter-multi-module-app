@@ -166,6 +166,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             APIRequestType.GET, HttpUrl.dashboardBrokenPTPUrl + '10');
         brokenPTPData = DashboardBrokenModel.fromJson(getBrokenPTPData['data']);
       }
+      print('Broken PTP Data => ${brokenPTPData.result}');
       yield BrokenPTPState();
     }
 
