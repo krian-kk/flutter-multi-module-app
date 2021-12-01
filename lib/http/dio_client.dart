@@ -35,6 +35,16 @@ class DioClient {
 
   //developer want get from stored while login/register
   static String getTokenFromSharedValues() {
+    //when user login or register or refresh the token = user will get token
+    // developer should try to get the token from
+    //stored palces, like: shared storage or local storage db or from firebase
+    //and should retrun with or without token
+
+    // if(token is expired){
+    //   // token refresh / try to get the new token
+    // }else{
+    //   // old token will be used
+    // }
     return '';
   }
 

@@ -30,3 +30,15 @@ class NavigateSearchState extends DashboardState {}
 class HelpState extends DashboardState {}
 
 class ClickPriorityFollowUpState extends DashboardState {}
+
+class SearchDashboardFailedState extends DashboardState {
+  final String error;
+  SearchDashboardFailedState(this.error);
+}
+
+class SearchDashboardScreenSuccessState extends DashboardState {
+  final SearchModel data;
+  SearchDashboardScreenSuccessState(this.data);
+}
+
+class SearchDashboardScreenLoadedState extends DashboardState {}

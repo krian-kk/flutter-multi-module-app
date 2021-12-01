@@ -13,6 +13,8 @@ import 'package:origa/screen/my_deposists/my_deposists.dart';
 import 'package:origa/screen/my_recipts/my_receipts.dart';
 import 'package:origa/screen/my_visit/my_visits.dart';
 import 'package:origa/screen/priority_follow_up/priority_follow_up_bottomsheet.dart';
+import 'package:origa/screen/search_screen/allocation_search_screen.dart';
+import 'package:origa/screen/search_screen/dashboard_search_screen.dart';
 import 'package:origa/screen/untouched_case/untouched_cases.dart';
 import 'package:origa/screen/yarding_selfrelese/yarding_self_release.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -95,7 +97,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is NavigateSearchState) {
-            Navigator.pushNamed(context, AppRoutes.SearchScreen);
+            searchShowBottomSheet();
+            // Navigator.pushNamed(context, AppRoutes.SearchScreen);
           }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
@@ -692,6 +695,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
               bottom: false,
               child: MyDeposistsBottomSheet(bloc));
         });
+  }
+
+  searchShowBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 1.0,
+                    child: DashboardSearchScreen(
+                      bloc: bloc,
+                    ))));
   }
 
   void yardingSelfReleaseSheet(BuildContext buildContext) {

@@ -12,7 +12,7 @@ import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_screen/bloc/map_event.dart';
 import 'package:origa/screen/map_screen/map_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
-import 'package:origa/screen/search_screen/search_screen.dart';
+import 'package:origa/screen/search_screen/allocation_search_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -511,6 +511,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
             builder: (BuildContext buildContext, StateSetter setState) =>
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 1.0,
-                    child: SearchScreen(bloc: bloc))));
+                    child: AllocationSearchScreen(bloc: bloc))));
   }
 }

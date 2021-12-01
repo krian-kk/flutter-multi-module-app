@@ -23,18 +23,18 @@ class FilterSelectOptionState extends AllocationState {}
 
 class SearchScreenLoadingState extends AllocationState {}
 
-class SearchScreenLoadedState extends AllocationState {}
+class SearchAllocationScreenLoadedState extends AllocationState {}
 
 class SearchScreenNormalState extends AllocationState {}
 
-class SearchScreenSuccessState extends AllocationState {
+class SearchAllocationScreenSuccessState extends AllocationState {
   final SearchModel data;
-  SearchScreenSuccessState(this.data);
+  SearchAllocationScreenSuccessState(this.data);
 }
 
-class SearchFailedState extends AllocationState {
+class SearchAllocationFailedState extends AllocationState {
   final String error;
-  SearchFailedState(this.error);
+  SearchAllocationFailedState(this.error);
 }
 
 class ClickSearchButtonState extends AllocationState {}

@@ -589,4 +589,13 @@ class LanguageTa extends Languages {
 
   @override
   String get email => 'Email';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String get resendOTP => 'Resend OTP?';
+
+  @override
+  String get sendOTP => 'SEND OTP';
 }

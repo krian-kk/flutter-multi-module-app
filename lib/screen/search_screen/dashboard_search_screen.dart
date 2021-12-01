@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -13,14 +14,14 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
-class SearchScreen extends StatefulWidget {
-  final AllocationBloc? bloc;
-  const SearchScreen({Key? key, required this.bloc}) : super(key: key);
+class DashboardSearchScreen extends StatefulWidget {
+  final DashboardBloc? bloc;
+  const DashboardSearchScreen({Key? key, required this.bloc}) : super(key: key);
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _DashboardSearchScreenState createState() => _DashboardSearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _DashboardSearchScreenState extends State<DashboardSearchScreen> {
   bool isLoaded = false;
 
   late TextEditingController accountNoController = TextEditingController();
@@ -42,24 +43,24 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorResource.colorC5C8CE,
-      body: BlocListener<AllocationBloc, AllocationState>(
+      body: BlocListener<DashboardBloc, DashboardState>(
         bloc: widget.bloc,
         listener: (context, state) {
-          if (state is SearchScreenLoadedState) {
+          if (state is SearchDashboardScreenLoadedState) {
             setState(() {
               isLoaded = true;
             });
           }
-          if (state is SearchScreenSuccessState) {
+          if (state is SearchDashboardScreenSuccessState) {
             setState(() => isLoaded = false);
             Navigator.pop(context);
           }
-          if (state is SearchFailedState) {
+          if (state is SearchDashboardFailedState) {
             setState(() => isLoaded = false);
             AppUtils.showToast(state.error, gravity: ToastGravity.CENTER);
           }
         },
-        child: BlocBuilder<AllocationBloc, AllocationState>(
+        child: BlocBuilder<DashboardBloc, DashboardState>(
           bloc: widget.bloc,
           builder: (context, state) {
             if (state is SearchScreenLoadingState) {
@@ -215,8 +216,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   statusController.text.isNotEmpty ||
                   pincodeController.text.isNotEmpty ||
                   customerIDController.text.isNotEmpty) {
-                widget.bloc!
-                    .add(ClickSearchButtonEvent(isStarOnly, 'MOR000800314934'));
+                widget.bloc!.add(ClickDashboardSearchButtonEvent(
+                    isStarOnly, 'MOR000800314934'));
               } else {
                 // AppUtils.showSnackBar(context,
                 //     Languages.of(context)!.searchErrorMessage, true);

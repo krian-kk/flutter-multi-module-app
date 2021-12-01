@@ -396,4 +396,10 @@ abstract class Languages {
   String get mobileNumber;
 
   String get email;
+
+  String get check;
+
+  String get resendOTP;
+
+  String get sendOTP;
 }

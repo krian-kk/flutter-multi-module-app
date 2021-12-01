@@ -96,8 +96,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           margin: const EdgeInsets.all(12),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 6),
-                          child: const CustomText(
-                            'Check',
+                          child: CustomText(
+                            Languages.of(context)!.check,
                             color: ColorResource.colorFFFFFF,
                             lineHeight: 1,
                             fontSize: FontSize.twelve,
@@ -208,7 +208,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 const SizedBox(height: 22),
                                 Center(
                                   child: CustomText(
-                                    'Resend OTP?'.toUpperCase(),
+                                    Languages.of(context)!
+                                        .resendOTP
+                                        .toUpperCase(),
                                     isUnderLine: true,
                                     color: ColorResource.color23375A,
                                     fontSize: FontSize.sixteen,
@@ -220,7 +222,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             ),
                       isSendOTP
                           ? CustomButton(
-                              'SEND OTP'.toUpperCase(),
+                              Languages.of(context)!.sendOTP.toUpperCase(),
                               buttonBackgroundColor: (userNameFirstController
                                           .text.isNotEmpty ||
                                       mobileNumberController.text.isNotEmpty ||
@@ -253,7 +255,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               fontWeight: FontWeight.w600,
                             )
                           : CustomButton(
-                              'SUBMIT'.toUpperCase(),
+                              Languages.of(context)!.submit.toUpperCase(),
                               buttonBackgroundColor:
                                   (pinCodeController.text.isNotEmpty &&
                                           pinCodeController.text.length == 6)

@@ -3,7 +3,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/models/dashboard_broken_model/dashboard_broken_model.dart';
+import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/dashboard_my_receipts_model/dashboard_my_receipts_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
@@ -11,7 +11,7 @@ import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dar
 import 'package:origa/models/dashboard_priority_model/dashboard_priority_model.dart';
 import 'package:origa/models/dashboard_untouched_cases_model/dashboard_untouched_cases_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
-import 'package:origa/widgets/case_list_widget.dart';
+import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
 
@@ -24,7 +24,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   List<CaseListModel> caseList = [];
   String? selectedFilter = 'TODAY';
   DashboardPriorityModel priortyFollowUpData = DashboardPriorityModel();
-  DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
+  DashboardAllModels brokenPTPData = DashboardAllModels();
   DashboardUntouchedCasesModel untouchedCasesData =
       DashboardUntouchedCasesModel();
   DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
@@ -163,10 +163,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getBrokenPTPData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardBrokenPTPUrl + '10');
-        brokenPTPData = DashboardBrokenModel.fromJson(getBrokenPTPData['data']);
+            APIRequestType.GET, HttpUrl.dashboardBrokenPTPUrl + '');
+        brokenPTPData = DashboardAllModels.fromJson(getBrokenPTPData['data']);
       }
-      print('Broken PTP Data => ${brokenPTPData.result}');
       yield BrokenPTPState();
     }
 
@@ -235,7 +234,20 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     if (event is NavigateSearchEvent) {
       yield NavigateSearchState();
     }
-
+    if (event is ClickDashboardSearchButtonEvent) {
+      yield SearchDashboardScreenLoadedState();
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        print('Please Connect Internet!');
+        yield SearchDashboardFailedState('Please Connect Internet!');
+      } else {
+        // Map<String, dynamic> getSearchData =
+        //     await APIRepository.getSearchData(event.searchField);
+        Map<String, dynamic> getSearchData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.searchUrl + 'MOR000800314934');
+        var searchData = SearchModel.fromJson(getSearchData['data']);
+        yield SearchDashboardScreenSuccessState(searchData);
+      }
+    }
     if (event is HelpEvent) {
       yield HelpState();
     }

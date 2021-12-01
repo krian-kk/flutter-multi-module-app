@@ -157,18 +157,18 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield FilterSelectOptionState();
       selectedOption = 0;
     }
-    if (event is ClickSearchButtonEvent) {
-      yield SearchScreenLoadedState();
+    if (event is ClickAllocationSearchButtonEvent) {
+      yield SearchAllocationScreenLoadedState();
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
-        yield SearchFailedState('Please Connect Internet!');
+        yield SearchAllocationFailedState('Please Connect Internet!');
       } else {
         // Map<String, dynamic> getSearchData =
         //     await APIRepository.getSearchData(event.searchField);
         Map<String, dynamic> getSearchData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.searchUrl + 'MOR000800314934');
         searchData = SearchModel.fromJson(getSearchData['data']);
-        yield SearchScreenSuccessState(searchData);
+        yield SearchAllocationScreenSuccessState(searchData);
       }
     }
   }

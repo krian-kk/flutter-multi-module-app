@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/models/priority_case_list.dart';
 
 enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
 

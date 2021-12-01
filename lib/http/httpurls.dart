@@ -24,7 +24,7 @@ class HttpUrl {
   static const String dashboardPriorityProirityFollowUpUrl =
       baseUrl + version + userType + 'case-details/priorityFollowUp?pincode=';
   static const String dashboardBrokenPTPUrl =
-      baseUrl + version + userType + 'case-details/priority?pageNo=1&limit=';
+      baseUrl + version + userType + 'case-details/brokenPtp';
   static const String dashboardUntouchedCasesUrl =
       baseUrl + version + userType + 'case-details/untouchedCases';
   static const String dashboardMyVisitsUrl = baseUrl +

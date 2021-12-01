@@ -588,4 +588,13 @@ class LanguageHi extends Languages {
 
   @override
   String get email => 'Email';
+
+  @override
+  String get check => 'जाँच';
+
+  @override
+  String get resendOTP => 'Resend OTP?';
+
+  @override
+  String get sendOTP => 'SEND OTP';
 }
