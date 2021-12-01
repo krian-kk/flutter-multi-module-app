@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:origa/http/api_repository.dart';
@@ -54,6 +54,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       var connectivityResult = await (Connectivity().checkConnectivity());
       if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      print(APIRepository.getpriorityCaseList());
       Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
       offlineDatabaseBox.whenComplete(() {
         offlineDatabaseBox.then((value) {

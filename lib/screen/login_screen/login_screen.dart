@@ -181,12 +181,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 17,
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
                             AppUtils.showToast('Reset Password');
-                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>DeviceInfo()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>DeviceInfo()));
                           },
-                          child: CustomText(
+                          child: const CustomText(
                             'Reset password via OTP',
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
