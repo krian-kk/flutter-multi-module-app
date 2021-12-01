@@ -30,14 +30,14 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
 class _CustomOtherFeedBackBottomSheetState
     extends State<CustomOtherFeedBackBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    DateTime currentDateTime = DateTime.now();
-
-    dateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // DateTime currentDateTime = DateTime.now();
+    // dateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
   }
 
   @override
@@ -47,127 +47,134 @@ class _CustomOtherFeedBackBottomSheetState
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: true,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CustomText(
-                            Languages.of(context)!.date,
-                            fontSize: FontSize.twelve,
-                            fontWeight: FontWeight.w400,
-                            color: ColorResource.color666666,
-                            fontStyle: FontStyle.normal,
-                          ),
-                          SizedBox(
-                            width: (MediaQuery.of(context).size.width - 44) / 2,
-                            child: CustomReadOnlyTextField(
-                              '',
-                              dateControlller,
-                              isReadOnly: true,
-                              onTapped: () =>
-                                  pickDate(context, dateControlller),
-                              suffixWidget: SvgPicture.asset(
-                                ImageResource.calendar,
-                                fit: BoxFit.scaleDown,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomText(
+                              Languages.of(context)!.date,
+                              fontSize: FontSize.twelve,
+                              fontWeight: FontWeight.w400,
+                              color: ColorResource.color666666,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            SizedBox(
+                              width:
+                                  (MediaQuery.of(context).size.width - 44) / 2,
+                              child: CustomReadOnlyTextField(
+                                '',
+                                dateControlller,
+                                validationRules: const ['required'],
+                                isReadOnly: true,
+                                onTapped: () =>
+                                    pickDate(context, dateControlller),
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 25),
-                      CustomText(
-                        Languages.of(context)!.customerMetCategory,
-                        fontSize: FontSize.fourteen,
-                        fontWeight: FontWeight.w700,
-                        color: ColorResource.color000000,
-                        fontStyle: FontStyle.normal,
-                      ),
-                      const SizedBox(height: 10),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: widget.bloc.expandOtherFeedback.length,
-                        itemBuilder: (context, int index) =>
-                            expandList(widget.bloc.expandOtherFeedback, index),
-                      ),
-                      const SizedBox(height: 25),
-                      GestureDetector(
-                        onTap: () {},
-                        child: SizedBox(
-                          width: double.infinity,
-                          // height: 56,
-                          child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                side: const BorderSide(
-                                  width: 0.5,
-                                  color: ColorResource.colorDADADA,
-                                ),
-                              ),
-                              color: ColorResource.color23375A,
-                              elevation: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(ImageResource.upload),
-                                        const SizedBox(width: 5),
-                                        const CustomText(
-                                          'UPLOAD AUDIO FILE',
-                                          color: ColorResource.colorFFFFFF,
-                                          fontSize: FontSize.sixteen,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w700,
-                                        )
-                                      ],
-                                    ),
-                                    const CustomText(
-                                      'UPTO 5MB',
-                                      lineHeight: 1,
-                                      color: ColorResource.colorFFFFFF,
-                                      fontSize: FontSize.twelve,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w700,
-                                    )
-                                  ],
-                                ),
-                              )),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 15),
-                    ],
+                        const SizedBox(height: 25),
+                        CustomText(
+                          Languages.of(context)!.customerMetCategory,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                          fontStyle: FontStyle.normal,
+                        ),
+                        const SizedBox(height: 10),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: widget.bloc.expandOtherFeedback.length,
+                          itemBuilder: (context, int index) => expandList(
+                              widget.bloc.expandOtherFeedback, index),
+                        ),
+                        const SizedBox(height: 25),
+                        GestureDetector(
+                          onTap: () {},
+                          child: SizedBox(
+                            width: double.infinity,
+                            // height: 56,
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: const BorderSide(
+                                    width: 0.5,
+                                    color: ColorResource.colorDADADA,
+                                  ),
+                                ),
+                                color: ColorResource.color23375A,
+                                elevation: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                              ImageResource.upload),
+                                          const SizedBox(width: 5),
+                                          const CustomText(
+                                            'UPLOAD AUDIO FILE',
+                                            color: ColorResource.colorFFFFFF,
+                                            fontSize: FontSize.sixteen,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ],
+                                      ),
+                                      const CustomText(
+                                        'UPTO 5MB',
+                                        lineHeight: 1,
+                                        color: ColorResource.colorFFFFFF,
+                                        fontSize: FontSize.twelve,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                      )
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -207,7 +214,7 @@ class _CustomOtherFeedBackBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),
@@ -253,41 +260,8 @@ class _CustomOtherFeedBackBottomSheetState
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // _formKey.currentState!.validate();
     });
-  }
-
-  Future pickTime(
-      BuildContext context, TextEditingController controller) async {
-    const initialTime = TimeOfDay(hour: 9, minute: 0);
-    final newTime = await showTimePicker(
-        context: context,
-        initialTime: initialTime,
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-    if (newTime == null) return;
-
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minutes = newTime.minute.toString().padLeft(2, '0');
-    setState(() => controller.text = '$hours:$minutes');
   }
 
   expandList(List<OtherFeedbackExpandModel> expandedList, int index) {

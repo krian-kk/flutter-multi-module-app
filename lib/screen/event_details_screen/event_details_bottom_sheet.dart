@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/event_detail_model.dart';
+import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -55,9 +56,9 @@ class _CustomEventDetailsBottomSheetState
             ),
             Expanded(
                 child: ListView.builder(
-              itemCount: widget.bloc.expandEvent.length,
+              itemCount: widget.bloc.offlineEventDetailsListValue.length,
               itemBuilder: (context, int index) =>
-                  expandList(widget.bloc.expandEvent, index),
+                  expandList(widget.bloc.offlineEventDetailsListValue, index),
             )),
           ],
         ),
@@ -98,7 +99,7 @@ class _CustomEventDetailsBottomSheetState
     );
   }
 
-  expandList(List<EventExpandModel> expandedList, int index) {
+  expandList(List<EventDetailsResultModel> expandedList, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,13 +132,13 @@ class _CustomEventDetailsBottomSheetState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      expandedList[index].date,
+                      expandedList[index].caseId.toString(),
                       fontSize: FontSize.seventeen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                     CustomText(
-                      expandedList[index].header,
+                      expandedList[index].eventType.toString(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
@@ -147,32 +148,51 @@ class _CustomEventDetailsBottomSheetState
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: [
-                  CustomText(
-                    expandedList[index].colloctorID,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
+                  if (expandedList[index].date != null)
+                    CustomText(
+                      expandedList[index].date.toString(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
                   const SizedBox(height: 8),
-                  CustomText(
-                    Languages.of(context)!.remarks.replaceAll('*', ''),
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
-                  CustomText(
-                    expandedList[index].remarks,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
+                  if (expandedList[index].date != null)
+                    CustomText(
+                      expandedList[index].mode.toString(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  const SizedBox(height: 8),
+                  if (expandedList[index].reference != null)
+                    CustomText(
+                      expandedList[index].reference.toString(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  const SizedBox(height: 8),
+                  if (expandedList[index].remarks != null)
+                    CustomText(
+                      Languages.of(context)!.remarks.replaceAll('*', ''),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].remarks != null)
+                    CustomText(
+                      expandedList[index].remarks.toString(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
                 ],
-                onExpansionChanged: (bool status) {
-                  setState(() {
-                    expandedList[index].expanded =
-                        !expandedList[index].expanded;
-                  });
-                },
+                // onExpansionChanged: (bool status) {
+                //   setState(() {
+                //     // expandedList[index].expanded =
+                //     //     !expandedList[index].expanded;
+                //   });
+                // },
               ),
             ),
           ),

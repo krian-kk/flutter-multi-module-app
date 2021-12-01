@@ -30,13 +30,15 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
 
   List<String> disputeDropDownList = ['One', 'Two', 'Three', 'Four'];
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    DateTime currentDateTime = DateTime.now();
-    nextActionDateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    remarksControlller.text = 'ABC';
+    // DateTime currentDateTime = DateTime.now();
+    // nextActionDateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -46,77 +48,84 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: true,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CustomText(
-                            Languages.of(context)!.nextActionTime,
-                            fontSize: FontSize.twelve,
-                            fontWeight: FontWeight.w400,
-                            color: ColorResource.color666666,
-                            fontStyle: FontStyle.normal,
-                          ),
-                          SizedBox(
-                            width: (MediaQuery.of(context).size.width - 46) / 2,
-                            child: CustomReadOnlyTextField(
-                              '',
-                              nextActionDateControlller,
-                              isReadOnly: true,
-                              onTapped: () =>
-                                  pickDate(context, nextActionDateControlller),
-                              suffixWidget: SvgPicture.asset(
-                                ImageResource.calendar,
-                                fit: BoxFit.scaleDown,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomText(
+                              Languages.of(context)!.nextActionTime,
+                              fontSize: FontSize.twelve,
+                              fontWeight: FontWeight.w400,
+                              color: ColorResource.color666666,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            SizedBox(
+                              width:
+                                  (MediaQuery.of(context).size.width - 46) / 2,
+                              child: CustomReadOnlyTextField(
+                                '',
+                                nextActionDateControlller,
+                                validationRules: const ['required'],
+                                isReadOnly: true,
+                                onTapped: () => pickDate(
+                                    context, nextActionDateControlller),
+                                suffixWidget: SvgPicture.asset(
+                                  ImageResource.calendar,
+                                  fit: BoxFit.scaleDown,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 15),
-                      Flexible(
-                        child: CustomDropDownButton(
-                          Languages.of(context)!.disputeReason,
-                          disputeDropDownList,
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 15)
-                    ],
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 15),
+                        Flexible(
+                          child: CustomDropDownButton(
+                            Languages.of(context)!.disputeReason,
+                            disputeDropDownList,
+                          ),
+                        ),
+                        const SizedBox(height: 15)
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -156,7 +165,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),
@@ -202,6 +211,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // _formKey.currentState!.validate();
     });
   }
 }

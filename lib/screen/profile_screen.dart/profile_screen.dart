@@ -161,9 +161,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       CustomText(
-                                        'USER ID  1004',
+                                        bloc.offlineProfileValue.id.toString(),
                                         fontSize: FontSize.eighteen,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w700,
@@ -171,14 +171,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       SizedBox(height: 11),
                                       CustomText(
-                                        'Debashish Patnaik',
+                                        bloc.offlineProfileValue.name
+                                            .toString(),
                                         fontSize: FontSize.sixteen,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        '7002792169',
+                                        bloc.offlineProfileValue.defMobileNumber
+                                            .toString(),
                                         fontSize: FontSize.sixteen,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w700,

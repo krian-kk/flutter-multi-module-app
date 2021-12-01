@@ -13,6 +13,7 @@ import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_scree
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -898,7 +899,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             return CustomOtherFeedBackBottomSheet(
                 Languages.of(context)!.otherFeedBack, bloc);
           case StringResource.eventDetails:
-            return CustomOtherFeedBackBottomSheet(
+            return CustomEventDetailsBottomSheet(
                 Languages.of(context)!.eventDetails, bloc);
           case StringResource.addressDetails:
             return AddressDetailsBottomSheetScreen(bloc: bloc);

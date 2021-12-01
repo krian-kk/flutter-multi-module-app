@@ -29,17 +29,18 @@ class _CustomRemainderBottomSheetState
   TextEditingController nextActionTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    DateTime currentDateTime = DateTime.now();
-    final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-
-    nextActionDateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    nextActionTimeControlller.text = '$hours:$minutes';
-    remarksControlller.text = 'ABC';
+    // DateTime currentDateTime = DateTime.now();
+    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+    // nextActionDateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // nextActionTimeControlller.text = '$hours:$minutes';
+    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -49,105 +50,114 @@ class _CustomRemainderBottomSheetState
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: true,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      Row(
-                        children: [
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.nextActionDate,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  nextActionDateControlller,
-                                  isReadOnly: true,
-                                  onTapped: () => pickDate(
-                                      context, nextActionDateControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.nextActionDate,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    nextActionDateControlller,
+                                    validationRules: const ['required'],
+                                    isReadOnly: true,
+                                    onTapped: () => pickDate(
+                                        context, nextActionDateControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                          const SizedBox(width: 7),
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.nextActionTime,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  nextActionTimeControlller,
-                                  isReadOnly: true,
-                                  onTapped: () => pickTime(
-                                      context, nextActionTimeControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+                              ],
+                            )),
+                            const SizedBox(width: 7),
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.nextActionTime,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    nextActionTimeControlller,
+                                    validationRules: const ['required'],
+                                    isReadOnly: true,
+                                    onTapped: () => pickTime(
+                                        context, nextActionTimeControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 15),
-                    ],
+                              ],
+                            )),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -187,7 +197,7 @@ class _CustomRemainderBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),
@@ -233,6 +243,7 @@ class _CustomRemainderBottomSheetState
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // _formKey.currentState!.validate();
     });
   }
 
@@ -267,6 +278,9 @@ class _CustomRemainderBottomSheetState
 
     final hours = newTime.hour.toString().padLeft(2, '0');
     final minutes = newTime.minute.toString().padLeft(2, '0');
-    setState(() => controller.text = '$hours:$minutes');
+    setState(() {
+      controller.text = '$hours:$minutes';
+      // _formKey.currentState!.validate();
+    });
   }
 }
