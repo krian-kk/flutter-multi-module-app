@@ -43,29 +43,28 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
           onWillPop: () async => false,
           child: Container(
             padding: EdgeInsets.only(top: 16),
-            child:  Scaffold(
-                  floatingActionButton: CustomFloatingActionButton(
-                    onTap: () async {
-                       widget.bloc.add(NavigateSearchEvent());
-                    },
+            child: Scaffold(
+              floatingActionButton: CustomFloatingActionButton(
+                onTap: () async {
+                  widget.bloc.add(NavigateSearchEvent());
+                },
+              ),
+              body: Column(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  BottomSheetAppbar(
+                    title: Languages.of(context)!.untouchedCases,
                   ),
-                  body: Column(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      BottomSheetAppbar(
-                        title: Languages.of(context)!.untouchedCases,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 5),
-                          child: CaseLists.buildListView(widget.bloc),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-             
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5),
+                      child: CaseLists.buildListView(widget.bloc,widget.bloc.untouchedCasesData),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         );
       }),

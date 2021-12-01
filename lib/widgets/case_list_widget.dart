@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/dashboard_model.dart';
+import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/router.dart';
 // import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -15,10 +18,13 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseLists {
-  static Widget buildListView(DashboardBloc bloc) {
+  static Widget buildListView(
+    DashboardBloc bloc, 
+    DashboardAllModel brokenPTPData) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: bloc.caseList.length,
+        // itemCount: brokenPTPData.result!.cases!.length,
+        itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           int listCount = index + 1;
           return Column(
@@ -41,7 +47,7 @@ class CaseLists {
                               color: ColorResource.color101010,
                             ),
                             CustomText(
-                              bloc.caseList.length.toString(),
+                              brokenPTPData.result!.count.toString(),
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,
@@ -60,7 +66,7 @@ class CaseLists {
                               color: ColorResource.color101010,
                             ),
                             CustomText(
-                              '₹ 3,97,553.67',
+                              brokenPTPData.result!.totalAmt.toString(),
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,
@@ -78,7 +84,7 @@ class CaseLists {
                     bloc.add(NavigateCaseDetailEvent());
                   },
                   child: Container(
-                    margin: (index == bloc.caseList.length - 1)
+                    margin: (index == brokenPTPData.result!.cases!.length - 1)
                         ? const EdgeInsets.only(bottom: 70)
                         : EdgeInsets.zero,
                     width: MediaQuery.of(context).size.width,
@@ -104,20 +110,21 @@ class CaseLists {
                         ),
                         Padding(
                           padding:
-                              EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+                              const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                           child: CustomText(
-                            bloc.caseList[index].loanID!,
+                             brokenPTPData.result!.cases![index].caseId!,
                             fontSize: FontSize.twelve,
                             color: ColorResource.color101010,
                           ),
                         ),
-                        Divider(
-                          color: ColorResource.colorDADADA,
-                          thickness: 0.5,
-                        ),
+                        AppUtils.showDivider(),
+                        // Divider(
+                        //   color: ColorResource.colorDADADA,
+                        //   thickness: 0.5,
+                        // ),
                         // const SizedBox(height: 6.0,),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(23, 0, 10, 0),
+                          padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -125,7 +132,7 @@ class CaseLists {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomText(
-                                    bloc.caseList[index].amount!,
+                                     brokenPTPData.result!.cases![index].due.toString(),
                                     fontSize: FontSize.eighteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w700,
@@ -134,7 +141,7 @@ class CaseLists {
                                     height: 3.0,
                                   ),
                                   CustomText(
-                                    bloc.caseList[index].customerName!,
+                                     brokenPTPData.result!.cases![index].cust!,
                                     fontSize: FontSize.sixteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w400,
@@ -142,8 +149,8 @@ class CaseLists {
                                 ],
                               ),
                               const Spacer(),
-                              bloc.caseList[index].newlyAdded!
-                                  ? Container(
+                               if(brokenPTPData.result!.cases![index].collSubStatus == 'new')
+                                  Container(
                                       width: 55,
                                       height: 19,
                                       // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
@@ -159,8 +166,7 @@ class CaseLists {
                                           lineHeight: 1,
                                         ),
                                       ),
-                                    )
-                                  : SizedBox(),
+                                    ),
                             ],
                           ),
                         ),
@@ -175,7 +181,7 @@ class CaseLists {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: CustomText(
-                              bloc.caseList[index].address!,
+                              brokenPTPData.result!.cases![index].address![0].value!,
                               color: ColorResource.color484848,
                               fontSize: FontSize.fourteen,
                             ),
@@ -208,7 +214,7 @@ class CaseLists {
                               Row(
                                 children: [
                                   CustomText(
-                                    bloc.caseList[index].date!,
+                                    brokenPTPData.result!.cases![index].followUpDate!,
                                     fontSize: FontSize.fourteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w700,

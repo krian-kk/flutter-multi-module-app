@@ -235,10 +235,10 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  if(widget.loginType == 'fos')
-                                  AllocationScreen(),
-                                  if(widget.loginType == 'tc')
-                                  const AllocationTelecallerScreen(),
+                                  if (widget.loginType == 'fos')
+                                    AllocationScreen(),
+                                  if (widget.loginType == 'tc')
+                                    const AllocationTelecallerScreen(),
                                   DashboardScreen(widget.loginType),
                                   const ProfileScreen(),
                                 ]),

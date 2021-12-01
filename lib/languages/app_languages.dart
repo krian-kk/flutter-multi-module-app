@@ -392,4 +392,8 @@ abstract class Languages {
   String get startCalling;
 
   String get searchErrorMessage;
+
+  String get mobileNumber;
+
+  String get email;
 }

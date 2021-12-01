@@ -24,4 +24,3 @@ class NavigateCaseDetailEvent extends DashboardEvent {}
 class NavigateSearchEvent extends DashboardEvent {}
 
 class HelpEvent extends DashboardEvent {}
-

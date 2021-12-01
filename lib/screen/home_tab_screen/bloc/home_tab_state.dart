@@ -7,6 +7,7 @@ abstract class HomeTabState extends BaseEquatable {}
 class HomeTabInitialState extends HomeTabState {}
 
 class HomeTabLoadingState extends HomeTabState {}
+
 class HomeTabLoadedState extends HomeTabState {}
 // class NavigateAllocationState extends HomeTabState {}
 // class NavigateHomeTabState extends HomeTabState {}

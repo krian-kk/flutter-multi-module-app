@@ -4,21 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
+import 'package:origa/router.dart';
+import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
+import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
+import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
+import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
+import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
+import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
+import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
+import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
+import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   final bool isAdderss;
@@ -45,17 +54,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
         bloc: bloc,
         listener: (context, state) {
-          if (state is ClickAddressBottomSheetState) {
-            addressDetailsShowBottomSheet(context);
+          if (state is ClickMainAddressBottomSheetState) {
+            Navigator.pop(context);
+            addressBottomSheet(context, bloc, state.i);
           }
-          if (state is ClickCallBottomSheetState) {
-            callDetailsShowBottomSheet(context);
+          if (state is ClickMainCallBottomSheetState) {
+            Navigator.pop(context);
+            phoneBottomSheet(context, bloc, state.i);
           }
-          if (state is ClickPhoneDetailState) {
-            phoneBottomSheet(context);
+          if (state is ClickOpenBottomSheetState) {
+            openBottomSheet(context, state.title);
           }
-          if (state is ClickCallCustomerState) {
-            callCustomerBottomSheet(context);
+          if (state is CallCaseDetailsState) {
+            Navigator.popAndPushNamed(context, AppRoutes.caseDetailsScreen,
+                arguments: true);
           }
         },
         child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -108,12 +120,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       Align(
                                         alignment: Alignment.bottomCenter,
                                         child: CustomLoanUserDetails(
-                                          userName: bloc.caseDetailsResult.result?.caseDetails?.cust ??
+                                          userName: bloc.offlineCaseDetailsValue
+                                                  .caseDetails?.cust ??
                                               '',
-                                          userId: bloc.caseDetailsResult.result?.caseDetails?.accNo ??
+                                          userId: bloc.offlineCaseDetailsValue
+                                                  .caseDetails?.accNo ??
                                               '',
                                           userAmount: bloc
-                                                  .caseDetailsResult.result?.caseDetails
+                                                  .offlineCaseDetailsValue
+                                                  .caseDetails
                                                   ?.due
                                                   ?.toDouble() ??
                                               0,
@@ -122,7 +137,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           marginTop: 10,
                                         ),
                                       ),
-                                      if (bloc.caseDetailsResult.result?.caseDetails?.collSubStatus ==
+                                      if (bloc.offlineCaseDetailsValue
+                                              .caseDetails?.collSubStatus ==
                                           'new')
                                         Container(
                                           margin:
@@ -271,9 +287,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 const SizedBox(height: 9),
                                                 CustomText(
                                                   bloc
-                                                          .caseDetailsResult
-                                                          .result
-                                                          ?.caseDetails
+                                                          .offlineCaseDetailsValue
+                                                          .caseDetails
                                                           ?.repaymentInfo
                                                           ?.benefeciaryAcc_Name ??
                                                       '',
@@ -286,9 +301,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 const SizedBox(height: 7),
                                                 CustomText(
                                                   bloc
-                                                          .caseDetailsResult
-                                                          .result
-                                                          ?.caseDetails
+                                                          .offlineCaseDetailsValue
+                                                          .caseDetails
                                                           ?.repaymentInfo
                                                           ?.repaymentIfscCode ??
                                                       '',
@@ -322,9 +336,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               const SizedBox(height: 4),
                                               CustomText(
                                                 bloc
-                                                        .caseDetailsResult
-                                                        .result
-                                                        ?.caseDetails
+                                                        .offlineCaseDetailsValue
+                                                        .caseDetails
                                                         ?.repaymentInfo
                                                         ?.repayBankName ??
                                                     '',
@@ -347,9 +360,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               const SizedBox(height: 4),
                                               CustomText(
                                                 bloc
-                                                        .caseDetailsResult
-                                                        .result
-                                                        ?.caseDetails
+                                                        .offlineCaseDetailsValue
+                                                        .caseDetails
                                                         ?.repaymentInfo
                                                         ?.refLender ??
                                                     '',
@@ -372,9 +384,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               const SizedBox(height: 4),
                                               CustomText(
                                                 bloc
-                                                        .caseDetailsResult
-                                                        .result
-                                                        ?.caseDetails
+                                                        .offlineCaseDetailsValue
+                                                        .caseDetails
                                                         ?.repaymentInfo
                                                         ?.ref_url ??
                                                     '',
@@ -385,67 +396,147 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color333333,
                                               ),
                                               const SizedBox(height: 12),
+                                              // Row(
+                                              //   mainAxisAlignment:
+                                              //       MainAxisAlignment
+                                              //           .spaceBetween,
+                                              //   children: [
+                                              //     Expanded(
+                                              //       flex: 2,
+                                              //       child: CustomButton(
+                                              //         StringResource.sendSms
+                                              //             .toUpperCase(),
+                                              //         fontSize: FontSize.twelve,
+                                              //         borderColor: ColorResource
+                                              //             .color23375A,
+                                              //         onTap: () async {
+                                              //           const uri =
+                                              //               'sms:+39 348 060 888?body=hello%20there';
+                                              //           if (await canLaunch(
+                                              //               uri)) {
+                                              //             await launch(uri);
+                                              //           } else {
+                                              //             const uri =
+                                              //                 'sms:0039-222-060-888?body=hello%20there';
+                                              //             if (await canLaunch(
+                                              //                 uri)) {
+                                              //               await launch(uri);
+                                              //             } else {
+                                              //               throw 'Could not launch $uri';
+                                              //             }
+                                              //           }
+                                              //         },
+                                              //         buttonBackgroundColor:
+                                              //             ColorResource
+                                              //                 .color23375A,
+                                              //       ),
+                                              //     ),
+                                              //     const SizedBox(width: 5),
+                                              //     Expanded(
+                                              //       flex: 3,
+                                              //       child: CustomButton(
+                                              //         StringResource
+                                              //             .sendWhatsapp
+                                              //             .toUpperCase(),
+                                              //         fontSize: FontSize.twelve,
+                                              //         borderColor: ColorResource
+                                              //             .color23375A,
+                                              //         isLeading: true,
+                                              //         trailingWidget:
+                                              //             SvgPicture.asset(
+                                              //                 ImageResource
+                                              //                     .whatsApp),
+                                              //         onTap: () async {
+                                              //           const url =
+                                              //               "https://wa.me/?text=Origa";
+
+                                              //           await launch(url);
+                                              //         },
+                                              //         buttonBackgroundColor:
+                                              //             ColorResource
+                                              //                 .color23375A,
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
+
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: CustomButton(
-                                                      StringResource.sendSms
-                                                          .toUpperCase(),
-                                                      fontSize: FontSize.twelve,
-                                                      borderColor: ColorResource
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      color: ColorResource
                                                           .color23375A,
-                                                      onTap: () async {
-                                                        const uri =
-                                                            'sms:+39 348 060 888?body=hello%20there';
-                                                        if (await canLaunch(
-                                                            uri)) {
-                                                          await launch(uri);
-                                                        } else {
-                                                          const uri =
-                                                              'sms:0039-222-060-888?body=hello%20there';
-                                                          if (await canLaunch(
-                                                              uri)) {
-                                                            await launch(uri);
-                                                          } else {
-                                                            throw 'Could not launch $uri';
-                                                          }
-                                                        }
-                                                      },
-                                                      buttonBackgroundColor:
-                                                          ColorResource
-                                                              .color23375A,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                          color: ColorResource
+                                                              .colorECECEC,
+                                                          width: 1.0),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            ImageResource
+                                                                .whatsApp),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        CustomText(
+                                                            StringResource
+                                                                .sendSms
+                                                                .toUpperCase(),
+                                                            lineHeight: 1.0,
+                                                            color: ColorResource
+                                                                .colorffffff),
+                                                      ],
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 5),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: CustomButton(
-                                                      StringResource
-                                                          .sendWhatsapp
-                                                          .toUpperCase(),
-                                                      fontSize: FontSize.twelve,
-                                                      borderColor: ColorResource
+                                                  const SizedBox(width: 10),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      color: ColorResource
                                                           .color23375A,
-                                                      isLeading: true,
-                                                      trailingWidget:
-                                                          SvgPicture.asset(
-                                                              ImageResource
-                                                                  .whatsApp),
-                                                      onTap: () async {
-                                                        const url =
-                                                            "https://wa.me/?text=Origa";
-
-                                                        await launch(url);
-                                                      },
-                                                      buttonBackgroundColor:
-                                                          ColorResource
-                                                              .color23375A,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                          color: ColorResource
+                                                              .colorECECEC,
+                                                          width: 1.0),
                                                     ),
-                                                  ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            ImageResource
+                                                                .whatsApp),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        CustomText(
+                                                          StringResource
+                                                              .sendWhatsapp
+                                                              .toUpperCase(),
+                                                          lineHeight: 1.0,
+                                                          color: ColorResource
+                                                              .colorffffff,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               )
                                             ],
@@ -463,7 +554,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                   CustomText(
-                                    bloc.caseDetailsResult.result?.caseDetails
+                                    bloc.offlineCaseDetailsValue.caseDetails
                                             ?.cust
                                             ?.toUpperCase() ??
                                         '', //--------------- doubt -----------
@@ -477,142 +568,146 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           const NeverScrollableScrollPhysics(),
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
-                                      itemCount: bloc.caseDetailsResult.result
-                                              ?.otherLoanDetails?.length ??
+                                      itemCount: bloc.offlineCaseDetailsValue
+                                              .otherLoanDetails?.length ??
                                           0,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: ColorResource
-                                                          .color000000
-                                                          .withOpacity(.25),
-                                                      blurRadius: 2.0,
-                                                      offset: const Offset(
-                                                          1.0, 1.0),
-                                                    ),
-                                                  ],
-                                                  border: Border.all(
-                                                      color: ColorResource
-                                                          .colorDADADA,
-                                                      width: 0.5),
-                                                  color:
-                                                      ColorResource.colorF7F8FA,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20,
-                                                        vertical: 12),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    CustomText(
-                                                      Languages.of(context)!
-                                                          .accountNo,
-                                                      color: ColorResource
-                                                          .color666666,
-                                                      fontSize: FontSize.twelve,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    CustomText(
-                                                      bloc
-                                                          .caseDetailsResult
-                                                          .result!
-                                                          .otherLoanDetails![
-                                                              index]
-                                                          .cust!
-                                                          .toUpperCase(), // ----------- doubt ---------------
-                                                      color: ColorResource
-                                                          .color333333,
-                                                      fontSize:
-                                                          FontSize.fourteen,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                    const SizedBox(height: 11),
-                                                    CustomText(
-                                                      Languages.of(context)!
-                                                          .overdueAmount,
-                                                      color: ColorResource
-                                                          .color666666,
-                                                      fontSize: FontSize.twelve,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        CustomText(
-                                                          bloc
-                                                              .caseDetailsResult
-                                                              .result!
-                                                              .otherLoanDetails![
-                                                                  index]
-                                                              .due
-                                                              .toString(),
-                                                          color: ColorResource
-                                                              .color333333,
-                                                          fontSize:
-                                                              FontSize.fourteen,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            CustomText(
-                                                              Languages.of(
-                                                                      context)!
-                                                                  .view,
-                                                              color: ColorResource
-                                                                  .color23375A,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            SvgPicture.asset(
-                                                                ImageResource
-                                                                    .forwardArrow)
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ],
+                                            const SizedBox(height: 10),
+                                            GestureDetector(
+                                              onTap: () => bloc
+                                                  .add(ClickCaseDetailsEvent()),
+                                              child: Container(
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: ColorResource
+                                                            .color000000
+                                                            .withOpacity(.25),
+                                                        blurRadius: 2.0,
+                                                        offset: const Offset(
+                                                            1.0, 1.0),
+                                                      ),
+                                                    ],
+                                                    border: Border.all(
+                                                        color: ColorResource
+                                                            .colorDADADA,
+                                                        width: 0.5),
+                                                    color: ColorResource
+                                                        .colorF7F8FA,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10.0))),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 12),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      CustomText(
+                                                        Languages.of(context)!
+                                                            .accountNo,
+                                                        color: ColorResource
+                                                            .color666666,
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      CustomText(
+                                                        bloc
+                                                            .offlineCaseDetailsValue
+                                                            .otherLoanDetails![
+                                                                index]
+                                                            .cust!
+                                                            .toUpperCase(), // ----------- doubt ---------------
+                                                        color: ColorResource
+                                                            .color333333,
+                                                        fontSize:
+                                                            FontSize.fourteen,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 11),
+                                                      CustomText(
+                                                        Languages.of(context)!
+                                                            .overdueAmount,
+                                                        color: ColorResource
+                                                            .color666666,
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          CustomText(
+                                                            bloc
+                                                                .offlineCaseDetailsValue
+                                                                .otherLoanDetails![
+                                                                    index]
+                                                                .due
+                                                                .toString(),
+                                                            color: ColorResource
+                                                                .color333333,
+                                                            fontSize: FontSize
+                                                                .fourteen,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              CustomText(
+                                                                Languages.of(
+                                                                        context)!
+                                                                    .view,
+                                                                color: ColorResource
+                                                                    .color23375A,
+                                                                fontSize: FontSize
+                                                                    .fourteen,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 10),
+                                                              SvgPicture.asset(
+                                                                  ImageResource
+                                                                      .forwardArrow)
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -645,8 +740,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                             children: [
                               widget.isAdderss
                                   ? GestureDetector(
-                                      onTap: () => bloc
-                                          .add(ClickAddressBottomSheetEvent()),
+                                      onTap: () => bloc.add(
+                                          ClickOpenBottomSheetEvent(
+                                              StringResource.addressDetails)),
                                       child: Container(
                                         height: 50,
                                         width:
@@ -690,8 +786,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   : const SizedBox(),
                               SizedBox(width: widget.isAdderss ? 20 : 0),
                               GestureDetector(
-                                onTap: () =>
-                                    bloc.add(ClickCallBottomSheetEvent()),
+                                onTap: () => bloc.add(ClickOpenBottomSheetEvent(
+                                    StringResource.callDetails)),
                                 child: Container(
                                   height: 50,
                                   width:
@@ -742,70 +838,99 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     );
   }
 
-  void addressDetailsShowBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        enableDrag: false,
-        isDismissible: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                AddressDetailsBottomSheetScreen(bloc: bloc)));
-  }
-
-  void callDetailsShowBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        enableDrag: false,
-        isDismissible: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                CallDetailsBottomSheetScreen(bloc: bloc)));
-  }
-
-  void phoneBottomSheet(BuildContext buildContext) {
+  void phoneBottomSheet(
+      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return PhoneScreen(bloc: bloc);
-          return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.89,
-              child: PhoneScreen(bloc: bloc));
+          return PhoneScreen(bloc: bloc, index: i);
+          // return SizedBox(
+          //     height: MediaQuery.of(context).size.height * 0.89,
+          //     child: PhoneScreen(bloc: bloc));
         });
   }
 
-  callCustomerBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-        enableDrag: false,
+  void addressBottomSheet(
+      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+    showCupertinoModalPopup(
         context: buildContext,
-        isScrollControlled: true,
-        isDismissible: false,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
         builder: (BuildContext context) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.89,
-            child: CallCustomerBottomSheet(blocObject: bloc),
-          );
+              height: MediaQuery.of(context).size.height * 0.89,
+              child: AddressScreen(bloc: bloc, index: i));
         });
+  }
+
+  openBottomSheet(BuildContext buildContext, String cardTitle) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        switch (cardTitle) {
+          case StringResource.ptp:
+            return CustomPtpBottomSheet(Languages.of(context)!.ptp);
+          case StringResource.rtp:
+            return CustomRtpBottomSheet(Languages.of(context)!.rtp);
+          case StringResource.dispute:
+            return CustomDisputeBottomSheet(Languages.of(context)!.dispute);
+          case StringResource.remainder:
+            return CustomRemainderBottomSheet(
+                Languages.of(context)!.remainderCb);
+          case StringResource.collections:
+            return CustomCollectionsBottomSheet(
+                Languages.of(context)!.collections);
+          case StringResource.ots:
+            return CustomOtsBottomSheet(Languages.of(context)!.ots);
+          case StringResource.repo:
+            return CustomRepoBottomSheet(Languages.of(context)!.repo);
+          case StringResource.captureImage:
+            return CustomCaptureImageBottomSheet(
+                Languages.of(context)!.captureImage);
+          case StringResource.otherFeedback:
+            return CustomOtherFeedBackBottomSheet(
+                Languages.of(context)!.otherFeedBack, bloc);
+          case StringResource.eventDetails:
+            return CustomOtherFeedBackBottomSheet(
+                Languages.of(context)!.eventDetails, bloc);
+          case StringResource.addressDetails:
+            return AddressDetailsBottomSheetScreen(bloc: bloc);
+          case StringResource.callDetails:
+            return CallDetailsBottomSheetScreen(bloc: bloc);
+          case StringResource.addNewContact:
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                        title:
+                            Languages.of(context)!.addNewContact.toUpperCase(),
+                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    const Expanded(
+                        child: Center(child: CircularProgressIndicator())),
+                  ],
+                ));
+          default:
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    BottomSheetAppbar(
+                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    Expanded(child: Center(child: CircularProgressIndicator())),
+                  ],
+                ));
+        }
+      },
+    );
   }
 }

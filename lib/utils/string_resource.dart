@@ -96,4 +96,5 @@ class StringResource {
   static const String call = 'call';
   static const String viewMap = 'VIEW MAP';
   static const String autoCalling = 'Auto Calling';
+  static const String eventDetails = 'EVENT DETAILS';
 }

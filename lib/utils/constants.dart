@@ -1,7 +1,7 @@
 class Constants {
   static const String inr = '₹ ';
   static const String bioMetricLogin = 'BioMetricLogin';
-static const String tenant = 'RBLPENCILTON';
+  static const String tenant = 'RBLPENCILTON';
   static const String mpin = 'mpin';
 
   static const String home = 'home';

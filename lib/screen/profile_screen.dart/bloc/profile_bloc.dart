@@ -1,7 +1,14 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
+import 'package:origa/models/profile_api_result_model/result.dart';
+import 'package:origa/models/search_model/search_model.dart';
+import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/preference_helper.dart';
 
@@ -10,6 +17,11 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
+
+  // For Offline Purpose
+  ProfileResultModel offlineProfileValue = ProfileResultModel();
+  Future<Box<OrigoMapDynamicTable>> profileHiveBox =
+      Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
 
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
@@ -20,26 +32,34 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
 
-      // profileNavigationList.addAll([
-      //   ProfileNavigation(
-      //       title: Languages.of(event.context)!.notification,
-      //       count: true,
-      //       onTap: () {
-      //         add(ClickNotificationEvent());
-      //       }),
-      //   ProfileNavigation(
-      //       title: Languages.of(event.context)!.selectLanguage,
-      //       count: false,
-      //       onTap: () {
-      //         add(ClickChangeLaunguageEvent());
-      //       }),
-      //   ProfileNavigation(
-      //       title: Languages.of(event.context)!.changePassword,
-      //       count: false,
-      //       onTap: () {
-      //         add(ClickChangePassswordEvent());
-      //       })
-      // ]);
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        print('Please Connect Internet!');
+      } else {
+        // Map<String, dynamic> getEventDetailsData =
+        //     await APIRepository.getProfileData('7988315676');
+        Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.profileUrl + '7988315676');
+
+        if (getProfileData['success'] == true) {
+          Map<String, dynamic> jsonData = getProfileData['data'];
+
+          profileHiveBox.then((value) => value.put(
+              'EventDetails1',
+              OrigoMapDynamicTable(
+                status: jsonData['status'],
+                message: jsonData['message'],
+                result: jsonData['result'][0],
+              )));
+        } else {
+          // message = weatherData["data"];
+          // yield SevenDaysFailureState();
+        }
+      }
+      await profileHiveBox.then(
+        (value) => offlineProfileValue = ProfileResultModel.fromJson(
+            Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
+      );
+
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
           NotificationChildModel('Mr. Debashish Sr. Manager',

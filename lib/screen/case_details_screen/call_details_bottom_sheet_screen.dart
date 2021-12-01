@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -41,10 +38,10 @@ class _CallDetailsBottomSheetScreenState
             padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
             child: CustomLoanUserDetails(
               userName:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.cust ?? '',
+                  widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
               userId:
-                  widget.bloc.caseDetailsResult.result?.caseDetails?.accNo ?? '',
-              userAmount: widget.bloc.caseDetailsResult.result?.caseDetails?.due
+                  widget.bloc.offlineCaseDetailsValue.caseDetails?.accNo ?? '',
+              userAmount: widget.bloc.offlineCaseDetailsValue.caseDetails?.due
                       ?.toDouble() ??
                   0,
             ),
@@ -60,7 +57,7 @@ class _CallDetailsBottomSheetScreenState
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: widget.bloc.caseDetailsResult.result?.callDetails
+                      itemCount: widget.bloc.offlineCaseDetailsValue.callDetails
                               ?.length ??
                           0,
                       itemBuilder: (context, i) {
@@ -70,16 +67,20 @@ class _CallDetailsBottomSheetScreenState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                (i + 1 > 9)
-                                    ? Languages.of(context)!
-                                            .phoneNumber
-                                            .toUpperCase() +
-                                        '${i + 1}'
-                                    : Languages.of(context)!
-                                            .phoneNumber
-                                            .toUpperCase() +
-                                        '0'
-                                            '${i + 1}',
+                                widget.bloc.offlineCaseDetailsValue
+                                    .callDetails![i]['cType']
+                                    .toString()
+                                    .toUpperCase(),
+                                // (i + 1 > 9)
+                                //     ? Languages.of(context)!
+                                //             .phoneNumber
+                                //             .toUpperCase() +
+                                //         '${i + 1}'
+                                //     : Languages.of(context)!
+                                //             .phoneNumber
+                                //             .toUpperCase() +
+                                //         '0'
+                                //             '${i + 1}',
                                 fontSize: FontSize.fourteen,
                                 fontWeight: FontWeight.w700,
                                 fontStyle: FontStyle.normal,
@@ -115,7 +116,8 @@ class _CallDetailsBottomSheetScreenState
                                                 CustomText(
                                                   widget
                                                       .bloc
-                                                      .caseDetailsResult.result?.callDetails![i]['value'],
+                                                      .offlineCaseDetailsValue
+                                                      .callDetails![i]['value'],
                                                   fontSize: FontSize.fourteen,
                                                   fontWeight: FontWeight.w400,
                                                   fontStyle: FontStyle.normal,
@@ -190,9 +192,9 @@ class _CallDetailsBottomSheetScreenState
                                           const SizedBox(width: 5),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.pop(context);
-                                              widget.bloc
-                                                  .add(ClickPhoneDetailEvent());
+                                              widget.bloc.add(
+                                                  ClickMainCallBottomSheetEvent(
+                                                      i));
                                             },
                                             child: Row(
                                               mainAxisAlignment:

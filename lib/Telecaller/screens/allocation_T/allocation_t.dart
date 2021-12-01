@@ -46,8 +46,8 @@ class _AllocationTelecallerScreenState
         }
 
         if (state is NavigateCaseDetailTState) {
-           Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                        arguments: false);
+          Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+              arguments: false);
         }
       },
       child: BlocBuilder<AllocationTBloc, AllocationTState>(

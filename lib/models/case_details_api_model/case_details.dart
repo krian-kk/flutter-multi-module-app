@@ -69,7 +69,7 @@ class CaseDetails {
         repaymentInfo: json['repaymentInfo'] == null
             ? null
             : RepaymentInfo.fromJson(
-                json['repaymentInfo'] as Map<String, dynamic>),
+                Map<String, dynamic>.from(json['repaymentInfo'])),
         caseId: json['caseId'] as String?,
       );
 

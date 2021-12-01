@@ -4,7 +4,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -25,7 +24,6 @@ class AddressInvalidScreen extends StatefulWidget {
 }
 
 class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
-  final formKey = GlobalKey<FormState>();
   String selectedOptionBottomSheetButton = '';
 
   @override
@@ -53,8 +51,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
-        key: formKey,
-        autovalidate: true,
+        key: widget.bloc.addressInvalidFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -114,8 +111,9 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         borderColor: ColorResource.colorBEC4CF,
                         buttonBackgroundColor: ColorResource.colorBEC4CF,
                         isLeading: true,
-                        onTap: () => openBottomSheet(
-                            context, StringResource.captureImage),
+                        onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+                            StringResource.captureImage)),
+
                         // onTap: () => pickImage(source, cameraDialogueContext)
                         trailingWidget:
                             SvgPicture.asset(ImageResource.captureImage),
@@ -129,50 +127,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           context,
                         ),
                       ),
-                      // Wrap(
-                      //   spacing: 15,
-                      //   children: [
-                      //     SizedBox(
-                      //       width: 179,
-                      //       child: CustomButton(
-                      //         StringResource.addNewContact.toUpperCase(),
-                      //         buttonBackgroundColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         textColor: ColorResource.colorFFFFFF,
-                      //         fontSize: FontSize.twelve,
-                      //         fontWeight: FontWeight.w700,
-                      //         cardShape: 75,
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 157,
-                      //       child: CustomButton(
-                      //         Languages.of(context)!.repo.toUpperCase(),
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //         borderColor: ColorResource.color23375A,
-                      //         textColor: ColorResource.color23375A,
-                      //         fontSize: FontSize.twelve,
-                      //         fontWeight: FontWeight.w700,
-                      //         cardShape: 75,
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 165,
-                      //       child: CustomButton(
-                      //         Languages.of(context)!
-                      //             .otherFeedBack
-                      //             .toUpperCase(),
-                      //         // onTap: () => openBottomSheet(
-                      //         //     context, StringResource.otherFeedback),
-                      //         cardShape: 75,
-                      //         fontSize: FontSize.twelve,
-                      //         textColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
+
                       const SizedBox(height: 120)
                     ],
                   ),
@@ -194,10 +149,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          // openBottomSheet(
-          //   context,
-          //   element.stringResourceValue,
-          // );
+          widget.bloc
+              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
         },
         child: Container(
           height: 45,
@@ -224,34 +177,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
       ));
     }
     return widgets;
-  }
-
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case StringResource.captureImage:
-            return CustomCaptureImageBottomSheet(
-                Languages.of(context)!.captureImage);
-          default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-        }
-      },
-    );
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {

@@ -13,3 +13,9 @@ class NavigateSearchPageEvent extends AllocationEvent {}
 class NavigateCaseDetailEvent extends AllocationEvent {}
 
 class FilterSelectOptionEvent extends AllocationEvent {}
+
+class ClickSearchButtonEvent extends AllocationEvent {
+  final bool isStaredOnly;
+  final String searchField;
+  ClickSearchButtonEvent(this.isStaredOnly, this.searchField);
+}

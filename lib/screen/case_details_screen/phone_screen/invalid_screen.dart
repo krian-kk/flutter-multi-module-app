@@ -3,11 +3,9 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhonenInvalidScreen extends StatefulWidget {
@@ -23,7 +21,6 @@ class PhonenInvalidScreen extends StatefulWidget {
 }
 
 class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
@@ -42,8 +39,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
-        key: formKey,
-        autovalidate: true,
+        key: widget.bloc.phoneInvalidFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -145,10 +141,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          openBottomSheet(
-            context,
-            element.stringResourceValue,
-          );
+          widget.bloc
+              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
         },
         child: Container(
           height: 45,
@@ -175,48 +169,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
       ));
     }
     return widgets;
-  }
-
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case StringResource.otherFeedback:
-            return CustomOtherFeedBackBottomSheet(
-                Languages.of(context)!.otherFeedBack, widget.bloc);
-          case StringResource.addNewContact:
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    BottomSheetAppbar(
-                        title:
-                            Languages.of(context)!.addNewContact.toUpperCase(),
-                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    const Expanded(
-                        child: Center(child: CircularProgressIndicator())),
-                  ],
-                ));
-          default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-        }
-      },
-    );
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {

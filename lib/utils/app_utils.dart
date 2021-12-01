@@ -65,10 +65,10 @@ class AppUtils {
         fontSize: 14.0);
   }
 
-  static showDivider(){
-   return Divider(
+  static showDivider() {
+    return Divider(
       color: ColorResource.colorDADADA,
-       thickness: 0.5,
-       );
+      thickness: 0.5,
+    );
   }
 }
