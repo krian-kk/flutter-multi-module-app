@@ -35,6 +35,8 @@ class _CustomCollectionsBottomSheetState
 
   List<String> amountCollectionDropDownList = ['One', 'Two', 'Three', 'Four'];
 
+  String amountCollectionDropDownValue = 'One';
+
   final _formKey = GlobalKey<FormState>();
 
   FocusNode chequeFocusNode = FocusNode();
@@ -96,9 +98,13 @@ class _CustomCollectionsBottomSheetState
                               child: CustomDropDownButton(
                                 Languages.of(context)!.amountCollected,
                                 amountCollectionDropDownList,
-                                // onChanged: (newValue) {
-                                //   print(newValue);
-                                // },
+                                selectedValue: amountCollectionDropDownValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    amountCollectionDropDownValue =
+                                        newValue.toString();
+                                  });
+                                },
                                 icon: SvgPicture.asset(
                                     ImageResource.dropDownArrow),
                               ),
@@ -229,7 +235,12 @@ class _CustomCollectionsBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w700,
-                    onTap: () => _formKey.currentState!.validate(),
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        print(amountCollectionDropDownValue);
+                        print(dateControlller.text);
+                      }
+                    },
                     cardShape: 5,
                   ),
                 ),

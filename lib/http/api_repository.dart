@@ -60,7 +60,7 @@ class APIRepository {
         default:
           {
             response = await DioClient.dioConfig()
-                .post(HttpUrl.register, data: requestBodydata);
+                .post(urlString, data: requestBodydata);
           }
       }
       returnValue = {'success': true, 'data': response!.data};

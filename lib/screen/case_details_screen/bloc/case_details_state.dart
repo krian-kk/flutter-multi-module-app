@@ -23,7 +23,7 @@ class ClickAddAddressState extends CaseDetailsState {}
 
 class ClickViewMapState extends CaseDetailsState {}
 
-class ClickCallCustomerState extends CaseDetailsState {}
+// class ClickCallCustomerState extends CaseDetailsState {}
 
 class CallCaseDetailsState extends CaseDetailsState {}
 

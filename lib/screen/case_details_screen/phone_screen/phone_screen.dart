@@ -124,12 +124,16 @@ class _PhoneScreenState extends State<PhoneScreen>
                         children: [
                           Expanded(
                               child: GestureDetector(
-                            onTap: () {
-                              widget.bloc.add(ClickCallCustomerEvent());
-                            },
+                            //================================================
+                            // onTap: () {
+                            //   widget.bloc.add(ClickCallCustomerEvent());
+                            // },
                             child: SizedBox(
                                 width: 10,
                                 child: InkWell(
+                                  onTap: () => widget.bloc.add(
+                                      ClickOpenBottomSheetEvent(
+                                          StringResource.callCustomer)),
                                   child: Container(
                                       decoration: const BoxDecoration(
                                           color: ColorResource.colorBEC4CF,

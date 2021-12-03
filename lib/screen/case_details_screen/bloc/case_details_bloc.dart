@@ -97,7 +97,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         //     await APIRepository.getCaseDetailsData('6181646813c5cf70dea671d2');
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.GET,
-            HttpUrl.caseDetailsUrl + '6181646813c5cf70dea671d2');
+            HttpUrl.caseDetailsUrl + '5f80375a86527c46deba2e5d');
 
         if (caseDetailsData['success'] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
@@ -237,9 +237,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickViewMapEvent) {
       yield ClickViewMapState();
     }
-    if (event is ClickCallCustomerEvent) {
-      yield ClickCallCustomerState();
-    }
+    // if (event is ClickCallCustomerEvent) {
+    //   // yield ClickCallCustomerState();
+    // }
     if (event is ClickCaseDetailsEvent) {
       yield CallCaseDetailsState();
     }

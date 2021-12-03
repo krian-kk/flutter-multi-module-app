@@ -24,7 +24,7 @@ class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
 
 class ClickViewMapEvent extends CaseDetailsEvent {}
 
-class ClickCallCustomerEvent extends CaseDetailsEvent {}
+// class ClickCallCustomerEvent extends CaseDetailsEvent {}
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {}
 

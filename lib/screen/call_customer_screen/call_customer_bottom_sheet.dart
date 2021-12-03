@@ -26,6 +26,8 @@ class CallCustomerBottomSheet extends StatefulWidget {
 class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   TextEditingController agentContactNoControlller = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   List<String> customerContactNoDropdownList = [
     '6524869550',
     '6524869534',
@@ -33,9 +35,15 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
     '6524861234'
   ];
 
+  String customerContactNoDropDownValue = '6524869550';
+
   List<String> serviceProviderListDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
 
+  String serviceProviderListValue = 'ABC';
+
   List<String> callersIDDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
+
+  String callersIDDropdownValue = 'ABC';
 
   List<CaseListModel> caseDetaislListModel = [];
   AllocationTBloc? allocationTBloc;
@@ -43,7 +51,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   @override
   void initState() {
     super.initState();
-    agentContactNoControlller.text = '7002792169';
+    // agentContactNoControlller.text = '7002792169';
     if (widget.blocObject is AllocationTBloc) {
       allocationTBloc = widget.blocObject;
     } else if (widget.blocObject is CaseDetailsBloc) {
@@ -58,130 +66,150 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.transparent,
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          BottomSheetAppbar(
-            title: Languages.of(context)!.callCustomer,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                .copyWith(bottom: 5),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const CustomLoanUserDetails(
-                      userName: 'DEBASISH PATNAIK',
-                      userId: 'TVSF_BFRT6458922993',
-                      userAmount: 397553.67,
-                    ),
-                    const SizedBox(height: 18),
-                    Row(
-                      children: [
-                        Flexible(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: Languages.of(context)!.callCustomer,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 18),
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            CustomText(
-                              Languages.of(context)!.agentContactNo,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            CustomReadOnlyTextField(
-                              '',
-                              agentContactNoControlller,
-                              height: 46,
-                              isReadOnly: true,
-                            ),
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.agentContactNo,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                CustomReadOnlyTextField(
+                                  '',
+                                  agentContactNoControlller,
+                                  validationRules: const ['required'],
+                                  height: 46,
+                                  isReadOnly: true,
+                                ),
+                              ],
+                            )),
+                            const SizedBox(width: 5),
+                            Flexible(
+                                child: CustomDropDownButton(
+                              Languages.of(context)!.customerContactNo,
+                              customerContactNoDropdownList,
+                              selectedValue: customerContactNoDropDownValue,
+                              onChanged: (newValue) => setState(() =>
+                                  customerContactNoDropDownValue =
+                                      newValue.toString()),
+                              icon: SvgPicture.asset(ImageResource.downShape),
+                            )),
                           ],
-                        )),
-                        const SizedBox(width: 5),
+                        ),
+                        const SizedBox(height: 15),
                         Flexible(
                             child: CustomDropDownButton(
-                          Languages.of(context)!.customerContactNo,
-                          customerContactNoDropdownList,
+                          Languages.of(context)!.serviceProvidersList,
+                          serviceProviderListDropdownList,
+                          selectedValue: serviceProviderListValue,
+                          onChanged: (newValue) => setState(() =>
+                              serviceProviderListValue = newValue.toString()),
                           icon: SvgPicture.asset(ImageResource.downShape),
                         )),
+                        const SizedBox(height: 20),
+                        Flexible(
+                            child: CustomDropDownButton(
+                          Languages.of(context)!.callersId,
+                          callersIDDropdownList,
+                          isExpanded: true,
+                          selectedValue: callersIDDropdownValue,
+                          onChanged: (newValue) => setState(() =>
+                              callersIDDropdownValue = newValue.toString()),
+                          icon: SvgPicture.asset(ImageResource.downShape),
+                        )),
+                        const SizedBox(height: 15)
                       ],
                     ),
-                    const SizedBox(height: 15),
-                    Flexible(
-                        child: CustomDropDownButton(
-                      Languages.of(context)!.serviceProvidersList,
-                      serviceProviderListDropdownList,
-                      icon: SvgPicture.asset(ImageResource.downShape),
-                    )),
-                    const SizedBox(height: 20),
-                    Flexible(
-                        child: CustomDropDownButton(
-                      Languages.of(context)!.callersId,
-                      callersIDDropdownList,
-                      icon: SvgPicture.asset(ImageResource.downShape),
-                    )),
-                    const SizedBox(height: 15)
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height * 0.1,
-        decoration: BoxDecoration(
-          color: ColorResource.colorFFFFFF,
-          boxShadow: [
-            BoxShadow(
-              color: ColorResource.color000000.withOpacity(.25),
-              blurRadius: 2.0,
-              offset: const Offset(1.0, 1.0),
-            ),
-          ],
-        ),
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () => Navigator.pop(context),
-                child: SizedBox(
-                    width: 95,
-                    child: Center(
-                        child: CustomText(
-                      Languages.of(context)!.done.toUpperCase(),
-                      color: ColorResource.colorEA6D48,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.normal,
-                      fontSize: FontSize.sixteen,
-                    ))),
-              ),
-              const SizedBox(width: 25),
-              SizedBox(
-                width: 191,
-                child: CustomButton(
-                  Languages.of(context)!.call.toUpperCase(),
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w600,
-                  isLeading: true,
-                  trailingWidget: SvgPicture.asset(ImageResource.vector),
-                  // onTap: () => bloc.add(ClickMessageEvent()),
-                  cardShape: 5,
+                  ),
                 ),
               ),
             ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
+            ],
+          ),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
+                      width: 95,
+                      child: Center(
+                          child: CustomText(
+                        Languages.of(context)!.done.toUpperCase(),
+                        color: ColorResource.colorEA6D48,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        fontSize: FontSize.sixteen,
+                      ))),
+                ),
+                const SizedBox(width: 25),
+                SizedBox(
+                  width: 191,
+                  child: CustomButton(
+                    Languages.of(context)!.call.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    isLeading: true,
+                    trailingWidget: SvgPicture.asset(ImageResource.vector),
+                    onTap: () => _formKey.currentState!.validate(),
+                    cardShape: 5,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

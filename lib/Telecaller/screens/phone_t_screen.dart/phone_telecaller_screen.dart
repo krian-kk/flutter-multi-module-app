@@ -372,26 +372,6 @@ class _PhoneTelecallerScreenState extends State<PhoneTelecallerScreen>
     );
   }
 
-  // callCustomerBottomSheet(BuildContext buildContext) {
-  //   showModalBottomSheet(
-  //       enableDrag: false,
-  //       context: buildContext,
-  //       isScrollControlled: true,
-  //       isDismissible: false,
-  //       backgroundColor: ColorResource.colorFFFFFF,
-  //       shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.vertical(
-  //           top: Radius.circular(20),
-  //         ),
-  //       ),
-  //       builder: (BuildContext context) {
-  //         return SizedBox(
-  //           height: MediaQuery.of(context).size.height * 0.89,
-  //           child: const CallCustomerBottomSheet(),
-  //         );
-  //       });
-  // }
-
   // openEventDetailsBottomSheet(BuildContext buildContext) {
   //   showModalBottomSheet(
   //     enableDrag: false,

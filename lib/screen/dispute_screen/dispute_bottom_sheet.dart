@@ -30,6 +30,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
 
   List<String> disputeDropDownList = ['One', 'Two', 'Three', 'Four'];
 
+  String disputeDropDownValue = 'One';
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -116,6 +118,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                           child: CustomDropDownButton(
                             Languages.of(context)!.disputeReason,
                             disputeDropDownList,
+                            selectedValue: disputeDropDownValue,
+                            onChanged: (newValue) => setState(() =>
+                                disputeDropDownValue = newValue.toString()),
                           ),
                         ),
                         const SizedBox(height: 15)

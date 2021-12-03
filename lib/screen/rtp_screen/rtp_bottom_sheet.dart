@@ -28,9 +28,13 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
+  String nextActionDateValue = '';
+
   final _formKey = GlobalKey<FormState>();
 
   List<String> rtpDenialReasonDropdownList = ['One', 'Two', 'Three', 'Four'];
+
+  String selectedDropdownValue = 'One';
 
   @override
   void initState() {
@@ -121,6 +125,12 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                         CustomDropDownButton(
                           Languages.of(context)!.rtpDenialReason,
                           rtpDenialReasonDropdownList,
+                          selectedValue: selectedDropdownValue,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedDropdownValue = newValue.toString();
+                            });
+                          },
                         ),
                         const SizedBox(height: 15),
                       ],
@@ -169,7 +179,14 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () => _formKey.currentState!.validate(),
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        print(nextActionDateControlller.text);
+                        print(nextActionDateValue);
+                        print(remarksControlller.text);
+                        print(selectedDropdownValue);
+                      }
+                    },
                     cardShape: 5,
                   ),
                 ),
@@ -215,6 +232,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      nextActionDateValue = newDate.toString();
       // _formKey.currentState!.validate();
     });
   }

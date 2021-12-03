@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
+import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/address_screen.dart';
@@ -70,6 +71,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             Navigator.popAndPushNamed(context, AppRoutes.caseDetailsScreen,
                 arguments: true);
           }
+          // if (state is ClickCallCustomerState) {
+          //   openBottomSheet(context, StringResource.callCustomer);
+          // }
         },
         child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
@@ -88,21 +92,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       child: CustomAppbar(
                         titleString: Languages.of(context)!.caseDetials,
                         titleSpacing: 10,
-
                         iconEnumValues: IconEnum.back,
-
-                        // showClose: true,
-
                         onItemSelected: (value) {
                           if (value == 'IconEnum.back') {
                             Navigator.pop(context);
                           }
-
-                          // else if (value == 'close') {
-
-                          // Navigator.pop(context);
-
-                          // }
                         },
                       ),
                     ),
@@ -291,7 +285,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                           .offlineCaseDetailsValue
                                                           .caseDetails
                                                           ?.repaymentInfo
-                                                          ?.benefeciaryAcc_Name ??
+                                                          ?.benefeciaryAccName ??
                                                       '',
                                                   fontWeight: FontWeight.w700,
                                                   color:
@@ -388,7 +382,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         .offlineCaseDetailsValue
                                                         .caseDetails
                                                         ?.repaymentInfo
-                                                        ?.ref_url ??
+                                                        ?.refUrl ??
                                                     '',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
@@ -397,70 +391,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ColorResource.color333333,
                                               ),
                                               const SizedBox(height: 12),
-                                              // Row(
-                                              //   mainAxisAlignment:
-                                              //       MainAxisAlignment
-                                              //           .spaceBetween,
-                                              //   children: [
-                                              //     Expanded(
-                                              //       flex: 2,
-                                              //       child: CustomButton(
-                                              //         StringResource.sendSms
-                                              //             .toUpperCase(),
-                                              //         fontSize: FontSize.twelve,
-                                              //         borderColor: ColorResource
-                                              //             .color23375A,
-                                              //         onTap: () async {
-                                              //           const uri =
-                                              //               'sms:+39 348 060 888?body=hello%20there';
-                                              //           if (await canLaunch(
-                                              //               uri)) {
-                                              //             await launch(uri);
-                                              //           } else {
-                                              //             const uri =
-                                              //                 'sms:0039-222-060-888?body=hello%20there';
-                                              //             if (await canLaunch(
-                                              //                 uri)) {
-                                              //               await launch(uri);
-                                              //             } else {
-                                              //               throw 'Could not launch $uri';
-                                              //             }
-                                              //           }
-                                              //         },
-                                              //         buttonBackgroundColor:
-                                              //             ColorResource
-                                              //                 .color23375A,
-                                              //       ),
-                                              //     ),
-                                              //     const SizedBox(width: 5),
-                                              //     Expanded(
-                                              //       flex: 3,
-                                              //       child: CustomButton(
-                                              //         StringResource
-                                              //             .sendWhatsapp
-                                              //             .toUpperCase(),
-                                              //         fontSize: FontSize.twelve,
-                                              //         borderColor: ColorResource
-                                              //             .color23375A,
-                                              //         isLeading: true,
-                                              //         trailingWidget:
-                                              //             SvgPicture.asset(
-                                              //                 ImageResource
-                                              //                     .whatsApp),
-                                              //         onTap: () async {
-                                              //           const url =
-                                              //               "https://wa.me/?text=Origa";
-
-                                              //           await launch(url);
-                                              //         },
-                                              //         buttonBackgroundColor:
-                                              //             ColorResource
-                                              //                 .color23375A,
-                                              //       ),
-                                              //     ),
-                                              //   ],
-                                              // ),
-
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -905,6 +835,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             return AddressDetailsBottomSheetScreen(bloc: bloc);
           case StringResource.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
+          case StringResource.callCustomer:
+            return CallCustomerBottomSheet();
           case StringResource.addNewContact:
             return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,
