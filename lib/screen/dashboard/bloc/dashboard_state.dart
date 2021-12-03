@@ -23,22 +23,13 @@ class MyDeposistsState extends DashboardState {}
 
 class YardingAndSelfReleaseState extends DashboardState {}
 
-class NavigateCaseDetailState extends DashboardState {}
+class NavigateCaseDetailState extends DashboardState {
+  dynamic paramValues;
+  NavigateCaseDetailState({this.paramValues});
+}
 
 class NavigateSearchState extends DashboardState {}
 
 class HelpState extends DashboardState {}
 
 class ClickPriorityFollowUpState extends DashboardState {}
-
-class SearchDashboardFailedState extends DashboardState {
-  final String error;
-  SearchDashboardFailedState(this.error);
-}
-
-class SearchDashboardScreenSuccessState extends DashboardState {
-  final SearchModel data;
-  SearchDashboardScreenSuccessState(this.data);
-}
-
-class SearchDashboardScreenLoadedState extends DashboardState {}

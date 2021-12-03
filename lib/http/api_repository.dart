@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 
@@ -26,11 +28,9 @@ class APIRepository {
         case APIRequestType.GET:
         case APIRequestType.DELETE:
           {
-            if (requestType == APIRequestType.DELETE) {
-              response = await DioClient.dioConfig().delete(urlString);
-            } else if (requestType == APIRequestType.GET) {
-              response = await DioClient.dioConfig().get(urlString);
-            }
+            response = requestType == APIRequestType.DELETE
+                ? await DioClient.dioConfig().delete(urlString)
+                : await DioClient.dioConfig().get(urlString);
             break;
           }
         case APIRequestType.UPLOAD:
@@ -63,6 +63,8 @@ class APIRepository {
                 .post(urlString, data: requestBodydata);
           }
       }
+      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+          '\n  response-->${jsonDecode(response.toString())}');
       returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
@@ -71,8 +73,11 @@ class APIRepository {
       } else {
         error = 'Error sending request!';
       }
+      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+          '\n  response-->${jsonDecode(e.response.toString())}');
       returnValue = {'success': false, 'data': error};
     }
+
     return returnValue;
   }
 
@@ -86,6 +91,26 @@ class APIRepository {
       // print('response.data: ${response.data}');
       // returnableValues = PriorityCaseListModel.fromJson(response.data);
       // returnableValues = json.decode(response.toString());
+      returnableValues = response.data;
+      // print(returnableValues);
+    } on DioError catch (e) {
+      if (e.response != null) {
+        returnableValues = DioClient.errorHandling(e);
+      } else {
+        print(e.message);
+        returnableValues = 'Error sending request!';
+      }
+    }
+    return returnableValues;
+  }
+
+  // get buildroute case list
+  static Future<Map<String, dynamic>> getBuildRouteCaseList() async {
+    dynamic? returnableValues;
+    try {
+      final Response response = await DioClient.dioConfig().get(
+        HttpUrl.buildRouteCaseList,
+      );
       returnableValues = response.data;
       // print(returnableValues);
     } on DioError catch (e) {

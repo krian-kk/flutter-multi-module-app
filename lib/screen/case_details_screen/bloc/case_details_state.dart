@@ -3,7 +3,10 @@ part of 'case_details_bloc.dart';
 @immutable
 class CaseDetailsState extends BaseEquatable {}
 
-class CaseDetailsInitial extends CaseDetailsState {}
+class CaseDetailsInitial extends CaseDetailsState {
+  dynamic paramValues;
+  CaseDetailsInitial({this.paramValues});
+}
 
 class CaseDetailsLoadingState extends CaseDetailsState {}
 
@@ -25,7 +28,10 @@ class ClickViewMapState extends CaseDetailsState {}
 
 // class ClickCallCustomerState extends CaseDetailsState {}
 
-class CallCaseDetailsState extends CaseDetailsState {}
+class CallCaseDetailsState extends CaseDetailsState {
+  dynamic paramValues;
+  CallCaseDetailsState({this.paramValues});
+}
 
 class ClickOpenBottomSheetState extends CaseDetailsState {
   final String title;

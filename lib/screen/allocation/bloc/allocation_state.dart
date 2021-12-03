@@ -17,24 +17,39 @@ class MessageState extends AllocationState {}
 
 class NavigateSearchPageState extends AllocationState {}
 
-class NavigateCaseDetailState extends AllocationState {}
+class NavigateCaseDetailState extends AllocationState {
+  dynamic paramValues;
+  NavigateCaseDetailState({this.paramValues});
+}
 
 class FilterSelectOptionState extends AllocationState {}
 
 class SearchScreenLoadingState extends AllocationState {}
 
-class SearchAllocationScreenLoadedState extends AllocationState {}
+class SearchScreenLoadedState extends AllocationState {}
 
 class SearchScreenNormalState extends AllocationState {}
 
-class SearchAllocationScreenSuccessState extends AllocationState {
+class TapPriorityState extends AllocationState {
+  dynamic? successResponse;
+  TapPriorityState({this.successResponse});
+}
+
+class TapBuildRouteState extends AllocationState {
+  dynamic? successResponse;
+  TapBuildRouteState({this.successResponse});
+}
+
+class SearchScreenSuccessState extends AllocationState {
   final SearchModel data;
-  SearchAllocationScreenSuccessState(this.data);
+  SearchScreenSuccessState(this.data);
 }
 
-class SearchAllocationFailedState extends AllocationState {
+class SearchFailedState extends AllocationState {
   final String error;
-  SearchAllocationFailedState(this.error);
+  SearchFailedState(this.error);
 }
 
-class ClickSearchButtonState extends AllocationState {}
+class CaseListViewLoadingState extends AllocationState {}
+
+class SearchReturnDataState extends AllocationState {}

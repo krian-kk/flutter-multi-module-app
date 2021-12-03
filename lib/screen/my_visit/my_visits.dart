@@ -164,17 +164,17 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc),
+                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myVisitsData),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc),
+                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myVisitsData),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc),
+                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myVisitsData),
                           ),
                         ],
                       ),

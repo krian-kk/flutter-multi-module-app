@@ -53,4 +53,8 @@ class ImageResource {
   static const String profileImagePicker =
       'assets/svg/profile_image_picker.svg';
   static const String declinedCall = 'assets/svg/declined.svg';
+  static const String dropDownIncreaseArrow =
+      'assets/svg/drop_down_increase_arrow.svg';
+  static const String dropDownDecreaseArrow =
+      'assets/svg/drop_down_decrease_arrow.svg';
 }

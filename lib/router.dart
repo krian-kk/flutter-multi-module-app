@@ -11,6 +11,8 @@ import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/screen/login_screen/bloc/login_bloc.dart';
 import 'package:origa/screen/login_screen/login_screen.dart';
+import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
+import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -24,7 +26,7 @@ class AppRoutes {
   static const String allocationScreen = 'allocation_screen';
   static const String allocationTelecallerScreen =
       'allocation_telecaller_screen';
-  static const String SearchScreen = 'search_allocation_details_screen';
+  static const String searchScreen = 'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
   static const String caseDetailsTelecallerScreen =
       'case_details_telecaller_screen';
@@ -37,8 +39,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildSplashScreen();
     case AppRoutes.homeTabScreen:
       return _buildHomeTabScreen(settings);
-    // case AppRoutes.SearchScreen:
-    //   return _buildSearchScreen();
+    case AppRoutes.searchScreen:
+      return _buildSearchScreen();
     case AppRoutes.caseDetailsScreen:
       return _buildCaseDetailsScreen(settings);
     case AppRoutes.loginScreen:
@@ -78,12 +80,12 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
   });
 }
 
-// Route<dynamic> _buildSearchScreen() {
-//   return MaterialPageRoute(
-//     builder: (context) =>
-//         addAuthBloc(context, PageBuilder.buildSearchScreenPage()),
-//   );
-// }
+Route<dynamic> _buildSearchScreen() {
+  return MaterialPageRoute(
+    builder: (context) =>
+        addAuthBloc(context, PageBuilder.buildSearchScreenPage()),
+  );
+}
 
 Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
   return MaterialPageRoute(
@@ -132,21 +134,28 @@ class PageBuilder {
     );
   }
 
-  // static Widget buildSearchScreenPage() {
-  //   return BlocProvider(
-  //     create: (BuildContext context) =>
-  //         BlocProvider.of<SearchScreenBloc>(context)
-  //           ..add(SearchScreenInitialEvent()),
-  //     child: const SearchScreen(bloc: null),
-  //   );
-  // }
+  static Widget buildSearchScreenPage() {
+    return BlocProvider(
+      create: (BuildContext context) =>
+          BlocProvider.of<SearchScreenBloc>(context)
+            ..add(SearchScreenInitialEvent()),
+      child: SearchScreen(),
+    );
+  }
 
   static Widget buildCaseDetailsPage(RouteSettings settings) {
+    // // String? loginType;
+    // if (settings.arguments != null) {
+    //   // loginType = settings.arguments.toString();
+    // }
+    print('event.paramValues------');
+    print(settings.arguments);
+
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
-            ..add(CaseDetailsInitialEvent()),
-      child: CaseDetailsScreen(settings.arguments as bool),
+            ..add(CaseDetailsInitialEvent(paramValues: settings.arguments)),
+      child: CaseDetailsScreen(paramValues: settings.arguments),
     );
   }
 

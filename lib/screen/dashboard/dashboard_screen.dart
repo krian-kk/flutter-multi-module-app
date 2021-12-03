@@ -13,8 +13,6 @@ import 'package:origa/screen/my_deposists/my_deposists.dart';
 import 'package:origa/screen/my_recipts/my_receipts.dart';
 import 'package:origa/screen/my_visit/my_visits.dart';
 import 'package:origa/screen/priority_follow_up/priority_follow_up_bottomsheet.dart';
-import 'package:origa/screen/search_screen/allocation_search_screen.dart';
-import 'package:origa/screen/search_screen/dashboard_search_screen.dart';
 import 'package:origa/screen/untouched_case/untouched_cases.dart';
 import 'package:origa/screen/yarding_selfrelese/yarding_self_release.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -62,43 +60,82 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
-        listener: (BuildContext context, DashboardState state) {
+        listener: (BuildContext context, DashboardState state) async {
           if (state is PriorityFollowState) {
-            priorityFollowUpSheet(context);
+            if (bloc.priortyFollowUpData.result!.cases!.isNotEmpty) {
+              priorityFollowUpSheet(context);
+            } else {
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is UntouchedCasesState) {
-            untouchedCasesSheet(context);
+            if (bloc.untouchedCasesData.result!.cases!.isNotEmpty) {
+              untouchedCasesSheet(context);
+            } else {
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is BrokenPTPState) {
-            brokenPTPSheet(context);
+            if (bloc.brokenPTPData.result!.cases!.isNotEmpty) {
+              brokenPTPSheet(context);
+            } else {
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is MyReceiptsState) {
-            myReceiptsSheet(context);
+            if (bloc.myReceiptsData.result!.cases!.isNotEmpty) {
+              myReceiptsSheet(context);
+            } else {
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is MyVisitsState) {
-            myVisitsSheet(context);
+            if (bloc.myVisitsData.result!.cases!.isNotEmpty) {
+              myVisitsSheet(context);
+            } else {
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is MyDeposistsState) {
+            // if(bloc.myDeposistsData.result!.cases!.isNotEmpty){
             myDeposistsSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   print('------------vales------');
+            // }
           }
 
           if (state is YardingAndSelfReleaseState) {
+            // if(bloc.yardingAndSelfReleaseData.result!.cases!.isNotEmpty){
             yardingSelfReleaseSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   print('------------vales------');
+            // }
           }
 
           if (state is NavigateCaseDetailState) {
             Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                arguments: true);
+                arguments: state.paramValues);
           }
 
           if (state is NavigateSearchState) {
-            searchShowBottomSheet();
-            // Navigator.pushNamed(context, AppRoutes.SearchScreen);
+            final dynamic returnValue =
+                await Navigator.pushNamed(context, AppRoutes.searchScreen);
+            if (returnValue != null) {
+              print('----NK----returnvalue');
+              print(returnValue);
+            }
           }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
@@ -695,23 +732,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               bottom: false,
               child: MyDeposistsBottomSheet(bloc));
         });
-  }
-
-  searchShowBottomSheet() {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 1.0,
-                    child: DashboardSearchScreen(
-                      bloc: bloc,
-                    ))));
   }
 
   void yardingSelfReleaseSheet(BuildContext buildContext) {

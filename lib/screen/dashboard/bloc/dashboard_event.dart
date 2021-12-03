@@ -19,7 +19,11 @@ class MyDeposistsEvent extends DashboardEvent {}
 
 class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
-class NavigateCaseDetailEvent extends DashboardEvent {}
+class NavigateCaseDetailEvent extends DashboardEvent {
+
+  dynamic paramValues;
+  NavigateCaseDetailEvent({this.paramValues});
+}
 
 class NavigateSearchEvent extends DashboardEvent {}
 

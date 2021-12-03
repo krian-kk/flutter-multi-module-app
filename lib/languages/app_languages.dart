@@ -402,4 +402,22 @@ abstract class Languages {
   String get resendOTP;
 
   String get sendOTP;
+
+  String get businessLoss;
+
+  String get covidImpacted;
+
+  String get financialReason;
+
+  String get incomeLossInTheFamily;
+
+  String get intention;
+
+  String get jobLoss;
+
+  String get jobUncertaintly;
+
+  String get medicalIssue;
+
+  String get salaryIssue;
 }

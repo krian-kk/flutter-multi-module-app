@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/denial_post_model/denial_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -28,13 +32,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
-  String nextActionDateValue = '';
-
   final _formKey = GlobalKey<FormState>();
 
-  List<String> rtpDenialReasonDropdownList = ['One', 'Two', 'Three', 'Four'];
-
-  String selectedDropdownValue = 'One';
+  late String selectedDropdownValue = 'select';
 
   @override
   void initState() {
@@ -124,8 +124,21 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                         const SizedBox(height: 15),
                         CustomDropDownButton(
                           Languages.of(context)!.rtpDenialReason,
-                          rtpDenialReasonDropdownList,
+                          [
+                            'select',
+                            Languages.of(context)!.businessLoss,
+                            Languages.of(context)!.covidImpacted,
+                            Languages.of(context)!.dispute,
+                            Languages.of(context)!.financialReason,
+                            Languages.of(context)!.incomeLossInTheFamily,
+                            Languages.of(context)!.intention,
+                            Languages.of(context)!.jobLoss,
+                            Languages.of(context)!.jobUncertaintly,
+                            Languages.of(context)!.medicalIssue,
+                            Languages.of(context)!.salaryIssue,
+                          ],
                           selectedValue: selectedDropdownValue,
+                          menuMaxHeight: 200,
                           onChanged: (newValue) {
                             setState(() {
                               selectedDropdownValue = newValue.toString();
@@ -179,12 +192,31 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        print(nextActionDateControlller.text);
-                        print(nextActionDateValue);
-                        print(remarksControlller.text);
-                        print(selectedDropdownValue);
+                    onTap: () async {
+                      if (_formKey.currentState!.validate() &&
+                          (selectedDropdownValue != 'select')) {
+                        var requestBodyData = DenialPostModel(
+                          eventType: 'DENIAL',
+                          eventCode: 'TELEVT004',
+                          contractor: '0',
+                          agrRef: '0',
+                          eventAttr: EventAttr(
+                              actionDate: nextActionDateControlller.text,
+                              remarks: remarksControlller.text,
+                              reasons: selectedDropdownValue,
+                              agentLocation: AgentLocation()),
+                          contact: Contact(),
+                          createdBy: DateTime.now().toString(),
+                          callID: '0',
+                          callingID: '0',
+                        );
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(APIRequestType.POST,
+                                'https://devapi.instalmint.com/v1/agent/case-details-events/denial?userType=FIELDAGENT',
+                                requestBodydata: jsonEncode(requestBodyData));
+                        if (postResult['success']) {
+                          Navigator.pop(context);
+                        }
                       }
                     },
                     cardShape: 5,
@@ -229,10 +261,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      nextActionDateValue = newDate.toString();
       // _formKey.currentState!.validate();
     });
   }

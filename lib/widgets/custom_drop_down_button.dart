@@ -20,6 +20,7 @@ class CustomDropDownButton extends StatefulWidget {
   final FocusNode? focusNode;
   final bool autoFocus;
   final OnChange? onChanged;
+  final double? menuMaxHeight;
 
   const CustomDropDownButton(this.labelText, this.listOfItems,
       {Key? key,
@@ -32,6 +33,7 @@ class CustomDropDownButton extends StatefulWidget {
       this.autoFocus = false,
       this.onChanged,
       this.focusColor,
+      this.menuMaxHeight,
       this.selectedValue})
       : super(key: key);
   @override
@@ -71,8 +73,10 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               iconSize: 24,
               isExpanded: widget.isExpanded,
               style: widget.style ??
-                  const TextStyle(
-                      color: ColorResource.color333333,
+                  TextStyle(
+                      color: (widget.selectedValue == 'select')
+                          ? ColorResource.color666666
+                          : ColorResource.color333333,
                       fontWeight: FontWeight.w700,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal),
@@ -80,6 +84,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
                 height: 1,
                 color: ColorResource.colorE5EAF6,
               ),
+              menuMaxHeight: widget.menuMaxHeight,
               focusNode: widget.focusNode,
               // onChanged: (newValue) {
               //   setState(() {

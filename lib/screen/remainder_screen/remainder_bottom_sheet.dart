@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/reminder_post_model/reminder_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -197,8 +201,34 @@ class _CustomRemainderBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        var requestBodyData = ReminderPostAPI(
+                          eventType: 'REMINDER',
+                          caseId: '618e382004d8d040ac18841b',
+                          eventCode: 'TELEVT006',
+                          eventAttr: EventAttr(
+                            reminderDate: nextActionDateControlller.text,
+                            time: nextActionTimeControlller.text,
+                            remarks: remarksControlller.text,
+                            agentLocation: AgentLocation(),
+                          ),
+                          contact: Contact(),
+                          callID: '0',
+                          callingID: '0',
+                        );
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(
+                          APIRequestType.POST,
+                          'https://devapi.instalmint.com/v1/agent/case-details-events/reminder?userType=FIELDAGENT',
+                          requestBodydata: jsonEncode(requestBodyData),
+                        );
+                        if (postResult['success']) {
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
                   ),
                 ),
               ],
@@ -240,7 +270,7 @@ class _CustomRemainderBottomSheetState
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

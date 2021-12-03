@@ -56,7 +56,7 @@ class CustomCardList {
                               width: 7,
                             ),
                             CustomText(
-                              '2.4km 20min',
+                              resultData[index].distanceMeters.toString(),
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
                               color: ColorResource.color101010,
@@ -110,7 +110,7 @@ class CustomCardList {
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
                       onTap: () {
-                        bloc.add(NavigateCaseDetailEvent());
+                        bloc.add(NavigateCaseDetailEvent(paramValues:{'caseID':resultData[index].caseId!,'isAddress': true}));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -251,7 +251,7 @@ class CustomCardList {
                                   Row(
                                     children: [
                                       CustomText(
-                                        resultData[index].fieldfollowUpDate ??
+                                        resultData[index].fieldfollowUpDate ?? resultData[index].followUpDate ??
                                             '-',
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,

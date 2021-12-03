@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
@@ -64,7 +63,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   @override
   Widget build(BuildContext context) {
     List<PaymentModeButtonModel> paymentModeButtonList = [
-      PaymentModeButtonModel(Languages.of(context)!.pickUp),
+      PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
     return SizedBox(
@@ -171,9 +170,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                           ptpAmountControlller,
                           focusNode: ptpDataFocusNode,
                           validatorCallBack: () {},
+                          keyBoardType: TextInputType.number,
                           validationRules: const ['required'],
                           isLabel: true,
-                          onEditing: () => ptpReferenceFocusNode.requestFocus(),
+                          onEditing: () {
+                            ptpReferenceFocusNode.requestFocus();
+                          },
                         )),
                         const SizedBox(height: 15),
                         CustomText(
@@ -257,7 +259,34 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
                     onTap: () async {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          selectedPaymentModeButton != '') {
+                        var requestBodyData = PTPPostModel(
+                            eventType: 'PTP',
+                            caseId: '618e382004d8d040ac18841b',
+                            eventAttr: EventAttr(
+                                date: ptpDateControlller.text,
+                                time: ptpTimeControlller.text,
+                                remarks: remarksControlller.text,
+                                ptpAmount: int.parse(ptpAmountControlller.text),
+                                reference: referenceControlller.text,
+                                mode: selectedPaymentModeButton,
+                                followUpPriority: 'PTP',
+                                agentLocation: AgentLocation(
+                                  latitude: 0,
+                                  longitude: 0,
+                                  missingAgentLocation: 'true',
+                                )),
+                            contact: Contact(cType: 'residence address'),
+                            callID: '0',
+                            callingID: '0');
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(APIRequestType.POST,
+                                'https://devapi.instalmint.com/v1/agent/case-details-events/ptp?userType=FIELDAGENT',
+                                requestBodydata: jsonEncode(requestBodyData));
+                        if (postResult['success']) {
+                          Navigator.pop(context);
+                        }
                       } else {}
                     },
                     cardShape: 5,
@@ -357,7 +386,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

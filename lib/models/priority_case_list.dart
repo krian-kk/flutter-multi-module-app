@@ -39,6 +39,11 @@ class Result {
   String? caseId;
   String? fieldfollowUpDate;
   int? sortId;
+  String? followUpDate;
+  String? locationType;
+  int? distanceMeters;
+  String? repoStatus;
+  String? accNo;
   List<Address>? address;
 
   Result(
@@ -53,6 +58,11 @@ class Result {
       this.caseId,
       this.fieldfollowUpDate,
       this.sortId,
+      this.followUpDate,
+      this.locationType,
+      this.distanceMeters,
+      this.repoStatus,
+      this.accNo,
       this.address});
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -67,6 +77,11 @@ class Result {
     caseId = json['caseId'];
     fieldfollowUpDate = json['fieldfollowUpDate'];
     sortId = json['sortId'];
+    followUpDate = json['followUpDate'];
+    locationType = json['locationType'];
+    distanceMeters = json['distanceMeters'];
+    repoStatus = json['repoStatus'];
+    accNo = json['accNo'];
     if (json['address'] != null) {
       address = <Address>[];
       json['address'].forEach((v) {
