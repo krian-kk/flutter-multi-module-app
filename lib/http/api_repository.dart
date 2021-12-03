@@ -63,7 +63,7 @@ class APIRepository {
                 .post(HttpUrl.register, data: requestBodydata);
           }
       }
-      returnValue = {'success': false, 'data': response!.data};
+      returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
       if (e.response != null) {
@@ -86,6 +86,26 @@ class APIRepository {
       // print('response.data: ${response.data}');
       // returnableValues = PriorityCaseListModel.fromJson(response.data);
       // returnableValues = json.decode(response.toString());
+      returnableValues = response.data;
+      // print(returnableValues);
+    } on DioError catch (e) {
+      if (e.response != null) {
+        returnableValues = DioClient.errorHandling(e);
+      } else {
+        print(e.message);
+        returnableValues = 'Error sending request!';
+      }
+    }
+    return returnableValues;
+  }
+
+   // get buildroute case list
+  static Future<Map<String, dynamic>> getBuildRouteCaseList() async {
+    dynamic? returnableValues;
+    try {
+      final Response response = await DioClient.dioConfig().get(
+        HttpUrl.buildRouteCaseList,
+      );
       returnableValues = response.data;
       // print(returnableValues);
     } on DioError catch (e) {

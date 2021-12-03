@@ -175,6 +175,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
+                                child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
                           ),
                         ],
                       ),

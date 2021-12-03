@@ -9,8 +9,10 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/build_route_model/build_route_model.dart';
+import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
+import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -47,32 +49,30 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List<AllocationListModel> allocationList = [];
   late Position currentLocation;
 
-  Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
-      Hive.openBox<OrigoDynamicTable>('testBox4');
+  // Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
+  //     Hive.openBox<OrigoDynamicTable>('testBox4');
 
+  AllocationListModel searchResultData = AllocationListModel();
   List starCount = [];
+  List<Result> resultList = [];
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
       yield AllocationLoadingState();
-
-      List<Result> resultList = [];
+      isShowSearchPincode = false;
 
       var connectivityResult = await (Connectivity().checkConnectivity());
       if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
-      print(APIRepository.getpriorityCaseList());
-      Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
-      offlineDatabaseBox.whenComplete(() {
-        offlineDatabaseBox.then((value) {
-              value.put('priority_caselist', 
-              OrigoDynamicTable(
-                message: priorityListData['message'],
-                status: priorityListData['status'],
-                result: priorityListData['result'] as List<dynamic>,
-              ),
-            );
-            for (var element in value.get('priority_caselist')!.result) {
+      // print(APIRepository.getpriorityCaseList());
+      // Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
+      Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.priorityCaseList);
+
+      resultList.clear();
+      starCount.clear();
+
+       for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
               if (Result.fromJson(jsonDecode(jsonEncode(element)))
                       .starredCase ==
@@ -81,47 +81,96 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     .starredCase);
               }
             }
-          });
-        });
-      } else {
-        await offlineDatabaseBox.then((value) {
-          for (var element in value.get('priority_caselist')!.result) {
-            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-                true) {
-              starCount.add(
-                  Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
-            }
-          }
-        });
-      }
-      // allocationList.addAll([
-      //   AllocationListModel(
-      //     newlyAdded: true,
-      //     customerName: 'Debashish Patnaik',
-      //     amount: '₹ 3,97,553.67',
-      //     address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-      //     date: 'Today, Thu 18 Oct, 2021',
-      //     loanID: 'TVS / TVSF_BFRT6524869550',
-      //   ),
-      //   AllocationListModel(
-      //     newlyAdded: true,
-      //     customerName: 'New User',
-      //     amount: '₹ 5,54,433.67',
-      //     address: '2/345, 6th Main Road, Bangalore - 534544',
-      //     date: 'Thu, Thu 18 Oct, 2021',
-      //     loanID: 'TVS / TVSF_BFRT6524869550',
-      //   ),
-      //   AllocationListModel(
-      //     newlyAdded: true,
-      //     customerName: 'Debashish Patnaik',
-      //     amount: '₹ 8,97,553.67',
-      //     address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-      //     date: 'Sat, Thu 18 Oct, 2021',
-      //     loanID: 'TVS / TVSF_BFRT6524869550',
-      //   ),
-      // ]);
+      
+      // offlineDatabaseBox.whenComplete(() {
+      //   offlineDatabaseBox.then((value) {
+      //         value.put('priority_caselist', 
+      //         OrigoDynamicTable(
+      //           message: priorityListData['message'],
+      //           status: priorityListData['status'],
+      //           result: priorityListData['result'] as List<dynamic>,
+      //         ),
+      //       );
+      //       for (var element in value.get('priority_caselist')!.result) {
+      //         resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+      //         if (Result.fromJson(jsonDecode(jsonEncode(element)))
+      //                 .starredCase ==
+      //             true) {
+      //           starCount.add(Result.fromJson(jsonDecode(jsonEncode(element)))
+      //               .starredCase);
+      //         }
+      //       }
+      //     });
+      //   });
+      } 
+      // else {
+      //   await offlineDatabaseBox.then((value) {
+      //     for (var element in value.get('priority_caselist')!.result) {
+      //       resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+      //       if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+      //           true) {
+      //         starCount.add(
+      //             Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+      //       }
+      //     }
+      //   });
+      // }
       yield AllocationLoadedState(successResponse: resultList);
+    }
+
+    if (event is TapPriorityEvent) {
+      yield CaseListViewLoadingState();
+
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      // print(APIRepository.getpriorityCaseList());
+      // Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
+      Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.priorityCaseList);
+
+      resultList.clear();
+      starCount.clear();
+
+       for (var element in priorityListData['data']['result']) {
+              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
+                  true) {
+                starCount.add(Result.fromJson(jsonDecode(jsonEncode(element)))
+                    .starredCase);
+              }
+            }
+      }
+    yield TapPriorityState(successResponse: resultList);
+    }
+
+    if (event is TapBuildRouteEvent) {
+      yield CaseListViewLoadingState();
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      // print(APIRepository.getpriorityCaseList());
+      // Map<String, dynamic> buildRouteListData = await APIRepository.getBuildRouteCaseList();
+      Map<String, dynamic> buildRouteListData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.buildRouteCaseList + 
+            "lat=${event.paramValues.lat}&" + 
+            "lng=${event.paramValues.long}&" + 
+            "maxDistMeters=${event.paramValues.maxDistMeters}");
+            print(buildRouteListData);
+
+      resultList.clear();
+      starCount.clear();
+
+       for (var element in buildRouteListData['data']['result']['cases']) {
+              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
+                  true) {
+                starCount.add(Result.fromJson(jsonDecode(jsonEncode(element)))
+                    .starredCase);
+              }
+            }
+      }
+    yield TapBuildRouteState(successResponse: resultList);
     }
 
     if (event is MapViewEvent) {
@@ -137,26 +186,59 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is NavigateCaseDetailEvent) {
-      yield NavigateCaseDetailState();
+      // print('event.paramValues---');
+      // print(event.paramValues);
+      yield NavigateCaseDetailState(
+        paramValues: event.paramValues
+      );
     }
 
     if (event is FilterSelectOptionEvent) {
       yield FilterSelectOptionState();
-      selectedOption = 0;
+      // selectedOption = 0;
     }
-    if (event is ClickSearchButtonEvent) {
-      yield SearchScreenLoadedState();
+
+    if (event is SearchReturnDataEvent) {
+      yield CaseListViewLoadingState();
+      
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
-        yield SearchFailedState('Please Connect Internet!');
       } else {
-        // Map<String, dynamic> getSearchData =
-        //     await APIRepository.getSearchData(event.searchField);
-        Map<String, dynamic> getSearchData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.searchUrl + 'MOR000800314934');
-        searchData = SearchModel.fromJson(getSearchData['data']);
-        yield SearchScreenSuccessState(searchData);
+        // if(event.returnValue is SearchingDataModel){
+        //   print('Print in bloc--> ${event.returnValue}');          
+        //  }
+        Map<String, dynamic> getSearchResultData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.searchUrl + 
+            "starredOnly=${event.returnValue.isStarCases}&" +
+            "recentActivity=${event.returnValue.isMyRecentActivity}&" +
+            "accNo=${event.returnValue.accountNumber}&" +
+            "cust=${event.returnValue.customerName}&" +
+            "dpdStr=${event.returnValue.dpdBucket}&" +
+            "customerId=${event.returnValue.customerID}&" +
+            "pincode=${event.returnValue.pincode}&" +
+            "collSubStatus=${event.returnValue.status}"
+            );
+            print('getSearchResultData----->');
+            print(getSearchResultData);
+             resultList.clear();
+             starCount.clear();
+
+            for (var element in getSearchResultData['data']['result']) {
+              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
+                  true) {
+                starCount.add(Result.fromJson(jsonDecode(jsonEncode(element)))
+                    .starredCase);
+              }
+            }
+            
+            isShowSearchPincode = true;
+            selectedOption = 3;
+            showFilterDistance = false;
+
       }
+      yield SearchReturnDataState();
     }
   }
 }

@@ -40,9 +40,13 @@ class _AllocationTelecallerScreenState
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return BlocListener<AllocationTBloc, AllocationTState>(
       bloc: bloc,
-      listener: (BuildContext context, AllocationTState state) {
+      listener: (BuildContext context, AllocationTState state) async {
         if (state is NavigateSearchPageTState) {
-          Navigator.pushNamed(context, AppRoutes.SearchScreen);
+          final dynamic returnValue = await Navigator.pushNamed(context, AppRoutes.searchScreen);
+         if(returnValue != null) {
+           print('----NK----returnvalue');
+           print(returnValue);
+         }
         }
 
         if (state is NavigateCaseDetailTState) {

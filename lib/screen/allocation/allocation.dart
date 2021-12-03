@@ -2,27 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/priority_case_list.dart';
-import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
-import 'package:origa/screen/map_screen/bloc/map_event.dart';
-import 'package:origa/screen/map_screen/map_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
-import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
-import 'package:origa/widgets/widget_utils.dart';
 
 import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
@@ -38,14 +32,27 @@ class AllocationScreen extends StatefulWidget {
 class _AllocationScreenState extends State<AllocationScreen> {
   late AllocationBloc bloc;
   late MapBloc mapBloc;
+  late Position position;
+  bool isCaseDetailLoading = false;
   bool areyouatOffice = true;
   String version = "";
   List<Result> resultList = [];
+
   @override
   void initState() {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent());
-    // mapBloc = MapBloc()..add(MapInitialEvent());
+    getCurrentLocation();
+  }
+
+  void getCurrentLocation() async {
+    Position result = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    setState(() {
+      position = result;
+    });
+    // print('position------> ${position}');
+    // print(position);
   }
 
   @override
@@ -54,30 +61,64 @@ class _AllocationScreenState extends State<AllocationScreen> {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
-      listener: (BuildContext context, AllocationState state) {
+      listener: (BuildContext context, AllocationState state) async {
+        if (state is CaseListViewLoadingState) {
+          isCaseDetailLoading = true;
+        }
         if (state is MapViewState) {
           mapView(context);
+          bloc.isShowSearchPincode = false;
         }
         if (state is MessageState) {
           messageShowBottomSheet();
         }
-        if (state is FilterSelectOptionState) {}
 
         if (state is NavigateCaseDetailState) {
           Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-              arguments: true);
+              arguments: state.paramValues);
         }
         if (state is NavigateSearchPageState) {
-          searchShowBottomSheet();
-          // var result = Navigator.pushNamed(context, AppRoutes.SearchScreen,
-          //     arguments: bloc);
+         final dynamic returnValue = await Navigator.pushNamed(context, AppRoutes.searchScreen);
+        //  if(returnValue is SearchingDataModel){
+        //   print(returnValue.accountNumber);
+        //  }
+         if(returnValue != null) {
+          bloc.add(SearchReturnDataEvent(returnValue: returnValue));
+         }
         }
+
+        if (state is SearchReturnDataState) {
+          isCaseDetailLoading = false;
+        }
+
         if (state is AllocationLoadedState) {
           //List<Result>
           if (state.successResponse is List<Result>) {
             resultList = state.successResponse;
           }
         }
+
+        if (state is TapPriorityState) {
+          if (state.successResponse is List<Result>) {
+            resultList = state.successResponse;
+          }
+          isCaseDetailLoading = false;
+          bloc.isShowSearchPincode = false;
+        }
+
+        if (state is TapBuildRouteState) {
+          if (state.successResponse is List<Result>) {
+            resultList = state.successResponse;
+          }
+          isCaseDetailLoading = false;
+          bloc.isShowSearchPincode = false;
+        }
+
+        if (state is FilterSelectOptionState) {
+          bloc.selectedOption = 0;
+          bloc.add(TapPriorityEvent());
+        }
+        // if (state is TapBuildRouteState) {}
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
@@ -278,11 +319,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   ),
                 ),
                 Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 0.0),
-                  child: CustomCardList.buildListView(bloc,
-                      resultData: resultList),
+                    child: isCaseDetailLoading ? 
+                    const Center(child: CircularProgressIndicator()) : 
+                    resultList.isEmpty ? const Center(child: CustomText('No cases available')) :
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 0.0),
+                      child: CustomCardList.buildListView(bloc,
+                              resultData: resultList),
                 )),
               ],
             ),
@@ -310,10 +354,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
           case 0:
             setState(() {
               bloc.showFilterDistance = false;
+              bloc.add(TapPriorityEvent());
             });
             break;
           case 1:
             setState(() {
+              bloc.add(TapBuildRouteEvent(
+                paramValues: BuildRouteDataModel(
+                  lat: position.latitude.toString(), 
+                  long: position.longitude.toString(), 
+                  maxDistMeters: "1000")
+              ));
               bloc.showFilterDistance = true;
             });
             break;
@@ -424,19 +475,38 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   List<Widget> _buildRouteFilterOptions() {
     List<Widget> widgets = [];
-    bloc.filterBuildRoute.forEach((element) {
-      widgets.add(_buildRouteFilterWidget(element));
+    bloc.filterBuildRoute.asMap().forEach((index, element) {
+      widgets.add(_buildRouteFilterWidget(index, element));
     });
     return widgets;
   }
 
-  Widget _buildRouteFilterWidget(String distance) {
+  Widget _buildRouteFilterWidget(int index, String distance) {
+    String? maxDistance;
     return InkWell(
       onTap: () {
+        switch (index) {
+          case 0:
+            maxDistance = '1000';
+            break;
+          case 1:
+            maxDistance = '5000';
+            break;
+          case 2:
+            maxDistance = '10000';
+            break;
+          default:
+        }
+        print(maxDistance);
         setState(() {
           bloc.selectedDistance = distance;
+          bloc.add(TapBuildRouteEvent(
+                paramValues: BuildRouteDataModel(
+                  lat: position.latitude.toString(), 
+                  long: position.longitude.toString(), 
+                  maxDistMeters: maxDistance)
+              ));
         });
-        print(distance);
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
@@ -497,20 +567,5 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.86,
                     child: MessageChatRoomScreen())));
-  }
-
-  searchShowBottomSheet() {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 1.0,
-                    child: SearchScreen(bloc: bloc))));
   }
 }

@@ -28,15 +28,16 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   List<String> rtpDenialReasonDropdownList = ['One', 'Two', 'Three', 'Four'];
 
   @override
   void initState() {
-    DateTime currentDateTime = DateTime.now();
-
-    nextActionDateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    remarksControlller.text = 'ABC';
+    // DateTime currentDateTime = DateTime.now();
+    // nextActionDateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // remarksControlller.text = 'ABC';
     super.initState();
   }
 
@@ -47,79 +48,88 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: true,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      SizedBox(
-                        width: (MediaQuery.of(context).size.width - 36) / 2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.nextActionDate,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width:
-                                  (MediaQuery.of(context).size.width - 42) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                nextActionDateControlller,
-                                isReadOnly: true,
-                                onTapped: () => pickDate(
-                                    context, nextActionDateControlller),
-                                suffixWidget: SvgPicture.asset(
-                                  ImageResource.calendar,
-                                  fit: BoxFit.scaleDown,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 36) / 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.nextActionDate,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w400,
+                                color: ColorResource.color666666,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              SizedBox(
+                                width:
+                                    (MediaQuery.of(context).size.width - 42) /
+                                        2,
+                                child: CustomReadOnlyTextField(
+                                  '',
+                                  nextActionDateControlller,
+                                  validationRules: const ['required'],
+                                  isReadOnly: true,
+                                  onEditing: () =>
+                                      _formKey.currentState!.validate(),
+                                  onTapped: () => pickDate(
+                                      context, nextActionDateControlller),
+                                  suffixWidget: SvgPicture.asset(
+                                    ImageResource.calendar,
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 15),
-                      CustomDropDownButton(
-                        Languages.of(context)!.rtpDenialReason,
-                        rtpDenialReasonDropdownList,
-                      ),
-                      const SizedBox(height: 15),
-                    ],
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 15),
+                        CustomDropDownButton(
+                          Languages.of(context)!.rtpDenialReason,
+                          rtpDenialReasonDropdownList,
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -159,7 +169,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),
@@ -205,6 +215,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // _formKey.currentState!.validate();
     });
   }
 }

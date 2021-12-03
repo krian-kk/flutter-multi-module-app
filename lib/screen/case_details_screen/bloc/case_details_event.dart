@@ -3,7 +3,10 @@ part of 'case_details_bloc.dart';
 @immutable
 class CaseDetailsEvent extends BaseEquatable {}
 
-class CaseDetailsInitialEvent extends CaseDetailsEvent {}
+class CaseDetailsInitialEvent extends CaseDetailsEvent {
+  dynamic paramValues;
+  CaseDetailsInitialEvent({this.paramValues});
+}
 
 class LaunchWhatsappEvent extends CaseDetailsEvent {
   final String whatsappUrlAddress;
@@ -26,7 +29,10 @@ class ClickViewMapEvent extends CaseDetailsEvent {}
 
 class ClickCallCustomerEvent extends CaseDetailsEvent {}
 
-class ClickCaseDetailsEvent extends CaseDetailsEvent {}
+class ClickCaseDetailsEvent extends CaseDetailsEvent {
+  dynamic paramValues;
+  ClickCaseDetailsEvent({this.paramValues});
+}
 
 class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String title;

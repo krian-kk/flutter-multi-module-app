@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -14,14 +15,13 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
 class SearchScreen extends StatefulWidget {
-  final AllocationBloc? bloc;
-  const SearchScreen({Key? key, required this.bloc}) : super(key: key);
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
   bool isLoaded = false;
+  late SearchScreenBloc bloc;
 
   late TextEditingController accountNoController = TextEditingController();
   late TextEditingController customerNameController = TextEditingController();
@@ -36,38 +36,35 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    bloc = SearchScreenBloc()..add(SearchScreenInitialEvent());
+    print('[-------Search------]');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorResource.colorC5C8CE,
-      body: BlocListener<AllocationBloc, AllocationState>(
-        bloc: widget.bloc,
+      body: BlocListener<SearchScreenBloc, SearchScreenState>(
+        bloc: bloc,
         listener: (context, state) {
-          if (state is SearchScreenLoadedState) {
-            setState(() {
-              isLoaded = true;
-            });
-          }
-          if (state is SearchScreenSuccessState) {
-            setState(() => isLoaded = false);
-            Navigator.pop(context);
-          }
-          if (state is SearchFailedState) {
-            setState(() => isLoaded = false);
-            AppUtils.showToast(state.error, gravity: ToastGravity.CENTER);
+          // TODO: implement listener
+          if(state is NavigatePopState){
+            Navigator.pop(context, 
+            SearchingDataModel(accountNumber: accountNoController.text,customerID: customerIDController.text,
+            customerName: customerNameController.text,dpdBucket: bucketController.text,
+            pincode: pincodeController.text,status: statusController.text, isStarCases: isStarOnly, isMyRecentActivity: isMyRecentActivity));
           }
         },
-        child: BlocBuilder<AllocationBloc, AllocationState>(
-          bloc: widget.bloc,
+        child: BlocBuilder<SearchScreenBloc, SearchScreenState>(
+          bloc: bloc,
           builder: (context, state) {
             if (state is SearchScreenLoadingState) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            return Stack(
+            return 
+           Stack(
               children: [
                 Column(
                   children: [
@@ -78,6 +75,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: BottomSheetAppbar(
                         title: Languages.of(context)!.searchAllocationDetails,
+                        // onTap: (){
+                        //   bloc.add(NavigatePopEvent());
+                        // },
                       ),
                     ),
                     Expanded(
@@ -140,6 +140,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                           isMyRecentActivity =
                                               !isMyRecentActivity;
                                         });
+                                        print(isMyRecentActivity);
                                       },
                                       child: Row(
                                         children: [
@@ -163,6 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         setState(() {
                                           isStarOnly = !isStarOnly;
                                         });
+                                        print(isStarOnly);
                                       },
                                       child: Row(
                                         children: [
@@ -214,12 +216,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   bucketController.text.isNotEmpty ||
                   statusController.text.isNotEmpty ||
                   pincodeController.text.isNotEmpty ||
-                  customerIDController.text.isNotEmpty) {
-                widget.bloc!
-                    .add(ClickSearchButtonEvent(isStarOnly, 'MOR000800314934'));
+                  customerIDController.text.isNotEmpty || isStarOnly || isMyRecentActivity) {
+                bloc.add(NavigatePopEvent());
               } else {
-                // AppUtils.showSnackBar(context,
-                //     Languages.of(context)!.searchErrorMessage, true);
                 AppUtils.showToast(Languages.of(context)!.searchErrorMessage,
                     gravity: ToastGravity.CENTER);
               }

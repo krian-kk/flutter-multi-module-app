@@ -69,10 +69,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   FocusNode phoneUnreachableRemarksFocusNode = FocusNode();
   FocusNode phoneInvalidRemarksFocusNode = FocusNode();
 
-  // Case Details Screen
-
-  // CaseDetailsApiModel caseDetailsResult = CaseDetailsApiModel();
-
   late TextEditingController loanAmountController = TextEditingController();
   late TextEditingController bankNameController = TextEditingController();
   late TextEditingController emiStartDateController = TextEditingController();
@@ -88,25 +84,21 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
 
+      print('CaseDetailsInitialEvent--> ${event.paramValues}');
+
+
       //check internet
       final result = await Connectivity().checkConnectivity();
       if (result == ConnectivityResult.none) {
         print('Please Connect Internet!');
       } else {
-        // Map<String, dynamic> caseDetailsData =
-        //     await APIRepository.getCaseDetailsData('6181646813c5cf70dea671d2');
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.GET,
-            HttpUrl.caseDetailsUrl + '6181646813c5cf70dea671d2');
+            HttpUrl.caseDetailsUrl + event.paramValues['caseID']);
+            print(caseDetailsData);
 
         if (caseDetailsData['success'] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
-          // print("Api values => ${jsonData['result']}");
-
-          // caseDetailsResult = CaseDetailsApiModel.fromJson(jsonData);
-
-          // dynamic values = caseDetailsResult.result?.toJson();
-          // caseDetailsHiveBox.clear();
 
           caseDetailsHiveBox.then((value) => value.put(
               'c1',
@@ -116,8 +108,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 result: jsonData['result'],
               )));
         } else {
-          // message = weatherData["data"];
-          // yield SevenDaysFailureState();
         }
       }
 
@@ -154,16 +144,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           .toString()
           .replaceAll('null', '-');
 
-      // print("Offline values => ${offlineCaseDetailsValue.caseDetails?.cust}");
-
-      // print(caseDetailsHiveBox.get('c1')?.message);
-      // Result result1 = Result.fromJson(caseDetailsHiveBox.get('c1')?.result);
-      // print(result1.caseDetails?.due);
-      // CaseDetailsApiModel caseDetailsTemp = CaseDetailsApiModel(
-      //     message: caseDetailsHiveBox.get('c1')?.message,
-      //     status: caseDetailsHiveBox.get('c1')?.status,
-      //     result: Result.fromJson(caseDetailsHiveBox.get('c1')?.result));
-      // print(caseDetailsTemp.result?.caseDetails?.bankName);
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ptp))),
@@ -182,23 +162,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ots))),
       ]);
-      expandEvent.addAll([
-        EventExpandModel(
-            header: 'FIELD ALLOCATION',
-            date: '7 Sep 2021',
-            colloctorID: 'AGENT | HAR_fos4',
-            remarks: 'XYZ'),
-        EventExpandModel(
-            header: 'TELECALLING | PTP',
-            date: '12 May 2021',
-            colloctorID: 'AGENT | HAR_fos4',
-            remarks: 'XYZ'),
-        EventExpandModel(
-            header: 'FTELECALLING',
-            date: '23 Oct 2021',
-            colloctorID: 'AGENT | HAR_fos4',
-            remarks: 'XYZ'),
-      ]);
+    
       expandOtherFeedback.addAll([
         OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
         OtherFeedbackExpandModel(
@@ -240,7 +204,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield ClickCallCustomerState();
     }
     if (event is ClickCaseDetailsEvent) {
-      yield CallCaseDetailsState();
+      yield CallCaseDetailsState(
+         paramValues: event.paramValues
+      );
     }
 
     if (event is ClickOpenBottomSheetEvent) {
@@ -250,10 +216,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               await Connectivity().checkConnectivity()) {
             print('Please Connect Internet!');
           } else {
-            // Map<String, dynamic> getEventDetailsData =
-            //     await APIRepository.getEventDetailsData(
-            //         '5f80375a86527c46deba2e62');
-
+            
             Map<String, dynamic> getEventDetailsData =
                 await APIRepository.apiRequest(APIRequestType.GET,
                     HttpUrl.profileUrl + '5f80375a86527c46deba2e62');

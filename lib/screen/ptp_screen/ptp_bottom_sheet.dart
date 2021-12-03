@@ -33,22 +33,28 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
   TextEditingController loanDurationController = TextEditingController();
 
+  FocusNode ptpDataFocusNode = FocusNode();
+  FocusNode ptpReferenceFocusNode = FocusNode();
+  FocusNode ptpRemarksFocusNode = FocusNode();
+
   String selectedPaymentModeButton = '';
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    DateTime currentDateTime = DateTime.now();
-    final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+    // DateTime currentDateTime = DateTime.now();
+    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
 
-    ptpDateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // ptpDateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
 
-    ptpTimeControlller.text = '$hours:$minutes';
-    ptpAmountControlller.text = '0';
-    referenceControlller.text = 'ABC';
-    remarksControlller.text = 'ABC';
+    // ptpTimeControlller.text = '$hours:$minutes';
+    // ptpAmountControlller.text = '0';
+    // referenceControlller.text = 'ABC';
+    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -74,114 +80,134 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      Row(
-                        children: [
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.ptpDate,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  ptpDateControlller,
-                                  isReadOnly: true,
-                                  onTapped: () =>
-                                      pickDate(context, ptpDateControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.ptpDate,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    ptpDateControlller,
+                                    isReadOnly: true,
+                                    validationRules: const ['required'],
+                                    onTapped: () =>
+                                        pickDate(context, ptpDateControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                          const SizedBox(width: 7),
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.ptpTime,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  ptpTimeControlller,
-                                  isReadOnly: true,
-                                  onTapped: () =>
-                                      pickTime(context, ptpTimeControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+                              ],
+                            )),
+                            const SizedBox(width: 7),
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.ptpTime,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    ptpTimeControlller,
+                                    validatorCallBack: () {},
+                                    isReadOnly: true,
+                                    validationRules: const ['required'],
+                                    onTapped: () =>
+                                        pickTime(context, ptpTimeControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.ptpAmount,
-                        ptpAmountControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 15),
-                      CustomText(
-                        Languages.of(context)!.paymentMode,
-                        fontSize: FontSize.fourteen,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                        color: ColorResource.color101010,
-                      ),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        runSpacing: 10,
-                        spacing: 18,
-                        children: _buildPaymentButton(paymentModeButtonList),
-                      ),
-                      const SizedBox(height: 21),
-                      CustomReadOnlyTextField(
-                        Languages.of(context)!.reference,
-                        referenceControlller,
-                        isLabel: true,
-                      ),
-                      const SizedBox(height: 20),
-                      CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                      ),
-                      const SizedBox(height: 15)
-                    ],
+                              ],
+                            )),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.ptpAmount,
+                          ptpAmountControlller,
+                          focusNode: ptpDataFocusNode,
+                          validatorCallBack: () {},
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          onEditing: () => ptpReferenceFocusNode.requestFocus(),
+                        )),
+                        const SizedBox(height: 15),
+                        CustomText(
+                          Languages.of(context)!.paymentMode,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                          color: ColorResource.color101010,
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          runSpacing: 10,
+                          spacing: 18,
+                          children: _buildPaymentButton(paymentModeButtonList),
+                        ),
+                        const SizedBox(height: 21),
+                        CustomReadOnlyTextField(
+                          Languages.of(context)!.reference,
+                          referenceControlller,
+                          focusNode: ptpReferenceFocusNode,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          validatorCallBack: () {},
+                          onEditing: () => ptpRemarksFocusNode.requestFocus(),
+                        ),
+                        const SizedBox(height: 20),
+                        CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          focusNode: ptpRemarksFocusNode,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          validatorCallBack: () {},
+                          onEditing: () => ptpRemarksFocusNode.unfocus(),
+                        ),
+                        const SizedBox(height: 15)
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -226,7 +252,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                      } else {}
+                    },
                     cardShape: 5,
                   ),
                 ),
@@ -327,6 +356,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // _formKey.currentState!.validate();
     });
   }
 
@@ -361,6 +391,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
     final hours = newTime.hour.toString().padLeft(2, '0');
     final minutes = newTime.minute.toString().padLeft(2, '0');
-    setState(() => controller.text = '$hours:$minutes');
+    setState(() {
+      controller.text = '$hours:$minutes';
+      // _formKey.currentState!.validate();
+    });
   }
 }

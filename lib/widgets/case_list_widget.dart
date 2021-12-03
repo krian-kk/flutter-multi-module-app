@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/allocation_model.dart';
-import 'package:origa/models/dashboard_model.dart';
-import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
-import 'package:origa/router.dart';
-// import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -19,11 +15,10 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CaseLists {
   static Widget buildListView(
-    DashboardBloc bloc, 
-    DashboardAllModel brokenPTPData) {
+    DashboardBloc bloc, DashboardAllModels listData, ) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        // itemCount: brokenPTPData.result!.cases!.length,
+        // itemCount: listData.result!.cases!.length,
         itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           int listCount = index + 1;
@@ -47,7 +42,7 @@ class CaseLists {
                               color: ColorResource.color101010,
                             ),
                             CustomText(
-                              brokenPTPData.result!.count.toString(),
+                              listData.result!.count.toString(),
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,
@@ -66,7 +61,7 @@ class CaseLists {
                               color: ColorResource.color101010,
                             ),
                             CustomText(
-                              brokenPTPData.result!.totalAmt.toString(),
+                              listData.result!.totalAmt.toString(),
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,
@@ -81,10 +76,10 @@ class CaseLists {
                 padding: const EdgeInsets.only(top: 20),
                 child: InkWell(
                   onTap: () {
-                    bloc.add(NavigateCaseDetailEvent());
+                    bloc.add(NavigateCaseDetailEvent(paramValues:{'caseID':listData.result!.cases![index].caseId,'isAddress': true}));
                   },
                   child: Container(
-                    margin: (index == brokenPTPData.result!.cases!.length - 1)
+                    margin: (index == listData.result!.cases!.length - 1)
                         ? const EdgeInsets.only(bottom: 70)
                         : EdgeInsets.zero,
                     width: MediaQuery.of(context).size.width,
@@ -112,7 +107,7 @@ class CaseLists {
                           padding:
                               const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                           child: CustomText(
-                             brokenPTPData.result!.cases![index].caseId!,
+                             listData.result!.cases![index].caseId!,
                             fontSize: FontSize.twelve,
                             color: ColorResource.color101010,
                           ),
@@ -132,7 +127,7 @@ class CaseLists {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomText(
-                                     brokenPTPData.result!.cases![index].due.toString(),
+                                     listData.result!.cases![index].due.toString(),
                                     fontSize: FontSize.eighteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w700,
@@ -141,7 +136,7 @@ class CaseLists {
                                     height: 3.0,
                                   ),
                                   CustomText(
-                                     brokenPTPData.result!.cases![index].cust!,
+                                     listData.result!.cases![index].cust!,
                                     fontSize: FontSize.sixteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w400,
@@ -149,7 +144,7 @@ class CaseLists {
                                 ],
                               ),
                               const Spacer(),
-                               if(brokenPTPData.result!.cases![index].collSubStatus == 'new')
+                               if(listData.result!.cases![index].collSubStatus == 'new')
                                   Container(
                                       width: 55,
                                       height: 19,
@@ -181,7 +176,7 @@ class CaseLists {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: CustomText(
-                              brokenPTPData.result!.cases![index].address![0].value!,
+                              listData.result!.cases![index].address![0].value!,
                               color: ColorResource.color484848,
                               fontSize: FontSize.fourteen,
                             ),
@@ -214,7 +209,7 @@ class CaseLists {
                               Row(
                                 children: [
                                   CustomText(
-                                    brokenPTPData.result!.cases![index].followUpDate!,
+                                    listData.result!.cases![index].followUpDate!,
                                     fontSize: FontSize.fourteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w700,

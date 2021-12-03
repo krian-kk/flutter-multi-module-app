@@ -5,9 +5,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/models/dashboard_broken_model/dashboard_broken_model.dart';
 import 'package:origa/models/dashboard_model.dart';
-import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
+// import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_my_receipts_model/dashboard_my_receipts_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
@@ -26,12 +27,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   List<DashboardListModel> dashboardList = [];
   List<CaseListModel> caseList = [];
   String? selectedFilter = 'TODAY';
-  DashboardAllModel priortyFollowUpData = DashboardAllModel();
-  DashboardAllModel brokenPTPData = DashboardAllModel();
-  DashboardAllModel untouchedCasesData =
-      DashboardAllModel();
-  DashboardAllModel myVisitsData = DashboardAllModel();
-  DashboardAllModel myReceiptsData = DashboardAllModel();
+  DashboardAllModels priortyFollowUpData = DashboardAllModels();
+  DashboardAllModels brokenPTPData = DashboardAllModels();
+  DashboardAllModels untouchedCasesData =
+      DashboardAllModels();
+  DashboardAllModels myVisitsData = DashboardAllModels();
+  DashboardAllModels myReceiptsData = DashboardAllModels();
   // DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
   // DashboardUntouchedCasesModel untouchedCasesData =
   //     DashboardUntouchedCasesModel();
@@ -46,8 +47,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'WEEKLY',
     'MONTHLY',
   ];
-
-  List<Cases> resultList = [];
 
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
@@ -147,16 +146,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getPriorityFollowUpData =
             await APIRepository.apiRequest(APIRequestType.GET,
-                HttpUrl.dashboardPriorityProirityFollowUpUrl + '411036');
-        priortyFollowUpData = getPriorityFollowUpData['data'] as DashboardAllModel;
-            // DashboardAllModel.fromJson(getProfileFollowUpData['data']);
-          // priortyFollowUpData =  DashboardAllModel(
-          //       message: getPriorityFollowUpData['data']['message'],
-          //       status: getPriorityFollowUpData['data']['status'],
-          //       result: Result.fromJson(getPriorityFollowUpData['data']['result']),
-          //     );
-        print('priortyFollowUpData-------------');
-        print(getPriorityFollowUpData['data']);
+                HttpUrl.dashboardPriorityFollowUpUrl + '411036');
+        priortyFollowUpData = 
+            DashboardAllModels.fromJson(getPriorityFollowUpData['data']);
       }
 
       yield PriorityFollowState();
@@ -169,9 +161,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic> getUntouchedCasesData =
             await APIRepository.apiRequest(
                 APIRequestType.GET, HttpUrl.dashboardUntouchedCasesUrl + '');
-        untouchedCasesData = DashboardAllModel.fromJson(
+        untouchedCasesData = DashboardAllModels.fromJson(
             getUntouchedCasesData['data']);
-        print(untouchedCasesData.result);
       }
       yield UntouchedCasesState();
     }
@@ -181,13 +172,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getBrokenPTPData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardBrokenPTPUrl + '10');
-            print(getBrokenPTPData);
-            // print('getBrokenPTPData----> ${getBrokenPTPData['data']}');
-            // print('Encodes----> ${jsonEncode(getBrokenPTPData['data'])}');
-        brokenPTPData = DashboardAllModel.fromJson(jsonDecode(jsonEncode(getBrokenPTPData['data'])));
-                    print('After convert----> ${brokenPTPData.result}');
-
+            APIRequestType.GET, HttpUrl.dashboardBrokenPTPUrl);
+        brokenPTPData = DashboardAllModels.fromJson(getBrokenPTPData['data']);
       }
       yield BrokenPTPState();
     }
@@ -196,12 +182,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
-        // Map<String, dynamic> getMyReceiptsData =
-        //     await APIRepository.getDashboardMyReceiptsData('WEEKLY');
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 'WEEKLY');
         myReceiptsData =
-            DashboardAllModel.fromJson(getMyReceiptsData['data']);
+            DashboardAllModels.fromJson(getMyReceiptsData['data']);
       }
       yield MyReceiptsState();
     }
@@ -212,7 +196,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + '');
-        myVisitsData = DashboardAllModel.fromJson(getMyVisitsData['data']);
+        myVisitsData = DashboardAllModels.fromJson(getMyVisitsData['data']);
         print(myVisitsData);
       }
       yield MyVisitsState();
@@ -236,9 +220,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
-        // Map<String, dynamic> getYardingAndSelfReleaseData =
-        //     await APIRepository.getDashboardYardingAndSelfReleaseData(
-        //         '5f80375a86527c46deba2e60');
         Map<String, dynamic> getYardingAndSelfReleaseData =
             await APIRepository.apiRequest(
                 APIRequestType.GET,
@@ -252,7 +233,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is NavigateCaseDetailEvent) {
-      yield NavigateCaseDetailState();
+      yield NavigateCaseDetailState(paramValues: event.paramValues);
     }
 
     if (event is NavigateSearchEvent) {

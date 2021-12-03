@@ -60,42 +60,81 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
-        listener: (BuildContext context, DashboardState state) {
+        listener: (BuildContext context, DashboardState state) async {
           if (state is PriorityFollowState) {
+            if(bloc.priortyFollowUpData.result!.cases!.isNotEmpty){
             priorityFollowUpSheet(context);
+            }else{
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is UntouchedCasesState) {
+            if(bloc.untouchedCasesData.result!.cases!.isNotEmpty){
             untouchedCasesSheet(context);
+            }else{
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is BrokenPTPState) {
+            if(bloc.brokenPTPData.result!.cases!.isNotEmpty){
             brokenPTPSheet(context);
+            }else{
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is MyReceiptsState) {
+            if(bloc.myReceiptsData.result!.cases!.isNotEmpty){
             myReceiptsSheet(context);
+            }else{
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is MyVisitsState) {
+            if(bloc.myVisitsData.result!.cases!.isNotEmpty){
             myVisitsSheet(context);
+            }else{
+              //Snacbar msg view
+              print('------------vales------');
+            }
           }
 
           if (state is MyDeposistsState) {
+            // if(bloc.myDeposistsData.result!.cases!.isNotEmpty){
             myDeposistsSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   print('------------vales------');
+            // }
           }
 
           if (state is YardingAndSelfReleaseState) {
+            // if(bloc.yardingAndSelfReleaseData.result!.cases!.isNotEmpty){
             yardingSelfReleaseSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   print('------------vales------');
+            // }
           }
 
           if (state is NavigateCaseDetailState) {
             Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                arguments: true);
+                arguments: state.paramValues);
           }
 
           if (state is NavigateSearchState) {
-            Navigator.pushNamed(context, AppRoutes.SearchScreen);
+          final dynamic returnValue = await Navigator.pushNamed(context, AppRoutes.searchScreen);
+          if(returnValue != null) {
+           print('----NK----returnvalue');
+           print(returnValue);
+         }
           }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(

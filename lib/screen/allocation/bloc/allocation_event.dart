@@ -10,12 +10,24 @@ class MessageEvent extends AllocationEvent {}
 
 class NavigateSearchPageEvent extends AllocationEvent {}
 
-class NavigateCaseDetailEvent extends AllocationEvent {}
+class NavigateCaseDetailEvent extends AllocationEvent {
+  dynamic paramValues;
+  NavigateCaseDetailEvent({this.paramValues});
+}
 
 class FilterSelectOptionEvent extends AllocationEvent {}
 
-class ClickSearchButtonEvent extends AllocationEvent {
-  final bool isStaredOnly;
-  final String searchField;
-  ClickSearchButtonEvent(this.isStaredOnly, this.searchField);
+class CaseListViewLoadingEvent extends AllocationEvent {}
+
+class TapPriorityEvent extends AllocationEvent {}
+
+class TapBuildRouteEvent extends AllocationEvent {
+  dynamic paramValues;
+  TapBuildRouteEvent({this.paramValues});
 }
+
+class SearchReturnDataEvent extends AllocationEvent {
+  dynamic returnValue;
+  SearchReturnDataEvent({this.returnValue});
+}
+

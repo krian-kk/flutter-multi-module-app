@@ -27,10 +27,12 @@ class _CustomCaptureImageBottomSheetState
     extends State<CustomCaptureImageBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    remarksControlller.text = 'ABC';
+    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -40,62 +42,68 @@ class _CustomCaptureImageBottomSheetState
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: true,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      CustomButton(
-                        Languages.of(context)!.customUpload,
-                        fontWeight: FontWeight.w700,
-                        trailingWidget: SvgPicture.asset(ImageResource.upload),
-                        fontSize: FontSize.sixteen,
-                        buttonBackgroundColor: ColorResource.color23375A,
-                        borderColor: ColorResource.colorDADADA,
-                        cardShape: 50,
-                        cardElevation: 1,
-                        isLeading: true,
-                        onTap: () async {
-                          final result = await FilePicker.platform.pickFiles(
-                            type: FileType.image,
-                            // allowedExtensions: ['doc'],
-                          );
-                          if (result == null) return;
-                          // print(result);
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                        // validationRules: ['required'],
-                      )),
-                      const SizedBox(height: 15),
-                    ],
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        CustomButton(
+                          Languages.of(context)!.customUpload,
+                          fontWeight: FontWeight.w700,
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.upload),
+                          fontSize: FontSize.sixteen,
+                          buttonBackgroundColor: ColorResource.color23375A,
+                          borderColor: ColorResource.colorDADADA,
+                          cardShape: 50,
+                          cardElevation: 1,
+                          isLeading: true,
+                          onTap: () async {
+                            final result = await FilePicker.platform.pickFiles(
+                              type: FileType.image,
+                              // allowedExtensions: ['doc'],
+                            );
+                            if (result == null) return;
+                            // print(result);
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          // validationRules: ['required'],
+                        )),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -135,7 +143,7 @@ class _CustomCaptureImageBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),

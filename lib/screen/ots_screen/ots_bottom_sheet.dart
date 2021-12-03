@@ -28,18 +28,19 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   TextEditingController otsPaymentTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    DateTime currentDateTime = DateTime.now();
-    final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-
-    otsProposedAmountControlller.text = '0';
-    otsPaymentDateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    otsPaymentTimeControlller.text = '$hours:$minutes';
-    remarksControlller.text = 'ABC';
+    // DateTime currentDateTime = DateTime.now();
+    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+    // otsProposedAmountControlller.text = '0';
+    // otsPaymentDateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // otsPaymentTimeControlller.text = '$hours:$minutes';
+    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -49,114 +50,124 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.otsProposedAmount,
-                        otsProposedAmountControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 17),
-                      Row(
-                        children: [
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.otsPaymentDate,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  otsPaymentDateControlller,
-                                  isReadOnly: true,
-                                  onTapped: () => pickDate(
-                                      context, otsPaymentDateControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
-                                  ),
-                                  // focusColor: ColorResource.colorE5EAF6,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.otsProposedAmount,
+                          otsProposedAmountControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.otsPaymentDate,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
                                 ),
-                              ),
-                            ],
-                          )),
-                          const SizedBox(width: 7),
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.otsPaymentTime,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  otsPaymentTimeControlller,
-                                  isReadOnly: true,
-                                  onTapped: () => pickTime(
-                                      context, otsPaymentTimeControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    otsPaymentDateControlller,
+                                    validationRules: const ['required'],
+                                    isReadOnly: true,
+                                    onTapped: () => pickDate(
+                                        context, otsPaymentDateControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                    // focusColor: ColorResource.colorE5EAF6,
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 15),
-                    ],
+                              ],
+                            )),
+                            const SizedBox(width: 7),
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.otsPaymentTime,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    otsPaymentTimeControlller,
+                                    validationRules: const ['required'],
+                                    isReadOnly: true,
+                                    onTapped: () => pickTime(
+                                        context, otsPaymentTimeControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -196,7 +207,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),
@@ -242,6 +253,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // _formKey.currentState!.validate();
     });
   }
 
@@ -276,6 +288,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
     final hours = newTime.hour.toString().padLeft(2, '0');
     final minutes = newTime.minute.toString().padLeft(2, '0');
-    setState(() => controller.text = '$hours:$minutes');
+    setState(() {
+      controller.text = '$hours:$minutes';
+      // _formKey.currentState!.validate();
+    });
   }
 }

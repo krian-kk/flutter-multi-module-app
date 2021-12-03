@@ -23,7 +23,10 @@ class MyDeposistsState extends DashboardState {}
 
 class YardingAndSelfReleaseState extends DashboardState {}
 
-class NavigateCaseDetailState extends DashboardState {}
+class NavigateCaseDetailState extends DashboardState {
+  dynamic paramValues;
+  NavigateCaseDetailState({this.paramValues});
+}
 
 class NavigateSearchState extends DashboardState {}
 

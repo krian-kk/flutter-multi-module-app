@@ -30,20 +30,25 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   TextEditingController chassisNoControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
+  FocusNode modelMakeFocusNode = FocusNode();
+  FocusNode registraionNoFocusNode = FocusNode();
+  FocusNode chassisNoFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
-    DateTime currentDateTime = DateTime.now();
-    final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-
-    dateControlller.text =
-        DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    timeControlller.text = '$hours:$minutes';
-    modelMakeControlller.text = '123';
-    registrationNoControlller.text = '123';
-    chassisNoControlller.text = '123';
-    remarksControlller.text = 'ABC';
+    // DateTime currentDateTime = DateTime.now();
+    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
+    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
+    // dateControlller.text =
+    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
+    // timeControlller.text = '$hours:$minutes';
+    // modelMakeControlller.text = '123';
+    // registrationNoControlller.text = '123';
+    // chassisNoControlller.text = '123';
+    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -53,135 +58,154 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const CustomLoanUserDetails(
-                        userName: 'DEBASISH PATNAIK',
-                        userId: 'TVSF_BFRT6458922993',
-                        userAmount: 397553.67,
-                      ),
-                      const SizedBox(height: 11),
-                      Row(
-                        children: [
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.date,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  dateControlller,
-                                  isReadOnly: true,
-                                  onTapped: () =>
-                                      pickDate(context, dateControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                  title: widget.cardTitle,
+                  padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const CustomLoanUserDetails(
+                          userName: 'DEBASISH PATNAIK',
+                          userId: 'TVSF_BFRT6458922993',
+                          userAmount: 397553.67,
+                        ),
+                        const SizedBox(height: 11),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.date,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    dateControlller,
+                                    validationRules: const ['required'],
+                                    isReadOnly: true,
+                                    onTapped: () => pickDate(
+                                        context, dateControlller, _formKey),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                          const SizedBox(width: 7),
-                          Flexible(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.time,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width: (MediaQuery.of(context).size.width) / 2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  timeControlller,
-                                  onTapped: () =>
-                                      pickTime(context, timeControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+                              ],
+                            )),
+                            const SizedBox(width: 7),
+                            Flexible(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.time,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    timeControlller,
+                                    validationRules: const ['required'],
+                                    onTapped: () =>
+                                        pickTime(context, timeControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                        ],
-                      ),
-                      const SizedBox(height: 17),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.modelMake,
-                        modelMakeControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 17),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.registrationNo,
-                        registrationNoControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 17),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.chassisNo,
-                        chassisNoControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 21),
-                      CustomButton(
-                        Languages.of(context)!.customUpload,
-                        fontWeight: FontWeight.w700,
-                        trailingWidget: SvgPicture.asset(ImageResource.upload),
-                        fontSize: FontSize.sixteen,
-                        buttonBackgroundColor: ColorResource.color23375A,
-                        borderColor: ColorResource.colorDADADA,
-                        cardShape: 50,
-                        cardElevation: 1,
-                        isLeading: true,
-                      ),
-                      const SizedBox(height: 17),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        remarksControlller,
-                        isLabel: true,
-                      )),
-                      const SizedBox(height: 15),
-                    ],
+                              ],
+                            )),
+                          ],
+                        ),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.modelMake,
+                          modelMakeControlller,
+                          focusNode: modelMakeFocusNode,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          onEditing: () =>
+                              registraionNoFocusNode.requestFocus(),
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.registrationNo,
+                          registrationNoControlller,
+                          focusNode: registraionNoFocusNode,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          onEditing: () => chassisNoFocusNode.requestFocus(),
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.chassisNo,
+                          chassisNoControlller,
+                          focusNode: chassisNoFocusNode,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          onEditing: () => chassisNoFocusNode.unfocus(),
+                        )),
+                        const SizedBox(height: 21),
+                        CustomButton(
+                          Languages.of(context)!.customUpload,
+                          fontWeight: FontWeight.w700,
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.upload),
+                          fontSize: FontSize.sixteen,
+                          buttonBackgroundColor: ColorResource.color23375A,
+                          borderColor: ColorResource.colorDADADA,
+                          cardShape: 50,
+                          cardElevation: 1,
+                          isLeading: true,
+                        ),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height * 0.1,
@@ -221,7 +245,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
+                    onTap: () => _formKey.currentState!.validate(),
                     cardShape: 5,
                   ),
                 ),
@@ -233,8 +257,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     );
   }
 
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
+  Future pickDate(BuildContext context, TextEditingController controller,
+      GlobalKey<FormState> formKey) async {
     final newDate = await showDatePicker(
         context: context,
         initialDatePickerMode: DatePickerMode.year,
@@ -262,11 +286,11 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
             child: child!,
           );
         });
-
     if (newDate == null) return null;
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      // formKey.currentState!.validate();
     });
   }
 
@@ -301,6 +325,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
     final hours = newTime.hour.toString().padLeft(2, '0');
     final minutes = newTime.minute.toString().padLeft(2, '0');
-    setState(() => controller.text = '$hours:$minutes');
+    setState(() {
+      controller.text = '$hours:$minutes';
+      // _formKey.currentState!.validate();
+    });
   }
 }

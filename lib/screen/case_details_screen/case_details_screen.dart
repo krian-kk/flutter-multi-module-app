@@ -13,6 +13,7 @@ import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_scree
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -30,8 +31,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
-  final bool isAdderss;
-  const CaseDetailsScreen(this.isAdderss, {Key? key}) : super(key: key);
+  dynamic paramValues;
+   CaseDetailsScreen({this.paramValues});
 
   @override
   _CaseDetailsScreenState createState() => _CaseDetailsScreenState();
@@ -44,7 +45,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent());
+    bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent(paramValues: widget.paramValues));
+      //   print('CaseDetailsScreen.paramValues------');
+      // print(widget.paramValues);
+      // print(widget.paramValues['caseID']);
   }
 
   @override
@@ -66,8 +70,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             openBottomSheet(context, state.title);
           }
           if (state is CallCaseDetailsState) {
-            Navigator.popAndPushNamed(context, AppRoutes.caseDetailsScreen,
-                arguments: true);
+            print(state.paramValues);
+            Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+                arguments: state.paramValues);
           }
         },
         child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -579,7 +584,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             const SizedBox(height: 10),
                                             GestureDetector(
                                               onTap: () => bloc
-                                                  .add(ClickCaseDetailsEvent()),
+                                                  .add(ClickCaseDetailsEvent(
+                                                    paramValues:{'caseID':bloc
+                                                            .offlineCaseDetailsValue
+                                                            .otherLoanDetails![
+                                                                index]
+                                                            .id!,'isAddress': true})),
                                               child: Container(
                                                 width: double.infinity,
                                                 decoration: BoxDecoration(
@@ -738,7 +748,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              widget.isAdderss
+                              widget.paramValues['isAddress'] as bool
                                   ? GestureDetector(
                                       onTap: () => bloc.add(
                                           ClickOpenBottomSheetEvent(
@@ -784,7 +794,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       ),
                                     )
                                   : const SizedBox(),
-                              SizedBox(width: widget.isAdderss ? 20 : 0),
+                              SizedBox(width: widget.paramValues['isAddress'] as bool ? 20 : 0),
                               GestureDetector(
                                 onTap: () => bloc.add(ClickOpenBottomSheetEvent(
                                     StringResource.callDetails)),
@@ -898,7 +908,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             return CustomOtherFeedBackBottomSheet(
                 Languages.of(context)!.otherFeedBack, bloc);
           case StringResource.eventDetails:
-            return CustomOtherFeedBackBottomSheet(
+            return CustomEventDetailsBottomSheet(
                 Languages.of(context)!.eventDetails, bloc);
           case StringResource.addressDetails:
             return AddressDetailsBottomSheetScreen(bloc: bloc);
