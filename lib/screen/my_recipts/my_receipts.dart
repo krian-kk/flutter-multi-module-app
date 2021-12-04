@@ -63,6 +63,10 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.myReceipts,
+                      onTap: (){
+                        widget.bloc.add(SetTimeperiodValueEvent());
+                        Navigator.pop(context);
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -89,7 +93,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        '200',
+                                        widget.bloc.myReceiptsData.result!.count.toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -111,7 +115,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        '₹ 3,97,553.67',
+                                        widget.bloc.myReceiptsData.result!.totalAmt.toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -204,13 +208,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         setState(() {
           widget.bloc.selectedFilter = option;
         });
-        // switch (option) {
-        //   case 'WEEKLY':
-        //     break;
-        //   case 'MONTHLY':
-        //     break;
-        //   default:
-        // }
+        widget.bloc.add(ReceiptsApiEvent(timePeiod:option));
         print(option);
       },
       child: Card(

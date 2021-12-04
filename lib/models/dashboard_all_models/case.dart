@@ -26,7 +26,7 @@ class Case {
         due: json['due'] as int?,
         cust: json['cust'] as String?,
         collSubStatus: json['collSubStatus'] as String?,
-        followUpDate: json['followUpDate'] as String?,
+        followUpDate: json['followUpDate'] as String? ?? "-",
         customerId: json['customerId'] as String?,
         caseId: json['caseId'] as String?,
         address: (json['address'] as List<dynamic>?)

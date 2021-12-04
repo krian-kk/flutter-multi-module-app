@@ -10,18 +10,24 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 // import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseLists {
   static Widget buildListView(
     DashboardBloc bloc, DashboardAllModels listData, ) {
-    return ListView.builder(
+      print(bloc.selectedFilterDataLoading);
+    return bloc.selectedFilterDataLoading! ? 
+    const Center(child: CircularProgressIndicator(),) :
+    listData.result!.cases!.isEmpty ? 
+    const Center(child: CustomText(StringResource.noCasesAvailable),) :
+    ListView.builder(
         scrollDirection: Axis.vertical,
-        // itemCount: listData.result!.cases!.length,
-        itemCount: 1,
+        itemCount: listData.result!.cases!.length,
+        // itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
-          int listCount = index + 1;
+          // int listCount = index + 1;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
