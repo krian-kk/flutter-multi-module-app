@@ -589,4 +589,40 @@ class LanguageEn extends Languages {
 
   @override
   String get email => 'Email';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String get resendOTP => 'Resend OTP?';
+
+  @override
+  String get sendOTP => 'SEND OTP';
+
+  @override
+  String get businessLoss => 'Business Loss';
+
+  @override
+  String get covidImpacted => 'Covid Impacted';
+
+  @override
+  String get financialReason => 'Financial Reason';
+
+  @override
+  String get incomeLossInTheFamily => 'Income Loss In The Family';
+
+  @override
+  String get intention => 'Intention ';
+
+  @override
+  String get jobLoss => 'Job Loss';
+
+  @override
+  String get jobUncertaintly => 'Job Uncertaintly';
+
+  @override
+  String get medicalIssue => 'Medical Issue';
+
+  @override
+  String get salaryIssue => 'Salary Issue';
 }

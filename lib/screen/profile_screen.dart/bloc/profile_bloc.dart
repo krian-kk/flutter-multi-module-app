@@ -7,7 +7,6 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_api_result_model/result.dart';
-import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/preference_helper.dart';
@@ -72,6 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               'Hi, Check Case Details with all in pincode 600054 .')
         ]),
       ]);
+      yield ProfileLoadedState();
     }
     if (event is ClickNotificationEvent) {
       yield ClickNotificationState();

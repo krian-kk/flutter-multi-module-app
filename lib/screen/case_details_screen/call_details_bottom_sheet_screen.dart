@@ -5,6 +5,7 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -156,7 +157,9 @@ class _CallDetailsBottomSheetScreenState
                                               child: InkWell(
                                             onTap: () {
                                               widget.bloc.add(
-                                                  ClickCallCustomerEvent());
+                                                  ClickOpenBottomSheetEvent(
+                                                      StringResource
+                                                          .callCustomer));
                                             },
                                             child: Container(
                                                 decoration: const BoxDecoration(

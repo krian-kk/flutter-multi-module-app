@@ -98,4 +98,5 @@ class StringResource {
   static const String autoCalling = 'Auto Calling';
   static const String eventDetails = 'EVENT DETAILS';
   static const String noCasesAvailable = 'No cases available';
+  static const String callCustomer = 'CALL CUSTOMER';
 }

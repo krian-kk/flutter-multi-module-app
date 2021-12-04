@@ -18,6 +18,7 @@ part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
+  String caseId = '5f80375a86527c46deba2e5d';
   // double launguageValue = 0;
 
   CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
@@ -84,18 +85,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
 
-      print('CaseDetailsInitialEvent--> ${event.paramValues}');
-
-
       //check internet
       final result = await Connectivity().checkConnectivity();
       if (result == ConnectivityResult.none) {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
-            HttpUrl.caseDetailsUrl + event.paramValues['caseID']);
-            print(caseDetailsData);
+            APIRequestType.GET, HttpUrl.caseDetailsUrl + caseId
+            // event.paramValues['caseID']
+            );
+        print(caseDetailsData);
 
         if (caseDetailsData['success'] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
@@ -107,8 +106,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 message: jsonData['message'],
                 result: jsonData['result'],
               )));
-        } else {
-        }
+        } else {}
       }
 
       await caseDetailsHiveBox.then(
@@ -162,7 +160,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ots))),
       ]);
-    
+
       expandOtherFeedback.addAll([
         OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
         OtherFeedbackExpandModel(
@@ -200,13 +198,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickViewMapEvent) {
       yield ClickViewMapState();
     }
-    if (event is ClickCallCustomerEvent) {
-      yield ClickCallCustomerState();
-    }
+    // if (event is ClickCallCustomerEvent) {
+    //   // yield ClickCallCustomerState();
+    // }
     if (event is ClickCaseDetailsEvent) {
-      yield CallCaseDetailsState(
-         paramValues: event.paramValues
-      );
+      yield CallCaseDetailsState(paramValues: event.paramValues);
     }
 
     if (event is ClickOpenBottomSheetEvent) {
@@ -216,10 +212,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               await Connectivity().checkConnectivity()) {
             print('Please Connect Internet!');
           } else {
-            
             Map<String, dynamic> getEventDetailsData =
-                await APIRepository.apiRequest(APIRequestType.GET,
-                    HttpUrl.profileUrl + '5f80375a86527c46deba2e62');
+                await APIRepository.apiRequest(
+                    APIRequestType.GET,
+                    HttpUrl.eventDetailsUrl(
+                        '5f80375a86527c46deba2e62', 'TELECALLER')
+                    // + '5f80375a86527c46deba2e62'
+                    );
 
             if (getEventDetailsData['success'] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];

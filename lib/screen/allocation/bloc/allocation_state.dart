@@ -31,7 +31,7 @@ class SearchScreenLoadedState extends AllocationState {}
 class SearchScreenNormalState extends AllocationState {}
 
 class TapPriorityState extends AllocationState {
-   dynamic? successResponse;
+  dynamic? successResponse;
   TapPriorityState({this.successResponse});
 }
 

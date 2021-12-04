@@ -79,13 +79,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
               arguments: state.paramValues);
         }
         if (state is NavigateSearchPageState) {
-         final dynamic returnValue = await Navigator.pushNamed(context, AppRoutes.searchScreen);
-        //  if(returnValue is SearchingDataModel){
-        //   print(returnValue.accountNumber);
-        //  }
-         if(returnValue != null) {
-          bloc.add(SearchReturnDataEvent(returnValue: returnValue));
-         }
+          final dynamic returnValue =
+              await Navigator.pushNamed(context, AppRoutes.searchScreen);
+          //  if(returnValue is SearchingDataModel){
+          //   print(returnValue.accountNumber);
+          //  }
+          if (returnValue != null) {
+            bloc.add(SearchReturnDataEvent(returnValue: returnValue));
+          }
         }
 
         if (state is SearchReturnDataState) {
@@ -361,11 +362,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
           case 1:
             setState(() {
               bloc.add(TapBuildRouteEvent(
-                paramValues: BuildRouteDataModel(
-                  lat: position.latitude.toString(), 
-                  long: position.longitude.toString(), 
-                  maxDistMeters: "1000")
-              ));
+                  paramValues: BuildRouteDataModel(
+                      lat: position.latitude.toString(),
+                      long: position.longitude.toString(),
+                      maxDistMeters: "1000")));
               bloc.showFilterDistance = true;
             });
             break;
@@ -502,11 +502,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
         setState(() {
           bloc.selectedDistance = distance;
           bloc.add(TapBuildRouteEvent(
-                paramValues: BuildRouteDataModel(
-                  lat: position.latitude.toString(), 
-                  long: position.longitude.toString(), 
-                  maxDistMeters: maxDistance)
-              ));
+              paramValues: BuildRouteDataModel(
+                  lat: position.latitude.toString(),
+                  long: position.longitude.toString(),
+                  maxDistMeters: maxDistance)));
         });
       },
       child: Container(

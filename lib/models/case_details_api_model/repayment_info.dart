@@ -2,20 +2,20 @@ class RepaymentInfo {
   String? reference2;
   String? officeMobile;
   String? repaymentIfscCode;
-  String? benefeciaryAcc_No;
-  String? benefeciaryAcc_Name;
+  String? benefeciaryAccNo;
+  String? benefeciaryAccName;
   String? repayBankName;
-  String? ref_url;
+  String? refUrl;
   String? refLender;
 
   RepaymentInfo({
     this.reference2,
     this.officeMobile,
     this.repaymentIfscCode,
-    this.benefeciaryAcc_No,
-    this.benefeciaryAcc_Name,
+    this.benefeciaryAccNo,
+    this.benefeciaryAccName,
     this.repayBankName,
-    this.ref_url,
+    this.refUrl,
     this.refLender,
   });
 
@@ -28,16 +28,16 @@ class RepaymentInfo {
         repaymentIfscCode: json['repaymentIfscCode'] != null
             ? json['repaymentIfscCode'] as String?
             : null,
-        benefeciaryAcc_No: json['benefeciaryAcc_No'] != null
+        benefeciaryAccNo: json['benefeciaryAcc_No'] != null
             ? json['benefeciaryAcc_No'] as String?
             : null,
-        benefeciaryAcc_Name: json['benefeciaryAcc_Name'] != null
+        benefeciaryAccName: json['benefeciaryAcc_Name'] != null
             ? json['benefeciaryAcc_Name'] as String?
             : null,
         repayBankName: json['repayBankName'] != null
             ? json['repayBankName'] as String?
             : null,
-        ref_url: json['ref_url'] != null ? json['ref_url'] as String? : null,
+        refUrl: json['ref_url'] != null ? json['ref_url'] as String? : null,
         refLender:
             json['refLender'] != null ? json['refLender'] as String? : null,
       );
@@ -46,10 +46,10 @@ class RepaymentInfo {
         'reference2': reference2,
         'officeMobile': officeMobile,
         'repaymentIfscCode': repaymentIfscCode,
-        'benefeciaryAcc_No': benefeciaryAcc_No,
-        'benefeciaryAcc_Name': benefeciaryAcc_Name,
+        'benefeciaryAcc_No': benefeciaryAccNo,
+        'benefeciaryAcc_Name': benefeciaryAccName,
         'repayBankName': repayBankName,
-        'ref_url': ref_url,
+        'ref_url': refUrl,
         'refLender': refLender,
       };
 }

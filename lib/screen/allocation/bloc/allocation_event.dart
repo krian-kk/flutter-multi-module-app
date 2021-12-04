@@ -30,4 +30,3 @@ class SearchReturnDataEvent extends AllocationEvent {
   dynamic returnValue;
   SearchReturnDataEvent({this.returnValue});
 }
-

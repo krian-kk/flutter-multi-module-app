@@ -148,8 +148,8 @@ class PageBuilder {
     // if (settings.arguments != null) {
     //   // loginType = settings.arguments.toString();
     // }
-        print('event.paramValues------');
-      print(settings.arguments);
+    print('event.paramValues------');
+    print(settings.arguments);
 
     return BlocProvider(
       create: (BuildContext context) =>

@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -28,7 +32,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
-  List<String> disputeDropDownList = ['One', 'Two', 'Three', 'Four'];
+  String disputeDropDownValue = 'select';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -115,7 +119,23 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         Flexible(
                           child: CustomDropDownButton(
                             Languages.of(context)!.disputeReason,
-                            disputeDropDownList,
+                            [
+                              'select',
+                              Languages.of(context)!.businessLoss,
+                              Languages.of(context)!.covidImpacted,
+                              Languages.of(context)!.dispute,
+                              Languages.of(context)!.financialReason,
+                              Languages.of(context)!.incomeLossInTheFamily,
+                              Languages.of(context)!.intention,
+                              Languages.of(context)!.jobLoss,
+                              Languages.of(context)!.jobUncertaintly,
+                              Languages.of(context)!.medicalIssue,
+                              Languages.of(context)!.salaryIssue,
+                            ],
+                            menuMaxHeight: 200,
+                            selectedValue: disputeDropDownValue,
+                            onChanged: (newValue) => setState(() =>
+                                disputeDropDownValue = newValue.toString()),
                           ),
                         ),
                         const SizedBox(height: 15)
@@ -165,7 +185,34 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () => _formKey.currentState!.validate(),
+                    onTap: () async {
+                      if (_formKey.currentState!.validate() &&
+                          (disputeDropDownValue != 'select')) {
+                        var requestBodyData = DisputePostModel(
+                          eventType: 'DISPUTE',
+                          eventCode: 'TELEVT005',
+                          contractor: '0',
+                          agrRef: '0',
+                          eventAttr: EventAttr(
+                              actionDate: nextActionDateControlller.text,
+                              remarks: remarksControlller.text,
+                              disputereasons: disputeDropDownValue,
+                              agentLocation: AgentLocation()),
+                          contact: Contact(),
+                          createdBy: DateTime.now().toString(),
+                          callID: '0',
+                          callingID: '0',
+                        );
+
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(APIRequestType.POST,
+                                'https://devapi.instalmint.com/v1/agent/case-details-events/dispute?userType=FIELDAGENT',
+                                requestBodydata: jsonEncode(requestBodyData));
+                        if (postResult['success']) {
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
                     cardShape: 5,
                   ),
                 ),
@@ -208,7 +255,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

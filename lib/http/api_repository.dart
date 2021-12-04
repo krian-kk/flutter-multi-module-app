@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/models/priority_case_list.dart';
 
 enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
 
@@ -28,9 +28,9 @@ class APIRepository {
         case APIRequestType.GET:
         case APIRequestType.DELETE:
           {
-            response = requestType ==  APIRequestType.DELETE ? 
-            await DioClient.dioConfig().delete(urlString) : 
-            await DioClient.dioConfig().get(urlString);
+            response = requestType == APIRequestType.DELETE
+                ? await DioClient.dioConfig().delete(urlString)
+                : await DioClient.dioConfig().get(urlString);
             break;
           }
         case APIRequestType.UPLOAD:
@@ -60,9 +60,11 @@ class APIRepository {
         default:
           {
             response = await DioClient.dioConfig()
-                .post(HttpUrl.register, data: requestBodydata);
+                .post(urlString, data: requestBodydata);
           }
       }
+      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+          '\n  response-->${jsonDecode(response.toString())}');
       returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
@@ -71,8 +73,11 @@ class APIRepository {
       } else {
         error = 'Error sending request!';
       }
+      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+          '\n  response-->${jsonDecode(e.response.toString())}');
       returnValue = {'success': false, 'data': error};
     }
+
     return returnValue;
   }
 
@@ -99,7 +104,7 @@ class APIRepository {
     return returnableValues;
   }
 
-   // get buildroute case list
+  // get buildroute case list
   static Future<Map<String, dynamic>> getBuildRouteCaseList() async {
     dynamic? returnableValues;
     try {

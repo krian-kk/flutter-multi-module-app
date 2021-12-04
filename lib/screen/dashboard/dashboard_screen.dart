@@ -151,11 +151,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is NavigateSearchState) {
-          final dynamic returnValue = await Navigator.pushNamed(context, AppRoutes.searchScreen);
-          if(returnValue != null) {
-           print('----NK----returnvalue');
-           print(returnValue);
-         }
+            final dynamic returnValue =
+                await Navigator.pushNamed(context, AppRoutes.searchScreen);
+            if (returnValue != null) {
+              print('----NK----returnvalue');
+              print(returnValue);
+            }
           }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(

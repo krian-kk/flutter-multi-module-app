@@ -26,6 +26,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
   List<String> validationRules = [];
+  EdgeInsetsGeometry? contentPadding;
 
   final Function? onEditing;
   final bool isBorder;
@@ -59,6 +60,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
       this.isLabel = false,
       this.isBorder = true,
       this.isFill = false,
+      this.contentPadding,
       this.cursorColor = ColorResource.color666666,
       this.validationRules = const []})
       : super(key: key);
@@ -159,7 +161,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               labelText: widget.isLabel ? widget.hintText : null,
               isDense: true,
               counterText: widget.descriptionText,
-              contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 4),
+              contentPadding: widget.contentPadding ??
+                  const EdgeInsets.fromLTRB(0, 10, 0, 4),
               errorMaxLines: 1,
               suffixIcon: widget.suffixWidget,
               errorStyle: const TextStyle(

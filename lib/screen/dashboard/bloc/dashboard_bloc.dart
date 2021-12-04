@@ -30,8 +30,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   bool? selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
   DashboardAllModels brokenPTPData = DashboardAllModels();
-  DashboardAllModels untouchedCasesData =
-      DashboardAllModels();
+  DashboardAllModels untouchedCasesData = DashboardAllModels();
   DashboardAllModels myVisitsData = DashboardAllModels();
   DashboardAllModels myReceiptsData = DashboardAllModels();
   // DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
