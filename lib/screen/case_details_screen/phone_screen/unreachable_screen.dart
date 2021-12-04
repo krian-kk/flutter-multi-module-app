@@ -33,8 +33,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   @override
   void initState() {
-    widget.bloc.phoneUnreachableNextActionDateController.text =
-        DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
+    // widget.bloc.phoneUnreachableNextActionDateController.text =
+    //     DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
     super.initState();
   }
 
@@ -90,6 +90,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           focusNode: widget
                               .bloc.phoneUnreachableNextActionDateFocusNode,
                           isReadOnly: true,
+                          validationRules: const ['required'],
                           onTapped: () => pickDate(
                               context,
                               widget.bloc
@@ -103,6 +104,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                 .unfocus();
                             widget.bloc.phoneUnreachableRemarksFocusNode
                                 .requestFocus();
+                            widget.bloc.phoneInvalidFormKey.currentState!
+                                .validate();
                           },
                         ),
                       ),
@@ -251,7 +254,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
     });

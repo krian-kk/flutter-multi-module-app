@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/repo_post_model/repo_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -245,7 +249,34 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () => _formKey.currentState!.validate(),
+                    onTap: () async {
+                      if (_formKey.currentState!.validate() &&
+                          dateControlller.text != '' &&
+                          timeControlller.text != '') {
+                        var requestBodyData = RepoPostModel(
+                            eventType: 'REPO',
+                            caseId: '618e382004d8d040ac18841b',
+                            eventCode: 'TELEVT016',
+                            eventAttr: EventAttr(
+                                modelMake: modelMakeControlller.text,
+                                registrationNo: registrationNoControlller.text,
+                                chassisNo: chassisNoControlller.text,
+                                remarks: remarksControlller.text,
+                                repo: Repo(),
+                                date: dateControlller.text,
+                                imageLocation: ['0'],
+                                agentLocation: AgentLocation()));
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(
+                          APIRequestType.POST,
+                          'https://devapi.instalmint.com/v1/agent/case-details-events/repo?userType=FIELDAGENT',
+                          requestBodydata: jsonEncode(requestBodyData),
+                        );
+                        if (postResult['success']) {
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
                     cardShape: 5,
                   ),
                 ),
@@ -287,7 +318,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
           );
         });
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // formKey.currentState!.validate();

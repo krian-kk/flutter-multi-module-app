@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/unreachable_post_model/unreachable_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
@@ -303,18 +307,129 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   // isEnabled: (bloc.selectedUnreadableClip == ''),
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
-                                  onTap: () => widget.bloc
-                                      .phoneUnreachableFormKey.currentState!
-                                      .validate(),
+                                  onTap: () {
+                                    if (widget.bloc.phoneUnreachableFormKey
+                                            .currentState!
+                                            .validate() &&
+                                        widget.bloc
+                                                .phoneSelectedUnreadableClip !=
+                                            '') {
+                                      if (widget.bloc
+                                              .phoneSelectedUnreadableClip ==
+                                          Languages.of(context)!.lineBusy) {
+                                        unreachableButtonClick(
+                                          'TC : Line Busy',
+                                          '618e382004d8d040ac18841b',
+                                          'TELEVT007',
+                                          'https://devapi.instalmint.com/v1/agent/case-details-events/lineBusy?userType=TELECALLER',
+                                        );
+                                      } else if (widget.bloc
+                                              .phoneSelectedUnreadableClip ==
+                                          Languages.of(context)!.switchOff) {
+                                        unreachableButtonClick(
+                                          'TC : Switch Off',
+                                          '618e382004d8d040ac18841b',
+                                          'TELEVT007',
+                                          'https://devapi.instalmint.com/v1/agent/case-details-events/switchOff?userType=TELECALLER',
+                                        );
+                                      } else if (widget.bloc
+                                              .phoneSelectedUnreadableClip ==
+                                          Languages.of(context)!.rnr) {
+                                        unreachableButtonClick(
+                                          'TC : RNR',
+                                          '618e382004d8d040ac18841b',
+                                          'TELEVT011',
+                                          'https://devapi.instalmint.com/v1/agent/case-details-events/RNR?userType=TELECALLER',
+                                        );
+                                      } else if (widget.bloc
+                                              .phoneSelectedUnreadableClip ==
+                                          Languages.of(context)!.outOfNetwork) {
+                                        unreachableButtonClick(
+                                          'TC : Out Of Network',
+                                          '618e382004d8d040ac18841b',
+                                          'TELEVT007',
+                                          'https://devapi.instalmint.com/v1/agent/case-details-events/outOfNetwork?userType=TELECALLER',
+                                        );
+                                      } else if (widget.bloc
+                                              .phoneSelectedUnreadableClip ==
+                                          Languages.of(context)!
+                                              .disConnecting) {
+                                        unreachableButtonClick(
+                                          'TC : Disconnecting',
+                                          '618e382004d8d040ac18841b',
+                                          'TELEVT011',
+                                          'https://devapi.instalmint.com/v1/agent/case-details-events/disconnecting?userType=TELECALLER',
+                                        );
+                                      }
+                                    }
+                                  },
                                   cardShape: 5,
                                 )
                               : CustomButton(
                                   Languages.of(context)!.submit.toUpperCase(),
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
-                                  onTap: () => widget
-                                      .bloc.phoneInvalidFormKey.currentState!
-                                      .validate(),
+                                  onTap: () {
+                                    if (widget.bloc.phoneInvalidFormKey
+                                            .currentState!
+                                            .validate() &&
+                                        widget.bloc.phoneSelectedInvalidClip !=
+                                            '') {
+                                      // if (widget
+                                      //         .bloc.phoneSelectedInvalidClip ==
+                                      //     Languages.of(context)!.doesNotExist) {
+                                      //   unreachableButtonClick(
+                                      //     'TC : Does Not Exist',
+                                      //     '618e382004d8d040ac18841b',
+                                      //     'TELEVT008',
+                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/doesNotExist?userType=TELECALLER',
+                                      //     'AWAITING CONTACT',
+                                      //   );
+                                      // }
+                                      // else if (widget.bloc
+                                      //         .phoneSelectedUnreadableClip ==
+                                      //     Languages.of(context)!.switchOff) {
+                                      //   unreachableButtonClick(
+                                      //     'TC : Switch Off',
+                                      //     '618e382004d8d040ac18841b',
+                                      //     'TELEVT007',
+                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/switchOff?userType=TELECALLER',
+                                      //     'REVIEW',
+                                      //   );
+                                      // } else if (widget.bloc
+                                      //         .phoneSelectedUnreadableClip ==
+                                      //     Languages.of(context)!.rnr) {
+                                      //   unreachableButtonClick(
+                                      //     'TC : RNR',
+                                      //     '618e382004d8d040ac18841b',
+                                      //     'TELEVT011',
+                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/RNR?userType=TELECALLER',
+                                      //     'REVIEW',
+                                      //   );
+                                      // } else if (widget.bloc
+                                      //         .phoneSelectedUnreadableClip ==
+                                      //     Languages.of(context)!.outOfNetwork) {
+                                      //   unreachableButtonClick(
+                                      //     'TC : Out Of Network',
+                                      //     '618e382004d8d040ac18841b',
+                                      //     'TELEVT007',
+                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/outOfNetwork?userType=TELECALLER',
+                                      //     'REVIEW',
+                                      //   );
+                                      // } else if (widget.bloc
+                                      //         .phoneSelectedUnreadableClip ==
+                                      //     Languages.of(context)!
+                                      //         .disConnecting) {
+                                      //   unreachableButtonClick(
+                                      //     'TC : Disconnecting',
+                                      //     '618e382004d8d040ac18841b',
+                                      //     'TELEVT011',
+                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/disconnecting?userType=TELECALLER',
+                                      //     'REVIEW',
+                                      //   );
+                                      // }
+                                    }
+                                  },
                                   cardShape: 5,
                                 ),
                         ),
@@ -327,24 +442,35 @@ class _PhoneScreenState extends State<PhoneScreen>
     );
   }
 
-  // callCustomerBottomSheet(BuildContext buildContext) {
-  //   showModalBottomSheet(
-  //       enableDrag: false,
-  //       context: buildContext,
-  //       isScrollControlled: true,
-  //       isDismissible: false,
-  //       backgroundColor: ColorResource.colorFFFFFF,
-  //       shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.vertical(
-  //           top: Radius.circular(20),
-  //         ),
-  //       ),
-  //       builder: (BuildContext context) {
-  //         return SizedBox(
-  //           height: MediaQuery.of(context).size.height * 0.89,
-  //           child: CallCustomerBottomSheet(blocObject: widget.bloc),
-  //         );
-  //       });
-  // }
-
+  unreachableButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+  ) async {
+    var requestBodyData = UnReachablePostModel(
+      eventType: eventType,
+      caseId: caseId,
+      eventCode: eventCode,
+      eventAttr: EventAttr(
+          followUpPriority: 'REVIEW',
+          remarks: widget.bloc.phoneUnreachableRemarksController.text,
+          nextActionDate:
+              widget.bloc.phoneUnreachableNextActionDateController.text),
+      contact: Contact(),
+    );
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+    setState(() {
+      widget.bloc.phoneUnreachableNextActionDateController.text = '';
+      widget.bloc.phoneUnreachableRemarksController.text = '';
+      widget.bloc.phoneSelectedUnreadableClip = '';
+    });
+    if (await postResult['success']) {
+      Navigator.pop(context);
+    }
+  }
 }

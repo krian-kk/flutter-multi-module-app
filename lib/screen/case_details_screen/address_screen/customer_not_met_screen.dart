@@ -39,11 +39,11 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.addressCustomerNotMetNextActionDateController.text =
-        DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
+    // widget.bloc.addressCustomerNotMetNextActionDateController.text =
+    //     DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
     // nextActionDateFocusNode = FocusNode();
     // remarksFocusNode = FocusNode();
-    setState(() {});
+    // setState(() {});
   }
 
   @override
@@ -106,6 +106,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             focusNode:
                                 widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,
+                            validationRules: const ['required'],
                             onTapped: () => pickDate(
                                 context,
                                 widget.bloc
