@@ -14,6 +14,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
@@ -320,17 +321,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   ),
                 ),
                 Expanded(
-                    child: isCaseDetailLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : resultList.isEmpty
-                            ? const Center(
-                                child: CustomText('No cases available'))
-                            : Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 0.0),
-                                child: CustomCardList.buildListView(bloc,
-                                    resultData: resultList),
-                              )),
+                    child: isCaseDetailLoading ? 
+                    const Center(child: CircularProgressIndicator()) : 
+                    resultList.isEmpty ? const Center(child: CustomText(StringResource.noCasesAvailable)) :
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 0.0),
+                      child: CustomCardList.buildListView(bloc,
+                              resultData: resultList),
+                )),
               ],
             ),
           );

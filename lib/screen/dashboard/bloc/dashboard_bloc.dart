@@ -27,6 +27,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   List<DashboardListModel> dashboardList = [];
   List<CaseListModel> caseList = [];
   String? selectedFilter = 'TODAY';
+  bool? selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
   DashboardAllModels brokenPTPData = DashboardAllModels();
   DashboardAllModels untouchedCasesData = DashboardAllModels();
@@ -145,9 +146,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getPriorityFollowUpData =
             await APIRepository.apiRequest(APIRequestType.GET,
-                HttpUrl.dashboardPriorityFollowUpUrl + '411036');
-        priortyFollowUpData =
+                HttpUrl.dashboardPriorityFollowUpUrl);
+        priortyFollowUpData = 
             DashboardAllModels.fromJson(getPriorityFollowUpData['data']);
+      print(getPriorityFollowUpData['data']);
       }
 
       yield PriorityFollowState();
@@ -159,9 +161,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getUntouchedCasesData =
             await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.dashboardUntouchedCasesUrl + '');
-        untouchedCasesData =
-            DashboardAllModels.fromJson(getUntouchedCasesData['data']);
+                APIRequestType.GET, HttpUrl.dashboardUntouchedCasesUrl);
+        untouchedCasesData = DashboardAllModels.fromJson(
+            getUntouchedCasesData['data']);
+            print(getUntouchedCasesData['data']);
       }
       yield UntouchedCasesState();
     }
@@ -182,22 +185,57 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 'WEEKLY');
-        myReceiptsData = DashboardAllModels.fromJson(getMyReceiptsData['data']);
+            APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 
+            'timePeriod='+selectedFilter!);
+        myReceiptsData =
+            DashboardAllModels.fromJson(getMyReceiptsData['data']);
+            print(getMyReceiptsData['data']);
       }
       yield MyReceiptsState();
     }
 
+    if (event is ReceiptsApiEvent) {
+      yield SelectedTimeperiodDataLoadingState();
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        print('Please Connect Internet!');
+      } else {
+        Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 
+            "timePeriod=${event.timePeiod}");
+        myReceiptsData =
+            DashboardAllModels.fromJson(getMyReceiptsData['data']);
+            print(getMyReceiptsData['data']);
+      }
+
+      yield SelectedTimeperiodDataLoadedState();
+
+    }
+
     if (event is MyVisitsEvent) {
+      print(selectedFilter);
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + '');
+            APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
+            'timePeriod='+selectedFilter!);
         myVisitsData = DashboardAllModels.fromJson(getMyVisitsData['data']);
-        print(myVisitsData);
+        print(getMyVisitsData['data']);
       }
       yield MyVisitsState();
+    }
+
+    if (event is MyVisitApiEvent) {
+      print(event.timePeiod);
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        print('Please Connect Internet!');
+      } else {
+        Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
+            "timePeriod=${event.timePeiod}");
+        myVisitsData = DashboardAllModels.fromJson(getMyVisitsData['data']);
+        print(getMyVisitsData['data']);
+      }
     }
 
     if (event is MyDeposistsEvent) {
@@ -207,11 +245,26 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         // Map<String, dynamic> getMyDepositsData =
         //     await APIRepository.getDashboardMyDeposistsData('WEEKLY');
         Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyDeposistsUrl + 'WEEKLY');
+            APIRequestType.GET, HttpUrl.dashboardMyDeposistsUrl + 
+            'timePeriod='+selectedFilter!);
+        myDeposistsData =
+            DashboardMydeposistsModel.fromJson(getMyDepositsData['data']);
+            // print('getMyDepositsData');
+            print(getMyDepositsData['data']);
+      }
+      yield MyDeposistsState();
+    }
+
+    if (event is DeposistsApiEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        print('Please Connect Internet!');
+      } else {
+        Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.dashboardMyDeposistsUrl + 
+            "timePeriod=${event.timePeiod}");
         myDeposistsData =
             DashboardMydeposistsModel.fromJson(getMyDepositsData['data']);
       }
-      yield MyDeposistsState();
     }
 
     if (event is YardingAndSelfReleaseEvent) {
@@ -236,6 +289,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is NavigateSearchEvent) {
       yield NavigateSearchState();
+    }
+
+     if (event is SetTimeperiodValueEvent) {
+      yield SetTimeperiodValueState();
     }
 
     if (event is HelpEvent) {

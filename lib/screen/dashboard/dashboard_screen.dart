@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
 import 'package:origa/screen/message_screen/message.dart';
@@ -61,49 +62,69 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
+
+          if (state is SetTimeperiodValueState) {
+            bloc.selectedFilter = 'TODAY';
+          }
+
+          if (state is SelectedTimeperiodDataLoadingState) {
+            bloc.selectedFilterDataLoading= true;
+          }
+
+          if (state is SelectedTimeperiodDataLoadedState) {
+            print("SelectedTimeperiodDataLoadedState----> ${bloc.selectedFilterDataLoading}");
+           bloc.selectedFilterDataLoading= false;
+            print("SelectedTimeperiodDataLoadedState after----> ${bloc.selectedFilterDataLoading}");
+          }
+
           if (state is PriorityFollowState) {
-            if (bloc.priortyFollowUpData.result!.cases!.isNotEmpty) {
-              priorityFollowUpSheet(context);
-            } else {
-              //Snacbar msg view
-              print('------------vales------');
-            }
+            priorityFollowUpSheet(context);
+            // if(bloc.priortyFollowUpData.result!.cases!.isNotEmpty){
+            // priorityFollowUpSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   AppUtils.showToast(StringResource.noCasesAvailable);
+            // }
           }
 
           if (state is UntouchedCasesState) {
-            if (bloc.untouchedCasesData.result!.cases!.isNotEmpty) {
-              untouchedCasesSheet(context);
-            } else {
-              //Snacbar msg view
-              print('------------vales------');
-            }
+            untouchedCasesSheet(context);
+            // if(bloc.untouchedCasesData.result!.cases!.isNotEmpty){
+            // untouchedCasesSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //  AppUtils.showToast(StringResource.noCasesAvailable);
+            // }
           }
 
           if (state is BrokenPTPState) {
-            if (bloc.brokenPTPData.result!.cases!.isNotEmpty) {
-              brokenPTPSheet(context);
-            } else {
-              //Snacbar msg view
-              print('------------vales------');
-            }
+            brokenPTPSheet(context);
+            // if(bloc.brokenPTPData.result!.cases!.isNotEmpty){
+            // brokenPTPSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   AppUtils.showToast(StringResource.noCasesAvailable);
+            // }
           }
 
           if (state is MyReceiptsState) {
-            if (bloc.myReceiptsData.result!.cases!.isNotEmpty) {
-              myReceiptsSheet(context);
-            } else {
-              //Snacbar msg view
-              print('------------vales------');
-            }
+            myReceiptsSheet(context);
+            // if(bloc.myReceiptsData.result!.cases!.isNotEmpty){
+            // myReceiptsSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //  AppUtils.showToast(StringResource.noCasesAvailable);
+            // }
           }
 
           if (state is MyVisitsState) {
-            if (bloc.myVisitsData.result!.cases!.isNotEmpty) {
-              myVisitsSheet(context);
-            } else {
-              //Snacbar msg view
-              print('------------vales------');
-            }
+            myVisitsSheet(context);
+            // if(bloc.myVisitsData.result!.cases!.isNotEmpty){
+            // myVisitsSheet(context);
+            // }else{
+            //   //Snacbar msg view
+            //   AppUtils.showToast(StringResource.noCasesAvailable);
+            // }
           }
 
           if (state is MyDeposistsState) {

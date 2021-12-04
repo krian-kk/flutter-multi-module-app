@@ -62,6 +62,10 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.myVisits,
+                      onTap: (){
+                        widget.bloc.add(SetTimeperiodValueEvent());
+                        Navigator.pop(context);
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -88,7 +92,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        '200',
+                                        widget.bloc.myVisitsData.result!.count.toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -110,7 +114,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        '₹ 3,97,553.67',
+                                        widget.bloc.myVisitsData.result!.totalAmt.toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -198,18 +202,22 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   }
 
   Widget _buildFilterWidget(String option) {
+    String? timePeriod;
     return InkWell(
       onTap: () {
         setState(() {
           widget.bloc.selectedFilter = option;
         });
-        switch (option) {
-          case 'WEEKLY':
-            break;
-          case 'MONTHLY':
-            break;
-          default:
-        }
+        // switch (option) {
+        //   case 'TODAY':
+        //     break;
+        //   case 'WEEKLY':
+        //     break;
+        //   case 'MONTHLY':
+        //     break;
+        //   default:
+        // }
+        widget.bloc.add(MyVisitApiEvent(timePeiod:option));
         print(option);
       },
       child: Card(

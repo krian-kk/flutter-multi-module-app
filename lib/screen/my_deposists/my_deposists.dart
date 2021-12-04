@@ -77,6 +77,10 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                     children: [
                       BottomSheetAppbar(
                         title: Languages.of(context)!.myDeposists,
+                        onTap: (){
+                        widget.bloc.add(SetTimeperiodValueEvent());
+                        Navigator.pop(context);
+                      },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -200,15 +204,16 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
         setState(() {
           widget.bloc.selectedFilter = option;
         });
-        switch (option) {
-          case 'TODAY':
-            break;
-          case 'WEEKLY':
-            break;
-          case 'MONTHLY':
-            break;
-          default:
-        }
+        // switch (option) {
+        //   case 'TODAY':
+        //     break;
+        //   case 'WEEKLY':
+        //     break;
+        //   case 'MONTHLY':
+        //     break;
+        //   default:
+        // }
+        widget.bloc.add(DeposistsApiEvent(timePeiod: option));
         print(option);
       },
       child: Card(

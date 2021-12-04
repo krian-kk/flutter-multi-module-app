@@ -27,7 +27,7 @@ class HttpUrl {
 
   // DashBoard
   static const String dashboardPriorityFollowUpUrl =
-      baseUrl + version + userType + 'case-details/priorityFollowUp?pincode=';
+      baseUrl + version + userType + 'case-details/priorityFollowUp';
   static const String dashboardBrokenPTPUrl =
       baseUrl + version + userType + 'case-details/brokenPtp';
   static const String dashboardUntouchedCasesUrl =
@@ -35,15 +35,13 @@ class HttpUrl {
   static const String dashboardMyVisitsUrl = baseUrl +
       version +
       userType +
-      'case-details/visits?timePeriod=WEEKLY&eventType=PTP';
+      'case-details/visits?';
   static const String dashboardMyReceiptsUrl =
-      baseUrl + version + userType + 'case-details/receipts?timePeriod=WEEKLY';
+      baseUrl + version + userType + 'case-details/receipts?';
   static const String dashboardMyDeposistsUrl =
-      baseUrl + version + userType + 'case-details/deposits?timePeriod=WEEKLY';
-  static const String dashboardYardingAndSelfReleaseUrl = baseUrl +
-      version +
-      userType +
-      'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
+      baseUrl + version + userType + 'case-details/deposits?';
+  static const String dashboardYardingAndSelfReleaseUrl =
+      baseUrl + version + userType + 'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
   static const String searchUrl =
       baseUrl + version + userType + 'case-details/search?';
   static const String login = users + 'auth/signin';
