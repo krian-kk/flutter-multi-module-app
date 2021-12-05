@@ -1,12 +1,15 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -28,6 +31,24 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
     //   ..add(YardingandselfreleaseInitialEvent());
     super.initState();
   }
+
+   int? _selectedIndex;
+   String? caseID;
+   String? custName;
+
+  _onSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+    Future getFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
+
+    print(result);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +81,15 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
                       onTap: () {
-                        repoStatusModeSheet(context);
+                         if (_selectedIndex != null) {
+                            repoStatusModeSheet(context);
+                          } else {
+                            AppUtils.showToast(
+                              StringResource.notSelectedCase,
+                              gravity: ToastGravity.CENTER,
+                              );
+                          }
+                        
                       },
                     ),
                   ),
@@ -252,11 +281,27 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                 SizedBox(
                                                   width: 123,
                                                   height: 47,
-                                                  child: CustomButton(
-                                                    Languages.of(context)!
-                                                        .select
-                                                        .toUpperCase(),
+                                                  child:  _selectedIndex != null && _selectedIndex == index ?
+                                                  CustomButton(
+                                                    Languages.of(context)!.selected,
                                                     fontSize: FontSize.twelve,
+                                                  ) :
+                                                  CustomButton(
+                                                    Languages.of(context)!.select.toUpperCase(),
+                                                    fontSize: FontSize.twelve,
+                                                    buttonBackgroundColor: ColorResource.colorFEFFFF,
+                                                    borderColor: ColorResource.colorFEFFFF,
+                                                    textColor: ColorResource.color23375A,
+                                                    cardElevation: 3.0,
+                                                    onTap: (){
+                                                      _onSelected(index);
+                                                      setState((){
+                                                        caseID = widget.bloc.caseList[index].loanID;
+                                                        custName=widget.bloc.caseList[index].customerName;
+                                                      });
+                                                      print(index);
+                                                      print(caseID);
+                                                    },
                                                   ),
                                                 )
                                               ],
@@ -295,6 +340,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                RepoStatus()));
+                RepoStatus.buildRepoSelfReleaseTab(context, caseID, custName, widget.bloc)));
   }
 }

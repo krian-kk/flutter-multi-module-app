@@ -91,7 +91,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.caseDetailsUrl + caseId
+            APIRequestType.GET, HttpUrl.caseDetailsUrl + 
+            'caseId=${event.paramValues['caseID']}'
             // event.paramValues['caseID']
             );
         print(caseDetailsData);
@@ -216,7 +217,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 await APIRepository.apiRequest(
                     APIRequestType.GET,
                     HttpUrl.eventDetailsUrl(
-                        '5f80375a86527c46deba2e62', 'TELECALLER')
+                        caseId:'5f80375a86527c46deba2e62', usertype:'TELECALLER')
                     // + '5f80375a86527c46deba2e62'
                     );
 

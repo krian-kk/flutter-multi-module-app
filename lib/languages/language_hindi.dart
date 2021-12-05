@@ -164,6 +164,9 @@ class LanguageHi extends Languages {
   String get ifscCode => 'आईएफएससी कोड*';
 
   @override
+  String get accNumber => 'खाता संख्या*';
+
+  @override
   String get branchLocation => 'शाखा का स्थान*';
 
   @override

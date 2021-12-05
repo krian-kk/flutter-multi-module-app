@@ -12,7 +12,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import 'cash_tab.dart';
-import 'chegue_tab.dart';
+import 'chegue_and_cash_tab.dart';
 
 class MyDeposistsBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
@@ -30,6 +30,11 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
     // bloc = MydeposistsBloc()..add(MydeposistsInitialEvent());
     super.initState();
   }
+  //   int? _selectedIndex;
+
+  // _onSelected(int index) {
+  //   setState(() => _selectedIndex = index);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,27 +55,21 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
               length: 2,
               child: SafeArea(
                 child: Scaffold(
-                  // floatingActionButton: CustomFloatingActionButton(
-                  //   onTap: () async {
-                  //     await Navigator.pushNamed(
-                  //         context, AppRoutes.searchAllocationDetailsScreen);
-                  //   },
+                  // bottomNavigationBar: Container(
+                  //   height: 66,
+                  //   color: ColorResource.colorFFFFFF,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
+                  //     child: CustomButton(
+                  //       Languages.of(context)!.enterDepositionDetails,
+                  //       fontSize: FontSize.sixteen,
+                  //       fontWeight: FontWeight.w600,
+                  //       onTap: () {
+                  //         depositionModeSheet(context);
+                  //       },
+                  //     ),
+                  //   ),
                   // ),
-                  bottomNavigationBar: Container(
-                    height: 66,
-                    color: ColorResource.colorFFFFFF,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
-                      child: CustomButton(
-                        Languages.of(context)!.enterDepositionDetails,
-                        fontSize: FontSize.sixteen,
-                        fontWeight: FontWeight.w600,
-                        onTap: () {
-                          depositionModeSheet(context);
-                        },
-                      ),
-                    ),
-                  ),
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // ignore: prefer_const_literals_to_create_immutables
@@ -105,7 +104,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          '200',
+                                          widget.bloc.myDeposistsData.result!.count.toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -125,7 +124,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          '₹ 3,97,553.67',
+                                          widget.bloc.myDeposistsData.result!.totalAmt.toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -174,8 +173,19 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                         child: TabBarView(
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            ChegueResults(widget.bloc),
-                            CashResults(widget.bloc),
+                            ChegueAndCasshResults(
+                              widget.bloc, 
+                              mode: "CHEQUE",
+                             result: widget.bloc.myDeposistsData.result!),
+                            ChegueAndCasshResults(
+                              widget.bloc, 
+                              mode: "CASH",
+                             result: widget.bloc.myDeposistsData.result!),
+                            // StatefulBuilder(
+                            //     builder: (BuildContext context, StateSetter setState) {
+                            //     return  CashResults.buildListCashAndChegue(widget.bloc, setState);
+                            //   }
+                            // ),
                           ],
                         ),
                       ),
@@ -246,20 +256,20 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
     );
   }
 
-  void depositionModeSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                DepositionMode()));
-  }
+  // void depositionModeSheet(BuildContext buildContext) {
+  //   showModalBottomSheet(
+  //       context: context,
+  //       isDismissible: false,
+  //       isScrollControlled: true,
+  //       backgroundColor: ColorResource.colorFFFFFF,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(
+  //           top: Radius.circular(20),
+  //         ),
+  //       ),
+  //       clipBehavior: Clip.antiAliasWithSaveLayer,
+  //       builder: (BuildContext context) => StatefulBuilder(
+  //           builder: (BuildContext buildContext, StateSetter setState) =>
+  //               DepositionMode()));
+  // }
 }

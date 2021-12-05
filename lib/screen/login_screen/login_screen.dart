@@ -10,6 +10,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -39,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode passwords;
   bool _obscureText = true;
   bool _isChecked = false;
-  String? loginType;
+  String? userType;
 
   @override
   void initState() {
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         if (state is HomeTabState) {
           Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
-              arguments: loginType);
+              arguments: userType);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -171,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                         ),
                         CustomButton(
-                          'SIGN IN',
+                          StringResource.signIn.toUpperCase(),
                           buttonBackgroundColor: ColorResource.color23375A,
                           onTap: () {
                             _signIn();
@@ -190,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Navigator.push(context, MaterialPageRoute(builder: (context)=>DeviceInfo()));
                           },
                           child: const CustomText(
-                            'Reset password via OTP',
+                            StringResource.resetPassword,
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
                             color: ColorResource.color23375A,
@@ -200,9 +201,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 30,
                         ),
                         CustomButton(
-                          'Login via diffrent user',
+                          StringResource.loginViaDifferentUser,
                           onTap: () {
-                            setState(() {
+                           setState(() {
                               userName.clear();
                               password.clear();
                             });
@@ -244,19 +245,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _signIn() {
+  Future<void> _signIn() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
     final bool isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     } else {
       if (userName.text == 'fos' && password.text == '1234') {
         setState(() {
-          loginType = 'fos';
+          userType = 'FIELDAGENT';
+          _prefs.setString('userType', 'FIELDAGENT');
         });
         bloc.add(HomeTabEvent());
       } else if (userName.text == 'tc' && password.text == '1234') {
         setState(() {
-          loginType = 'tc';
+          userType = 'TELECALLER';
+          _prefs.setString('userType', 'TELECALLER');
         });
         bloc.add(HomeTabEvent());
       } else {

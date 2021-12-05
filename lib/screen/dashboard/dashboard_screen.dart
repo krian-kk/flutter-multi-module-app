@@ -30,8 +30,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../router.dart';
 
 class DashboardScreen extends StatefulWidget {
-  final String? loginType;
-  const DashboardScreen(this.loginType, {Key? key}) : super(key: key);
+  final String? userType;
+  const DashboardScreen(this.userType, {Key? key}) : super(key: key);
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -75,6 +75,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             print("SelectedTimeperiodDataLoadedState----> ${bloc.selectedFilterDataLoading}");
            bloc.selectedFilterDataLoading= false;
             print("SelectedTimeperiodDataLoadedState after----> ${bloc.selectedFilterDataLoading}");
+          }
+
+          if (state is PostDataApiSuccessState) {
+            AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+            Navigator.pop(context);
           }
 
           if (state is PriorityFollowState) {
@@ -197,7 +202,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                            header: widget.loginType == 'fos'
+                                            header: widget.userType == 'FIELDAGENT'
                                                 ? Languages.of(context)!
                                                     .customerMet
                                                 : Languages.of(context)!
@@ -217,7 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            header: widget.loginType == 'fos'
+                                            header: widget.userType == 'FIELDAGENT'
                                                 ? Languages.of(context)!
                                                     .customerNotMet
                                                 : Languages.of(context)!

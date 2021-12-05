@@ -36,7 +36,6 @@ class DeposistsApiEvent extends DashboardEvent {
 class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
 class NavigateCaseDetailEvent extends DashboardEvent {
-
   dynamic paramValues;
   NavigateCaseDetailEvent({this.paramValues});
 }
@@ -44,6 +43,26 @@ class NavigateCaseDetailEvent extends DashboardEvent {
 class NavigateSearchEvent extends DashboardEvent {}
 
 class SetTimeperiodValueEvent extends DashboardEvent {}
+
+class PostBankDepositDataEvent extends DashboardEvent {
+  dynamic postData;
+  PostBankDepositDataEvent({this.postData});
+}
+
+class PostCompanyDepositDataEvent extends DashboardEvent {
+  dynamic postData;
+  PostCompanyDepositDataEvent({this.postData});
+}
+
+class PostYardingDataEvent extends DashboardEvent {
+  dynamic postData;
+  PostYardingDataEvent({this.postData});
+}
+
+class PostSelfreleaseDataEvent extends DashboardEvent {
+  dynamic postData;
+  PostSelfreleaseDataEvent({this.postData});
+}
 
 class HelpEvent extends DashboardEvent {}
 

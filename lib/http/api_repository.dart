@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/color_resource.dart';
 
 enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
 
@@ -65,6 +68,7 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
+          print('response data -------->');
       returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
@@ -75,6 +79,17 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
+          print('response dio error data -------->');
+          // AppUtils.showErrorToast(error);
+          Fluttertoast.showToast(
+              msg: error,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: ColorResource.color101010,
+              textColor: ColorResource.colorffffff,
+              fontSize: 14.0
+          );
       returnValue = {'success': false, 'data': error};
     }
 

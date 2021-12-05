@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
@@ -38,6 +39,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   bool areyouatOffice = true;
   String version = "";
   List<Result> resultList = [];
+  String? searchBasedOnValue;
 
   @override
   void initState() {
@@ -81,11 +83,28 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is NavigateSearchPageState) {
           final dynamic returnValue =
               await Navigator.pushNamed(context, AppRoutes.searchScreen);
-          //  if(returnValue is SearchingDataModel){
-          //   print(returnValue.accountNumber);
-          //  }
           if (returnValue != null) {
+            // print('search data--------->');
+            // print(returnValue.accountNumber);
             bloc.add(SearchReturnDataEvent(returnValue: returnValue));
+            var data = returnValue as SearchingDataModel;
+            if(data.isStarCases!){
+              searchBasedOnValue = "Stared Cases (High Priority)";
+            } else if(data.isMyRecentActivity!) {
+              searchBasedOnValue = "My Recent Activity";
+            } else if(data.accountNumber!.isNotEmpty){
+              searchBasedOnValue = "Account Number: "+data.accountNumber!;
+            } else if(data.customerName!.isNotEmpty){
+              searchBasedOnValue = "Customer Name: "+data.customerName!;
+            } else if(data.dpdBucket!.isNotEmpty){
+              searchBasedOnValue = "DPD/Bucket: "+data.dpdBucket!;
+            } else if(data.status!.isNotEmpty){
+              searchBasedOnValue = "Status: "+data.status!;
+            } else if(data.pincode!.isNotEmpty){
+              searchBasedOnValue = "Pincode: "+data.pincode!;
+            } else if(data.customerID!.isNotEmpty){
+              searchBasedOnValue = "Customer ID: "+data.customerID!;
+            }
           }
         }
 
@@ -287,10 +306,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               ),
                               // const SizedBox(height: 10.0,),
                               CustomText(
-                                Languages.of(context)!.pincode + ' 636808',
+                                // Languages.of(context)!.pincode + ' 636808',
+                                searchBasedOnValue ?? "",
                                 fontSize: FontSize.fourteen,
                                 color: ColorResource.color000000,
                                 fontWeight: FontWeight.w700,
+                                style: TextStyle(overflow: TextOverflow.ellipsis),
                               ),
                             ],
                           ),

@@ -164,6 +164,9 @@ class LanguageEn extends Languages {
   String get ifscCode => 'IFSC Code*';
 
   @override
+  String get accNumber => 'Account Number*';
+
+  @override
   String get branchLocation => 'Branch Location*';
 
   @override
