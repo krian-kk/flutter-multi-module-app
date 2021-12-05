@@ -68,8 +68,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         isNoInternet = false;
-        // print(APIRepository.getpriorityCaseList());
-        // Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
+        
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.priorityCaseList);
 
