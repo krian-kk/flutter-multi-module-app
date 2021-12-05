@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,6 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<LoginBloc, LoginState>(
       bloc: bloc,
       listener: (context, state) {
+
+        if (state is NoInternetConnectionState) {
+            AppUtils.noInternetSnackbar(context);
+          }
+          
         if (state is HomeTabState) {
           Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
               arguments: userType);
@@ -251,6 +257,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!isValid) {
       return;
     } else {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        bloc.add(NoInternetConnectionEvent());
+      } 
       if (userName.text == 'fos' && password.text == '1234') {
         setState(() {
           userType = 'FIELDAGENT';

@@ -627,4 +627,7 @@ class LanguageHi extends Languages {
 
   @override
   String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं';
 }

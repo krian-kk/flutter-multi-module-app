@@ -5,3 +5,5 @@ abstract class LoginEvent extends BaseEquatable {}
 class LoginInitialEvent extends LoginEvent {}
 
 class HomeTabEvent extends LoginEvent {}
+
+class NoInternetConnectionEvent extends LoginEvent {}

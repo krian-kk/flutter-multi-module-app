@@ -82,6 +82,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Navigator.pop(context);
           }
 
+          if (state is NoInternetConnectionState) {
+            AppUtils.noInternetSnackbar(context);
+          }
+
           if (state is PriorityFollowState) {
             priorityFollowUpSheet(context);
             // if(bloc.priortyFollowUpData.result!.cases!.isNotEmpty){

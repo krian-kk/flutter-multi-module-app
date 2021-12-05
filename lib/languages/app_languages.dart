@@ -422,4 +422,6 @@ abstract class Languages {
   String get medicalIssue;
 
   String get salaryIssue;
+
+  String get noInternetConnection;
 }

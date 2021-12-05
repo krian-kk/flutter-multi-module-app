@@ -628,4 +628,7 @@ class LanguageTa extends Languages {
 
   @override
   String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'இணைய இணைப்பு இல்லை';
 }

@@ -60,6 +60,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString('userType');
 
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } 
+
 // // dashboardList.clear();
       dashboardList.addAll([
         DashboardListModel(
@@ -149,7 +153,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PriorityFollowEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getPriorityFollowUpData =
             await APIRepository.apiRequest(APIRequestType.GET,
@@ -346,5 +350,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     if (event is HelpEvent) {
       yield HelpState();
     }
+
+    // if (event is NoInternetConnectionEvent) {
+    //   yield NoInternetConnectionState();
+    // }
   }
 }

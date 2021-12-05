@@ -628,4 +628,7 @@ class LanguageEn extends Languages {
 
   @override
   String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'No Internet Connection';
 }

@@ -65,6 +65,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) async {
+        if (state is NoInternetConnectionState) {
+            AppUtils.noInternetSnackbar(context);
+          }
+          
         if (state is CaseListViewLoadingState) {
           isCaseDetailLoading = true;
         }
@@ -149,7 +153,19 @@ class _AllocationScreenState extends State<AllocationScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return Scaffold(
+          return bloc.isNoInternet ?
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(Languages.of(context)!.noInternetConnection),
+                const SizedBox(height: 5,),
+                IconButton(onPressed: (){
+                  bloc.add(AllocationInitialEvent());
+                }, icon: Icon(Icons.refresh)),
+              ],
+            ),) :
+           Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             floatingActionButton: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),

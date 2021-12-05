@@ -52,4 +52,6 @@ class SearchFailedState extends AllocationState {
 
 class CaseListViewLoadingState extends AllocationState {}
 
+class NoInternetConnectionState extends AllocationState {}
+
 class SearchReturnDataState extends AllocationState {}

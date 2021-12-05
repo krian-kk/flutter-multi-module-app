@@ -66,3 +66,5 @@ class PostSelfreleaseDataEvent extends DashboardEvent {
 
 class HelpEvent extends DashboardEvent {}
 
+class NoInternetConnectionEvent extends DashboardEvent {}
+
