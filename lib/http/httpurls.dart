@@ -53,5 +53,11 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details-events/yarding?';  
 
   static const String selfRelease =
-      baseUrl + version + fieldAgent + 'case-details-events/selfRelease?';  
+      baseUrl + version + fieldAgent + 'case-details-events/selfRelease?'; 
+
+  static const String changeProfileImage =
+      baseUrl + version + fieldAgent + 'profile/profileImgUrl?';  
+
+  static const String imageCaptured =
+      baseUrl + version + fieldAgent + 'case-details-events/imageCaptured?';  
 }

@@ -37,3 +37,5 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
   final String title;
   ClickOpenBottomSheetState(this.title);
 }
+
+class PostDataApiSuccessState extends CaseDetailsState {}

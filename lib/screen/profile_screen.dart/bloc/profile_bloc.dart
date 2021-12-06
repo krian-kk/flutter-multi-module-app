@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +12,7 @@ import 'package:origa/models/profile_api_result_model/result.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/preference_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -24,12 +27,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
+  String? userType;
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
+
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      userType = _pref.getString('userType');
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
@@ -90,6 +97,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
     if (event is LoginEvent) {
       yield LoginState();
+    }
+
+    if (event is PostProfileImageEvent) {
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(APIRequestType.POST,
+      HttpUrl.changeProfileImage + 
+      "userType=$userType",
+          requestBodydata: jsonEncode(event.postValue));
+        if (postResult['success']) {
+          yield PostDataApiSuccessState();
+        }
     }
   }
   // {

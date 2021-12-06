@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +15,15 @@ import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
-  String caseId = '5f80375a86527c46deba2e5d';
+  String caseId = '618e382004d8d040ac18841b';
   // double launguageValue = 0;
+  String? userType;
 
   CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
   List<EventDetailsResultModel> offlineEventDetailsListValue = [];
@@ -84,6 +88,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
+
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      userType = _pref.getString('userType');
 
       //check internet
       final result = await Connectivity().checkConnectivity();
@@ -248,6 +255,18 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
 
       yield ClickOpenBottomSheetState(event.title);
+    }
+
+    if (event is PostImageCapturedEvent) {
+      Map<String, dynamic> postResult =
+          await APIRepository.apiRequest(APIRequestType.POST,
+           HttpUrl.imageCaptured + 
+           "userType=$userType",
+            requestBodydata: jsonEncode(event.postData));
+
+            if (postResult['success']) {
+               yield PostDataApiSuccessState();
+            }
     }
   }
 }

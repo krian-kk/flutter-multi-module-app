@@ -1,10 +1,15 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/imagecaptured_post_model.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -13,10 +18,11 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
   const CustomCaptureImageBottomSheet(
-    this.cardTitle, {
+    this.cardTitle, this.bloc, {
     Key? key,
-  }) : super(key: key);
+  });
   final String cardTitle;
+  final CaseDetailsBloc bloc;
 
   @override
   State<CustomCaptureImageBottomSheet> createState() =>
@@ -28,11 +34,22 @@ class _CustomCaptureImageBottomSheetState
   TextEditingController remarksControlller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  List uploadFileLists = [];
 
   @override
   void initState() {
     super.initState();
-    // remarksControlller.text = 'ABC';
+  }
+
+   getFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.image);
+      if (result != null) {
+        uploadFileLists = result.files.map((path) => path.path.toString()).toList();
+        print(uploadFileLists);
+      } else {
+        // User canceled the picker
+        AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      }
   }
 
   @override
@@ -79,12 +96,7 @@ class _CustomCaptureImageBottomSheetState
                           cardElevation: 1,
                           isLeading: true,
                           onTap: () async {
-                            final result = await FilePicker.platform.pickFiles(
-                              type: FileType.image,
-                              // allowedExtensions: ['doc'],
-                            );
-                            if (result == null) return;
-                            // print(result);
+                           getFiles();
                           },
                         ),
                         const SizedBox(height: 15),
@@ -143,7 +155,25 @@ class _CustomCaptureImageBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () => _formKey.currentState!.validate(),
+                    onTap: () {
+                       if (_formKey.currentState!.validate()) {
+                         print('object');
+                         if (uploadFileLists.isNotEmpty) {
+                         var requestBodyData = PostImageCapturedModel(
+                           caseId: widget.bloc.caseId, 
+                           eventAttr: EventAttr(
+                             remarks: remarksControlller.text,
+                             imageLocation: uploadFileLists as List<String>,));
+                            print(requestBodyData.toString());
+                             widget.bloc.add(PostImageCapturedEvent(postData: requestBodyData));
+                         } else {
+                           AppUtils.showToast(
+                                  Languages.of(context)!.customUpload.toLowerCase(),
+                                  gravity: ToastGravity.CENTER,
+                                  );
+                         }
+                       };
+                    },
                     cardShape: 5,
                   ),
                 ),

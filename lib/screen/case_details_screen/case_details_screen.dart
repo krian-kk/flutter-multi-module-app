@@ -21,6 +21,7 @@ import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
 import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -59,6 +60,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
         bloc: bloc,
         listener: (context, state) {
+
+          if (state is PostDataApiSuccessState) {
+            AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+            Navigator.pop(context);
+          }
+
           if (state is ClickMainAddressBottomSheetState) {
             Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
@@ -833,7 +840,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             return CustomRepoBottomSheet(Languages.of(context)!.repo);
           case StringResource.captureImage:
             return CustomCaptureImageBottomSheet(
-                Languages.of(context)!.captureImage);
+                Languages.of(context)!.captureImage, bloc);
           case StringResource.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
                 Languages.of(context)!.otherFeedBack, bloc);

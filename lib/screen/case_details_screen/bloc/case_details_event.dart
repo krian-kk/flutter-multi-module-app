@@ -38,3 +38,8 @@ class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String title;
   ClickOpenBottomSheetEvent(this.title);
 }
+
+class PostImageCapturedEvent extends CaseDetailsEvent {
+dynamic? postData;
+  PostImageCapturedEvent({this.postData});
+}
