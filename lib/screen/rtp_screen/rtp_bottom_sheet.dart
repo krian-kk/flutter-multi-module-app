@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/denial_post_model/denial_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -212,7 +213,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                         );
                         Map<String, dynamic> postResult =
                             await APIRepository.apiRequest(APIRequestType.POST,
-                                'https://devapi.instalmint.com/v1/agent/case-details-events/denial?userType=FIELDAGENT',
+                                HttpUrl.denialPostUrl('denial', 'FIELDAGENT'),
                                 requestBodydata: jsonEncode(requestBodyData));
                         if (postResult['success']) {
                           Navigator.pop(context);

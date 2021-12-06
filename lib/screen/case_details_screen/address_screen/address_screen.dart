@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:origa/http/api_repository.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
+import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
@@ -325,11 +330,49 @@ class _AddressScreenState extends State<AddressScreen>
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
 
-                                      onTap: () => widget
-                                          .bloc
-                                          .addressCustomerNotMetFormKey
-                                          .currentState!
-                                          .validate(),
+                                      onTap: () {
+                                        if (widget
+                                                .bloc
+                                                .addressCustomerNotMetFormKey
+                                                .currentState!
+                                                .validate() &&
+                                            widget.bloc
+                                                    .addressSelectedCustomerNotMetClip !=
+                                                '') {
+                                          if (widget.bloc
+                                                  .addressSelectedCustomerNotMetClip ==
+                                              Languages.of(context)!
+                                                  .leftMessage) {
+                                            customerNotMetButtonClick(
+                                              'Left Message',
+                                              '618e382004d8d040ac18841b',
+                                              'TELEVT007',
+                                              'https://devapi.instalmint.com/v1/agent/case-details-events/leftMessage?userType=FIELDAGENT',
+                                              'PTP',
+                                            );
+                                          } else if (widget.bloc
+                                                  .addressSelectedInvalidClip ==
+                                              Languages.of(context)!.shifted) {
+                                            invalidButtonClick(
+                                                'Shifted',
+                                                '618e382004d8d040ac18841b',
+                                                'TELEVT008',
+                                                'https://devapi.instalmint.com/v1/agent/case-details-events/shifted?userType=FIELDAGENT',
+                                                'REVIEW');
+                                          } else if (widget.bloc
+                                                  .addressSelectedInvalidClip ==
+                                              Languages.of(context)!
+                                                  .addressNotFound) {
+                                            invalidButtonClick(
+                                              'Address Not Found',
+                                              '618e382004d8d040ac18841b',
+                                              'TELEVT008',
+                                              'https://devapi.instalmint.com/v1/agent/case-details-events/addressNotFound?userType=FIELDAGENT',
+                                              'PTP',
+                                            );
+                                          }
+                                        } else {}
+                                      },
                                       cardShape: 5,
                                     )
                                   : CustomButton(
@@ -339,9 +382,47 @@ class _AddressScreenState extends State<AddressScreen>
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
-                                      onTap: () => widget.bloc
-                                          .addressInvalidFormKey.currentState!
-                                          .validate(),
+                                      onTap: () {
+                                        if (widget.bloc.addressInvalidFormKey
+                                                .currentState!
+                                                .validate() &&
+                                            widget.bloc
+                                                    .addressSelectedInvalidClip !=
+                                                '') {
+                                          if (widget.bloc
+                                                  .addressSelectedInvalidClip ==
+                                              Languages.of(context)!
+                                                  .wrongAddress) {
+                                            invalidButtonClick(
+                                              'Wrong Address',
+                                              '618e382004d8d040ac18841b',
+                                              'TELEVT008',
+                                              'https://devapi.instalmint.com/v1/agent/case-details-events/invalidAddress?userType=FIELDAGENT',
+                                              'PTP',
+                                            );
+                                          } else if (widget.bloc
+                                                  .addressSelectedInvalidClip ==
+                                              Languages.of(context)!.shifted) {
+                                            invalidButtonClick(
+                                                'Shifted',
+                                                '618e382004d8d040ac18841b',
+                                                'TELEVT008',
+                                                'https://devapi.instalmint.com/v1/agent/case-details-events/shifted?userType=FIELDAGENT',
+                                                'REVIEW');
+                                          } else if (widget.bloc
+                                                  .addressSelectedInvalidClip ==
+                                              Languages.of(context)!
+                                                  .addressNotFound) {
+                                            invalidButtonClick(
+                                              'Address Not Found',
+                                              '618e382004d8d040ac18841b',
+                                              'TELEVT008',
+                                              'https://devapi.instalmint.com/v1/agent/case-details-events/addressNotFound?userType=FIELDAGENT',
+                                              'PTP',
+                                            );
+                                          }
+                                        } else {}
+                                      },
                                       cardShape: 5,
                                     ),
                             ),
@@ -354,6 +435,72 @@ class _AddressScreenState extends State<AddressScreen>
         },
       ),
     );
+  }
+
+  invalidButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+    String followUpPriority,
+  ) async {
+    var requestBodyData = AddressInvalidPostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        eventAttr: EventAttr(
+            remarks: widget.bloc.addressInvalidRemarksController.text,
+            followUpPriority: followUpPriority,
+            agentLocation: AgentLocation()),
+        contact: []);
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+
+    if (await postResult['success']) {
+      setState(() {
+        widget.bloc.addressInvalidRemarksController.text = '';
+        widget.bloc.addressSelectedInvalidClip = '';
+      });
+      Navigator.pop(context);
+    }
+  }
+
+  customerNotMetButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+    String followUpPriority,
+  ) async {
+    var requestBodyData = CustomerNotMetPostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        contact: {},
+        eventAttr: CustomerNotMetEventAttr(
+            remarks: widget.bloc.addressCustomerNotMetRemarksController.text,
+            followUpPriority: followUpPriority,
+            nextActionDate:
+                widget.bloc.addressCustomerNotMetNextActionDateController.text,
+            agentLocation: CustomerNotMetAgentLocation()));
+
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+
+    if (await postResult['success']) {
+      setState(() {
+        widget.bloc.addressCustomerNotMetNextActionDateController.text = '';
+        widget.bloc.addressCustomerNotMetRemarksController.text = '';
+        widget.bloc.addressSelectedCustomerNotMetClip = '';
+      });
+      // Navigator.pop(context);
+    }
   }
 
   openViewMapBottomSheet(BuildContext buildContext) {

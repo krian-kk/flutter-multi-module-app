@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -214,7 +219,28 @@ class _CustomOtherFeedBackBottomSheetState
                     Languages.of(context)!.submit.toUpperCase(),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: () => _formKey.currentState!.validate(),
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        var requestBodyData = OtherFeedBackPostModel(
+                            eventType: 'FEEDBACK',
+                            caseId: '618e382004d8d040ac18841b',
+                            eventCode: 'TELEVT002',
+                            eventAttr: EventAttr(
+                                actionDate: dateControlller.text,
+                                imageLocation: ['0'],
+                                agentLocation: AgentLocation()),
+                            contact: []);
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(
+                          APIRequestType.POST,
+                          HttpUrl.reminderPostUrl('feedback', 'FIELDAGENT'),
+                          requestBodydata: jsonEncode(requestBodyData),
+                        );
+                        if (postResult['success']) {
+                          Navigator.pop(context);
+                        }
+                      } else {}
+                    },
                     cardShape: 5,
                   ),
                 ),
@@ -257,7 +283,7 @@ class _CustomOtherFeedBackBottomSheetState
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

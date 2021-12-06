@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -205,8 +206,12 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         );
 
                         Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(APIRequestType.POST,
-                                'https://devapi.instalmint.com/v1/agent/case-details-events/dispute?userType=FIELDAGENT',
+                            await APIRepository.apiRequest(
+                                APIRequestType.POST,
+                                HttpUrl.disputePostUrl(
+                                  'dispute',
+                                  'FIELDAGENT',
+                                ),
                                 requestBodydata: jsonEncode(requestBodyData));
                         if (postResult['success']) {
                           Navigator.pop(context);

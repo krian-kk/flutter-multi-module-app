@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
@@ -281,9 +282,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             callID: '0',
                             callingID: '0');
                         Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(APIRequestType.POST,
-                                'https://devapi.instalmint.com/v1/agent/case-details-events/ptp?userType=FIELDAGENT',
-                                requestBodydata: jsonEncode(requestBodyData));
+                            await APIRepository.apiRequest(
+                          APIRequestType.POST,
+                          HttpUrl.ptpPostUrl(
+                            'ptp',
+                            'FIELDAGENT',
+                          ),
+                          requestBodydata: jsonEncode(requestBodyData),
+                        );
                         if (postResult['success']) {
                           Navigator.pop(context);
                         }

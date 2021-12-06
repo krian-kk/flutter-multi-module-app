@@ -25,6 +25,58 @@ class HttpUrl {
   // static const String masterLookUp =
   //     baseUrl + 'ms-communication/lookup/index/mastLookupType/';
 
+  // Post API ===================================================
+  // Collection Post API
+  static String collectionPostUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  // Other FeedBack Post API
+  static String otherFeedBackPostUrl(
+          String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  // RTP(Denial) Post API
+  static String denialPostUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  // Reminder Post API
+  static String reminderPostUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  // Repo Post API
+  static String repoPostUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  // Dispute Post API
+  static String disputePostUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  // Dispute Post API
+  static String ptpPostUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+
+  // Unreachable Post API
+  static String unreachableUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      userType +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+
   // DashBoard
   static const String dashboardPriorityFollowUpUrl =
       baseUrl + version + userType + 'case-details/priorityFollowUp';
@@ -32,16 +84,16 @@ class HttpUrl {
       baseUrl + version + userType + 'case-details/brokenPtp';
   static const String dashboardUntouchedCasesUrl =
       baseUrl + version + userType + 'case-details/untouchedCases';
-  static const String dashboardMyVisitsUrl = baseUrl +
-      version +
-      userType +
-      'case-details/visits?';
+  static const String dashboardMyVisitsUrl =
+      baseUrl + version + userType + 'case-details/visits?';
   static const String dashboardMyReceiptsUrl =
       baseUrl + version + userType + 'case-details/receipts?';
   static const String dashboardMyDeposistsUrl =
       baseUrl + version + userType + 'case-details/deposits?';
-  static const String dashboardYardingAndSelfReleaseUrl =
-      baseUrl + version + userType + 'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
+  static const String dashboardYardingAndSelfReleaseUrl = baseUrl +
+      version +
+      userType +
+      'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
   static const String searchUrl =
       baseUrl + version + userType + 'case-details/search?';
   static const String login = users + 'auth/signin';

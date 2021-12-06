@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
@@ -324,10 +325,13 @@ class _CustomCollectionsBottomSheetState
                             createdAt: DateTime.now().toString(),
                             lastAction: DateTime.now().toString());
                         Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(APIRequestType.POST,
-                                'https://devapi.instalmint.com/v1/agent/case-details-events/collection?userType=FIELDAGENT',
+                            await APIRepository.apiRequest(
+                                APIRequestType.POST,
+                                HttpUrl.collectionPostUrl(
+                                  'collection',
+                                  'FIELDAGENT',
+                                ),
                                 requestBodydata: jsonEncode(requestBodyData));
-                        print(postResult);
                         if (postResult['success']) {
                           Navigator.pop(context);
                         }
@@ -375,7 +379,7 @@ class _CustomCollectionsBottomSheetState
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -269,7 +270,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         Map<String, dynamic> postResult =
                             await APIRepository.apiRequest(
                           APIRequestType.POST,
-                          'https://devapi.instalmint.com/v1/agent/case-details-events/repo?userType=FIELDAGENT',
+                          HttpUrl.repoPostUrl('repo', 'FIELDAGENT'),
                           requestBodydata: jsonEncode(requestBodyData),
                         );
                         if (postResult['success']) {

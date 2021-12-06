@@ -280,14 +280,15 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.addressSelectedInvalidClip = element.clipTitle;
+          widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.addressSelectedInvalidClip
+            color: element.clipTitle ==
+                    widget.bloc.addressSelectedCustomerNotMetClip
                 ? ColorResource.colorFFB800.withOpacity(0.67)
                 : ColorResource.colorE7E7E7,
           ),
@@ -335,7 +336,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
     });

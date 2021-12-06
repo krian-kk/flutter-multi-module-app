@@ -184,15 +184,14 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;
+          widget.bloc.addressSelectedInvalidClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle ==
-                    widget.bloc.addressSelectedCustomerNotMetClip
+            color: element.clipTitle == widget.bloc.addressSelectedInvalidClip
                 ? ColorResource.colorF1BCC4
                 : ColorResource.colorE7E7E7,
           ),

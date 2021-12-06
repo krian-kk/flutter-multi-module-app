@@ -1,0 +1,3 @@
+// class CaseDetailsRouteModel {
+//   final String 
+// }

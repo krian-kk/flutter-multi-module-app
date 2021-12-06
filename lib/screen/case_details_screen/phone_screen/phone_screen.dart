@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/unreachable_post_model/unreachable_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
@@ -321,7 +323,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           'TC : Line Busy',
                                           '618e382004d8d040ac18841b',
                                           'TELEVT007',
-                                          'https://devapi.instalmint.com/v1/agent/case-details-events/lineBusy?userType=TELECALLER',
+                                          HttpUrl.unreachableUrl(
+                                            'lineBusy',
+                                            'TELECALLER',
+                                          ),
                                         );
                                       } else if (widget.bloc
                                               .phoneSelectedUnreadableClip ==
@@ -330,7 +335,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           'TC : Switch Off',
                                           '618e382004d8d040ac18841b',
                                           'TELEVT007',
-                                          'https://devapi.instalmint.com/v1/agent/case-details-events/switchOff?userType=TELECALLER',
+                                          HttpUrl.unreachableUrl(
+                                            'switchOff',
+                                            'TELECALLER',
+                                          ),
                                         );
                                       } else if (widget.bloc
                                               .phoneSelectedUnreadableClip ==
@@ -339,7 +347,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           'TC : RNR',
                                           '618e382004d8d040ac18841b',
                                           'TELEVT011',
-                                          'https://devapi.instalmint.com/v1/agent/case-details-events/RNR?userType=TELECALLER',
+                                          HttpUrl.unreachableUrl(
+                                            'RNR',
+                                            'TELECALLER',
+                                          ),
                                         );
                                       } else if (widget.bloc
                                               .phoneSelectedUnreadableClip ==
@@ -348,7 +359,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           'TC : Out Of Network',
                                           '618e382004d8d040ac18841b',
                                           'TELEVT007',
-                                          'https://devapi.instalmint.com/v1/agent/case-details-events/outOfNetwork?userType=TELECALLER',
+                                          HttpUrl.unreachableUrl(
+                                            'outOfNetwork',
+                                            'TELECALLER',
+                                          ),
                                         );
                                       } else if (widget.bloc
                                               .phoneSelectedUnreadableClip ==
@@ -358,7 +372,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           'TC : Disconnecting',
                                           '618e382004d8d040ac18841b',
                                           'TELEVT011',
-                                          'https://devapi.instalmint.com/v1/agent/case-details-events/disconnecting?userType=TELECALLER',
+                                          HttpUrl.unreachableUrl(
+                                            'disconnecting',
+                                            'TELECALLER',
+                                          ),
                                         );
                                       }
                                     }
@@ -448,28 +465,58 @@ class _PhoneScreenState extends State<PhoneScreen>
     String eventCode,
     String urlString,
   ) async {
+    // var requestBodyData = PhoneInvalidPostModel(
+    //     eventType: eventType,
+    //     caseId: caseId,
+    //     eventCode: eventCode,
+    //     eventAttr: InvalidEventAttr(
+    //         remarks: widget.bloc.phoneInvalidRemarksController.text,
+    //         followUpPriority: followUpPriority,
+    //         nextActionDate: nextActionDate),
+    //     contact: Contact());
+    // Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    //   APIRequestType.POST,
+    //   urlString,
+    //   requestBodydata: jsonEncode(requestBodyData),
+    // );
+    // if (await postResult['success']) {
+    //   setState(() {
+    //     widget.bloc.phoneUnreachableNextActionDateController.text = '';
+    //     widget.bloc.phoneUnreachableRemarksController.text = '';
+    //     widget.bloc.phoneSelectedUnreadableClip = '';
+    //   });
+    //   Navigator.pop(context);
+    // }
+  }
+
+  invalidButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+  ) async {
     var requestBodyData = UnReachablePostModel(
       eventType: eventType,
       caseId: caseId,
       eventCode: eventCode,
-      eventAttr: EventAttr(
+      eventAttr: UnreadableEventAttr(
           followUpPriority: 'REVIEW',
           remarks: widget.bloc.phoneUnreachableRemarksController.text,
           nextActionDate:
               widget.bloc.phoneUnreachableNextActionDateController.text),
-      contact: Contact(),
+      contact: UnreachableContact(),
     );
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.POST,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
-    setState(() {
-      widget.bloc.phoneUnreachableNextActionDateController.text = '';
-      widget.bloc.phoneUnreachableRemarksController.text = '';
-      widget.bloc.phoneSelectedUnreadableClip = '';
-    });
     if (await postResult['success']) {
+      setState(() {
+        widget.bloc.phoneUnreachableNextActionDateController.text = '';
+        widget.bloc.phoneUnreachableRemarksController.text = '';
+        widget.bloc.phoneSelectedUnreadableClip = '';
+      });
       Navigator.pop(context);
     }
   }

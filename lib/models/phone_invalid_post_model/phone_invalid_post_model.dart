@@ -1,11 +1,11 @@
-class UnReachablePostModel {
+class PhoneInvalidPostModel {
   late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
-  late UnreadableEventAttr eventAttr;
+  late InvalidEventAttr eventAttr;
   late String eventModule;
-  late UnreachableContact contact;
+  late Contact contact;
   late String createdBy;
   late String callID;
   late String callingID;
@@ -15,7 +15,7 @@ class UnReachablePostModel {
   late String agentName;
   late String agrRef;
 
-  UnReachablePostModel(
+  PhoneInvalidPostModel(
       {this.eventId = 0,
       required this.eventType,
       required this.caseId,
@@ -29,17 +29,17 @@ class UnReachablePostModel {
       this.callerServiceID = '',
       this.voiceCallEventCode = '',
       this.invalidNumber = 0,
-      this.agentName = '0',
-      this.agrRef = '0'});
+      this.agentName = '',
+      this.agrRef = ''});
 
-  UnReachablePostModel.fromJson(Map<String, dynamic> json) {
+  PhoneInvalidPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
     eventType = json['eventType'];
     caseId = json['caseId'];
     eventCode = json['eventCode'];
-    eventAttr = UnreadableEventAttr.fromJson(json['eventAttr']);
+    eventAttr = InvalidEventAttr.fromJson(json['eventAttr']);
     eventModule = json['eventModule'];
-    contact = UnreachableContact.fromJson(json['contact']);
+    contact = Contact.fromJson(json['contact']);
     createdBy = json['createdBy'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -71,17 +71,17 @@ class UnReachablePostModel {
   }
 }
 
-class UnreadableEventAttr {
+class InvalidEventAttr {
   late String remarks;
   late String followUpPriority;
   late String nextActionDate;
 
-  UnreadableEventAttr(
+  InvalidEventAttr(
       {required this.remarks,
-      required this.followUpPriority,
+      this.followUpPriority = 'AWAITING CONTACT',
       required this.nextActionDate});
 
-  UnreadableEventAttr.fromJson(Map<String, dynamic> json) {
+  InvalidEventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
     followUpPriority = json['followUpPriority'];
     nextActionDate = json['nextActionDate'];
@@ -96,19 +96,19 @@ class UnreadableEventAttr {
   }
 }
 
-class UnreachableContact {
+class Contact {
   late String cType;
   late String value;
   late String contactId0;
   late String health;
 
-  UnreachableContact(
+  Contact(
       {this.cType = '',
       this.value = '',
       this.contactId0 = '',
-      this.health = '1'});
+      this.health = ''});
 
-  UnreachableContact.fromJson(Map<String, dynamic> json) {
+  Contact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
     contactId0 = json['contactId_0'];
