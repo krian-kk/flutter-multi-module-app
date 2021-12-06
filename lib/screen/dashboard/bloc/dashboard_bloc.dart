@@ -15,9 +15,12 @@ import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dar
 import 'package:origa/models/dashboard_priority_model/dashboard_priority_model.dart';
 import 'package:origa/models/dashboard_untouched_cases_model/dashboard_untouched_cases_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
+import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
@@ -26,6 +29,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
   List<CaseListModel> caseList = [];
+  String? userType;
   String? selectedFilter = 'TODAY';
   bool? selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
@@ -52,6 +56,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is DashboardInitialEvent) {
       yield DashboardLoadingState();
+
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      userType = _pref.getString('userType');
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } 
 
 // // dashboardList.clear();
       dashboardList.addAll([
@@ -142,7 +153,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PriorityFollowEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getPriorityFollowUpData =
             await APIRepository.apiRequest(APIRequestType.GET,
@@ -242,14 +253,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
-        // Map<String, dynamic> getMyDepositsData =
-        //     await APIRepository.getDashboardMyDeposistsData('WEEKLY');
         Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.dashboardMyDeposistsUrl + 
             'timePeriod='+selectedFilter!);
         myDeposistsData =
             DashboardMydeposistsModel.fromJson(getMyDepositsData['data']);
-            // print('getMyDepositsData');
             print(getMyDepositsData['data']);
       }
       yield MyDeposistsState();
@@ -274,13 +282,57 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic> getYardingAndSelfReleaseData =
             await APIRepository.apiRequest(
                 APIRequestType.GET,
-                HttpUrl.dashboardYardingAndSelfReleaseUrl +
-                    '5f80375a86527c46deba2e60');
+                HttpUrl.dashboardYardingAndSelfReleaseUrl);
         yardingAndSelfReleaseData =
             DashboardYardingandSelfReleaseModel.fromJson(
                 getYardingAndSelfReleaseData['data']);
       }
       yield YardingAndSelfReleaseState();
+    }
+
+    if (event is PostBankDepositDataEvent) {
+        Map<String, dynamic> postResult =
+      await APIRepository.apiRequest(APIRequestType.POST,
+      HttpUrl.bankDeposit + 
+      "userType=$userType",
+          requestBodydata: jsonEncode(event.postData));
+        if (postResult['success']) {
+          yield PostDataApiSuccessState();
+        }
+    }
+
+    if (event is PostCompanyDepositDataEvent) {
+        Map<String, dynamic> postResult =
+      await APIRepository.apiRequest(APIRequestType.POST,
+      HttpUrl.companyBranchDeposit +
+      "userType=$userType",
+          requestBodydata: jsonEncode(event.postData));
+        if (postResult['success']) {
+          yield PostDataApiSuccessState();
+        }
+    }
+
+    if (event is PostYardingDataEvent) {
+        Map<String, dynamic> postResult =
+      await APIRepository.apiRequest(APIRequestType.POST,
+      HttpUrl.yarding + "userType=$userType",
+          requestBodydata: jsonEncode(event.postData));
+        if (postResult['success']) {
+          yield PostDataApiSuccessState();
+        }
+    }
+
+    if (event is PostSelfreleaseDataEvent) {
+      print('userType----------');
+      print(userType);
+       Map<String, dynamic> postResult =
+          await APIRepository.apiRequest(APIRequestType.POST,
+           HttpUrl.selfRelease + "userType=$userType",
+            requestBodydata: jsonEncode(event.postData));
+
+            if (postResult['success']) {
+               yield PostDataApiSuccessState();
+            }
     }
 
     if (event is NavigateCaseDetailEvent) {
@@ -298,5 +350,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     if (event is HelpEvent) {
       yield HelpState();
     }
+
+    // if (event is NoInternetConnectionEvent) {
+    //   yield NoInternetConnectionState();
+    // }
   }
 }

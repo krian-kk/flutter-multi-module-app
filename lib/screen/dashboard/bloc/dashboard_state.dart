@@ -39,3 +39,7 @@ class ClickPriorityFollowUpState extends DashboardState {}
 class SelectedTimeperiodDataLoadingState extends DashboardState {}
 
 class SelectedTimeperiodDataLoadedState extends DashboardState {}
+
+class PostDataApiSuccessState extends DashboardState {}
+
+class NoInternetConnectionState extends DashboardState {}

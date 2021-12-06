@@ -12,6 +12,8 @@ class CaseDetailsLoadingState extends CaseDetailsState {}
 
 class CaseDetailsLoadedState extends CaseDetailsState {}
 
+class NoInternetState extends CaseDetailsState {}
+
 class ClickMainAddressBottomSheetState extends CaseDetailsState {
   final int i;
   ClickMainAddressBottomSheetState(this.i);

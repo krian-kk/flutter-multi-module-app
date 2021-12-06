@@ -1,15 +1,19 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -21,8 +25,10 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
   const CustomCollectionsBottomSheet(
     this.cardTitle, {
     Key? key,
+    required this.caseId,
   }) : super(key: key);
   final String cardTitle;
+  final String caseId;
 
   @override
   State<CustomCollectionsBottomSheet> createState() =>
@@ -38,9 +44,21 @@ class _CustomCollectionsBottomSheetState
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
+  List uploadFileLists = [];
 
   FocusNode chequeFocusNode = FocusNode();
   FocusNode remarksFocusNode = FocusNode();
+
+  getFiles() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: true, type: FileType.any);
+    if (result != null) {
+      uploadFileLists =
+          result.files.map((path) => path.path.toString()).toList();
+    } else {
+      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+    }
+  }
 
   @override
   void initState() {
@@ -254,6 +272,7 @@ class _CustomCollectionsBottomSheetState
                         CustomButton(
                           Languages.of(context)!.customUpload,
                           fontWeight: FontWeight.w700,
+                          onTap: () => getFiles(),
                           trailingWidget:
                               SvgPicture.asset(ImageResource.upload),
                           fontSize: FontSize.sixteen,
@@ -313,27 +332,35 @@ class _CustomCollectionsBottomSheetState
                     onTap: () async {
                       if (_formKey.currentState!.validate() &&
                           selectedPaymentModeButton != '') {
-                        var requestBodyData = CollectionPostModel(
-                            eventType: 'RECEIPT',
-                            caseId: '618e382004d8d040ac18841b',
-                            eventAttr: EventAttr(
-                                date: dateControlller.text,
-                                remarks: remarksControlller.text,
-                                mode: selectedPaymentModeButton,
-                                imageLocation: ['dkjd'],
-                                agentLocation: AgentLocation()),
-                            createdAt: DateTime.now().toString(),
-                            lastAction: DateTime.now().toString());
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                                APIRequestType.POST,
-                                HttpUrl.collectionPostUrl(
-                                  'collection',
-                                  'FIELDAGENT',
-                                ),
-                                requestBodydata: jsonEncode(requestBodyData));
-                        if (postResult['success']) {
-                          Navigator.pop(context);
+                        if (uploadFileLists.isEmpty) {
+                          AppUtils.showToast(
+                            StringResource.uploadDepositSlip,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        } else {
+                          var requestBodyData = CollectionPostModel(
+                              eventType: 'RECEIPT',
+                              caseId: widget.caseId,
+                              eventAttr: EventAttr(
+                                  date: dateControlller.text,
+                                  remarks: remarksControlller.text,
+                                  mode: selectedPaymentModeButton,
+                                  imageLocation:
+                                      uploadFileLists as List<String>,
+                                  agentLocation: AgentLocation()),
+                              createdAt: DateTime.now().toString(),
+                              lastAction: DateTime.now().toString());
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.collectionPostUrl(
+                                    'collection',
+                                    'FIELDAGENT',
+                                  ),
+                                  requestBodydata: jsonEncode(requestBodyData));
+                          if (postResult['success']) {
+                            Navigator.pop(context);
+                          }
                         }
                       }
                     },

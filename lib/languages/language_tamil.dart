@@ -164,6 +164,9 @@ class LanguageTa extends Languages {
   String get ifscCode => 'IFSC குறியீடு*';
 
   @override
+  String get accNumber => 'கணக்கு எண்*';
+
+  @override
   String get branchLocation => 'கிளை இடம்*';
 
   @override
@@ -625,4 +628,7 @@ class LanguageTa extends Languages {
 
   @override
   String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'இணைய இணைப்பு இல்லை';
 }

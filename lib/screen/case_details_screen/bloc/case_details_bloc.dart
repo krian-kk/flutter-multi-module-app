@@ -18,7 +18,7 @@ part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
-  String caseId = '5f80375a86527c46deba2e5d';
+  String? caseId;
   // double launguageValue = 0;
 
   CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
@@ -85,16 +85,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
 
+      caseId = event.paramValues['caseID'];
+
       //check internet
       final result = await Connectivity().checkConnectivity();
       if (result == ConnectivityResult.none) {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.caseDetailsUrl + caseId
-            // event.paramValues['caseID']
-            );
-        print(caseDetailsData);
+            APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId');
 
         if (caseDetailsData['success'] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
@@ -210,13 +209,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         case StringResource.eventDetails:
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            print('Please Connect Internet!');
+            yield NoInternetState();
           } else {
             Map<String, dynamic> getEventDetailsData =
                 await APIRepository.apiRequest(
                     APIRequestType.GET,
                     HttpUrl.eventDetailsUrl(
-                        '5f80375a86527c46deba2e62', 'TELECALLER')
+                        caseId: '5f80375a86527c46deba2e62',
+                        usertype: 'TELECALLER')
                     // + '5f80375a86527c46deba2e62'
                     );
 

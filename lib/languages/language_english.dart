@@ -164,6 +164,9 @@ class LanguageEn extends Languages {
   String get ifscCode => 'IFSC Code*';
 
   @override
+  String get accNumber => 'Account Number*';
+
+  @override
   String get branchLocation => 'Branch Location*';
 
   @override
@@ -625,4 +628,7 @@ class LanguageEn extends Languages {
 
   @override
   String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'No Internet Connection';
 }

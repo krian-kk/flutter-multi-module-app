@@ -163,6 +163,8 @@ abstract class Languages {
 
   String get ifscCode;
 
+  String get accNumber;
+
   String get repoStatus;
 
   String get repoDate;
@@ -420,4 +422,6 @@ abstract class Languages {
   String get medicalIssue;
 
   String get salaryIssue;
+
+  String get noInternetConnection;
 }

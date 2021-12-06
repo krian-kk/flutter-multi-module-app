@@ -18,11 +18,11 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomDisputeBottomSheet extends StatefulWidget {
-  const CustomDisputeBottomSheet(
-    this.cardTitle, {
-    Key? key,
-  }) : super(key: key);
+  const CustomDisputeBottomSheet(this.cardTitle,
+      {Key? key, required this.caseId})
+      : super(key: key);
   final String cardTitle;
+  final String caseId;
 
   @override
   State<CustomDisputeBottomSheet> createState() =>
@@ -191,6 +191,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                           (disputeDropDownValue != 'select')) {
                         var requestBodyData = DisputePostModel(
                           eventType: 'DISPUTE',
+                          caseId: widget.caseId,
                           eventCode: 'TELEVT005',
                           contractor: '0',
                           agrRef: '0',

@@ -141,9 +141,7 @@ class EventAttr {
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     data['distance'] = distance;
-    if (agentLocation != null) {
-      data['agentLocation'] = agentLocation.toJson();
-    }
+    data['agentLocation'] = agentLocation.toJson();
     data['appStatus'] = appStatus;
     data['duplicate'] = duplicate;
     return data;

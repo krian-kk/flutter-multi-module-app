@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
@@ -345,30 +346,41 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .leftMessage) {
                                             customerNotMetButtonClick(
                                               'Left Message',
-                                              '618e382004d8d040ac18841b',
+                                              widget.bloc.caseId.toString(),
                                               'TELEVT007',
-                                              'https://devapi.instalmint.com/v1/agent/case-details-events/leftMessage?userType=FIELDAGENT',
+                                              HttpUrl.leftMessageUrl(
+                                                'leftMessage',
+                                                'FIELDAGENT',
+                                              ),
                                               'PTP',
+                                              {},
                                             );
                                           } else if (widget.bloc
-                                                  .addressSelectedInvalidClip ==
-                                              Languages.of(context)!.shifted) {
-                                            invalidButtonClick(
-                                                'Shifted',
-                                                '618e382004d8d040ac18841b',
-                                                'TELEVT008',
-                                                'https://devapi.instalmint.com/v1/agent/case-details-events/shifted?userType=FIELDAGENT',
-                                                'REVIEW');
-                                          } else if (widget.bloc
-                                                  .addressSelectedInvalidClip ==
+                                                  .addressSelectedCustomerNotMetClip ==
                                               Languages.of(context)!
-                                                  .addressNotFound) {
-                                            invalidButtonClick(
-                                              'Address Not Found',
-                                              '618e382004d8d040ac18841b',
-                                              'TELEVT008',
-                                              'https://devapi.instalmint.com/v1/agent/case-details-events/addressNotFound?userType=FIELDAGENT',
+                                                  .doorLocked) {
+                                            customerNotMetButtonClick(
+                                              'Door Locked',
+                                              widget.bloc.caseId.toString(),
+                                              'TELEVT007',
+                                              HttpUrl.doorLockedUrl(
+                                                  'doorLocked', 'FIELDAGENT'),
+                                              'NEW',
+                                              [],
+                                            );
+                                          } else if (widget.bloc
+                                                  .addressSelectedCustomerNotMetClip ==
+                                              Languages.of(context)!
+                                                  .entryRestricted) {
+                                            customerNotMetButtonClick(
+                                              'Entry Restricted',
+                                              widget.bloc.caseId.toString(),
+                                              'TELEVT007',
+                                              HttpUrl.entryRestrictedUrl(
+                                                  'entryRestricted',
+                                                  'FIELDAGENT'),
                                               'PTP',
+                                              [],
                                             );
                                           }
                                         } else {}
@@ -395,9 +407,12 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .wrongAddress) {
                                             invalidButtonClick(
                                               'Wrong Address',
-                                              '618e382004d8d040ac18841b',
+                                              widget.bloc.caseId.toString(),
                                               'TELEVT008',
-                                              'https://devapi.instalmint.com/v1/agent/case-details-events/invalidAddress?userType=FIELDAGENT',
+                                              HttpUrl.wrongAddressUrl(
+                                                'invalidAddress',
+                                                'FIELDAGENT',
+                                              ),
                                               'PTP',
                                             );
                                           } else if (widget.bloc
@@ -405,9 +420,10 @@ class _AddressScreenState extends State<AddressScreen>
                                               Languages.of(context)!.shifted) {
                                             invalidButtonClick(
                                                 'Shifted',
-                                                '618e382004d8d040ac18841b',
+                                                widget.bloc.caseId.toString(),
                                                 'TELEVT008',
-                                                'https://devapi.instalmint.com/v1/agent/case-details-events/shifted?userType=FIELDAGENT',
+                                                HttpUrl.shiftedUrl(
+                                                    'shifted', 'FIELDAGENT'),
                                                 'REVIEW');
                                           } else if (widget.bloc
                                                   .addressSelectedInvalidClip ==
@@ -415,9 +431,12 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .addressNotFound) {
                                             invalidButtonClick(
                                               'Address Not Found',
-                                              '618e382004d8d040ac18841b',
+                                              widget.bloc.caseId.toString(),
                                               'TELEVT008',
-                                              'https://devapi.instalmint.com/v1/agent/case-details-events/addressNotFound?userType=FIELDAGENT',
+                                              HttpUrl.addressNotFoundUrl(
+                                                'addressNotFound',
+                                                'FIELDAGENT',
+                                              ),
                                               'PTP',
                                             );
                                           }
@@ -474,12 +493,13 @@ class _AddressScreenState extends State<AddressScreen>
     String eventCode,
     String urlString,
     String followUpPriority,
+    dynamic contact,
   ) async {
     var requestBodyData = CustomerNotMetPostModel(
         eventType: eventType,
         caseId: caseId,
         eventCode: eventCode,
-        contact: {},
+        contact: contact,
         eventAttr: CustomerNotMetEventAttr(
             remarks: widget.bloc.addressCustomerNotMetRemarksController.text,
             followUpPriority: followUpPriority,
@@ -499,7 +519,7 @@ class _AddressScreenState extends State<AddressScreen>
         widget.bloc.addressCustomerNotMetRemarksController.text = '';
         widget.bloc.addressSelectedCustomerNotMetClip = '';
       });
-      // Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 

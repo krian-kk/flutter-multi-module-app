@@ -21,6 +21,7 @@ import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
 import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -32,8 +33,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
-  dynamic paramValues;
-   CaseDetailsScreen({this.paramValues});
+  final dynamic paramValues;
+  const CaseDetailsScreen({Key? key, this.paramValues}) : super(key: key);
 
   @override
   _CaseDetailsScreenState createState() => _CaseDetailsScreenState();
@@ -46,10 +47,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = CaseDetailsBloc()..add(CaseDetailsInitialEvent(paramValues: widget.paramValues));
-      //   print('CaseDetailsScreen.paramValues------');
-      // print(widget.paramValues);
-      // print(widget.paramValues['caseID']);
+    bloc = CaseDetailsBloc()
+      ..add(CaseDetailsInitialEvent(paramValues: widget.paramValues));
+    //   print('CaseDetailsScreen.paramValues------');
+    // print(widget.paramValues);
+    // print(widget.paramValues['caseID']);
   }
 
   @override
@@ -70,8 +72,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           if (state is ClickOpenBottomSheetState) {
             openBottomSheet(context, state.title);
           }
+          if (state is NoInternetState) {
+            AppUtils.noInternetSnackbar(context);
+          }
           if (state is CallCaseDetailsState) {
-            print(state.paramValues);
             Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
                 arguments: state.paramValues);
           }
@@ -513,13 +517,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           children: [
                                             const SizedBox(height: 10),
                                             GestureDetector(
-                                              onTap: () => bloc
-                                                  .add(ClickCaseDetailsEvent(
-                                                    paramValues:{'caseID':bloc
-                                                            .offlineCaseDetailsValue
-                                                            .otherLoanDetails![
-                                                                index]
-                                                            .id!,'isAddress': true})),
+                                              onTap: () => bloc.add(
+                                                  ClickCaseDetailsEvent(
+                                                      paramValues: {
+                                                    'caseID': bloc
+                                                        .offlineCaseDetailsValue
+                                                        .otherLoanDetails![
+                                                            index]
+                                                        .id!,
+                                                    'isAddress': true
+                                                  })),
                                               child: Container(
                                                 width: double.infinity,
                                                 decoration: BoxDecoration(
@@ -724,7 +731,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       ),
                                     )
                                   : const SizedBox(),
-                              SizedBox(width: widget.paramValues['isAddress'] as bool ? 20 : 0),
+                              SizedBox(
+                                  width: widget.paramValues['isAddress'] as bool
+                                      ? 20
+                                      : 0),
                               GestureDetector(
                                 onTap: () => bloc.add(ClickOpenBottomSheetEvent(
                                     StringResource.callDetails)),
@@ -816,27 +826,51 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       builder: (BuildContext context) {
         switch (cardTitle) {
           case StringResource.ptp:
-            return CustomPtpBottomSheet(Languages.of(context)!.ptp);
+            return CustomPtpBottomSheet(
+              Languages.of(context)!.ptp,
+              caseId: bloc.caseId.toString(),
+            );
           case StringResource.rtp:
             return CustomRtpBottomSheet(Languages.of(context)!.rtp);
           case StringResource.dispute:
-            return CustomDisputeBottomSheet(Languages.of(context)!.dispute);
+            return CustomDisputeBottomSheet(
+              Languages.of(context)!.dispute,
+              caseId: bloc.caseId.toString(),
+            );
           case StringResource.remainder:
             return CustomRemainderBottomSheet(
-                Languages.of(context)!.remainderCb);
+              Languages.of(context)!.remainderCb,
+              caseId: bloc.caseId.toString(),
+            );
           case StringResource.collections:
             return CustomCollectionsBottomSheet(
-                Languages.of(context)!.collections);
+              Languages.of(context)!.collections,
+              caseId: bloc.caseId.toString(),
+            );
           case StringResource.ots:
             return CustomOtsBottomSheet(Languages.of(context)!.ots);
           case StringResource.repo:
-            return CustomRepoBottomSheet(Languages.of(context)!.repo);
+            return CustomRepoBottomSheet(
+              Languages.of(context)!.repo,
+              caseId: bloc.caseId.toString(),
+            );
           case StringResource.captureImage:
             return CustomCaptureImageBottomSheet(
-                Languages.of(context)!.captureImage);
+              Languages.of(context)!.captureImage,
+              customerLoanUserDetailsWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+            );
           case StringResource.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
-                Languages.of(context)!.otherFeedBack, bloc);
+              Languages.of(context)!.otherFeedBack,
+              bloc,
+              caseId: bloc.caseId.toString(),
+            );
           case StringResource.eventDetails:
             return CustomEventDetailsBottomSheet(
                 Languages.of(context)!.eventDetails, bloc);

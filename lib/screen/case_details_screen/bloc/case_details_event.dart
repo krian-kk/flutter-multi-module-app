@@ -4,7 +4,7 @@ part of 'case_details_bloc.dart';
 class CaseDetailsEvent extends BaseEquatable {}
 
 class CaseDetailsInitialEvent extends CaseDetailsEvent {
-  dynamic paramValues;
+  final dynamic paramValues;
   CaseDetailsInitialEvent({this.paramValues});
 }
 
@@ -27,10 +27,12 @@ class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
 
 class ClickViewMapEvent extends CaseDetailsEvent {}
 
+class ClickUnreachableButtonEvent extends CaseDetailsEvent {}
+
 // class ClickCallCustomerEvent extends CaseDetailsEvent {}
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {
-  dynamic paramValues;
+  final dynamic paramValues;
   ClickCaseDetailsEvent({this.paramValues});
 }
 

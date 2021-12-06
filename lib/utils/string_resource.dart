@@ -99,4 +99,10 @@ class StringResource {
   static const String eventDetails = 'EVENT DETAILS';
   static const String noCasesAvailable = 'No cases available';
   static const String callCustomer = 'CALL CUSTOMER';
+  static const String notSelectedCase = 'Should be select one loan';
+  static const String uploadDepositSlip = 'Please upload deposit slip';
+  static const String successfullySubmitted = 'Successfully submitted!!';
+  static const String resetPassword = 'Reset password via OTP';
+  static const String loginViaDifferentUser = 'Login via diffrent user';
+  static const String signIn = 'Sign In';
 }

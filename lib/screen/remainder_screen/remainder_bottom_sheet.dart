@@ -17,11 +17,11 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomRemainderBottomSheet extends StatefulWidget {
-  const CustomRemainderBottomSheet(
-    this.cardTitle, {
-    Key? key,
-  }) : super(key: key);
+  const CustomRemainderBottomSheet(this.cardTitle,
+      {Key? key, required this.caseId})
+      : super(key: key);
   final String cardTitle;
+  final String caseId;
 
   @override
   State<CustomRemainderBottomSheet> createState() =>
@@ -207,7 +207,7 @@ class _CustomRemainderBottomSheetState
                       if (_formKey.currentState!.validate()) {
                         var requestBodyData = ReminderPostAPI(
                           eventType: 'REMINDER',
-                          caseId: '618e382004d8d040ac18841b',
+                          caseId: widget.caseId,
                           eventCode: 'TELEVT006',
                           eventAttr: EventAttr(
                             reminderDate: nextActionDateControlller.text,

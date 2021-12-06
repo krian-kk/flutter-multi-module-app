@@ -321,7 +321,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           Languages.of(context)!.lineBusy) {
                                         unreachableButtonClick(
                                           'TC : Line Busy',
-                                          '618e382004d8d040ac18841b',
+                                          widget.bloc.caseId.toString(),
                                           'TELEVT007',
                                           HttpUrl.unreachableUrl(
                                             'lineBusy',
@@ -333,7 +333,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           Languages.of(context)!.switchOff) {
                                         unreachableButtonClick(
                                           'TC : Switch Off',
-                                          '618e382004d8d040ac18841b',
+                                          widget.bloc.caseId.toString(),
                                           'TELEVT007',
                                           HttpUrl.unreachableUrl(
                                             'switchOff',
@@ -345,7 +345,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           Languages.of(context)!.rnr) {
                                         unreachableButtonClick(
                                           'TC : RNR',
-                                          '618e382004d8d040ac18841b',
+                                          widget.bloc.caseId.toString(),
                                           'TELEVT011',
                                           HttpUrl.unreachableUrl(
                                             'RNR',
@@ -357,7 +357,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           Languages.of(context)!.outOfNetwork) {
                                         unreachableButtonClick(
                                           'TC : Out Of Network',
-                                          '618e382004d8d040ac18841b',
+                                          widget.bloc.caseId.toString(),
                                           'TELEVT007',
                                           HttpUrl.unreachableUrl(
                                             'outOfNetwork',
@@ -370,7 +370,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                               .disConnecting) {
                                         unreachableButtonClick(
                                           'TC : Disconnecting',
-                                          '618e382004d8d040ac18841b',
+                                          widget.bloc.caseId.toString(),
                                           'TELEVT011',
                                           HttpUrl.unreachableUrl(
                                             'disconnecting',
@@ -465,28 +465,29 @@ class _PhoneScreenState extends State<PhoneScreen>
     String eventCode,
     String urlString,
   ) async {
-    // var requestBodyData = PhoneInvalidPostModel(
-    //     eventType: eventType,
-    //     caseId: caseId,
-    //     eventCode: eventCode,
-    //     eventAttr: InvalidEventAttr(
-    //         remarks: widget.bloc.phoneInvalidRemarksController.text,
-    //         followUpPriority: followUpPriority,
-    //         nextActionDate: nextActionDate),
-    //     contact: Contact());
-    // Map<String, dynamic> postResult = await APIRepository.apiRequest(
-    //   APIRequestType.POST,
-    //   urlString,
-    //   requestBodydata: jsonEncode(requestBodyData),
-    // );
-    // if (await postResult['success']) {
-    //   setState(() {
-    //     widget.bloc.phoneUnreachableNextActionDateController.text = '';
-    //     widget.bloc.phoneUnreachableRemarksController.text = '';
-    //     widget.bloc.phoneSelectedUnreadableClip = '';
-    //   });
-    //   Navigator.pop(context);
-    // }
+    var requestBodyData = PhoneInvalidPostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        eventAttr: InvalidEventAttr(
+            remarks: widget.bloc.phoneUnreachableRemarksController.text,
+            followUpPriority: 'REVIEW',
+            nextActionDate:
+                widget.bloc.phoneUnreachableNextActionDateController.text),
+        contact: Contact());
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+    if (await postResult['success']) {
+      setState(() {
+        widget.bloc.phoneUnreachableNextActionDateController.text = '';
+        widget.bloc.phoneUnreachableRemarksController.text = '';
+        widget.bloc.phoneSelectedUnreadableClip = '';
+      });
+      Navigator.pop(context);
+    }
   }
 
   invalidButtonClick(

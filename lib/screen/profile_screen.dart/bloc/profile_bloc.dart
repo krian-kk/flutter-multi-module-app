@@ -32,7 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ProfileLoadingState();
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetState();
       } else {
         // Map<String, dynamic> getEventDetailsData =
         //     await APIRepository.getProfileData('7988315676');

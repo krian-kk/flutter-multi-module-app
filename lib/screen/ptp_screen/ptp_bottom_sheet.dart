@@ -19,11 +19,10 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
-  const CustomPtpBottomSheet(
-    this.cardTitle, {
-    Key? key,
-  }) : super(key: key);
+  const CustomPtpBottomSheet(this.cardTitle, {Key? key, required this.caseId})
+      : super(key: key);
   final String cardTitle;
+  final String caseId;
 
   @override
   State<CustomPtpBottomSheet> createState() => _CustomPtpBottomSheetState();
@@ -264,7 +263,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                           selectedPaymentModeButton != '') {
                         var requestBodyData = PTPPostModel(
                             eventType: 'PTP',
-                            caseId: '618e382004d8d040ac18841b',
+                            caseId: widget.caseId,
                             eventAttr: EventAttr(
                                 date: ptpDateControlller.text,
                                 time: ptpTimeControlller.text,

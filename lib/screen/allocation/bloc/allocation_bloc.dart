@@ -33,6 +33,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
+  bool isNoInternet = false;
 
   List<String> selectOptions = [
     StringResource.priority,
@@ -62,11 +63,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AllocationLoadingState();
       isShowSearchPincode = false;
 
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.mobile ||
-          connectivityResult == ConnectivityResult.wifi) {
-        // print(APIRepository.getpriorityCaseList());
-        // Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternet = true;
+        yield NoInternetConnectionState();
+      } else {
+        isNoInternet = false;
+        
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.priorityCaseList);
 

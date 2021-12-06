@@ -19,7 +19,7 @@ class DisputePostModel {
   DisputePostModel(
       {this.eventId = 0,
       required this.eventType,
-      this.caseId = '618e382004d8d040ac18841b',
+      required this.caseId,
       required this.eventCode,
       required this.eventAttr,
       required this.contact,

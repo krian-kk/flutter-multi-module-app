@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -17,11 +21,10 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
-  const CustomRepoBottomSheet(
-    this.cardTitle, {
-    Key? key,
-  }) : super(key: key);
+  const CustomRepoBottomSheet(this.cardTitle, {Key? key, required this.caseId})
+      : super(key: key);
   final String cardTitle;
+  final String caseId;
 
   @override
   State<CustomRepoBottomSheet> createState() => _CustomRepoBottomSheetState();
@@ -36,6 +39,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  List uploadFileLists = [];
 
   FocusNode modelMakeFocusNode = FocusNode();
   FocusNode registraionNoFocusNode = FocusNode();
@@ -54,6 +59,17 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     // registrationNoControlller.text = '123';
     // chassisNoControlller.text = '123';
     // remarksControlller.text = 'ABC';
+  }
+
+  getFiles() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: true, type: FileType.any);
+    if (result != null) {
+      uploadFileLists =
+          result.files.map((path) => path.path.toString()).toList();
+    } else {
+      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+    }
   }
 
   @override
@@ -138,6 +154,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   child: CustomReadOnlyTextField(
                                     '',
                                     timeControlller,
+                                    isReadOnly: true,
                                     validationRules: const ['required'],
                                     onTapped: () =>
                                         pickTime(context, timeControlller),
@@ -185,6 +202,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 21),
                         CustomButton(
                           Languages.of(context)!.customUpload,
+                          onTap: () => getFiles(),
                           fontWeight: FontWeight.w700,
                           trailingWidget:
                               SvgPicture.asset(ImageResource.upload),
@@ -254,27 +272,36 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                       if (_formKey.currentState!.validate() &&
                           dateControlller.text != '' &&
                           timeControlller.text != '') {
-                        var requestBodyData = RepoPostModel(
-                            eventType: 'REPO',
-                            caseId: '618e382004d8d040ac18841b',
-                            eventCode: 'TELEVT016',
-                            eventAttr: EventAttr(
-                                modelMake: modelMakeControlller.text,
-                                registrationNo: registrationNoControlller.text,
-                                chassisNo: chassisNoControlller.text,
-                                remarks: remarksControlller.text,
-                                repo: Repo(),
-                                date: dateControlller.text,
-                                imageLocation: ['0'],
-                                agentLocation: AgentLocation()));
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.POST,
-                          HttpUrl.repoPostUrl('repo', 'FIELDAGENT'),
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
-                        if (postResult['success']) {
-                          Navigator.pop(context);
+                        if (uploadFileLists.isEmpty) {
+                          AppUtils.showToast(
+                            StringResource.uploadDepositSlip,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        } else {
+                          var requestBodyData = RepoPostModel(
+                              eventType: 'REPO',
+                              caseId: widget.caseId,
+                              eventCode: 'TELEVT016',
+                              eventAttr: EventAttr(
+                                  modelMake: modelMakeControlller.text,
+                                  registrationNo:
+                                      registrationNoControlller.text,
+                                  chassisNo: chassisNoControlller.text,
+                                  remarks: remarksControlller.text,
+                                  repo: Repo(),
+                                  date: dateControlller.text,
+                                  imageLocation:
+                                      uploadFileLists as List<String>,
+                                  agentLocation: AgentLocation()));
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                            APIRequestType.POST,
+                            HttpUrl.repoPostUrl('repo', 'FIELDAGENT'),
+                            requestBodydata: jsonEncode(requestBodyData),
+                          );
+                          if (postResult['success']) {
+                            Navigator.pop(context);
+                          }
                         }
                       }
                     },

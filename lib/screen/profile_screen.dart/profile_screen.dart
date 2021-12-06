@@ -12,6 +12,7 @@ import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
 import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -88,7 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (state is ChangeProfileImageState) {
           profileImageShowBottomSheet();
         }
-
+        if (state is NoInternetState) {
+          AppUtils.noInternetSnackbar(context);
+        }
         if (state is LoginState) {
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.loginScreen, (route) => false);

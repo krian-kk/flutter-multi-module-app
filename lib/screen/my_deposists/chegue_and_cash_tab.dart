@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_mydeposists_model/result.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -13,27 +16,64 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import '../../router.dart';
+import 'deposistion_mode/deposistion_mode.dart';
 
-class ChegueResults extends StatefulWidget {
+class ChegueAndCasshResults extends StatefulWidget {
   final DashboardBloc bloc;
-  ChegueResults(this.bloc, {Key? key}) : super(key: key);
+  final String? mode;
+  final DashboardMyDeposistsResult? result;
+  ChegueAndCasshResults(this.bloc, {this.mode, this.result});
 
   @override
-  _ChegueResultsState createState() => _ChegueResultsState();
+  _ChegueAndCasshResultsState createState() => _ChegueAndCasshResultsState();
 }
 
-class _ChegueResultsState extends State<ChegueResults> {
+class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
+   int? _selectedIndex;
+   String? caseID;
+   String? custName;
+
+  _onSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return Scaffold(
+         bottomNavigationBar: Container(
+                    height: 65,
+                    color: ColorResource.colorFFFFFF,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
+                      child: CustomButton(
+                        Languages.of(context)!.enterDepositionDetails,
+                        fontSize: FontSize.sixteen,
+                        fontWeight: FontWeight.w600,
+                        onTap: () {
+                          if (_selectedIndex != null) {
+                            depositionModeSheet(context);
+                            print(widget.mode);
+                            print(caseID);
+                          } else {
+                            AppUtils.showToast(
+                              StringResource.notSelectedCase,
+                              gravity: ToastGravity.CENTER,
+                              );
+                          }
+                          
+                        },
+                      ),
+                    ),
+                  ),
         body: Column(
           // ignore: prefer_const_literals_to_create_immutables
           children: [
@@ -43,6 +83,7 @@ class _ChegueResultsState extends State<ChegueResults> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
+                    // widget.result!.cash!.cases!.length,
                     itemCount: widget.bloc.caseList.length,
                     itemBuilder: (BuildContext context, int index) {
                       int listCount = index + 1;
@@ -244,9 +285,30 @@ class _ChegueResultsState extends State<ChegueResults> {
                                         SizedBox(
                                           width: 123,
                                           height: 47,
-                                          child: CustomButton(
+                                          child: _selectedIndex != null && _selectedIndex == index ?
+                                          CustomButton(
                                             Languages.of(context)!.selected,
                                             fontSize: FontSize.twelve,
+                                            // onTap: (){
+                                            //   _onSelected(index);
+                                            // },
+                                          ) :
+                                          CustomButton(
+                                            Languages.of(context)!.select.toUpperCase(),
+                                            fontSize: FontSize.twelve,
+                                            buttonBackgroundColor: ColorResource.colorFEFFFF,
+                                            borderColor: ColorResource.colorFEFFFF,
+                                            textColor: ColorResource.color23375A,
+                                            cardElevation: 3.0,
+                                            onTap: (){
+                                              _onSelected(index);
+                                              setState((){
+                                                caseID = widget.bloc.caseList[index].loanID;
+                                                custName=widget.bloc.caseList[index].customerName;
+                                              });
+                                              print(index);
+                                              print(caseID);
+                                            },
                                           ),
                                         )
                                       ],
@@ -265,5 +327,22 @@ class _ChegueResultsState extends State<ChegueResults> {
         ),
       );
     });
+  }
+
+  void depositionModeSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                DepositionMode.buildDepositionMode(context,caseID,widget.mode, widget.bloc , custName)));
   }
 }

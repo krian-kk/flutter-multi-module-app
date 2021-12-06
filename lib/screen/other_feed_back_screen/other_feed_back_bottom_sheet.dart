@@ -1,16 +1,20 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -20,12 +24,11 @@ import 'package:intl/intl.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  const CustomOtherFeedBackBottomSheet(
-    this.cardTitle,
-    this.bloc, {
-    Key? key,
-  }) : super(key: key);
+  const CustomOtherFeedBackBottomSheet(this.cardTitle, this.bloc,
+      {Key? key, required this.caseId})
+      : super(key: key);
   final String cardTitle;
+  final String caseId;
 
   @override
   State<CustomOtherFeedBackBottomSheet> createState() =>
@@ -36,6 +39,23 @@ class _CustomOtherFeedBackBottomSheetState
     extends State<CustomOtherFeedBackBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  List uploadFileLists = [];
+
+  getFiles() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: true, type: FileType.audio);
+    if (result != null) {
+      if ((result.files.first.size) / 1048576.ceil() > 5) {
+        AppUtils.showToast('Please Select Minimum 5 MB File.',
+            gravity: ToastGravity.CENTER);
+      } else {
+        uploadFileLists =
+            result.files.map((path) => path.path.toString()).toList();
+      }
+    } else {
+      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+    }
+  }
 
   @override
   void initState() {
@@ -139,35 +159,38 @@ class _CustomOtherFeedBackBottomSheetState
                                 ),
                                 color: ColorResource.color23375A,
                                 elevation: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                              ImageResource.upload),
-                                          const SizedBox(width: 5),
-                                          const CustomText(
-                                            'UPLOAD AUDIO FILE',
-                                            color: ColorResource.colorFFFFFF,
-                                            fontSize: FontSize.sixteen,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w700,
-                                          )
-                                        ],
-                                      ),
-                                      const CustomText(
-                                        'UPTO 5MB',
-                                        lineHeight: 1,
-                                        color: ColorResource.colorFFFFFF,
-                                        fontSize: FontSize.twelve,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700,
-                                      )
-                                    ],
+                                child: GestureDetector(
+                                  onTap: () => getFiles(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                                ImageResource.upload),
+                                            const SizedBox(width: 5),
+                                            const CustomText(
+                                              'UPLOAD AUDIO FILE',
+                                              color: ColorResource.colorFFFFFF,
+                                              fontSize: FontSize.sixteen,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w700,
+                                            )
+                                          ],
+                                        ),
+                                        const CustomText(
+                                          'UPTO 5MB',
+                                          lineHeight: 1,
+                                          color: ColorResource.colorFFFFFF,
+                                          fontSize: FontSize.twelve,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 )),
                           ),
@@ -221,25 +244,33 @@ class _CustomOtherFeedBackBottomSheetState
                     fontWeight: FontWeight.w600,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        var requestBodyData = OtherFeedBackPostModel(
-                            eventType: 'FEEDBACK',
-                            caseId: '618e382004d8d040ac18841b',
-                            eventCode: 'TELEVT002',
-                            eventAttr: EventAttr(
-                                actionDate: dateControlller.text,
-                                imageLocation: ['0'],
-                                agentLocation: AgentLocation()),
-                            contact: []);
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.POST,
-                          HttpUrl.reminderPostUrl('feedback', 'FIELDAGENT'),
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
-                        if (postResult['success']) {
-                          Navigator.pop(context);
+                        if (uploadFileLists.isEmpty) {
+                          AppUtils.showToast(
+                            StringResource.uploadDepositSlip,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        } else {
+                          var requestBodyData = OtherFeedBackPostModel(
+                              eventType: 'FEEDBACK',
+                              caseId: widget.caseId,
+                              eventCode: 'TELEVT002',
+                              eventAttr: EventAttr(
+                                  actionDate: dateControlller.text,
+                                  imageLocation:
+                                      uploadFileLists as List<String>,
+                                  agentLocation: AgentLocation()),
+                              contact: []);
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                            APIRequestType.POST,
+                            HttpUrl.reminderPostUrl('feedback', 'FIELDAGENT'),
+                            requestBodydata: jsonEncode(requestBodyData),
+                          );
+                          if (postResult['success']) {
+                            Navigator.pop(context);
+                          } else {}
                         }
-                      } else {}
+                      }
                     },
                     cardShape: 5,
                   ),

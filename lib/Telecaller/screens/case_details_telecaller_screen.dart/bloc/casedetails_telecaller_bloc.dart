@@ -88,7 +88,6 @@ class CasedetailsTelecallerBloc
         }
         emit.call(CaseDetailsTelecallerLoadedState());
       }
-
       if (event is ClickCallBottomSheetTelecallerEvent) {
         emit.call(ClickCallTelecallerBottomSheetState());
       }

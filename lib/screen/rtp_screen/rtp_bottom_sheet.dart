@@ -198,6 +198,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                           (selectedDropdownValue != 'select')) {
                         var requestBodyData = DenialPostModel(
                           eventType: 'DENIAL',
+                          caseId: '618e382004d8d040ac18841b',
                           eventCode: 'TELEVT004',
                           contractor: '0',
                           agrRef: '0',

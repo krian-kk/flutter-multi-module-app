@@ -7,16 +7,15 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
-  const CustomCaptureImageBottomSheet(
-    this.cardTitle, {
-    Key? key,
-  }) : super(key: key);
+  const CustomCaptureImageBottomSheet(this.cardTitle,
+      {Key? key, required this.customerLoanUserDetailsWidget})
+      : super(key: key);
   final String cardTitle;
+  final Widget customerLoanUserDetailsWidget;
 
   @override
   State<CustomCaptureImageBottomSheet> createState() =>
@@ -61,11 +60,7 @@ class _CustomCaptureImageBottomSheetState
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserDetailsWidget,
                         const SizedBox(height: 11),
                         CustomButton(
                           Languages.of(context)!.customUpload,
