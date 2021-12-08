@@ -15,6 +15,7 @@ import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
 
 part 'allocation_event.dart';
@@ -34,6 +35,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
   bool isNoInternet = false;
+
+  int page = 1;
+
+  // There is next page or not
+  bool hasNextPage = true;
 
   List<String> selectOptions = [
     StringResource.priority,
@@ -70,7 +76,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isNoInternet = false;
 
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.priorityCaseList);
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=${Constants.pageNo}' +
+                '&limit=${Constants.limit}');
 
         resultList.clear();
         starCount.clear();
@@ -123,13 +132,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is TapPriorityEvent) {
       yield CaseListViewLoadingState();
 
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.mobile ||
-          connectivityResult == ConnectivityResult.wifi) {
-        // print(APIRepository.getpriorityCaseList());
-        // Map<String, dynamic> priorityListData = await APIRepository.getpriorityCaseList();
+      page = 1;
+      hasNextPage = true;
+      print(page);
+      print(hasNextPage);
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.priorityCaseList);
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=${Constants.pageNo}' +
+                '&limit=${Constants.limit}');
 
         resultList.clear();
         starCount.clear();
@@ -146,11 +161,41 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield TapPriorityState(successResponse: resultList);
     }
 
+    if (event is PriorityLoadMoreEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=$page' +
+                '&limit=${Constants.limit}');
+        if (priorityListData['data']['result'] != null) {
+          for (var element in priorityListData['data']['result']) {
+            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+                true) {
+              starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
+                  .starredCase as List);
+            }
+          }
+          hasNextPage = false;
+        }
+      }
+      yield PriorityLoadMoreState(successResponse: resultList);
+    }
+
     if (event is TapBuildRouteEvent) {
       yield CaseListViewLoadingState();
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.mobile ||
-          connectivityResult == ConnectivityResult.wifi) {
+
+      page = 1;
+      hasNextPage = true;
+      print(page);
+      print(hasNextPage);
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
         // print(APIRepository.getpriorityCaseList());
         // Map<String, dynamic> buildRouteListData = await APIRepository.getBuildRouteCaseList();
         Map<String, dynamic> buildRouteListData =

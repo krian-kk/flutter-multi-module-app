@@ -1,16 +1,8 @@
 class Constants {
   static const String inr = '₹ ';
-  static const String bioMetricLogin = 'BioMetricLogin';
-  static const String tenant = 'RBLPENCILTON';
-  static const String mpin = 'mpin';
-
   static const String home = 'home';
-  static const String bag = 'bag';
-  static const String profileImageShared = 'profileImageShared';
-  static const String clearAll = 'clearAll';
-  static const String getTrack = 'getTrack';
-  static const String getGenerate = 'getTrack';
-  static const String kycDontAskMeAgain = 'kycDontAskMeAgain';
+  static const String pageNo = '1';
+  static const String limit = '10';
 
   static List<int> keyBoardNumberList() {
     final List<int> keyBoardNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];

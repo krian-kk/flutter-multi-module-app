@@ -174,9 +174,10 @@ class CaseLists {
 
                         Padding(
                           padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                             const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(20, 12, 15, 12),
+                            width: double.infinity,
+                            padding: const EdgeInsets.fromLTRB(20, 12, 15, 12),
                             decoration: BoxDecoration(
                               color: ColorResource.colorF8F9FB,
                               borderRadius: BorderRadius.circular(10),
