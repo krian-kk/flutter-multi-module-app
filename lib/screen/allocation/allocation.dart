@@ -41,12 +41,23 @@ class _AllocationScreenState extends State<AllocationScreen> {
   List<Result> resultList = [];
   String? searchBasedOnValue;
 
+   // The controller for the ListView
+  late ScrollController _controller;
+
   @override
   void initState() {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent());
+    _controller = ScrollController()..addListener(_loadMore);
     getCurrentLocation();
   }
+
+   @override
+  void dispose() {
+    _controller.removeListener(_loadMore);
+    super.dispose();
+  }
+
 
   void getCurrentLocation() async {
     Position result = await Geolocator.getCurrentPosition(
@@ -56,6 +67,22 @@ class _AllocationScreenState extends State<AllocationScreen> {
     });
     // print('position------> ${position}');
     // print(position);
+  }
+
+   // This function will be triggered whenver the user scroll
+  // to near the bottom of the list view
+  void _loadMore() async {
+    if (_controller.position.pixels ==
+          _controller.position.maxScrollExtent) {
+      if (bloc.hasNextPage) {
+        if (bloc.isShowSearchPincode) {
+          print('search api cal ---------------->');
+        } else {
+          bloc.page += 1; 
+          bloc.add(PriorityLoadMoreEvent());
+        }
+        }
+    }
   }
 
   @override
@@ -143,7 +170,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
           bloc.selectedOption = 0;
           bloc.add(TapPriorityEvent());
         }
-        // if (state is TapBuildRouteState) {}
+
+        if (state is PriorityLoadMoreState) {
+          if (state.successResponse is List<Result>) {
+            if (bloc.hasNextPage) {
+              resultList.addAll(state.successResponse);
+            } 
+          }
+        }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
@@ -162,7 +196,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 const SizedBox(height: 5,),
                 IconButton(onPressed: (){
                   bloc.add(AllocationInitialEvent());
-                }, icon: Icon(Icons.refresh)),
+                }, icon: const Icon(Icons.refresh)),
               ],
             ),) :
            Scaffold(
@@ -360,13 +394,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 Expanded(
                     child: isCaseDetailLoading ? 
                     const Center(child: CircularProgressIndicator()) : 
-                    resultList.isEmpty ? const Center(child: CustomText(StringResource.noCasesAvailable)) :
+                    resultList.isEmpty ? 
+                    const Center(child: CustomText(StringResource.noCasesAvailable)) :
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 0.0),
                       child: CustomCardList.buildListView(bloc,
-                              resultData: resultList),
+                              resultData: resultList, listViewController:_controller),
                 )),
+
               ],
             ),
           );

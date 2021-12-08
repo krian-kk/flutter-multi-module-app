@@ -101,9 +101,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     if (event is PostProfileImageEvent) {
       Map<String, dynamic> postResult = await APIRepository.apiRequest(APIRequestType.POST,
-      HttpUrl.changeProfileImage + 
-      "userType=$userType",
-          requestBodydata: jsonEncode(event.postValue));
+      HttpUrl.changeProfileImage,
+          requestBodydata: jsonEncode({
+              "profileImgUrl": event.postValue.toString()}
+            ));
         if (postResult['success']) {
           yield PostDataApiSuccessState();
         }

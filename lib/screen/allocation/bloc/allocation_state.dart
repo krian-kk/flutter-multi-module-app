@@ -35,6 +35,11 @@ class TapPriorityState extends AllocationState {
   TapPriorityState({this.successResponse});
 }
 
+class PriorityLoadMoreState extends AllocationState {
+  dynamic? successResponse;
+  PriorityLoadMoreState({this.successResponse});
+}
+
 class TapBuildRouteState extends AllocationState {
   dynamic? successResponse;
   TapBuildRouteState({this.successResponse});

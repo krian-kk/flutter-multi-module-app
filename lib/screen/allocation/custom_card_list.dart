@@ -12,9 +12,10 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomCardList {
-  static Widget buildListView(AllocationBloc bloc, {List<Result>? resultData}) {
+  static Widget buildListView(AllocationBloc bloc, {List<Result>? resultData, required ScrollController listViewController}) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
+        controller: listViewController,
         itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
           int listCount = index + 1;
@@ -218,11 +219,11 @@ class CustomCardList {
                                       color: ColorResource.color484848,
                                       fontSize: FontSize.fourteen,
                                     ),
-                                    CustomText(
-                                      resultData[index].address![1].value!,
-                                      color: ColorResource.color484848,
-                                      fontSize: FontSize.fourteen,
-                                    ),
+                                    // CustomText(
+                                    //   resultData[index].address![1].value!,
+                                    //   color: ColorResource.color484848,
+                                    //   fontSize: FontSize.fourteen,
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -238,7 +239,7 @@ class CustomCardList {
                             ),
                             //  const SizedBox(height: 5,),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(23, 5, 14, 13),
+                              padding: const EdgeInsets.fromLTRB(23, 5, 14, 13),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

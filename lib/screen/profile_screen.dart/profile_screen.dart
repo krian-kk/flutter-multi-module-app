@@ -45,9 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final image = await ImagePicker().pickImage(source: source);
       if (image != null) {
         final getProfileImage = File(image.path);
+        print(getProfileImage);
         setState(() {
         this.image = getProfileImage;
-        bloc.add(PostProfileImageEvent(postValue: getProfileImage));
+        bloc.add(PostProfileImageEvent(postValue: getProfileImage.path));
         print(getProfileImage.path);
       });
       } else {

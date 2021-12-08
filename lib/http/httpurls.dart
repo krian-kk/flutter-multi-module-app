@@ -12,7 +12,7 @@ class HttpUrl {
       fieldAgent +
       'case-details/eventDetails?caseId=$caseId&userType=$usertype';
   static const String priorityCaseList =
-      baseUrl + version + fieldAgent + 'case-details/priority?pageNo=1&limit=10';
+      baseUrl + version + fieldAgent + 'case-details/priority?';
   static const String buildRouteCaseList =
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl = baseUrl +
@@ -56,7 +56,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details-events/selfRelease?'; 
 
   static const String changeProfileImage =
-      baseUrl + version + fieldAgent + 'profile/profileImgUrl?';  
+      baseUrl + version + fieldAgent + 'profile/profileImgUrl';  
 
   static const String imageCaptured =
       baseUrl + version + fieldAgent + 'case-details-events/imageCaptured?';  
