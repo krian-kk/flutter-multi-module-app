@@ -1,12 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
-import 'package:origa/models/unreachable_post_model/unreachable_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
@@ -139,7 +133,9 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 child: InkWell(
                                   onTap: () => widget.bloc.add(
                                       ClickOpenBottomSheetEvent(
-                                          StringResource.callCustomer)),
+                                          StringResource.callCustomer,
+                                          widget.bloc.offlineCaseDetailsValue
+                                              .callDetails)),
                                   child: Container(
                                       decoration: const BoxDecoration(
                                           color: ColorResource.colorBEC4CF,
@@ -167,7 +163,9 @@ class _PhoneScreenState extends State<PhoneScreen>
                               Languages.of(context)!.eventDetails,
                               onTap: () => widget.bloc.add(
                                   ClickOpenBottomSheetEvent(
-                                      StringResource.eventDetails)),
+                                      StringResource.eventDetails,
+                                      widget.bloc.offlineCaseDetailsValue
+                                          .callDetails)),
                               fontSize: FontSize.twelve,
                               textColor: ColorResource.color23375A,
                               borderColor: ColorResource.color23375A,
@@ -316,68 +314,9 @@ class _PhoneScreenState extends State<PhoneScreen>
                                         widget.bloc
                                                 .phoneSelectedUnreadableClip !=
                                             '') {
-                                      if (widget.bloc
-                                              .phoneSelectedUnreadableClip ==
-                                          Languages.of(context)!.lineBusy) {
-                                        unreachableButtonClick(
-                                          'TC : Line Busy',
-                                          widget.bloc.caseId.toString(),
-                                          'TELEVT007',
-                                          HttpUrl.unreachableUrl(
-                                            'lineBusy',
-                                            'TELECALLER',
-                                          ),
-                                        );
-                                      } else if (widget.bloc
-                                              .phoneSelectedUnreadableClip ==
-                                          Languages.of(context)!.switchOff) {
-                                        unreachableButtonClick(
-                                          'TC : Switch Off',
-                                          widget.bloc.caseId.toString(),
-                                          'TELEVT007',
-                                          HttpUrl.unreachableUrl(
-                                            'switchOff',
-                                            'TELECALLER',
-                                          ),
-                                        );
-                                      } else if (widget.bloc
-                                              .phoneSelectedUnreadableClip ==
-                                          Languages.of(context)!.rnr) {
-                                        unreachableButtonClick(
-                                          'TC : RNR',
-                                          widget.bloc.caseId.toString(),
-                                          'TELEVT011',
-                                          HttpUrl.unreachableUrl(
-                                            'RNR',
-                                            'TELECALLER',
-                                          ),
-                                        );
-                                      } else if (widget.bloc
-                                              .phoneSelectedUnreadableClip ==
-                                          Languages.of(context)!.outOfNetwork) {
-                                        unreachableButtonClick(
-                                          'TC : Out Of Network',
-                                          widget.bloc.caseId.toString(),
-                                          'TELEVT007',
-                                          HttpUrl.unreachableUrl(
-                                            'outOfNetwork',
-                                            'TELECALLER',
-                                          ),
-                                        );
-                                      } else if (widget.bloc
-                                              .phoneSelectedUnreadableClip ==
-                                          Languages.of(context)!
-                                              .disConnecting) {
-                                        unreachableButtonClick(
-                                          'TC : Disconnecting',
-                                          widget.bloc.caseId.toString(),
-                                          'TELEVT011',
-                                          HttpUrl.unreachableUrl(
-                                            'disconnecting',
-                                            'TELECALLER',
-                                          ),
-                                        );
-                                      }
+                                      widget.bloc.add(
+                                          ClickPhoneUnreachableSubmitedButtonEvent(
+                                              context));
                                     }
                                   },
                                   cardShape: 5,
@@ -387,65 +326,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.w600,
                                   onTap: () {
-                                    if (widget.bloc.phoneInvalidFormKey
-                                            .currentState!
-                                            .validate() &&
-                                        widget.bloc.phoneSelectedInvalidClip !=
-                                            '') {
-                                      // if (widget
-                                      //         .bloc.phoneSelectedInvalidClip ==
-                                      //     Languages.of(context)!.doesNotExist) {
-                                      //   unreachableButtonClick(
-                                      //     'TC : Does Not Exist',
-                                      //     '618e382004d8d040ac18841b',
-                                      //     'TELEVT008',
-                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/doesNotExist?userType=TELECALLER',
-                                      //     'AWAITING CONTACT',
-                                      //   );
-                                      // }
-                                      // else if (widget.bloc
-                                      //         .phoneSelectedUnreadableClip ==
-                                      //     Languages.of(context)!.switchOff) {
-                                      //   unreachableButtonClick(
-                                      //     'TC : Switch Off',
-                                      //     '618e382004d8d040ac18841b',
-                                      //     'TELEVT007',
-                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/switchOff?userType=TELECALLER',
-                                      //     'REVIEW',
-                                      //   );
-                                      // } else if (widget.bloc
-                                      //         .phoneSelectedUnreadableClip ==
-                                      //     Languages.of(context)!.rnr) {
-                                      //   unreachableButtonClick(
-                                      //     'TC : RNR',
-                                      //     '618e382004d8d040ac18841b',
-                                      //     'TELEVT011',
-                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/RNR?userType=TELECALLER',
-                                      //     'REVIEW',
-                                      //   );
-                                      // } else if (widget.bloc
-                                      //         .phoneSelectedUnreadableClip ==
-                                      //     Languages.of(context)!.outOfNetwork) {
-                                      //   unreachableButtonClick(
-                                      //     'TC : Out Of Network',
-                                      //     '618e382004d8d040ac18841b',
-                                      //     'TELEVT007',
-                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/outOfNetwork?userType=TELECALLER',
-                                      //     'REVIEW',
-                                      //   );
-                                      // } else if (widget.bloc
-                                      //         .phoneSelectedUnreadableClip ==
-                                      //     Languages.of(context)!
-                                      //         .disConnecting) {
-                                      //   unreachableButtonClick(
-                                      //     'TC : Disconnecting',
-                                      //     '618e382004d8d040ac18841b',
-                                      //     'TELEVT011',
-                                      //     'https://devapi.instalmint.com/v1/agent/case-details-events/disconnecting?userType=TELECALLER',
-                                      //     'REVIEW',
-                                      //   );
-                                      // }
-                                    }
+                                    widget.bloc.add(
+                                        ClickPhoneInvalidButtonEvent(context));
                                   },
                                   cardShape: 5,
                                 ),
@@ -457,68 +339,5 @@ class _PhoneScreenState extends State<PhoneScreen>
         ),
       ),
     );
-  }
-
-  unreachableButtonClick(
-    String eventType,
-    String caseId,
-    String eventCode,
-    String urlString,
-  ) async {
-    var requestBodyData = PhoneInvalidPostModel(
-        eventType: eventType,
-        caseId: caseId,
-        eventCode: eventCode,
-        eventAttr: InvalidEventAttr(
-            remarks: widget.bloc.phoneUnreachableRemarksController.text,
-            followUpPriority: 'REVIEW',
-            nextActionDate:
-                widget.bloc.phoneUnreachableNextActionDateController.text),
-        contact: Contact());
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
-    if (await postResult['success']) {
-      setState(() {
-        widget.bloc.phoneUnreachableNextActionDateController.text = '';
-        widget.bloc.phoneUnreachableRemarksController.text = '';
-        widget.bloc.phoneSelectedUnreadableClip = '';
-      });
-      Navigator.pop(context);
-    }
-  }
-
-  invalidButtonClick(
-    String eventType,
-    String caseId,
-    String eventCode,
-    String urlString,
-  ) async {
-    var requestBodyData = UnReachablePostModel(
-      eventType: eventType,
-      caseId: caseId,
-      eventCode: eventCode,
-      eventAttr: UnreadableEventAttr(
-          followUpPriority: 'REVIEW',
-          remarks: widget.bloc.phoneUnreachableRemarksController.text,
-          nextActionDate:
-              widget.bloc.phoneUnreachableNextActionDateController.text),
-      contact: UnreachableContact(),
-    );
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
-    if (await postResult['success']) {
-      setState(() {
-        widget.bloc.phoneUnreachableNextActionDateController.text = '';
-        widget.bloc.phoneUnreachableRemarksController.text = '';
-        widget.bloc.phoneSelectedUnreadableClip = '';
-      });
-      Navigator.pop(context);
-    }
   }
 }

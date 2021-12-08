@@ -4,6 +4,7 @@ class RepoPostModel {
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
+  late List<RepoContact> contact;
   late String createdBy;
   late String agentName;
   late String eventModule;
@@ -21,6 +22,7 @@ class RepoPostModel {
       required this.caseId,
       required this.eventCode,
       required this.eventAttr,
+      required this.contact,
       this.createdBy = '',
       this.agentName = '',
       this.eventModule = 'Field Allocation',
@@ -38,6 +40,9 @@ class RepoPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
+    contact = json['contact'].forEach((v) {
+      contact.add(v);
+    });
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     eventModule = json['eventModule'];
@@ -56,9 +61,8 @@ class RepoPostModel {
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
-    if (eventAttr != null) {
-      data['eventAttr'] = eventAttr.toJson();
-    }
+    data['eventAttr'] = eventAttr.toJson();
+    data['contact'] = contact.map((v) => v.toJson()).toList();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
@@ -199,6 +203,39 @@ class AgentLocation {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['missingAgentLocation'] = missingAgentLocation;
+    return data;
+  }
+}
+
+class RepoContact {
+  late String cType;
+  late String health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
+
+  RepoContact(
+      {required this.cType,
+      this.health = '1',
+      required this.value,
+      this.resAddressId0 = '',
+      this.contactId0 = ''});
+
+  RepoContact.fromJson(Map<String, dynamic> json) {
+    cType = json['cType'];
+    health = json['health'];
+    value = json['value'];
+    resAddressId0 = json['resAddressId_0'];
+    contactId0 = json['contactId_0'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['health'] = health;
+    data['value'] = value;
+    data['resAddressId_0'] = resAddressId0;
+    data['contactId_0'] = contactId0;
     return data;
   }
 }

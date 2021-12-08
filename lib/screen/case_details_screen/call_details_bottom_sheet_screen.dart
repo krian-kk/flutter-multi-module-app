@@ -159,7 +159,11 @@ class _CallDetailsBottomSheetScreenState
                                               widget.bloc.add(
                                                   ClickOpenBottomSheetEvent(
                                                       StringResource
-                                                          .callCustomer));
+                                                          .callCustomer,
+                                                      widget
+                                                          .bloc
+                                                          .offlineCaseDetailsValue
+                                                          .callDetails));
                                             },
                                             child: Container(
                                                 decoration: const BoxDecoration(

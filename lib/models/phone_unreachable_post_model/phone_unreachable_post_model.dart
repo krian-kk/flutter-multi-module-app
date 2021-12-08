@@ -1,11 +1,11 @@
-class PhoneInvalidPostModel {
+class PhoneUnreachablePostModel {
   late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
-  late PhoneInvalidEventAttr eventAttr;
+  late PhoneUnreachableEventAttr eventAttr;
   late String eventModule;
-  late PhoneInvalidContact contact;
+  late PhoneUnreachbleContact contact;
   late String createdBy;
   late String callID;
   late String callingID;
@@ -15,7 +15,7 @@ class PhoneInvalidPostModel {
   late String agentName;
   late String agrRef;
 
-  PhoneInvalidPostModel(
+  PhoneUnreachablePostModel(
       {this.eventId = 0,
       required this.eventType,
       required this.caseId,
@@ -32,14 +32,14 @@ class PhoneInvalidPostModel {
       this.agentName = '',
       this.agrRef = ''});
 
-  PhoneInvalidPostModel.fromJson(Map<String, dynamic> json) {
+  PhoneUnreachablePostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
     eventType = json['eventType'];
     caseId = json['caseId'];
     eventCode = json['eventCode'];
-    eventAttr = PhoneInvalidEventAttr.fromJson(json['eventAttr']);
+    eventAttr = PhoneUnreachableEventAttr.fromJson(json['eventAttr']);
     eventModule = json['eventModule'];
-    contact = PhoneInvalidContact.fromJson(json['contact']);
+    contact = PhoneUnreachbleContact.fromJson(json['contact']);
     createdBy = json['createdBy'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -71,17 +71,17 @@ class PhoneInvalidPostModel {
   }
 }
 
-class PhoneInvalidEventAttr {
+class PhoneUnreachableEventAttr {
   late String remarks;
   late String followUpPriority;
   late String nextActionDate;
 
-  PhoneInvalidEventAttr(
+  PhoneUnreachableEventAttr(
       {required this.remarks,
       this.followUpPriority = 'AWAITING CONTACT',
       required this.nextActionDate});
 
-  PhoneInvalidEventAttr.fromJson(Map<String, dynamic> json) {
+  PhoneUnreachableEventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
     followUpPriority = json['followUpPriority'];
     nextActionDate = json['nextActionDate'];
@@ -96,19 +96,19 @@ class PhoneInvalidEventAttr {
   }
 }
 
-class PhoneInvalidContact {
+class PhoneUnreachbleContact {
   late String cType;
   late String value;
   late String contactId0;
   late String health;
 
-  PhoneInvalidContact(
+  PhoneUnreachbleContact(
       {required this.cType,
       required this.value,
       this.contactId0 = '',
       this.health = ''});
 
-  PhoneInvalidContact.fromJson(Map<String, dynamic> json) {
+  PhoneUnreachbleContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
     contactId0 = json['contactId_0'];

@@ -59,7 +59,7 @@ class _BankTabState extends State<BankTab> {
       print(uploadFileLists);
     } else {
       // User canceled the picker
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
     }
   }
 

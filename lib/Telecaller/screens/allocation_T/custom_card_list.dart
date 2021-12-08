@@ -22,7 +22,7 @@ class CustomCardList {
       listener: (context, state) {
         if (state is ClickCaseDetailsState) {
           Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-              arguments: false);
+              arguments: state.paramValue);
         }
       },
       child: BlocBuilder<AllocationTBloc, AllocationTState>(
@@ -76,7 +76,10 @@ class CustomCardList {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 19),
                             child: InkWell(
-                              onTap: () => bloc.add(ClickCaseDetailsEvent()),
+                              onTap: () => bloc.add(ClickCaseDetailsEvent({
+                                'caseID': '618e382004d8d040ac18841b',
+                                'isAddress': true
+                              })),
                               // () {
                               //   // caseDetailsBottomSheet(context);
                               // },
@@ -119,8 +122,8 @@ class CustomCardList {
                                     ),
                                     AppUtils.showDivider(),
                                     Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(23, 0, 10, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          23, 0, 10, 0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,

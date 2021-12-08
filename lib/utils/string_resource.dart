@@ -105,4 +105,6 @@ class StringResource {
   static const String resetPassword = 'Reset password via OTP';
   static const String loginViaDifferentUser = 'Login via diffrent user';
   static const String signIn = 'Sign In';
+  static const String profileImageChanged = 'Successfully image changed';
+  static const String canceled = 'Canceled';
 }

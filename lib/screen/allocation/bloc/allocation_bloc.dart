@@ -68,7 +68,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         isNoInternet = false;
-        
+
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.priorityCaseList);
 
@@ -204,7 +204,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield CaseListViewLoadingState();
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         // if(event.returnValue is SearchingDataModel){
         //   print('Print in bloc--> ${event.returnValue}');

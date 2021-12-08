@@ -15,6 +15,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key}) : super(key: key);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -37,7 +39,6 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     bloc = SearchScreenBloc()..add(SearchScreenInitialEvent());
-    print('[-------Search------]');
   }
 
   @override
@@ -47,12 +48,18 @@ class _SearchScreenState extends State<SearchScreen> {
       body: BlocListener<SearchScreenBloc, SearchScreenState>(
         bloc: bloc,
         listener: (context, state) {
-          // TODO: implement listener
-          if(state is NavigatePopState){
-            Navigator.pop(context, 
-            SearchingDataModel(accountNumber: accountNoController.text,customerID: customerIDController.text,
-            customerName: customerNameController.text,dpdBucket: bucketController.text,
-            pincode: pincodeController.text,status: statusController.text, isStarCases: isStarOnly, isMyRecentActivity: isMyRecentActivity));
+          if (state is NavigatePopState) {
+            Navigator.pop(
+                context,
+                SearchingDataModel(
+                    accountNumber: accountNoController.text,
+                    customerID: customerIDController.text,
+                    customerName: customerNameController.text,
+                    dpdBucket: bucketController.text,
+                    pincode: pincodeController.text,
+                    status: statusController.text,
+                    isStarCases: isStarOnly,
+                    isMyRecentActivity: isMyRecentActivity));
           }
         },
         child: BlocBuilder<SearchScreenBloc, SearchScreenState>(
@@ -63,8 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: CircularProgressIndicator(),
               );
             }
-            return 
-           Stack(
+            return Stack(
               children: [
                 Column(
                   children: [
@@ -216,7 +222,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   bucketController.text.isNotEmpty ||
                   statusController.text.isNotEmpty ||
                   pincodeController.text.isNotEmpty ||
-                  customerIDController.text.isNotEmpty || isStarOnly || isMyRecentActivity) {
+                  customerIDController.text.isNotEmpty ||
+                  isStarOnly ||
+                  isMyRecentActivity) {
                 bloc.add(NavigatePopEvent());
               } else {
                 AppUtils.showToast(Languages.of(context)!.searchErrorMessage,

@@ -10,13 +10,15 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
-  dynamic blocObject;
-  CallCustomerBottomSheet({Key? key, this.blocObject}) : super(key: key);
+  final dynamic blocObject;
+  final Widget customerLoanUserWidget;
+  const CallCustomerBottomSheet(
+      {Key? key, this.blocObject, required this.customerLoanUserWidget})
+      : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -90,11 +92,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserWidget,
                         const SizedBox(height: 18),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +115,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   agentContactNoControlller,
                                   validationRules: const ['required'],
                                   height: 46,
-                                  isReadOnly: true,
+                                  // isReadOnly: true,
                                 ),
                               ],
                             )),

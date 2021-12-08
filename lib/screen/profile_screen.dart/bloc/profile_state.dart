@@ -21,3 +21,5 @@ class ChangeProfileImageState extends ProfileState {}
 class LoginState extends ProfileState {}
 
 class NoInternetState extends ProfileState {}
+
+class PostDataApiSuccessState extends ProfileState {}

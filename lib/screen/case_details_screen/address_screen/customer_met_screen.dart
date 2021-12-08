@@ -133,8 +133,12 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
                           onTap: () => widget.bloc.add(
-                              ClickOpenBottomSheetEvent(
-                                  StringResource.captureImage)),
+                            ClickOpenBottomSheetEvent(
+                              StringResource.captureImage,
+                              widget
+                                  .bloc.offlineCaseDetailsValue.addressDetails,
+                            ),
+                          ),
                           trailingWidget:
                               SvgPicture.asset(ImageResource.captureImage),
                         ),
@@ -147,7 +151,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                             context,
                           ),
                         ),
-                        const SizedBox(height: 120)
+                        const SizedBox(height: 135)
                       ],
                     ),
                   ),
@@ -167,8 +171,10 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       widgets.add(InkWell(
         onTap: () {
           setState(() => selectedOptionBottomSheetButton = element.title);
-          widget.bloc
-              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
+          widget.bloc.add(ClickOpenBottomSheetEvent(
+            element.stringResourceValue,
+            widget.bloc.offlineCaseDetailsValue.addressDetails,
+          ));
         },
         child: Container(
           height: 45,

@@ -630,4 +630,7 @@ class LanguageHi extends Languages {
 
   @override
   String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं';
+
+  @override
+  String get mode => 'Mode';
 }

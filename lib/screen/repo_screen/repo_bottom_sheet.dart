@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,16 +14,23 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
-  const CustomRepoBottomSheet(this.cardTitle, {Key? key, required this.caseId})
+  const CustomRepoBottomSheet(this.cardTitle,
+      {Key? key,
+      required this.caseId,
+      required this.customerLoanUserWidget,
+      this.postValue,
+      required this.userType})
       : super(key: key);
   final String cardTitle;
   final String caseId;
+  final Widget customerLoanUserWidget;
+  final String userType;
+  final dynamic postValue;
 
   @override
   State<CustomRepoBottomSheet> createState() => _CustomRepoBottomSheetState();
@@ -95,11 +101,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserWidget,
                         const SizedBox(height: 11),
                         Row(
                           children: [
@@ -282,6 +284,12 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               eventType: 'REPO',
                               caseId: widget.caseId,
                               eventCode: 'TELEVT016',
+                              contact: [
+                                RepoContact(
+                                  cType: widget.postValue['cType'],
+                                  value: widget.postValue['value'],
+                                )
+                              ],
                               eventAttr: EventAttr(
                                   modelMake: modelMakeControlller.text,
                                   registrationNo:
@@ -296,10 +304,13 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           Map<String, dynamic> postResult =
                               await APIRepository.apiRequest(
                             APIRequestType.POST,
-                            HttpUrl.repoPostUrl('repo', 'FIELDAGENT'),
-                            requestBodydata: jsonEncode(requestBodyData),
+                            HttpUrl.repoPostUrl('repo', widget.userType),
+                            requestBodydata:
+                                jsonEncode(requestBodyData.toJson()),
                           );
                           if (postResult['success']) {
+                            AppUtils.topSnackBar(
+                                context, StringResource.successfullySubmitted);
                             Navigator.pop(context);
                           }
                         }

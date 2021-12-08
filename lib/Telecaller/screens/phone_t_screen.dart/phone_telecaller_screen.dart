@@ -64,7 +64,7 @@ class _PhoneTelecallerScreenState extends State<PhoneTelecallerScreen>
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return Container(
+                return SizedBox(
                   width: double.infinity,
                   child: Column(
                     children: [

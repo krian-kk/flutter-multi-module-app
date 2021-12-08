@@ -8,21 +8,30 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
-  const CustomPtpBottomSheet(this.cardTitle, {Key? key, required this.caseId})
+  const CustomPtpBottomSheet(this.cardTitle,
+      {Key? key,
+      required this.caseId,
+      required this.customerLoanUserWidget,
+      required this.userType,
+      this.postValue})
       : super(key: key);
   final String cardTitle;
   final String caseId;
+  final Widget customerLoanUserWidget;
+  final String userType;
+  final dynamic postValue;
 
   @override
   State<CustomPtpBottomSheet> createState() => _CustomPtpBottomSheetState();
@@ -47,6 +56,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   @override
   void initState() {
     super.initState();
+
     // DateTime currentDateTime = DateTime.now();
     // final hours = currentDateTime.hour.toString().padLeft(2, '0');
     // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
@@ -89,11 +99,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserWidget,
                         const SizedBox(height: 11),
                         Row(
                           children: [
@@ -277,7 +283,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   longitude: 0,
                                   missingAgentLocation: 'true',
                                 )),
-                            contact: Contact(cType: 'residence address'),
+                            contact: PTPContact(
+                              cType: widget.postValue['cType'],
+                              value: widget.postValue['value'],
+                            ),
                             callID: '0',
                             callingID: '0');
                         Map<String, dynamic> postResult =
@@ -285,11 +294,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                           APIRequestType.POST,
                           HttpUrl.ptpPostUrl(
                             'ptp',
-                            'FIELDAGENT',
+                            widget.userType,
                           ),
                           requestBodydata: jsonEncode(requestBodyData),
                         );
                         if (postResult['success']) {
+                          AppUtils.topSnackBar(
+                              context, StringResource.successfullySubmitted);
                           Navigator.pop(context);
                         }
                       } else {}

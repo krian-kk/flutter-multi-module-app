@@ -1,25 +1,35 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
 import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/models/other_feedback_model.dart';
+import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
+import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
-  // double launguageValue = 0;
+
+  int? indexValue;
+  String? userType;
 
   CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
   List<EventDetailsResultModel> offlineEventDetailsListValue = [];
@@ -87,10 +97,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       caseId = event.paramValues['caseID'];
 
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      userType = _pref.getString('userType');
+
       //check internet
-      final result = await Connectivity().checkConnectivity();
-      if (result == ConnectivityResult.none) {
-        print('Please Connect Internet!');
+      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+        yield NoInternetState();
       } else {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId');
@@ -143,21 +155,25 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ptp))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.ptp, offlineCaseDetailsValue.addressDetails!))),
         CustomerMetGridModel(ImageResource.rtp, StringResource.rtp,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.rtp))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.rtp, offlineCaseDetailsValue.addressDetails!))),
         CustomerMetGridModel(ImageResource.dispute, StringResource.dispute,
-            onTap: () =>
-                add(ClickOpenBottomSheetEvent(StringResource.dispute))),
+            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.dispute,
+                offlineCaseDetailsValue.addressDetails!))),
         CustomerMetGridModel(ImageResource.remainder, StringResource.remainder,
-            onTap: () =>
-                add(ClickOpenBottomSheetEvent(StringResource.remainder))),
+            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.remainder,
+                offlineCaseDetailsValue.addressDetails!))),
         CustomerMetGridModel(
             ImageResource.collections, StringResource.collections,
-            onTap: () =>
-                add(ClickOpenBottomSheetEvent(StringResource.collections))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.collections,
+                offlineCaseDetailsValue.addressDetails!))),
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ots))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.ots, offlineCaseDetailsValue.addressDetails!))),
       ]);
 
       expandOtherFeedback.addAll([
@@ -169,29 +185,35 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       ]);
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ptp))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.ptp, offlineCaseDetailsValue.callDetails!))),
         CustomerMetGridModel(ImageResource.rtp, StringResource.rtp,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.rtp))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.rtp, offlineCaseDetailsValue.callDetails!))),
         CustomerMetGridModel(ImageResource.dispute, StringResource.dispute,
-            onTap: () =>
-                add(ClickOpenBottomSheetEvent(StringResource.dispute))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.dispute, offlineCaseDetailsValue.callDetails!))),
         CustomerMetGridModel(ImageResource.remainder, StringResource.remainder,
-            onTap: () =>
-                add(ClickOpenBottomSheetEvent(StringResource.remainder))),
+            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.remainder,
+                offlineCaseDetailsValue.callDetails!))),
         CustomerMetGridModel(
             ImageResource.collections, StringResource.collections,
-            onTap: () =>
-                add(ClickOpenBottomSheetEvent(StringResource.collections))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.collections,
+                offlineCaseDetailsValue.callDetails!))),
         CustomerMetGridModel(ImageResource.ots, StringResource.ots,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.ots))),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                StringResource.ots, offlineCaseDetailsValue.callDetails!))),
       ]);
 
       yield CaseDetailsLoadedState();
     }
     if (event is ClickMainAddressBottomSheetEvent) {
+      indexValue = event.index;
       yield ClickMainAddressBottomSheetState(event.index);
     }
     if (event is ClickMainCallBottomSheetEvent) {
+      indexValue = event.index;
       yield ClickMainCallBottomSheetState(event.index);
     }
     if (event is ClickViewMapEvent) {
@@ -202,6 +224,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     // }
     if (event is ClickCaseDetailsEvent) {
       yield CallCaseDetailsState(paramValues: event.paramValues);
+    }
+
+    if (event is ClickPushAndPOPCaseDetailsEvent) {
+      yield PushAndPOPNavigationCaseDetailsState(
+          paramValues: event.paramValues);
     }
 
     if (event is ClickOpenBottomSheetEvent) {
@@ -246,7 +273,369 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         default:
       }
 
-      yield ClickOpenBottomSheetState(event.title);
+      yield ClickOpenBottomSheetState(event.title, event.list!);
     }
+
+    if (event is PostImageCapturedEvent) {
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.POST, HttpUrl.imageCaptured + "userType=$userType",
+          requestBodydata: jsonEncode(event.postData));
+      if (postResult['success']) {
+        yield PostDataApiSuccessState();
+      }
+    }
+
+    if (event is ClickCustomerNotMetButtonEvent) {
+      late Map<String, dynamic> resultValue;
+      if (addressSelectedCustomerNotMetClip ==
+          Languages.of(event.context)!.leftMessage) {
+        resultValue = await customerNotMetButtonClick(
+          'Left Message',
+          caseId.toString(),
+          'TELEVT007',
+          HttpUrl.leftMessageUrl(
+            'leftMessage',
+            'FIELDAGENT',
+          ),
+          'PTP',
+          {
+            'cType': offlineCaseDetailsValue.addressDetails?[indexValue!]
+                    ['cType']
+                .toString(),
+            'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
+                    ['value']
+                .toString(),
+            'health': '1'
+          },
+        );
+      } else if (addressSelectedCustomerNotMetClip ==
+          Languages.of(event.context)!.doorLocked) {
+        resultValue = await customerNotMetButtonClick(
+          'Door Locked',
+          caseId.toString(),
+          'TELEVT007',
+          HttpUrl.doorLockedUrl('doorLocked', 'FIELDAGENT'),
+          'NEW',
+          [
+            {
+              'cType': offlineCaseDetailsValue.addressDetails?[indexValue!]
+                      ['cType']
+                  .toString(),
+              'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
+                      ['value']
+                  .toString(),
+              'health': '1'
+            }
+          ],
+        );
+      } else if (addressSelectedCustomerNotMetClip ==
+          Languages.of(event.context)!.entryRestricted) {
+        resultValue = await customerNotMetButtonClick(
+          'Entry Restricted',
+          caseId.toString(),
+          'TELEVT007',
+          HttpUrl.entryRestrictedUrl('entryRestricted', 'FIELDAGENT'),
+          'PTP',
+          [
+            {
+              'cType': offlineCaseDetailsValue.addressDetails?[indexValue!]
+                      ['cType']
+                  .toString(),
+              'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
+                      ['value']
+                  .toString(),
+              'health': '1'
+            }
+          ],
+        );
+      }
+      if (resultValue['success']) {
+        yield PostDataApiSuccessState();
+      }
+    }
+
+    if (event is ClickAddressInvalidButtonEvent) {
+      late Map<String, dynamic> resultValue;
+      if (addressInvalidFormKey.currentState!.validate() &&
+          addressSelectedInvalidClip != '') {
+        if (addressSelectedInvalidClip ==
+            Languages.of(event.context)!.wrongAddress) {
+          resultValue = await addressInvalidButtonClick(
+            'Wrong Address',
+            caseId.toString(),
+            'TELEVT008',
+            HttpUrl.wrongAddressUrl(
+              'invalidAddress',
+              'FIELDAGENT',
+            ),
+            'PTP',
+          );
+        } else if (addressSelectedInvalidClip ==
+            Languages.of(event.context)!.shifted) {
+          resultValue = await addressInvalidButtonClick(
+              'Shifted',
+              caseId.toString(),
+              'TELEVT008',
+              HttpUrl.shiftedUrl('shifted', 'FIELDAGENT'),
+              'REVIEW');
+        } else if (addressSelectedInvalidClip ==
+            Languages.of(event.context)!.addressNotFound) {
+          resultValue = await addressInvalidButtonClick(
+            'Address Not Found',
+            caseId.toString(),
+            'TELEVT008',
+            HttpUrl.addressNotFoundUrl(
+              'addressNotFound',
+              'FIELDAGENT',
+            ),
+            'PTP',
+          );
+        }
+      }
+      if (resultValue['success']) {
+        yield PostDataApiSuccessState();
+      }
+    }
+
+    if (event is ClickPhoneInvalidButtonEvent) {
+      late Map<String, dynamic> resultValue;
+      if (phoneInvalidFormKey.currentState!.validate() &&
+          phoneSelectedInvalidClip != '') {
+        if (phoneSelectedInvalidClip ==
+            Languages.of(event.context)!.doesNotExist) {
+          resultValue = await phoneInvalidButtonClick(
+              'TC : Does Not Exist',
+              caseId.toString(),
+              'TELEVT008',
+              HttpUrl.numberNotWorkingUrl('doesNotExist', 'TELECALLER'));
+        } else if (phoneSelectedInvalidClip ==
+            Languages.of(event.context)!.incorrectNumber) {
+          resultValue = await phoneInvalidButtonClick(
+            'TC : Incorrect Number',
+            caseId.toString(),
+            'TELEVT008',
+            HttpUrl.incorrectNumberUrl('incorrectNo', 'TELECALLER'),
+          );
+        } else if (phoneSelectedInvalidClip ==
+            Languages.of(event.context)!.numberNotWorking) {
+          resultValue = await phoneInvalidButtonClick(
+            'TC : Number Not Working',
+            caseId.toString(),
+            'TELEVT008',
+            HttpUrl.numberNotWorkingUrl('numberNotWorking', 'TELECALLER'),
+          );
+        } else if (phoneSelectedInvalidClip ==
+            Languages.of(event.context)!.notOperational) {
+          resultValue = await phoneInvalidButtonClick(
+              'TC : Not Operational',
+              caseId.toString(),
+              'TELEVT008',
+              HttpUrl.notOperationalUrl('notOperational', 'TELECALLER'));
+        }
+      }
+      if (resultValue['success']) {
+        yield PostDataApiSuccessState();
+      }
+    }
+
+    if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
+      late Map<String, dynamic> resultValue;
+      if (phoneSelectedUnreadableClip ==
+          Languages.of(event.context)!.lineBusy) {
+        resultValue = await unreachableButtonClick(
+          'TC : Line Busy',
+          caseId.toString(),
+          'TELEVT007',
+          HttpUrl.unreachableUrl(
+            'lineBusy',
+            'TELECALLER',
+          ),
+        );
+      } else if (phoneSelectedUnreadableClip ==
+          Languages.of(event.context)!.switchOff) {
+        resultValue = await unreachableButtonClick(
+          'TC : Switch Off',
+          caseId.toString(),
+          'TELEVT007',
+          HttpUrl.unreachableUrl(
+            'switchOff',
+            'TELECALLER',
+          ),
+        );
+      } else if (phoneSelectedUnreadableClip ==
+          Languages.of(event.context)!.rnr) {
+        resultValue = await unreachableButtonClick(
+          'TC : RNR',
+          caseId.toString(),
+          'TELEVT011',
+          HttpUrl.unreachableUrl(
+            'RNR',
+            'TELECALLER',
+          ),
+        );
+      } else if (phoneSelectedUnreadableClip ==
+          Languages.of(event.context)!.outOfNetwork) {
+        resultValue = await unreachableButtonClick(
+          'TC : Out Of Network',
+          caseId.toString(),
+          'TELEVT007',
+          HttpUrl.unreachableUrl(
+            'outOfNetwork',
+            'TELECALLER',
+          ),
+        );
+      } else if (phoneSelectedUnreadableClip ==
+          Languages.of(event.context)!.disConnecting) {
+        resultValue = await unreachableButtonClick(
+          'TC : Disconnecting',
+          caseId.toString(),
+          'TELEVT011',
+          HttpUrl.unreachableUrl(
+            'disconnecting',
+            'TELECALLER',
+          ),
+        );
+      }
+      if (resultValue['success']) {
+        yield PostDataApiSuccessState();
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>> unreachableButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+  ) async {
+    var requestBodyData = PhoneUnreachablePostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        eventAttr: PhoneUnreachableEventAttr(
+            remarks: phoneUnreachableRemarksController.text,
+            followUpPriority: 'REVIEW',
+            nextActionDate: phoneUnreachableNextActionDateController.text),
+        contact: PhoneUnreachbleContact(
+          cType: offlineCaseDetailsValue.callDetails![indexValue!]['cType'],
+          value: offlineCaseDetailsValue.callDetails![indexValue!]['value'],
+        ));
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+    if (await postResult['success']) {
+      phoneUnreachableNextActionDateController.text = '';
+      phoneUnreachableRemarksController.text = '';
+      phoneSelectedUnreadableClip = '';
+
+      // Navigator.pop(context);
+    } else {}
+    return postResult;
+  }
+
+  Future<Map<String, dynamic>> customerNotMetButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+    String followUpPriority,
+    dynamic contact,
+  ) async {
+    var requestBodyData = CustomerNotMetPostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        contact: contact,
+        eventAttr: CustomerNotMetEventAttr(
+            remarks: addressCustomerNotMetRemarksController.text,
+            followUpPriority: followUpPriority,
+            nextActionDate: addressCustomerNotMetNextActionDateController.text,
+            agentLocation: CustomerNotMetAgentLocation()));
+
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+
+    if (await postResult['success']) {
+      addressCustomerNotMetNextActionDateController.text = '';
+      addressCustomerNotMetRemarksController.text = '';
+      addressSelectedCustomerNotMetClip = '';
+
+      // Navigator.pop(context);
+    } else {}
+    return postResult;
+  }
+
+  Future<Map<String, dynamic>> addressInvalidButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+    String followUpPriority,
+  ) async {
+    var requestBodyData = AddressInvalidPostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        eventAttr: AddressInvalidEventAttr(
+            remarks: addressInvalidRemarksController.text,
+            followUpPriority: followUpPriority,
+            agentLocation: AgentLocation()),
+        contact: [
+          AddressInvalidContact(
+            cType: offlineCaseDetailsValue.addressDetails![indexValue!]
+                ['cType'],
+            value: offlineCaseDetailsValue.addressDetails![indexValue!]
+                ['value'],
+          )
+        ]);
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+
+    if (await postResult['success']) {
+      addressInvalidRemarksController.text = '';
+      addressSelectedInvalidClip = '';
+
+      // Navigator.pop(context);
+    }
+    return postResult;
+  }
+
+  Future<Map<String, dynamic>> phoneInvalidButtonClick(
+    String eventType,
+    String caseId,
+    String eventCode,
+    String urlString,
+  ) async {
+    var requestBodyData = PhoneInvalidPostModel(
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: eventCode,
+        eventAttr: PhoneInvalidEventAttr(
+            remarks: phoneInvalidRemarksController.text,
+            nextActionDate: DateTime.now().toString()),
+        contact: PhoneInvalidContact(
+          cType: offlineCaseDetailsValue.callDetails![indexValue!]['cType'],
+          value: offlineCaseDetailsValue.callDetails![indexValue!]['value'],
+        ));
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.POST,
+      urlString,
+      requestBodydata: jsonEncode(requestBodyData),
+    );
+    if (await postResult['success']) {
+      phoneInvalidRemarksController.text = '';
+      phoneSelectedInvalidClip = '';
+
+      // Navigator.pop(context);
+    }
+    return postResult;
   }
 }

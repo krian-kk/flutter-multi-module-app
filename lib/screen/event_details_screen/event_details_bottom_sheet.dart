@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:intl/intl.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  const CustomEventDetailsBottomSheet(
-    this.cardTitle,
-    this.bloc, {
-    Key? key,
-  }) : super(key: key);
+  const CustomEventDetailsBottomSheet(this.cardTitle, this.bloc,
+      {Key? key, required this.customeLoanUserWidget})
+      : super(key: key);
   final String cardTitle;
+  final Widget customeLoanUserWidget;
 
   @override
   State<CustomEventDetailsBottomSheet> createState() =>
@@ -46,14 +44,11 @@ class _CustomEventDetailsBottomSheetState
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
                   .copyWith(bottom: 5),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18.0),
-              child: CustomLoanUserDetails(
-                userName: 'DEBASISH PATNAIK',
-                userId: 'TVSF_BFRT6458922993',
-                userAmount: 397553.67,
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: widget.customeLoanUserWidget,
             ),
+            const SizedBox(height: 10),
             Expanded(
                 child: ListView.builder(
               itemCount: widget.bloc.offlineEventDetailsListValue.length,
@@ -131,14 +126,19 @@ class _CustomEventDetailsBottomSheetState
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if (expandedList[index].date != null)
+                      CustomText(
+                        DateFormat('dd MMMM yyyy')
+                            .format(DateTime.parse(
+                                expandedList[index].date.toString()))
+                            .toString()
+                            .toUpperCase(),
+                        fontSize: FontSize.seventeen,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color000000,
+                      ),
                     CustomText(
-                      expandedList[index].caseId.toString(),
-                      fontSize: FontSize.seventeen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                    CustomText(
-                      expandedList[index].eventType.toString(),
+                      expandedList[index].eventType.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
@@ -150,7 +150,7 @@ class _CustomEventDetailsBottomSheetState
                 children: [
                   if (expandedList[index].date != null)
                     CustomText(
-                      expandedList[index].date.toString(),
+                      expandedList[index].caseId.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
@@ -158,34 +158,35 @@ class _CustomEventDetailsBottomSheetState
                   const SizedBox(height: 8),
                   if (expandedList[index].date != null)
                     CustomText(
-                      expandedList[index].mode.toString(),
+                      Languages.of(context)!.mode.toString().toUpperCase(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].mode != null)
+                    CustomText(
+                      expandedList[index].mode.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   const SizedBox(height: 8),
-                  if (expandedList[index].reference != null)
-                    CustomText(
-                      expandedList[index].reference.toString(),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
                   const SizedBox(height: 8),
-                  if (expandedList[index].remarks != null)
-                    CustomText(
-                      Languages.of(context)!.remarks.replaceAll('*', ''),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].remarks != null)
-                    CustomText(
-                      expandedList[index].remarks.toString(),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
+                  CustomText(
+                    Languages.of(context)!
+                        .remarks
+                        .replaceAll('*', '')
+                        .toUpperCase(),
+                    fontSize: FontSize.fourteen,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                  CustomText(
+                    expandedList[index].remarks ?? '-',
+                    fontSize: FontSize.fourteen,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
                 ],
                 // onExpansionChanged: (bool status) {
                 //   setState(() {

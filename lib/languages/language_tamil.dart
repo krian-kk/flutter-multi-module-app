@@ -631,4 +631,7 @@ class LanguageTa extends Languages {
 
   @override
   String get noInternetConnection => 'இணைய இணைப்பு இல்லை';
+
+  @override
+  String get mode => 'Mode';
 }

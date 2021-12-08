@@ -104,8 +104,10 @@ class WidgetUtils {
                     child: InkWell(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, AppRoutes.caseDetailsScreen,
-                            arguments: false);
+                            context, AppRoutes.caseDetailsScreen, arguments: {
+                          'caseID': '618e382004d8d040ac18841b',
+                          'isAddress': true
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

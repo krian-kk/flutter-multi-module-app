@@ -7,7 +7,7 @@ class PTPPostModel {
   late String? createdBy;
   late String? agentName;
   late String? eventModule;
-  late Contact contact;
+  late PTPContact contact;
   late String? agrRef;
   late String? contractor;
   late String callID;
@@ -43,7 +43,7 @@ class PTPPostModel {
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     eventModule = json['eventModule'];
-    contact = Contact.fromJson(json['contact']);
+    contact = PTPContact.fromJson(json['contact']);
     agrRef = json['agrRef'];
     contractor = json['contractor'];
     callID = json['callID'];
@@ -59,15 +59,11 @@ class PTPPostModel {
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
-    if (eventAttr != null) {
-      data['eventAttr'] = eventAttr.toJson();
-    }
+    data['eventAttr'] = eventAttr.toJson();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
-    if (contact != null) {
-      data['contact'] = contact.toJson();
-    }
+    data['contact'] = contact.toJson();
     data['agrRef'] = agrRef;
     data['contractor'] = contractor;
     data['callID'] = callID;
@@ -155,9 +151,7 @@ class EventAttr {
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     data['distance'] = distance;
-    if (agentLocation != null) {
-      data['agentLocation'] = agentLocation.toJson();
-    }
+    data['agentLocation'] = agentLocation.toJson();
     return data;
   }
 }
@@ -187,21 +181,21 @@ class AgentLocation {
   }
 }
 
-class Contact {
+class PTPContact {
   late String cType;
   late String health;
   late String value;
   late String resAddressId0;
   late String contactId0;
 
-  Contact(
+  PTPContact(
       {required this.cType,
       this.health = '1',
-      this.value = '0',
+      required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});
 
-  Contact.fromJson(Map<String, dynamic> json) {
+  PTPContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     health = json['health'];
     value = json['value'];

@@ -112,7 +112,9 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         buttonBackgroundColor: ColorResource.colorBEC4CF,
                         isLeading: true,
                         onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-                            StringResource.captureImage)),
+                            StringResource.captureImage,
+                            widget
+                                .bloc.offlineCaseDetailsValue.addressDetails)),
 
                         // onTap: () => pickImage(source, cameraDialogueContext)
                         trailingWidget:
@@ -128,7 +130,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 120)
+                      const SizedBox(height: 135)
                     ],
                   ),
                 ),
@@ -149,8 +151,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          widget.bloc
-              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
+          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
+              widget.bloc.offlineCaseDetailsValue.addressDetails));
         },
         child: Container(
           height: 45,

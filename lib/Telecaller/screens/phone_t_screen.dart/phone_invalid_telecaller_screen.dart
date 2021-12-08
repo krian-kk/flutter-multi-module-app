@@ -43,7 +43,6 @@ class _PhonenInvalidTelecallerScreenState
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
         key: formKey,
-        autovalidate: true,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

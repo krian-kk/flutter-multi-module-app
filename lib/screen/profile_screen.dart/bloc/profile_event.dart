@@ -18,3 +18,8 @@ class ClickMessageEvent extends ProfileEvent {}
 class ChangeProfileImageEvent extends ProfileEvent {}
 
 class LoginEvent extends ProfileEvent {}
+
+class PostProfileImageEvent extends ProfileEvent {
+  final dynamic postValue;
+  PostProfileImageEvent({this.postValue});
+}

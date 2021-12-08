@@ -1,15 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
-import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
@@ -178,8 +172,12 @@ class _AddressScreenState extends State<AddressScreen>
                                     child: CustomButton(
                                   Languages.of(context)!.eventDetails,
                                   onTap: () => widget.bloc.add(
-                                      ClickOpenBottomSheetEvent(
-                                          StringResource.eventDetails)),
+                                    ClickOpenBottomSheetEvent(
+                                      StringResource.eventDetails,
+                                      widget.bloc.offlineCaseDetailsValue
+                                          .addressDetails,
+                                    ),
+                                  ),
                                   textColor: ColorResource.color23375A,
                                   borderColor: ColorResource.color23375A,
                                   buttonBackgroundColor:
@@ -340,49 +338,9 @@ class _AddressScreenState extends State<AddressScreen>
                                             widget.bloc
                                                     .addressSelectedCustomerNotMetClip !=
                                                 '') {
-                                          if (widget.bloc
-                                                  .addressSelectedCustomerNotMetClip ==
-                                              Languages.of(context)!
-                                                  .leftMessage) {
-                                            customerNotMetButtonClick(
-                                              'Left Message',
-                                              widget.bloc.caseId.toString(),
-                                              'TELEVT007',
-                                              HttpUrl.leftMessageUrl(
-                                                'leftMessage',
-                                                'FIELDAGENT',
-                                              ),
-                                              'PTP',
-                                              {},
-                                            );
-                                          } else if (widget.bloc
-                                                  .addressSelectedCustomerNotMetClip ==
-                                              Languages.of(context)!
-                                                  .doorLocked) {
-                                            customerNotMetButtonClick(
-                                              'Door Locked',
-                                              widget.bloc.caseId.toString(),
-                                              'TELEVT007',
-                                              HttpUrl.doorLockedUrl(
-                                                  'doorLocked', 'FIELDAGENT'),
-                                              'NEW',
-                                              [],
-                                            );
-                                          } else if (widget.bloc
-                                                  .addressSelectedCustomerNotMetClip ==
-                                              Languages.of(context)!
-                                                  .entryRestricted) {
-                                            customerNotMetButtonClick(
-                                              'Entry Restricted',
-                                              widget.bloc.caseId.toString(),
-                                              'TELEVT007',
-                                              HttpUrl.entryRestrictedUrl(
-                                                  'entryRestricted',
-                                                  'FIELDAGENT'),
-                                              'PTP',
-                                              [],
-                                            );
-                                          }
+                                          widget.bloc.add(
+                                              ClickCustomerNotMetButtonEvent(
+                                                  context));
                                         } else {}
                                       },
                                       cardShape: 5,
@@ -395,52 +353,9 @@ class _AddressScreenState extends State<AddressScreen>
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
                                       onTap: () {
-                                        if (widget.bloc.addressInvalidFormKey
-                                                .currentState!
-                                                .validate() &&
-                                            widget.bloc
-                                                    .addressSelectedInvalidClip !=
-                                                '') {
-                                          if (widget.bloc
-                                                  .addressSelectedInvalidClip ==
-                                              Languages.of(context)!
-                                                  .wrongAddress) {
-                                            invalidButtonClick(
-                                              'Wrong Address',
-                                              widget.bloc.caseId.toString(),
-                                              'TELEVT008',
-                                              HttpUrl.wrongAddressUrl(
-                                                'invalidAddress',
-                                                'FIELDAGENT',
-                                              ),
-                                              'PTP',
-                                            );
-                                          } else if (widget.bloc
-                                                  .addressSelectedInvalidClip ==
-                                              Languages.of(context)!.shifted) {
-                                            invalidButtonClick(
-                                                'Shifted',
-                                                widget.bloc.caseId.toString(),
-                                                'TELEVT008',
-                                                HttpUrl.shiftedUrl(
-                                                    'shifted', 'FIELDAGENT'),
-                                                'REVIEW');
-                                          } else if (widget.bloc
-                                                  .addressSelectedInvalidClip ==
-                                              Languages.of(context)!
-                                                  .addressNotFound) {
-                                            invalidButtonClick(
-                                              'Address Not Found',
-                                              widget.bloc.caseId.toString(),
-                                              'TELEVT008',
-                                              HttpUrl.addressNotFoundUrl(
-                                                'addressNotFound',
-                                                'FIELDAGENT',
-                                              ),
-                                              'PTP',
-                                            );
-                                          }
-                                        } else {}
+                                        widget.bloc.add(
+                                            ClickAddressInvalidButtonEvent(
+                                                context));
                                       },
                                       cardShape: 5,
                                     ),
@@ -454,73 +369,6 @@ class _AddressScreenState extends State<AddressScreen>
         },
       ),
     );
-  }
-
-  invalidButtonClick(
-    String eventType,
-    String caseId,
-    String eventCode,
-    String urlString,
-    String followUpPriority,
-  ) async {
-    var requestBodyData = AddressInvalidPostModel(
-        eventType: eventType,
-        caseId: caseId,
-        eventCode: eventCode,
-        eventAttr: EventAttr(
-            remarks: widget.bloc.addressInvalidRemarksController.text,
-            followUpPriority: followUpPriority,
-            agentLocation: AgentLocation()),
-        contact: []);
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
-
-    if (await postResult['success']) {
-      setState(() {
-        widget.bloc.addressInvalidRemarksController.text = '';
-        widget.bloc.addressSelectedInvalidClip = '';
-      });
-      Navigator.pop(context);
-    }
-  }
-
-  customerNotMetButtonClick(
-    String eventType,
-    String caseId,
-    String eventCode,
-    String urlString,
-    String followUpPriority,
-    dynamic contact,
-  ) async {
-    var requestBodyData = CustomerNotMetPostModel(
-        eventType: eventType,
-        caseId: caseId,
-        eventCode: eventCode,
-        contact: contact,
-        eventAttr: CustomerNotMetEventAttr(
-            remarks: widget.bloc.addressCustomerNotMetRemarksController.text,
-            followUpPriority: followUpPriority,
-            nextActionDate:
-                widget.bloc.addressCustomerNotMetNextActionDateController.text,
-            agentLocation: CustomerNotMetAgentLocation()));
-
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
-
-    if (await postResult['success']) {
-      setState(() {
-        widget.bloc.addressCustomerNotMetNextActionDateController.text = '';
-        widget.bloc.addressCustomerNotMetRemarksController.text = '';
-        widget.bloc.addressSelectedCustomerNotMetClip = '';
-      });
-      Navigator.pop(context);
-    }
   }
 
   openViewMapBottomSheet(BuildContext buildContext) {

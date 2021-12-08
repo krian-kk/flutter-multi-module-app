@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
@@ -16,6 +17,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -41,12 +43,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pop(cameraDialogueContext);
     try {
       final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      final imageTemporary = File(image.path);
-      setState(() {
-        this.image = imageTemporary;
-        print(image);
+      if (image != null) {
+        final getProfileImage = File(image.path);
+        setState(() {
+        this.image = getProfileImage;
+        bloc.add(PostProfileImageEvent(postValue: getProfileImage));
+        print(getProfileImage.path);
       });
+      } else {
+         AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
+      }
+      // if (image == null) return;
     } on PlatformException catch (e) {
       print(e.message);
     }
@@ -77,6 +84,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
       listener: (context, state) {
+        if (state is PostDataApiSuccessState) {
+          AppUtils.topSnackBar(context, StringResource.profileImageChanged);
+        }
+
         if (state is ClickNotificationState) {
           notificationShowBottomSheet(context);
         }

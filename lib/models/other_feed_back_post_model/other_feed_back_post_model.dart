@@ -4,7 +4,7 @@ class OtherFeedBackPostModel {
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
-  late List contact;
+  late List<OtherFeedBackContact> contact;
   late String createdBy;
   late String eventModule;
   late String agentName;
@@ -143,9 +143,7 @@ class EventAttr {
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     data['distance'] = distance;
-    if (agentLocation != null) {
-      data['agentLocation'] = agentLocation.toJson();
-    }
+    data['agentLocation'] = agentLocation.toJson();
     return data;
   }
 }
@@ -175,35 +173,35 @@ class AgentLocation {
   }
 }
 
-// class Contact {
-//   late String cType;
-//   late String health;
-//   late String value;
-//   late String resAddressId0;
-//   late String contactId0;
+class OtherFeedBackContact {
+  late String cType;
+  late String health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
-//   Contact(
-//       {this.cType = 'residence address',
-//       this.health = '1',
-//       this.value = '0',
-//       this.resAddressId0 = '',
-//       this.contactId0 = ''});
+  OtherFeedBackContact(
+      {this.cType = 'residence address',
+      this.health = '1',
+      this.value = '0',
+      this.resAddressId0 = '',
+      this.contactId0 = ''});
 
-//   Contact.fromJson(Map<String, dynamic> json) {
-//     cType = json['cType'];
-//     health = json['health'];
-//     value = json['value'];
-//     resAddressId0 = json['resAddressId_0'];
-//     contactId0 = json['contactId_0'];
-//   }
+  OtherFeedBackContact.fromJson(Map<String, dynamic> json) {
+    cType = json['cType'];
+    health = json['health'];
+    value = json['value'];
+    resAddressId0 = json['resAddressId_0'];
+    contactId0 = json['contactId_0'];
+  }
 
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['cType'] = cType;
-//     data['health'] = health;
-//     data['value'] = value;
-//     data['resAddressId_0'] = resAddressId0;
-//     data['contactId_0'] = contactId0;
-//     return data;
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['health'] = health;
+    data['value'] = value;
+    data['resAddressId_0'] = resAddressId0;
+    data['contactId_0'] = contactId0;
+    return data;
+  }
+}

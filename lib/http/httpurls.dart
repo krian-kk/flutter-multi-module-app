@@ -109,6 +109,28 @@ class HttpUrl {
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
+  // Phone Invalid Post API
+  static String doesNotExistUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      fieldAgent +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  static String incorrectNumberUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      fieldAgent +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  static String numberNotWorkingUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      fieldAgent +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+  static String notOperationalUrl(String selectValue, String userTypeValue) =>
+      baseUrl +
+      version +
+      fieldAgent +
+      'case-details-events/$selectValue?userType=$userTypeValue';
+
   // DashBoard
   static const String dashboardPriorityFollowUpUrl =
       baseUrl + version + fieldAgent + 'case-details/priorityFollowUp';
@@ -143,4 +165,10 @@ class HttpUrl {
 
   static const String selfRelease =
       baseUrl + version + fieldAgent + 'case-details-events/selfRelease?';
+
+  static const String changeProfileImage =
+      baseUrl + version + fieldAgent + 'profile/profileImgUrl?';
+
+  static const String imageCaptured =
+      baseUrl + version + fieldAgent + 'case-details-events/imageCaptured?';
 }

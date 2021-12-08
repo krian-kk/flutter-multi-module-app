@@ -17,7 +17,6 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
@@ -25,10 +24,17 @@ import 'package:intl/intl.dart';
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
   const CustomOtherFeedBackBottomSheet(this.cardTitle, this.bloc,
-      {Key? key, required this.caseId})
+      {Key? key,
+      required this.caseId,
+      required this.customerLoanUserWidget,
+      required this.userType,
+      this.postValue})
       : super(key: key);
   final String cardTitle;
   final String caseId;
+  final Widget customerLoanUserWidget;
+  final String userType;
+  final dynamic postValue;
 
   @override
   State<CustomOtherFeedBackBottomSheet> createState() =>
@@ -91,11 +97,7 @@ class _CustomOtherFeedBackBottomSheetState
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserWidget,
                         const SizedBox(height: 11),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -259,14 +261,24 @@ class _CustomOtherFeedBackBottomSheetState
                                   imageLocation:
                                       uploadFileLists as List<String>,
                                   agentLocation: AgentLocation()),
-                              contact: []);
+                              contact: [
+                                OtherFeedBackContact(
+                                  cType: widget.postValue['cType'].toString(),
+                                  value: widget.postValue['value'].toString(),
+                                )
+                              ]);
+
                           Map<String, dynamic> postResult =
                               await APIRepository.apiRequest(
                             APIRequestType.POST,
-                            HttpUrl.reminderPostUrl('feedback', 'FIELDAGENT'),
-                            requestBodydata: jsonEncode(requestBodyData),
+                            HttpUrl.reminderPostUrl(
+                                'feedback', widget.userType),
+                            requestBodydata:
+                                jsonEncode(requestBodyData.toJson()),
                           );
                           if (postResult['success']) {
+                            AppUtils.topSnackBar(
+                                context, StringResource.successfullySubmitted);
                             Navigator.pop(context);
                           } else {}
                         }

@@ -16,19 +16,24 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+// import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
-  const CustomCollectionsBottomSheet(
-    this.cardTitle, {
-    Key? key,
-    required this.caseId,
-  }) : super(key: key);
+  const CustomCollectionsBottomSheet(this.cardTitle,
+      {Key? key,
+      required this.caseId,
+      required this.customerLoanUserWidget,
+      required this.userType,
+      this.postValue})
+      : super(key: key);
   final String cardTitle;
   final String caseId;
+  final Widget customerLoanUserWidget;
+  final String userType;
+  final dynamic postValue;
 
   @override
   State<CustomCollectionsBottomSheet> createState() =>
@@ -46,6 +51,7 @@ class _CustomCollectionsBottomSheetState
   final _formKey = GlobalKey<FormState>();
   List uploadFileLists = [];
 
+  FocusNode amountCollectedFocusNode = FocusNode();
   FocusNode chequeFocusNode = FocusNode();
   FocusNode remarksFocusNode = FocusNode();
 
@@ -63,6 +69,7 @@ class _CustomCollectionsBottomSheetState
   @override
   void initState() {
     super.initState();
+
     // DateTime currentDateTime = DateTime.now();
 
     // dateControlller.text =
@@ -70,6 +77,19 @@ class _CustomCollectionsBottomSheetState
     // chequeControlller.text = '123';
     // remarksControlller.text = 'ABC';
   }
+
+  // KeyboardActionsConfig _buildConfig(BuildContext context) {
+  //   return KeyboardActionsConfig(
+  //     keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+  //     keyboardBarColor: Colors.grey[200],
+  //     nextFocus: true,
+  //     actions: [
+  //       KeyboardActionsItem(
+  //         focusNode: amountCollectedFocusNode,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,11 +122,7 @@ class _CustomCollectionsBottomSheetState
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserWidget,
                         const SizedBox(height: 11),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,6 +175,7 @@ class _CustomCollectionsBottomSheetState
                                         const EdgeInsets.fromLTRB(1, 23, 5, 10),
                                     validatorCallBack: () {},
                                     keyBoardType: TextInputType.number,
+                                    focusNode: amountCollectedFocusNode,
                                     validationRules: const ['required'],
                                     suffixWidget: Column(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -355,10 +372,12 @@ class _CustomCollectionsBottomSheetState
                                   APIRequestType.POST,
                                   HttpUrl.collectionPostUrl(
                                     'collection',
-                                    'FIELDAGENT',
+                                    widget.userType,
                                   ),
                                   requestBodydata: jsonEncode(requestBodyData));
                           if (postResult['success']) {
+                            AppUtils.topSnackBar(
+                                context, StringResource.successfullySubmitted);
                             Navigator.pop(context);
                           }
                         }

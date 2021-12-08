@@ -48,7 +48,10 @@ class AutoCalling {
                     const Spacer(),
                     InkWell(
                       onTap: () {
-                        bloc.add(NavigateCaseDetailTEvent());
+                        bloc.add(NavigateCaseDetailTEvent({
+                          'caseID': '618e382004d8d040ac18841b',
+                          'isAddress': true
+                        }));
                       },
                       child: Row(
                         children: [
@@ -233,7 +236,10 @@ class AutoCalling {
                 ),
                 InkWell(
                   onTap: () {
-                    bloc.add(NavigateCaseDetailTEvent());
+                    bloc.add(NavigateCaseDetailTEvent({
+                      'caseID': '618e382004d8d040ac18841b',
+                      'isAddress': true
+                    }));
                   },
                   child: SizedBox(
                     child: Column(

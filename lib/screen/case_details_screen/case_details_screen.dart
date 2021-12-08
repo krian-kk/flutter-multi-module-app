@@ -49,9 +49,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     super.initState();
     bloc = CaseDetailsBloc()
       ..add(CaseDetailsInitialEvent(paramValues: widget.paramValues));
-    //   print('CaseDetailsScreen.paramValues------');
-    // print(widget.paramValues);
-    // print(widget.paramValues['caseID']);
   }
 
   @override
@@ -61,6 +58,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
         bloc: bloc,
         listener: (context, state) {
+          if (state is PostDataApiSuccessState) {
+            AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+            Navigator.pop(context);
+          }
+
           if (state is ClickMainAddressBottomSheetState) {
             Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
@@ -70,13 +72,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
-            openBottomSheet(context, state.title);
+            openBottomSheet(context, state.title, state.list);
           }
           if (state is NoInternetState) {
             AppUtils.noInternetSnackbar(context);
           }
           if (state is CallCaseDetailsState) {
             Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+                arguments: state.paramValues);
+          }
+          if (state is PushAndPOPNavigationCaseDetailsState) {
+            Navigator.pushReplacementNamed(context, AppRoutes.caseDetailsScreen,
                 arguments: state.paramValues);
           }
           // if (state is ClickCallCustomerState) {
@@ -294,7 +300,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                           .caseDetails
                                                           ?.repaymentInfo
                                                           ?.benefeciaryAccName ??
-                                                      '',
+                                                      '-',
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       ColorResource.color333333,
@@ -308,7 +314,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                           .caseDetails
                                                           ?.repaymentInfo
                                                           ?.repaymentIfscCode ??
-                                                      '',
+                                                      '-',
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       ColorResource.color333333,
@@ -343,7 +349,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         .caseDetails
                                                         ?.repaymentInfo
                                                         ?.repayBankName ??
-                                                    '',
+                                                    '-',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -367,7 +373,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         .caseDetails
                                                         ?.repaymentInfo
                                                         ?.refLender ??
-                                                    '',
+                                                    '-',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -391,93 +397,93 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         .caseDetails
                                                         ?.repaymentInfo
                                                         ?.refUrl ??
-                                                    '',
+                                                    '-',
                                                 fontSize: FontSize.fourteen,
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
                                                 color:
                                                     ColorResource.color333333,
                                               ),
-                                              const SizedBox(height: 12),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 10),
-                                                    decoration: BoxDecoration(
-                                                      color: ColorResource
-                                                          .color23375A,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          color: ColorResource
-                                                              .colorECECEC,
-                                                          width: 1.0),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            ImageResource
-                                                                .whatsApp),
-                                                        const SizedBox(
-                                                            width: 5),
-                                                        CustomText(
-                                                            StringResource
-                                                                .sendSms
-                                                                .toUpperCase(),
-                                                            lineHeight: 1.0,
-                                                            color: ColorResource
-                                                                .colorffffff),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 10),
-                                                    decoration: BoxDecoration(
-                                                      color: ColorResource
-                                                          .color23375A,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          color: ColorResource
-                                                              .colorECECEC,
-                                                          width: 1.0),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            ImageResource
-                                                                .whatsApp),
-                                                        const SizedBox(
-                                                            width: 5),
-                                                        CustomText(
-                                                          StringResource
-                                                              .sendWhatsapp
-                                                              .toUpperCase(),
-                                                          lineHeight: 1.0,
-                                                          color: ColorResource
-                                                              .colorffffff,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              )
+                                              // const SizedBox(height: 12),
+                                              // Row(
+                                              //   mainAxisAlignment:
+                                              //       MainAxisAlignment
+                                              //           .spaceBetween,
+                                              //   children: [
+                                              //     Container(
+                                              //       padding: const EdgeInsets
+                                              //               .symmetric(
+                                              //           horizontal: 10,
+                                              //           vertical: 10),
+                                              //       decoration: BoxDecoration(
+                                              //         color: ColorResource
+                                              //             .color23375A,
+                                              //         borderRadius:
+                                              //             BorderRadius.circular(
+                                              //                 10),
+                                              //         border: Border.all(
+                                              //             color: ColorResource
+                                              //                 .colorECECEC,
+                                              //             width: 1.0),
+                                              //       ),
+                                              //       child: Row(
+                                              //         mainAxisSize:
+                                              //             MainAxisSize.min,
+                                              //         children: [
+                                              //           SvgPicture.asset(
+                                              //               ImageResource
+                                              //                   .whatsApp),
+                                              //           const SizedBox(
+                                              //               width: 5),
+                                              //           CustomText(
+                                              //               StringResource
+                                              //                   .sendSms
+                                              //                   .toUpperCase(),
+                                              //               lineHeight: 1.0,
+                                              //               color: ColorResource
+                                              //                   .colorffffff),
+                                              //         ],
+                                              //       ),
+                                              //     ),
+                                              //     const SizedBox(width: 10),
+                                              //     Container(
+                                              //       padding: const EdgeInsets
+                                              //               .symmetric(
+                                              //           horizontal: 10,
+                                              //           vertical: 10),
+                                              //       decoration: BoxDecoration(
+                                              //         color: ColorResource
+                                              //             .color23375A,
+                                              //         borderRadius:
+                                              //             BorderRadius.circular(
+                                              //                 10),
+                                              //         border: Border.all(
+                                              //             color: ColorResource
+                                              //                 .colorECECEC,
+                                              //             width: 1.0),
+                                              //       ),
+                                              //       child: Row(
+                                              //         mainAxisSize:
+                                              //             MainAxisSize.min,
+                                              //         children: [
+                                              //           SvgPicture.asset(
+                                              //               ImageResource
+                                              //                   .whatsApp),
+                                              //           const SizedBox(
+                                              //               width: 5),
+                                              //           CustomText(
+                                              //             StringResource
+                                              //                 .sendWhatsapp
+                                              //                 .toUpperCase(),
+                                              //             lineHeight: 1.0,
+                                              //             color: ColorResource
+                                              //                 .colorffffff,
+                                              //           ),
+                                              //         ],
+                                              //       ),
+                                              //     )
+                                              //   ],
+                                              // )
                                             ],
                                           ),
                                         )
@@ -518,13 +524,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             const SizedBox(height: 10),
                                             GestureDetector(
                                               onTap: () => bloc.add(
-                                                  ClickCaseDetailsEvent(
+                                                  ClickPushAndPOPCaseDetailsEvent(
                                                       paramValues: {
                                                     'caseID': bloc
                                                         .offlineCaseDetailsValue
                                                         .otherLoanDetails![
                                                             index]
-                                                        .id!,
+                                                        .caseId,
                                                     'isAddress': true
                                                   })),
                                               child: Container(
@@ -685,11 +691,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              widget.paramValues['isAddress'] as bool
+                              bloc.userType == 'FIELDAGENT'
                                   ? GestureDetector(
                                       onTap: () => bloc.add(
                                           ClickOpenBottomSheetEvent(
-                                              StringResource.addressDetails)),
+                                              StringResource.addressDetails,
+                                              const [])),
                                       child: Container(
                                         height: 50,
                                         width:
@@ -732,12 +739,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     )
                                   : const SizedBox(),
                               SizedBox(
-                                  width: widget.paramValues['isAddress'] as bool
-                                      ? 20
-                                      : 0),
+                                  width:
+                                      bloc.userType == 'FIELDAGENT' ? 20 : 0),
                               GestureDetector(
                                 onTap: () => bloc.add(ClickOpenBottomSheetEvent(
-                                    StringResource.callDetails)),
+                                    StringResource.callDetails, const [])),
                                 child: Container(
                                   height: 50,
                                   width:
@@ -811,7 +817,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         });
   }
 
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
+  openBottomSheet(BuildContext buildContext, String cardTitle, List list) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -826,33 +832,99 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       builder: (BuildContext context) {
         switch (cardTitle) {
           case StringResource.ptp:
-            return CustomPtpBottomSheet(
-              Languages.of(context)!.ptp,
-              caseId: bloc.caseId.toString(),
-            );
+            return CustomPtpBottomSheet(Languages.of(context)!.ptp,
+                caseId: bloc.caseId.toString(),
+                customerLoanUserWidget: CustomLoanUserDetails(
+                  userName:
+                      bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                  userId:
+                      bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                  userAmount: bloc.offlineCaseDetailsValue.caseDetails?.due
+                          ?.toDouble() ??
+                      0.0,
+                ),
+                userType: bloc.userType.toString(),
+                postValue: list[bloc.indexValue!]);
           case StringResource.rtp:
-            return CustomRtpBottomSheet(Languages.of(context)!.rtp);
+            return CustomRtpBottomSheet(
+              Languages.of(context)!.rtp,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
+            );
           case StringResource.dispute:
             return CustomDisputeBottomSheet(
               Languages.of(context)!.dispute,
               caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
             );
           case StringResource.remainder:
             return CustomRemainderBottomSheet(
               Languages.of(context)!.remainderCb,
               caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
             );
           case StringResource.collections:
             return CustomCollectionsBottomSheet(
               Languages.of(context)!.collections,
               caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
             );
           case StringResource.ots:
-            return CustomOtsBottomSheet(Languages.of(context)!.ots);
+            return CustomOtsBottomSheet(
+              Languages.of(context)!.ots,
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+            );
           case StringResource.repo:
             return CustomRepoBottomSheet(
               Languages.of(context)!.repo,
               caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
             );
           case StringResource.captureImage:
             return CustomCaptureImageBottomSheet(
@@ -864,22 +936,49 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
+              bloc: bloc,
             );
           case StringResource.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,
               bloc,
               caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
             );
           case StringResource.eventDetails:
             return CustomEventDetailsBottomSheet(
-                Languages.of(context)!.eventDetails, bloc);
+              Languages.of(context)!.eventDetails,
+              bloc,
+              customeLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+            );
           case StringResource.addressDetails:
             return AddressDetailsBottomSheetScreen(bloc: bloc);
           case StringResource.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case StringResource.callCustomer:
-            return CallCustomerBottomSheet();
+            return CallCustomerBottomSheet(
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+            );
           case StringResource.addNewContact:
             return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,

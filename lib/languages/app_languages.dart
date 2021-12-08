@@ -424,4 +424,6 @@ abstract class Languages {
   String get salaryIssue;
 
   String get noInternetConnection;
+
+  String get mode;
 }

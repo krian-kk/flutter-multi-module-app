@@ -6,23 +6,31 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/denial_post_model/denial_post_model.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomRtpBottomSheet extends StatefulWidget {
-  const CustomRtpBottomSheet(
-    this.cardTitle, {
-    Key? key,
-  }) : super(key: key);
+  const CustomRtpBottomSheet(this.cardTitle,
+      {Key? key,
+      required this.caseId,
+      required this.customerLoanUserWidget,
+      required this.userType,
+      this.postValue})
+      : super(key: key);
   final String cardTitle;
+  final String caseId;
+  final Widget customerLoanUserWidget;
+  final String userType;
+  final dynamic postValue;
 
   @override
   State<CustomRtpBottomSheet> createState() => _CustomRtpBottomSheetState();
@@ -72,11 +80,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const CustomLoanUserDetails(
-                          userName: 'DEBASISH PATNAIK',
-                          userId: 'TVSF_BFRT6458922993',
-                          userAmount: 397553.67,
-                        ),
+                        widget.customerLoanUserWidget,
                         const SizedBox(height: 11),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width - 36) / 2,
@@ -198,7 +202,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                           (selectedDropdownValue != 'select')) {
                         var requestBodyData = DenialPostModel(
                           eventType: 'DENIAL',
-                          caseId: '618e382004d8d040ac18841b',
+                          caseId: widget.caseId,
                           eventCode: 'TELEVT004',
                           contractor: '0',
                           agrRef: '0',
@@ -207,16 +211,23 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               remarks: remarksControlller.text,
                               reasons: selectedDropdownValue,
                               agentLocation: AgentLocation()),
-                          contact: Contact(),
+                          contact: Contact(
+                            cType: widget.postValue['cType'],
+                            value: widget.postValue['value'],
+                          ),
                           createdBy: DateTime.now().toString(),
                           callID: '0',
                           callingID: '0',
                         );
                         Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(APIRequestType.POST,
-                                HttpUrl.denialPostUrl('denial', 'FIELDAGENT'),
+                            await APIRepository.apiRequest(
+                                APIRequestType.POST,
+                                HttpUrl.denialPostUrl(
+                                    'denial', widget.userType),
                                 requestBodydata: jsonEncode(requestBodyData));
                         if (postResult['success']) {
+                          AppUtils.topSnackBar(
+                              context, StringResource.successfullySubmitted);
                           Navigator.pop(context);
                         }
                       }

@@ -173,9 +173,9 @@ class Contact {
   late String contactId0;
 
   Contact(
-      {this.cType = 'residence address',
+      {required this.cType,
       this.health = '1',
-      this.value = '0',
+      required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});
 

@@ -36,7 +36,7 @@ class _PriorityFollowUpBottomSheetState
         return WillPopScope(
           onWillPop: () async => false,
           child: Container(
-            padding: EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.only(top: 16),
             child: Scaffold(
               floatingActionButton: CustomFloatingActionButton(
                 onTap: () async {
@@ -53,7 +53,8 @@ class _PriorityFollowUpBottomSheetState
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 5),
-                      child: CaseLists.buildListView(widget.bloc,widget.bloc.priortyFollowUpData),
+                      child: CaseLists.buildListView(
+                          widget.bloc, widget.bloc.priortyFollowUpData),
                     ),
                   )
                 ],

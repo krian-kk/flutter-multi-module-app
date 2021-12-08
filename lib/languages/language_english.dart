@@ -631,4 +631,7 @@ class LanguageEn extends Languages {
 
   @override
   String get noInternetConnection => 'No Internet Connection';
+
+  @override
+  String get mode => 'Mode';
 }

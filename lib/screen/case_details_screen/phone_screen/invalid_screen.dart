@@ -86,6 +86,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                       ),
                       // TextField(),
                       const SizedBox(height: 19),
+
                       Wrap(
                         spacing: 15,
                         runSpacing: 8,
@@ -141,8 +142,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          widget.bloc
-              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
+          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
+              widget.bloc.offlineCaseDetailsValue.callDetails));
         },
         child: Container(
           height: 45,

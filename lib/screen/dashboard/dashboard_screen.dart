@@ -62,19 +62,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
-
           if (state is SetTimeperiodValueState) {
             bloc.selectedFilter = 'TODAY';
           }
 
           if (state is SelectedTimeperiodDataLoadingState) {
-            bloc.selectedFilterDataLoading= true;
+            bloc.selectedFilterDataLoading = true;
           }
 
           if (state is SelectedTimeperiodDataLoadedState) {
-            print("SelectedTimeperiodDataLoadedState----> ${bloc.selectedFilterDataLoading}");
-           bloc.selectedFilterDataLoading= false;
-            print("SelectedTimeperiodDataLoadedState after----> ${bloc.selectedFilterDataLoading}");
+            print(
+                "SelectedTimeperiodDataLoadedState----> ${bloc.selectedFilterDataLoading}");
+            bloc.selectedFilterDataLoading = false;
+            print(
+                "SelectedTimeperiodDataLoadedState after----> ${bloc.selectedFilterDataLoading}");
           }
 
           if (state is PostDataApiSuccessState) {
@@ -206,12 +207,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                            header: widget.userType == 'FIELDAGENT'
-                                                ? Languages.of(context)!
-                                                    .customerMet
-                                                : Languages.of(context)!
-                                                    .connected
-                                                    .trim(),
+                                            header:
+                                                widget.userType == 'FIELDAGENT'
+                                                    ? Languages.of(context)!
+                                                        .customerMet
+                                                    : Languages.of(context)!
+                                                        .connected
+                                                        .trim(),
                                             count: '20',
                                             backgrountColor:
                                                 ColorResource.colorE0ECDF,
@@ -226,12 +228,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            header: widget.userType == 'FIELDAGENT'
-                                                ? Languages.of(context)!
-                                                    .customerNotMet
-                                                : Languages.of(context)!
-                                                    .unreachable
-                                                    .trim(),
+                                            header:
+                                                widget.userType == 'FIELDAGENT'
+                                                    ? Languages.of(context)!
+                                                        .customerNotMet
+                                                    : Languages.of(context)!
+                                                        .unreachable
+                                                        .trim(),
                                             count: '10',
                                             backgrountColor:
                                                 ColorResource.colorF2EEDC,

@@ -3,8 +3,8 @@ class AddressInvalidPostModel {
   late String eventType;
   late String caseId;
   late String eventCode;
-  late EventAttr eventAttr;
-  late List contact;
+  late AddressInvalidEventAttr eventAttr;
+  late List<AddressInvalidContact> contact;
   late String createdBy;
   late String eventModule;
   late String agentName;
@@ -39,7 +39,7 @@ class AddressInvalidPostModel {
     eventType = json['eventType'];
     caseId = json['caseId'];
     eventCode = json['eventCode'];
-    eventAttr = EventAttr.fromJson(json['eventAttr']);
+    eventAttr = AddressInvalidEventAttr.fromJson(json['eventAttr']);
     contact = json['contact'].forEach((v) {
       contact.add(v);
     });
@@ -83,7 +83,7 @@ class AddressInvalidPostModel {
   }
 }
 
-class EventAttr {
+class AddressInvalidEventAttr {
   late String remarks;
   late String followUpPriority;
   late int altitude;
@@ -96,7 +96,7 @@ class EventAttr {
   late int distance;
   late AgentLocation agentLocation;
 
-  EventAttr(
+  AddressInvalidEventAttr(
       {required this.remarks,
       required this.followUpPriority,
       this.altitude = 0,
@@ -109,7 +109,7 @@ class EventAttr {
       this.distance = 0,
       required this.agentLocation});
 
-  EventAttr.fromJson(Map<String, dynamic> json) {
+  AddressInvalidEventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
     followUpPriority = json['followUpPriority'];
     altitude = json['altitude'];
@@ -161,6 +161,29 @@ class AgentLocation {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['missingAgentLocation'] = missingAgentLocation;
+    return data;
+  }
+}
+
+class AddressInvalidContact {
+  late String cType;
+  late String value;
+  late String health;
+
+  AddressInvalidContact(
+      {required this.cType, required this.value, this.health = '1'});
+
+  AddressInvalidContact.fromJson(Map<String, dynamic> json) {
+    cType = json['cType'];
+    value = json['value'];
+    health = json['health'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['value'] = value;
+    data['health'] = health;
     return data;
   }
 }

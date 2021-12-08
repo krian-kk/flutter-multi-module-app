@@ -42,16 +42,17 @@ class _AllocationTelecallerScreenState
       bloc: bloc,
       listener: (BuildContext context, AllocationTState state) async {
         if (state is NavigateSearchPageTState) {
-          final dynamic returnValue = await Navigator.pushNamed(context, AppRoutes.searchScreen);
-         if(returnValue != null) {
-           print('----NK----returnvalue');
-           print(returnValue);
-         }
+          final dynamic returnValue =
+              await Navigator.pushNamed(context, AppRoutes.searchScreen);
+          if (returnValue != null) {
+            print('----NK----returnvalue');
+            print(returnValue);
+          }
         }
 
         if (state is NavigateCaseDetailTState) {
           Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-              arguments: false);
+              arguments: state.paramValue);
         }
       },
       child: BlocBuilder<AllocationTBloc, AllocationTState>(

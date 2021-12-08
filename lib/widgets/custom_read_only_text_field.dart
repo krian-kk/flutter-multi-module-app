@@ -26,8 +26,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
   List<String> validationRules = [];
-  EdgeInsetsGeometry? contentPadding;
-
+  final EdgeInsetsGeometry? contentPadding;
   final Function? onEditing;
   final bool isBorder;
   final bool isFill;

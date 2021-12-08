@@ -138,8 +138,8 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          widget.bloc
-              .add(ClickOpenBottomSheetEvent(element.stringResourceValue));
+          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
+              widget.bloc.offlineCaseDetailsValue.callDetails));
         },
         child: Container(
           height: 45,

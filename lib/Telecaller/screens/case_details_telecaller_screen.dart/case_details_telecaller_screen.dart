@@ -82,14 +82,14 @@ class _CaseDetailsTelecallerScreenState
                                         child: CustomLoanUserDetails(
                                           userName: bloc.caseDetailsResult
                                                   .result?.caseDetails?.cust ??
-                                              'DEBASISH PATNAIK',
+                                              '',
                                           userId: bloc.caseDetailsResult.result
                                                   ?.caseDetails?.accNo ??
-                                              'TVSF_BFRT6524869550',
+                                              '',
                                           userAmount: bloc.caseDetailsResult
                                                   .result?.caseDetails?.due
                                                   ?.toDouble() ??
-                                              397553.67,
+                                              0.0,
                                           isAccountNo: true,
                                           color: ColorResource.colorD4F5CF,
                                           marginTop: 10,

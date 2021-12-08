@@ -29,6 +29,26 @@ class ClickViewMapEvent extends CaseDetailsEvent {}
 
 class ClickUnreachableButtonEvent extends CaseDetailsEvent {}
 
+class ClickCustomerNotMetButtonEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  ClickCustomerNotMetButtonEvent(this.context);
+}
+
+class ClickAddressInvalidButtonEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  ClickAddressInvalidButtonEvent(this.context);
+}
+
+class ClickPhoneInvalidButtonEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  ClickPhoneInvalidButtonEvent(this.context);
+}
+
+class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  ClickPhoneUnreachableSubmitedButtonEvent(this.context);
+}
+
 // class ClickCallCustomerEvent extends CaseDetailsEvent {}
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {
@@ -36,7 +56,18 @@ class ClickCaseDetailsEvent extends CaseDetailsEvent {
   ClickCaseDetailsEvent({this.paramValues});
 }
 
+class ClickPushAndPOPCaseDetailsEvent extends CaseDetailsEvent {
+  final dynamic paramValues;
+  ClickPushAndPOPCaseDetailsEvent({this.paramValues});
+}
+
 class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String title;
-  ClickOpenBottomSheetEvent(this.title);
+  final List? list;
+  ClickOpenBottomSheetEvent(this.title, this.list);
+}
+
+class PostImageCapturedEvent extends CaseDetailsEvent {
+  final dynamic postData;
+  PostImageCapturedEvent({this.postData});
 }
