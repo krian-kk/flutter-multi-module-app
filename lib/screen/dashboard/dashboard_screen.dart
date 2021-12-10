@@ -63,20 +63,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
+
           if (state is SetTimeperiodValueState) {
             bloc.selectedFilter = 'TODAY';
-          }
-
-          if (state is SelectedTimeperiodDataLoadingState) {
-            bloc.selectedFilterDataLoading = true;
-          }
-
-          if (state is SelectedTimeperiodDataLoadedState) {
-            print(
-                "SelectedTimeperiodDataLoadedState----> ${bloc.selectedFilterDataLoading}");
-            bloc.selectedFilterDataLoading = false;
-            print(
-                "SelectedTimeperiodDataLoadedState after----> ${bloc.selectedFilterDataLoading}");
           }
 
           if (state is PostDataApiSuccessState) {
@@ -165,8 +154,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             final dynamic returnValue =
                 await Navigator.pushNamed(context, AppRoutes.searchScreen);
             if (returnValue != null) {
-              print('----NK----returnvalue');
-              print(returnValue);
+              bloc.add(SearchReturnDataEvent(returnValue: returnValue));
             }
           }
         },
@@ -432,12 +420,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             AppUtils.showToast('');
                                         }
                                       },
-                                      child: index == 5
-                                          ? Card(
+                                      child:  index == 5
+                                          ? widget.userType == 'FIELDAGENT' ? Card(
                                               elevation: 0,
                                               color: ColorResource.colorD3D7DE,
                                               shape: RoundedRectangleBorder(
-                                                side: BorderSide(
+                                                side: const BorderSide(
                                                     color: ColorResource
                                                         .colorD3D7DE,
                                                     width: 1),
@@ -454,14 +442,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       ColorResource.color23375A,
                                                 ),
                                               ),
-                                            )
+                                            ) : const SizedBox() 
                                           : index == 6
-                                              ? Card(
+                                              ? widget.userType == 'FIELDAGENT' ?  Card(
                                                   elevation: 0,
                                                   color:
                                                       ColorResource.colorffffff,
                                                   shape: RoundedRectangleBorder(
-                                                    side: BorderSide(
+                                                    side: const BorderSide(
                                                         color: ColorResource
                                                             .color23375A,
                                                         width: 0.5),
@@ -490,7 +478,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                )
+                                                ) : const SizedBox() 
                                               : Card(
                                                   elevation: 2,
                                                   shape: RoundedRectangleBorder(

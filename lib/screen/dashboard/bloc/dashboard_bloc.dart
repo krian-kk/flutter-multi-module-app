@@ -31,7 +31,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   List<CaseListModel> caseList = [];
   String? userType;
   String? selectedFilter = 'TODAY';
-  bool? selectedFilterDataLoading = false;
+  bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
   DashboardAllModels brokenPTPData = DashboardAllModels();
   DashboardAllModels untouchedCasesData = DashboardAllModels();
@@ -99,7 +99,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             amount: 'Amount',
             amountRs: '₹ 3,97,553.67'),
         DashboardListModel(
-            title: 'MY VISITS',
+            title: userType == 'FIELDAGENT' ? 'MY VISITS' : 'MY CALLS',
             image: ImageResource.vectorArrow,
             count: 'Count',
             countNum: '200',
@@ -209,14 +209,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
-        Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
-            HttpUrl.dashboardMyReceiptsUrl + "timePeriod=${event.timePeiod}");
-        myReceiptsData = DashboardAllModels.fromJson(getMyReceiptsData['data']);
-        print(getMyReceiptsData['data']);
+         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 
+            'timePeriod=${event.timePeiod}');
+            if(getMyReceiptsData['success']) {
+             yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
+            }
+            yield SelectedTimeperiodDataLoadedState();
       }
 
-      yield SelectedTimeperiodDataLoadedState();
     }
 
     if (event is MyVisitsEvent) {
@@ -234,15 +235,18 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyVisitApiEvent) {
-      print(event.timePeiod);
+      yield SelectedTimeperiodDataLoadingState();
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
-            HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
-        myVisitsData = DashboardAllModels.fromJson(getMyVisitsData['data']);
-        print(getMyVisitsData['data']);
+            APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
+            "timePeriod=${event.timePeiod}");
+        if(getMyVisitsData['success']) {
+             yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
+            }
+
+            yield SelectedTimeperiodDataLoadedState();
       }
     }
 
@@ -342,8 +346,38 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield HelpState();
     }
 
-    // if (event is NoInternetConnectionEvent) {
-    //   yield NoInternetConnectionState();
-    // }
+    if (event is SearchReturnDataEvent) {
+      yield SelectedTimeperiodDataLoadingState();
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> getSearchResultData =
+            await APIRepository.apiRequest(
+                APIRequestType.GET,
+                HttpUrl.searchUrl +
+                    "starredOnly=${event.returnValue.isStarCases}&" +
+                    "recentActivity=${event.returnValue.isMyRecentActivity}&" +
+                    "accNo=${event.returnValue.accountNumber}&" +
+                    "cust=${event.returnValue.customerName}&" +
+                    "dpdStr=${event.returnValue.dpdBucket}&" +
+                    "customerId=${event.returnValue.customerID}&" +
+                    "pincode=${event.returnValue.pincode}&" +
+                    "collSubStatus=${event.returnValue.status}");
+
+        //             Map<String, dynamic> getSearchResultData = await APIRepository.apiRequest(
+        //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
+        //     "timePeriod=WEEKLY");
+        // print('getSearchResultData----->');
+        // print(getSearchResultData['data']);
+        
+        // for (var element in getSearchResultData['data']['result']) {
+        //   resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+         
+        // }
+            yield GetSearchDataState(getReturnValues: getSearchResultData['data']);
+      }
+      yield SelectedTimeperiodDataLoadedState();
+    }
   }
 }

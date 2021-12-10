@@ -41,6 +41,11 @@ class NavigateCaseDetailEvent extends DashboardEvent {
 
 class NavigateSearchEvent extends DashboardEvent {}
 
+class SearchReturnDataEvent extends DashboardEvent {
+  dynamic? returnValue;
+  SearchReturnDataEvent({this.returnValue});
+}
+
 class SetTimeperiodValueEvent extends DashboardEvent {}
 
 class PostBankDepositDataEvent extends DashboardEvent {
