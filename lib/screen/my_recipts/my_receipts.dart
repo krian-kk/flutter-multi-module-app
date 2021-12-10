@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/widgets/case_list_widget.dart';
@@ -29,28 +31,53 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
   @override
   void initState() {
     // TODO: implement initState
-
-    // bloc = MyreceiptsBloc()..add(MyreceiptsInitialEvent(context));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: ColorResource.colorF7F8FA,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-      ),
-      height: MediaQuery.of(context).size.height * 0.85,
-      child: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: Container(
-            padding: EdgeInsets.only(top: 16),
-            child: DefaultTabController(
-              length: 3,
+    return BlocListener<DashboardBloc, DashboardState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+
+        if (state is SelectedTimeperiodDataLoadingState) {
+            widget.bloc.selectedFilterDataLoading = true;
+          }
+
+          if (state is SelectedTimeperiodDataLoadedState) {
+            widget.bloc.selectedFilterDataLoading = false;
+          }
+
+
+        if (state is ReturnReceiptsApiState) {
+           setState(() {
+              widget.bloc.myReceiptsData = DashboardAllModels.fromJson(state.returnData);
+           });
+          }
+
+        if(state is GetSearchDataState){
+          if (state.getReturnValues !=null) {
+            setState(() {
+              widget.bloc.selectedFilter = '';
+              widget.bloc.myReceiptsData = 
+            DashboardAllModels.fromJson(state.getReturnValues);
+            });
+          }
+        }
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          color: ColorResource.colorF7F8FA,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        ),
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: Container(
+              padding: EdgeInsets.only(top: 16),
               child: Scaffold(
                 floatingActionButton: CustomFloatingActionButton(
                   onTap: () async {
@@ -63,7 +90,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.myReceipts,
-                      onTap: (){
+                      onTap: () {
                         widget.bloc.add(SetTimeperiodValueEvent());
                         Navigator.pop(context);
                       },
@@ -93,7 +120,8 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        widget.bloc.myReceiptsData.result!.count.toString(),
+                                        widget.bloc.myReceiptsData.result!.count
+                                            .toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -115,7 +143,9 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        widget.bloc.myReceiptsData.result!.totalAmt.toString(),
+                                        widget.bloc.myReceiptsData.result!
+                                            .totalAmt
+                                            .toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -137,60 +167,21 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: ColorResource.colorD8D8D8))),
-                      child: TabBar(
-                        isScrollable: true,
-                        indicatorColor: ColorResource.colorD5344C,
-                        labelStyle: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color23375A,
-                            fontSize: FontSize.fourteen,
-                            fontStyle: FontStyle.normal),
-                        indicatorWeight: 5.0,
-                        labelColor: ColorResource.color23375A,
-                        unselectedLabelColor: ColorResource.colorC4C4C4,
-                        tabs: [
-                          Tab(text: Languages.of(context)!.customerMet),
-                          Tab(text: Languages.of(context)!.customerNotMet),
-                          Tab(text: Languages.of(context)!.invalid)
-                        ],
-                      ),
-                    ),
                     Expanded(
-                      child: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
-                          ),
-                          // CustomerMetNotmetInvalidTab(bloc.caseList),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                                child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        child: CaseLists.buildListView(
+                            widget.bloc, widget.bloc.myReceiptsData),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 
@@ -208,8 +199,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         setState(() {
           widget.bloc.selectedFilter = option;
         });
-        widget.bloc.add(ReceiptsApiEvent(timePeiod:option));
-        print(option);
+        widget.bloc.add(ReceiptsApiEvent(timePeiod: option));
       },
       child: Card(
         shape: RoundedRectangleBorder(

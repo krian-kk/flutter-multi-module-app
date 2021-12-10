@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -35,37 +37,59 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
             topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
       ),
       height: MediaQuery.of(context).size.height * 0.85,
-      child: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: Container(
-            padding: EdgeInsets.only(top: 16),
-            child: Scaffold(
-              floatingActionButton: CustomFloatingActionButton(
-                onTap: () async {
-                  widget.bloc.add(NavigateSearchEvent());
-                },
-              ),
-              body: Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  BottomSheetAppbar(
-                    title: Languages.of(context)!.brokenPTP,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
-                      child: CaseLists.buildListView(widget.bloc,widget.bloc.brokenPTPData),
+      child: BlocListener<DashboardBloc, DashboardState>(
+        bloc: widget.bloc,
+        listener: (context, state) {
+         if (state is SelectedTimeperiodDataLoadingState) {
+            widget.bloc.selectedFilterDataLoading = true;
+          }
+
+          if (state is SelectedTimeperiodDataLoadedState) {
+            widget.bloc.selectedFilterDataLoading = false;
+          }
+        
+        if(state is GetSearchDataState){
+          if (state.getReturnValues !=null) {
+            setState(() {
+              widget.bloc.brokenPTPData = 
+            DashboardAllModels.fromJson(state.getReturnValues);
+            });
+          }
+        }
+        },
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: Container(
+              padding: EdgeInsets.only(top: 16),
+              child: Scaffold(
+                floatingActionButton: CustomFloatingActionButton(
+                  onTap: () async {
+                    widget.bloc.add(NavigateSearchEvent());
+                  },
+                ),
+                body: Column(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    BottomSheetAppbar(
+                      title: Languages.of(context)!.brokenPTP,
                     ),
-                  )
-                ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        child: CaseLists.buildListView(
+                            widget.bloc, widget.bloc.brokenPTPData),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

@@ -17,8 +17,9 @@ import 'package:origa/widgets/custom_text.dart';
 class CaseLists {
   static Widget buildListView(
     DashboardBloc bloc, DashboardAllModels listData, ) {
+      print("Listview filter loading -------->");
       print(bloc.selectedFilterDataLoading);
-    return bloc.selectedFilterDataLoading! ? 
+    return bloc.selectedFilterDataLoading ? 
     const Center(child: CircularProgressIndicator(),) :
     listData.result!.cases!.isEmpty ? 
     const Center(child: CustomText(StringResource.noCasesAvailable),) :
