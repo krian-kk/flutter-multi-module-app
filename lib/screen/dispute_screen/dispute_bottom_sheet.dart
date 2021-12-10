@@ -8,9 +8,9 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
@@ -191,40 +191,44 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
                     onTap: () async {
-                      if (_formKey.currentState!.validate() &&
-                          (disputeDropDownValue != 'select')) {
-                        var requestBodyData = DisputePostModel(
-                          eventType: 'DISPUTE',
-                          caseId: widget.caseId,
-                          eventCode: 'TELEVT005',
-                          contractor: '0',
-                          agrRef: '0',
-                          eventAttr: EventAttr(
-                              actionDate: nextActionDateControlller.text,
-                              remarks: remarksControlller.text,
-                              disputereasons: disputeDropDownValue,
-                              agentLocation: AgentLocation()),
-                          contact: Contact(
-                            cType: widget.postValue['cType'],
-                            value: widget.postValue['value'],
-                          ),
-                          createdBy: DateTime.now().toString(),
-                          callID: '0',
-                          callingID: '0',
-                        );
+                      if (_formKey.currentState!.validate()) {
+                        if (disputeDropDownValue != 'select') {
+                          var requestBodyData = DisputePostModel(
+                            eventType: Constants.dispute,
+                            caseId: widget.caseId,
+                            eventCode: 'TELEVT005',
+                            contractor: '0',
+                            agrRef: '0',
+                            eventAttr: EventAttr(
+                                actionDate: nextActionDateControlller.text,
+                                remarks: remarksControlller.text,
+                                disputereasons: disputeDropDownValue,
+                                agentLocation: AgentLocation()),
+                            contact: Contact(
+                              cType: widget.postValue['cType'],
+                              value: widget.postValue['value'],
+                            ),
+                            createdBy: DateTime.now().toString(),
+                            callID: '0',
+                            callingID: '0',
+                          );
 
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                                APIRequestType.POST,
-                                HttpUrl.disputePostUrl(
-                                  'dispute',
-                                  widget.userType,
-                                ),
-                                requestBodydata: jsonEncode(requestBodyData));
-                        if (postResult['success']) {
-                          AppUtils.topSnackBar(
-                              context, StringResource.successfullySubmitted);
-                          Navigator.pop(context);
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.disputePostUrl(
+                                    'dispute',
+                                    widget.userType,
+                                  ),
+                                  requestBodydata: jsonEncode(requestBodyData));
+                          if (postResult['success']) {
+                            AppUtils.topSnackBar(
+                                context, Constants.successfullySubmitted);
+                            Navigator.pop(context);
+                          }
+                        } else {
+                          AppUtils.showToast(
+                              Constants.pleaseSelectDropDownValue);
                         }
                       }
                     },

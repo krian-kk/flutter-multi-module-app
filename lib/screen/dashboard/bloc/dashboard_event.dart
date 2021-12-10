@@ -18,20 +18,19 @@ class ReceiptsApiEvent extends DashboardEvent {
   ReceiptsApiEvent({this.timePeiod});
 }
 
-class MyVisitsEvent extends DashboardEvent {
-}
+class MyVisitsEvent extends DashboardEvent {}
 
 class MyVisitApiEvent extends DashboardEvent {
   dynamic? timePeiod;
   MyVisitApiEvent({this.timePeiod});
 }
+
 class MyDeposistsEvent extends DashboardEvent {}
 
 class DeposistsApiEvent extends DashboardEvent {
   dynamic? timePeiod;
   DeposistsApiEvent({this.timePeiod});
 }
-
 
 class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
@@ -67,4 +66,3 @@ class PostSelfreleaseDataEvent extends DashboardEvent {
 class HelpEvent extends DashboardEvent {}
 
 class NoInternetConnectionEvent extends DashboardEvent {}
-

@@ -6,6 +6,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_mydeposists_model/result.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -35,45 +36,43 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
     super.initState();
   }
 
-   int? _selectedIndex;
-   String? caseID;
-   String? custName;
+  int? _selectedIndex;
+  String? caseID;
+  String? custName;
 
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
-
 
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return Scaffold(
-         bottomNavigationBar: Container(
-                    height: 65,
-                    color: ColorResource.colorFFFFFF,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
-                      child: CustomButton(
-                        Languages.of(context)!.enterDepositionDetails,
-                        fontSize: FontSize.sixteen,
-                        fontWeight: FontWeight.w600,
-                        onTap: () {
-                          if (_selectedIndex != null) {
-                            depositionModeSheet(context);
-                            print(widget.mode);
-                            print(caseID);
-                          } else {
-                            AppUtils.showToast(
-                              StringResource.notSelectedCase,
-                              gravity: ToastGravity.CENTER,
-                              );
-                          }
-                          
-                        },
-                      ),
-                    ),
-                  ),
+        bottomNavigationBar: Container(
+          height: 65,
+          color: ColorResource.colorFFFFFF,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
+            child: CustomButton(
+              Languages.of(context)!.enterDepositionDetails,
+              fontSize: FontSize.sixteen,
+              fontWeight: FontWeight.w600,
+              onTap: () {
+                if (_selectedIndex != null) {
+                  depositionModeSheet(context);
+                  print(widget.mode);
+                  print(caseID);
+                } else {
+                  AppUtils.showToast(
+                    Constants.notSelectedCase,
+                    gravity: ToastGravity.CENTER,
+                  );
+                }
+              },
+            ),
+          ),
+        ),
         body: Column(
           // ignore: prefer_const_literals_to_create_immutables
           children: [
@@ -285,31 +284,44 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         SizedBox(
                                           width: 123,
                                           height: 47,
-                                          child: _selectedIndex != null && _selectedIndex == index ?
-                                          CustomButton(
-                                            Languages.of(context)!.selected,
-                                            fontSize: FontSize.twelve,
-                                            // onTap: (){
-                                            //   _onSelected(index);
-                                            // },
-                                          ) :
-                                          CustomButton(
-                                            Languages.of(context)!.select.toUpperCase(),
-                                            fontSize: FontSize.twelve,
-                                            buttonBackgroundColor: ColorResource.colorFEFFFF,
-                                            borderColor: ColorResource.colorFEFFFF,
-                                            textColor: ColorResource.color23375A,
-                                            cardElevation: 3.0,
-                                            onTap: (){
-                                              _onSelected(index);
-                                              setState((){
-                                                caseID = widget.bloc.caseList[index].loanID;
-                                                custName=widget.bloc.caseList[index].customerName;
-                                              });
-                                              print(index);
-                                              print(caseID);
-                                            },
-                                          ),
+                                          child: _selectedIndex != null &&
+                                                  _selectedIndex == index
+                                              ? CustomButton(
+                                                  Languages.of(context)!
+                                                      .selected,
+                                                  fontSize: FontSize.twelve,
+                                                  // onTap: (){
+                                                  //   _onSelected(index);
+                                                  // },
+                                                )
+                                              : CustomButton(
+                                                  Languages.of(context)!
+                                                      .select
+                                                      .toUpperCase(),
+                                                  fontSize: FontSize.twelve,
+                                                  buttonBackgroundColor:
+                                                      ColorResource.colorFEFFFF,
+                                                  borderColor:
+                                                      ColorResource.colorFEFFFF,
+                                                  textColor:
+                                                      ColorResource.color23375A,
+                                                  cardElevation: 3.0,
+                                                  onTap: () {
+                                                    _onSelected(index);
+                                                    setState(() {
+                                                      caseID = widget
+                                                          .bloc
+                                                          .caseList[index]
+                                                          .loanID;
+                                                      custName = widget
+                                                          .bloc
+                                                          .caseList[index]
+                                                          .customerName;
+                                                    });
+                                                    print(index);
+                                                    print(caseID);
+                                                  },
+                                                ),
                                         )
                                       ],
                                     ),
@@ -343,6 +355,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                DepositionMode.buildDepositionMode(context,caseID,widget.mode, widget.bloc , custName)));
+                DepositionMode.buildDepositionMode(
+                    context, caseID, widget.mode, widget.bloc, custName)));
   }
 }

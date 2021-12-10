@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/selectable.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -69,7 +70,7 @@ class _SingleSelectionBottomSheetState
                               child:
                                   const Icon(Icons.close, color: Colors.white)),
                         ),
-                        hintText: StringResource.search,
+                        hintText: Languages.of(context)!.search,
                         hintStyle: const TextStyle(color: Colors.white)),
                   ),
                 ),

@@ -126,10 +126,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         }
       },
       onChanged: (q) {
-        setState(() {});
-        if (widget.onChange != null) {
-          widget.onChange!();
-        }
+        setState(() {
+          if (widget.onChange != null) {
+            widget.onChange!();
+          }
+        });
       },
       // inputFormatters: [
       //   // if (widget.maximumWordCount != null)

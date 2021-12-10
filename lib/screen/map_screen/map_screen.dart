@@ -17,23 +17,22 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng _center = const LatLng(11.0168, 76.9558);
+  static const LatLng _center = LatLng(11.0168, 76.9558);
 
   final Set<Marker> _markers = {};
   late BitmapDescriptor customIcon;
 
-  LatLng _lastMapPosition = _center;
+  final LatLng _lastMapPosition = _center;
 
   MapType _currentMapType = MapType.normal;
 
   @override
   void initState() {
-    // TODO: implement initState
     // make sure to initialize before map loading
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+            const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
         .then((d) {
       customIcon = d;
     });

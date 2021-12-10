@@ -272,22 +272,22 @@ class AutoCalling {
     );
   }
 
-  static caseDetailsBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-        isDismissible: false,
-        // enableDrag: false,
-        isScrollControlled: true,
-        context: buildContext,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-        ),
-        backgroundColor: ColorResource.colorFFFFFF,
-        builder: (BuildContext context) {
-          // return SizedBox(
-          //   height: MediaQuery.of(context).size.height * 0.89,
-          // );
-          return CaseDetailsTelecallerScreen();
-        });
-  }
+  // static caseDetailsBottomSheet(BuildContext buildContext) {
+  //   showModalBottomSheet(
+  //       isDismissible: false,
+  //       // enableDrag: false,
+  //       isScrollControlled: true,
+  //       context: buildContext,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.only(
+  //             topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+  //       ),
+  //       backgroundColor: ColorResource.colorFFFFFF,
+  //       builder: (BuildContext context) {
+  //         // return SizedBox(
+  //         //   height: MediaQuery.of(context).size.height * 0.89,
+  //         // );
+  //         return CaseDetailsTelecallerScreen();
+  //       });
+  // }
 }

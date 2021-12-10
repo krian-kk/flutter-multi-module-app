@@ -3,7 +3,7 @@ class CompanyBranchDepositPostModel {
   String? eventType;
   String? caseId;
   String? eventCode;
- late EventAttr eventAttr;
+  late EventAttr eventAttr;
   String? createdBy;
   String? eventModule;
   String? callID;
@@ -21,16 +21,16 @@ class CompanyBranchDepositPostModel {
       required this.caseId,
       this.eventCode = 'TELEVT003',
       required this.eventAttr,
-      this.createdBy='',
+      this.createdBy = '',
       this.eventModule = 'Field Allocation',
       this.callID = '0',
       this.callingID = '0',
       this.callerServiceID = '',
       this.voiceCallEventCode = '',
       this.invalidNumber = 0,
-      this.agentName ='',
-      this.contractor ='',
-      this.agrRef=''});
+      this.agentName = '',
+      this.contractor = '',
+      this.agrRef = ''});
 
   CompanyBranchDepositPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -84,7 +84,7 @@ class EventAttr {
   String? followUpPriority;
   String? customerName;
   List<String>? imageLocation;
- late Deposition deposition;
+  late Deposition deposition;
   int? altitude;
   int? accuracy;
   int? altitudeAccuracy;
@@ -232,7 +232,10 @@ class AgentLocation {
   int? longitude;
   String? missingAgentLocation;
 
-  AgentLocation({this.latitude = 0, this.longitude = 0, this.missingAgentLocation = 'true'});
+  AgentLocation(
+      {this.latitude = 0,
+      this.longitude = 0,
+      this.missingAgentLocation = 'true'});
 
   AgentLocation.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];

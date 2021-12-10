@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/selectable.dart';
@@ -85,8 +86,8 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                                     .toList();
                                 widget.onSelect(widget.selectedList);
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
                                 child: CustomText(
                                   'StringResource.done',
                                   font: Font.latoBold,
@@ -98,7 +99,7 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                             )
                           ],
                         ),
-                        hintText: StringResource.search,
+                        hintText: Languages.of(context)!.search,
                         hintStyle: const TextStyle(color: Colors.white)),
                   ),
                 ),

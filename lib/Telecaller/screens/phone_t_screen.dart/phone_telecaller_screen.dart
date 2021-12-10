@@ -7,6 +7,7 @@ import 'package:origa/Telecaller/screens/phone_t_screen.dart/phone_invalid_telec
 import 'package:origa/Telecaller/screens/phone_t_screen.dart/phone_unreachable_t_screen.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -160,7 +161,7 @@ class _PhoneTelecallerScreenState extends State<PhoneTelecallerScreen>
                                                           ImageResource.phone),
                                                       const SizedBox(width: 12),
                                                       CustomText(
-                                                        StringResource.call
+                                                        Constants.call
                                                             .toUpperCase(),
                                                         fontSize:
                                                             FontSize.fourteen,

@@ -62,7 +62,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.myVisits,
-                      onTap: (){
+                      onTap: () {
                         widget.bloc.add(SetTimeperiodValueEvent());
                         Navigator.pop(context);
                       },
@@ -92,7 +92,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        widget.bloc.myVisitsData.result!.count.toString(),
+                                        widget.bloc.myVisitsData.result!.count
+                                            .toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -114,7 +115,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        widget.bloc.myVisitsData.result!.totalAmt.toString(),
+                                        widget
+                                            .bloc.myVisitsData.result!.totalAmt
+                                            .toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -168,17 +171,20 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myVisitsData),
+                            child: CaseLists.buildListView(
+                                widget.bloc, widget.bloc.myVisitsData),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myVisitsData),
+                            child: CaseLists.buildListView(
+                                widget.bloc, widget.bloc.myVisitsData),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myVisitsData),
+                            child: CaseLists.buildListView(
+                                widget.bloc, widget.bloc.myVisitsData),
                           ),
                         ],
                       ),
@@ -217,7 +223,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         //     break;
         //   default:
         // }
-        widget.bloc.add(MyVisitApiEvent(timePeiod:option));
+        widget.bloc.add(MyVisitApiEvent(timePeiod: option));
         print(option);
       },
       child: Card(

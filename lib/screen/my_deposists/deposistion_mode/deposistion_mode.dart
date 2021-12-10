@@ -12,7 +12,8 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 
 class DepositionMode {
   @override
-  static Widget buildDepositionMode(BuildContext context, String? caseID, String? mode, DashboardBloc bloc, String? custName) {
+  static Widget buildDepositionMode(BuildContext context, String? caseID,
+      String? mode, DashboardBloc bloc, String? custName) {
     // print("caseID------->");
     // print(caseID);
     // print(mode);
@@ -31,7 +32,7 @@ class DepositionMode {
               //   },
               // ),
               backgroundColor: ColorResource.colorFFFFFF,
-              
+
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // ignore: prefer_const_literals_to_create_immutables
@@ -69,8 +70,10 @@ class DepositionMode {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        BankTab(bloc, caseId: caseID, mode: mode, custname: custName),
-                        CompanyBranch(bloc, caseId: caseID, mode: mode, custname: custName),
+                        BankTab(bloc,
+                            caseId: caseID, mode: mode, custname: custName),
+                        CompanyBranch(bloc,
+                            caseId: caseID, mode: mode, custname: custName),
                       ],
                     ),
                   ),

@@ -18,7 +18,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MapView extends StatefulWidget {
   final AllocationBloc bloc;
-  const MapView(this.bloc, {Key? key}) : super(key: key);
+  List<String> listOfCity = [
+    'DNYANRAJ AGRO PRODUCT',
+    'SHOP NO 2 DNYANRAJ BUILDING',
+    'EAGLE LOGISTICS',
+  ];
+  MapView(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _MapViewState createState() => _MapViewState();
@@ -30,18 +35,19 @@ class _MapViewState extends State<MapView> {
   final Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = LatLng(28.644800, 77.216721);
   final Set<Marker> _markers = {};
-  MapType _currentMapType = MapType.normal;
+  final MapType _currentMapType = MapType.normal;
   late String addressLine;
 
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+            const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
         .then((d) {
       customIcon = d;
     });
 
     getCurrentLocation();
+    getPermission();
     super.initState();
   }
 
@@ -85,6 +91,51 @@ class _MapViewState extends State<MapView> {
     // print("------------------Nandhu---------------");
     // print(position.latitude);
     _onAddMarkerButtonPressed();
+  }
+
+  getPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission.toString() != PermissionStatus.granted.toString()) {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission.toString() != PermissionStatus.granted.toString()) {
+        addMarkers();
+      }
+      return;
+    }
+    addMarkers();
+  }
+
+  addMarkers() async {
+    for (var i in widget.listOfCity) {
+      // List<Location> locations =
+      //     await locationFromAddress('Gronausestraat 710, Enschede');
+      // print('Location => $locations');
+      // _markers.add(Marker(
+      //   markerId: MarkerId('Marker_current ' + i),
+      //   position: LatLng(locations.first.latitude, locations.first.longitude),
+      //   infoWindow: InfoWindow(
+      //     title: i,
+      //     // snippet: 'Bus Stop',
+      //   ),
+      //   onTap: () {
+      //     setState(() {
+      //       print("dkldjd");
+      //       // _polyline.add(Polyline(
+      //       //   polylineId: PolylineId('1'),
+      //       //   visible: true,
+      //       //   width: 1,
+      //       //   points: [
+      //       //     LatLng(currentLatitude, currentLontitude),
+      //       //     LatLng(locations.first.latitude, locations.first.longitude),
+      //       //   ],
+      //       //   color: Colors.red,
+      //       //   jointType: JointType.bevel,
+      //       // ));
+      //     });
+      //   },
+      //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      // ));
+    }
   }
 
   _onMapCreated(GoogleMapController controller) {

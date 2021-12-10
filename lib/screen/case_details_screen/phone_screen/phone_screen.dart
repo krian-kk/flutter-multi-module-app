@@ -5,7 +5,9 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -133,7 +135,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 child: InkWell(
                                   onTap: () => widget.bloc.add(
                                       ClickOpenBottomSheetEvent(
-                                          StringResource.callCustomer,
+                                          Constants.callCustomer,
                                           widget.bloc.offlineCaseDetailsValue
                                               .callDetails)),
                                   child: Container(
@@ -146,7 +148,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           Image.asset(ImageResource.phone),
                                           const SizedBox(width: 12),
                                           CustomText(
-                                            StringResource.call.toUpperCase(),
+                                            Constants.call.toUpperCase(),
                                             fontSize: FontSize.fourteen,
                                             fontWeight: FontWeight.w700,
                                             color: ColorResource.color23375A,
@@ -163,7 +165,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                               Languages.of(context)!.eventDetails,
                               onTap: () => widget.bloc.add(
                                   ClickOpenBottomSheetEvent(
-                                      StringResource.eventDetails,
+                                      Constants.eventDetails,
                                       widget.bloc.offlineCaseDetailsValue
                                           .callDetails)),
                               fontSize: FontSize.twelve,
@@ -309,14 +311,18 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   fontWeight: FontWeight.w600,
                                   onTap: () {
                                     if (widget.bloc.phoneUnreachableFormKey
-                                            .currentState!
-                                            .validate() &&
-                                        widget.bloc
-                                                .phoneSelectedUnreadableClip !=
-                                            '') {
-                                      widget.bloc.add(
-                                          ClickPhoneUnreachableSubmitedButtonEvent(
-                                              context));
+                                        .currentState!
+                                        .validate()) {
+                                      if (widget.bloc
+                                              .phoneSelectedUnreadableClip !=
+                                          '') {
+                                        widget.bloc.add(
+                                            ClickPhoneUnreachableSubmitedButtonEvent(
+                                                context));
+                                      } else {
+                                        AppUtils.showToast(
+                                            Constants.pleaseSelectOptions);
+                                      }
                                     }
                                   },
                                   cardShape: 5,

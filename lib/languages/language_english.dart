@@ -23,7 +23,7 @@ class LanguageEn extends Languages {
   String get passwordNotMatch => "Password doesn't match";
 
   @override
-  String get resetPassword => 'Reset password via OTP';
+  String get resetPassword => 'Reset password';
 
   @override
   String get loginViaDiffrentUser => 'Login via diffrent user';

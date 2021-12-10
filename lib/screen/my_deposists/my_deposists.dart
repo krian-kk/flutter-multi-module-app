@@ -76,10 +76,10 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                     children: [
                       BottomSheetAppbar(
                         title: Languages.of(context)!.myDeposists,
-                        onTap: (){
-                        widget.bloc.add(SetTimeperiodValueEvent());
-                        Navigator.pop(context);
-                      },
+                        onTap: () {
+                          widget.bloc.add(SetTimeperiodValueEvent());
+                          Navigator.pop(context);
+                        },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -104,7 +104,9 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          widget.bloc.myDeposistsData.result!.count.toString(),
+                                          widget.bloc.myDeposistsData.result!
+                                              .count
+                                              .toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -124,7 +126,9 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          widget.bloc.myDeposistsData.result!.totalAmt.toString(),
+                                          widget.bloc.myDeposistsData.result!
+                                              .totalAmt
+                                              .toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -173,14 +177,12 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                         child: TabBarView(
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            ChegueAndCasshResults(
-                              widget.bloc, 
-                              mode: "CHEQUE",
-                             result: widget.bloc.myDeposistsData.result!),
-                            ChegueAndCasshResults(
-                              widget.bloc, 
-                              mode: "CASH",
-                             result: widget.bloc.myDeposistsData.result!),
+                            ChegueAndCasshResults(widget.bloc,
+                                mode: "CHEQUE",
+                                result: widget.bloc.myDeposistsData.result!),
+                            ChegueAndCasshResults(widget.bloc,
+                                mode: "CASH",
+                                result: widget.bloc.myDeposistsData.result!),
                             // StatefulBuilder(
                             //     builder: (BuildContext context, StateSetter setState) {
                             //     return  CashResults.buildListCashAndChegue(widget.bloc, setState);

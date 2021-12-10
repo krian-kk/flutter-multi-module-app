@@ -10,9 +10,9 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -265,45 +265,49 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
                     onTap: () async {
-                      if (_formKey.currentState!.validate() &&
-                          selectedPaymentModeButton != '') {
-                        var requestBodyData = PTPPostModel(
-                            eventType: 'PTP',
-                            caseId: widget.caseId,
-                            eventAttr: EventAttr(
-                                date: ptpDateControlller.text,
-                                time: ptpTimeControlller.text,
-                                remarks: remarksControlller.text,
-                                ptpAmount: int.parse(ptpAmountControlller.text),
-                                reference: referenceControlller.text,
-                                mode: selectedPaymentModeButton,
-                                followUpPriority: 'PTP',
-                                agentLocation: AgentLocation(
-                                  latitude: 0,
-                                  longitude: 0,
-                                  missingAgentLocation: 'true',
-                                )),
-                            contact: PTPContact(
-                              cType: widget.postValue['cType'],
-                              value: widget.postValue['value'],
+                      if (_formKey.currentState!.validate()) {
+                        if (selectedPaymentModeButton != '') {
+                          var requestBodyData = PTPPostModel(
+                              eventType: Constants.ptp,
+                              caseId: widget.caseId,
+                              eventAttr: EventAttr(
+                                  date: ptpDateControlller.text,
+                                  time: ptpTimeControlller.text,
+                                  remarks: remarksControlller.text,
+                                  ptpAmount:
+                                      int.parse(ptpAmountControlller.text),
+                                  reference: referenceControlller.text,
+                                  mode: selectedPaymentModeButton,
+                                  followUpPriority: 'PTP',
+                                  agentLocation: AgentLocation(
+                                    latitude: 0,
+                                    longitude: 0,
+                                    missingAgentLocation: 'true',
+                                  )),
+                              contact: PTPContact(
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                              ),
+                              callID: '0',
+                              callingID: '0');
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                            APIRequestType.POST,
+                            HttpUrl.ptpPostUrl(
+                              'ptp',
+                              widget.userType,
                             ),
-                            callID: '0',
-                            callingID: '0');
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.POST,
-                          HttpUrl.ptpPostUrl(
-                            'ptp',
-                            widget.userType,
-                          ),
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
-                        if (postResult['success']) {
-                          AppUtils.topSnackBar(
-                              context, StringResource.successfullySubmitted);
-                          Navigator.pop(context);
+                            requestBodydata: jsonEncode(requestBodyData),
+                          );
+                          if (postResult['success']) {
+                            AppUtils.topSnackBar(
+                                context, Constants.successfullySubmitted);
+                            Navigator.pop(context);
+                          }
+                        } else {
+                          AppUtils.showToast(Constants.pleaseSelectPaymentMode);
                         }
-                      } else {}
+                      }
                     },
                     cardShape: 5,
                   ),

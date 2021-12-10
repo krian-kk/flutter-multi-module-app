@@ -12,6 +12,7 @@ import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -248,7 +249,7 @@ class _CustomOtherFeedBackBottomSheetState
                       if (_formKey.currentState!.validate()) {
                         if (uploadFileLists.isEmpty) {
                           AppUtils.showToast(
-                            StringResource.uploadDepositSlip,
+                            Constants.uploadDepositSlip,
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
@@ -278,7 +279,7 @@ class _CustomOtherFeedBackBottomSheetState
                           );
                           if (postResult['success']) {
                             AppUtils.topSnackBar(
-                                context, StringResource.successfullySubmitted);
+                                context, Constants.successfullySubmitted);
                             Navigator.pop(context);
                           } else {}
                         }

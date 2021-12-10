@@ -15,7 +15,7 @@
 // import '../../router.dart';
 
 // class CashResults {
-  
+
 //   static Widget buildListCashAndChegue(DashboardBloc bloc, StateSetter setState){
 //      int? _selectedIndex;
 //                           _onSelected(int index) {
@@ -32,7 +32,7 @@
 //                         scrollDirection: Axis.vertical,
 //                         itemCount: bloc.caseList.length,
 //                         itemBuilder: (BuildContext context, int index) {
-                         
+
 //                           return Column(
 //                             crossAxisAlignment: CrossAxisAlignment.start,
 //                             children: [
@@ -173,7 +173,7 @@
 //                                           ],
 //                                         ),
 //                                       ),
-    
+
 //                                       Padding(
 //                                         padding: EdgeInsets.symmetric(
 //                                             horizontal: 15, vertical: 6),
@@ -267,7 +267,5 @@
 //               ],
 //             );
 //       }
-    
-//   }
-  
 
+//   }

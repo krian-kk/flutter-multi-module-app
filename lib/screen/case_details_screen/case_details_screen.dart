@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
+import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
@@ -23,11 +24,13 @@ import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
+import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -59,7 +62,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         bloc: bloc,
         listener: (context, state) {
           if (state is PostDataApiSuccessState) {
-            AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
             Navigator.pop(context);
           }
 
@@ -284,8 +287,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                const CustomText(
-                                                  StringResource
+                                                CustomText(
+                                                  Languages.of(context)!
                                                       .beneficiaryDetails,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: FontSize.twelve,
@@ -695,7 +698,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   ? GestureDetector(
                                       onTap: () => bloc.add(
                                           ClickOpenBottomSheetEvent(
-                                              StringResource.addressDetails,
+                                              Constants.addressDetails,
                                               const [])),
                                       child: Container(
                                         height: 50,
@@ -743,7 +746,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       bloc.userType == 'FIELDAGENT' ? 20 : 0),
                               GestureDetector(
                                 onTap: () => bloc.add(ClickOpenBottomSheetEvent(
-                                    StringResource.callDetails, const [])),
+                                    Constants.callDetails, const [])),
                                 child: Container(
                                   height: 50,
                                   width:
@@ -831,7 +834,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       ),
       builder: (BuildContext context) {
         switch (cardTitle) {
-          case StringResource.ptp:
+          case Constants.ptp:
             return CustomPtpBottomSheet(Languages.of(context)!.ptp,
                 caseId: bloc.caseId.toString(),
                 customerLoanUserWidget: CustomLoanUserDetails(
@@ -845,7 +848,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 ),
                 userType: bloc.userType.toString(),
                 postValue: list[bloc.indexValue!]);
-          case StringResource.rtp:
+          case Constants.rtp:
             return CustomRtpBottomSheet(
               Languages.of(context)!.rtp,
               caseId: bloc.caseId.toString(),
@@ -859,7 +862,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
-          case StringResource.dispute:
+          case Constants.dispute:
             return CustomDisputeBottomSheet(
               Languages.of(context)!.dispute,
               caseId: bloc.caseId.toString(),
@@ -873,7 +876,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
-          case StringResource.remainder:
+          case Constants.remainder:
             return CustomRemainderBottomSheet(
               Languages.of(context)!.remainderCb,
               caseId: bloc.caseId.toString(),
@@ -887,7 +890,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
-          case StringResource.collections:
+          case Constants.collections:
             return CustomCollectionsBottomSheet(
               Languages.of(context)!.collections,
               caseId: bloc.caseId.toString(),
@@ -901,7 +904,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
-          case StringResource.ots:
+          case Constants.ots:
             return CustomOtsBottomSheet(
               Languages.of(context)!.ots,
               customerLoanUserWidget: CustomLoanUserDetails(
@@ -912,7 +915,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
             );
-          case StringResource.repo:
+          case Constants.repo:
             return CustomRepoBottomSheet(
               Languages.of(context)!.repo,
               caseId: bloc.caseId.toString(),
@@ -926,7 +929,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
-          case StringResource.captureImage:
+          case Constants.captureImage:
             return CustomCaptureImageBottomSheet(
               Languages.of(context)!.captureImage,
               customerLoanUserDetailsWidget: CustomLoanUserDetails(
@@ -938,7 +941,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               bloc: bloc,
             );
-          case StringResource.otherFeedback:
+          case Constants.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,
               bloc,
@@ -953,7 +956,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
-          case StringResource.eventDetails:
+          case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
               Languages.of(context)!.eventDetails,
               bloc,
@@ -965,11 +968,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
             );
-          case StringResource.addressDetails:
+          case Constants.addressDetails:
             return AddressDetailsBottomSheetScreen(bloc: bloc);
-          case StringResource.callDetails:
+          case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
-          case StringResource.callCustomer:
+          case Constants.callCustomer:
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
@@ -979,20 +982,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
             );
-          case StringResource.addNewContact:
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    BottomSheetAppbar(
-                        title:
-                            Languages.of(context)!.addNewContact.toUpperCase(),
-                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    const Expanded(
-                        child: Center(child: CircularProgressIndicator())),
-                  ],
-                ));
+          case Constants.addNewContact:
+            return AddNewContactBottomSheet(
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+            );
           default:
             return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,

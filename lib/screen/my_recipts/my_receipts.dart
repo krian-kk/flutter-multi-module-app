@@ -63,7 +63,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.myReceipts,
-                      onTap: (){
+                      onTap: () {
                         widget.bloc.add(SetTimeperiodValueEvent());
                         Navigator.pop(context);
                       },
@@ -93,7 +93,8 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        widget.bloc.myReceiptsData.result!.count.toString(),
+                                        widget.bloc.myReceiptsData.result!.count
+                                            .toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -115,7 +116,9 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        widget.bloc.myReceiptsData.result!.totalAmt.toString(),
+                                        widget.bloc.myReceiptsData.result!
+                                            .totalAmt
+                                            .toString(),
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -168,18 +171,21 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
+                            child: CaseLists.buildListView(
+                                widget.bloc, widget.bloc.myReceiptsData),
                           ),
                           // CustomerMetNotmetInvalidTab(bloc.caseList),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                            child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
+                            child: CaseLists.buildListView(
+                                widget.bloc, widget.bloc.myReceiptsData),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 5),
-                                child: CaseLists.buildListView(widget.bloc,widget.bloc.myReceiptsData),
+                            child: CaseLists.buildListView(
+                                widget.bloc, widget.bloc.myReceiptsData),
                           ),
                         ],
                       ),
@@ -208,7 +214,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         setState(() {
           widget.bloc.selectedFilter = option;
         });
-        widget.bloc.add(ReceiptsApiEvent(timePeiod:option));
+        widget.bloc.add(ReceiptsApiEvent(timePeiod: option));
         print(option);
       },
       child: Card(

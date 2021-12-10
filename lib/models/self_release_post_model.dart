@@ -1,9 +1,9 @@
 class SelfReleasePostModel {
   int? eventId;
   String? eventType;
- late String caseId;
+  late String caseId;
   String? eventCode;
- late EventAttr eventAttr;
+  late EventAttr eventAttr;
   String? createdBy;
   String? eventModule;
   String? callID;
@@ -82,9 +82,9 @@ class EventAttr {
   late String remarks;
   late Repo repo;
   String? followUpPriority;
- late List<String> imageLocation;
- late String customerName;
- late String date;
+  late List<String> imageLocation;
+  late String customerName;
+  late String date;
   int? altitude;
   int? accuracy;
   int? altitudeAccuracy;
@@ -178,8 +178,7 @@ class Repo {
   String? status;
 
   Repo(
-      {
-      required this.date,
+      {required this.date,
       required this.time,
       required this.remarks,
       required this.imageLocation,
@@ -209,9 +208,10 @@ class AgentLocation {
   int? longitude;
   String? missingAgentLocation;
 
-  AgentLocation({this.latitude = 0, 
-  this.longitude = 0, 
-  this.missingAgentLocation = 'true'});
+  AgentLocation(
+      {this.latitude = 0,
+      this.longitude = 0,
+      this.missingAgentLocation = 'true'});
 
   AgentLocation.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];

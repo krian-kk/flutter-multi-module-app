@@ -1,3 +1,3 @@
 // class CaseDetailsRouteModel {
-//   final String 
+//   final String
 // }

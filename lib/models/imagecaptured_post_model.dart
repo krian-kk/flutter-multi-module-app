@@ -142,9 +142,9 @@ class AgentLocation {
   String? missingAgentLocation;
 
   AgentLocation(
-    {this.latitude = 0, 
-  this.longitude = 0, 
-  this.missingAgentLocation = "true"});
+      {this.latitude = 0,
+      this.longitude = 0,
+      this.missingAgentLocation = "true"});
 
   AgentLocation.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];

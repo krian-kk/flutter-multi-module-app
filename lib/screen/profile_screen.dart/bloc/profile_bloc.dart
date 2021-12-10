@@ -92,6 +92,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ClickMessageEvent) {
       yield ClickMessageState();
     }
+    if (event is ChangePasswordEvent) {
+      yield ClickChangePasswordState();
+    }
     if (event is ChangeProfileImageEvent) {
       yield ChangeProfileImageState();
     }
@@ -100,14 +103,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     if (event is PostProfileImageEvent) {
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(APIRequestType.POST,
-      HttpUrl.changeProfileImage,
-          requestBodydata: jsonEncode({
-              "profileImgUrl": event.postValue.toString()}
-            ));
-        if (postResult['success']) {
-          yield PostDataApiSuccessState();
-        }
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.POST, HttpUrl.changeProfileImage,
+          requestBodydata:
+              jsonEncode({"profileImgUrl": event.postValue.toString()}));
+      if (postResult['success']) {
+        yield PostDataApiSuccessState();
+      }
     }
   }
   // {
