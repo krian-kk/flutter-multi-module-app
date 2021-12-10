@@ -13,6 +13,7 @@ import 'package:origa/models/bank_deposit_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -101,7 +102,7 @@ class _BankTabState extends State<BankTab> {
                     if (_formKey.currentState!.validate()) {
                       if (uploadFileLists.isEmpty) {
                         AppUtils.showToast(
-                          StringResource.uploadDepositSlip,
+                          Constants.uploadDepositSlip,
                           gravity: ToastGravity.CENTER,
                         );
                       } else {

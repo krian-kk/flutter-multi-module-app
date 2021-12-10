@@ -8,6 +8,7 @@ import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -22,7 +23,7 @@ class CaseLists {
     return bloc.selectedFilterDataLoading ? 
     const Center(child: CircularProgressIndicator(),) :
     listData.result!.cases!.isEmpty ? 
-    const Center(child: CustomText(StringResource.noCasesAvailable),) :
+    const Center(child: CustomText(Constants.noCasesAvailable),) :
     ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: listData.result!.cases!.length,

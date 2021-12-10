@@ -5,6 +5,7 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -42,11 +43,10 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.repo, StringResource.repo),
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
+          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -112,7 +112,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         buttonBackgroundColor: ColorResource.colorBEC4CF,
                         isLeading: true,
                         onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-                            StringResource.captureImage,
+                            Constants.captureImage,
                             widget
                                 .bloc.offlineCaseDetailsValue.addressDetails)),
 

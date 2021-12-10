@@ -13,6 +13,7 @@ import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
 import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
+import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -47,12 +48,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final getProfileImage = File(image.path);
         print(getProfileImage);
         setState(() {
-        this.image = getProfileImage;
-        bloc.add(PostProfileImageEvent(postValue: getProfileImage.path));
-        print(getProfileImage.path);
-      });
+          this.image = getProfileImage;
+          bloc.add(PostProfileImageEvent(postValue: getProfileImage.path));
+          print(getProfileImage.path);
+        });
       } else {
-         AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
+        AppUtils.showToast(StringResource.canceled,
+            gravity: ToastGravity.CENTER);
       }
       // if (image == null) return;
     } on PlatformException catch (e) {
@@ -88,7 +90,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (state is PostDataApiSuccessState) {
           AppUtils.topSnackBar(context, StringResource.profileImageChanged);
         }
-
         if (state is ClickNotificationState) {
           notificationShowBottomSheet(context);
         }
@@ -103,6 +104,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         if (state is NoInternetState) {
           AppUtils.noInternetSnackbar(context);
+        }
+        if (state is ClickChangePasswordState) {
+          changePasswordBottomSheet(context);
         }
         if (state is LoginState) {
           Navigator.pushNamedAndRemoveUntil(
@@ -150,6 +154,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Image.asset(
+                                  //     bloc.offlineProfileValue.profileImgUrl!),
                                   GestureDetector(
                                     onTap: () =>
                                         bloc.add(ChangeProfileImageEvent()),
@@ -184,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fontWeight: FontWeight.w700,
                                         color: ColorResource.color101010,
                                       ),
-                                      SizedBox(height: 11),
+                                      const SizedBox(height: 11),
                                       CustomText(
                                         bloc.offlineProfileValue.name
                                             .toString(),
@@ -483,6 +489,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 )));
+  }
+
+  changePasswordBottomSheet(BuildContext buildContext) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorF8F9FB,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return const ResetPasswordScreen();
+      },
+    );
   }
 
   languageBottomSheet() {

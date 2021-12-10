@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -29,9 +30,9 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
+          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,

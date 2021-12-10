@@ -11,6 +11,7 @@ import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -351,7 +352,7 @@ class _CustomCollectionsBottomSheetState
                           selectedPaymentModeButton != '') {
                         if (uploadFileLists.isEmpty) {
                           AppUtils.showToast(
-                            StringResource.uploadDepositSlip,
+                            Constants.uploadDepositSlip,
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
@@ -377,7 +378,7 @@ class _CustomCollectionsBottomSheetState
                                   requestBodydata: jsonEncode(requestBodyData));
                           if (postResult['success']) {
                             AppUtils.topSnackBar(
-                                context, StringResource.successfullySubmitted);
+                                context, Constants.successfullySubmitted);
                             Navigator.pop(context);
                           }
                         }

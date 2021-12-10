@@ -18,6 +18,7 @@ import 'package:origa/screen/untouched_case/untouched_cases.dart';
 import 'package:origa/screen/yarding_selfrelese/yarding_self_release.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -68,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is PostDataApiSuccessState) {
-            AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
             Navigator.pop(context);
           }
 

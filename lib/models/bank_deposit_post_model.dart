@@ -3,7 +3,7 @@ class BankDepositPostModel {
   String? eventType;
   String? caseId;
   String? eventCode;
- late EventAttr eventAttr;
+  late EventAttr eventAttr;
   String? createdBy;
   String? eventModule;
   String? callID;
@@ -21,16 +21,16 @@ class BankDepositPostModel {
       required this.caseId,
       this.eventCode = 'TELEVT003',
       required this.eventAttr,
-      this.createdBy='',
+      this.createdBy = '',
       this.eventModule = 'Field Allocation',
       this.callID = '0',
       this.callingID = '0',
       this.callerServiceID = '',
       this.voiceCallEventCode = '',
       this.invalidNumber = 0,
-      this.agentName ='',
-      this.contractor ='',
-      this.agrRef=''});
+      this.agentName = '',
+      this.contractor = '',
+      this.agrRef = ''});
 
   BankDepositPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -84,7 +84,7 @@ class EventAttr {
   String? followUpPriority;
   String? customerName;
   List<String>? imageLocation;
- late Deposition deposition;
+  late Deposition deposition;
   int? altitude;
   int? accuracy;
   int? altitudeAccuracy;
@@ -116,7 +116,7 @@ class EventAttr {
       this.longitude = 0,
       this.distance = 0,
       this.agentLocation,
-      this.appStatus ='',
+      this.appStatus = '',
       this.duplicate = 'true'});
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -238,7 +238,10 @@ class AgentLocation {
   int? longitude;
   String? missingAgentLocation;
 
-  AgentLocation({this.latitude = 0, this.longitude = 0, this.missingAgentLocation = 'true'});
+  AgentLocation(
+      {this.latitude = 0,
+      this.longitude = 0,
+      this.missingAgentLocation = 'true'});
 
   AgentLocation.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];

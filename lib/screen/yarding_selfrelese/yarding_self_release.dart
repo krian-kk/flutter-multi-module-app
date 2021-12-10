@@ -8,6 +8,7 @@ import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -32,15 +33,15 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
     super.initState();
   }
 
-   int? _selectedIndex;
-   String? caseID;
-   String? custName;
+  int? _selectedIndex;
+  String? caseID;
+  String? custName;
 
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
 
-    Future getFiles() async {
+  Future getFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'pdf', 'doc'],
@@ -48,7 +49,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
 
     print(result);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +81,14 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
                       onTap: () {
-                         if (_selectedIndex != null) {
-                            repoStatusModeSheet(context);
-                          } else {
-                            AppUtils.showToast(
-                              StringResource.notSelectedCase,
-                              gravity: ToastGravity.CENTER,
-                              );
-                          }
-                        
+                        if (_selectedIndex != null) {
+                          repoStatusModeSheet(context);
+                        } else {
+                          AppUtils.showToast(
+                            Constants.notSelectedCase,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        }
                       },
                     ),
                   ),
@@ -281,28 +280,50 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                 SizedBox(
                                                   width: 123,
                                                   height: 47,
-                                                  child:  _selectedIndex != null && _selectedIndex == index ?
-                                                  CustomButton(
-                                                    Languages.of(context)!.selected,
-                                                    fontSize: FontSize.twelve,
-                                                  ) :
-                                                  CustomButton(
-                                                    Languages.of(context)!.select.toUpperCase(),
-                                                    fontSize: FontSize.twelve,
-                                                    buttonBackgroundColor: ColorResource.colorFEFFFF,
-                                                    borderColor: ColorResource.colorFEFFFF,
-                                                    textColor: ColorResource.color23375A,
-                                                    cardElevation: 3.0,
-                                                    onTap: (){
-                                                      _onSelected(index);
-                                                      setState((){
-                                                        caseID = widget.bloc.caseList[index].loanID;
-                                                        custName=widget.bloc.caseList[index].customerName;
-                                                      });
-                                                      print(index);
-                                                      print(caseID);
-                                                    },
-                                                  ),
+                                                  child: _selectedIndex !=
+                                                              null &&
+                                                          _selectedIndex ==
+                                                              index
+                                                      ? CustomButton(
+                                                          Languages.of(context)!
+                                                              .selected,
+                                                          fontSize:
+                                                              FontSize.twelve,
+                                                        )
+                                                      : CustomButton(
+                                                          Languages.of(context)!
+                                                              .select
+                                                              .toUpperCase(),
+                                                          fontSize:
+                                                              FontSize.twelve,
+                                                          buttonBackgroundColor:
+                                                              ColorResource
+                                                                  .colorFEFFFF,
+                                                          borderColor:
+                                                              ColorResource
+                                                                  .colorFEFFFF,
+                                                          textColor:
+                                                              ColorResource
+                                                                  .color23375A,
+                                                          cardElevation: 3.0,
+                                                          onTap: () {
+                                                            _onSelected(index);
+                                                            setState(() {
+                                                              caseID = widget
+                                                                  .bloc
+                                                                  .caseList[
+                                                                      index]
+                                                                  .loanID;
+                                                              custName = widget
+                                                                  .bloc
+                                                                  .caseList[
+                                                                      index]
+                                                                  .customerName;
+                                                            });
+                                                            print(index);
+                                                            print(caseID);
+                                                          },
+                                                        ),
                                                 )
                                               ],
                                             ),
@@ -340,6 +361,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                RepoStatus.buildRepoSelfReleaseTab(context, caseID, custName, widget.bloc)));
+                RepoStatus.buildRepoSelfReleaseTab(
+                    context, caseID, custName, widget.bloc)));
   }
 }

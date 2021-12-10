@@ -9,6 +9,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -276,7 +277,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           timeControlller.text != '') {
                         if (uploadFileLists.isEmpty) {
                           AppUtils.showToast(
-                            StringResource.uploadDepositSlip,
+                            Constants.uploadDepositSlip,
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
@@ -310,7 +311,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           );
                           if (postResult['success']) {
                             AppUtils.topSnackBar(
-                                context, StringResource.successfullySubmitted);
+                                context, Constants.successfullySubmitted);
                             Navigator.pop(context);
                           }
                         }

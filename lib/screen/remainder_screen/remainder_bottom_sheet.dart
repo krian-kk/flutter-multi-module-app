@@ -8,9 +8,9 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/reminder_post_model/reminder_post_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -211,7 +211,7 @@ class _CustomRemainderBottomSheetState
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         var requestBodyData = ReminderPostAPI(
-                          eventType: 'REMINDER',
+                          eventType: Constants.remainder,
                           caseId: widget.caseId,
                           eventCode: 'TELEVT006',
                           eventAttr: EventAttr(
@@ -235,7 +235,7 @@ class _CustomRemainderBottomSheetState
                         );
                         if (postResult['success']) {
                           AppUtils.topSnackBar(
-                              context, StringResource.successfullySubmitted);
+                              context, Constants.successfullySubmitted);
                           Navigator.pop(context);
                         }
                       }

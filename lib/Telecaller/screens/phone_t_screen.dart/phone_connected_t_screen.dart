@@ -4,6 +4,7 @@ import 'package:origa/Telecaller/screens/phone_t_screen.dart/bloc/phone_telecall
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -30,9 +31,9 @@ class _PhoneConnectedTelecallerScreenState
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
+          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -61,25 +62,25 @@ class _PhoneConnectedTelecallerScreenState
                           onTap: () {
                             switch (widget.bloc
                                 .phoneCustomerMetGridList[innerIndex].title) {
-                              case StringResource.ptp:
+                              case Constants.ptp:
                                 // openBottomSheet(context, StringResource.ptp);
                                 break;
-                              case StringResource.rtp:
+                              case Constants.rtp:
                                 // openBottomSheet(context, StringResource.rtp);
                                 break;
-                              case StringResource.dispute:
+                              case Constants.dispute:
                                 // openBottomSheet(
                                 //     context, StringResource.dispute);
                                 break;
-                              case StringResource.remainder:
+                              case Constants.remainder:
                                 // openBottomSheet(
                                 //     context, StringResource.remainder);
                                 break;
-                              case StringResource.collections:
+                              case Constants.collections:
                                 // openBottomSheet(
                                 //     context, StringResource.collections);
                                 break;
-                              case StringResource.ots:
+                              case Constants.ots:
                                 // openBottomSheet(context, StringResource.ots);
                                 break;
                               default:

@@ -13,6 +13,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/self_release_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -38,30 +39,32 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
   late TextEditingController dateController = TextEditingController();
   late TextEditingController timeController = TextEditingController();
   late TextEditingController remarksController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();  
-  
+  final _formKey = GlobalKey<FormState>();
+
   List uploadFileLists = [];
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     var currentDateTime= DateTime.now();
+    var currentDateTime = DateTime.now();
     String currentDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
     setState(() {
       dateController.text = currentDate;
     });
   }
 
-    getFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.any);
-      if (result != null) {
-        uploadFileLists = result.files.map((path) => path.path.toString()).toList();
-        print(uploadFileLists);
-      } else {
-        // User canceled the picker
-        AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
-      }
+  getFiles() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: true, type: FileType.any);
+    if (result != null) {
+      uploadFileLists =
+          result.files.map((path) => path.path.toString()).toList();
+      print(uploadFileLists);
+    } else {
+      // User canceled the picker
+      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+    }
   }
 
   @override
@@ -71,69 +74,71 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
       return Scaffold(
         backgroundColor: ColorResource.colorffffff,
         bottomNavigationBar: Container(
-                height: 66,
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(13, 5, 20, 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: CustomButton(
-                          Languages.of(context)!.cancel.toUpperCase(),
-                          fontSize: FontSize.sixteen,
-                          textColor: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
-                          cardShape: 5,
-                          buttonBackgroundColor: ColorResource.colorffffff,
-                          borderColor: ColorResource.colorffffff,
-                          onTap: () => Navigator.pop(context),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: CustomButton(
-                          Languages.of(context)!.submit.toUpperCase(),
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
-                          cardShape: 5,
-                          onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                                if(uploadFileLists.isEmpty){
-                                AppUtils.showToast(
-                                  StringResource.uploadDepositSlip,
-                                  gravity: ToastGravity.CENTER,
-                                  );
-                                 } else {
-                                   var currentDateTime= DateTime.now();
-                                    var requestBodyData = SelfReleasePostModel(
-                                      // caseId: widget.caseId!, 
-                                      caseId: '618e382004d8d040ac18841b',
-                                      eventAttr: EventAttr(
-                                        remarks: remarksController.text, 
-                                        repo: Repo(
-                                          date: dateController.text, 
-                                          time: timeController.text, 
-                                          remarks: remarksController.text, 
-                                          imageLocation: uploadFileLists as List<String>), 
-                                        imageLocation: uploadFileLists as List<String>, 
-                                        customerName: widget.custname!, 
-                                        date: currentDateTime.toString()));
-                                          // print("--------self release--------");
-                                          // print(jsonEncode(requestBodyData));
-                                      widget.bloc.add(PostSelfreleaseDataEvent(postData: requestBodyData));
-
-                                 }
-                          } 
-                          },
-                        ),
-                      ),
-                    ],
+          height: 66,
+          decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(13, 5, 20, 5),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: CustomButton(
+                    Languages.of(context)!.cancel.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    textColor: ColorResource.colorEA6D48,
+                    fontWeight: FontWeight.w600,
+                    cardShape: 5,
+                    buttonBackgroundColor: ColorResource.colorffffff,
+                    borderColor: ColorResource.colorffffff,
+                    onTap: () => Navigator.pop(context),
                   ),
                 ),
-              ),
+                Expanded(
+                  flex: 5,
+                  child: CustomButton(
+                    Languages.of(context)!.submit.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    cardShape: 5,
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        if (uploadFileLists.isEmpty) {
+                          AppUtils.showToast(
+                            Constants.uploadDepositSlip,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        } else {
+                          var currentDateTime = DateTime.now();
+                          var requestBodyData = SelfReleasePostModel(
+                              // caseId: widget.caseId!,
+                              caseId: '618e382004d8d040ac18841b',
+                              eventAttr: EventAttr(
+                                  remarks: remarksController.text,
+                                  repo: Repo(
+                                      date: dateController.text,
+                                      time: timeController.text,
+                                      remarks: remarksController.text,
+                                      imageLocation:
+                                          uploadFileLists as List<String>),
+                                  imageLocation:
+                                      uploadFileLists as List<String>,
+                                  customerName: widget.custname!,
+                                  date: currentDateTime.toString()));
+                          // print("--------self release--------");
+                          // print(jsonEncode(requestBodyData));
+                          widget.bloc.add(PostSelfreleaseDataEvent(
+                              postData: requestBodyData));
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         body: Column(
           // ignore: prefer_const_literals_to_create_immutables
           children: [
@@ -154,8 +159,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                             validationRules: ['required'],
                             isLabel: true,
                             isEnable: true,
-                            onTapped: () =>
-                                        pickDate(context, dateController),
+                            onTapped: () => pickDate(context, dateController),
                           ),
                         ),
                         Padding(
@@ -166,8 +170,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                             validationRules: ['required'],
                             isLabel: true,
                             isEnable: true,
-                            onTapped: () =>
-                                        pickTime(context, timeController),
+                            onTapped: () => pickTime(context, timeController),
                           ),
                         ),
                         Padding(
@@ -190,7 +193,8 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           buttonBackgroundColor: ColorResource.color23375A,
                           cardShape: 50,
                           isLeading: true,
-                          trailingWidget: SvgPicture.asset(ImageResource.upload),
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.upload),
                           onTap: () => getFiles(),
                         )
                       ],
@@ -279,5 +283,4 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
       // _formKey.currentState!.validate();
     });
   }
-
 }

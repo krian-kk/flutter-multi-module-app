@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -15,6 +19,8 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  late Timer? timer;
+  int secondsRemaining = Constants.otpWaitingTime;
   late TextEditingController userNameFirstController = TextEditingController();
   late TextEditingController mobileNumberController = TextEditingController();
   late TextEditingController userNameSecondController = TextEditingController();
@@ -23,6 +29,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool isReset = false;
   bool isSubmit = false;
   bool isSendOTP = true;
+  bool isTime = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -32,12 +39,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode pinCodeFocusNode = FocusNode();
 
+  void secondsOTP() {
+    setState(() {
+      isTime = true;
+    });
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        setState(() {
+          secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          isTime = false;
+          secondsRemaining = Constants.otpWaitingTime;
+          cancelTimer();
+        });
+      }
+    });
+  }
+
+  cancelTimer() {
+    if (timer != null) timer!.cancel();
+  }
+
   @override
   void dispose() {
     userNameFirstController.clear();
     mobileNumberController.clear();
     userNameSecondController.clear();
     emailController.clear();
+    cancelTimer();
     super.dispose();
   }
 
@@ -158,20 +189,30 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         // errorborderColor: ColorResource.color23375A,
                         validationRules: const ['required'],
                         focusNode: emailFocusNode,
+                        onChange: () {
+                          setState(() {});
+                        },
                         onEditing: () {
                           emailFocusNode.unfocus();
+                          setState(() {});
                           _formKey.currentState!.validate();
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validatorCallBack: (bool values) {},
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
                       isSendOTP
                           ? const SizedBox()
                           : Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const SizedBox(height: 5),
+                                if (isTime)
+                                  CustomText(
+                                    StringResource.remainingSeconds(
+                                      secondsRemaining,
+                                    ),
+                                  ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
@@ -205,38 +246,54 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 22),
+                                const SizedBox(height: 12),
                                 Center(
-                                  child: CustomText(
-                                    Languages.of(context)!
-                                        .resendOTP
-                                        .toUpperCase(),
-                                    isUnderLine: true,
-                                    color: ColorResource.color23375A,
-                                    fontSize: FontSize.sixteen,
-                                    fontWeight: FontWeight.w600,
+                                  child: InkWell(
+                                    onTap: () => secondsOTP(),
+                                    child: CustomText(
+                                      Languages.of(context)!
+                                          .resendOTP
+                                          .toUpperCase(),
+                                      isUnderLine: true,
+                                      color: isTime
+                                          ? ColorResource.color23375A
+                                              .withOpacity(0.5)
+                                          : ColorResource.color23375A,
+                                      fontSize: FontSize.sixteen,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(height: 40),
+                                const SizedBox(height: 30),
                               ],
                             ),
                       isSendOTP
                           ? CustomButton(
                               Languages.of(context)!.sendOTP.toUpperCase(),
                               buttonBackgroundColor: (userNameFirstController
-                                          .text.isNotEmpty ||
-                                      mobileNumberController.text.isNotEmpty ||
-                                      userNameSecondController
-                                          .text.isNotEmpty ||
-                                      emailController.text.isNotEmpty)
+                                              .text.isNotEmpty &&
+                                          mobileNumberController
+                                              .text.isNotEmpty &&
+                                          userNameSecondController
+                                              .text.isNotEmpty &&
+                                          emailController.text.isNotEmpty) &&
+                                      (userNameFirstController.text != '' &&
+                                          mobileNumberController.text != '' &&
+                                          userNameSecondController.text != '' &&
+                                          emailController.text != '')
                                   ? ColorResource.color23375A
                                   : ColorResource.colorBEC4CF,
                               borderColor: (userNameFirstController
-                                          .text.isNotEmpty ||
-                                      mobileNumberController.text.isNotEmpty ||
-                                      userNameSecondController
-                                          .text.isNotEmpty ||
-                                      emailController.text.isNotEmpty)
+                                              .text.isNotEmpty &&
+                                          mobileNumberController
+                                              .text.isNotEmpty &&
+                                          userNameSecondController
+                                              .text.isNotEmpty &&
+                                          emailController.text.isNotEmpty) &&
+                                      (userNameFirstController.text != '' &&
+                                          mobileNumberController.text != '' &&
+                                          userNameSecondController.text != '' &&
+                                          emailController.text != '')
                                   ? ColorResource.color23375A
                                   : ColorResource.colorBEC4CF,
                               onTap: (userNameFirstController.text.isNotEmpty ||
@@ -247,6 +304,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   ? () {
                                       setState(() {
                                         isSendOTP = false;
+                                        isTime = true;
+                                        secondsOTP();
                                       });
                                     }
                                   : () {},

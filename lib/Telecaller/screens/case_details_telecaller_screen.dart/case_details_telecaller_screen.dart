@@ -228,9 +228,9 @@ class _CaseDetailsTelecallerScreenState
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: const [
+                                              children: [
                                                 CustomText(
-                                                  StringResource
+                                                  Languages.of(context)!
                                                       .beneficiaryDetails,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: FontSize.twelve,
@@ -238,8 +238,8 @@ class _CaseDetailsTelecallerScreenState
                                                   color:
                                                       ColorResource.color666666,
                                                 ),
-                                                SizedBox(height: 9),
-                                                CustomText(
+                                                const SizedBox(height: 9),
+                                                const CustomText(
                                                   'TVSF FINANCE',
                                                   fontWeight: FontWeight.w700,
                                                   color:
@@ -247,8 +247,8 @@ class _CaseDetailsTelecallerScreenState
                                                   fontSize: FontSize.fourteen,
                                                   fontStyle: FontStyle.normal,
                                                 ),
-                                                SizedBox(height: 7),
-                                                CustomText(
+                                                const SizedBox(height: 7),
+                                                const CustomText(
                                                   'SBI_BFRT6458922993',
                                                   fontWeight: FontWeight.w700,
                                                   color:
@@ -356,8 +356,12 @@ class _CaseDetailsTelecallerScreenState
                                                         const SizedBox(
                                                             width: 5),
                                                         CustomText(
-                                                            StringResource
+                                                            Languages.of(
+                                                                    context)!
                                                                 .sendSms
+                                                                .toString()
+                                                                .replaceAll(
+                                                                    ' ', '\n')
                                                                 .toUpperCase(),
                                                             lineHeight: 1.0,
                                                             color: ColorResource
@@ -392,8 +396,11 @@ class _CaseDetailsTelecallerScreenState
                                                         const SizedBox(
                                                             width: 5),
                                                         CustomText(
-                                                          StringResource
+                                                          Languages.of(context)!
                                                               .sendWhatsapp
+                                                              .toString()
+                                                              .replaceAll(
+                                                                  ' ', '\n')
                                                               .toUpperCase(),
                                                           lineHeight: 1.0,
                                                           color: ColorResource

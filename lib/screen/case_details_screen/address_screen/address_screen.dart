@@ -8,7 +8,9 @@ import 'package:origa/screen/case_details_screen/address_screen/customer_met_scr
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -158,7 +160,7 @@ class _AddressScreenState extends State<AddressScreen>
                                                   ImageResource.direction),
                                               const SizedBox(width: 10),
                                               const CustomText(
-                                                StringResource.viewMap,
+                                                Constants.viewMap,
                                                 fontSize: FontSize.fourteen,
                                                 fontWeight: FontWeight.w700,
                                                 color:
@@ -173,7 +175,7 @@ class _AddressScreenState extends State<AddressScreen>
                                   Languages.of(context)!.eventDetails,
                                   onTap: () => widget.bloc.add(
                                     ClickOpenBottomSheetEvent(
-                                      StringResource.eventDetails,
+                                      Constants.eventDetails,
                                       widget.bloc.offlineCaseDetailsValue
                                           .addressDetails,
                                     ),
@@ -331,16 +333,20 @@ class _AddressScreenState extends State<AddressScreen>
 
                                       onTap: () {
                                         if (widget
-                                                .bloc
-                                                .addressCustomerNotMetFormKey
-                                                .currentState!
-                                                .validate() &&
-                                            widget.bloc
-                                                    .addressSelectedCustomerNotMetClip !=
-                                                '') {
-                                          widget.bloc.add(
-                                              ClickCustomerNotMetButtonEvent(
-                                                  context));
+                                            .bloc
+                                            .addressCustomerNotMetFormKey
+                                            .currentState!
+                                            .validate()) {
+                                          if (widget.bloc
+                                                  .addressSelectedCustomerNotMetClip !=
+                                              '') {
+                                            widget.bloc.add(
+                                                ClickCustomerNotMetButtonEvent(
+                                                    context));
+                                          } else {
+                                            AppUtils.showToast(
+                                                Constants.pleaseSelectOptions);
+                                          }
                                         } else {}
                                       },
                                       cardShape: 5,

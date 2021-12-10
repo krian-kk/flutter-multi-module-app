@@ -12,7 +12,9 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomCardList {
-  static Widget buildListView(AllocationBloc bloc, {List<Result>? resultData, required ScrollController listViewController}) {
+  static Widget buildListView(AllocationBloc bloc,
+      {List<Result>? resultData,
+      required ScrollController listViewController}) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         controller: listViewController,
@@ -111,7 +113,10 @@ class CustomCardList {
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
                       onTap: () {
-                        bloc.add(NavigateCaseDetailEvent(paramValues:{'caseID':resultData[index].caseId!,'isAddress': true}));
+                        bloc.add(NavigateCaseDetailEvent(paramValues: {
+                          'caseID': resultData[index].caseId!,
+                          'isAddress': true
+                        }));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -252,7 +257,8 @@ class CustomCardList {
                                   Row(
                                     children: [
                                       CustomText(
-                                        resultData[index].fieldfollowUpDate ?? resultData[index].followUpDate ??
+                                        resultData[index].fieldfollowUpDate ??
+                                            resultData[index].followUpDate ??
                                             '-',
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,

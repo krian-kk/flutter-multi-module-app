@@ -5,6 +5,7 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -61,9 +62,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.repo, StringResource.repo),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -175,7 +175,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           fontSize: FontSize.sixteen,
                           onTap: () => widget.bloc.add(
                               ClickOpenBottomSheetEvent(
-                                  StringResource.captureImage,
+                                  Constants.captureImage,
                                   widget.bloc.offlineCaseDetailsValue
                                       .addressDetails)),
 

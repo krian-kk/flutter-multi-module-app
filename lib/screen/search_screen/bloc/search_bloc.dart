@@ -5,8 +5,7 @@ import 'package:origa/utils/base_equatable.dart';
 part 'search_event.dart';
 part 'search_state.dart';
 
-class SearchScreenBloc
-    extends Bloc<SearchScreenEvent, SearchScreenState> {
+class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
   SearchScreenBloc() : super(SearchScreenInitial());
 
   @override
@@ -16,7 +15,7 @@ class SearchScreenBloc
       yield SearchScreenLoadedState();
     }
 
-    if(event is NavigatePopEvent){
+    if (event is NavigatePopEvent) {
       yield NavigatePopState();
     }
   }

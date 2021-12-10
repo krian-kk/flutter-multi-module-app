@@ -16,8 +16,9 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class RepoStatus{
- static Widget buildRepoSelfReleaseTab(BuildContext context, String? caseID, String? custName, DashboardBloc bloc) {
+class RepoStatus {
+  static Widget buildRepoSelfReleaseTab(BuildContext context, String? caseID,
+      String? custName, DashboardBloc bloc) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.83,
       child: Container(
@@ -33,7 +34,7 @@ class RepoStatus{
               //   },
               // ),
               backgroundColor: ColorResource.colorFFFFFF,
-              
+
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // ignore: prefer_const_literals_to_create_immutables
@@ -71,8 +72,16 @@ class RepoStatus{
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        YardingTab(bloc, caseId: caseID, custname: custName,),
-                        SelfReleaseTab(bloc, caseId: caseID, custname: custName,),
+                        YardingTab(
+                          bloc,
+                          caseId: caseID,
+                          custname: custName,
+                        ),
+                        SelfReleaseTab(
+                          bloc,
+                          caseId: caseID,
+                          custname: custName,
+                        ),
                       ],
                     ),
                   ),

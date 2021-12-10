@@ -17,7 +17,9 @@ import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -154,26 +156,24 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           .replaceAll('null', '-');
 
       addressCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
+        CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.ptp, offlineCaseDetailsValue.addressDetails!))),
-        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp,
+                Constants.ptp, offlineCaseDetailsValue.addressDetails!))),
+        CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.rtp, offlineCaseDetailsValue.addressDetails!))),
-        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.dispute,
+                Constants.rtp, offlineCaseDetailsValue.addressDetails!))),
+        CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                Constants.dispute, offlineCaseDetailsValue.addressDetails!))),
+        CustomerMetGridModel(ImageResource.remainder, Constants.remainder,
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                Constants.remainder, offlineCaseDetailsValue.addressDetails!))),
+        CustomerMetGridModel(ImageResource.collections, Constants.collections,
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
                 offlineCaseDetailsValue.addressDetails!))),
-        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.remainder,
-                offlineCaseDetailsValue.addressDetails!))),
-        CustomerMetGridModel(
-            ImageResource.collections, StringResource.collections,
+        CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.collections,
-                offlineCaseDetailsValue.addressDetails!))),
-        CustomerMetGridModel(ImageResource.ots, StringResource.ots,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.ots, offlineCaseDetailsValue.addressDetails!))),
+                Constants.ots, offlineCaseDetailsValue.addressDetails!))),
       ]);
 
       expandOtherFeedback.addAll([
@@ -184,26 +184,24 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
       ]);
       phoneCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, StringResource.ptp,
+        CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.ptp, offlineCaseDetailsValue.callDetails!))),
-        CustomerMetGridModel(ImageResource.rtp, StringResource.rtp,
+                Constants.ptp, offlineCaseDetailsValue.callDetails!))),
+        CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.rtp, offlineCaseDetailsValue.callDetails!))),
-        CustomerMetGridModel(ImageResource.dispute, StringResource.dispute,
+                Constants.rtp, offlineCaseDetailsValue.callDetails!))),
+        CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.dispute, offlineCaseDetailsValue.callDetails!))),
-        CustomerMetGridModel(ImageResource.remainder, StringResource.remainder,
-            onTap: () => add(ClickOpenBottomSheetEvent(StringResource.remainder,
-                offlineCaseDetailsValue.callDetails!))),
-        CustomerMetGridModel(
-            ImageResource.collections, StringResource.collections,
+                Constants.dispute, offlineCaseDetailsValue.callDetails!))),
+        CustomerMetGridModel(ImageResource.remainder, Constants.remainder,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.collections,
-                offlineCaseDetailsValue.callDetails!))),
-        CustomerMetGridModel(ImageResource.ots, StringResource.ots,
+                Constants.remainder, offlineCaseDetailsValue.callDetails!))),
+        CustomerMetGridModel(ImageResource.collections, Constants.collections,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                StringResource.ots, offlineCaseDetailsValue.callDetails!))),
+                Constants.collections, offlineCaseDetailsValue.callDetails!))),
+        CustomerMetGridModel(ImageResource.ots, Constants.ots,
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                Constants.ots, offlineCaseDetailsValue.callDetails!))),
       ]);
 
       yield CaseDetailsLoadedState();
@@ -233,7 +231,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
     if (event is ClickOpenBottomSheetEvent) {
       switch (event.title) {
-        case StringResource.eventDetails:
+        case Constants.eventDetails:
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
             yield NoInternetState();
@@ -290,7 +288,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.leftMessage) {
         resultValue = await customerNotMetButtonClick(
-          'Left Message',
+          Constants.leftMessage,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.leftMessageUrl(
@@ -311,7 +309,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.doorLocked) {
         resultValue = await customerNotMetButtonClick(
-          'Door Locked',
+          Constants.doorLocked,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.doorLockedUrl('doorLocked', 'FIELDAGENT'),
@@ -331,7 +329,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.entryRestricted) {
         resultValue = await customerNotMetButtonClick(
-          'Entry Restricted',
+          Constants.entryRestricted,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.entryRestrictedUrl('entryRestricted', 'FIELDAGENT'),
@@ -355,41 +353,44 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ClickAddressInvalidButtonEvent) {
-      late Map<String, dynamic> resultValue;
-      if (addressInvalidFormKey.currentState!.validate() &&
-          addressSelectedInvalidClip != '') {
-        if (addressSelectedInvalidClip ==
-            Languages.of(event.context)!.wrongAddress) {
-          resultValue = await addressInvalidButtonClick(
-            'Wrong Address',
-            caseId.toString(),
-            'TELEVT008',
-            HttpUrl.wrongAddressUrl(
-              'invalidAddress',
-              'FIELDAGENT',
-            ),
-            'PTP',
-          );
-        } else if (addressSelectedInvalidClip ==
-            Languages.of(event.context)!.shifted) {
-          resultValue = await addressInvalidButtonClick(
-              'Shifted',
+      late Map<String, dynamic> resultValue = {'success': false};
+      if (addressInvalidFormKey.currentState!.validate()) {
+        if (addressSelectedInvalidClip != '') {
+          if (addressSelectedInvalidClip ==
+              Languages.of(event.context)!.wrongAddress) {
+            resultValue = await addressInvalidButtonClick(
+              Constants.wrongAddress,
               caseId.toString(),
               'TELEVT008',
-              HttpUrl.shiftedUrl('shifted', 'FIELDAGENT'),
-              'REVIEW');
-        } else if (addressSelectedInvalidClip ==
-            Languages.of(event.context)!.addressNotFound) {
-          resultValue = await addressInvalidButtonClick(
-            'Address Not Found',
-            caseId.toString(),
-            'TELEVT008',
-            HttpUrl.addressNotFoundUrl(
-              'addressNotFound',
-              'FIELDAGENT',
-            ),
-            'PTP',
-          );
+              HttpUrl.wrongAddressUrl(
+                'invalidAddress',
+                'FIELDAGENT',
+              ),
+              'PTP',
+            );
+          } else if (addressSelectedInvalidClip ==
+              Languages.of(event.context)!.shifted) {
+            resultValue = await addressInvalidButtonClick(
+                Constants.shifted,
+                caseId.toString(),
+                'TELEVT008',
+                HttpUrl.shiftedUrl('shifted', 'FIELDAGENT'),
+                'REVIEW');
+          } else if (addressSelectedInvalidClip ==
+              Languages.of(event.context)!.addressNotFound) {
+            resultValue = await addressInvalidButtonClick(
+              Constants.addressNotFound,
+              caseId.toString(),
+              'TELEVT008',
+              HttpUrl.addressNotFoundUrl(
+                'addressNotFound',
+                'FIELDAGENT',
+              ),
+              'PTP',
+            );
+          }
+        } else {
+          AppUtils.showToast(Constants.pleaseSelectOptions);
         }
       }
       if (resultValue['success']) {
@@ -398,39 +399,42 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ClickPhoneInvalidButtonEvent) {
-      late Map<String, dynamic> resultValue;
-      if (phoneInvalidFormKey.currentState!.validate() &&
-          phoneSelectedInvalidClip != '') {
-        if (phoneSelectedInvalidClip ==
-            Languages.of(event.context)!.doesNotExist) {
-          resultValue = await phoneInvalidButtonClick(
-              'TC : Does Not Exist',
+      late Map<String, dynamic> resultValue = {'success': false};
+      if (phoneInvalidFormKey.currentState!.validate()) {
+        if (phoneSelectedInvalidClip != '') {
+          if (phoneSelectedInvalidClip ==
+              Languages.of(event.context)!.doesNotExist) {
+            resultValue = await phoneInvalidButtonClick(
+                'TC : Does Not Exist',
+                caseId.toString(),
+                'TELEVT008',
+                HttpUrl.numberNotWorkingUrl('doesNotExist', 'TELECALLER'));
+          } else if (phoneSelectedInvalidClip ==
+              Languages.of(event.context)!.incorrectNumber) {
+            resultValue = await phoneInvalidButtonClick(
+              'TC : Incorrect Number',
               caseId.toString(),
               'TELEVT008',
-              HttpUrl.numberNotWorkingUrl('doesNotExist', 'TELECALLER'));
-        } else if (phoneSelectedInvalidClip ==
-            Languages.of(event.context)!.incorrectNumber) {
-          resultValue = await phoneInvalidButtonClick(
-            'TC : Incorrect Number',
-            caseId.toString(),
-            'TELEVT008',
-            HttpUrl.incorrectNumberUrl('incorrectNo', 'TELECALLER'),
-          );
-        } else if (phoneSelectedInvalidClip ==
-            Languages.of(event.context)!.numberNotWorking) {
-          resultValue = await phoneInvalidButtonClick(
-            'TC : Number Not Working',
-            caseId.toString(),
-            'TELEVT008',
-            HttpUrl.numberNotWorkingUrl('numberNotWorking', 'TELECALLER'),
-          );
-        } else if (phoneSelectedInvalidClip ==
-            Languages.of(event.context)!.notOperational) {
-          resultValue = await phoneInvalidButtonClick(
-              'TC : Not Operational',
+              HttpUrl.incorrectNumberUrl('incorrectNo', 'TELECALLER'),
+            );
+          } else if (phoneSelectedInvalidClip ==
+              Languages.of(event.context)!.numberNotWorking) {
+            resultValue = await phoneInvalidButtonClick(
+              'TC : Number Not Working',
               caseId.toString(),
               'TELEVT008',
-              HttpUrl.notOperationalUrl('notOperational', 'TELECALLER'));
+              HttpUrl.numberNotWorkingUrl('numberNotWorking', 'TELECALLER'),
+            );
+          } else if (phoneSelectedInvalidClip ==
+              Languages.of(event.context)!.notOperational) {
+            resultValue = await phoneInvalidButtonClick(
+                'TC : Not Operational',
+                caseId.toString(),
+                'TELEVT008',
+                HttpUrl.notOperationalUrl('notOperational', 'TELECALLER'));
+          }
+        } else {
+          AppUtils.showToast(Constants.pleaseSelectOptions);
         }
       }
       if (resultValue['success']) {

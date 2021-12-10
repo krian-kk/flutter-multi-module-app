@@ -9,6 +9,7 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -64,11 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<LoginBloc, LoginState>(
       bloc: bloc,
       listener: (context, state) {
-
         if (state is NoInternetConnectionState) {
-            AppUtils.noInternetSnackbar(context);
-          }
-          
+          AppUtils.noInternetSnackbar(context);
+        }
+
         if (state is HomeTabState) {
           Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
               arguments: userType);
@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Navigator.push(context, MaterialPageRoute(builder: (context)=>DeviceInfo()));
                           },
                           child: const CustomText(
-                            StringResource.resetPassword,
+                            Constants.resetPassword,
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
                             color: ColorResource.color23375A,
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         CustomButton(
                           StringResource.loginViaDifferentUser,
                           onTap: () {
-                           setState(() {
+                            setState(() {
                               userName.clear();
                               password.clear();
                             });
@@ -259,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         bloc.add(NoInternetConnectionEvent());
-      } 
+      }
       if (userName.text == 'fos' && password.text == '1234') {
         setState(() {
           userType = 'FIELDAGENT';

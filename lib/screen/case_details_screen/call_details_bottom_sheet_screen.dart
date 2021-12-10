@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -158,8 +159,7 @@ class _CallDetailsBottomSheetScreenState
                                             onTap: () {
                                               widget.bloc.add(
                                                   ClickOpenBottomSheetEvent(
-                                                      StringResource
-                                                          .callCustomer,
+                                                      Constants.callCustomer,
                                                       widget
                                                           .bloc
                                                           .offlineCaseDetailsValue
