@@ -1,7 +1,4 @@
-import 'package:origa/models/profile_api_result_model/address.dart';
-
 import 'audit.dart';
-import 'contact.dart';
 
 class ProfileResultModel {
   String? id;

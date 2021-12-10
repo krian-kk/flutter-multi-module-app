@@ -7,7 +7,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhoneConnectedScreen extends StatefulWidget {

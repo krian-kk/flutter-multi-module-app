@@ -146,7 +146,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                           isMyRecentActivity =
                                               !isMyRecentActivity;
                                         });
-                                        print(isMyRecentActivity);
                                       },
                                       child: Row(
                                         children: [
@@ -170,7 +169,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                         setState(() {
                                           isStarOnly = !isStarOnly;
                                         });
-                                        print(isStarOnly);
                                       },
                                       child: Row(
                                         children: [

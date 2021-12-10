@@ -47,7 +47,7 @@ class _CustomCaptureImageBottomSheetState
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      print(uploadFileLists);
+      // print(uploadFileLists);
     } else {
       // User canceled the picker
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
@@ -155,7 +155,6 @@ class _CustomCaptureImageBottomSheetState
                     fontWeight: FontWeight.w600,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        print('object');
                         if (uploadFileLists.isNotEmpty) {
                           var requestBodyData = PostImageCapturedModel(
                               caseId: widget.bloc.caseId.toString(),
@@ -163,7 +162,6 @@ class _CustomCaptureImageBottomSheetState
                                 remarks: remarksControlller.text,
                                 imageLocation: uploadFileLists as List<String>,
                               ));
-                          print(requestBodyData.toString());
                           widget.bloc.add(PostImageCapturedEvent(
                               postData: requestBodyData));
                         } else {
@@ -173,7 +171,6 @@ class _CustomCaptureImageBottomSheetState
                           );
                         }
                       }
-                      ;
                     },
                     cardShape: 5,
                   ),

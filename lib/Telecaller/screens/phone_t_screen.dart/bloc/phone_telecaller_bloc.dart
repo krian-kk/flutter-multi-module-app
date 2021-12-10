@@ -4,7 +4,6 @@ import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 
 part 'phone_telecaller_event.dart';
 part 'phone_telecaller_state.dart';

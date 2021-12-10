@@ -21,7 +21,6 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'case_details_event.dart';
@@ -293,7 +292,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT007',
           HttpUrl.leftMessageUrl(
             'leftMessage',
-            'FIELDAGENT',
+            userType.toString(),
           ),
           'PTP',
           {
@@ -312,7 +311,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Constants.doorLocked,
           caseId.toString(),
           'TELEVT007',
-          HttpUrl.doorLockedUrl('doorLocked', 'FIELDAGENT'),
+          HttpUrl.doorLockedUrl('doorLocked', userType.toString()),
           'NEW',
           [
             {
@@ -332,7 +331,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Constants.entryRestricted,
           caseId.toString(),
           'TELEVT007',
-          HttpUrl.entryRestrictedUrl('entryRestricted', 'FIELDAGENT'),
+          HttpUrl.entryRestrictedUrl('entryRestricted', userType.toString()),
           'PTP',
           [
             {
@@ -364,7 +363,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'TELEVT008',
               HttpUrl.wrongAddressUrl(
                 'invalidAddress',
-                'FIELDAGENT',
+                userType.toString(),
               ),
               'PTP',
             );
@@ -374,7 +373,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 Constants.shifted,
                 caseId.toString(),
                 'TELEVT008',
-                HttpUrl.shiftedUrl('shifted', 'FIELDAGENT'),
+                HttpUrl.shiftedUrl('shifted', userType.toString()),
                 'REVIEW');
           } else if (addressSelectedInvalidClip ==
               Languages.of(event.context)!.addressNotFound) {
@@ -384,7 +383,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'TELEVT008',
               HttpUrl.addressNotFoundUrl(
                 'addressNotFound',
-                'FIELDAGENT',
+                userType.toString(),
               ),
               'PTP',
             );
@@ -405,14 +404,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.doesNotExist) {
             resultValue = await phoneInvalidButtonClick(
-                'TC : Does Not Exist',
+                Constants.doesNotExist,
                 caseId.toString(),
                 'TELEVT008',
                 HttpUrl.numberNotWorkingUrl('doesNotExist', 'TELECALLER'));
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.incorrectNumber) {
             resultValue = await phoneInvalidButtonClick(
-              'TC : Incorrect Number',
+              Constants.incorrectNumber,
               caseId.toString(),
               'TELEVT008',
               HttpUrl.incorrectNumberUrl('incorrectNo', 'TELECALLER'),
@@ -420,7 +419,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.numberNotWorking) {
             resultValue = await phoneInvalidButtonClick(
-              'TC : Number Not Working',
+              Constants.numberNotWorking,
               caseId.toString(),
               'TELEVT008',
               HttpUrl.numberNotWorkingUrl('numberNotWorking', 'TELECALLER'),
@@ -428,7 +427,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.notOperational) {
             resultValue = await phoneInvalidButtonClick(
-                'TC : Not Operational',
+                Constants.notOpeartional,
                 caseId.toString(),
                 'TELEVT008',
                 HttpUrl.notOperationalUrl('notOperational', 'TELECALLER'));
@@ -447,7 +446,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.lineBusy) {
         resultValue = await unreachableButtonClick(
-          'TC : Line Busy',
+          Constants.lineBusy,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.unreachableUrl(
@@ -458,7 +457,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.switchOff) {
         resultValue = await unreachableButtonClick(
-          'TC : Switch Off',
+          Constants.switchOff,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.unreachableUrl(
@@ -469,7 +468,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.rnr) {
         resultValue = await unreachableButtonClick(
-          'TC : RNR',
+          Constants.rnr,
           caseId.toString(),
           'TELEVT011',
           HttpUrl.unreachableUrl(
@@ -480,7 +479,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.outOfNetwork) {
         resultValue = await unreachableButtonClick(
-          'TC : Out Of Network',
+          Constants.outOfNetwork,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.unreachableUrl(
@@ -491,7 +490,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.disConnecting) {
         resultValue = await unreachableButtonClick(
-          'TC : Disconnecting',
+          Constants.disconnecting,
           caseId.toString(),
           'TELEVT011',
           HttpUrl.unreachableUrl(

@@ -66,10 +66,10 @@ void showTopSnackBar(
 class TopSnackBar extends StatefulWidget {
   final Widget child;
   final VoidCallback onDismissed;
-  final showOutAnimationDuration;
-  final hideOutAnimationDuration;
-  final displayDuration;
-  final additionalTopPadding;
+  final dynamic showOutAnimationDuration;
+  final dynamic hideOutAnimationDuration;
+  final dynamic displayDuration;
+  final dynamic additionalTopPadding;
   final VoidCallback? onTap;
   final double leftPadding;
   final double rightPadding;

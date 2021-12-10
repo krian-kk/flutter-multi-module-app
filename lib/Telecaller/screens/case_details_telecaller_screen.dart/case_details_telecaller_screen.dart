@@ -8,13 +8,10 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CaseDetailsTelecallerScreen extends StatefulWidget {
   const CaseDetailsTelecallerScreen({Key? key}) : super(key: key);

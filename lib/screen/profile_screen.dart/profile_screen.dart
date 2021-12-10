@@ -46,11 +46,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final image = await ImagePicker().pickImage(source: source);
       if (image != null) {
         final getProfileImage = File(image.path);
-        print(getProfileImage);
         setState(() {
           this.image = getProfileImage;
           bloc.add(PostProfileImageEvent(postValue: getProfileImage.path));
-          print(getProfileImage.path);
         });
       } else {
         AppUtils.showToast(StringResource.canceled,
@@ -544,7 +542,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext buildContext, StateSetter setState) =>
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.86,
-                    child: MessageChatRoomScreen())));
+                    child: const MessageChatRoomScreen())));
   }
 
   notificationShowBottomSheet(BuildContext context) {
