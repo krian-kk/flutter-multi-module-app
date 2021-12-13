@@ -145,7 +145,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/deposits?';
 
   static const String dashboardYardingAndSelfReleaseUrl =
-      baseUrl + version + fieldAgent + 'case-details/yardingData?';
+      baseUrl + version + fieldAgent + 'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
   static const String fileUpload = '';
