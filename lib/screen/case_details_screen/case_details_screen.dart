@@ -812,9 +812,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.89,
-              child: AddressScreen(bloc: bloc, index: i));
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: AddressScreen(bloc: bloc, index: i)),
+          );
         });
   }
 
@@ -991,16 +994,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
             );
           default:
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    BottomSheetAppbar(
-                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
-                  ],
-                ));
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.89,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      BottomSheetAppbar(
+                          title: '',
+                          padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                      Expanded(
+                          child: Center(child: CircularProgressIndicator())),
+                    ],
+                  )),
+            );
         }
       },
     );

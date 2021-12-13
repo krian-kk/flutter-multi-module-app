@@ -646,8 +646,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.86,
-                    child: MessageChatRoomScreen())));
+                WillPopScope(
+                  onWillPop: () async => false,
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.86,
+                      child: MessageChatRoomScreen()),
+                )));
   }
 }

@@ -56,186 +56,192 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        resizeToAvoidBottomInset: true,
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget.customerLoanUserWidget,
-                        const SizedBox(height: 11),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.nextActionTime,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width:
-                                  (MediaQuery.of(context).size.width - 46) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                nextActionDateControlller,
-                                validationRules: const ['required'],
-                                isReadOnly: true,
-                                onTapped: () => pickDate(
-                                    context, nextActionDateControlller),
-                                suffixWidget: SvgPicture.asset(
-                                  ImageResource.calendar,
-                                  fit: BoxFit.scaleDown,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.89,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: true,
+          body: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BottomSheetAppbar(
+                  title: widget.cardTitle,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                          .copyWith(bottom: 5),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          widget.customerLoanUserWidget,
+                          const SizedBox(height: 11),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.nextActionTime,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w400,
+                                color: ColorResource.color666666,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              SizedBox(
+                                width:
+                                    (MediaQuery.of(context).size.width - 46) /
+                                        2,
+                                child: CustomReadOnlyTextField(
+                                  '',
+                                  nextActionDateControlller,
+                                  validationRules: const ['required'],
+                                  isReadOnly: true,
+                                  onTapped: () => pickDate(
+                                      context, nextActionDateControlller),
+                                  suffixWidget: SvgPicture.asset(
+                                    ImageResource.calendar,
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Flexible(
-                            child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
-                          remarksControlller,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                        )),
-                        const SizedBox(height: 15),
-                        Flexible(
-                          child: CustomDropDownButton(
-                            Languages.of(context)!.disputeReason,
-                            [
-                              'select',
-                              Languages.of(context)!.businessLoss,
-                              Languages.of(context)!.covidImpacted,
-                              Languages.of(context)!.dispute,
-                              Languages.of(context)!.financialReason,
-                              Languages.of(context)!.incomeLossInTheFamily,
-                              Languages.of(context)!.intention,
-                              Languages.of(context)!.jobLoss,
-                              Languages.of(context)!.jobUncertaintly,
-                              Languages.of(context)!.medicalIssue,
-                              Languages.of(context)!.salaryIssue,
                             ],
-                            menuMaxHeight: 200,
-                            selectedValue: disputeDropDownValue,
-                            onChanged: (newValue) => setState(() =>
-                                disputeDropDownValue = newValue.toString()),
                           ),
-                        ),
-                        const SizedBox(height: 15)
-                      ],
+                          const SizedBox(height: 15),
+                          Flexible(
+                              child: CustomReadOnlyTextField(
+                            Languages.of(context)!.remarks,
+                            remarksControlller,
+                            validationRules: const ['required'],
+                            isLabel: true,
+                          )),
+                          const SizedBox(height: 15),
+                          Flexible(
+                            child: CustomDropDownButton(
+                              Languages.of(context)!.disputeReason,
+                              [
+                                'select',
+                                Languages.of(context)!.businessLoss,
+                                Languages.of(context)!.covidImpacted,
+                                Languages.of(context)!.dispute,
+                                Languages.of(context)!.financialReason,
+                                Languages.of(context)!.incomeLossInTheFamily,
+                                Languages.of(context)!.intention,
+                                Languages.of(context)!.jobLoss,
+                                Languages.of(context)!.jobUncertaintly,
+                                Languages.of(context)!.medicalIssue,
+                                Languages.of(context)!.salaryIssue,
+                              ],
+                              menuMaxHeight: 200,
+                              selectedValue: disputeDropDownValue,
+                              onChanged: (newValue) => setState(() =>
+                                  disputeDropDownValue = newValue.toString()),
+                            ),
+                          ),
+                          const SizedBox(height: 15)
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
-                ),
-                const SizedBox(width: 25),
-                SizedBox(
-                  width: 191,
-                  child: CustomButton(
-                    Languages.of(context)!.submit.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (disputeDropDownValue != 'select') {
-                          var requestBodyData = DisputePostModel(
-                            eventType: Constants.dispute,
-                            caseId: widget.caseId,
-                            eventCode: 'TELEVT005',
-                            contractor: '0',
-                            agrRef: '0',
-                            eventAttr: EventAttr(
-                                actionDate: nextActionDateControlller.text,
-                                remarks: remarksControlller.text,
-                                disputereasons: disputeDropDownValue,
-                                agentLocation: AgentLocation()),
-                            contact: Contact(
-                              cType: widget.postValue['cType'],
-                              value: widget.postValue['value'],
-                            ),
-                            createdBy: DateTime.now().toString(),
-                            callID: '0',
-                            callingID: '0',
-                          );
-
-                          Map<String, dynamic> postResult =
-                              await APIRepository.apiRequest(
-                                  APIRequestType.POST,
-                                  HttpUrl.disputePostUrl(
-                                    'dispute',
-                                    widget.userType,
-                                  ),
-                                  requestBodydata: jsonEncode(requestBodyData));
-                          if (postResult['success']) {
-                            AppUtils.topSnackBar(
-                                context, Constants.successfullySubmitted);
-                            Navigator.pop(context);
-                          }
-                        } else {
-                          AppUtils.showToast(
-                              Constants.pleaseSelectDropDownValue);
-                        }
-                      }
-                    },
-                    cardShape: 5,
-                  ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(.25),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SizedBox(
+                        width: 95,
+                        child: Center(
+                            child: CustomText(
+                          Languages.of(context)!.cancel.toUpperCase(),
+                          color: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                          fontSize: FontSize.sixteen,
+                        ))),
+                  ),
+                  const SizedBox(width: 25),
+                  SizedBox(
+                    width: 191,
+                    child: CustomButton(
+                      Languages.of(context)!.submit.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (disputeDropDownValue != 'select') {
+                            var requestBodyData = DisputePostModel(
+                              eventType: Constants.dispute,
+                              caseId: widget.caseId,
+                              eventCode: 'TELEVT005',
+                              contractor: '0',
+                              agrRef: '0',
+                              eventAttr: EventAttr(
+                                  actionDate: nextActionDateControlller.text,
+                                  remarks: remarksControlller.text,
+                                  disputereasons: disputeDropDownValue,
+                                  agentLocation: AgentLocation()),
+                              contact: Contact(
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                              ),
+                              createdBy: DateTime.now().toString(),
+                              callID: '0',
+                              callingID: '0',
+                            );
+
+                            Map<String, dynamic> postResult =
+                                await APIRepository.apiRequest(
+                                    APIRequestType.POST,
+                                    HttpUrl.disputePostUrl(
+                                      'dispute',
+                                      widget.userType,
+                                    ),
+                                    requestBodydata:
+                                        jsonEncode(requestBodyData));
+                            if (postResult['success']) {
+                              AppUtils.topSnackBar(
+                                  context, Constants.successfullySubmitted);
+                              Navigator.pop(context);
+                            }
+                          } else {
+                            AppUtils.showToast(
+                                Constants.pleaseSelectDropDownValue);
+                          }
+                        }
+                      },
+                      cardShape: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -389,7 +389,10 @@ class _AddressScreenState extends State<AddressScreen>
         ),
       ),
       builder: (BuildContext context) {
-        return const CustomMapViewBottomSheet();
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: const CustomMapViewBottomSheet(),
+        );
         // return CustomEventDetailsBottomSheet(
         //   Languages.of(context)!.eventDetails.toUpperCase(),
         //   widget.bloc,

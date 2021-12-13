@@ -31,62 +31,67 @@ class _CustomEventDetailsBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: widget.customeLoanUserWidget,
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-                child: ListView.builder(
-              itemCount: widget.bloc.offlineEventDetailsListValue.length,
-              itemBuilder: (context, int index) =>
-                  expandList(widget.bloc.offlineEventDetailsListValue, index),
-            )),
-          ],
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.89,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Colors.transparent,
+          body: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: widget.customeLoanUserWidget,
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                  child: ListView.builder(
+                itemCount: widget.bloc.offlineEventDetailsListValue.length,
+                itemBuilder: (context, int index) =>
+                    expandList(widget.bloc.offlineEventDetailsListValue, index),
+              )),
             ],
           ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 190,
-                  child: CustomButton(
-                    Languages.of(context)!.okay.toUpperCase(),
-                    onTap: () => Navigator.pop(context),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
-                    cardShape: 5,
-                  ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(.25),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 190,
+                    child: CustomButton(
+                      Languages.of(context)!.okay.toUpperCase(),
+                      onTap: () => Navigator.pop(context),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      // onTap: () => bloc.add(ClickMessageEvent()),
+                      cardShape: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

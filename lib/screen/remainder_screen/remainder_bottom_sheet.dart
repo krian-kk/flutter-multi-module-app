@@ -59,190 +59,195 @@ class _CustomRemainderBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        resizeToAvoidBottomInset: true,
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget.customerLoanUserWidget,
-                        const SizedBox(height: 11),
-                        Row(
-                          children: [
-                            Flexible(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionDate,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width) / 2,
-                                  child: CustomReadOnlyTextField(
-                                    '',
-                                    nextActionDateControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () => pickDate(
-                                        context, nextActionDateControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.89,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: true,
+          body: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BottomSheetAppbar(
+                  title: widget.cardTitle,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                          .copyWith(bottom: 5),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          widget.customerLoanUserWidget,
+                          const SizedBox(height: 11),
+                          Row(
+                            children: [
+                              Flexible(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomText(
+                                    Languages.of(context)!.nextActionDate,
+                                    fontSize: FontSize.twelve,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorResource.color666666,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        (MediaQuery.of(context).size.width) / 2,
+                                    child: CustomReadOnlyTextField(
+                                      '',
+                                      nextActionDateControlller,
+                                      validationRules: const ['required'],
+                                      isReadOnly: true,
+                                      onTapped: () => pickDate(
+                                          context, nextActionDateControlller),
+                                      suffixWidget: SvgPicture.asset(
+                                        ImageResource.calendar,
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            )),
-                            const SizedBox(width: 7),
-                            Flexible(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionTime,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width) / 2,
-                                  child: CustomReadOnlyTextField(
-                                    '',
-                                    nextActionTimeControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () => pickTime(
-                                        context, nextActionTimeControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
+                                ],
+                              )),
+                              const SizedBox(width: 7),
+                              Flexible(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomText(
+                                    Languages.of(context)!.nextActionTime,
+                                    fontSize: FontSize.twelve,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorResource.color666666,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        (MediaQuery.of(context).size.width) / 2,
+                                    child: CustomReadOnlyTextField(
+                                      '',
+                                      nextActionTimeControlller,
+                                      validationRules: const ['required'],
+                                      isReadOnly: true,
+                                      onTapped: () => pickTime(
+                                          context, nextActionTimeControlller),
+                                      suffixWidget: SvgPicture.asset(
+                                        ImageResource.calendar,
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            )),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Flexible(
-                            child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
-                          remarksControlller,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                        )),
-                        const SizedBox(height: 15),
-                      ],
+                                ],
+                              )),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Flexible(
+                              child: CustomReadOnlyTextField(
+                            Languages.of(context)!.remarks,
+                            remarksControlller,
+                            validationRules: const ['required'],
+                            isLabel: true,
+                          )),
+                          const SizedBox(height: 15),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
-                ),
-                const SizedBox(width: 25),
-                SizedBox(
-                  width: 191,
-                  child: CustomButton(
-                    Languages.of(context)!.submit.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    cardShape: 5,
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        var requestBodyData = ReminderPostAPI(
-                          eventType: Constants.remainder,
-                          caseId: widget.caseId,
-                          eventCode: 'TELEVT006',
-                          eventAttr: EventAttr(
-                            reminderDate: nextActionDateControlller.text,
-                            time: nextActionTimeControlller.text,
-                            remarks: remarksControlller.text,
-                            agentLocation: AgentLocation(),
-                          ),
-                          contact: Contact(
-                            cType: widget.postValue['cType'],
-                            value: widget.postValue['value'],
-                          ),
-                          callID: '0',
-                          callingID: '0',
-                        );
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.POST,
-                          HttpUrl.reminderPostUrl('reminder', widget.userType),
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
-                        if (postResult['success']) {
-                          AppUtils.topSnackBar(
-                              context, Constants.successfullySubmitted);
-                          Navigator.pop(context);
-                        }
-                      }
-                    },
-                  ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(.25),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SizedBox(
+                        width: 95,
+                        child: Center(
+                            child: CustomText(
+                          Languages.of(context)!.cancel.toUpperCase(),
+                          color: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                          fontSize: FontSize.sixteen,
+                        ))),
+                  ),
+                  const SizedBox(width: 25),
+                  SizedBox(
+                    width: 191,
+                    child: CustomButton(
+                      Languages.of(context)!.submit.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      cardShape: 5,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          var requestBodyData = ReminderPostAPI(
+                            eventType: Constants.remainder,
+                            caseId: widget.caseId,
+                            eventCode: 'TELEVT006',
+                            eventAttr: EventAttr(
+                              reminderDate: nextActionDateControlller.text,
+                              time: nextActionTimeControlller.text,
+                              remarks: remarksControlller.text,
+                              agentLocation: AgentLocation(),
+                            ),
+                            contact: Contact(
+                              cType: widget.postValue['cType'],
+                              value: widget.postValue['value'],
+                            ),
+                            callID: '0',
+                            callingID: '0',
+                          );
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                            APIRequestType.POST,
+                            HttpUrl.reminderPostUrl(
+                                'reminder', widget.userType),
+                            requestBodydata: jsonEncode(requestBodyData),
+                          );
+                          if (postResult['success']) {
+                            AppUtils.topSnackBar(
+                                context, Constants.successfullySubmitted);
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

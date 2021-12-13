@@ -73,221 +73,227 @@ class _CustomOtherFeedBackBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        resizeToAvoidBottomInset: true,
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget.customerLoanUserWidget,
-                        const SizedBox(height: 11),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              Languages.of(context)!.date,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              color: ColorResource.color666666,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            SizedBox(
-                              width:
-                                  (MediaQuery.of(context).size.width - 44) / 2,
-                              child: CustomReadOnlyTextField(
-                                '',
-                                dateControlller,
-                                validationRules: const ['required'],
-                                isReadOnly: true,
-                                onTapped: () =>
-                                    pickDate(context, dateControlller),
-                                suffixWidget: SvgPicture.asset(
-                                  ImageResource.calendar,
-                                  fit: BoxFit.scaleDown,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.89,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: true,
+          body: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BottomSheetAppbar(
+                  title: widget.cardTitle,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                          .copyWith(bottom: 5),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          widget.customerLoanUserWidget,
+                          const SizedBox(height: 11),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.date,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w400,
+                                color: ColorResource.color666666,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              SizedBox(
+                                width:
+                                    (MediaQuery.of(context).size.width - 44) /
+                                        2,
+                                child: CustomReadOnlyTextField(
+                                  '',
+                                  dateControlller,
+                                  validationRules: const ['required'],
+                                  isReadOnly: true,
+                                  onTapped: () =>
+                                      pickDate(context, dateControlller),
+                                  suffixWidget: SvgPicture.asset(
+                                    ImageResource.calendar,
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 25),
-                        CustomText(
-                          Languages.of(context)!.customerMetCategory,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                          fontStyle: FontStyle.normal,
-                        ),
-                        const SizedBox(height: 10),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: widget.bloc.expandOtherFeedback.length,
-                          itemBuilder: (context, int index) => expandList(
-                              widget.bloc.expandOtherFeedback, index),
-                        ),
-                        const SizedBox(height: 25),
-                        GestureDetector(
-                          onTap: () {},
-                          child: SizedBox(
-                            width: double.infinity,
-                            // height: 56,
-                            child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                  side: const BorderSide(
-                                    width: 0.5,
-                                    color: ColorResource.colorDADADA,
-                                  ),
-                                ),
-                                color: ColorResource.color23375A,
-                                elevation: 2,
-                                child: GestureDetector(
-                                  onTap: () => getFiles(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                                ImageResource.upload),
-                                            const SizedBox(width: 5),
-                                            const CustomText(
-                                              'UPLOAD AUDIO FILE',
-                                              color: ColorResource.colorFFFFFF,
-                                              fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                            )
-                                          ],
-                                        ),
-                                        const CustomText(
-                                          'UPTO 5MB',
-                                          lineHeight: 1,
-                                          color: ColorResource.colorFFFFFF,
-                                          fontSize: FontSize.twelve,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w700,
-                                        )
-                                      ],
+                            ],
+                          ),
+                          const SizedBox(height: 25),
+                          CustomText(
+                            Languages.of(context)!.customerMetCategory,
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                            fontStyle: FontStyle.normal,
+                          ),
+                          const SizedBox(height: 10),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: widget.bloc.expandOtherFeedback.length,
+                            itemBuilder: (context, int index) => expandList(
+                                widget.bloc.expandOtherFeedback, index),
+                          ),
+                          const SizedBox(height: 25),
+                          GestureDetector(
+                            onTap: () {},
+                            child: SizedBox(
+                              width: double.infinity,
+                              // height: 56,
+                              child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    side: const BorderSide(
+                                      width: 0.5,
+                                      color: ColorResource.colorDADADA,
                                     ),
                                   ),
-                                )),
+                                  color: ColorResource.color23375A,
+                                  elevation: 2,
+                                  child: GestureDetector(
+                                    onTap: () => getFiles(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                  ImageResource.upload),
+                                              const SizedBox(width: 5),
+                                              const CustomText(
+                                                'UPLOAD AUDIO FILE',
+                                                color:
+                                                    ColorResource.colorFFFFFF,
+                                                fontSize: FontSize.sixteen,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w700,
+                                              )
+                                            ],
+                                          ),
+                                          const CustomText(
+                                            'UPTO 5MB',
+                                            lineHeight: 1,
+                                            color: ColorResource.colorFFFFFF,
+                                            fontSize: FontSize.twelve,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                      ],
+                          const SizedBox(height: 15),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
-                ),
-                const SizedBox(width: 25),
-                SizedBox(
-                  width: 191,
-                  child: CustomButton(
-                    Languages.of(context)!.submit.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (uploadFileLists.isEmpty) {
-                          AppUtils.showToast(
-                            Constants.uploadDepositSlip,
-                            gravity: ToastGravity.CENTER,
-                          );
-                        } else {
-                          var requestBodyData = OtherFeedBackPostModel(
-                              eventType: Constants.feedBack,
-                              caseId: widget.caseId,
-                              eventCode: 'TELEVT002',
-                              eventAttr: EventAttr(
-                                  actionDate: dateControlller.text,
-                                  imageLocation:
-                                      uploadFileLists as List<String>,
-                                  agentLocation: AgentLocation()),
-                              contact: [
-                                OtherFeedBackContact(
-                                  cType: widget.postValue['cType'].toString(),
-                                  value: widget.postValue['value'].toString(),
-                                )
-                              ]);
-
-                          Map<String, dynamic> postResult =
-                              await APIRepository.apiRequest(
-                            APIRequestType.POST,
-                            HttpUrl.reminderPostUrl(
-                                'feedback', widget.userType),
-                            requestBodydata:
-                                jsonEncode(requestBodyData.toJson()),
-                          );
-                          if (postResult['success']) {
-                            AppUtils.topSnackBar(
-                                context, Constants.successfullySubmitted);
-                            Navigator.pop(context);
-                          } else {}
-                        }
-                      }
-                    },
-                    cardShape: 5,
-                  ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(.25),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SizedBox(
+                        width: 95,
+                        child: Center(
+                            child: CustomText(
+                          Languages.of(context)!.cancel.toUpperCase(),
+                          color: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                          fontSize: FontSize.sixteen,
+                        ))),
+                  ),
+                  const SizedBox(width: 25),
+                  SizedBox(
+                    width: 191,
+                    child: CustomButton(
+                      Languages.of(context)!.submit.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (uploadFileLists.isEmpty) {
+                            AppUtils.showToast(
+                              Constants.uploadDepositSlip,
+                              gravity: ToastGravity.CENTER,
+                            );
+                          } else {
+                            var requestBodyData = OtherFeedBackPostModel(
+                                eventType: Constants.feedBack,
+                                caseId: widget.caseId,
+                                eventCode: 'TELEVT002',
+                                eventAttr: EventAttr(
+                                    actionDate: dateControlller.text,
+                                    imageLocation:
+                                        uploadFileLists as List<String>,
+                                    agentLocation: AgentLocation()),
+                                contact: [
+                                  OtherFeedBackContact(
+                                    cType: widget.postValue['cType'].toString(),
+                                    value: widget.postValue['value'].toString(),
+                                  )
+                                ]);
+
+                            Map<String, dynamic> postResult =
+                                await APIRepository.apiRequest(
+                              APIRequestType.POST,
+                              HttpUrl.reminderPostUrl(
+                                  'feedback', widget.userType),
+                              requestBodydata:
+                                  jsonEncode(requestBodyData.toJson()),
+                            );
+                            if (postResult['success']) {
+                              AppUtils.topSnackBar(
+                                  context, Constants.successfullySubmitted);
+                              Navigator.pop(context);
+                            } else {}
+                          }
+                        }
+                      },
+                      cardShape: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
