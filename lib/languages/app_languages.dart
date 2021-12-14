@@ -69,6 +69,8 @@ abstract class Languages {
 
   String get myVisits;
 
+  String get myCalls;
+
   String get myDeposists;
 
   String get yardingSelfRelease;

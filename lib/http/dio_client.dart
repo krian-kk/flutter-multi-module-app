@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/http/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioClient {
   static dynamic dioConfig() {
@@ -34,18 +36,25 @@ class DioClient {
   }
 
   //developer want get from stored while login/register
-  static String getTokenFromSharedValues() {
+  static Future<String> getTokenFromSharedValues() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
     //when user login or register or refresh the token = user will get token
     // developer should try to get the token from
     //stored palces, like: shared storage or local storage db or from firebase
     //and should retrun with or without token
+    String? token = _prefs.getString('accessToken');
 
-    // if(token is expired){
-    //   // token refresh / try to get the new token
-    // }else{
-    //   // old token will be used
-    // }
-    return '';
+    print('----------Autherization token----------');
+    print(token);
+    print('----------Done Autherization token----------');
+    if(JwtDecoder.isExpired(token!)){
+      // token refresh / try to get the new token
+
+    } else {
+      // old token will be used
+      token = token;
+    }
+    return token;
   }
 
   static dynamic errorHandling(DioError e) {

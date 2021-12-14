@@ -44,7 +44,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         // Map<String, dynamic> getEventDetailsData =
         //     await APIRepository.getProfileData('7988315676');
         Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.profileUrl + '7988315676');
+            APIRequestType.GET, HttpUrl.profileUrl);
 
         if (getProfileData['success'] == true) {
           Map<String, dynamic> jsonData = getProfileData['data'];

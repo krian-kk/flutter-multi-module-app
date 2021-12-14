@@ -63,7 +63,7 @@ class _YardingTabState extends State<YardingTab> {
       print(uploadFileLists);
     } else {
       // User canceled the picker
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
     }
   }
 
@@ -113,7 +113,7 @@ class _YardingTabState extends State<YardingTab> {
                           var currentDateTime = DateTime.now();
                           var requestBodyData = YardingPostModel(
                               // caseId: widget.caseId!,
-                              caseId: '618e382004d8d040ac18841b',
+                              caseId: widget.caseId.toString(),
                               eventAttr: EventAttr(
                                   remarks: remarksController.text,
                                   repo: Repo(

@@ -1,24 +1,17 @@
 import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
-import 'package:origa/models/dashboard_broken_model/dashboard_broken_model.dart';
 import 'package:origa/models/dashboard_model.dart';
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
-import 'package:origa/models/dashboard_my_receipts_model/dashboard_my_receipts_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
-import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
-import 'package:origa/models/dashboard_priority_model/dashboard_priority_model.dart';
-import 'package:origa/models/dashboard_untouched_cases_model/dashboard_untouched_cases_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
-import 'package:origa/utils/app_utils.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,6 +45,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'MONTHLY',
   ];
 
+  String? mtdCaseCompleted;
+  String? mtdCaseTotal;
+  String? mtdAmountCompleted;
+  String? mtdAmountTotal;
+
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is DashboardInitialEvent) {
@@ -64,62 +62,62 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         yield NoInternetConnectionState();
       }
 
-// // dashboardList.clear();
+      Map<String, dynamic> DashboardData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
+
+        if (DashboardData['success'] == true) {
+         var jsonData = DashboardData['data']['result'];
+
+         mtdCaseCompleted = jsonData['mtdCases']['completed'].toString();
+         mtdCaseTotal = jsonData['mtdCases']['total'].toString();
+         mtdAmountCompleted = jsonData['mtdAmount']['completed'].toString();
+         mtdAmountTotal = jsonData['mtdAmount']['total'].toString();
+          // print(DashboardData['data']);
+
       dashboardList.addAll([
         DashboardListModel(
-          title: 'PRIORITY FOLLOW UP',
+          title: Languages.of(event.context!)!.priorityFollowUp,
           image: ImageResource.vectorArrow,
-          count: 'Count',
-          countNum: '200',
-          amount: 'Amount',
-          amountRs: '₹ 3,97,553.67',
-          // onTap: (){
-          //   print('object');
-          // },
+          count: jsonData['priorityFollowUp']['count'].toString(),
+          amountRs: jsonData['priorityFollowUp']['totalAmt'].toString(),
+         
         ),
         DashboardListModel(
-            title: 'UNTOUCHED CASES',
+            title: Languages.of(event.context!)!.untouchedCases,
             image: ImageResource.vectorArrow,
-            count: 'Count',
-            countNum: '200',
-            amount: 'Amount',
-            amountRs: '₹ 3,97,553.67'),
+            count: jsonData['untouched']['count'].toString(),
+            amountRs: jsonData['untouched']['totalAmt'].toString(),
+            ),
         DashboardListModel(
-            title: 'BROKEN PTP',
+            title: Languages.of(event.context!)!.brokenPTP,
             image: ImageResource.vectorArrow,
-            count: 'Count',
-            countNum: '200',
-            amount: 'Amount',
-            amountRs: '₹ 3,97,553.67'),
+            count: jsonData['brokenPtp']['count'].toString(),
+            amountRs: jsonData['brokenPtp']['totalAmt'].toString(),
+            ),
         DashboardListModel(
-            title: 'MY RECEIPTS',
+            title: Languages.of(event.context!)!.myReceipts,
             image: ImageResource.vectorArrow,
-            count: 'Count',
-            countNum: '200',
-            amount: 'Amount',
-            amountRs: '₹ 3,97,553.67'),
+            count: jsonData['receipts']['count'].toString(),
+            amountRs: jsonData['receipts']['totalAmt'].toString(),
+            ),
         DashboardListModel(
-            title: userType == 'FIELDAGENT' ? 'MY VISITS' : 'MY CALLS',
+            title: userType == Constants.fieldagent ? Languages.of(event.context!)!.myVisits : Languages.of(event.context!)!.myCalls,
             image: ImageResource.vectorArrow,
-            count: 'Count',
-            countNum: '200',
-            amount: 'Amount',
-            amountRs: '₹ 3,97,553.67'),
+            count: jsonData['visits']['count'].toString(),
+            amountRs: jsonData['visits']['totalAmt'].toString(),
+            ),
         DashboardListModel(
-            title: 'MY DEPOSISTS',
+            title: Languages.of(event.context!)!.myDeposists,
             image: '',
             count: '',
-            countNum: '',
-            amount: '',
             amountRs: ''),
         DashboardListModel(
-            title: 'YARDING & SELF- RELEASE',
+            title: Languages.of(event.context!)!.yardingSelfRelease,
             image: '',
             count: '',
-            countNum: '',
-            amount: '',
             amountRs: ''),
       ]);
+    }
 // caseList.clear();
       caseList.addAll([
         CaseListModel(

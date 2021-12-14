@@ -106,6 +106,9 @@ class LanguageTa extends Languages {
   @override
   String get myVisits => 'எனது வருகைகள்';
 
+   @override
+  String get myCalls => 'என் அழைப்புகள்';
+
   @override
   String get myDeposists => 'என் டெபாசிஸ்ட்கள்';
 

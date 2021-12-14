@@ -5,6 +5,7 @@ class ImageResource {
   static const String checkOn = 'assets/svg/check_on.svg';
   // static const checkOff = 'assets/check_off.png';
   static const String checkOff = 'assets/svg/check_off.svg';
+  static const caseNotAvailable = 'assets/caseNotAvailable.png';
   // static const back = 'assets/back.png';
   // static const back1 = 'assets/svg/back.svg';
   // static const viewShape = 'assets/shape.png';

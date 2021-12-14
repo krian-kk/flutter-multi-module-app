@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -10,10 +9,10 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/no_case_available.dart';
 
 class YardingAndSelfRelease extends StatefulWidget {
   final DashboardBloc bloc;
@@ -54,7 +53,22 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
           child: Container(
             padding: const EdgeInsets.only(top: 16),
             child: SafeArea(
-              child: Scaffold(
+              child: widget.bloc.yardingAndSelfReleaseData.result!.isEmpty ?
+              Scaffold(
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BottomSheetAppbar(
+                        title: Languages.of(context)!.yardingSelfRelease,
+                      ),
+
+                     const SizedBox(height: 90,),
+
+                     Center(child: NoCaseAvailble.buildNoCaseAvailable(),)
+                  ],
+                ),
+              ) :
+               Scaffold(
                 bottomNavigationBar: Container(
                   height: 66,
                   decoration: const BoxDecoration(

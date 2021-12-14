@@ -184,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       CustomText(
-                                        bloc.offlineProfileValue.id.toString(),
+                                        bloc.offlineProfileValue.type.toString(),
                                         fontSize: FontSize.eighteen,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w700,

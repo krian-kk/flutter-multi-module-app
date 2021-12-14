@@ -68,7 +68,7 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
 
     // final AuthenticationBloc authBloc =
     //     BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildHomeTabScreen(loginType));
+    return addAuthBloc(context, PageBuilder.buildHomeTabScreen());
   });
 }
 
@@ -118,11 +118,11 @@ class PageBuilder {
     );
   }
 
-  static Widget buildHomeTabScreen(String? loginType) {
+  static Widget buildHomeTabScreen() {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<HomeTabBloc>(context)..add(HomeTabInitialEvent()),
-      child: HomeTabScreen(loginType),
+      child: HomeTabScreen(),
     );
   }
 
@@ -187,8 +187,14 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+      }
+
+      if (state is AuthenticationUnAuthenticated) {
+        while (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
         Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
 
       if (state is SplashScreenState) {
