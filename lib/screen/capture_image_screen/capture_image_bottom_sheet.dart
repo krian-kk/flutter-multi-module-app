@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
   const CustomCaptureImageBottomSheet(this.cardTitle,
@@ -156,15 +158,40 @@ class _CustomCaptureImageBottomSheetState
                       Languages.of(context)!.submit.toUpperCase(),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
-                      onTap: () {
+                      onTap: () async {
                         if (_formKey.currentState!.validate()) {
                           if (uploadFileLists.isNotEmpty) {
+                            Position position = Position(
+                              longitude: 0,
+                              latitude: 0,
+                              timestamp: DateTime.now(),
+                              accuracy: 0,
+                              altitude: 0,
+                              heading: 0,
+                              speed: 0,
+                              speedAccuracy: 0,
+                            );
+                            if (Geolocator.checkPermission().toString() !=
+                                PermissionStatus.granted.toString()) {
+                              Position res =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.best);
+                              setState(() {
+                                position = res;
+                              });
+                            }
                             var requestBodyData = PostImageCapturedModel(
                                 caseId: widget.bloc.caseId.toString(),
                                 eventAttr: EventAttr(
                                   remarks: remarksControlller.text,
                                   imageLocation:
                                       uploadFileLists as List<String>,
+                                  longitude: position.longitude,
+                                  latitude: position.latitude,
+                                  accuracy: position.accuracy,
+                                  altitude: position.altitude,
+                                  heading: position.heading,
+                                  speed: position.speed,
                                 ));
                             widget.bloc.add(PostImageCapturedEvent(
                                 postData: requestBodyData));

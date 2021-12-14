@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -18,6 +19,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
   const CustomPtpBottomSheet(this.cardTitle,
@@ -163,7 +165,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                       onTapped: () =>
                                           pickTime(context, ptpTimeControlller),
                                       suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
+                                        ImageResource.clock,
                                         fit: BoxFit.scaleDown,
                                       ),
                                     ),
@@ -272,29 +274,49 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
                           if (selectedPaymentModeButton != '') {
+                            Position position = Position(
+                              longitude: 0,
+                              latitude: 0,
+                              timestamp: DateTime.now(),
+                              accuracy: 0,
+                              altitude: 0,
+                              heading: 0,
+                              speed: 0,
+                              speedAccuracy: 0,
+                            );
+                            if (Geolocator.checkPermission().toString() !=
+                                PermissionStatus.granted.toString()) {
+                              Position res =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.best);
+                              setState(() {
+                                position = res;
+                              });
+                            }
                             var requestBodyData = PTPPostModel(
-                                eventType: Constants.ptp,
-                                caseId: widget.caseId,
-                                eventAttr: EventAttr(
-                                    date: ptpDateControlller.text,
-                                    time: ptpTimeControlller.text,
-                                    remarks: remarksControlller.text,
-                                    ptpAmount:
-                                        int.parse(ptpAmountControlller.text),
-                                    reference: referenceControlller.text,
-                                    mode: selectedPaymentModeButton,
-                                    followUpPriority: 'PTP',
-                                    agentLocation: AgentLocation(
-                                      latitude: 0,
-                                      longitude: 0,
-                                      missingAgentLocation: 'true',
-                                    )),
-                                contact: PTPContact(
-                                  cType: widget.postValue['cType'],
-                                  value: widget.postValue['value'],
-                                ),
-                                callID: '0',
-                                callingID: '0');
+                              eventType: Constants.ptp,
+                              caseId: widget.caseId,
+                              eventAttr: EventAttr(
+                                date: ptpDateControlller.text,
+                                time: ptpTimeControlller.text,
+                                remarks: remarksControlller.text,
+                                ptpAmount: int.parse(ptpAmountControlller.text),
+                                reference: referenceControlller.text,
+                                mode: selectedPaymentModeButton,
+                                followUpPriority: 'PTP',
+                                longitude: position.longitude,
+                                latitude: position.latitude,
+                                accuracy: position.accuracy,
+                                altitude: position.altitude,
+                                heading: position.heading,
+                                speed: position.speed,
+                              ),
+                              contact: PTPContact(
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                              ),
+                            );
+
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(
                               APIRequestType.POST,
@@ -304,7 +326,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               ),
                               requestBodydata: jsonEncode(requestBodyData),
                             );
-                            if (postResult['success']) {
+                            if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
                                   context, Constants.successfullySubmitted);
                               Navigator.pop(context);

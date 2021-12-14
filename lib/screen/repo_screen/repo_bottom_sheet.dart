@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -17,6 +18,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
   const CustomRepoBottomSheet(this.cardTitle,
@@ -163,7 +165,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       onTapped: () =>
                                           pickTime(context, timeControlller),
                                       suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
+                                        ImageResource.clock,
                                         fit: BoxFit.scaleDown,
                                       ),
                                     ),
@@ -283,6 +285,25 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               gravity: ToastGravity.CENTER,
                             );
                           } else {
+                            Position position = Position(
+                              longitude: 0,
+                              latitude: 0,
+                              timestamp: DateTime.now(),
+                              accuracy: 0,
+                              altitude: 0,
+                              heading: 0,
+                              speed: 0,
+                              speedAccuracy: 0,
+                            );
+                            if (Geolocator.checkPermission().toString() !=
+                                PermissionStatus.granted.toString()) {
+                              Position res =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.best);
+                              setState(() {
+                                position = res;
+                              });
+                            }
                             var requestBodyData = RepoPostModel(
                                 eventType: Constants.repo,
                                 caseId: widget.caseId,
@@ -294,16 +315,23 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   )
                                 ],
                                 eventAttr: EventAttr(
-                                    modelMake: modelMakeControlller.text,
-                                    registrationNo:
-                                        registrationNoControlller.text,
-                                    chassisNo: chassisNoControlller.text,
-                                    remarks: remarksControlller.text,
-                                    repo: Repo(),
-                                    date: dateControlller.text,
-                                    imageLocation:
-                                        uploadFileLists as List<String>,
-                                    agentLocation: AgentLocation()));
+                                  modelMake: modelMakeControlller.text,
+                                  registrationNo:
+                                      registrationNoControlller.text,
+                                  chassisNo: chassisNoControlller.text,
+                                  remarks: remarksControlller.text,
+                                  repo: Repo(),
+                                  date: dateControlller.text,
+                                  imageLocation:
+                                      uploadFileLists as List<String>,
+                                  customerName: '',
+                                  longitude: position.longitude,
+                                  latitude: position.latitude,
+                                  accuracy: position.accuracy,
+                                  altitude: position.altitude,
+                                  heading: position.heading,
+                                  speed: position.speed,
+                                ));
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(
                               APIRequestType.POST,
@@ -311,7 +339,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               requestBodydata:
                                   jsonEncode(requestBodyData.toJson()),
                             );
-                            if (postResult['success']) {
+                            if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
                                   context, Constants.successfullySubmitted);
                               Navigator.pop(context);

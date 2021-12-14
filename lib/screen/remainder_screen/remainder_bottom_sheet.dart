@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -16,6 +17,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomRemainderBottomSheet extends StatefulWidget {
   const CustomRemainderBottomSheet(this.cardTitle,
@@ -145,7 +147,7 @@ class _CustomRemainderBottomSheetState
                                       onTapped: () => pickTime(
                                           context, nextActionTimeControlller),
                                       suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
+                                        ImageResource.clock,
                                         fit: BoxFit.scaleDown,
                                       ),
                                     ),
@@ -213,6 +215,24 @@ class _CustomRemainderBottomSheetState
                       cardShape: 5,
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
+                          Position position = Position(
+                            longitude: 0,
+                            latitude: 0,
+                            timestamp: DateTime.now(),
+                            accuracy: 0,
+                            altitude: 0,
+                            heading: 0,
+                            speed: 0,
+                            speedAccuracy: 0,
+                          );
+                          if (Geolocator.checkPermission().toString() !=
+                              PermissionStatus.granted.toString()) {
+                            Position res = await Geolocator.getCurrentPosition(
+                                desiredAccuracy: LocationAccuracy.best);
+                            setState(() {
+                              position = res;
+                            });
+                          }
                           var requestBodyData = ReminderPostAPI(
                             eventType: Constants.remainder,
                             caseId: widget.caseId,
@@ -221,7 +241,12 @@ class _CustomRemainderBottomSheetState
                               reminderDate: nextActionDateControlller.text,
                               time: nextActionTimeControlller.text,
                               remarks: remarksControlller.text,
-                              agentLocation: AgentLocation(),
+                              longitude: position.longitude,
+                              latitude: position.latitude,
+                              accuracy: position.accuracy,
+                              altitude: position.altitude,
+                              heading: position.heading,
+                              speed: position.speed,
                             ),
                             contact: Contact(
                               cType: widget.postValue['cType'],
@@ -237,7 +262,7 @@ class _CustomRemainderBottomSheetState
                                 'reminder', widget.userType),
                             requestBodydata: jsonEncode(requestBodyData),
                           );
-                          if (postResult['success']) {
+                          if (postResult[Constants.success]) {
                             AppUtils.topSnackBar(
                                 context, Constants.successfullySubmitted);
                             Navigator.pop(context);

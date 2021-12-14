@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_model.dart';
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
@@ -20,6 +25,7 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
@@ -177,6 +183,48 @@ class _AllocationScreenState extends State<AllocationScreen> {
             }
           }
         }
+        if (state is TapAreYouAtOfficeOptionsState) {
+          Position position = Position(
+            longitude: 0,
+            latitude: 0,
+            timestamp: DateTime.now(),
+            accuracy: 0,
+            altitude: 0,
+            heading: 0,
+            speed: 0,
+            speedAccuracy: 0,
+          );
+          if (Geolocator.checkPermission().toString() !=
+              PermissionStatus.granted.toString()) {
+            Position res = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.best);
+            setState(() {
+              position = res;
+            });
+          }
+          var requestBodyData = AreYouAtOfficeModel(
+              eventType: 'Office Check In',
+              eventAttr: AreYouAtOfficeEventAttr(
+                altitude: position.altitude,
+                accuracy: position.accuracy,
+                heading: position.heading,
+                speed: position.speed,
+                latitude: position.latitude,
+                longitude: position.longitude,
+              ),
+              eventCode: 'TELEVT017');
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            APIRequestType.POST,
+            HttpUrl.areYouAtOfficeUrl(),
+            requestBodydata: jsonEncode(requestBodyData),
+          );
+          if (postResult[Constants.success]) {
+            // AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            setState(() {
+              areyouatOffice = false;
+            });
+          }
+        }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
@@ -309,9 +357,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                               ColorResource.colorEA6D48,
                                           cardShape: 5,
                                           onTap: () {
-                                            setState(() {
-                                              areyouatOffice = false;
-                                            });
+                                            bloc.add(
+                                                TapAreYouAtOfficeOptionsEvent());
                                           },
                                         )),
                                     const SizedBox(
@@ -328,9 +375,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                               ColorResource.colorffffff,
                                           cardShape: 5,
                                           onTap: () {
-                                            setState(() {
-                                              areyouatOffice = false;
-                                            });
+                                            bloc.add(
+                                                TapAreYouAtOfficeOptionsEvent());
                                           },
                                         )),
                                   ],

@@ -21,6 +21,8 @@ class CaseListViewLoadingEvent extends AllocationEvent {}
 
 class TapPriorityEvent extends AllocationEvent {}
 
+class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
+
 class TapBuildRouteEvent extends AllocationEvent {
   dynamic paramValues;
   TapBuildRouteEvent({this.paramValues});

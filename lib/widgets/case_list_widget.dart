@@ -14,6 +14,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 // import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/no_case_available.dart';
 
 class CaseLists {
   static Widget buildListView(
@@ -23,7 +24,7 @@ class CaseLists {
     return bloc.selectedFilterDataLoading ? 
     const Center(child: CircularProgressIndicator(),) :
     listData.result!.cases!.isEmpty ? 
-    const Center(child: CustomText(Constants.noCasesAvailable),) :
+    Center(child: NoCaseAvailble.buildNoCaseAvailable(),) :
     ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: listData.result!.cases!.length,

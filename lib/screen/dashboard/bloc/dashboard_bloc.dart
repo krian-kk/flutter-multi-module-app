@@ -16,6 +16,7 @@ import 'package:origa/models/dashboard_priority_model/dashboard_priority_model.d
 import 'package:origa/models/dashboard_untouched_cases_model/dashboard_untouched_cases_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -209,15 +210,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
-         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 
-            'timePeriod=${event.timePeiod}');
-            if(getMyReceiptsData['success']) {
-             yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
-            }
-            yield SelectedTimeperiodDataLoadedState();
+        Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=${event.timePeiod}');
+        if (getMyReceiptsData[Constants.success]) {
+          yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
+        }
+        yield SelectedTimeperiodDataLoadedState();
       }
-
     }
 
     if (event is MyVisitsEvent) {
@@ -240,13 +240,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
-            "timePeriod=${event.timePeiod}");
-        if(getMyVisitsData['success']) {
-             yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
-            }
+            APIRequestType.GET,
+            HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
+        if (getMyVisitsData['success']) {
+          yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
+        }
 
-            yield SelectedTimeperiodDataLoadedState();
+        yield SelectedTimeperiodDataLoadedState();
       }
     }
 
@@ -366,16 +366,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                     "collSubStatus=${event.returnValue.status}");
 
         //             Map<String, dynamic> getSearchResultData = await APIRepository.apiRequest(
-        //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
+        //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl +
         //     "timePeriod=WEEKLY");
         // print('getSearchResultData----->');
         // print(getSearchResultData['data']);
-        
+
         // for (var element in getSearchResultData['data']['result']) {
         //   resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-         
+
         // }
-            yield GetSearchDataState(getReturnValues: getSearchResultData['data']);
+        yield GetSearchDataState(getReturnValues: getSearchResultData['data']);
       }
       yield SelectedTimeperiodDataLoadedState();
     }

@@ -140,7 +140,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       onTapped: () => pickTime(
                                           context, otsPaymentTimeControlller),
                                       suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
+                                        ImageResource.clock,
                                         fit: BoxFit.scaleDown,
                                       ),
                                     ),

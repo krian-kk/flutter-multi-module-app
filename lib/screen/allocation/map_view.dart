@@ -214,6 +214,37 @@ class _MapViewState extends State<MapView> {
                       compassEnabled: false,
                       tiltGesturesEnabled: false,
                       mapToolbarEnabled: true,
+                      onTap: (tabPositions) async {
+                        List<Placemark> placemarks =
+                            await placemarkFromCoordinates(
+                                tabPositions.latitude, tabPositions.longitude);
+                        print('Tap Location Place Mark => ${placemarks}');
+                        setState(() {
+                          _markers.add(
+                            Marker(
+                              markerId: const MarkerId('Tap Locations'),
+                              position: tabPositions,
+                              infoWindow: const InfoWindow(
+                                title: 'Tap Locations',
+                              ),
+                              // icon: customIcon,
+                              icon: BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueBlue),
+                            ),
+                          );
+                          _polyline.add(Polyline(
+                            polylineId: const PolylineId('poly'),
+                            visible: true,
+                            width: 1,
+                            points: [
+                              LatLng(currentLatitude, currentLontitude),
+                              tabPositions,
+                            ],
+                            color: Colors.red,
+                            jointType: JointType.bevel,
+                          ));
+                        });
+                      },
                     ),
                   ),
                 ],

@@ -41,12 +41,13 @@ class Constants {
   static const String successfullySubmitted = 'Successfully submitted!!';
   static const String resetPassword = 'Reset password via OTP';
   static const String notSelectedCase = 'Should be select one loan';
-  static const String noCasesAvailable = 'No cases available';
+  static const String noCasesAvailable = 'No Case Available';
   static const String uploadDepositSlip = 'Please upload deposit slip';
   static const String pleaseSelectPaymentMode = 'Please Select Payment Mode!';
   static const String pleaseSelectOptions = 'Please Select Options';
   static const String pleaseSelectDropDownValue =
       'Please Select Drop Down Value';
+  static const String success = 'success';
   static const int otpWaitingTime = 60;
 
   static List<int> keyBoardNumberList() {

@@ -1,7 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/reset_password_model/reset_password_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -148,7 +152,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
+                          validationRules: const ['required', 'number_only'],
+                          maximumWordCount: 10,
+
                           focusNode: mobileNumberFocusNode,
                           onEditing: () {
                             mobileNumberFocusNode.unfocus();
@@ -188,8 +194,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
+                          keyBoardType: TextInputType.emailAddress,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
+                          validationRules: const ['email'],
                           focusNode: emailFocusNode,
                           onChange: () {
                             setState(() {});
@@ -308,12 +315,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             userNameSecondController
                                                 .text.isNotEmpty ||
                                             emailController.text.isNotEmpty)
-                                        ? () {
-                                            setState(() {
-                                              isSendOTP = false;
-                                              isTime = true;
-                                              secondsOTP();
-                                            });
+                                        ? () async {
+                                            Map<String, dynamic> postResult =
+                                                await APIRepository.apiRequest(
+                                              APIRequestType.POST,
+                                              HttpUrl.requestOTPUrl(),
+                                              requestBodydata: {},
+                                            );
+                                            if (await postResult[
+                                                Constants.success]) {
+                                              setState(() {
+                                                isSendOTP = false;
+                                                isTime = true;
+                                                secondsOTP();
+                                              });
+                                            } else {}
                                           }
                                         : () {},
                                 cardShape: 85,
@@ -335,6 +351,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 onTap: (pinCodeController.text.isNotEmpty &&
                                         pinCodeController.text.length == 6)
                                     ? () {
+                                        // var requestBodyData = ResetPasswordModel(otp: pinCodeController.text, username: userNameFirstController.text, newPassword: newPassword) ;
                                         Navigator.pop(context);
                                       }
                                     : () {},

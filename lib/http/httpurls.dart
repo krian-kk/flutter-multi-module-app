@@ -10,15 +10,14 @@ class HttpUrl {
       baseUrl +
       version +
       fieldAgent +
-      'case-details/eventDetails?caseId=$caseId&userType=$usertype';
+      'case-details-events/eventDetails?userType=$caseId&caseId=$usertype';
+
   static const String priorityCaseList =
       baseUrl + version + fieldAgent + 'case-details/priority?';
   static const String buildRouteCaseList =
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
-  static const String profileUrl = baseUrl +
-      version +
-      fieldAgent +
-      'case-details/userDetails?aRef=yes_superadmin&name=yes_superadmin&defMobileNumber=';
+  static const String profileUrl =
+      baseUrl + version + fieldAgent + 'profile/userDetails';
 
   // Post API ===================================================
   // Collection Post API
@@ -34,6 +33,15 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+  // Are You At Office?
+  static String areYouAtOfficeUrl() =>
+      baseUrl + version + fieldAgent + 'profile/officeCheckIn';
+  // Reques OTP
+  static String requestOTPUrl() =>
+      baseUrl + version + fieldAgent + 'profile/requestOtp';
+  // Home Address in Profile Screen
+  static String homeAddressUrl() =>
+      baseUrl + version + fieldAgent + 'profile/homeAddress';
   // RTP(Denial) Post API
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
@@ -144,8 +152,10 @@ class HttpUrl {
   static const String dashboardMyDeposistsUrl =
       baseUrl + version + fieldAgent + 'case-details/deposits?';
 
-  static const String dashboardYardingAndSelfReleaseUrl =
-      baseUrl + version + fieldAgent + 'case-details/yardingData?';
+  static const String dashboardYardingAndSelfReleaseUrl = baseUrl +
+      version +
+      fieldAgent +
+      'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
   static const String fileUpload = '';

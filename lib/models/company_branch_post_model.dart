@@ -1,76 +1,57 @@
 class CompanyBranchDepositPostModel {
-  int? eventId;
-  String? eventType;
-  String? caseId;
-  String? eventCode;
-  late EventAttr eventAttr;
-  String? createdBy;
-  String? eventModule;
-  String? callID;
-  String? callingID;
-  String? callerServiceID;
-  String? voiceCallEventCode;
-  int? invalidNumber;
-  String? agentName;
-  String? contractor;
-  String? agrRef;
+  late List<String> caseIds;
+  // String? eventModule;
+  // String? callID;
+  // String? callingID;
+  // String? callerServiceID;
+  // String? voiceCallEventCode;
+  // int? invalidNumber;
+  // String? agentName;
+  // String? contractor;
+  // String? agrRef;
 
-  CompanyBranchDepositPostModel(
-      {this.eventId = 0,
-      this.eventType = 'RECEIPT',
-      required this.caseId,
-      this.eventCode = 'TELEVT003',
-      required this.eventAttr,
-      this.createdBy = '',
-      this.eventModule = 'Field Allocation',
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0,
-      this.agentName = '',
-      this.contractor = '',
-      this.agrRef = ''});
+  CompanyBranchDepositPostModel({
+    required this.caseIds,
+    // this.eventModule = 'Field Allocation',
+    // this.callID = '0',
+    // this.callingID = '0',
+    // this.callerServiceID = '',
+    // this.voiceCallEventCode = '',
+    // this.invalidNumber = 0,
+    // this.agentName = '',
+    // this.contractor = '',
+    // this.agrRef = '',
+  });
 
   CompanyBranchDepositPostModel.fromJson(Map<String, dynamic> json) {
-    eventId = json['eventId'];
-    eventType = json['eventType'];
-    caseId = json['caseId'];
-    eventCode = json['eventCode'];
-    eventAttr = (json['eventAttr'] != null
-        ? new EventAttr.fromJson(json['eventAttr'])
-        : null)!;
-    createdBy = json['createdBy'];
-    eventModule = json['eventModule'];
-    callID = json['callID'];
-    callingID = json['callingID'];
-    callerServiceID = json['callerServiceID'];
-    voiceCallEventCode = json['voiceCallEventCode'];
-    invalidNumber = json['invalidNumber'];
-    agentName = json['agentName'];
-    contractor = json['contractor'];
-    agrRef = json['agrRef'];
+    caseIds = json['caseIds'].forEach((v) {
+      caseIds.add(v);
+    });
+
+    // eventModule = json['eventModule'];
+    // callID = json['callID'];
+    // callingID = json['callingID'];
+    // callerServiceID = json['callerServiceID'];
+    // voiceCallEventCode = json['voiceCallEventCode'];
+    // invalidNumber = json['invalidNumber'];
+    // agentName = json['agentName'];
+    // contractor = json['contractor'];
+    // agrRef = json['agrRef'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventId'] = this.eventId;
-    data['eventType'] = this.eventType;
-    data['caseId'] = this.caseId;
-    data['eventCode'] = this.eventCode;
-    if (this.eventAttr != null) {
-      data['eventAttr'] = this.eventAttr.toJson();
-    }
-    data['createdBy'] = this.createdBy;
-    data['eventModule'] = this.eventModule;
-    data['callID'] = this.callID;
-    data['callingID'] = this.callingID;
-    data['callerServiceID'] = this.callerServiceID;
-    data['voiceCallEventCode'] = this.voiceCallEventCode;
-    data['invalidNumber'] = this.invalidNumber;
-    data['agentName'] = this.agentName;
-    data['contractor'] = this.contractor;
-    data['agrRef'] = this.agrRef;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['caseIds'] = caseIds;
+
+    // data['eventModule'] = eventModule;
+    // data['callID'] = callID;
+    // data['callingID'] = callingID;
+    // data['callerServiceID'] = callerServiceID;
+    // data['voiceCallEventCode'] = voiceCallEventCode;
+    // data['invalidNumber'] = invalidNumber;
+    // data['agentName'] = agentName;
+    // data['contractor'] = contractor;
+    // data['agrRef'] = agrRef;
     return data;
   }
 }
@@ -129,7 +110,7 @@ class EventAttr {
     customerName = json['customerName'];
     imageLocation = json['imageLocation'].cast<String>();
     deposition = (json['deposition'] != null
-        ? new Deposition.fromJson(json['deposition'])
+        ? Deposition.fromJson(json['deposition'])
         : null)!;
     altitude = json['altitude'];
     accuracy = json['accuracy'];
@@ -140,38 +121,38 @@ class EventAttr {
     longitude = json['Longitude'];
     distance = json['distance'];
     agentLocation = json['agentLocation'] != null
-        ? new AgentLocation.fromJson(json['agentLocation'])
+        ? AgentLocation.fromJson(json['agentLocation'])
         : null;
     appStatus = json['appStatus'];
     duplicate = json['duplicate'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['amountCollected'] = this.amountCollected;
-    data['date'] = this.date;
-    data['chequeRefNo'] = this.chequeRefNo;
-    data['remarks'] = this.remarks;
-    data['mode'] = this.mode;
-    data['followUpPriority'] = this.followUpPriority;
-    data['customerName'] = this.customerName;
-    data['imageLocation'] = this.imageLocation;
-    if (this.deposition != null) {
-      data['deposition'] = this.deposition.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['amountCollected'] = amountCollected;
+    data['date'] = date;
+    data['chequeRefNo'] = chequeRefNo;
+    data['remarks'] = remarks;
+    data['mode'] = mode;
+    data['followUpPriority'] = followUpPriority;
+    data['customerName'] = customerName;
+    data['imageLocation'] = imageLocation;
+    if (deposition != null) {
+      data['deposition'] = deposition.toJson();
     }
-    data['altitude'] = this.altitude;
-    data['accuracy'] = this.accuracy;
-    data['altitudeAccuracy'] = this.altitudeAccuracy;
-    data['heading'] = this.heading;
-    data['speed'] = this.speed;
-    data['Latitude'] = this.latitude;
-    data['Longitude'] = this.longitude;
-    data['distance'] = this.distance;
-    if (this.agentLocation != null) {
-      data['agentLocation'] = this.agentLocation?.toJson();
+    data['altitude'] = altitude;
+    data['accuracy'] = accuracy;
+    data['altitudeAccuracy'] = altitudeAccuracy;
+    data['heading'] = heading;
+    data['speed'] = speed;
+    data['Latitude'] = latitude;
+    data['Longitude'] = longitude;
+    data['distance'] = distance;
+    if (agentLocation != null) {
+      data['agentLocation'] = agentLocation?.toJson();
     }
-    data['appStatus'] = this.appStatus;
-    data['duplicate'] = this.duplicate;
+    data['appStatus'] = appStatus;
+    data['duplicate'] = duplicate;
     return data;
   }
 }
@@ -213,16 +194,16 @@ class Deposition {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['companyBranchName'] = this.companyBranchName;
-    data['companyBranchLocation'] = this.companyBranchLocation;
-    data['recptAmount'] = this.recptAmount;
-    data['deptAmount'] = this.deptAmount;
-    data['reference'] = this.reference;
-    data['imageLocation'] = this.imageLocation;
-    data['mode'] = this.mode;
-    data['depositDate'] = this.depositDate;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['companyBranchName'] = companyBranchName;
+    data['companyBranchLocation'] = companyBranchLocation;
+    data['recptAmount'] = recptAmount;
+    data['deptAmount'] = deptAmount;
+    data['reference'] = reference;
+    data['imageLocation'] = imageLocation;
+    data['mode'] = mode;
+    data['depositDate'] = depositDate;
+    data['status'] = status;
     return data;
   }
 }
@@ -244,10 +225,10 @@ class AgentLocation {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['missingAgentLocation'] = this.missingAgentLocation;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['missingAgentLocation'] = missingAgentLocation;
     return data;
   }
 }

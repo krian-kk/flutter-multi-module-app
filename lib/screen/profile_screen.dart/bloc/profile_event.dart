@@ -15,6 +15,8 @@ class ClickChangePassswordEvent extends ProfileEvent {}
 
 class ClickMessageEvent extends ProfileEvent {}
 
+class ClickMarkAsHomeEvent extends ProfileEvent {}
+
 class ChangeProfileImageEvent extends ProfileEvent {}
 
 class ChangePasswordEvent extends ProfileEvent {}

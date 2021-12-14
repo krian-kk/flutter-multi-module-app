@@ -102,10 +102,6 @@ class _PhoneUnreachableTelecallerScreenState
                             ImageResource.calendar,
                             fit: BoxFit.scaleDown,
                           ),
-                          //  const ImageIcon(
-                          //   AssetImage(ImageResource.calendar),
-                          //   color: ColorResource.colorC4C4C4,
-                          // ),
                           onEditing: () {
                             widget.bloc.phoneUnreachableNextActionDateFocusNode
                                 .unfocus();

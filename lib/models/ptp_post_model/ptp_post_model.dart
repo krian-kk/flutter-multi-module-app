@@ -1,5 +1,5 @@
 class PTPPostModel {
-  late int eventId;
+  late double eventId;
   late String eventType;
   late String caseId;
   late String? eventCode;
@@ -9,30 +9,30 @@ class PTPPostModel {
   late String? eventModule;
   late PTPContact contact;
   late String? agrRef;
-  late String? contractor;
-  late String callID;
-  late String callingID;
+  // late String? contractor;
+  late String? callID;
+  late String? callingID;
   late String? callerServiceID;
   late String? voiceCallEventCode;
-  late int? invalidNumber;
+  late double? invalidNumber;
 
   PTPPostModel(
-      {this.eventId = 0,
+      {this.eventId = 16,
       required this.eventType,
       required this.caseId,
       this.eventCode = 'TELEVT001',
       required this.eventAttr,
-      this.createdBy = '',
-      this.agentName = '',
+      this.createdBy = 'YES_getwisecollector',
+      this.agentName = 'GETWISE COLLECTOR',
       this.eventModule = 'Field Allocation',
       required this.contact,
-      this.agrRef = '',
-      this.contractor = '',
-      required this.callID,
-      required this.callingID,
+      this.agrRef = 'YES_SD87628',
+      // this.contractor = '',
+      this.callID,
+      this.callingID,
       this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0});
+      this.voiceCallEventCode = 'TELEVT011',
+      this.invalidNumber});
 
   PTPPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -45,7 +45,7 @@ class PTPPostModel {
     eventModule = json['eventModule'];
     contact = PTPContact.fromJson(json['contact']);
     agrRef = json['agrRef'];
-    contractor = json['contractor'];
+    // contractor = json['contractor'];
     callID = json['callID'];
     callingID = json['callingID'];
     callerServiceID = json['callerServiceID'];
@@ -65,7 +65,7 @@ class PTPPostModel {
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
     data['agrRef'] = agrRef;
-    data['contractor'] = contractor;
+    // data['contractor'] = contractor;
     data['callID'] = callID;
     data['callingID'] = callingID;
     data['callerServiceID'] = callerServiceID;
@@ -84,34 +84,35 @@ class EventAttr {
   late String mode;
   late String? pTPType;
   late String followUpPriority;
-  late int altitude;
-  late int accuracy;
-  late int altitudeAccuracy;
-  late int heading;
-  late int speed;
-  late int latitude;
-  late int longitude;
-  late int distance;
-  late AgentLocation agentLocation;
+  late double altitude;
+  late double accuracy;
+  late double? altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  // late double distance;
+  // late AgentLocation agentLocation;
 
-  EventAttr(
-      {required this.date,
-      required this.time,
-      required this.remarks,
-      required this.ptpAmount,
-      required this.reference,
-      required this.mode,
-      this.pTPType = 'Money',
-      required this.followUpPriority,
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation});
+  EventAttr({
+    required this.date,
+    required this.time,
+    required this.remarks,
+    required this.ptpAmount,
+    required this.reference,
+    required this.mode,
+    this.pTPType = 'Money',
+    required this.followUpPriority,
+    this.altitude = 0,
+    this.accuracy = 0,
+    this.altitudeAccuracy,
+    this.heading = 0,
+    this.speed = 0,
+    this.latitude = 0,
+    this.longitude = 0,
+    // this.distance = 0,
+    // required this.agentLocation
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     date = json['date'];
@@ -129,8 +130,8 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = AgentLocation.fromJson(json['agentLocation']);
+    // distance = json['distance'];
+    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
   }
 
   Map<String, dynamic> toJson() {
@@ -150,15 +151,15 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
+    // data['distance'] = distance;
+    // data['agentLocation'] = agentLocation.toJson();
     return data;
   }
 }
 
 class AgentLocation {
-  late int latitude;
-  late int longitude;
+  late double latitude;
+  late double longitude;
   late String missingAgentLocation;
 
   AgentLocation(

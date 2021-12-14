@@ -63,7 +63,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
-
           if (state is SetTimeperiodValueState) {
             bloc.selectedFilter = 'TODAY';
           }
@@ -298,7 +297,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: 0.25,
+                                      percent: (40 / 400),
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -352,7 +351,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: 0.4,
+                                      percent: (50000 / 5000000),
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -420,65 +419,75 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             AppUtils.showToast('');
                                         }
                                       },
-                                      child:  index == 5
-                                          ? widget.userType == 'FIELDAGENT' ? Card(
-                                              elevation: 0,
-                                              color: ColorResource.colorD3D7DE,
-                                              shape: RoundedRectangleBorder(
-                                                side: const BorderSide(
-                                                    color: ColorResource
-                                                        .colorD3D7DE,
-                                                    width: 1),
-                                                borderRadius:
-                                                    BorderRadius.circular(75),
-                                              ),
-                                              child: Center(
-                                                child: CustomText(
-                                                  bloc.dashboardList[index]
-                                                      .title!,
-                                                  fontSize: FontSize.twelve,
-                                                  fontWeight: FontWeight.w700,
-                                                  color:
-                                                      ColorResource.color23375A,
-                                                ),
-                                              ),
-                                            ) : const SizedBox() 
-                                          : index == 6
-                                              ? widget.userType == 'FIELDAGENT' ?  Card(
+                                      child: index == 5
+                                          ? widget.userType == 'FIELDAGENT'
+                                              ? Card(
                                                   elevation: 0,
                                                   color:
-                                                      ColorResource.colorffffff,
+                                                      ColorResource.colorD3D7DE,
                                                   shape: RoundedRectangleBorder(
                                                     side: const BorderSide(
                                                         color: ColorResource
-                                                            .color23375A,
-                                                        width: 0.5),
+                                                            .colorD3D7DE,
+                                                        width: 1),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             75),
                                                   ),
                                                   child: Center(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10),
-                                                      child: CustomText(
-                                                        bloc
-                                                            .dashboardList[
-                                                                index]
-                                                            .title!,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color23375A,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
+                                                    child: CustomText(
+                                                      bloc.dashboardList[index]
+                                                          .title!,
+                                                      fontSize: FontSize.twelve,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: ColorResource
+                                                          .color23375A,
                                                     ),
                                                   ),
-                                                ) : const SizedBox() 
+                                                )
+                                              : const SizedBox()
+                                          : index == 6
+                                              ? widget.userType == 'FIELDAGENT'
+                                                  ? Card(
+                                                      elevation: 0,
+                                                      color: ColorResource
+                                                          .colorffffff,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        side: const BorderSide(
+                                                            color: ColorResource
+                                                                .color23375A,
+                                                            width: 0.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(75),
+                                                      ),
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      10),
+                                                          child: CustomText(
+                                                            bloc
+                                                                .dashboardList[
+                                                                    index]
+                                                                .title!,
+                                                            fontSize:
+                                                                FontSize.twelve,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: ColorResource
+                                                                .color23375A,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox()
                                               : Card(
                                                   elevation: 2,
                                                   shape: RoundedRectangleBorder(

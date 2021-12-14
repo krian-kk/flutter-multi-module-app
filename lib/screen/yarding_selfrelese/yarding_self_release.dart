@@ -24,12 +24,9 @@ class YardingAndSelfRelease extends StatefulWidget {
 }
 
 class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
-  // late YardingandselfreleaseBloc bloc;
+
   @override
   void initState() {
-    // TODO: implement initState
-    // bloc = YardingandselfreleaseBloc()
-    //   ..add(YardingandselfreleaseInitialEvent());
     super.initState();
   }
 
@@ -39,15 +36,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
 
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
-  }
-
-  Future getFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'doc'],
-    );
-
-    print(result);
   }
 
   @override
@@ -109,7 +97,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                             horizontal: 20, vertical: 5),
                         child: ListView.builder(
                             scrollDirection: Axis.vertical,
-                            itemCount: widget.bloc.caseList.length,
+                            itemCount: widget.bloc.yardingAndSelfReleaseData.result!.length,
                             itemBuilder: (BuildContext context, int index) {
                               int listCount = index + 1;
                               return Column(
@@ -166,8 +154,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                         horizontal: 24,
                                                         vertical: 2),
                                                 child: CustomText(
-                                                  widget.bloc.caseList[index]
-                                                      .loanID!,
+                                                  widget.bloc.yardingAndSelfReleaseData.result![index].caseId!,
                                                   fontSize: FontSize.fourteen,
                                                   color:
                                                       ColorResource.color101010,
@@ -186,8 +173,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                  widget.bloc.caseList[index]
-                                                      .amount!,
+                                                 Constants.inr + widget.bloc.yardingAndSelfReleaseData.result![index].due!.toString(),
                                                   fontSize: FontSize.eighteen,
                                                   color:
                                                       ColorResource.color101010,
@@ -197,8 +183,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                   height: 3.0,
                                                 ),
                                                 CustomText(
-                                                  widget.bloc.caseList[index]
-                                                      .customerName!,
+                                                  widget.bloc.yardingAndSelfReleaseData.result![index].cust!,
                                                   fontSize: FontSize.sixteen,
                                                   color:
                                                       ColorResource.color101010,
@@ -212,6 +197,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 15, vertical: 6),
                                             child: Container(
+                                              width: double.infinity,
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 12, 15, 12),
@@ -222,8 +208,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                     BorderRadius.circular(10),
                                               ),
                                               child: CustomText(
-                                                widget.bloc.caseList[index]
-                                                    .address!,
+                                                widget.bloc.yardingAndSelfReleaseData.result![index].address![0].value!,
                                                 color:
                                                     ColorResource.color484848,
                                                 fontSize: FontSize.fourteen,
@@ -263,10 +248,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                           FontWeight.w400,
                                                     ),
                                                     CustomText(
-                                                      widget
-                                                          .bloc
-                                                          .caseList[index]
-                                                          .date!,
+                                                      'date field not added',
                                                       fontSize:
                                                           FontSize.fourteen,
                                                       color: ColorResource
@@ -309,16 +291,8 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                           onTap: () {
                                                             _onSelected(index);
                                                             setState(() {
-                                                              caseID = widget
-                                                                  .bloc
-                                                                  .caseList[
-                                                                      index]
-                                                                  .loanID;
-                                                              custName = widget
-                                                                  .bloc
-                                                                  .caseList[
-                                                                      index]
-                                                                  .customerName;
+                                                              caseID = widget.bloc.yardingAndSelfReleaseData.result![index].caseId!;
+                                                              custName = widget.bloc.yardingAndSelfReleaseData.result![index].cust!;
                                                             });
                                                             print(index);
                                                             print(caseID);

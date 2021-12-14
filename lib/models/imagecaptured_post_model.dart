@@ -12,25 +12,23 @@ class PostImageCapturedModel {
   String? voiceCallEventCode;
   int? invalidNumber;
   String? agentName;
-  String? contractor;
   String? agrRef;
 
   PostImageCapturedModel(
-      {this.eventId = 0,
+      {this.eventId = 22,
       this.eventType = "IMAGE CAPTURED",
       required this.caseId,
       this.eventCode = "TELEVT015",
       required this.eventAttr,
-      this.createdBy = '',
+      this.createdBy = 'YES_getwisecollector',
       this.eventModule = 'Field Allocation',
-      this.callID = "0",
-      this.callingID = "0",
-      this.callerServiceID = "",
-      this.voiceCallEventCode = "",
-      this.invalidNumber = 0,
-      this.agentName = "",
-      this.contractor = "",
-      this.agrRef = ""});
+      this.callID,
+      this.callingID,
+      this.callerServiceID = "e",
+      this.voiceCallEventCode = "TELEVT011",
+      this.invalidNumber,
+      this.agentName = "GETWISE COLLECTOR",
+      this.agrRef = "YES_SD87628"});
 
   PostImageCapturedModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -38,7 +36,7 @@ class PostImageCapturedModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = (json['eventAttr'] != null
-        ? new EventAttr.fromJson(json['eventAttr'])
+        ? EventAttr.fromJson(json['eventAttr'])
         : null)!;
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
@@ -48,29 +46,27 @@ class PostImageCapturedModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
     agentName = json['agentName'];
-    contractor = json['contractor'];
     agrRef = json['agrRef'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventId'] = this.eventId;
-    data['eventType'] = this.eventType;
-    data['caseId'] = this.caseId;
-    data['eventCode'] = this.eventCode;
-    if (this.eventAttr != null) {
-      data['eventAttr'] = this.eventAttr.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['eventId'] = eventId;
+    data['eventType'] = eventType;
+    data['caseId'] = caseId;
+    data['eventCode'] = eventCode;
+    if (eventAttr != null) {
+      data['eventAttr'] = eventAttr.toJson();
     }
-    data['createdBy'] = this.createdBy;
-    data['eventModule'] = this.eventModule;
-    data['callID'] = this.callID;
-    data['callingID'] = this.callingID;
-    data['callerServiceID'] = this.callerServiceID;
-    data['voiceCallEventCode'] = this.voiceCallEventCode;
-    data['invalidNumber'] = this.invalidNumber;
-    data['agentName'] = this.agentName;
-    data['contractor'] = this.contractor;
-    data['agrRef'] = this.agrRef;
+    data['createdBy'] = createdBy;
+    data['eventModule'] = eventModule;
+    data['callID'] = callID;
+    data['callingID'] = callingID;
+    data['callerServiceID'] = callerServiceID;
+    data['voiceCallEventCode'] = voiceCallEventCode;
+    data['invalidNumber'] = invalidNumber;
+    data['agentName'] = agentName;
+    data['agrRef'] = agrRef;
     return data;
   }
 }
@@ -78,27 +74,25 @@ class PostImageCapturedModel {
 class EventAttr {
   late String remarks;
   late List<String> imageLocation;
-  int? altitude;
-  int? accuracy;
-  int? altitudeAccuracy;
-  int? heading;
-  int? speed;
-  int? latitude;
-  int? longitude;
-  int? distance;
-  AgentLocation? agentLocation;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late AgentLocation? agentLocation;
 
   EventAttr(
       {required this.remarks,
       required this.imageLocation,
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
+      this.altitude = 0.0,
+      this.accuracy = 0.0,
+      this.altitudeAccuracy = 0.0,
+      this.heading = 0.0,
+      this.speed = 0.0,
+      this.latitude = 0.0,
+      this.longitude = 0.0,
       this.agentLocation});
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -111,26 +105,24 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
     agentLocation = json['agentLocation'] != null
-        ? new AgentLocation.fromJson(json['agentLocation'])
+        ? AgentLocation.fromJson(json['agentLocation'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['remarks'] = this.remarks;
-    data['imageLocation'] = this.imageLocation;
-    data['altitude'] = this.altitude;
-    data['accuracy'] = this.accuracy;
-    data['altitudeAccuracy'] = this.altitudeAccuracy;
-    data['heading'] = this.heading;
-    data['speed'] = this.speed;
-    data['Latitude'] = this.latitude;
-    data['Longitude'] = this.longitude;
-    data['distance'] = this.distance;
-    if (this.agentLocation != null) {
-      data['agentLocation'] = this.agentLocation!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['remarks'] = remarks;
+    data['imageLocation'] = imageLocation;
+    data['altitude'] = altitude;
+    data['accuracy'] = accuracy;
+    data['altitudeAccuracy'] = altitudeAccuracy;
+    data['heading'] = heading;
+    data['speed'] = speed;
+    data['Latitude'] = latitude;
+    data['Longitude'] = longitude;
+    if (agentLocation != null) {
+      data['agentLocation'] = agentLocation!.toJson();
     }
     return data;
   }
@@ -153,10 +145,10 @@ class AgentLocation {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['missingAgentLocation'] = this.missingAgentLocation;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['missingAgentLocation'] = missingAgentLocation;
     return data;
   }
 }

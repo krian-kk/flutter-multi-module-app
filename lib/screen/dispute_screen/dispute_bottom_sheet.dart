@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -17,6 +18,7 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomDisputeBottomSheet extends StatefulWidget {
   const CustomDisputeBottomSheet(this.cardTitle,
@@ -197,17 +199,41 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
                           if (disputeDropDownValue != 'select') {
+                            Position position = Position(
+                              longitude: 0,
+                              latitude: 0,
+                              timestamp: DateTime.now(),
+                              accuracy: 0,
+                              altitude: 0,
+                              heading: 0,
+                              speed: 0,
+                              speedAccuracy: 0,
+                            );
+                            if (Geolocator.checkPermission().toString() !=
+                                PermissionStatus.granted.toString()) {
+                              Position res =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.best);
+                              setState(() {
+                                position = res;
+                              });
+                            }
                             var requestBodyData = DisputePostModel(
                               eventType: Constants.dispute,
                               caseId: widget.caseId,
                               eventCode: 'TELEVT005',
-                              contractor: '0',
                               agrRef: '0',
                               eventAttr: EventAttr(
-                                  actionDate: nextActionDateControlller.text,
-                                  remarks: remarksControlller.text,
-                                  disputereasons: disputeDropDownValue,
-                                  agentLocation: AgentLocation()),
+                                actionDate: nextActionDateControlller.text,
+                                remarks: remarksControlller.text,
+                                disputereasons: disputeDropDownValue,
+                                longitude: position.longitude,
+                                latitude: position.latitude,
+                                accuracy: position.accuracy,
+                                altitude: position.altitude,
+                                heading: position.heading,
+                                speed: position.speed,
+                              ),
                               contact: Contact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
@@ -216,7 +242,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               callID: '0',
                               callingID: '0',
                             );
-
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(
                                     APIRequestType.POST,
@@ -226,7 +251,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                     ),
                                     requestBodydata:
                                         jsonEncode(requestBodyData));
-                            if (postResult['success']) {
+                            if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
                                   context, Constants.successfullySubmitted);
                               Navigator.pop(context);
