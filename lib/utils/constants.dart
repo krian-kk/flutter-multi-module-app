@@ -3,6 +3,9 @@ class Constants {
   static const String home = 'home';
   static const String pageNo = '1';
   static const String limit = '10';
+  static const String help = 'Help';
+  static const String fieldagent = 'FIELDAGENT';
+  static const String telecaller = 'TELECALLER';
   static const String ptp = 'PTP';
   static const String rtp = 'RTP (DENIAL)';
   static const String denial = 'DENIAL';
@@ -48,6 +51,7 @@ class Constants {
   static const String pleaseSelectDropDownValue =
       'Please Select Drop Down Value';
   static const String success = 'success';
+  static const String receipt = 'RECEIPT';
   static const int otpWaitingTime = 60;
 
   static List<int> keyBoardNumberList() {

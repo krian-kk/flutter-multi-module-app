@@ -1,11 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/login_response.dart';
 import 'package:origa/router.dart';
+import 'package:origa/screen/login_screen/login_response.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -19,8 +27,9 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import 'bloc/login_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginScreen extends StatefulWidget {
   final AuthenticationBloc authBloc;
@@ -42,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode passwords;
   bool _obscureText = true;
   bool _isChecked = false;
-  String? userType;
+  // String? userType;
 
   @override
   void initState() {
@@ -64,14 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       bloc: bloc,
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is NoInternetConnectionState) {
           AppUtils.noInternetSnackbar(context);
         }
 
         if (state is HomeTabState) {
-          Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
-              arguments: userType);
+          Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -135,7 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           validationRules: ['required'],
                           focusNode: passwords,
                           onEditing: () {
-                            print('object');
                             passwords.unfocus();
                             _formKey.currentState!.validate();
                           },
@@ -182,6 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           buttonBackgroundColor: ColorResource.color23375A,
                           onTap: () {
                             _signIn();
+                            // keyCloak();
                           },
                           cardShape: 85,
                           fontSize: FontSize.sixteen,
@@ -252,33 +260,87 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _signIn() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
     final bool isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     } else {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         bloc.add(NoInternetConnectionEvent());
-      }
-      if (userName.text == 'fos' && password.text == '1234') {
-        setState(() {
-          userType = 'FIELDAGENT';
-          _prefs.setString('userType', 'FIELDAGENT');
-        });
-        bloc.add(HomeTabEvent());
-      } else if (userName.text == 'tc' && password.text == '1234') {
-        setState(() {
-          userType = 'TELECALLER';
-          _prefs.setString('userType', 'TELECALLER');
-        });
-        bloc.add(HomeTabEvent());
       } else {
-        AppUtils.showToast(Languages.of(context)!.passwordNotMatch);
+
+        var params =
+                {
+                "userName": userName.text, 
+                "agentRef": userName.text, 
+                "password": password.text
+                };
+
+        bloc.add(SignInEvent(paramValue: params, userName: userName.text));
       }
-      // bloc.add(HomeTabEvent());
     }
     _formKey.currentState!.save();
   }
+  
+  // LoginResponseModel loginResponse =
+  //     LoginResponseModel();
+
+  // Future<void> keyCloak() async {
+  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+    
+  //     var params =
+  //     {
+  //     "userName": userName.text, 
+  //     "agentRef": userName.text, 
+  //     "password": password.text
+  //     };
+  //       print('---------before execute----------');
+
+  //         Map<String, dynamic> response = await APIRepository.apiRequest(
+  //         APIRequestType.POST,
+  //         HttpUrl.loginUrl,
+  //         requestBodydata: params);
+
+  //         if (response['success']) {
+  //           loginResponse = LoginResponseModel.fromJson(response['data']);
+  //           _prefs.setString('accessToken', loginResponse.data!.accessToken!);
+  //           _prefs.setInt('accessTokenExpireTime', loginResponse.data!.expiresIn!);
+  //           _prefs.setString('refreshToken', loginResponse.data!.refreshToken!);
+  //           _prefs.setInt('refreshTokenExpireTime', loginResponse.data!.refreshExpiresIn!);
+  //           _prefs.setString('keycloakId', loginResponse.data!.keycloakId!);
+
+  //         }
+
+  //       // var params =  {
+  //     //         "username": "YES_suvodeepcollector",
+  //     //         "password": "Agent1234",
+  //     //         "grant_type": "password",
+  //     //         "client_id": "admin-cli",
+  //     //       }; 
+
+  //         // Response response = await _dio.post(
+  //         //   "http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token",
+  //         //   options: Options(headers: {
+  //         //     HttpHeaders.contentTypeHeader: "application/x-www-form-urlencoded",
+  //         //   }),
+  //         //   data: jsonEncode(params),
+  //         // );
+  //         // print(params);
+          
+
+  //       // var response = await http.post(
+  //       //     Uri.parse(HttpUrl.login_keycloak),
+  //       //     headers: <String, String>{
+  //       //       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  //       //     },
+  //       //     body: params,
+  //       //   );
+  //       //   print('---------After execute----------');
+  //       //   print(response.statusCode.toString());
+  //       //   print(response.body);
+
+  //         // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginResponse(response.body.toString())));
+
+  // }
 
   _handleRemeberme(bool value) {
     _isChecked = value;

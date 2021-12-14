@@ -10,17 +10,19 @@ import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/home_tab_event.dart';
 
 // ignore: must_be_immutable
 class HomeTabScreen extends StatefulWidget {
-  final String? userType;
-  HomeTabScreen(this.userType);
+  // final String? userType;
+  // HomeTabScreen(this.userType);
   @override
   _HomeTabScreenState createState() => _HomeTabScreenState();
 }
@@ -32,15 +34,19 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
   String? title = StringResource.allocation.toUpperCase();
 
   TabController? _controller;
-  int _selectedIndex = 0;
+  String? userType;
 
   @override
   void initState() {
     // TODO: implement initState
-    bloc = HomeTabBloc()..add(HomeTabInitialEvent());
     super.initState();
-    print('---------NK-------');
-    print(widget.userType);
+    getUserType();
+    bloc = HomeTabBloc()..add(HomeTabInitialEvent());
+  }
+
+  void getUserType() async {
+   SharedPreferences _prefs = await SharedPreferences.getInstance();
+   userType = _prefs.getString('userType');
   }
 
   @override
@@ -235,11 +241,11 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  if (widget.userType == 'FIELDAGENT')
+                                  if (userType == Constants.fieldagent)
                                     AllocationScreen(),
-                                  if (widget.userType == 'TELECALLER')
+                                  if (userType == Constants.telecaller)
                                     const AllocationTelecallerScreen(),
-                                  DashboardScreen(widget.userType),
+                                  DashboardScreen(),
                                   const ProfileScreen(),
                                 ]),
                           )

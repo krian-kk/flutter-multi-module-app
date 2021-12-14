@@ -25,6 +25,7 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
+import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'bloc/allocation_bloc.dart';
@@ -343,10 +344,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       color: ColorResource.color000000,
                                     ),
                                     const SizedBox(
-                                      width: 15.0,
+                                      width: 10.0,
                                     ),
                                     SizedBox(
-                                        width: 80,
+                                        width: 76,
                                         height: 40,
                                         child: CustomButton(
                                           Languages.of(context)!.yes,
@@ -362,10 +363,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                           },
                                         )),
                                     const SizedBox(
-                                      width: 6.0,
+                                      width: 5.0,
                                     ),
                                     Container(
-                                        width: 80,
+                                        width: 76,
                                         height: 40,
                                         child: CustomButton(
                                           Languages.of(context)!.no,
@@ -448,9 +449,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           child: isCaseDetailLoading
                               ? const Center(child: CircularProgressIndicator())
                               : resultList.isEmpty
-                                  ? const Center(
-                                      child: CustomText(
-                                          Constants.noCasesAvailable))
+                                  ? Center(
+                                      child:
+                                          NoCaseAvailble.buildNoCaseAvailable(),
+                                    )
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0, vertical: 0.0),

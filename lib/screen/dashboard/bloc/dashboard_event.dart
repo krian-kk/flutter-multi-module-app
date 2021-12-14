@@ -3,7 +3,10 @@ part of 'dashboard_bloc.dart';
 @immutable
 abstract class DashboardEvent extends BaseEquatable {}
 
-class DashboardInitialEvent extends DashboardEvent {}
+class DashboardInitialEvent extends DashboardEvent {
+  BuildContext? context;
+  DashboardInitialEvent(this.context);
+}
 
 class PriorityFollowEvent extends DashboardEvent {}
 

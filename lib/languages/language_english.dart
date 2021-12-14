@@ -106,6 +106,9 @@ class LanguageEn extends Languages {
   @override
   String get myVisits => 'MY VISITS';
 
+   @override
+  String get myCalls => 'MY CALLS';
+
   @override
   String get myDeposists => 'MY DEPOSISTS';
 

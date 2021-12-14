@@ -9,7 +9,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
-import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/my_deposists/my_deposists.dart';
 import 'package:origa/screen/my_recipts/my_receipts.dart';
 import 'package:origa/screen/my_visit/my_visits.dart';
@@ -21,9 +20,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_card_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -31,8 +28,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../router.dart';
 
 class DashboardScreen extends StatefulWidget {
-  final String? userType;
-  const DashboardScreen(this.userType, {Key? key}) : super(key: key);
+  // final String? userType;
+  // const DashboardScreen(this.userType, {Key? key}) : super(key: key);
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -45,16 +42,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _initPackageInfo();
-    bloc = DashboardBloc()..add(DashboardInitialEvent());
+    // _initPackageInfo();
+    bloc = DashboardBloc()..add(DashboardInitialEvent(context));
   }
 
-  Future<void> _initPackageInfo() async {
-    final info = await PackageInfo.fromPlatform();
-    setState(() {
-      version = info.version;
-    });
-  }
+  // Future<void> _initPackageInfo() async {
+  //   final info = await PackageInfo.fromPlatform();
+  //   setState(() {
+  //     version = info.version;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -195,13 +192,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 4,
                                         child: Container(
                                           child: userActivity(
-                                            header:
-                                                widget.userType == 'FIELDAGENT'
-                                                    ? Languages.of(context)!
-                                                        .customerMet
-                                                    : Languages.of(context)!
-                                                        .connected
-                                                        .trim(),
+                                            header: bloc.userType ==
+                                                    Constants.fieldagent
+                                                ? Languages.of(context)!
+                                                    .customerMet
+                                                : Languages.of(context)!
+                                                    .connected
+                                                    .trim(),
                                             count: '20',
                                             backgrountColor:
                                                 ColorResource.colorE0ECDF,
@@ -216,13 +213,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         flex: 5,
                                         child: Container(
                                           child: userActivity(
-                                            header:
-                                                widget.userType == 'FIELDAGENT'
-                                                    ? Languages.of(context)!
-                                                        .customerNotMet
-                                                    : Languages.of(context)!
-                                                        .unreachable
-                                                        .trim(),
+                                            header: bloc.userType ==
+                                                    Constants.fieldagent
+                                                ? Languages.of(context)!
+                                                    .customerNotMet
+                                                : Languages.of(context)!
+                                                    .unreachable
+                                                    .trim(),
                                             count: '10',
                                             backgrountColor:
                                                 ColorResource.colorF2EEDC,
@@ -297,7 +294,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: (40 / 400),
+                                      percent: 0.25,
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -309,13 +306,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomText(
-                                          '40',
+                                          bloc.mtdCaseCompleted!.toString(),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
                                         ),
                                         CustomText(
-                                          '400',
+                                          bloc.mtdCaseTotal!.toString(),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
@@ -347,11 +344,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                     LinearPercentIndicator(
                                       // width: MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: (50000 / 5000000),
+                                      percent: 0.19,
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -363,13 +360,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomText(
-                                          '₹ 3,979.67',
+                                          Constants.inr +
+                                              bloc.mtdAmountCompleted!
+                                                  .toString(),
                                           fontSize: FontSize.twelve,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
                                         ),
                                         CustomText(
-                                          '₹ 3,97,553.67',
+                                          Constants.inr +
+                                              bloc.mtdAmountTotal!.toString(),
                                           fontSize: FontSize.twelve,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
@@ -420,7 +420,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         }
                                       },
                                       child: index == 5
-                                          ? widget.userType == 'FIELDAGENT'
+                                          ? bloc.userType ==
+                                                  Constants.fieldagent
                                               ? Card(
                                                   elevation: 0,
                                                   color:
@@ -448,7 +449,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 )
                                               : const SizedBox()
                                           : index == 6
-                                              ? widget.userType == 'FIELDAGENT'
+                                              ? bloc.userType ==
+                                                      Constants.fieldagent
                                                   ? Card(
                                                       elevation: 0,
                                                       color: ColorResource
@@ -502,7 +504,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   ),
                                                   child: Container(
                                                     padding: const EdgeInsets
-                                                        .fromLTRB(12, 7, 10, 8),
+                                                        .fromLTRB(8, 5, 8, 5),
                                                     child: Column(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
@@ -558,7 +560,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                         Row(
                                                           children: [
                                                             CustomText(
-                                                              '40',
+                                                              bloc
+                                                                  .dashboardList[
+                                                                      index]
+                                                                  .count!,
                                                               fontSize: FontSize
                                                                   .fourteen,
                                                               fontWeight:
@@ -571,7 +576,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               width: 6,
                                                             ),
                                                             CustomText(
-                                                              'Customer',
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .customer,
                                                               fontSize: FontSize
                                                                   .fourteen,
                                                               fontWeight:
@@ -586,10 +593,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           height: 3,
                                                         ),
                                                         CustomText(
-                                                          bloc
-                                                              .dashboardList[
-                                                                  index]
-                                                              .amountRs!,
+                                                          Constants.inr +
+                                                              bloc
+                                                                  .dashboardList[
+                                                                      index]
+                                                                  .amountRs!,
                                                           fontSize:
                                                               FontSize.sixteen,
                                                           fontWeight:
@@ -620,7 +628,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 2),
                                 child: CustomButton(
-                                  'HELP',
+                                  Languages.of(context)!.help.toUpperCase(),
                                   fontSize: FontSize.sixteen,
                                   fontWeight: FontWeight.bold,
                                   textColor: ColorResource.color23375A,
@@ -631,7 +639,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   cardShape: 75,
                                   isLeading: true,
                                   onTap: () {
-                                    AppUtils.showToast('help');
+                                    AppUtils.showToast(
+                                        Languages.of(context)!.help);
                                   },
                                   trailingWidget: Row(
                                     children: [

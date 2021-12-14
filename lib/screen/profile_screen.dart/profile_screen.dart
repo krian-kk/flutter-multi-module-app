@@ -204,15 +204,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         CrossAxisAlignment.start,
                                     // mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      SizedBox(
-                                        child: CustomText(
-                                          bloc.offlineProfileValue.id
-                                              .toString(),
-                                          fontSize: FontSize.eighteen,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color101010,
-                                        ),
+                                      CustomText(
+                                        bloc.offlineProfileValue.type
+                                            .toString(),
+                                        fontSize: FontSize.eighteen,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResource.color101010,
                                       ),
                                       const SizedBox(height: 11),
                                       CustomText(

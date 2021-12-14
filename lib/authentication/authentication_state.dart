@@ -24,3 +24,5 @@ class AuthenticationAuthenticated extends AuthenticationState {
 }
 
 class SplashScreenState extends AuthenticationState {}
+
+class HomeScreenState extends AuthenticationState {}

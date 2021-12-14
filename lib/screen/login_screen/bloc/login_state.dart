@@ -9,6 +9,7 @@ class LoginLoadingState extends LoginState {}
 
 class LoginLoadedState extends LoginState {}
 
-class HomeTabState extends LoginState {}
+class HomeTabState extends LoginState {
+}
 
 class NoInternetConnectionState extends LoginState {}

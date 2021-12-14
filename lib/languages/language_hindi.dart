@@ -106,6 +106,9 @@ class LanguageHi extends Languages {
   @override
   String get myVisits => 'मेरा दौरा';
 
+   @override
+  String get myCalls => 'मेरी कॉल';
+
   @override
   String get myDeposists => 'मेरे जमाकर्ता';
 

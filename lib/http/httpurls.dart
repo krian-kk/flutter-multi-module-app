@@ -3,7 +3,17 @@ class HttpUrl {
   static const String version = 'v1/';
   static const String fieldAgent = 'agent/';
 
+  //login
+  static const String login_keycloak =
+      'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
+  static const String loginUrl =
+      'https://uat-collect.origa.ai/node/api/user/loginWeb';
+  static const String agentDetailUrl =
+      'https://uat-collect.origa.ai/node/field-allocation/agents/';
+
   //Get API
+  static const String dashboardUrl =
+      baseUrl + version + fieldAgent + 'profile/dashboard?';
   static const String caseDetailsUrl =
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
   static String eventDetailsUrl({String? caseId, String? usertype}) =>
