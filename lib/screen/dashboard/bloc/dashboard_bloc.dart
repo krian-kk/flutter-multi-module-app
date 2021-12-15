@@ -93,21 +93,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             image: ImageResource.vectorArrow,
             count: jsonData['untouched']['count'].toString(),
             amountRs: jsonData['untouched']['totalAmt'].toString(),
-            ),
-        DashboardListModel(
+          ),
+          DashboardListModel(
             title: Languages.of(event.context!)!.brokenPTP,
             image: ImageResource.vectorArrow,
             count: jsonData['brokenPtp']['count'].toString(),
             amountRs: jsonData['brokenPtp']['totalAmt'].toString(),
-            ),
-        DashboardListModel(
+          ),
+          DashboardListModel(
             title: Languages.of(event.context!)!.myReceipts,
             image: ImageResource.vectorArrow,
             count: jsonData['receipts']['count'].toString(),
             amountRs: jsonData['receipts']['totalAmt'].toString(),
-            ),
-        DashboardListModel(
-            title: userType == Constants.fieldagent ? Languages.of(event.context!)!.myVisits : Languages.of(event.context!)!.myCalls,
+          ),
+          DashboardListModel(
+            title: userType == Constants.fieldagent
+                ? Languages.of(event.context!)!.myVisits
+                : Languages.of(event.context!)!.myCalls,
             image: ImageResource.vectorArrow,
             count: jsonData['visits']['count'].toString(),
             amountRs: jsonData['visits']['totalAmt'].toString(),
@@ -127,30 +129,30 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       }
 // caseList.clear();
       caseList.addAll([
-        CaseListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 3,97,553.67',
-          address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-          date: 'Today, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-        CaseListModel(
-          newlyAdded: true,
-          customerName: 'New User',
-          amount: '₹ 5,54,433.67',
-          address: '2/345, 6th Main Road, Bangalore - 534544',
-          date: 'Thu, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-        CaseListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 8,97,553.67',
-          address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-          date: 'Sat, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
+        // CaseListModel(
+        //   newlyAdded: true,
+        //   customerName: 'Debashish Patnaik',
+        //   amount: '₹ 3,97,553.67',
+        //   address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+        //   date: 'Today, Thu 18 Oct, 2021',
+        //   loanID: 'TVS / TVSF_BFRT6524869550',
+        // ),
+        // CaseListModel(
+        //   newlyAdded: true,
+        //   customerName: 'New User',
+        //   amount: '₹ 5,54,433.67',
+        //   address: '2/345, 6th Main Road, Bangalore - 534544',
+        //   date: 'Thu, Thu 18 Oct, 2021',
+        //   loanID: 'TVS / TVSF_BFRT6524869550',
+        // ),
+        // CaseListModel(
+        //   newlyAdded: true,
+        //   customerName: 'Debashish Patnaik',
+        //   amount: '₹ 8,97,553.67',
+        //   address: '2/345, 1th Main Road Guindy, Chenai - 875032',
+        //   date: 'Sat, Thu 18 Oct, 2021',
+        //   loanID: 'TVS / TVSF_BFRT6524869550',
+        // ),
       ]);
 
       yield DashboardLoadedState();
@@ -214,15 +216,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         print('Please Connect Internet!');
       } else {
-         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyReceiptsUrl + 
-            'timePeriod=${event.timePeiod}');
-            if(getMyReceiptsData['success']) {
-             yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
-            }
-            yield SelectedTimeperiodDataLoadedState();
+        Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=${event.timePeiod}');
+        if (getMyReceiptsData[Constants.success]) {
+          yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
+        }
+        yield SelectedTimeperiodDataLoadedState();
       }
-
     }
 
     if (event is MyVisitsEvent) {
@@ -245,13 +246,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         print('Please Connect Internet!');
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
-            "timePeriod=${event.timePeiod}");
-        if(getMyVisitsData['success']) {
-             yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
-            }
+            APIRequestType.GET,
+            HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
+        if (getMyVisitsData['success']) {
+          yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
+        }
 
-            yield SelectedTimeperiodDataLoadedState();
+        yield SelectedTimeperiodDataLoadedState();
       }
     }
 
@@ -375,12 +376,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         //     "timePeriod=MONTHLY");
         // print('getSearchResultData----->');
         // print(getSearchResultData['data']);
-        
+
         // for (var element in getSearchResultData['data']['result']) {
         //   resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-         
+
         // }
-            yield GetSearchDataState(getReturnValues: getSearchResultData['data']);
+        yield GetSearchDataState(getReturnValues: getSearchResultData['data']);
       }
       yield SelectedTimeperiodDataLoadedState();
     }

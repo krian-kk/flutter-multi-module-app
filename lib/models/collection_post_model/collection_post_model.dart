@@ -7,24 +7,39 @@ class CollectionPostModel {
   late String createdBy;
   late String agentName;
   late String eventModule;
-  late String createdAt;
-  late String lastAction;
-  late String contractor;
+  late CollectionsContact contact;
+  // late CollectionsDeposition deposition;
+  // late String createdAt;
+  // late String lastAction;
+  // late String contractor;
   late String agrRef;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late double? invalidNumber;
 
-  CollectionPostModel(
-      {this.eventId = 0,
-      required this.eventType,
-      required this.caseId,
-      required this.eventAttr,
-      this.eventCode = 'TELEVT003',
-      this.createdBy = '',
-      this.agentName = '',
-      this.eventModule = 'Field Allocation',
-      required this.createdAt,
-      required this.lastAction,
-      this.contractor = '',
-      this.agrRef = ''});
+  CollectionPostModel({
+    this.eventId = 17,
+    required this.eventType,
+    required this.caseId,
+    required this.eventAttr,
+    this.eventCode = 'TELEVT003',
+    this.createdBy = 'YES_getwisecollecto',
+    this.agentName = 'GETWISE COLLECTOR',
+    this.eventModule = 'Field Allocation',
+    required this.contact,
+    // required this.deposition,
+    // required this.createdAt,
+    // required this.lastAction,
+    // this.contractor = '',
+    this.agrRef = 'YES_SD87628',
+    this.callID,
+    this.callingID,
+    this.callerServiceID = 'e',
+    this.voiceCallEventCode = 'TELEVT011',
+    this.invalidNumber,
+  });
 
   CollectionPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -35,10 +50,17 @@ class CollectionPostModel {
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     eventModule = json['eventModule'];
-    createdAt = json['createdAt'];
-    lastAction = json['lastAction'];
-    contractor = json['contractor'];
+    contact = CollectionsContact.fromJson(json['contact']);
+    // deposition = CollectionsDeposition.fromJson(json['deposition']);
+    // createdAt = json['createdAt'];
+    // lastAction = json['lastAction'];
+    // contractor = json['contractor'];
     agrRef = json['agrRef'];
+    callID = json['callID'];
+    callingID = json['callingID'];
+    callerServiceID = json['callerServiceID'];
+    voiceCallEventCode = json['voiceCallEventCode'];
+    invalidNumber = json['invalidNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,10 +73,17 @@ class CollectionPostModel {
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
-    data['createdAt'] = createdAt;
-    data['lastAction'] = lastAction;
-    data['contractor'] = contractor;
+    data['contact'] = contact.toJson();
+    // data['deposition'] = contact.toJson();
+    // data['createdAt'] = createdAt;
+    // data['lastAction'] = lastAction;
+    // data['contractor'] = contractor;
     data['agrRef'] = agrRef;
+    data['callID'] = callID;
+    data['callingID'] = callingID;
+    data['callerServiceID'] = callerServiceID;
+    data['voiceCallEventCode'] = voiceCallEventCode;
+    data['invalidNumber'] = invalidNumber;
     return data;
   }
 }
@@ -68,38 +97,31 @@ class EventAttr {
   late String followUpPriority;
   late String customerName;
   late List<String> imageLocation;
-  late int altitude;
-  late int accuracy;
-  late int altitudeAccuracy;
-  late int heading;
-  late int speed;
-  late int latitude;
-  late int longitude;
-  late int distance;
-  late AgentLocation agentLocation;
-  late String appStatus;
-  late String duplicate;
+  late double? altitude;
+  late double accuracy;
+  late double? altitudeAccuracy;
+  late double? heading;
+  late double? speed;
+  late double latitude;
+  late double longitude;
 
-  EventAttr(
-      {this.amountCollected = 0,
-      required this.date,
-      this.chequeRefNo = '',
-      required this.remarks,
-      required this.mode,
-      this.followUpPriority = '',
-      this.customerName = '',
-      required this.imageLocation,
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation,
-      this.appStatus = '',
-      this.duplicate = 'true'});
+  EventAttr({
+    required this.amountCollected,
+    required this.date,
+    required this.chequeRefNo,
+    required this.remarks,
+    required this.mode,
+    this.followUpPriority = '',
+    this.customerName = '',
+    required this.imageLocation,
+    this.altitude,
+    this.accuracy = 0,
+    this.altitudeAccuracy,
+    this.heading,
+    this.speed,
+    this.latitude = 0,
+    this.longitude = 0,
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     amountCollected = json['amountCollected'];
@@ -117,10 +139,6 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = AgentLocation.fromJson(json['agentLocation']);
-    appStatus = json['appStatus'];
-    duplicate = json['duplicate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -140,35 +158,58 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
-    data['appStatus'] = appStatus;
-    data['duplicate'] = duplicate;
     return data;
   }
 }
 
-class AgentLocation {
-  late int latitude;
-  late int longitude;
-  late String missingAgentLocation;
+class CollectionsContact {
+  late String cType;
+  late String health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
-  AgentLocation(
-      {this.latitude = 0,
-      this.longitude = 0,
-      this.missingAgentLocation = 'true'});
+  CollectionsContact(
+      {required this.cType,
+      this.health = '1',
+      required this.value,
+      this.resAddressId0 = '',
+      this.contactId0 = ''});
 
-  AgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
+  CollectionsContact.fromJson(Map<String, dynamic> json) {
+    cType = json['cType'];
+    health = json['health'];
+    value = json['value'];
+    resAddressId0 = json['resAddressId_0'];
+    contactId0 = json['contactId_0'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
+    data['cType'] = cType;
+    data['health'] = health;
+    data['value'] = value;
+    data['resAddressId_0'] = resAddressId0;
+    data['contactId_0'] = contactId0;
+    return data;
+  }
+}
+
+class CollectionsDeposition {
+  late String status;
+
+  CollectionsDeposition({
+    this.status = 'pending',
+  });
+
+  CollectionsDeposition.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+
     return data;
   }
 }

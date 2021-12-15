@@ -47,7 +47,7 @@ class DioClient {
     print('----------Autherization token----------');
     print(token);
     print('----------Done Autherization token----------');
-    if(JwtDecoder.isExpired(token!)){
+    if (JwtDecoder.isExpired(token!)) {
       // token refresh / try to get the new token
 
     } else {

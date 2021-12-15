@@ -11,6 +11,7 @@ import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_api_result_model/result.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,12 +42,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetState();
       } else {
-        // Map<String, dynamic> getEventDetailsData =
-        //     await APIRepository.getProfileData('7988315676');
         Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.profileUrl);
 
-        if (getProfileData['success'] == true) {
+        if (getProfileData['success']) {
           Map<String, dynamic> jsonData = getProfileData['data'];
 
           profileHiveBox.then((value) => value.put(
@@ -65,6 +64,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (value) => offlineProfileValue = ProfileResultModel.fromJson(
             Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
       );
+
+      // print(
+      //     'Offline Profile Value => ${jsonEncode(offlineProfileValue.address?.last)}');
 
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
@@ -103,13 +105,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await _prefs.clear();
       yield LoginState();
     }
+    if (event is ClickMarkAsHomeEvent) {
+      yield ClickMarkAsHomeState();
+    }
 
     if (event is PostProfileImageEvent) {
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST, HttpUrl.changeProfileImage,
           requestBodydata:
               jsonEncode({"profileImgUrl": event.postValue.toString()}));
-      if (postResult['success']) {
+      if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
     }

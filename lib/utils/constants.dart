@@ -8,21 +8,35 @@ class Constants {
   static const String telecaller = 'TELECALLER';
   static const String ptp = 'PTP';
   static const String rtp = 'RTP (DENIAL)';
+  static const String denial = 'DENIAL';
   static const String dispute = 'DISPUTE';
   static const String remainder = 'Reminder';
   static const String remainder_1 = 'Reminder';
   static const String collections = 'COLLECTIONS';
   static const String ots = 'OTS';
+  static const String otherFeedback = 'OTHER FEEDBACK';
+  static const String leftMessage = 'Left Message';
+  static const String wrongAddress = 'Wrong Address';
+  static const String entryRestricted = 'Entry Restricted';
+  static const String repo = 'REPO';
+  static const String imageCaptured = 'IMAGE CAPTURED';
+  static const String feedBack = 'FEEDBACK';
+  static const String shifted = 'Shifted';
+  static const String doorLocked = 'Door Locked';
+  static const String addressNotFound = 'Address Not Found';
+  static const String lineBusy = 'TC : Line Busy';
+  static const String switchOff = 'TC : Switch Off';
+  static const String rnr = 'TC : RNR';
+  static const String outOfNetwork = 'TC : Out Of Network';
+  static const String disconnecting = 'TC : Disconnecting';
+  static const String doesNotExist = 'TC : Does Not Exist';
+  static const String incorrectNumber = 'TC : Incorrect Number';
+  static const String notOpeartional = 'TC : Not Operational';
+  static const String numberNotWorking = 'TC : Number Not Working';
+
   static const String addressDetails = 'Address Details';
   static const String callDetails = 'Call Details';
-  static const String repo = 'REPO';
-  static const String doorLocked = 'Door Locked';
-  static const String entryRestricted = 'Entry Restricted';
-  static const String wrongAddress = 'Wrong Address';
-  static const String shifted = 'Shifted';
-  static const String addressNotFound = 'Address Not Found';
   static const String captureImage = 'CAPTURE IMAGE';
-  static const String otherFeedback = 'OTHER FEEDBACK';
   static const String addNewContact = 'ADD New contact';
   static const String call = 'CALL';
   static const String viewMap = 'VIEW MAP';
@@ -37,9 +51,8 @@ class Constants {
   static const String pleaseSelectOptions = 'Please Select Options';
   static const String pleaseSelectDropDownValue =
       'Please Select Drop Down Value';
-  static const String denial = 'DENIAL';
+  static const String success = 'success';
   static const String receipt = 'RECEIPT';
-  static const String leftMessage = 'Left Message';
   static const int otpWaitingTime = 60;
 
   static List<int> keyBoardNumberList() {

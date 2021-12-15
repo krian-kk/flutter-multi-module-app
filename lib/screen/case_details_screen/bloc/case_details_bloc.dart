@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -21,7 +22,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'case_details_event.dart';
@@ -109,7 +110,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId');
 
-        if (caseDetailsData['success'] == true) {
+        if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
 
           caseDetailsHiveBox.then((value) => value.put(
@@ -241,11 +242,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                     APIRequestType.GET,
                     HttpUrl.eventDetailsUrl(
                         caseId: '5f80375a86527c46deba2e62',
-                        usertype: 'TELECALLER')
+                        usertype: 'FIELDAGENT')
                     // + '5f80375a86527c46deba2e62'
                     );
 
-            if (getEventDetailsData['success'] == true) {
+            if (getEventDetailsData[Constants.success] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];
 
               eventDetailsHiveBox.then((value) => value.put(
@@ -278,7 +279,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST, HttpUrl.imageCaptured + "userType=$userType",
           requestBodydata: jsonEncode(event.postData));
-      if (postResult['success']) {
+      if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
     }
@@ -293,7 +294,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT007',
           HttpUrl.leftMessageUrl(
             'leftMessage',
-            'FIELDAGENT',
+            userType.toString(),
           ),
           'PTP',
           {
@@ -303,7 +304,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
                     ['value']
                 .toString(),
-            'health': '1'
+            'health': '1',
+            'resAddressId_0': '6181646813c5cf70dea671d2',
           },
         );
       } else if (addressSelectedCustomerNotMetClip ==
@@ -312,7 +314,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Constants.doorLocked,
           caseId.toString(),
           'TELEVT007',
-          HttpUrl.doorLockedUrl('doorLocked', 'FIELDAGENT'),
+          HttpUrl.doorLockedUrl('doorLocked', userType.toString()),
           'NEW',
           [
             {
@@ -322,7 +324,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
                       ['value']
                   .toString(),
-              'health': '1'
+              'health': '1',
+              'resAddressId_0': '6181646813c5cf70dea671d2',
             }
           ],
         );
@@ -332,7 +335,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Constants.entryRestricted,
           caseId.toString(),
           'TELEVT007',
-          HttpUrl.entryRestrictedUrl('entryRestricted', 'FIELDAGENT'),
+          HttpUrl.entryRestrictedUrl('entryRestricted', userType.toString()),
           'PTP',
           [
             {
@@ -342,18 +345,19 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
                       ['value']
                   .toString(),
-              'health': '1'
+              'health': '1',
+              'resAddressId_0': '6181646813c5cf70dea671d2',
             }
           ],
         );
       }
-      if (resultValue['success']) {
+      if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
     }
 
     if (event is ClickAddressInvalidButtonEvent) {
-      late Map<String, dynamic> resultValue = {'success': false};
+      late Map<String, dynamic> resultValue = {Constants.success: false};
       if (addressInvalidFormKey.currentState!.validate()) {
         if (addressSelectedInvalidClip != '') {
           if (addressSelectedInvalidClip ==
@@ -364,7 +368,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'TELEVT008',
               HttpUrl.wrongAddressUrl(
                 'invalidAddress',
-                'FIELDAGENT',
+                userType.toString(),
               ),
               'PTP',
             );
@@ -374,7 +378,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 Constants.shifted,
                 caseId.toString(),
                 'TELEVT008',
-                HttpUrl.shiftedUrl('shifted', 'FIELDAGENT'),
+                HttpUrl.shiftedUrl('shifted', userType.toString()),
                 'REVIEW');
           } else if (addressSelectedInvalidClip ==
               Languages.of(event.context)!.addressNotFound) {
@@ -384,7 +388,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'TELEVT008',
               HttpUrl.addressNotFoundUrl(
                 'addressNotFound',
-                'FIELDAGENT',
+                userType.toString(),
               ),
               'PTP',
             );
@@ -393,26 +397,26 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.showToast(Constants.pleaseSelectOptions);
         }
       }
-      if (resultValue['success']) {
+      if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
     }
 
     if (event is ClickPhoneInvalidButtonEvent) {
-      late Map<String, dynamic> resultValue = {'success': false};
+      late Map<String, dynamic> resultValue = {Constants.success: false};
       if (phoneInvalidFormKey.currentState!.validate()) {
         if (phoneSelectedInvalidClip != '') {
           if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.doesNotExist) {
             resultValue = await phoneInvalidButtonClick(
-                'TC : Does Not Exist',
+                Constants.doesNotExist,
                 caseId.toString(),
                 'TELEVT008',
                 HttpUrl.numberNotWorkingUrl('doesNotExist', 'TELECALLER'));
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.incorrectNumber) {
             resultValue = await phoneInvalidButtonClick(
-              'TC : Incorrect Number',
+              Constants.incorrectNumber,
               caseId.toString(),
               'TELEVT008',
               HttpUrl.incorrectNumberUrl('incorrectNo', 'TELECALLER'),
@@ -420,7 +424,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.numberNotWorking) {
             resultValue = await phoneInvalidButtonClick(
-              'TC : Number Not Working',
+              Constants.numberNotWorking,
               caseId.toString(),
               'TELEVT008',
               HttpUrl.numberNotWorkingUrl('numberNotWorking', 'TELECALLER'),
@@ -428,7 +432,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.notOperational) {
             resultValue = await phoneInvalidButtonClick(
-                'TC : Not Operational',
+                Constants.notOpeartional,
                 caseId.toString(),
                 'TELEVT008',
                 HttpUrl.notOperationalUrl('notOperational', 'TELECALLER'));
@@ -437,7 +441,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.showToast(Constants.pleaseSelectOptions);
         }
       }
-      if (resultValue['success']) {
+      if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
     }
@@ -447,7 +451,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.lineBusy) {
         resultValue = await unreachableButtonClick(
-          'TC : Line Busy',
+          Constants.lineBusy,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.unreachableUrl(
@@ -458,7 +462,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.switchOff) {
         resultValue = await unreachableButtonClick(
-          'TC : Switch Off',
+          Constants.switchOff,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.unreachableUrl(
@@ -469,7 +473,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.rnr) {
         resultValue = await unreachableButtonClick(
-          'TC : RNR',
+          Constants.rnr,
           caseId.toString(),
           'TELEVT011',
           HttpUrl.unreachableUrl(
@@ -480,7 +484,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.outOfNetwork) {
         resultValue = await unreachableButtonClick(
-          'TC : Out Of Network',
+          Constants.outOfNetwork,
           caseId.toString(),
           'TELEVT007',
           HttpUrl.unreachableUrl(
@@ -491,7 +495,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.disConnecting) {
         resultValue = await unreachableButtonClick(
-          'TC : Disconnecting',
+          Constants.disconnecting,
           caseId.toString(),
           'TELEVT011',
           HttpUrl.unreachableUrl(
@@ -500,7 +504,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           ),
         );
       }
-      if (resultValue['success']) {
+      if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
     }
@@ -512,14 +516,31 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String eventCode,
     String urlString,
   ) async {
+    // Position position = Position(
+    //   longitude: 0,
+    //   latitude: 0,
+    //   timestamp: DateTime.now(),
+    //   accuracy: 0,
+    //   altitude: 0,
+    //   heading: 0,
+    //   speed: 0,
+    //   speedAccuracy: 0,
+    // );
+    // if (Geolocator.checkPermission().toString() !=
+    //     PermissionStatus.granted.toString()) {
+    //   Position res = await Geolocator.getCurrentPosition(
+    //       desiredAccuracy: LocationAccuracy.best);
+    //   position = res;
+    // }
     var requestBodyData = PhoneUnreachablePostModel(
         eventType: eventType,
         caseId: caseId,
         eventCode: eventCode,
         eventAttr: PhoneUnreachableEventAttr(
-            remarks: phoneUnreachableRemarksController.text,
-            followUpPriority: 'REVIEW',
-            nextActionDate: phoneUnreachableNextActionDateController.text),
+          remarks: phoneUnreachableRemarksController.text,
+          followUpPriority: 'REVIEW',
+          nextActionDate: phoneUnreachableNextActionDateController.text,
+        ),
         contact: PhoneUnreachbleContact(
           cType: offlineCaseDetailsValue.callDetails![indexValue!]['cType'],
           value: offlineCaseDetailsValue.callDetails![indexValue!]['value'],
@@ -529,7 +550,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
-    if (await postResult['success']) {
+    if (await postResult[Constants.success]) {
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
       phoneSelectedUnreadableClip = '';
@@ -547,16 +568,39 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String followUpPriority,
     dynamic contact,
   ) async {
+    Position position = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0,
+    );
+    if (Geolocator.checkPermission().toString() !=
+        PermissionStatus.granted.toString()) {
+      Position res = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      position = res;
+    }
     var requestBodyData = CustomerNotMetPostModel(
         eventType: eventType,
         caseId: caseId,
         eventCode: eventCode,
         contact: contact,
         eventAttr: CustomerNotMetEventAttr(
-            remarks: addressCustomerNotMetRemarksController.text,
-            followUpPriority: followUpPriority,
-            nextActionDate: addressCustomerNotMetNextActionDateController.text,
-            agentLocation: CustomerNotMetAgentLocation()));
+          remarks: addressCustomerNotMetRemarksController.text,
+          followUpPriority: followUpPriority,
+          nextActionDate: addressCustomerNotMetNextActionDateController.text,
+          longitude: position.longitude,
+          latitude: position.latitude,
+          accuracy: position.accuracy,
+          altitude: position.altitude,
+          heading: position.heading,
+          speed: position.speed,
+        ));
 
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.POST,
@@ -564,7 +608,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
 
-    if (await postResult['success']) {
+    if (await postResult[Constants.success]) {
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
       addressSelectedCustomerNotMetClip = '';
@@ -581,14 +625,37 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String urlString,
     String followUpPriority,
   ) async {
+    Position position = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0,
+    );
+    if (Geolocator.checkPermission().toString() !=
+        PermissionStatus.granted.toString()) {
+      Position res = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      position = res;
+    }
     var requestBodyData = AddressInvalidPostModel(
         eventType: eventType,
         caseId: caseId,
         eventCode: eventCode,
         eventAttr: AddressInvalidEventAttr(
-            remarks: addressInvalidRemarksController.text,
-            followUpPriority: followUpPriority,
-            agentLocation: AgentLocation()),
+          remarks: addressInvalidRemarksController.text,
+          followUpPriority: followUpPriority,
+          longitude: position.longitude,
+          latitude: position.latitude,
+          accuracy: position.accuracy,
+          altitude: position.altitude,
+          heading: position.heading,
+          speed: position.speed,
+        ),
         contact: [
           AddressInvalidContact(
             cType: offlineCaseDetailsValue.addressDetails![indexValue!]
@@ -603,7 +670,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
 
-    if (await postResult['success']) {
+    if (await postResult[Constants.success]) {
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
 
@@ -618,13 +685,31 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String eventCode,
     String urlString,
   ) async {
+    Position position = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0,
+    );
+    if (Geolocator.checkPermission().toString() !=
+        PermissionStatus.granted.toString()) {
+      Position res = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      position = res;
+    }
     var requestBodyData = PhoneInvalidPostModel(
         eventType: eventType,
         caseId: caseId,
         eventCode: eventCode,
         eventAttr: PhoneInvalidEventAttr(
-            remarks: phoneInvalidRemarksController.text,
-            nextActionDate: DateTime.now().toString()),
+          remarks: phoneInvalidRemarksController.text,
+          nextActionDate: DateTime.now().toString(),
+        ),
         contact: PhoneInvalidContact(
           cType: offlineCaseDetailsValue.callDetails![indexValue!]['cType'],
           value: offlineCaseDetailsValue.callDetails![indexValue!]['value'],
@@ -634,7 +719,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
-    if (await postResult['success']) {
+    if (await postResult[Constants.success]) {
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
 

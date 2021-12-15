@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 
 enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
@@ -68,7 +67,6 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
-      print('response data -------->');
       returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;

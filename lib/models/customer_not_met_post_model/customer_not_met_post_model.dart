@@ -1,5 +1,5 @@
 class CustomerNotMetPostModel {
-  late int eventId;
+  late double eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -8,16 +8,15 @@ class CustomerNotMetPostModel {
   late String createdBy;
   late String eventModule;
   late String agentName;
-  late String contractor;
-  late String callID;
-  late String callingID;
+  late String? callID;
+  late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int invalidNumber;
+  late double? invalidNumber;
   late String agrRef;
 
   CustomerNotMetPostModel(
-      {this.eventId = 0,
+      {this.eventId = 24,
       required this.eventType,
       required this.caseId,
       required this.eventCode,
@@ -25,14 +24,13 @@ class CustomerNotMetPostModel {
       this.contact,
       this.createdBy = '0',
       this.eventModule = 'Field Allocation',
-      this.agentName = '0',
-      this.contractor = '0',
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0,
-      this.agrRef = '0'});
+      this.agentName = 'GETWISE COLLECTOR',
+      this.callID,
+      this.callingID,
+      this.callerServiceID = 'e',
+      this.voiceCallEventCode = 'TELEVT011',
+      this.invalidNumber,
+      this.agrRef = 'YES_SD87628'});
 
   CustomerNotMetPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -44,7 +42,6 @@ class CustomerNotMetPostModel {
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
-    contractor = json['contractor'];
     callID = json['callID'];
     callingID = json['callingID'];
     callerServiceID = json['callerServiceID'];
@@ -66,7 +63,6 @@ class CustomerNotMetPostModel {
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
-    data['contractor'] = contractor;
     data['callID'] = callID;
     data['callingID'] = callingID;
     data['callerServiceID'] = callerServiceID;
@@ -81,29 +77,26 @@ class CustomerNotMetEventAttr {
   late String remarks;
   late String followUpPriority;
   late String nextActionDate;
-  late int altitude;
-  late int accuracy;
-  late int altitudeAccuracy;
-  late int heading;
-  late int speed;
-  late int latitude;
-  late int longitude;
-  late int distance;
-  late CustomerNotMetAgentLocation agentLocation;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
 
-  CustomerNotMetEventAttr(
-      {required this.remarks,
-      required this.followUpPriority,
-      required this.nextActionDate,
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation});
+  CustomerNotMetEventAttr({
+    required this.remarks,
+    required this.followUpPriority,
+    required this.nextActionDate,
+    this.altitude = 0,
+    this.accuracy = 0,
+    this.altitudeAccuracy = 0,
+    this.heading = 0,
+    this.speed = 0,
+    this.latitude = 0,
+    this.longitude = 0,
+  });
 
   CustomerNotMetEventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
@@ -116,8 +109,6 @@ class CustomerNotMetEventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = CustomerNotMetAgentLocation.fromJson(json['agentLocation']);
   }
 
   Map<String, dynamic> toJson() {
@@ -132,33 +123,6 @@ class CustomerNotMetEventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
-    return data;
-  }
-}
-
-class CustomerNotMetAgentLocation {
-  late int latitude;
-  late int longitude;
-  late String missingAgentLocation;
-
-  CustomerNotMetAgentLocation(
-      {this.latitude = 0,
-      this.longitude = 0,
-      this.missingAgentLocation = 'true'});
-
-  CustomerNotMetAgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
     return data;
   }
 }

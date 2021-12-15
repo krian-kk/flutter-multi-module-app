@@ -29,8 +29,6 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
-import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -814,9 +812,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.89,
-              child: AddressScreen(bloc: bloc, index: i));
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: AddressScreen(bloc: bloc, index: i)),
+          );
         });
   }
 
@@ -993,16 +994,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
             );
           default:
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    BottomSheetAppbar(
-                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
-                  ],
-                ));
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.89,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      BottomSheetAppbar(
+                          title: '',
+                          padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                      Expanded(
+                          child: Center(child: CircularProgressIndicator())),
+                    ],
+                  )),
+            );
         }
       },
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -61,7 +60,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
-
           if (state is SetTimeperiodValueState) {
             bloc.selectedFilter = 'TODAY';
           }
@@ -358,7 +356,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       progressColor: ColorResource.colorEA6D48,
                                       backgroundColor:
                                           ColorResource.colorD3D7DE,
-                                    ), 
+                                    ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -458,27 +456,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                             75),
                                                   ),
                                                   child: Center(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10),
-                                                      child: CustomText(
-                                                        bloc
-                                                            .dashboardList[
-                                                                index]
-                                                            .title!,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color23375A,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
+                                                    child: CustomText(
+                                                      bloc.dashboardList[index]
+                                                          .title!,
+                                                      fontSize: FontSize.twelve,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: ColorResource
+                                                          .color23375A,
                                                     ),
                                                   ),
-                                                ) : const SizedBox() 
+                                                )
+                                              : const SizedBox()
+                                          : index == 6
+                                              ? bloc.userType ==
+                                                      Constants.fieldagent
+                                                  ? Card(
+                                                      elevation: 0,
+                                                      color: ColorResource
+                                                          .colorffffff,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        side: const BorderSide(
+                                                            color: ColorResource
+                                                                .color23375A,
+                                                            width: 0.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(75),
+                                                      ),
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      10),
+                                                          child: CustomText(
+                                                            bloc
+                                                                .dashboardList[
+                                                                    index]
+                                                                .title!,
+                                                            fontSize:
+                                                                FontSize.twelve,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: ColorResource
+                                                                .color23375A,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox()
                                               : Card(
                                                   elevation: 2,
                                                   shape: RoundedRectangleBorder(
@@ -549,10 +580,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                         Row(
                                                           children: [
                                                             CustomText(
-                                                               bloc
-                                                              .dashboardList[
-                                                                  index]
-                                                              .count!,
+                                                              bloc
+                                                                  .dashboardList[
+                                                                      index]
+                                                                  .count!,
                                                               fontSize: FontSize
                                                                   .fourteen,
                                                               fontWeight:
@@ -565,7 +596,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               width: 6,
                                                             ),
                                                             CustomText(
-                                                              Languages.of(context)!.customer,
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .customer,
                                                               fontSize: FontSize
                                                                   .fourteen,
                                                               fontWeight:
@@ -580,10 +613,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           height: 3,
                                                         ),
                                                         CustomText(
-                                                         Constants.inr + bloc
-                                                              .dashboardList[
-                                                                  index]
-                                                              .amountRs!,
+                                                          Constants.inr +
+                                                              bloc
+                                                                  .dashboardList[
+                                                                      index]
+                                                                  .amountRs!,
                                                           fontSize:
                                                               FontSize.sixteen,
                                                           fontWeight:
@@ -625,7 +659,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   cardShape: 75,
                                   isLeading: true,
                                   onTap: () {
-                                    AppUtils.showToast(Languages.of(context)!.help);
+                                    AppUtils.showToast(
+                                        Languages.of(context)!.help);
                                   },
                                   trailingWidget: Row(
                                     children: [

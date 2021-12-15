@@ -105,29 +105,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
                         } else {
                           var currentDateTime = DateTime.now();
                           var requestBodyData = CompanyBranchDepositPostModel(
-                              // caseId: widget.caseId,
-                              caseId: '618e382004d8d040ac18841b',
-                              eventAttr: EventAttr(
-                                  date: currentDateTime.toString(),
-                                  chequeRefNo: 'chequeRefNo',
-                                  remarks: 'remarks',
-                                  mode: widget.mode,
-                                  customerName: widget.custname,
-                                  imageLocation:
-                                      uploadFileLists as List<String>,
-                                  deposition: Deposition(
-                                      companyBranchName:
-                                          branchNameController.text,
-                                      companyBranchLocation:
-                                          branchLocationController.text,
-                                      recptAmount: receiptController.text,
-                                      deptAmount: depositController.text,
-                                      reference: referenceController.text,
-                                      imageLocation:
-                                          uploadFileLists as List<String>,
-                                      mode: widget.mode,
-                                      depositDate: currentDateTime.toString(),
-                                      status: 'company deposition')));
+                            // caseId: widget.caseId,
+                            caseIds: ['618e382004d8d040ac18841b'],
+                          );
 
                           print("--------company branch--------");
                           print(jsonEncode(requestBodyData));

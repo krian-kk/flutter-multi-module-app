@@ -1,5 +1,5 @@
 class RepoPostModel {
-  late int eventId;
+  late double eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -8,12 +8,11 @@ class RepoPostModel {
   late String createdBy;
   late String agentName;
   late String eventModule;
-  late String contractor;
-  late String callID;
-  late String callingID;
+  late String? callID;
+  late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int invalidNumber;
+  late double? invalidNumber;
   late String agrRef;
 
   RepoPostModel(
@@ -23,16 +22,15 @@ class RepoPostModel {
       required this.eventCode,
       required this.eventAttr,
       required this.contact,
-      this.createdBy = '',
-      this.agentName = '',
+      this.createdBy = 'YES_getwisecollector',
+      this.agentName = 'GETWISE COLLECTOR',
       this.eventModule = 'Field Allocation',
-      this.contractor = '',
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0,
-      this.agrRef = ''});
+      this.callID,
+      this.callingID,
+      this.callerServiceID = 'Kaleyra_123',
+      this.voiceCallEventCode = 'TELEVT011',
+      this.invalidNumber,
+      this.agrRef = 'YES_SD81111'});
 
   RepoPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -46,7 +44,6 @@ class RepoPostModel {
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     eventModule = json['eventModule'];
-    contractor = json['contractor'];
     callID = json['callID'];
     callingID = json['callingID'];
     callerServiceID = json['callerServiceID'];
@@ -66,7 +63,6 @@ class RepoPostModel {
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
-    data['contractor'] = contractor;
     data['callID'] = callID;
     data['callingID'] = callingID;
     data['callerServiceID'] = callerServiceID;
@@ -87,37 +83,32 @@ class EventAttr {
   late String followUpPriority;
   late List<String> imageLocation;
   late String customerName;
-  late int altitude;
-  late int accuracy;
-  late int altitudeAccuracy;
-  late int heading;
-  late int speed;
-  late int latitude;
-  late int longitude;
-  late int distance;
-  late AgentLocation agentLocation;
-  late String appStatus;
+  late double? altitude;
+  late double accuracy;
+  late double? altitudeAccuracy;
+  late double? heading;
+  late double? speed;
+  late double latitude;
+  late double longitude;
 
-  EventAttr(
-      {required this.modelMake,
-      required this.registrationNo,
-      required this.chassisNo,
-      required this.remarks,
-      required this.repo,
-      required this.date,
-      this.followUpPriority = 'REVIEW',
-      required this.imageLocation,
-      this.customerName = '',
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation,
-      this.appStatus = ''});
+  EventAttr({
+    required this.modelMake,
+    required this.registrationNo,
+    required this.chassisNo,
+    required this.remarks,
+    required this.repo,
+    required this.date,
+    this.followUpPriority = 'REVIEW',
+    required this.imageLocation,
+    required this.customerName,
+    this.altitude,
+    this.accuracy = 0,
+    this.altitudeAccuracy,
+    this.heading,
+    this.speed,
+    this.latitude = 0,
+    this.longitude = 0,
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     modelMake = json['modelMake'];
@@ -136,9 +127,6 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = AgentLocation.fromJson(json['agentLocation']);
-    appStatus = json['appStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -159,9 +147,6 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
-    data['appStatus'] = appStatus;
     return data;
   }
 }
@@ -178,31 +163,6 @@ class Repo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
-    return data;
-  }
-}
-
-class AgentLocation {
-  late int latitude;
-  late int longitude;
-  late String missingAgentLocation;
-
-  AgentLocation(
-      {this.latitude = 0,
-      this.longitude = 0,
-      this.missingAgentLocation = 'true'});
-
-  AgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
     return data;
   }
 }

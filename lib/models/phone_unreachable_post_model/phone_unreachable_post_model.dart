@@ -7,30 +7,31 @@ class PhoneUnreachablePostModel {
   late String eventModule;
   late PhoneUnreachbleContact contact;
   late String createdBy;
-  late String callID;
-  late String callingID;
+  late String? callID;
+  late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int invalidNumber;
+  late int? invalidNumber;
   late String agentName;
   late String agrRef;
 
-  PhoneUnreachablePostModel(
-      {this.eventId = 0,
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      this.eventModule = 'Telecalling',
-      required this.contact,
-      this.createdBy = '',
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0,
-      this.agentName = '',
-      this.agrRef = ''});
+  PhoneUnreachablePostModel({
+    this.eventId = 0,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    this.eventModule = 'Telecalling',
+    required this.contact,
+    this.createdBy = 'YES_getwisecollector',
+    this.callID,
+    this.callingID,
+    this.callerServiceID = 'e',
+    this.voiceCallEventCode = 'TELEVT011',
+    this.invalidNumber,
+    this.agentName = 'GETWISE COLLECTOR',
+    this.agrRef = 'YES_SD87628',
+  });
 
   PhoneUnreachablePostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];

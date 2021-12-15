@@ -1,15 +1,8 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
-import 'package:origa/widgets/custom_appbar.dart';
-import 'package:origa/widgets/custom_dialog.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
@@ -19,9 +12,9 @@ import 'package:permission_handler/permission_handler.dart';
 class MapView extends StatefulWidget {
   final AllocationBloc bloc;
   List<String> listOfCity = [
-    'DNYANRAJ AGRO PRODUCT',
-    'SHOP NO 2 DNYANRAJ BUILDING',
-    'EAGLE LOGISTICS',
+    'Guindy',
+    'Perungudi',
+    'Karuthapillaiyur',
   ];
   MapView(this.bloc, {Key? key}) : super(key: key);
 
@@ -34,20 +27,23 @@ class _MapViewState extends State<MapView> {
   late Position position;
   final Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = LatLng(28.644800, 77.216721);
-  final Set<Marker> _markers = {};
-  final MapType _currentMapType = MapType.normal;
+  Set<Marker> _markers = {};
+  Set<Polyline> _polyline = {};
   late String addressLine;
+
+  double currentLatitude = 0.0;
+  double currentLontitude = 0.0;
 
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+            const ImageConfiguration(devicePixelRatio: 7.0),
+            'assets/marker.png')
         .then((d) {
       customIcon = d;
     });
 
     getCurrentLocation();
-    getPermission();
     super.initState();
   }
 
@@ -107,34 +103,34 @@ class _MapViewState extends State<MapView> {
 
   addMarkers() async {
     for (var i in widget.listOfCity) {
-      // List<Location> locations =
-      //     await locationFromAddress('Gronausestraat 710, Enschede');
-      // print('Location => $locations');
-      // _markers.add(Marker(
-      //   markerId: MarkerId('Marker_current ' + i),
-      //   position: LatLng(locations.first.latitude, locations.first.longitude),
-      //   infoWindow: InfoWindow(
-      //     title: i,
-      //     // snippet: 'Bus Stop',
-      //   ),
-      //   onTap: () {
-      //     setState(() {
-      //       print("dkldjd");
-      //       // _polyline.add(Polyline(
-      //       //   polylineId: PolylineId('1'),
-      //       //   visible: true,
-      //       //   width: 1,
-      //       //   points: [
-      //       //     LatLng(currentLatitude, currentLontitude),
-      //       //     LatLng(locations.first.latitude, locations.first.longitude),
-      //       //   ],
-      //       //   color: Colors.red,
-      //       //   jointType: JointType.bevel,
-      //       // ));
-      //     });
-      //   },
-      //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-      // ));
+      List<Location> locations = await locationFromAddress(i);
+      setState(() {
+        _markers.add(Marker(
+          markerId: MarkerId('Marker_current ' + i),
+          position: LatLng(locations.first.latitude, locations.first.longitude),
+          infoWindow: InfoWindow(
+            title: i,
+            // snippet: 'Bus Stop',
+          ),
+          onTap: () {
+            setState(() {
+              _polyline.add(Polyline(
+                polylineId: const PolylineId('poly'),
+                visible: true,
+                width: 1,
+                points: [
+                  LatLng(currentLatitude, currentLontitude),
+                  LatLng(locations.first.latitude, locations.first.longitude),
+                ],
+                color: Colors.red,
+                jointType: JointType.bevel,
+              ));
+            });
+          },
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        ));
+      });
     }
   }
 
@@ -152,7 +148,7 @@ class _MapViewState extends State<MapView> {
 
   void _onAddMarkerButtonPressed() async {
     final CameraPosition _position1 = CameraPosition(
-      bearing: 192.833,
+      // bearing: 192.833,
       target: LatLng(position.latitude, position.longitude),
       tilt: 59.440,
       zoom: 16.0,
@@ -160,6 +156,9 @@ class _MapViewState extends State<MapView> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
     setState(() {
+      currentLatitude = position.latitude;
+      currentLontitude = position.longitude;
+
       _markers.add(
         Marker(
           markerId: const MarkerId("current location"),
@@ -167,10 +166,12 @@ class _MapViewState extends State<MapView> {
           infoWindow: const InfoWindow(
             title: 'current location',
           ),
-          icon: customIcon,
+          // icon: customIcon,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         ),
       );
     });
+    getPermission();
   }
 
   @override
@@ -205,10 +206,45 @@ class _MapViewState extends State<MapView> {
                         target: _center,
                         zoom: 11.0,
                       ),
-                      mapType: _currentMapType,
+                      mapType: MapType.normal,
                       markers: _markers,
                       myLocationButtonEnabled: true,
                       myLocationEnabled: true,
+                      polylines: _polyline,
+                      compassEnabled: false,
+                      tiltGesturesEnabled: false,
+                      mapToolbarEnabled: true,
+                      onTap: (tabPositions) async {
+                        List<Placemark> placemarks =
+                            await placemarkFromCoordinates(
+                                tabPositions.latitude, tabPositions.longitude);
+                        print('Tap Location Place Mark => ${placemarks}');
+                        setState(() {
+                          _markers.add(
+                            Marker(
+                              markerId: const MarkerId('Tap Locations'),
+                              position: tabPositions,
+                              infoWindow: const InfoWindow(
+                                title: 'Tap Locations',
+                              ),
+                              // icon: customIcon,
+                              icon: BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueBlue),
+                            ),
+                          );
+                          _polyline.add(Polyline(
+                            polylineId: const PolylineId('poly'),
+                            visible: true,
+                            width: 1,
+                            points: [
+                              LatLng(currentLatitude, currentLontitude),
+                              tabPositions,
+                            ],
+                            color: Colors.red,
+                            jointType: JointType.bevel,
+                          ));
+                        });
+                      },
                     ),
                   ),
                 ],

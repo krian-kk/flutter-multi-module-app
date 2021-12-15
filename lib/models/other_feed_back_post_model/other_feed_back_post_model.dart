@@ -1,5 +1,5 @@
 class OtherFeedBackPostModel {
-  late int eventId;
+  late double eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -14,7 +14,7 @@ class OtherFeedBackPostModel {
   late String callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int invalidNumber;
+  late double invalidNumber;
 
   OtherFeedBackPostModel(
       {this.eventId = 0,
@@ -88,14 +88,14 @@ class EventAttr {
   late String remarks;
   late List<String> imageLocation;
   late String followUpPriority;
-  late int altitude;
-  late int accuracy;
-  late int altitudeAccuracy;
-  late int heading;
-  late int speed;
-  late int latitude;
-  late int longitude;
-  late int distance;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late double distance;
   late AgentLocation agentLocation;
 
   EventAttr(
@@ -149,8 +149,8 @@ class EventAttr {
 }
 
 class AgentLocation {
-  late int latitude;
-  late int longitude;
+  late double latitude;
+  late double longitude;
   late String missingAgentLocation;
 
   AgentLocation(

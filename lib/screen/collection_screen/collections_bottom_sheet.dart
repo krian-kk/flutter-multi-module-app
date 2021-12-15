@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -20,6 +21,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 // import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
@@ -99,295 +101,336 @@ class _CustomCollectionsBottomSheetState
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
     ];
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.transparent,
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget.customerLoanUserWidget,
-                        const SizedBox(height: 11),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Flexible(
-                            //   child: SizedBox(
-                            //     width: (MediaQuery.of(context).size.width) / 2,
-                            //     child: CustomReadOnlyTextField(
-                            //       '',
-                            //       amountCollectedControlller,
-                            //       validatorCallBack: () {},
-                            //       isReadOnly: true,
-                            //       validationRules: const ['required'],
-                            //     ),
-                            //   ),
-                            //   // child: CustomDropDownButton(
-                            //   //   Languages.of(context)!.amountCollected,
-                            //   //   amountCollectionDropDownList,
-                            //   //   selectedValue: amountCollectionDropDownValue,
-                            //   //   onChanged: (newValue) {
-                            //   //     setState(() {
-                            //   //       amountCollectionDropDownValue =
-                            //   //           newValue.toString();
-                            //   //     });
-                            //   //   },
-                            //   //   icon: SvgPicture.asset(
-                            //   //       ImageResource.dropDownArrow),
-                            //   // ),
-                            // ),
-                            Flexible(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.amountCollected,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width) / 2,
-                                  child: CustomReadOnlyTextField(
-                                    '',
-                                    amountCollectedControlller,
-                                    contentPadding:
-                                        const EdgeInsets.fromLTRB(1, 23, 5, 10),
-                                    validatorCallBack: () {},
-                                    keyBoardType: TextInputType.number,
-                                    focusNode: amountCollectedFocusNode,
-                                    validationRules: const ['required'],
-                                    suffixWidget: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              amountCollectedControlller
-                                                  .text = (int.parse(
-                                                          amountCollectedControlller
-                                                              .text) +
-                                                      1)
-                                                  .toString();
-                                            });
-                                          },
-                                          child: SvgPicture.asset(
-                                            ImageResource.dropDownIncreaseArrow,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              amountCollectedControlller
-                                                  .text = (int.parse(
-                                                          amountCollectedControlller
-                                                              .text) -
-                                                      1)
-                                                  .toString();
-                                            });
-                                          },
-                                          child: SvgPicture.asset(
-                                            ImageResource.dropDownDecreaseArrow,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                            const SizedBox(width: 7),
-                            Flexible(
-                                child: SizedBox(
-                              child: Column(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.89,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Colors.transparent,
+          body: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BottomSheetAppbar(
+                  title: widget.cardTitle,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                          .copyWith(bottom: 5),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          widget.customerLoanUserWidget,
+                          const SizedBox(height: 11),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Flexible(
+                              //   child: SizedBox(
+                              //     width: (MediaQuery.of(context).size.width) / 2,
+                              //     child: CustomReadOnlyTextField(
+                              //       '',
+                              //       amountCollectedControlller,
+                              //       validatorCallBack: () {},
+                              //       isReadOnly: true,
+                              //       validationRules: const ['required'],
+                              //     ),
+                              //   ),
+                              //   // child: CustomDropDownButton(
+                              //   //   Languages.of(context)!.amountCollected,
+                              //   //   amountCollectionDropDownList,
+                              //   //   selectedValue: amountCollectionDropDownValue,
+                              //   //   onChanged: (newValue) {
+                              //   //     setState(() {
+                              //   //       amountCollectionDropDownValue =
+                              //   //           newValue.toString();
+                              //   //     });
+                              //   //   },
+                              //   //   icon: SvgPicture.asset(
+                              //   //       ImageResource.dropDownArrow),
+                              //   // ),
+                              // ),
+                              Flexible(
+                                  child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CustomText(
-                                    Languages.of(context)!.date,
+                                    Languages.of(context)!.amountCollected,
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w400,
                                     color: ColorResource.color666666,
                                     fontStyle: FontStyle.normal,
                                   ),
-                                  CustomReadOnlyTextField(
-                                    '',
-                                    dateControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () =>
-                                        pickDate(context, dateControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
+                                  SizedBox(
+                                    width:
+                                        (MediaQuery.of(context).size.width) / 2,
+                                    child: CustomReadOnlyTextField(
+                                      '',
+                                      amountCollectedControlller,
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          1, 23, 5, 10),
+                                      validatorCallBack: () {},
+                                      keyBoardType: TextInputType.number,
+                                      focusNode: amountCollectedFocusNode,
+                                      validationRules: const ['required'],
+                                      suffixWidget: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                amountCollectedControlller
+                                                    .text = (int.parse(
+                                                            amountCollectedControlller
+                                                                .text) +
+                                                        1)
+                                                    .toString();
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              ImageResource
+                                                  .dropDownIncreaseArrow,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                amountCollectedControlller
+                                                    .text = (int.parse(
+                                                            amountCollectedControlller
+                                                                .text) -
+                                                        1)
+                                                    .toString();
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              ImageResource
+                                                  .dropDownDecreaseArrow,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                        ],
+                                      ),
                                     ),
-                                    // focusColor: ColorResource.colorE5EAF6,
                                   ),
                                 ],
-                              ),
-                            )),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        CustomText(
-                          Languages.of(context)!.paymentMode,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          color: ColorResource.color101010,
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 18,
-                          children: _buildPaymentButton(paymentModeButtonList),
-                        ),
-                        const SizedBox(height: 15),
-                        Flexible(
-                            child: CustomReadOnlyTextField(
-                          Languages.of(context)!.refCheque,
-                          chequeControlller,
-                          focusNode: chequeFocusNode,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                          onEditing: () => remarksFocusNode.requestFocus(),
-                        )),
-                        const SizedBox(height: 15),
-                        CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
-                          remarksControlller,
-                          focusNode: remarksFocusNode,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                          onEditing: () => remarksFocusNode.unfocus(),
-                        ),
-                        const SizedBox(height: 15),
-                        CustomButton(
-                          Languages.of(context)!.customUpload,
-                          fontWeight: FontWeight.w700,
-                          onTap: () => getFiles(),
-                          trailingWidget:
-                              SvgPicture.asset(ImageResource.upload),
-                          fontSize: FontSize.sixteen,
-                          buttonBackgroundColor: ColorResource.color23375A,
-                          borderColor: ColorResource.colorDADADA,
-                          cardShape: 50,
-                          cardElevation: 1,
-                          isLeading: true,
-                        ),
-                        const SizedBox(height: 15),
-                      ],
+                              )),
+                              const SizedBox(width: 7),
+                              Flexible(
+                                  child: SizedBox(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      Languages.of(context)!.date,
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w400,
+                                      color: ColorResource.color666666,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    CustomReadOnlyTextField(
+                                      '',
+                                      dateControlller,
+                                      validationRules: const ['required'],
+                                      isReadOnly: true,
+                                      onTapped: () =>
+                                          pickDate(context, dateControlller),
+                                      suffixWidget: SvgPicture.asset(
+                                        ImageResource.calendar,
+                                        fit: BoxFit.scaleDown,
+                                      ),
+                                      // focusColor: ColorResource.colorE5EAF6,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          CustomText(
+                            Languages.of(context)!.paymentMode,
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            color: ColorResource.color101010,
+                          ),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            runSpacing: 10,
+                            spacing: 18,
+                            children:
+                                _buildPaymentButton(paymentModeButtonList),
+                          ),
+                          const SizedBox(height: 15),
+                          Flexible(
+                              child: CustomReadOnlyTextField(
+                            Languages.of(context)!.refCheque,
+                            chequeControlller,
+                            focusNode: chequeFocusNode,
+                            validationRules: const ['required'],
+                            isLabel: true,
+                            onEditing: () => remarksFocusNode.requestFocus(),
+                          )),
+                          const SizedBox(height: 15),
+                          CustomReadOnlyTextField(
+                            Languages.of(context)!.remarks,
+                            remarksControlller,
+                            focusNode: remarksFocusNode,
+                            validationRules: const ['required'],
+                            isLabel: true,
+                            onEditing: () => remarksFocusNode.unfocus(),
+                          ),
+                          const SizedBox(height: 15),
+                          CustomButton(
+                            Languages.of(context)!.customUpload,
+                            fontWeight: FontWeight.w700,
+                            onTap: () => getFiles(),
+                            trailingWidget:
+                                SvgPicture.asset(ImageResource.upload),
+                            fontSize: FontSize.sixteen,
+                            buttonBackgroundColor: ColorResource.color23375A,
+                            borderColor: ColorResource.colorDADADA,
+                            cardShape: 50,
+                            cardElevation: 1,
+                            isLeading: true,
+                          ),
+                          const SizedBox(height: 15),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
-                ),
-                const SizedBox(width: 25),
-                SizedBox(
-                  width: 191,
-                  child: CustomButton(
-                    Languages.of(context)!.submit.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w700,
-                    onTap: () async {
-                      if (_formKey.currentState!.validate() &&
-                          selectedPaymentModeButton != '') {
-                        if (uploadFileLists.isEmpty) {
-                          AppUtils.showToast(
-                            Constants.uploadDepositSlip,
-                            gravity: ToastGravity.CENTER,
-                          );
-                        } else {
-                          var requestBodyData = CollectionPostModel(
-                              eventType: 'RECEIPT',
-                              caseId: widget.caseId,
-                              eventAttr: EventAttr(
-                                  date: dateControlller.text,
-                                  remarks: remarksControlller.text,
-                                  mode: selectedPaymentModeButton,
-                                  imageLocation:
-                                      uploadFileLists as List<String>,
-                                  agentLocation: AgentLocation()),
-                              createdAt: DateTime.now().toString(),
-                              lastAction: DateTime.now().toString());
-                          Map<String, dynamic> postResult =
-                              await APIRepository.apiRequest(
-                                  APIRequestType.POST,
-                                  HttpUrl.collectionPostUrl(
-                                    'collection',
-                                    widget.userType,
-                                  ),
-                                  requestBodydata: jsonEncode(requestBodyData));
-                          if (postResult['success']) {
-                            AppUtils.topSnackBar(
-                                context, Constants.successfullySubmitted);
-                            Navigator.pop(context);
-                          }
-                        }
-                      }
-                    },
-                    cardShape: 5,
-                  ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(.25),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SizedBox(
+                        width: 95,
+                        child: Center(
+                            child: CustomText(
+                          Languages.of(context)!.cancel.toUpperCase(),
+                          color: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                          fontSize: FontSize.sixteen,
+                        ))),
+                  ),
+                  const SizedBox(width: 25),
+                  SizedBox(
+                    width: 191,
+                    child: CustomButton(
+                      Languages.of(context)!.submit.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w700,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate() &&
+                            selectedPaymentModeButton != '') {
+                          if (uploadFileLists.isEmpty) {
+                            AppUtils.showToast(
+                              Constants.uploadDepositSlip,
+                              gravity: ToastGravity.CENTER,
+                            );
+                          } else {
+                            Position position = Position(
+                              longitude: 0,
+                              latitude: 0,
+                              timestamp: DateTime.now(),
+                              accuracy: 0,
+                              altitude: 0,
+                              heading: 0,
+                              speed: 0,
+                              speedAccuracy: 0,
+                            );
+                            if (Geolocator.checkPermission().toString() !=
+                                PermissionStatus.granted.toString()) {
+                              Position res =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.best);
+                              setState(() {
+                                position = res;
+                              });
+                            }
+                            var requestBodyData = CollectionPostModel(
+                              eventType: 'RECEIPT',
+                              caseId: widget.caseId,
+                              contact: CollectionsContact(
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                              ),
+                              // deposition: CollectionsDeposition(),
+                              eventAttr: EventAttr(
+                                amountCollected:
+                                    int.parse(amountCollectedControlller.text),
+                                chequeRefNo: chequeControlller.text,
+                                date: dateControlller.text,
+                                remarks: remarksControlller.text,
+                                mode: selectedPaymentModeButton,
+                                imageLocation: uploadFileLists as List<String>,
+                                longitude: position.longitude,
+                                latitude: position.latitude,
+                                accuracy: position.accuracy,
+                                altitude: position.altitude,
+                                heading: position.heading,
+                                speed: position.speed,
+                              ),
+                            );
+
+                            Map<String, dynamic> postResult =
+                                await APIRepository.apiRequest(
+                                    APIRequestType.POST,
+                                    HttpUrl.collectionPostUrl(
+                                      'collection',
+                                      widget.userType,
+                                    ),
+                                    requestBodydata:
+                                        jsonEncode(requestBodyData));
+                            if (postResult[Constants.success]) {
+                              AppUtils.topSnackBar(
+                                  context, Constants.successfullySubmitted);
+                              Navigator.pop(context);
+                            }
+                          }
+                        }
+                      },
+                      cardShape: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

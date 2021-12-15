@@ -13,7 +13,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -390,7 +389,10 @@ class _AddressScreenState extends State<AddressScreen>
         ),
       ),
       builder: (BuildContext context) {
-        return const CustomMapViewBottomSheet();
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: const CustomMapViewBottomSheet(),
+        );
         // return CustomEventDetailsBottomSheet(
         //   Languages.of(context)!.eventDetails.toUpperCase(),
         //   widget.bloc,

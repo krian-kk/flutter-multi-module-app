@@ -227,6 +227,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is MapViewEvent) {
       yield MapViewState();
     }
+    if (event is TapAreYouAtOfficeOptionsEvent) {
+      yield TapAreYouAtOfficeOptionsState();
+    }
 
     if (event is MessageEvent) {
       yield MessageState();

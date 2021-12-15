@@ -58,8 +58,9 @@ dependencies:
   permission_handler: ^8.1.4+2
   pin_code_fields: ^7.3.0
   shared_preferences: ^2.0.8
-  sticky_headers: ^0.2.0
+  # sticky_headers: ^0.2.0
   url_launcher: ^6.0.11
+  # webview_flutter: ^2.0.14
   webview_flutter: ^2.0.14
   openid_client: ^0.4.3
   jwt_decoder: ^2.0.1

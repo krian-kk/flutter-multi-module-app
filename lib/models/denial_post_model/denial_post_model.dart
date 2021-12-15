@@ -1,5 +1,5 @@
 class DenialPostModel {
-  late int eventId;
+  late double eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -8,28 +8,28 @@ class DenialPostModel {
   late String createdBy;
   late String agentName;
   late String eventModule;
-  late String contractor;
+  // late String contractor;
   late String agrRef;
-  late String callID;
-  late String callingID;
+  late String? callID;
+  late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int invalidNumber;
+  late double invalidNumber;
 
   DenialPostModel(
-      {this.eventId = 0,
+      {this.eventId = 20,
       required this.eventType,
       required this.caseId,
       required this.eventCode,
       required this.eventAttr,
       required this.contact,
       required this.createdBy,
-      this.agentName = '',
-      this.eventModule = 'Field Allocation',
-      this.contractor = '',
+      this.agentName = 'SUVODEEP TELECALLER changed 3',
+      this.eventModule = 'Telecalling',
+      // this.contractor = '',
       this.agrRef = '',
-      required this.callID,
-      required this.callingID,
+      this.callID,
+      this.callingID,
       this.callerServiceID = '',
       this.voiceCallEventCode = '',
       this.invalidNumber = 0});
@@ -44,7 +44,7 @@ class DenialPostModel {
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     eventModule = json['eventModule'];
-    contractor = json['contractor'];
+    // contractor = json['contractor'];
     agrRef = json['agrRef'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -64,7 +64,7 @@ class DenialPostModel {
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
-    data['contractor'] = contractor;
+    // data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
     data['callingID'] = callingID;
@@ -82,31 +82,30 @@ class EventAttr {
   late String remarks;
   late String amountDenied;
   late String followUpPriority;
-  late int altitude;
-  late int accuracy;
-  late int altitudeAccuracy;
-  late int heading;
-  late int speed;
-  late int latitude;
-  late int longitude;
-  late int distance;
-  late AgentLocation agentLocation;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  // late AgentLocation agentLocation;
 
-  EventAttr(
-      {required this.actionDate,
-      this.reasons,
-      required this.remarks,
-      this.amountDenied = '',
-      this.followUpPriority = 'REVIEW',
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation});
+  EventAttr({
+    required this.actionDate,
+    this.reasons,
+    required this.remarks,
+    this.amountDenied = '',
+    this.followUpPriority = 'REVIEW',
+    this.altitude = 0,
+    this.accuracy = 0,
+    this.altitudeAccuracy = 0,
+    this.heading = 0,
+    this.speed = 0,
+    this.latitude = 0,
+    this.longitude = 0,
+    // required this.agentLocation
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     actionDate = json['actionDate'];
@@ -121,8 +120,8 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = AgentLocation.fromJson(json['agentLocation']);
+
+    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
   }
 
   Map<String, dynamic> toJson() {
@@ -140,15 +139,14 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
+    // data['agentLocation'] = agentLocation.toJson();
     return data;
   }
 }
 
 class AgentLocation {
-  late int latitude;
-  late int longitude;
+  late double latitude;
+  late double longitude;
   late String missingAgentLocation;
 
   AgentLocation(

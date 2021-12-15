@@ -10,7 +10,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
 class MessageChatRoomScreen extends StatefulWidget {
-  MessageChatRoomScreen({Key? key}) : super(key: key);
+  const MessageChatRoomScreen({Key? key}) : super(key: key);
 
   @override
   _MessageChatRoomScreenState createState() => _MessageChatRoomScreenState();
@@ -134,7 +134,7 @@ class _MessageChatRoomScreenState extends State<MessageChatRoomScreen> {
                           children: [
                             if (messages[index].messageType == "receiver")
                               Padding(
-                                  padding: EdgeInsets.only(right: 7),
+                                  padding: const EdgeInsets.only(right: 7),
                                   child: Container(
                                     child:
                                         SvgPicture.asset(ImageResource.profile),
@@ -186,7 +186,7 @@ class _MessageChatRoomScreenState extends State<MessageChatRoomScreen> {
                             ),
                             if (messages[index].messageType != "receiver")
                               Padding(
-                                  padding: EdgeInsets.only(left: 7),
+                                  padding: const EdgeInsets.only(left: 7),
                                   child: Container(
                                     child:
                                         SvgPicture.asset(ImageResource.profile),
