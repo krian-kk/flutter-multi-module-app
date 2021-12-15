@@ -10,6 +10,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/no_case_available.dart';
 
 import 'cash_tab.dart';
 import 'chegue_and_cash_tab.dart';
@@ -49,7 +50,22 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
           builder: (BuildContext context, StateSetter setState) {
         return WillPopScope(
           onWillPop: () async => false,
-          child: Container(
+          child: widget.bloc.myDeposistsData.result!
+                                              .count == 0 ?
+              Scaffold(
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BottomSheetAppbar(
+                        title: Languages.of(context)!.myDeposists,
+                      ),
+
+                     const SizedBox(height: 90,),
+
+                     Center(child: NoCaseAvailble.buildNoCaseAvailable(),)
+                  ],
+                ),
+              ) : Container(
             padding: EdgeInsets.only(top: 16),
             child: DefaultTabController(
               length: 2,

@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
+import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/models/login_response.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -31,7 +32,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginResponseModel loginResponse =
       LoginResponseModel();
 
-      AgentDetailErrorModel agentDetailError =
+    AgentDetailsModel agentDetails =
+      AgentDetailsModel();
+
+    AgentDetailErrorModel agentDetailError =
       AgentDetailErrorModel();
 
     if (event is SignInEvent) {
@@ -48,25 +52,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
            if(response['success']) {
             loginResponse = LoginResponseModel.fromJson(response['data']);
-            _prefs.setString('accessToken', loginResponse.data!.accessToken!);
-            _prefs.setInt('accessTokenExpireTime', loginResponse.data!.expiresIn!);
-            _prefs.setString('refreshToken', loginResponse.data!.refreshToken!);
-            _prefs.setInt('refreshTokenExpireTime', loginResponse.data!.refreshExpiresIn!);
-            _prefs.setString('keycloakId', loginResponse.data!.keycloakId!);
+            _prefs.setString(Constants.accessToken, loginResponse.data!.accessToken!);
+            _prefs.setInt(Constants.accessTokenExpireTime, loginResponse.data!.expiresIn!);
+            _prefs.setString(Constants.refreshToken, loginResponse.data!.refreshToken!);
+            _prefs.setInt(Constants.refreshTokenExpireTime, loginResponse.data!.refreshExpiresIn!);
+            _prefs.setString(Constants.keycloakId, loginResponse.data!.keycloakId!);
+            _prefs.setString(Constants.sessionId, loginResponse.data!.sessionState!);
+            _prefs.setString(Constants.agentRef, event.userName!);
+            _prefs.setString(Constants.userName, event.userName!);
 
-            _prefs.setString('userName', event.userName!);
-
-            if (_prefs.getString('accessToken') != null) {
+            if (_prefs.getString(Constants.accessToken) != null) {
 
              Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
                 APIRequestType.GET, HttpUrl.agentDetailUrl + event.userName!);
 
+                agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
+
                 agentDetailError = AgentDetailErrorModel.fromJson(agentDetail['data']);
 
-                if (event.userName == 'HAR_fos3' || event.userName == 'HAR_fos4' || event.userName == 'HAR_fos1' || event.userName == 'YES_suvodeepcollector') {
-                  _prefs.setString('userType', Constants.fieldagent);
+                if (agentDetails.data![0].agentType == 'COLLECTOR') {
+                  _prefs.setString(Constants.userType, Constants.fieldagent);
+                  _prefs.setString(Constants.agentName, agentDetails.data![0].agentName!);
+                  _prefs.setString(Constants.mobileNo, agentDetails.data![0].mobNo!);
+                  _prefs.setString(Constants.email, agentDetails.data![0].email!);
+                  _prefs.setString(Constants.contractor, agentDetails.data![0].contractor!);
+                  _prefs.setString(Constants.status, agentDetails.data![0].status!);
+                  _prefs.setString(Constants.code, agentDetails.code!);
+                  _prefs.setBool(Constants.userAdmin, agentDetails.data![0].userAdmin!);
                 } else {
-                  _prefs.setString('userType', Constants.telecaller);
+                  _prefs.setString(Constants.userType, Constants.telecaller);
                 }
 
                 // print("----------Agent Details-------------");

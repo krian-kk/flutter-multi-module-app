@@ -346,9 +346,9 @@ class _LoginScreenState extends State<LoginScreen> {
     _isChecked = value;
     SharedPreferences.getInstance().then(
       (prefs) {
-        prefs.setBool("remember_me", value);
-        prefs.setString('username', userName.text);
-        prefs.setString('password', password.text);
+        prefs.setBool(Constants.rememberMe, value);
+        prefs.setString(Constants.rememberUserName, userName.text);
+        prefs.setString(Constants.rememberPassword, password.text);
       },
     );
     setState(() {
@@ -359,9 +359,9 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loadUserNamePassword() async {
     try {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var _username = _prefs.getString("username") ?? "";
-      var _password = _prefs.getString("password") ?? "";
-      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+      var _username = _prefs.getString(Constants.rememberUserName) ?? "";
+      var _password = _prefs.getString(Constants.rememberPassword) ?? "";
+      var _remeberMe = _prefs.getBool(Constants.rememberMe) ?? false;
 
       if (_remeberMe) {
         setState(() {
