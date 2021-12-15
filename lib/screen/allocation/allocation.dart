@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/buildroute_data.dart';
@@ -42,6 +43,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   String version = "";
   List<Result> resultList = [];
   String? searchBasedOnValue;
+  String? currentAddress;
 
   // The controller for the ListView
   late ScrollController _controller;
@@ -60,14 +62,28 @@ class _AllocationScreenState extends State<AllocationScreen> {
     super.dispose();
   }
 
+  //get current location lat, alng and address
   void getCurrentLocation() async {
     Position result = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     setState(() {
       position = result;
     });
-    // print('position------> ${position}');
+    // print('position------> ${position.heading}');
     // print(position);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+                        result.latitude, result.longitude);
+    
+    setState(() {
+     currentAddress = placemarks.toList().first.street.toString() +
+                              ', ' +
+                              placemarks.toList().first.subLocality.toString() +
+                              ', ' +
+                              placemarks.toList().first.postalCode.toString();
+      // print(currentAddress);                        
+
+    });
+
   }
 
   // This function will be triggered whenver the user scroll
@@ -212,41 +228,44 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 30),
-                          child: Container(
-                            width: 175,
-                            // padding: EdgeInsets.all(10),
-                            child: CustomButton(
-                              Languages.of(context)!.message,
-                              alignment: MainAxisAlignment.end,
-                              cardShape: 50,
-                              isTrailing: true,
-                              leadingWidget: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: 40,
+                          child: Visibility(
+                            visible: bloc.isMessageThere,
+                            child: Container(
+                              width: 175,
+                              // padding: EdgeInsets.all(10),
+                              child: CustomButton(
+                                Languages.of(context)!.message,
+                                alignment: MainAxisAlignment.end,
+                                cardShape: 50,
+                                isTrailing: true,
+                                leadingWidget: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    height: 26,
-                                    width: 26,
-                                    // ignore: prefer_const_constructors
-                                    decoration: BoxDecoration(
-                                      color: ColorResource.colorFFFFFF,
-                                      shape: BoxShape.circle,
+                                    width: 40,
+                                    child: Container(
+                                      height: 26,
+                                      width: 26,
+                                      // ignore: prefer_const_constructors
+                                      decoration: BoxDecoration(
+                                        color: ColorResource.colorFFFFFF,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                          child: CustomText(
+                                        bloc.messageCount.toString(),
+                                        color: ColorResource.colorEA6D48,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w700,
+                                        lineHeight: 1,
+                                      )),
                                     ),
-                                    child: Center(
-                                        child: CustomText(
-                                      '2',
-                                      color: ColorResource.colorEA6D48,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      lineHeight: 1,
-                                    )),
                                   ),
                                 ),
+                                onTap: () {
+                                  bloc.add(MessageEvent());
+                                  AppUtils.showToast('Message');
+                                },
                               ),
-                              onTap: () {
-                                bloc.add(MessageEvent());
-                                AppUtils.showToast('Message');
-                              },
                             ),
                           ),
                         ),
@@ -403,7 +422,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           child: isCaseDetailLoading
                               ? const Center(child: CircularProgressIndicator())
                               : resultList.isEmpty
-                                  ? Center(child: NoCaseAvailble.buildNoCaseAvailable(),)
+                                  ? Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 50),
+                                        child: NoCaseAvailble.buildNoCaseAvailable(),
+                                      ),
+                                    ],
+                                  )
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0, vertical: 0.0),
@@ -513,10 +539,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
             const SizedBox(
               width: 8,
             ),
-            const SizedBox(
+             SizedBox(
               width: 213,
               child: CustomText(
-                'No.1, ABC Street, Gandhi Nagar 1st phase',
+                currentAddress!,
+                style: const TextStyle(overflow: TextOverflow.ellipsis),
                 fontSize: FontSize.twelve,
                 fontWeight: FontWeight.w700,
                 color: ColorResource.color101010,
@@ -534,7 +561,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   color: ColorResource.color23375A,
                 ),
                 onTap: () {
-                  AppUtils.showToast('Change address');
+                  getCurrentLocation();
+                  // AppUtils.showToast('Change address');
                 },
               ),
             ),

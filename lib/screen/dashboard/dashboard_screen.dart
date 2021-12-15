@@ -174,10 +174,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 13),
+                               Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 13),
                                 child: CustomText(
-                                  '15th Oct, 2020',
+                                  bloc.todayDate ?? '',
                                   fontSize: FontSize.twelve,
                                   fontWeight: FontWeight.w700,
                                   color: ColorResource.color23375A,
@@ -195,13 +195,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         child: Container(
                                           child: userActivity(
                                             header:
-                                                bloc.userType == Constants.fieldagent
+                                                bloc.userType! == Constants.fieldagent
                                                     ? Languages.of(context)!
                                                         .customerMet
                                                     : Languages.of(context)!
                                                         .connected
                                                         .trim(),
-                                            count: '20',
+                                            count: '0',
                                             backgrountColor:
                                                 ColorResource.colorE0ECDF,
                                             leadingColor:
@@ -216,13 +216,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         child: Container(
                                           child: userActivity(
                                             header:
-                                                bloc.userType == Constants.fieldagent 
+                                                bloc.userType! == Constants.fieldagent 
                                                     ? Languages.of(context)!
                                                         .customerNotMet
                                                     : Languages.of(context)!
                                                         .unreachable
                                                         .trim(),
-                                            count: '10',
+                                            count: '0',
                                             backgrountColor:
                                                 ColorResource.colorF2EEDC,
                                             leadingColor:
@@ -243,7 +243,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               header: Languages.of(context)!
                                                   .invalid
                                                   .trim(),
-                                              count: '10',
+                                              count: '0',
                                               backgrountColor:
                                                   ColorResource.colorF4ECEF,
                                               leadingColor:
@@ -292,11 +292,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                     LinearPercentIndicator(
                                       // width: MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: 0.25,
+                                      // Result must change
+                                      // percent: (bloc.mtdCaseCompleted!/bloc.mtdCaseTotal!),
+                                      percent: (3/5),
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -308,13 +310,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomText(
-                                          bloc.mtdCaseCompleted!.toString(),
+                                          bloc.mtdCaseCompleted.toString(),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
                                         ),
                                         CustomText(
-                                           bloc.mtdCaseTotal!.toString(),
+                                           bloc.mtdCaseTotal.toString(),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
@@ -350,7 +352,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: 0.19,
+                                      percent: (bloc.mtdAmountCompleted!/bloc.mtdAmountTotal!),
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -362,13 +364,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomText(
-                                          Constants.inr + bloc.mtdAmountCompleted!.toString(),
+                                          Constants.inr + bloc.mtdAmountCompleted.toString(),
                                           fontSize: FontSize.twelve,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
                                         ),
                                         CustomText(
-                                          Constants.inr + bloc.mtdAmountTotal!.toString(),
+                                          Constants.inr + bloc.mtdAmountTotal.toString(),
                                           fontSize: FontSize.twelve,
                                           fontWeight: FontWeight.w700,
                                           color: ColorResource.color23375A,
@@ -415,11 +417,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 YardingAndSelfReleaseEvent());
                                             break;
                                           default:
-                                            AppUtils.showToast('');
+                                            // AppUtils.showToast('');
                                         }
                                       },
                                       child:  index == 5
-                                          ? bloc.userType == Constants.fieldagent ? Card(
+                                          ? bloc.userType! == Constants.fieldagent ? Card(
                                               elevation: 0,
                                               color: ColorResource.colorD3D7DE,
                                               shape: RoundedRectangleBorder(
@@ -442,7 +444,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               ),
                                             ) : const SizedBox() 
                                           : index == 6
-                                              ? bloc.userType == Constants.fieldagent ?  Card(
+                                              ? bloc.userType! == Constants.fieldagent ?  Card(
                                                   elevation: 0,
                                                   color:
                                                       ColorResource.colorffffff,

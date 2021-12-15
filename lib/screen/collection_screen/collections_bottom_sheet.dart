@@ -63,7 +63,7 @@ class _CustomCollectionsBottomSheetState
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
     }
   }
 

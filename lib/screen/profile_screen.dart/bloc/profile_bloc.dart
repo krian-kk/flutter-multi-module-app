@@ -99,6 +99,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ChangeProfileImageState();
     }
     if (event is LoginEvent) {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      await _prefs.clear();
       yield LoginState();
     }
 

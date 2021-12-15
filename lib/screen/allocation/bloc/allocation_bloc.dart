@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -35,6 +34,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
   bool isNoInternet = false;
+
+  int? messageCount = 0;
+  bool isMessageThere = false;
 
   int page = 1;
 

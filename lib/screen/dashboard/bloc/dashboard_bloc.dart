@@ -14,7 +14,7 @@ import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
@@ -22,7 +22,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
   List<CaseListModel> caseList = [];
-  String? userType;
+  String? userType = 'FIELDAGENT';
   String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
@@ -45,10 +45,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'MONTHLY',
   ];
 
-  String? mtdCaseCompleted;
-  String? mtdCaseTotal;
-  String? mtdAmountCompleted;
-  String? mtdAmountTotal;
+  int? mtdCaseCompleted = 0;
+  int? mtdCaseTotal = 0;
+  int? mtdAmountCompleted = 0;
+  int? mtdAmountTotal = 0;
+
+  String? todayDate;
 
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
@@ -58,20 +60,24 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString('userType');
 
+    var currentDateTime = DateTime.now();
+    String currentDate = DateFormat.yMMMEd().format(currentDateTime);
+    todayDate = currentDate;
+
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
-      }
+      } else {
 
       Map<String, dynamic> DashboardData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
 
-        if (DashboardData['success'] == true) {
+        if (DashboardData['success']) {
          var jsonData = DashboardData['data']['result'];
 
-         mtdCaseCompleted = jsonData['mtdCases']['completed'].toString();
-         mtdCaseTotal = jsonData['mtdCases']['total'].toString();
-         mtdAmountCompleted = jsonData['mtdAmount']['completed'].toString();
-         mtdAmountTotal = jsonData['mtdAmount']['total'].toString();
+         mtdCaseCompleted = jsonData['mtdCases']['completed'];
+         mtdCaseTotal = jsonData['mtdCases']['total'];
+         mtdAmountCompleted = jsonData['mtdAmount']['completed'];
+         mtdAmountTotal = jsonData['mtdAmount']['total'];
           // print(DashboardData['data']);
 
       dashboardList.addAll([
@@ -118,6 +124,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             amountRs: ''),
       ]);
     }
+      }
 // caseList.clear();
       caseList.addAll([
         CaseListModel(
@@ -365,7 +372,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
         //             Map<String, dynamic> getSearchResultData = await APIRepository.apiRequest(
         //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
-        //     "timePeriod=WEEKLY");
+        //     "timePeriod=MONTHLY");
         // print('getSearchResultData----->');
         // print(getSearchResultData['data']);
         

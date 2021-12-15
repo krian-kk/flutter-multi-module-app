@@ -9,7 +9,8 @@ class Constants {
   static const String ptp = 'PTP';
   static const String rtp = 'RTP (DENIAL)';
   static const String dispute = 'DISPUTE';
-  static const String remainder = 'REMINDER';
+  static const String remainder = 'Reminder';
+  static const String remainder_1 = 'Reminder';
   static const String collections = 'COLLECTIONS';
   static const String ots = 'OTS';
   static const String addressDetails = 'Address Details';

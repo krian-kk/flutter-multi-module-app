@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/screen/dashboard/dashboard_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_tab_event.dart';
 import 'home_tab_state.dart';
@@ -10,12 +8,16 @@ import 'home_tab_state.dart';
 class HomeTabBloc extends Bloc<HomeTabEvent, HomeTabState> {
   HomeTabBloc() : super(HomeTabInitialState());
 
-  int? notificationCount = 3;
+  int? notificationCount = 0;
+  String? userType;
 
   @override
   Stream<HomeTabState> mapEventToState(HomeTabEvent event) async* {
     if (event is HomeTabInitialEvent) {
       yield HomeTabLoadingState();
+
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      userType = _prefs.getString('userType');
 
       yield HomeTabLoadedState();
     }
