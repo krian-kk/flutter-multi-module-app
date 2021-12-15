@@ -22,10 +22,10 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 
 class CompanyBranch extends StatefulWidget {
   final DashboardBloc bloc;
-  final String? caseId;
+  final List<String>? caseIds;
   final String? mode;
   final String? custname;
-  const CompanyBranch(this.bloc, {this.caseId, this.mode, this.custname});
+  const CompanyBranch(this.bloc, {this.caseIds, this.mode, this.custname});
 
   @override
   _CompanyBranchState createState() => _CompanyBranchState();
@@ -105,23 +105,20 @@ class _CompanyBranchState extends State<CompanyBranch> {
                         } else {
                           var requestBodyData = CompanyBranchDepositPostModel(
                             // caseId: widget.caseId,
-                            caseIds: ['618e382004d8d040ac18841b'],
+                            caseIds: widget.caseIds as List<String>,
                             deposition: Deposition(
-                              companyBranchName: 'Branch Name mandatory',
-                              companyBranchLocation: 'Location mandatory',
-                              recptAmount: '27577',
-                              deptAmount: '27577',
-                              reference: 'mandatory',
-                              // imageLocation: [],
-                              mode: 'Company Branch',
-                              depositDate: '2021-11-16T03:24:48.584Z',
+                              companyBranchName: branchNameController.text,
+                              companyBranchLocation:
+                                  branchLocationController.text,
+                              recptAmount: receiptController.text,
+                              deptAmount: depositController.text,
+                              reference: referenceController.text,
+                              imageLocation: uploadFileLists as List<String>,
+                              mode: widget.mode.toString(),
+                              depositDate: DateTime.now().toString(),
                               status: 'deposited',
                             ),
                           );
-
-                          print("--------company branch--------");
-                          print(jsonEncode(requestBodyData));
-
                           widget.bloc.add(PostCompanyDepositDataEvent(
                               postData: requestBodyData));
 

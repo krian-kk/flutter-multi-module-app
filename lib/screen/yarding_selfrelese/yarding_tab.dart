@@ -45,13 +45,7 @@ class _YardingTabState extends State<YardingTab> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    var currentDateTime = DateTime.now();
-    String currentDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
-    setState(() {
-      dateController.text = currentDate;
-    });
   }
 
   getFiles() async {
@@ -60,7 +54,6 @@ class _YardingTabState extends State<YardingTab> {
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      print(uploadFileLists);
     } else {
       // User canceled the picker
       AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
@@ -110,26 +103,16 @@ class _YardingTabState extends State<YardingTab> {
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
-                          var currentDateTime = DateTime.now();
                           var requestBodyData = YardingPostModel(
                               // caseId: widget.caseId!,
                               caseId: widget.caseId.toString(),
-                              eventAttr: EventAttr(
-                                  remarks: remarksController.text,
-                                  repo: Repo(
-                                      yard: yardNameController.text,
-                                      date: dateController.text,
-                                      time: timeController.text,
-                                      remarks: remarksController.text,
-                                      imageLocation:
-                                          uploadFileLists as List<String>),
-                                  imageLocation:
-                                      uploadFileLists as List<String>,
-                                  customerName: widget.custname!,
-                                  date: currentDateTime.toString()));
-
-                          // print("--------yarding--------");
-                          // print(jsonEncode(requestBodyData));
+                              repo: Repo(
+                                yard: yardNameController.text,
+                                date: dateController.text,
+                                time: timeController.text,
+                                remarks: remarksController.text,
+                                imageLocation: uploadFileLists as List<String>,
+                              ));
                           widget.bloc.add(
                               PostYardingDataEvent(postData: requestBodyData));
                         }
@@ -158,7 +141,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.yardName,
                             yardNameController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -168,7 +151,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.date,
                             dateController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                             onTapped: () => pickDate(context, dateController),
@@ -179,7 +162,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.time,
                             timeController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                             onTapped: () => pickTime(context, timeController),
@@ -190,7 +173,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.remark,
                             remarksController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -254,7 +237,7 @@ class _YardingTabState extends State<YardingTab> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

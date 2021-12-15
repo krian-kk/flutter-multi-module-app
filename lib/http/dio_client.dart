@@ -42,17 +42,19 @@ class DioClient {
     // developer should try to get the token from
     //stored palces, like: shared storage or local storage db or from firebase
     //and should retrun with or without token
-    String? token = _prefs.getString('accessToken');
+    String token = _prefs.getString('accessToken') ?? '';
 
     print('----------Autherization token----------');
     print(token);
     print('----------Done Autherization token----------');
-    if (JwtDecoder.isExpired(token!)) {
-      // token refresh / try to get the new token
+    if (token != '') {
+      if (JwtDecoder.isExpired(token)) {
+        // token refresh / try to get the new token
 
-    } else {
-      // old token will be used
-      token = token;
+      } else {
+        // old token will be used
+        token = token;
+      }
     }
     return token;
   }

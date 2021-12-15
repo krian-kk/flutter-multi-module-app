@@ -22,10 +22,10 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 
 class BankTab extends StatefulWidget {
   final DashboardBloc bloc;
-  final String? caseId;
+  final List<String>? caseIds;
   final String? mode;
   final String? custname;
-  const BankTab(this.bloc, {this.caseId, this.mode, this.custname});
+  const BankTab(this.bloc, {this.caseIds, this.mode, this.custname});
 
   @override
   _BankTabState createState() => _BankTabState();
@@ -47,7 +47,7 @@ class _BankTabState extends State<BankTab> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    print(widget.caseIds);
     super.initState();
   }
 
@@ -110,30 +110,20 @@ class _BankTabState extends State<BankTab> {
                         print(currentDateTime);
                         var requestBodyData = BankDepositPostModel(
                             // caseId: widget.caseId,
-                            caseId: '618e382004d8d040ac18841b',
-                            eventAttr: EventAttr(
-                                date: currentDateTime.toString(),
-                                chequeRefNo: 'chequeRefNo',
-                                remarks: 'remarks',
-                                mode: widget.mode,
-                                customerName: widget.custname,
-                                imageLocation: uploadFileLists as List<String>,
-                                deposition: Deposition(
-                                    bankName: bankNameController.text,
-                                    bankBranch: branchController.text,
-                                    ifscCode: ifscCodeController.text,
-                                    accNumber: accNoController.text,
-                                    recptAmount: receiptController.text,
-                                    deptAmount: depositController.text,
-                                    reference: referenceController.text,
-                                    imageLocation:
-                                        uploadFileLists as List<String>,
-                                    mode: widget.mode,
-                                    depositDate: currentDateTime.toString(),
-                                    status: 'bank deposition')));
-
-                        print("--------bank deposit--------");
-                        print(jsonEncode(requestBodyData));
+                            caseIds: widget.caseIds as List<String>,
+                            deposition: Deposition(
+                              bankName: bankNameController.text,
+                              bankBranch: branchController.text,
+                              ifscCode: ifscCodeController.text,
+                              accNumber: accNoController.text,
+                              recptAmount: receiptController.text,
+                              deptAmount: depositController.text,
+                              reference: referenceController.text,
+                              imageLocation: uploadFileLists as List<String>,
+                              mode: widget.mode.toString(),
+                              depositDate: DateTime.now().toString(),
+                              status: 'deposited',
+                            ));
 
                         widget.bloc.add(PostBankDepositDataEvent(
                             postData: requestBodyData));

@@ -17,11 +17,11 @@ class DashboardYardingandSelfReleaseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -62,14 +62,14 @@ class Result {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['due'] = this.due;
-    data['cust'] = this.cust;
-    data['collSubStatus'] = this.collSubStatus;
-    data['customerId'] = this.customerId;
-    data['caseId'] = this.caseId;
-    if (this.address != null) {
-      data['address'] = this.address!.map((v) => v.toJson()).toList();
+    data['_id'] = sId;
+    data['due'] = due;
+    data['cust'] = cust;
+    data['collSubStatus'] = collSubStatus;
+    data['customerId'] = customerId;
+    data['caseId'] = caseId;
+    if (address != null) {
+      data['address'] = address!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -88,8 +88,8 @@ class Address {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cType'] = this.cType;
-    data['value'] = this.value;
+    data['cType'] = cType;
+    data['value'] = value;
     return data;
   }
 }

@@ -12,8 +12,8 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 
 class DepositionMode {
   @override
-  static Widget buildDepositionMode(BuildContext context, String? caseID,
-      String? mode, DashboardBloc bloc, String? custName) {
+  static Widget buildDepositionMode(BuildContext context, List<String> caseIDs,
+      String mode, DashboardBloc bloc, String? custName) {
     // print("caseID------->");
     // print(caseID);
     // print(mode);
@@ -71,9 +71,9 @@ class DepositionMode {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         BankTab(bloc,
-                            caseId: caseID, mode: mode, custname: custName),
+                            caseIds: caseIDs, mode: mode, custname: custName),
                         CompanyBranch(bloc,
-                            caseId: caseID, mode: mode, custname: custName),
+                            caseIds: caseIDs, mode: mode, custname: custName),
                       ],
                     ),
                   ),

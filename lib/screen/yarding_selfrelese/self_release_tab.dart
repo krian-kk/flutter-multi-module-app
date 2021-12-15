@@ -45,13 +45,12 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    var currentDateTime = DateTime.now();
-    String currentDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
-    setState(() {
-      dateController.text = currentDate;
-    });
+    // var currentDateTime = DateTime.now();
+    // String currentDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
+    // setState(() {
+    //   dateController.text = currentDate;
+    // });
   }
 
   getFiles() async {
@@ -110,24 +109,14 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
-                          var currentDateTime = DateTime.now();
                           var requestBodyData = SelfReleasePostModel(
-                              // caseId: widget.caseId!,
-                              caseId: '618e382004d8d040ac18841b',
-                              eventAttr: EventAttr(
-                                  remarks: remarksController.text,
-                                  repo: Repo(
-                                      date: dateController.text,
-                                      time: timeController.text,
-                                      remarks: remarksController.text,
-                                      imageLocation:
-                                          uploadFileLists as List<String>),
-                                  imageLocation:
-                                      uploadFileLists as List<String>,
-                                  customerName: widget.custname!,
-                                  date: currentDateTime.toString()));
-                          // print("--------self release--------");
-                          // print(jsonEncode(requestBodyData));
+                              caseId: "61932bce3e29eb34b4149841",
+                              repo: Repo(
+                                date: dateController.text,
+                                time: timeController.text,
+                                remarks: remarksController.text,
+                                imageLocation: uploadFileLists as List<String>,
+                              ));
                           widget.bloc.add(PostSelfreleaseDataEvent(
                               postData: requestBodyData));
                         }
@@ -240,7 +229,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();
