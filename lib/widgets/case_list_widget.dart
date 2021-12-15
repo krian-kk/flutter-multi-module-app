@@ -24,7 +24,14 @@ class CaseLists {
     return bloc.selectedFilterDataLoading ? 
     const Center(child: CircularProgressIndicator(),) :
     listData.result!.cases!.isEmpty ? 
-    Center(child: NoCaseAvailble.buildNoCaseAvailable(),) :
+    Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 50),
+          child: NoCaseAvailble.buildNoCaseAvailable(),
+        ),
+      ],
+    ) :
     ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: listData.result!.cases!.length,

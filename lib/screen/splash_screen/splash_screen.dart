@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,11 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
           const SizedBox(
             height: 30,
           ),
-          CustomText(
-            Languages.of(context)!.origa,
-            color: ColorResource.color23375A,
-            fontSize: FontSize.twentyFour,
-          )
+          SvgPicture.asset(ImageResource.origa),
+          // CustomText(
+          //   Languages.of(context)!.origa,
+          //   color: ColorResource.color23375A,
+          //   fontSize: FontSize.twentyFour,
+          // )
         ],
       ),
     );

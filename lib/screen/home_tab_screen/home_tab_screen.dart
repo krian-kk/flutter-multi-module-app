@@ -34,20 +34,20 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
   String? title = StringResource.allocation.toUpperCase();
 
   TabController? _controller;
-  String? userType;
+  // String? userType;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserType();
+    // getUserType();
     bloc = HomeTabBloc()..add(HomeTabInitialEvent());
   }
 
-  void getUserType() async {
-   SharedPreferences _prefs = await SharedPreferences.getInstance();
-   userType = _prefs.getString('userType');
-  }
+  // void getUserType() async {
+  //  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  //  userType = _prefs.getString('userType');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +62,11 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
       child: BlocBuilder<HomeTabBloc, HomeTabState>(
         bloc: bloc,
         builder: (context, state) {
+          if (state is HomeTabLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             body: SafeArea(
@@ -241,13 +246,14 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  if (userType == Constants.fieldagent)
-                                    AllocationScreen(),
-                                  if (userType == Constants.telecaller)
-                                    const AllocationTelecallerScreen(),
-                                  DashboardScreen(),
-                                  const ProfileScreen(),
+                                  // if(bloc.userType == Constants.fieldagent) 
+                                  // AllocationScreen() else const AllocationTelecallerScreen(), //1
+                                  bloc.userType == Constants.fieldagent ? 
+                                  AllocationScreen() : const AllocationTelecallerScreen(), //1
+                                  DashboardScreen(), //2
+                                  const ProfileScreen(), //3
                                 ]),
+
                           )
                         ])),
                   ),

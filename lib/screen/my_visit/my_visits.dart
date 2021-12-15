@@ -39,6 +39,10 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
     super.initState();
   }
 
+  static List<Case>? custMet = [];
+  static List<Case>? custNotMet = [];
+  static List<Case>? custInvalid = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
@@ -78,6 +82,38 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
+              print(widget.bloc.myVisitsData.result!.cases!.length);              
+              custMet!.clear();
+              custNotMet!.clear();
+              custInvalid!.clear();
+              for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+                  if(element.collSubStatus ==  Constants.ptp ||
+                  element.collSubStatus ==  Constants.denial ||
+                  element.collSubStatus ==  Constants.dispute ||
+                  element.collSubStatus ==  Constants.remainder ||
+                  element.collSubStatus ==  Constants.remainder_1 ||
+                  element.collSubStatus ==  Constants.collections ||
+                  element.collSubStatus ==  Constants.receipt ||
+                  element.collSubStatus ==  Constants.ots){
+                    custMet!.add(element);
+                  }
+                }
+
+                for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+                  if(element.collSubStatus ==  Constants.leftMessage ||
+                  element.collSubStatus ==  Constants.doorLocked ||
+                  element.collSubStatus ==  Constants.entryRestricted){
+                    custNotMet!.add(element);
+                  }
+                }
+
+                for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+                  if(element.collSubStatus ==  Constants.wrongAddress ||
+                  element.collSubStatus ==  Constants.shifted ||
+                  element.collSubStatus ==  Constants.addressNotFound){
+                    custInvalid!.add(element);
+                  }
+                }
           return WillPopScope(
             onWillPop: () async => false,
             child: Container(
@@ -206,19 +242,19 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: buildListView(
-                                  widget.bloc, widget.bloc.myVisitsData),
+                                  widget.bloc, widget.bloc.myVisitsData, custMet),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: buildListView(
-                                  widget.bloc, widget.bloc.myVisitsData),
+                                  widget.bloc, widget.bloc.myVisitsData, custNotMet),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: buildListView(
-                                  widget.bloc, widget.bloc.myVisitsData),
+                                  widget.bloc, widget.bloc.myVisitsData, custInvalid),
                             ),
                           ],
                         ),
@@ -291,7 +327,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
     );
   }
 
-static List<Case>? resultValue = [];
+// static List<Case>? resultValue = [];
 
  static List customerMet = [
     Constants.ptp,
@@ -314,7 +350,10 @@ static List<Case>? resultValue = [];
   ];
 
   static Widget buildListView(
-    DashboardBloc bloc, DashboardAllModels listData) {
+    DashboardBloc bloc, DashboardAllModels listData, List<Case>? resultValue) {
+      // if(i == 1) {
+      //   print('--------------->>> $i');
+      //   resultValue!.clear();
       // for (Case element in listData.result!.cases!) {
       //   if(element.collSubStatus ==  Constants.ptp ||
       //   element.collSubStatus ==  Constants.denial ||
@@ -326,25 +365,23 @@ static List<Case>? resultValue = [];
       //     resultValue!.add(element);
       //   }
       // }
+      // } else if(i == 2) {
+      //   print('--------------->>> $i');
+      //   resultValue!.clear();
+      // } else if(i == 3) {
+      //   print('--------------->>> $i');
+      //   // resultValue!.clear();
+      // }
       
     return bloc.selectedFilterDataLoading ? 
     const Center(child: CircularProgressIndicator(),) :
-    listData.result!.cases!.isEmpty ? 
+    resultValue!.isEmpty ? 
     Center(child: NoCaseAvailble.buildNoCaseAvailable(),) :
     ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: listData.result!.cases!.length,
+        itemCount: resultValue.length,
         // itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
-          print('--------------NK------------');
-          print(customerMet.map((e) => e.toString()).contains(listData.result!.cases![index].collSubStatus!));
-          
-          // if (customerMet.map((e) => e.toString()).contains(listData.result!.cases![index].collSubStatus!)) {
-          //   resultValue?.add(listData.result!.cases![index]);
-          //    print('--------------NK--resultValue------------');
-          //   //  print(resultValue![index]);
-          // }
-          
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -365,7 +402,7 @@ static List<Case>? resultValue = [];
                               color: ColorResource.color101010,
                             ),
                             CustomText(
-                              listData.result!.count.toString(),
+                              resultValue.length.toString(),
                               fontSize: FontSize.fourteen,
                               color: ColorResource.color101010,
                               fontWeight: FontWeight.w700,
@@ -399,10 +436,10 @@ static List<Case>? resultValue = [];
                 padding: const EdgeInsets.only(top: 20),
                 child: InkWell(
                   onTap: () {
-                    bloc.add(NavigateCaseDetailEvent(paramValues:{'caseID':listData.result!.cases![index].caseId}));
+                    bloc.add(NavigateCaseDetailEvent(paramValues:{'caseID':resultValue[index].caseId}));
                   },
                   child: Container(
-                    margin: (index == listData.result!.cases!.length - 1)
+                    margin: (index == resultValue.length - 1)
                         ? const EdgeInsets.only(bottom: 70)
                         : EdgeInsets.zero,
                     width: MediaQuery.of(context).size.width,
@@ -430,7 +467,7 @@ static List<Case>? resultValue = [];
                           padding:
                               const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                           child: CustomText(
-                             listData.result!.cases![index].caseId!,
+                             resultValue[index].caseId!,
                             fontSize: FontSize.twelve,
                             color: ColorResource.color101010,
                           ),
@@ -450,7 +487,7 @@ static List<Case>? resultValue = [];
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomText(
-                                     listData.result!.cases![index].due.toString(),
+                                     resultValue[index].due.toString(),
                                     fontSize: FontSize.eighteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w700,
@@ -459,7 +496,7 @@ static List<Case>? resultValue = [];
                                     height: 3.0,
                                   ),
                                   CustomText(
-                                     listData.result!.cases![index].cust!,
+                                     resultValue[index].cust!,
                                     fontSize: FontSize.sixteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w400,
@@ -467,7 +504,7 @@ static List<Case>? resultValue = [];
                                 ],
                               ),
                               const Spacer(),
-                               if(listData.result!.cases![index].collSubStatus == 'new')
+                               if(resultValue[index].collSubStatus == 'new')
                                   Container(
                                       width: 55,
                                       height: 19,
@@ -500,7 +537,7 @@ static List<Case>? resultValue = [];
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: CustomText(
-                              listData.result!.cases![index].address![0].value!,
+                              resultValue[index].address![0].value!,
                               color: ColorResource.color484848,
                               fontSize: FontSize.fourteen,
                             ),
@@ -533,7 +570,7 @@ static List<Case>? resultValue = [];
                               Row(
                                 children: [
                                   CustomText(
-                                    listData.result!.cases![index].followUpDate!,
+                                    resultValue[index].followUpDate!,
                                     fontSize: FontSize.fourteen,
                                     color: ColorResource.color101010,
                                     fontWeight: FontWeight.w700,

@@ -391,9 +391,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Center(
                             child: CustomText(
                               Languages.of(context)!.logout.toUpperCase(),
-                              // onTap: () {
-                              //   bloc.add(LoginEvent());
-                              // },
                               fontSize: FontSize.twelve,
                               color: ColorResource.color23375A,
                               fontWeight: FontWeight.w700,

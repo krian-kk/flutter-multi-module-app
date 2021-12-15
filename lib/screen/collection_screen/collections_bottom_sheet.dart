@@ -15,6 +15,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -64,7 +65,7 @@ class _CustomCollectionsBottomSheetState
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
     }
   }
 
