@@ -103,10 +103,20 @@ class _CompanyBranchState extends State<CompanyBranch> {
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
-                          var currentDateTime = DateTime.now();
                           var requestBodyData = CompanyBranchDepositPostModel(
                             // caseId: widget.caseId,
                             caseIds: ['618e382004d8d040ac18841b'],
+                            deposition: Deposition(
+                              companyBranchName: 'Branch Name mandatory',
+                              companyBranchLocation: 'Location mandatory',
+                              recptAmount: '27577',
+                              deptAmount: '27577',
+                              reference: 'mandatory',
+                              // imageLocation: [],
+                              mode: 'Company Branch',
+                              depositDate: '2021-11-16T03:24:48.584Z',
+                              status: 'deposited',
+                            ),
                           );
 
                           print("--------company branch--------");

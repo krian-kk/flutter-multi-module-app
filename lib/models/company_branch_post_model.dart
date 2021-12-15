@@ -1,5 +1,6 @@
 class CompanyBranchDepositPostModel {
   late List<String> caseIds;
+  late Deposition deposition;
   // String? eventModule;
   // String? callID;
   // String? callingID;
@@ -12,6 +13,7 @@ class CompanyBranchDepositPostModel {
 
   CompanyBranchDepositPostModel({
     required this.caseIds,
+    required this.deposition,
     // this.eventModule = 'Field Allocation',
     // this.callID = '0',
     // this.callingID = '0',
@@ -27,8 +29,7 @@ class CompanyBranchDepositPostModel {
     caseIds = json['caseIds'].forEach((v) {
       caseIds.add(v);
     });
-
-    // eventModule = json['eventModule'];
+    deposition = json['deposition'];
     // callID = json['callID'];
     // callingID = json['callingID'];
     // callerServiceID = json['callerServiceID'];
@@ -42,6 +43,7 @@ class CompanyBranchDepositPostModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['caseIds'] = caseIds;
+    data['deposition'] = deposition;
 
     // data['eventModule'] = eventModule;
     // data['callID'] = callID;
@@ -158,17 +160,16 @@ class EventAttr {
 }
 
 class Deposition {
-  String? companyBranchName;
-  String? companyBranchLocation;
-  String? ifscCode;
-  String? accNumber;
-  String? recptAmount;
-  String? deptAmount;
-  String? reference;
-  List<String>? imageLocation;
-  String? mode;
-  String? depositDate;
-  String? status;
+  late String companyBranchName;
+  late String companyBranchLocation;
+
+  late String recptAmount;
+  late String deptAmount;
+  late String reference;
+  // List<String>? imageLocation;
+  late String mode;
+  late String depositDate;
+  late String status;
 
   Deposition(
       {required this.companyBranchName,
@@ -176,7 +177,7 @@ class Deposition {
       required this.recptAmount,
       required this.deptAmount,
       required this.reference,
-      required this.imageLocation,
+      // required this.imageLocation,
       required this.mode,
       required this.depositDate,
       required this.status});
@@ -187,7 +188,7 @@ class Deposition {
     recptAmount = json['recptAmount'];
     deptAmount = json['deptAmount'];
     reference = json['reference'];
-    imageLocation = json['imageLocation'].cast<String>();
+    // imageLocation = json['imageLocation'].cast<String>();
     mode = json['mode'];
     depositDate = json['depositDate'];
     status = json['status'];
@@ -200,7 +201,7 @@ class Deposition {
     data['recptAmount'] = recptAmount;
     data['deptAmount'] = deptAmount;
     data['reference'] = reference;
-    data['imageLocation'] = imageLocation;
+    // data['imageLocation'] = imageLocation;
     data['mode'] = mode;
     data['depositDate'] = depositDate;
     data['status'] = status;
