@@ -1,18 +1,13 @@
 import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/build_route_model/build_route_model.dart';
-import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
-import 'package:origa/models/searching_data_model.dart';
-import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -136,8 +131,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       page = 1;
       hasNextPage = true;
-      print(page);
-      print(hasNextPage);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -192,14 +185,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       page = 1;
       hasNextPage = true;
-      print(page);
-      print(hasNextPage);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        // print(APIRepository.getpriorityCaseList());
-        // Map<String, dynamic> buildRouteListData = await APIRepository.getBuildRouteCaseList();
         Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.GET,
@@ -207,7 +196,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     "lat=${event.paramValues.lat}&" +
                     "lng=${event.paramValues.long}&" +
                     "maxDistMeters=${event.paramValues.maxDistMeters}");
-        print(buildRouteListData);
 
         resultList.clear();
         starCount.clear();
@@ -240,14 +228,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is NavigateCaseDetailEvent) {
-      // print('event.paramValues---');
-      // print(event.paramValues);
       yield NavigateCaseDetailState(paramValues: event.paramValues);
     }
 
     if (event is FilterSelectOptionEvent) {
       yield FilterSelectOptionState();
-      // selectedOption = 0;
     }
 
     if (event is SearchReturnDataEvent) {
@@ -256,9 +241,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        // if(event.returnValue is SearchingDataModel){
-        //   print('Print in bloc--> ${event.returnValue}');
-        //  }
         Map<String, dynamic> getSearchResultData =
             await APIRepository.apiRequest(
                 APIRequestType.GET,
@@ -271,8 +253,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     "customerId=${event.returnValue.customerID}&" +
                     "pincode=${event.returnValue.pincode}&" +
                     "collSubStatus=${event.returnValue.status}");
-        print('getSearchResultData----->');
-        print(getSearchResultData);
+                    
         resultList.clear();
         starCount.clear();
 

@@ -1,6 +1,6 @@
 class AgentDetailsModel {
   String? code;
-  String? status;
+  int? status;
   String? msg;
   String? auth;
   List<Data>? data;
@@ -9,7 +9,12 @@ class AgentDetailsModel {
 
   AgentDetailsModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
-    status = json['status'];
+    if (json['status'] is int) {
+      status = json['status'];
+    }
+    if (json['status'] is String) {
+      status = int.parse(json['status']);
+    }
     msg = json['msg'];
     auth = json['auth'];
     if (json['data'] != null) {

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_tab_event.dart';
@@ -17,7 +18,7 @@ class HomeTabBloc extends Bloc<HomeTabEvent, HomeTabState> {
       yield HomeTabLoadingState();
 
       SharedPreferences _prefs = await SharedPreferences.getInstance();
-      userType = _prefs.getString('userType');
+      userType = _prefs.getString(Constants.userType);
 
       yield HomeTabLoadedState();
     }

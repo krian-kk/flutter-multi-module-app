@@ -22,7 +22,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
   List<CaseListModel> caseList = [];
-  String? userType = 'FIELDAGENT';
+  String? userType;
   String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
@@ -58,11 +58,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield DashboardLoadingState();
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString('userType');
+      userType = _pref.getString(Constants.userType);
 
-    var currentDateTime = DateTime.now();
-    String currentDate = DateFormat.yMMMEd().format(currentDateTime);
-    todayDate = currentDate;
+      var currentDateTime = DateTime.now();
+      String currentDate = DateFormat.yMMMEd().format(currentDateTime);
+      todayDate = currentDate;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
