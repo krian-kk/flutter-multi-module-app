@@ -13,8 +13,9 @@ class SingleSelectionBottomSheet extends StatefulWidget {
   Function onDismiss;
   Function onSelect;
 
-  SingleSelectionBottomSheet(
-      this.selectableList, this.onDismiss, this.onSelect);
+  SingleSelectionBottomSheet(this.selectableList, this.onDismiss, this.onSelect,
+      {Key? key})
+      : super(key: key);
 
   @override
   _SingleSelectionBottomSheetState createState() =>
@@ -87,7 +88,7 @@ class _SingleSelectionBottomSheetState
                                       title: CustomText(
                                           widget.filterList[i].displayName),
                                       trailing: widget.filterList[i].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )
@@ -111,7 +112,7 @@ class _SingleSelectionBottomSheetState
                                           .selectableList[index].displayName),
                                       trailing: widget
                                               .selectableList[index].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )

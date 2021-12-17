@@ -6,6 +6,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/reset_password_model/reset_password_model.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -15,6 +16,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -23,7 +25,7 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  late Timer? timer;
+  late Timer? timer = Timer(const Duration(), () {});
   int secondsRemaining = Constants.otpWaitingTime;
   late TextEditingController userNameFirstController = TextEditingController();
   late TextEditingController mobileNumberController = TextEditingController();
@@ -116,29 +118,50 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           focusNode: userNameFirstFocusNode,
                           onEditing: () {
                             userNameFirstFocusNode.unfocus();
-                            mobileNumberFocusNode.requestFocus();
+                            // mobileNumberFocusNode.requestFocus();
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           // onChange: (){
                           //    _formKey.currentState!.validate();
                           // },
                           validatorCallBack: (bool values) {},
-                          suffixWidget: Container(
-                            decoration: BoxDecoration(
-                              color: ColorResource.color23375A,
-                              borderRadius: BorderRadius.circular(85),
-                              border: Border.all(
-                                  color: ColorResource.colorECECEC, width: 1.0),
-                            ),
-                            margin: const EdgeInsets.all(12),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 6),
-                            child: CustomText(
-                              Languages.of(context)!.check,
-                              color: ColorResource.colorFFFFFF,
-                              lineHeight: 1,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w700,
+                          suffixWidget: GestureDetector(
+                            onTap: () async {
+                              SharedPreferences _prefs =
+                                  await SharedPreferences.getInstance();
+                              if (userNameFirstController.text ==
+                                  _prefs.getString('userName')) {
+                                setState(() {
+                                  mobileNumberController.text =
+                                      _prefs.getString('userName') ?? '';
+                                  userNameSecondController.text =
+                                      _prefs.getString('accessToken') ?? '';
+                                  emailController.text =
+                                      _prefs.getString('accessToken') ?? '';
+                                });
+                              } else {
+                                AppUtils.showToast(
+                                    Constants.pleaseEnterCorrectUserName);
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ColorResource.color23375A,
+                                borderRadius: BorderRadius.circular(85),
+                                border: Border.all(
+                                    color: ColorResource.colorECECEC,
+                                    width: 1.0),
+                              ),
+                              margin: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 6),
+                              child: CustomText(
+                                Languages.of(context)!.check,
+                                color: ColorResource.colorFFFFFF,
+                                lineHeight: 1,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
@@ -150,6 +173,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
+                          isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
                           validationRules: const ['required', 'number_only'],
@@ -174,6 +198,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
+                          isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
                           validationRules: const ['required'],
@@ -191,6 +216,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           emailController,
                           // obscureText: _obscureText,
                           isFill: true,
+                          isReadOnly: true,
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,

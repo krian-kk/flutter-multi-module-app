@@ -16,21 +16,21 @@ class PhoneUnreachablePostModel {
   late String agrRef;
 
   PhoneUnreachablePostModel({
-    this.eventId = 0,
+    this.eventId = 24,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
     required this.eventAttr,
-    this.eventModule = 'Telecalling',
+    required this.eventModule,
     required this.contact,
-    this.createdBy = 'YES_getwisecollector',
+    required this.createdBy,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'e',
+    this.callerServiceID = 'Kaleyra_123',
     this.voiceCallEventCode = 'TELEVT011',
     this.invalidNumber,
-    this.agentName = 'GETWISE COLLECTOR',
-    this.agrRef = 'YES_SD87628',
+    required this.agentName,
+    required this.agrRef,
   });
 
   PhoneUnreachablePostModel.fromJson(Map<String, dynamic> json) {

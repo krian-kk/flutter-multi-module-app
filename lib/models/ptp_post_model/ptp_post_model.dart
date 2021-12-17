@@ -2,13 +2,13 @@ class PTPPostModel {
   late double eventId;
   late String eventType;
   late String caseId;
-  late String? eventCode;
+  late String eventCode;
   late EventAttr eventAttr;
-  late String? createdBy;
-  late String? agentName;
-  late String? eventModule;
+  late String createdBy;
+  late String agentName;
+  late String eventModule;
   late PTPContact contact;
-  late String? agrRef;
+  late String agrRef;
   // late String? contractor;
   late String? callID;
   late String? callingID;
@@ -20,13 +20,13 @@ class PTPPostModel {
       {this.eventId = 16,
       required this.eventType,
       required this.caseId,
-      this.eventCode = 'TELEVT001',
+      required this.eventCode,
       required this.eventAttr,
-      this.createdBy = 'YES_getwisecollector',
-      this.agentName = 'GETWISE COLLECTOR',
-      this.eventModule = 'Field Allocation',
+      required this.createdBy,
+      required this.agentName,
+      required this.eventModule,
       required this.contact,
-      this.agrRef = 'YES_SD87628',
+      required this.agrRef,
       // this.contractor = '',
       this.callID,
       this.callingID,

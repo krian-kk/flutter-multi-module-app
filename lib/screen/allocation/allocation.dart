@@ -77,19 +77,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
     });
     // print('position------> ${position.heading}');
     // print(position);
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-                        result.latitude, result.longitude);
-    
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(result.latitude, result.longitude);
+
     setState(() {
-     currentAddress = placemarks.toList().first.street.toString() +
-                              ', ' +
-                              placemarks.toList().first.subLocality.toString() +
-                              ', ' +
-                              placemarks.toList().first.postalCode.toString();
-      // print(currentAddress);                        
-
+      currentAddress = placemarks.toList().first.street.toString() +
+          ', ' +
+          placemarks.toList().first.subLocality.toString() +
+          ', ' +
+          placemarks.toList().first.postalCode.toString();
+      // print(currentAddress);
     });
-
   }
 
   // This function will be triggered whenver the user scroll
@@ -229,6 +227,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 latitude: position.latitude,
                 longitude: position.longitude,
               ),
+              createdBy: bloc.agentName.toString(),
+              agentName: bloc.agentName.toString(),
+              eventModule: (bloc.userType == Constants.telecaller)
+                  ? 'Telecalling'
+                  : 'Field Allocation',
               eventCode: 'TELEVT017');
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.POST,
@@ -469,13 +472,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               ? const Center(child: CircularProgressIndicator())
                               : resultList.isEmpty
                                   ? Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 50),
-                                        child: NoCaseAvailble.buildNoCaseAvailable(),
-                                      ),
-                                    ],
-                                  )
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 50),
+                                          child: NoCaseAvailble
+                                              .buildNoCaseAvailable(),
+                                        ),
+                                      ],
+                                    )
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0, vertical: 0.0),
@@ -585,7 +590,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             const SizedBox(
               width: 8,
             ),
-             SizedBox(
+            SizedBox(
               width: 213,
               child: CustomText(
                 currentAddress!,

@@ -30,10 +30,14 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
       required this.caseId,
       required this.customerLoanUserWidget,
       required this.userType,
+      required this.agentName,
+      required this.argRef,
       this.postValue})
       : super(key: key);
   final String cardTitle;
   final String caseId;
+  final String argRef;
+  final String agentName;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
@@ -385,7 +389,10 @@ class _CustomCollectionsBottomSheetState
                               });
                             }
                             var requestBodyData = CollectionPostModel(
-                              eventType: 'RECEIPT',
+                              eventType:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'TC : RECEIPT'
+                                      : 'RECEIPT',
                               caseId: widget.caseId,
                               contact: CollectionsContact(
                                 cType: widget.postValue['cType'],
@@ -407,6 +414,13 @@ class _CustomCollectionsBottomSheetState
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
+                              createdBy: widget.agentName,
+                              agentName: widget.agentName,
+                              eventModule:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                              agrRef: widget.argRef,
                             );
 
                             Map<String, dynamic> postResult =

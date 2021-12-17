@@ -7,11 +7,11 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class NoCaseAvailble {
-  static Widget buildNoCaseAvailable(){
+  static Widget buildNoCaseAvailable() {
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: Container(
+      child: SizedBox(
         width: 320,
         height: 210,
         child: Column(
@@ -21,7 +21,11 @@ class NoCaseAvailble {
             // SvgPicture.asset(ImageResource.noCaseAvailable),
             Image.asset(ImageResource.caseNotAvailable),
             // const SizedBox(height: 25,),
-            const CustomText(Constants.noCasesAvailable, fontSize: FontSize.sixteen, color: ColorResource.color000000,),
+            const CustomText(
+              Constants.noCasesAvailable,
+              fontSize: FontSize.sixteen,
+              color: ColorResource.color000000,
+            ),
           ],
         ),
       ),

@@ -22,17 +22,24 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
-  const CustomPtpBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      this.postValue})
-      : super(key: key);
+  const CustomPtpBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    required this.agentName,
+    required this.argRef,
+    required this.eventCode,
+    this.postValue,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
+  final String argRef;
+  final String agentName;
   final Widget customerLoanUserWidget;
   final String userType;
+  final String eventCode;
   final dynamic postValue;
 
   @override
@@ -294,7 +301,11 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               });
                             }
                             var requestBodyData = PTPPostModel(
-                              eventType: Constants.ptp,
+                              eventType:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'TC : PTP'
+                                      : 'PTP',
+                              eventCode: widget.eventCode,
                               caseId: widget.caseId,
                               eventAttr: EventAttr(
                                 date: ptpDateControlller.text,
@@ -311,6 +322,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
+                              createdBy: widget.agentName,
+                              agentName: widget.agentName,
+                              eventModule:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                              agrRef: widget.argRef,
                               contact: PTPContact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],

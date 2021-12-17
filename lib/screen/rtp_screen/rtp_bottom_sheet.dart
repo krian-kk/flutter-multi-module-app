@@ -26,6 +26,8 @@ class CustomRtpBottomSheet extends StatefulWidget {
       required this.caseId,
       required this.customerLoanUserWidget,
       required this.userType,
+      required this.agentName,
+      required this.argRef,
       this.postValue})
       : super(key: key);
   final String cardTitle;
@@ -33,6 +35,9 @@ class CustomRtpBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+
+  final String argRef;
+  final String agentName;
 
   @override
   State<CustomRtpBottomSheet> createState() => _CustomRtpBottomSheetState();
@@ -225,10 +230,13 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               });
                             }
                             var requestBodyData = DenialPostModel(
-                              eventType: Constants.denial,
+                              eventType:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'TC : DENIAL'
+                                      : 'DENIAL',
                               caseId: widget.caseId,
                               eventCode: 'TELEVT004',
-                              agrRef: 'YES_SD00001',
+                              agrRef: widget.argRef,
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
                                 remarks: remarksControlller.text,

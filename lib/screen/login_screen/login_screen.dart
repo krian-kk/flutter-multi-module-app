@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLabel: true,
                           borderColor: ColorResource.color23375A,
                           errorborderColor: ColorResource.color23375A,
-                          validationRules: ['required'],
+                          validationRules: const ['required'],
                           focusNode: passwords,
                           onEditing: () {
                             passwords.unfocus();
@@ -267,30 +267,28 @@ class _LoginScreenState extends State<LoginScreen> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         bloc.add(NoInternetConnectionEvent());
       } else {
-
-        var params =
-                {
-                "userName": userName.text, 
-                "agentRef": userName.text, 
-                "password": password.text
-                };
+        var params = {
+          "userName": userName.text,
+          "agentRef": userName.text,
+          "password": password.text
+        };
 
         bloc.add(SignInEvent(paramValue: params, userName: userName.text));
       }
     }
     _formKey.currentState!.save();
   }
-  
+
   // LoginResponseModel loginResponse =
   //     LoginResponseModel();
 
   // Future<void> keyCloak() async {
   //   SharedPreferences _prefs = await SharedPreferences.getInstance();
-    
+
   //     var params =
   //     {
-  //     "userName": userName.text, 
-  //     "agentRef": userName.text, 
+  //     "userName": userName.text,
+  //     "agentRef": userName.text,
   //     "password": password.text
   //     };
   //       print('---------before execute----------');
@@ -315,7 +313,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //     //         "password": "Agent1234",
   //     //         "grant_type": "password",
   //     //         "client_id": "admin-cli",
-  //     //       }; 
+  //     //       };
 
   //         // Response response = await _dio.post(
   //         //   "http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token",
@@ -325,7 +323,6 @@ class _LoginScreenState extends State<LoginScreen> {
   //         //   data: jsonEncode(params),
   //         // );
   //         // print(params);
-          
 
   //       // var response = await http.post(
   //       //     Uri.parse(HttpUrl.login_keycloak),

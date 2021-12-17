@@ -8,6 +8,7 @@ import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -182,6 +183,14 @@ class _CustomCaptureImageBottomSheetState
                             }
                             var requestBodyData = PostImageCapturedModel(
                                 caseId: widget.bloc.caseId.toString(),
+                                createdBy: widget.bloc.agentName.toString(),
+                                agentName: widget.bloc.agentName.toString(),
+                                agrRef: widget.bloc.agentName.toString(),
+                                eventType: 'IMAGE CAPTURED',
+                                eventModule: (widget.bloc.userType ==
+                                        Constants.telecaller)
+                                    ? 'Telecalling'
+                                    : 'Field Allocation',
                                 eventAttr: EventAttr(
                                   remarks: remarksControlller.text,
                                   imageLocation:

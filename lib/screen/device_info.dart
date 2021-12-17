@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
+import 'package:origa/models/device_info_model/android_device_info.dart';
+import 'package:origa/models/device_info_model/ios_device_model.dart';
 
 void main() {
   runZonedGuarded(() {
@@ -38,6 +43,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
       } else if (Platform.isIOS) {
         deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
       }
+      print('Device Info => ${deviceData}');
     } on PlatformException {
       deviceData = <String, dynamic>{
         'Error:': 'Failed to get platform version.'
@@ -133,6 +139,87 @@ class _DeviceInfoState extends State<DeviceInfo> {
               ],
             );
           }).toList(),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            try {
+              if (Platform.isAndroid) {
+                // print('Value => ${_deviceData['version.sdkInt']}');
+                // print('');
+                var requestBodyData = AndoridDeviceInfoModel(
+                  board: _deviceData['board'],
+                  bootloader: _deviceData['bootloader'],
+                  brand: _deviceData['brand'],
+                  device: _deviceData['device'],
+                  dislay: _deviceData['display'],
+                  fingerprint: _deviceData['fingerprint'],
+                  hardware: _deviceData['hardware'],
+                  host: _deviceData['host'],
+                  id: _deviceData['id'],
+                  manufacturer: _deviceData['manufacturer'],
+                  model: _deviceData['model'],
+                  product: _deviceData['product'],
+                  supported32BitAbis: _deviceData['supported32BitAbis'],
+                  supported64BitAbis: _deviceData['supported64BitAbis'],
+                  supportedAbis: _deviceData['supportedAbis'],
+                  tags: _deviceData['tags'],
+                  type: _deviceData['type'],
+                  isPhysicalDevice: _deviceData['isPhysicalDevice'] as bool,
+                  androidId: _deviceData['androidId'],
+                  systemFeatures: [],
+                  // systemFeatures: ['_deviceData[' ']'],
+                  version: Version(
+                    securityPatch: _deviceData['version.securityPatch'],
+                    sdkInt: _deviceData['version.sdkInt'].toString(),
+                    previewSdkInt:
+                        _deviceData['version.previewSdkInt'].toString(),
+                    codename: _deviceData['version.codename'],
+                    release: _deviceData['version.release'],
+                    incremental: _deviceData['version.incremental'],
+                    baseOs: _deviceData['version.baseOS'],
+                  ),
+                );
+                // print('Request Body => ${requestBodyData}');
+
+                Map<String, dynamic> postResult =
+                    await APIRepository.apiRequest(
+                  APIRequestType.POST,
+                  HttpUrl.mobileInfoUrl,
+                  requestBodydata: jsonEncode(requestBodyData.toJson()),
+                );
+                print('Request Body => ${postResult}');
+              } else if (Platform.isIOS) {
+                var requestBodyData = IOSDeviceInfoModel(
+                  name: _deviceData['name'],
+                  systemName: _deviceData['systemName'],
+                  systemVersion: _deviceData['systemVersion'],
+                  model: _deviceData['model'],
+                  localizedModel: _deviceData['localizedModel'],
+                  identifierForVendor: _deviceData['identifierForVendor'],
+                  isPhysicalDevice: _deviceData['isPhysicalDevice'],
+                  utsname: Utsname(
+                    sysname: _deviceData['utsname.sysname:'],
+                    nodename: _deviceData['utsname.nodename:'],
+                    release: _deviceData['utsname.release:'],
+                    version: _deviceData['utsname.version:'],
+                    machine: _deviceData['utsname.machine:'],
+                  ),
+                  created: _deviceData['utsname.sysname'],
+                );
+                Map<String, dynamic> postResult =
+                    await APIRepository.apiRequest(
+                  APIRequestType.POST,
+                  HttpUrl.mobileInfoUrl,
+                  requestBodydata: jsonEncode(requestBodyData.toJson()),
+                );
+                print('Request Body => ${postResult}');
+              }
+            } on PlatformException {
+              print('Platform Error');
+            }
+          },
+          label: const Text('Clicks'),
+          backgroundColor: Colors.pink,
         ),
       ),
     );

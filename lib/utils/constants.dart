@@ -38,6 +38,7 @@ class Constants {
   static const String callDetails = 'Call Details';
   static const String captureImage = 'CAPTURE IMAGE';
   static const String addNewContact = 'ADD New contact';
+  static const String mapView = 'MAP VIEW';
   static const String call = 'CALL';
   static const String viewMap = 'VIEW MAP';
   static const String eventDetails = 'EVENT DETAILS';
@@ -49,6 +50,8 @@ class Constants {
   static const String uploadDepositSlip = 'Please upload deposit slip';
   static const String pleaseSelectPaymentMode = 'Please Select Payment Mode!';
   static const String pleaseSelectOptions = 'Please Select Options';
+  static const String pleaseEnterCorrectUserName =
+      'Please Enter Currect User Name';
   static const String pleaseSelectDropDownValue =
       'Please Select Drop Down Value';
   static const String success = 'success';

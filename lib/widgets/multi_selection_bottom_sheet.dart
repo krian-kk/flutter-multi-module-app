@@ -116,7 +116,7 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                                       title: CustomText(
                                           widget.filterList[i].displayName),
                                       trailing: widget.filterList[i].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )
@@ -143,7 +143,7 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                                           .selectableList[index].displayName),
                                       trailing: widget
                                               .selectableList[index].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )

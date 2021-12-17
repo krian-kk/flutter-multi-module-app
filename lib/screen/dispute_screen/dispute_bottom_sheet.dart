@@ -21,18 +21,23 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomDisputeBottomSheet extends StatefulWidget {
-  const CustomDisputeBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      this.postValue})
-      : super(key: key);
+  const CustomDisputeBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    this.postValue,
+    required this.agentName,
+    required this.argRef,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String argRef;
+  final String agentName;
 
   @override
   State<CustomDisputeBottomSheet> createState() =>
@@ -219,10 +224,18 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               });
                             }
                             var requestBodyData = DisputePostModel(
-                              eventType: Constants.dispute,
+                              eventType:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'TC : DISPUTE'
+                                      : 'DISPUTE',
                               caseId: widget.caseId,
                               eventCode: 'TELEVT005',
-                              agrRef: '0',
+                              agrRef: widget.argRef,
+                              agentName: widget.agentName,
+                              eventModule:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
                                 remarks: remarksControlller.text,

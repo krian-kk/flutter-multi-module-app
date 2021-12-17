@@ -29,6 +29,14 @@ class HttpUrl {
   static const String profileUrl =
       baseUrl + version + fieldAgent + 'profile/userDetails';
 
+  // Call Customer Post API
+  static const String callCustomerUrl =
+      baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
+
+  // Mobile Info Post API
+  static const String mobileInfoUrl =
+      baseUrl + version + fieldAgent + 'profile/mobileInfo';
+
   // Post API ===================================================
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>

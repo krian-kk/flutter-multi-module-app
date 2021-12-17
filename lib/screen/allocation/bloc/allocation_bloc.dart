@@ -16,6 +16,7 @@ import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
 part 'allocation_state.dart';
@@ -24,6 +25,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationBloc() : super(AllocationInitial());
 
   int selectedOption = 0;
+
+  String? userType;
+  String? agentName;
+  String? agrRef;
 
   BuildRouteModel buildRouteData = BuildRouteModel();
 
@@ -68,6 +73,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      userType = _pref.getString('userType');
+      agentName = _pref.getString('userName');
+      agrRef = _pref.getString('userName');
       yield AllocationLoadingState();
       isShowSearchPincode = false;
 
