@@ -54,6 +54,10 @@ class HttpUrl {
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
+  // Are You At Office?
+  static String resetPasswordCheckUrl(String agentName) =>
+      'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+  // baseUrl + version + fieldAgent + '';
   // Reques OTP
   static String requestOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
