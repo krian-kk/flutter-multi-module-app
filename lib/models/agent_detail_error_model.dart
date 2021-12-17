@@ -8,7 +8,12 @@ class AgentDetailErrorModel {
 
   AgentDetailErrorModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
-    status = json['status'];
+    if (json['status'] is int) {
+      status = json['status'];
+    }
+    if (json['status'] is String) {
+      status = int.parse(json['status']);
+    }
     msg = json['msg'];
     auth = json['auth'];
   }

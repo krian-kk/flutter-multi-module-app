@@ -102,7 +102,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
     if (event is LoginEvent) {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
-      await _prefs.clear();
+      await _prefs.setString(Constants.accessToken, "");
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {

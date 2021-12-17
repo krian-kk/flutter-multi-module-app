@@ -35,7 +35,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late LoginBloc bloc;
 
-  late TextEditingController userName = TextEditingController();
+  late TextEditingController userId = TextEditingController();
   late TextEditingController password = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
-    // userName.text = 'HAR_fos1';
+    // userId.text = 'HAR_fos1';
     // password.text = 'Agent1234';
     super.initState();
   }
@@ -122,8 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                         ),
                         CustomTextField(
-                          Languages.of(context)!.userName,
-                          userName,
+                          Languages.of(context)!.userId,
+                          userId,
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
@@ -230,8 +230,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           StringResource.loginViaDifferentUser,
                           onTap: () {
                             setState(() {
-                              userName.clear();
+                              userId.clear();
                               password.clear();
+                              _isChecked = false;
                             });
                           },
                           borderColor: ColorResource.color23375A,
@@ -280,12 +281,12 @@ class _LoginScreenState extends State<LoginScreen> {
         bloc.add(NoInternetConnectionEvent());
       } else {
         var params = {
-          "userName": userName.text,
-          "agentRef": userName.text,
+          "userName": userId.text,
+          "agentRef": userId.text,
           "password": password.text
         };
 
-        bloc.add(SignInEvent(paramValue: params, userName: userName.text));
+        bloc.add(SignInEvent(paramValue: params, userId: userId.text));
       }
     }
     _formKey.currentState!.save();
@@ -326,8 +327,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //     var params =
   //     {
-  //     "userName": userName.text,
-  //     "agentRef": userName.text,
+  //     "userId": userId.text,
+  //     "agentRef": userId.text,
   //     "password": password.text
   //     };
   //       print('---------before execute----------');
@@ -422,7 +423,7 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences.getInstance().then(
       (prefs) {
         prefs.setBool(Constants.rememberMe, value);
-        prefs.setString(Constants.rememberUserName, userName.text);
+        prefs.setString(Constants.rememberUserId, userId.text);
         prefs.setString(Constants.rememberPassword, password.text);
       },
     );
@@ -434,7 +435,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loadUserNamePassword() async {
     try {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var _username = _prefs.getString(Constants.rememberUserName) ?? "";
+      var _username = _prefs.getString(Constants.rememberUserId) ?? "";
       var _password = _prefs.getString(Constants.rememberPassword) ?? "";
       var _remeberMe = _prefs.getBool(Constants.rememberMe) ?? false;
 
@@ -442,7 +443,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isChecked = true;
         });
-        userName.text = _username;
+        userId.text = _username;
         password.text = _password;
       } else {
         setState(() {
@@ -457,7 +458,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed
-    userName.dispose();
+    userId.dispose();
     password.dispose();
     super.dispose();
   }

@@ -6,8 +6,8 @@ class LoginInitialEvent extends LoginEvent {}
 
 class SignInEvent extends LoginEvent {
   dynamic paramValue;
-  String? userName;
-  SignInEvent({this.paramValue, this.userName});
+  String? userId;
+  SignInEvent({this.paramValue, this.userId});
 }
 
 class HomeTabEvent extends LoginEvent {}

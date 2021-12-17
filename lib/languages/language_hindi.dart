@@ -14,7 +14,7 @@ class LanguageHi extends Languages {
   String get password => 'पासवर्ड';
 
   @override
-  String get userName => 'उपयोगकर्ता नाम';
+  String get userId => 'उपयोगकर्ता नाम';
 
   @override
   String get rememberMe => 'मुझे याद रखें';
@@ -106,7 +106,7 @@ class LanguageHi extends Languages {
   @override
   String get myVisits => 'मेरा दौरा';
 
-   @override
+  @override
   String get myCalls => 'मेरी कॉल';
 
   @override

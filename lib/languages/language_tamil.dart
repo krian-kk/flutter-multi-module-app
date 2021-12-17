@@ -14,7 +14,7 @@ class LanguageTa extends Languages {
   String get password => 'கடவுச்சொல்';
 
   @override
-  String get userName => 'பயனர் பெயர்';
+  String get userId => 'பயனர் பெயர்';
 
   @override
   String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
@@ -106,7 +106,7 @@ class LanguageTa extends Languages {
   @override
   String get myVisits => 'எனது வருகைகள்';
 
-   @override
+  @override
   String get myCalls => 'என் அழைப்புகள்';
 
   @override

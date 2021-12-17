@@ -73,17 +73,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               Constants.keycloakId, loginResponse.data!.keycloakId!);
           _prefs.setString(
               Constants.sessionId, loginResponse.data!.sessionState!);
-          _prefs.setString(Constants.agentRef, event.userName!);
-          _prefs.setString(Constants.userName, event.userName!);
+          _prefs.setString(Constants.agentRef, event.userId!);
+          _prefs.setString(Constants.userId, event.userId!);
           Singleton.instance.accessToken = loginResponse.data!.accessToken!;
           Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
           Singleton.instance.sessionID = loginResponse.data!.sessionState!;
-          Singleton.instance.agentRef = event.userName!;
+          Singleton.instance.agentRef = event.userId!;
 
           if (loginResponse.data!.accessToken != null) {
             // Execute agent detail URl to get Agent details
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + event.userName!);
+                APIRequestType.GET, HttpUrl.agentDetailUrl + event.userId!);
 
             if (agentDetail['data'] is AgentDetailErrorModel) {
               // Error getting Agent Details
