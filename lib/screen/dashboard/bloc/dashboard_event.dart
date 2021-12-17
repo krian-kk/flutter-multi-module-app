@@ -4,7 +4,7 @@ part of 'dashboard_bloc.dart';
 abstract class DashboardEvent extends BaseEquatable {}
 
 class DashboardInitialEvent extends DashboardEvent {
-  BuildContext? context;
+  final BuildContext? context;
   DashboardInitialEvent(this.context);
 }
 
@@ -17,57 +17,57 @@ class BrokenPTPEvent extends DashboardEvent {}
 class MyReceiptsEvent extends DashboardEvent {}
 
 class ReceiptsApiEvent extends DashboardEvent {
-  dynamic? timePeiod;
+  final dynamic timePeiod;
   ReceiptsApiEvent({this.timePeiod});
 }
 
 class MyVisitsEvent extends DashboardEvent {}
 
 class MyVisitApiEvent extends DashboardEvent {
-  dynamic? timePeiod;
+  final dynamic timePeiod;
   MyVisitApiEvent({this.timePeiod});
 }
 
 class MyDeposistsEvent extends DashboardEvent {}
 
 class DeposistsApiEvent extends DashboardEvent {
-  dynamic? timePeiod;
+  final dynamic timePeiod;
   DeposistsApiEvent({this.timePeiod});
 }
 
 class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
 class NavigateCaseDetailEvent extends DashboardEvent {
-  dynamic paramValues;
+  final dynamic paramValues;
   NavigateCaseDetailEvent({this.paramValues});
 }
 
 class NavigateSearchEvent extends DashboardEvent {}
 
 class SearchReturnDataEvent extends DashboardEvent {
-  dynamic? returnValue;
+  final dynamic returnValue;
   SearchReturnDataEvent({this.returnValue});
 }
 
 class SetTimeperiodValueEvent extends DashboardEvent {}
 
 class PostBankDepositDataEvent extends DashboardEvent {
-  dynamic postData;
+  final dynamic postData;
   PostBankDepositDataEvent({this.postData});
 }
 
 class PostCompanyDepositDataEvent extends DashboardEvent {
-  dynamic postData;
+  final dynamic postData;
   PostCompanyDepositDataEvent({this.postData});
 }
 
 class PostYardingDataEvent extends DashboardEvent {
-  dynamic postData;
+  final dynamic postData;
   PostYardingDataEvent({this.postData});
 }
 
 class PostSelfreleaseDataEvent extends DashboardEvent {
-  dynamic postData;
+  final dynamic postData;
   PostSelfreleaseDataEvent({this.postData});
 }
 

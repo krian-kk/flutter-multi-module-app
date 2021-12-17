@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
 
           home: addAuthBloc(
             context,
-            SplashScreen(),
+            const SplashScreen(),
           ),
         );
       },

@@ -1,13 +1,7 @@
-import 'dart:convert';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/bank_deposit_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -25,7 +19,8 @@ class BankTab extends StatefulWidget {
   final List<String>? caseIds;
   final String? mode;
   final String? custname;
-  const BankTab(this.bloc, {this.caseIds, this.mode, this.custname});
+  const BankTab(this.bloc, {Key? key, this.caseIds, this.mode, this.custname})
+      : super(key: key);
 
   @override
   _BankTabState createState() => _BankTabState();
@@ -47,7 +42,6 @@ class _BankTabState extends State<BankTab> {
 
   @override
   void initState() {
-    print(widget.caseIds);
     super.initState();
   }
 
@@ -57,9 +51,7 @@ class _BankTabState extends State<BankTab> {
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      print(uploadFileLists);
     } else {
-      // User canceled the picker
       AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
     }
   }
@@ -106,8 +98,6 @@ class _BankTabState extends State<BankTab> {
                           gravity: ToastGravity.CENTER,
                         );
                       } else {
-                        var currentDateTime = DateTime.now();
-                        print(currentDateTime);
                         var requestBodyData = BankDepositPostModel(
                             // caseId: widget.caseId,
                             caseIds: widget.caseIds as List<String>,
@@ -161,7 +151,7 @@ class _BankTabState extends State<BankTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.bankName,
                             bankNameController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -171,7 +161,7 @@ class _BankTabState extends State<BankTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.branchName,
                             branchController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -181,7 +171,7 @@ class _BankTabState extends State<BankTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.ifscCode,
                             ifscCodeController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -191,7 +181,7 @@ class _BankTabState extends State<BankTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.accNumber,
                             accNoController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -205,7 +195,7 @@ class _BankTabState extends State<BankTab> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.receiptAmount,
                                   receiptController,
-                                  validationRules: ['required'],
+                                  validationRules: const ['required'],
                                   isLabel: true,
                                   isEnable: true,
                                 ),
@@ -218,7 +208,7 @@ class _BankTabState extends State<BankTab> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.depositAmount,
                                   depositController,
-                                  validationRules: ['required'],
+                                  validationRules: const ['required'],
                                   isLabel: true,
                                   isEnable: true,
                                 ),
@@ -231,7 +221,7 @@ class _BankTabState extends State<BankTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.reference,
                             referenceController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),

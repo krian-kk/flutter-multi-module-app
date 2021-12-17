@@ -22,7 +22,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
   List<CaseListModel> caseList = [];
-  String? userType = 'FIELDAGENT';
+  String? userType;
   String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
@@ -58,7 +58,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield DashboardLoadingState();
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString('userType');
+      userType = _pref.getString(Constants.userType);
 
       var currentDateTime = DateTime.now();
       String currentDate = DateFormat.yMMMEd().format(currentDateTime);
@@ -67,11 +67,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> DashboardData = await APIRepository.apiRequest(
+        Map<String, dynamic> dashboardData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
 
-        if (DashboardData['success']) {
-          var jsonData = DashboardData['data']['result'];
+        if (dashboardData['success']) {
+          var jsonData = dashboardData['data']['result'];
 
           mtdCaseCompleted = jsonData['mtdCases']['completed'];
           mtdCaseTotal = jsonData['mtdCases']['total'];

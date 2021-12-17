@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/my_deposists/deposistion_mode/bank_tab.dart';
 import 'package:origa/screen/my_deposists/deposistion_mode/company_branch.dart';
@@ -11,12 +10,8 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 
 class DepositionMode {
-  @override
   static Widget buildDepositionMode(BuildContext context, List<String> caseIDs,
       String mode, DashboardBloc bloc, String? custName) {
-    // print("caseID------->");
-    // print(caseID);
-    // print(mode);
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.83,
       child: Container(

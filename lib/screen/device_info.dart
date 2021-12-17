@@ -12,7 +12,7 @@ import 'package:origa/models/device_info_model/ios_device_model.dart';
 
 void main() {
   runZonedGuarded(() {
-    runApp(DeviceInfo());
+    runApp(const DeviceInfo());
   }, (dynamic error, dynamic stack) {
     print(error);
     print(stack);
@@ -20,6 +20,8 @@ void main() {
 }
 
 class DeviceInfo extends StatefulWidget {
+  const DeviceInfo({Key? key}) : super(key: key);
+
   @override
   _DeviceInfoState createState() => _DeviceInfoState();
 }
@@ -43,7 +45,6 @@ class _DeviceInfoState extends State<DeviceInfo> {
       } else if (Platform.isIOS) {
         deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
       }
-      print('Device Info => ${deviceData}');
     } on PlatformException {
       deviceData = <String, dynamic>{
         'Error:': 'Failed to get platform version.'
@@ -187,7 +188,6 @@ class _DeviceInfoState extends State<DeviceInfo> {
                   HttpUrl.mobileInfoUrl,
                   requestBodydata: jsonEncode(requestBodyData.toJson()),
                 );
-                print('Request Body => ${postResult}');
               } else if (Platform.isIOS) {
                 var requestBodyData = IOSDeviceInfoModel(
                   name: _deviceData['name'],
@@ -212,7 +212,6 @@ class _DeviceInfoState extends State<DeviceInfo> {
                   HttpUrl.mobileInfoUrl,
                   requestBodydata: jsonEncode(requestBodyData.toJson()),
                 );
-                print('Request Body => ${postResult}');
               }
             } on PlatformException {
               print('Platform Error');

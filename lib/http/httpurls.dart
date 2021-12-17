@@ -60,6 +60,12 @@ class HttpUrl {
   // Home Address in Profile Screen
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
+  // Resent OTP Post API
+  static String resendOTPUrl() =>
+      baseUrl + version + fieldAgent + 'profile/requestOtp';
+  // Resent Password Post API
+  static String resendPasswordUrl() =>
+      baseUrl + version + fieldAgent + 'profile/resetPassword';
   // RTP(Denial) Post API
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +

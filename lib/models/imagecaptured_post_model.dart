@@ -56,9 +56,7 @@ class PostImageCapturedModel {
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
-    if (eventAttr != null) {
-      data['eventAttr'] = eventAttr.toJson();
-    }
+    data['eventAttr'] = eventAttr.toJson();
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['callID'] = callID;

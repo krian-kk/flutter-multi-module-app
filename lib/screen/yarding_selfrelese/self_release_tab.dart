@@ -1,35 +1,25 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/self_release_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class SelfReleaseTab extends StatefulWidget {
   final DashboardBloc bloc;
   final String? caseId;
   final String? custname;
-  SelfReleaseTab(this.bloc, {this.caseId, this.custname});
+  const SelfReleaseTab(this.bloc, {Key? key, this.caseId, this.custname})
+      : super(key: key);
 
   @override
   _SelfReleaseTabState createState() => _SelfReleaseTabState();
@@ -59,9 +49,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      print(uploadFileLists);
     } else {
-      // User canceled the picker
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
   }
@@ -74,7 +62,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
         backgroundColor: ColorResource.colorffffff,
         bottomNavigationBar: Container(
           height: 66,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
           child: Padding(
@@ -145,7 +133,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.date,
                             dateController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                             onTapped: () => pickDate(context, dateController),
@@ -156,7 +144,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.time,
                             timeController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                             onTapped: () => pickTime(context, timeController),
@@ -167,7 +155,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.remark,
                             remarksController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),

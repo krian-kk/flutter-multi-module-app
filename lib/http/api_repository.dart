@@ -67,6 +67,7 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
+      print('response data -------->');
       returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
@@ -95,7 +96,7 @@ class APIRepository {
 
   // get priority case list
   static Future<Map<String, dynamic>> getpriorityCaseList() async {
-    dynamic? returnableValues;
+    dynamic returnableValues;
     try {
       final Response response = await DioClient.dioConfig().get(
         HttpUrl.priorityCaseList,
@@ -118,7 +119,7 @@ class APIRepository {
 
   // get buildroute case list
   static Future<Map<String, dynamic>> getBuildRouteCaseList() async {
-    dynamic? returnableValues;
+    dynamic returnableValues;
     try {
       final Response response = await DioClient.dioConfig().get(
         HttpUrl.buildRouteCaseList,

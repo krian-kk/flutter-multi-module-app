@@ -1,14 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/yarding_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -18,17 +11,16 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class YardingTab extends StatefulWidget {
   final DashboardBloc bloc;
   final String? caseId;
   final String? custname;
-  YardingTab(this.bloc, {this.caseId, this.custname});
+  const YardingTab(this.bloc, {Key? key, this.caseId, this.custname})
+      : super(key: key);
 
   @override
   _YardingTabState createState() => _YardingTabState();
@@ -68,7 +60,7 @@ class _YardingTabState extends State<YardingTab> {
         backgroundColor: ColorResource.colorffffff,
         bottomNavigationBar: Container(
           height: 66,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
           child: Padding(

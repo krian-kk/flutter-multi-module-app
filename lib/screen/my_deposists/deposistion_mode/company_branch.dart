@@ -1,13 +1,7 @@
-import 'dart:convert';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/company_branch_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -16,7 +10,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 
@@ -25,7 +18,9 @@ class CompanyBranch extends StatefulWidget {
   final List<String>? caseIds;
   final String? mode;
   final String? custname;
-  const CompanyBranch(this.bloc, {this.caseIds, this.mode, this.custname});
+  const CompanyBranch(this.bloc,
+      {Key? key, this.caseIds, this.mode, this.custname})
+      : super(key: key);
 
   @override
   _CompanyBranchState createState() => _CompanyBranchState();
@@ -43,7 +38,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -53,9 +47,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      print(uploadFileLists);
     } else {
-      // User canceled the picker
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
   }
@@ -156,7 +148,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.branchName,
                             branchNameController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -166,7 +158,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.branchLocation,
                             branchLocationController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -180,7 +172,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.receiptAmount,
                                   receiptController,
-                                  validationRules: ['required'],
+                                  validationRules: const ['required'],
                                   isLabel: true,
                                   isEnable: true,
                                 ),
@@ -193,7 +185,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.depositAmount,
                                   depositController,
-                                  validationRules: ['required'],
+                                  validationRules: const ['required'],
                                   isLabel: true,
                                   isEnable: true,
                                 ),
@@ -206,7 +198,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.reference,
                             referenceController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),

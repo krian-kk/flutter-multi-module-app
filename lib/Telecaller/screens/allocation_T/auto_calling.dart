@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dart';
-import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/router.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -48,10 +45,12 @@ class AutoCalling {
                     const Spacer(),
                     InkWell(
                       onTap: () {
-                        bloc.add(NavigateCaseDetailTEvent({
-                          'caseID': '618e382004d8d040ac18841b',
-                          'isAddress': true
-                        }));
+                        bloc.add(NavigateCaseDetailTEvent(
+                          const {
+                            'caseID': '618e382004d8d040ac18841b',
+                            'isAddress': true,
+                          },
+                        ));
                       },
                       child: Row(
                         children: [
@@ -115,7 +114,7 @@ class AutoCalling {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               CustomText(
                 '40',
                 fontSize: FontSize.sixteen,
@@ -148,7 +147,7 @@ class AutoCalling {
               color: ColorResource.colorffffff,
               border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                   // spreadRadius: 1,
@@ -176,20 +175,20 @@ class AutoCalling {
                 ),
                 AppUtils.showDivider(),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(23, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           CustomText(
                             '₹ 3,97,553.67',
                             fontSize: FontSize.eighteen,
                             color: ColorResource.color101010,
                             fontWeight: FontWeight.w700,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 3.0,
                           ),
                           CustomText(
@@ -198,7 +197,7 @@ class AutoCalling {
                             color: ColorResource.color101010,
                             fontWeight: FontWeight.w400,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 8.0,
                           ),
                         ],
@@ -236,10 +235,12 @@ class AutoCalling {
                 ),
                 InkWell(
                   onTap: () {
-                    bloc.add(NavigateCaseDetailTEvent({
-                      'caseID': '618e382004d8d040ac18841b',
-                      'isAddress': true
-                    }));
+                    bloc.add(NavigateCaseDetailTEvent(
+                      const {
+                        'caseID': '618e382004d8d040ac18841b',
+                        'isAddress': true
+                      },
+                    ));
                   },
                   child: SizedBox(
                     child: Column(

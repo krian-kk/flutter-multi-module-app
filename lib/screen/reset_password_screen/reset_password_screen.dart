@@ -1,7 +1,6 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -98,6 +97,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     horizontal: 24,
                     vertical: 12,
                   ),
+                  onTap: () {
+                    cancelTimer();
+                    Navigator.pop(context);
+                  },
                 ),
                 Expanded(
                     child: SingleChildScrollView(
@@ -114,7 +117,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
+                          // validationRules: const ['required'],
                           focusNode: userNameFirstFocusNode,
                           onEditing: () {
                             userNameFirstFocusNode.unfocus();
@@ -173,12 +176,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
-                          isReadOnly: true,
+                          // isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required', 'number_only'],
+                          // validationRules: const ['required', 'number_only'],
                           maximumWordCount: 10,
-
                           focusNode: mobileNumberFocusNode,
                           onEditing: () {
                             mobileNumberFocusNode.unfocus();
@@ -198,10 +200,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
-                          isReadOnly: true,
+                          // isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
+                          // validationRules: const ['required'],
                           focusNode: userNameSecondFocusNode,
                           onEditing: () {
                             userNameSecondFocusNode.unfocus();
@@ -216,13 +218,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           emailController,
                           // obscureText: _obscureText,
                           isFill: true,
-                          isReadOnly: true,
+                          // isReadOnly: true,
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
                           keyBoardType: TextInputType.emailAddress,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['email'],
+                          // validationRules: const ['email'],
                           focusNode: emailFocusNode,
                           onChange: () {
                             setState(() {});
@@ -285,7 +287,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   const SizedBox(height: 12),
                                   Center(
                                     child: InkWell(
-                                      onTap: () => secondsOTP(),
+                                      onTap: isTime
+                                          ? () {}
+                                          : () async {
+                                              Map<String, dynamic> postResult =
+                                                  await APIRepository
+                                                      .apiRequest(
+                                                APIRequestType.POST,
+                                                HttpUrl.resendOTPUrl(),
+                                                requestBodydata: {},
+                                              );
+                                              if (postResult[
+                                                  Constants.success]) {
+                                                secondsOTP();
+                                              }
+                                            },
                                       child: CustomText(
                                         Languages.of(context)!
                                             .resendOTP
@@ -377,14 +393,30 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 onTap: (pinCodeController.text.isNotEmpty &&
                                         pinCodeController.text.length == 6)
                                     ? () {
-                                        // var requestBodyData = ResetPasswordModel(otp: pinCodeController.text, username: userNameFirstController.text, newPassword: newPassword) ;
-                                        Navigator.pop(context);
+                                        cancelTimer();
+                                        resetPasswordShowBottomSheet();
                                       }
                                     : () {},
                                 cardShape: 85,
                                 fontSize: FontSize.sixteen,
                                 fontWeight: FontWeight.w600,
                               ),
+                        const SizedBox(height: 20),
+                        CustomButton(
+                          Languages.of(context)!.clear.toUpperCase(),
+                          onTap: () {
+                            userNameFirstController.clear();
+                            mobileNumberController.clear();
+                            userNameSecondController.clear();
+                            emailController.clear();
+                          },
+                          borderColor: ColorResource.color23375A,
+                          cardShape: 85,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorResource.color23375A,
+                          buttonBackgroundColor: ColorResource.colorffffff,
+                        ),
                       ],
                     ),
                   ),
@@ -395,5 +427,154 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
       ),
     );
+  }
+
+  resetPasswordShowBottomSheet() {
+    TextEditingController newPasswordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+    FocusNode newPasswordFocusNode = FocusNode();
+    FocusNode confirmPasswordFocusNode = FocusNode();
+    final formKey = GlobalKey<FormState>();
+
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorF8F9FB,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                WillPopScope(
+                  onWillPop: () async => false,
+                  child: Form(
+                    key: formKey,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.89,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          BottomSheetAppbar(
+                            title: Languages.of(context)!
+                                .resetPassword
+                                .toUpperCase(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomTextField(
+                                    Languages.of(context)!.enterNewPassword,
+                                    newPasswordController,
+                                    // obscureText: _obscureText,
+                                    isFill: true,
+                                    isBorder: true,
+                                    isLabel: true,
+                                    // isReadOnly: true,
+                                    borderColor: ColorResource.colorFFFFFF,
+                                    // errorborderColor: ColorResource.color23375A,
+                                    validationRules: const ['required'],
+                                    maximumWordCount: 10,
+                                    focusNode: newPasswordFocusNode,
+                                    onEditing: () {
+                                      mobileNumberFocusNode.unfocus();
+                                      userNameSecondFocusNode.requestFocus();
+                                    },
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    // onChange: (){
+                                    //    _formKey.currentState!.validate();
+                                    // },
+                                    validatorCallBack: (bool values) {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  CustomTextField(
+                                    Languages.of(context)!
+                                        .enterConfirmNewPassword,
+                                    confirmPasswordController,
+                                    // obscureText: _obscureText,
+                                    isFill: true,
+                                    isBorder: true,
+                                    isLabel: true,
+                                    // isReadOnly: true,
+                                    borderColor: ColorResource.colorFFFFFF,
+                                    // errorborderColor: ColorResource.color23375A,
+                                    validationRules: const ['required'],
+                                    maximumWordCount: 10,
+                                    focusNode: confirmPasswordFocusNode,
+                                    onEditing: () {
+                                      mobileNumberFocusNode.unfocus();
+                                      userNameSecondFocusNode.requestFocus();
+                                    },
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    // onChange: (){
+                                    //    _formKey.currentState!.validate();
+                                    // },
+                                    validatorCallBack: (bool values) {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Spacer(),
+                                  CustomButton(
+                                    Languages.of(context)!
+                                        .saveNewPassword
+                                        .toUpperCase(),
+                                    textColor: ColorResource.colorFFFFFF,
+                                    fontSize: FontSize.sixteen,
+                                    fontWeight: FontWeight.w700,
+                                    padding: 15.0,
+                                    cardShape: 75.0,
+                                    onTap: () async {
+                                      formKey.currentState!.validate();
+                                      if (newPasswordController.text ==
+                                          confirmPasswordController.text) {
+                                        var requestBodyData =
+                                            ResetPasswordModel(
+                                                otp: pinCodeController.text,
+                                                username:
+                                                    userNameSecondController
+                                                        .text,
+                                                newPassword:
+                                                    newPasswordController.text);
+                                        Map<String, dynamic> postResult =
+                                            await APIRepository.apiRequest(
+                                                APIRequestType.POST,
+                                                HttpUrl.resendPasswordUrl(),
+                                                requestBodydata: jsonEncode(
+                                                    requestBodyData.toJson()));
+                                        if (postResult[Constants.success]) {
+                                          AppUtils.topSnackBar(context,
+                                              Constants.successfullySubmitted);
+                                          Navigator.pop(context);
+                                        }
+                                      } else {
+                                        AppUtils.showToast(
+                                            'Please Enter Correct Password');
+                                      }
+                                    },
+                                    borderColor: ColorResource.colorBEC4CF,
+                                    buttonBackgroundColor:
+                                        ColorResource.color23375A,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )));
   }
 }

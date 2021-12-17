@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
@@ -12,7 +10,7 @@ import 'package:origa/widgets/floating_action_button.dart';
 
 class BrokenPTPBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
-  BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  const BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _BrokenPTPBottomSheetState createState() => _BrokenPTPBottomSheetState();
@@ -23,7 +21,6 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
 
   @override
   void initState() {
-    // TODO: implement initState
     // bloc = BrokenptpBloc()..add(BrokenptpInitialEvent());
     super.initState();
   }
@@ -40,29 +37,29 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
       child: BlocListener<DashboardBloc, DashboardState>(
         bloc: widget.bloc,
         listener: (context, state) {
-         if (state is SelectedTimeperiodDataLoadingState) {
+          if (state is SelectedTimeperiodDataLoadingState) {
             widget.bloc.selectedFilterDataLoading = true;
           }
 
           if (state is SelectedTimeperiodDataLoadedState) {
             widget.bloc.selectedFilterDataLoading = false;
           }
-        
-        if(state is GetSearchDataState){
-          if (state.getReturnValues !=null) {
-            setState(() {
-              widget.bloc.brokenPTPData = 
-            DashboardAllModels.fromJson(state.getReturnValues);
-            });
+
+          if (state is GetSearchDataState) {
+            if (state.getReturnValues != null) {
+              setState(() {
+                widget.bloc.brokenPTPData =
+                    DashboardAllModels.fromJson(state.getReturnValues);
+              });
+            }
           }
-        }
         },
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return WillPopScope(
             onWillPop: () async => false,
             child: Container(
-              padding: EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: 16),
               child: Scaffold(
                 floatingActionButton: CustomFloatingActionButton(
                   onTap: () async {

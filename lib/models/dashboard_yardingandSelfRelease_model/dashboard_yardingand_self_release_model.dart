@@ -61,7 +61,7 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['due'] = due;
     data['cust'] = cust;
@@ -87,7 +87,7 @@ class Address {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
     data['value'] = value;
     return data;

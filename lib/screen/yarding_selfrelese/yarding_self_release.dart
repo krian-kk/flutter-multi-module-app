@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -16,7 +14,7 @@ import 'package:origa/widgets/no_case_available.dart';
 
 class YardingAndSelfRelease extends StatefulWidget {
   final DashboardBloc bloc;
-  YardingAndSelfRelease(this.bloc, {Key? key}) : super(key: key);
+  const YardingAndSelfRelease(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _YardingAndSelfReleaseState createState() => _YardingAndSelfReleaseState();
@@ -116,7 +114,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                       .yardingAndSelfReleaseData.result!.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    int listCount = index + 1;
                                     return Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -136,7 +133,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                   width: 0.5),
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              boxShadow: [
+                                              boxShadow: const [
                                                 BoxShadow(
                                                   color: Color.fromRGBO(
                                                       0, 0, 0, 0.25),
@@ -306,7 +303,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                             fontWeight:
                                                                 FontWeight.w400,
                                                           ),
-                                                          CustomText(
+                                                          const CustomText(
                                                             'date field not added',
                                                             fontSize: FontSize
                                                                 .fourteen,
@@ -369,8 +366,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                             index]
                                                                         .cust!;
                                                                   });
-                                                                  print(index);
-                                                                  print(caseID);
                                                                 },
                                                               ),
                                                       )

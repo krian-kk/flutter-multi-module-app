@@ -74,7 +74,7 @@ class TopSnackBar extends StatefulWidget {
   final double leftPadding;
   final double rightPadding;
 
-  TopSnackBar({
+  const TopSnackBar({
     Key? key,
     required this.child,
     required this.onDismissed,
@@ -118,8 +118,8 @@ class _TopSnackBarState extends State<TopSnackBar>
     );
 
     Tween<Offset> offsetTween = Tween<Offset>(
-      begin: Offset(0.0, -1.0),
-      end: Offset(0.0, 0.0),
+      begin: const Offset(0.0, -1.0),
+      end: const Offset(0.0, 0.0),
     );
 
     offsetAnimation = offsetTween.animate(

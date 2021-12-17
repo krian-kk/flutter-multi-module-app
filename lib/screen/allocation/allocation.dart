@@ -22,7 +22,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
@@ -33,6 +32,8 @@ import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
 
 class AllocationScreen extends StatefulWidget {
+  const AllocationScreen({Key? key}) : super(key: key);
+
   // AuthenticationBloc authenticationBloc;
   // AllocationScreen(this.authenticationBloc);
 
@@ -96,7 +97,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
       if (bloc.hasNextPage) {
         if (bloc.isShowSearchPincode) {
-          print('search api cal ---------------->');
         } else {
           bloc.page += 1;
           bloc.add(PriorityLoadMoreEvent());
@@ -281,7 +281,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           padding: const EdgeInsets.only(left: 30),
                           child: Visibility(
                             visible: bloc.isMessageThere,
-                            child: Container(
+                            child: SizedBox(
                               width: 175,
                               // padding: EdgeInsets.all(10),
                               child: CustomButton(
@@ -291,7 +291,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 isTrailing: true,
                                 leadingWidget: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 40,
                                     child: Container(
                                       height: 26,
@@ -387,7 +387,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     const SizedBox(
                                       width: 5.0,
                                     ),
-                                    Container(
+                                    SizedBox(
                                         width: 76,
                                         height: 40,
                                         child: CustomButton(
@@ -436,7 +436,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color000000,
                                       fontWeight: FontWeight.w700,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           overflow: TextOverflow.ellipsis),
                                     ),
                                   ],
@@ -658,7 +658,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
             break;
           default:
         }
-        print(maxDistance);
         setState(() {
           bloc.selectedDistance = distance;
           bloc.add(TapBuildRouteEvent(
@@ -728,7 +727,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   onWillPop: () async => false,
                   child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.86,
-                      child: MessageChatRoomScreen()),
+                      child: const MessageChatRoomScreen()),
                 )));
   }
 }

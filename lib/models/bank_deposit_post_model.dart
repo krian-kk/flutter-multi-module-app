@@ -64,18 +64,18 @@ class Deposition {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['bankName'] = this.bankName;
-    data['bankBranch'] = this.bankBranch;
-    data['ifscCode'] = this.ifscCode;
-    data['accNumber'] = this.accNumber;
-    data['recptAmount'] = this.recptAmount;
-    data['deptAmount'] = this.deptAmount;
-    data['reference'] = this.reference;
-    data['imageLocation'] = this.imageLocation;
-    data['mode'] = this.mode;
-    data['depositDate'] = this.depositDate;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['bankName'] = bankName;
+    data['bankBranch'] = bankBranch;
+    data['ifscCode'] = ifscCode;
+    data['accNumber'] = accNumber;
+    data['recptAmount'] = recptAmount;
+    data['deptAmount'] = deptAmount;
+    data['reference'] = reference;
+    data['imageLocation'] = imageLocation;
+    data['mode'] = mode;
+    data['depositDate'] = depositDate;
+    data['status'] = status;
     return data;
   }
 }
@@ -97,10 +97,10 @@ class AgentLocation {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['missingAgentLocation'] = this.missingAgentLocation;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['missingAgentLocation'] = missingAgentLocation;
     return data;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,18 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/listener/item_selected_listener.dart';
-import 'package:origa/models/home_address_post_model/home_address_post_model.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/router.dart';
-import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
@@ -27,14 +18,11 @@ import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_scree
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

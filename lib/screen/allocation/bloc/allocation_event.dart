@@ -11,7 +11,7 @@ class MessageEvent extends AllocationEvent {}
 class NavigateSearchPageEvent extends AllocationEvent {}
 
 class NavigateCaseDetailEvent extends AllocationEvent {
-  dynamic paramValues;
+  final dynamic paramValues;
   NavigateCaseDetailEvent({this.paramValues});
 }
 
@@ -24,12 +24,12 @@ class TapPriorityEvent extends AllocationEvent {}
 class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
 
 class TapBuildRouteEvent extends AllocationEvent {
-  dynamic paramValues;
+  final dynamic paramValues;
   TapBuildRouteEvent({this.paramValues});
 }
 
 class SearchReturnDataEvent extends AllocationEvent {
-  dynamic returnValue;
+  final dynamic returnValue;
   SearchReturnDataEvent({this.returnValue});
 }
 

@@ -61,10 +61,7 @@ Route<dynamic> _buildSplashScreen() {
 
 Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
-    String? loginType;
-    if (settings.arguments != null) {
-      loginType = settings.arguments.toString();
-    }
+    if (settings.arguments != null) {}
 
     // final AuthenticationBloc authBloc =
     //     BlocProvider.of<AuthenticationBloc>(context);
@@ -114,7 +111,7 @@ class PageBuilder {
       create: (BuildContext context) {
         return BlocProvider.of<AuthenticationBloc>(context);
       },
-      child: SplashScreen(),
+      child: const SplashScreen(),
     );
   }
 
@@ -139,7 +136,7 @@ class PageBuilder {
       create: (BuildContext context) =>
           BlocProvider.of<SearchScreenBloc>(context)
             ..add(SearchScreenInitialEvent()),
-      child: SearchScreen(),
+      child: const SearchScreen(),
     );
   }
 

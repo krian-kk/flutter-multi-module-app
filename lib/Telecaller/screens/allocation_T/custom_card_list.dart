@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/allocation_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-// import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import 'bloc/allocation_t_bloc.dart';
@@ -32,7 +28,6 @@ class CustomCardList {
               scrollDirection: Axis.vertical,
               itemCount: bloc.allocationList.length,
               itemBuilder: (BuildContext context, int index) {
-                int listCount = index + 1;
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -53,7 +48,7 @@ class CustomCardList {
                               const SizedBox(
                                 width: 9.0,
                               ),
-                              Container(
+                              SizedBox(
                                   height: 20,
                                   width: 20,
                                   child: SvgPicture.asset(ImageResource.star)),
@@ -76,13 +71,11 @@ class CustomCardList {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 19),
                             child: InkWell(
-                              onTap: () => bloc.add(ClickCaseDetailsEvent({
+                              onTap: () => bloc.add(
+                                  ClickCaseDetailsEvent(const {
                                 'caseID': '618e382004d8d040ac18841b',
                                 'isAddress': true
                               })),
-                              // () {
-                              //   // caseDetailsBottomSheet(context);
-                              // },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 margin:
@@ -95,7 +88,7 @@ class CustomCardList {
                                       color: ColorResource.colorDADADA,
                                       width: 0.5),
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Color.fromRGBO(0, 0, 0, 0.25),
                                       // spreadRadius: 1,
@@ -112,7 +105,7 @@ class CustomCardList {
                                       height: 2.0,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 24, vertical: 2),
                                       child: CustomText(
                                         bloc.allocationList[index].loanID!,
@@ -274,7 +267,7 @@ class CustomCardList {
                           Container(
                             alignment: Alignment.topRight,
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: SvgPicture.asset(ImageResource.star),
                           ),
                         ],

@@ -106,7 +106,7 @@ class LanguageTa extends Languages {
   @override
   String get myVisits => 'எனது வருகைகள்';
 
-   @override
+  @override
   String get myCalls => 'என் அழைப்புகள்';
 
   @override
@@ -637,4 +637,16 @@ class LanguageTa extends Languages {
 
   @override
   String get mode => 'Mode';
+
+  @override
+  String get saveNewPassword => 'SAVE NEW PASSWORD';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get enterConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get clear => 'Clear';
 }

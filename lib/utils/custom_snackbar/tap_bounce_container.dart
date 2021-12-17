@@ -5,10 +5,11 @@ class TapBounceContainer extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
 
-  TapBounceContainer({
+  const TapBounceContainer({
+    Key? key,
     required this.child,
     this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   _TapBounceContainerState createState() => _TapBounceContainerState();
@@ -19,7 +20,7 @@ class _TapBounceContainerState extends State<TapBounceContainer>
   late double _scale;
   late AnimationController _controller;
 
-  final animationDuration = Duration(milliseconds: 200);
+  final animationDuration = const Duration(milliseconds: 200);
 
   @override
   void initState() {
