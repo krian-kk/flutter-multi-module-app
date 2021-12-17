@@ -9,7 +9,7 @@ abstract class Languages {
 
   String get splashScreen;
 
-  String get userName;
+  String get userId;
 
   String get password;
 

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/authentication/authentication_state.dart';
@@ -20,10 +21,20 @@ class AuthenticationBloc
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
       await Future.delayed(const Duration(seconds: 2));
+      // final response = await InternetAddress.lookup('www.google.com');
+
+      // print('response.isNotEmpty');
+      // print(response.isNotEmpty);
+
+      // if (response.isNotEmpty) {}
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        AppUtils.showErrorToast('No Internet Connection');
+      }
 
       SharedPreferences _prefs = await SharedPreferences.getInstance();
-      String? getToken = _prefs.getString(Constants.accessToken) ?? "";
-      String? getUserName = _prefs.getString(Constants.userName);
+      String? getToken = _prefs.getString(Constants.accessToken) ?? '';
+      String? getUserName = _prefs.getString(Constants.userId);
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {

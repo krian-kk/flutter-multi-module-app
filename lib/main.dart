@@ -117,8 +117,6 @@ class _MyAppState extends State<MyApp> {
           },
           onGenerateRoute: getRoute,
           debugShowCheckedModeBanner: false,
-          // ignore: prefer_double_quotes
-
           home: addAuthBloc(
             context,
             const SplashScreen(),

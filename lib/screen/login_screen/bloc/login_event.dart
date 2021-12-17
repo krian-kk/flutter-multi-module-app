@@ -5,9 +5,9 @@ abstract class LoginEvent extends BaseEquatable {}
 class LoginInitialEvent extends LoginEvent {}
 
 class SignInEvent extends LoginEvent {
-  final dynamic paramValue;
-  final String? userName;
-  SignInEvent({this.paramValue, this.userName});
+  dynamic paramValue;
+  String? userId;
+  SignInEvent({this.paramValue, this.userId});
 }
 
 class HomeTabEvent extends LoginEvent {}

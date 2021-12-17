@@ -109,9 +109,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     child: Column(
                       children: [
                         CustomTextField(
-                          Languages.of(context)!.userName,
+                          Languages.of(context)!.userId,
                           userIdController,
                           keyBoardType: TextInputType.emailAddress,
+
                           // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,
@@ -215,8 +216,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         const SizedBox(height: 20),
                         CustomTextField(
-                          Languages.of(context)!.userName,
+                          Languages.of(context)!.userId,
                           userNameController,
+
                           // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,

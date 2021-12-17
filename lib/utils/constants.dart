@@ -68,12 +68,12 @@ class Constants {
 
   // Remember login field values storage key
   static const String rememberMe = 'remember_me';
-  static const String rememberUserName = 'rememberUserName';
+  static const String rememberUserId = 'rememberUserId';
   static const String rememberPassword = 'rememberPassword';
-  
+
   // local storage key
   static const String userType = 'userType';
-  static const String userName = 'userName';
+  static const String userId = 'userId';
   static const String accessToken = 'accessToken';
   static const String accessTokenExpireTime = 'accessTokenExpireTime';
   static const String refreshToken = 'refreshToken';

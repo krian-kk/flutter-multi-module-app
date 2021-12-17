@@ -14,7 +14,7 @@ class LanguageEn extends Languages {
   String get password => 'Password';
 
   @override
-  String get userName => 'User Name';
+  String get userId => 'User ID';
 
   @override
   String get rememberMe => 'Remember Me';
