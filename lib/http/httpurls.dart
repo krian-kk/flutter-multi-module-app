@@ -1,11 +1,12 @@
 class HttpUrl {
-  static const String baseUrl = 'https://devapi.instalmint.com/';
+  static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
+  // static const String baseUrl = 'https://devapi.instalmint.com/';
   static const String version = 'v1/';
   static const String fieldAgent = 'agent/';
 
   //login
-  static const String login_keycloak =
-      'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
+  // static const String login_keycloak =
+  //     'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
   static const String loginUrl =
       'https://uat-collect.origa.ai/node/api/user/loginWeb';
   static const String agentDetailUrl =
@@ -162,10 +163,8 @@ class HttpUrl {
   static const String dashboardMyDeposistsUrl =
       baseUrl + version + fieldAgent + 'case-details/deposits?';
 
-  static const String dashboardYardingAndSelfReleaseUrl = baseUrl +
-      version +
-      fieldAgent +
-      'case-details/yardingData?caseId=5f80375a86527c46deba2e60';
+  static const String dashboardYardingAndSelfReleaseUrl =
+      baseUrl + version + fieldAgent + 'case-details/yardingData';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
   static const String fileUpload = '';

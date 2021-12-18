@@ -61,6 +61,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           loginResponse = LoginResponseModel.fromJson(response['data']);
           // Store the access-token in local storage
+          print('get header values---------->');
+          print(loginResponse.data!.accessToken!);
+          print(loginResponse.data!.refreshToken!);
+          print(loginResponse.data!.sessionState!);
+          print(event.userId!);
           _prefs.setString(
               Constants.accessToken, loginResponse.data!.accessToken!);
           _prefs.setInt(
