@@ -59,10 +59,13 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                             title: Languages.of(context)!.yardingSelfRelease,
                           ),
                           const SizedBox(
-                            height: 90,
+                            height: 30,
                           ),
                           Center(
-                            child: NoCaseAvailble.buildNoCaseAvailable(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: NoCaseAvailble.buildNoCaseAvailable(),
+                            ),
                           )
                         ],
                       ),

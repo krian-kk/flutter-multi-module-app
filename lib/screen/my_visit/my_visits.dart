@@ -340,35 +340,18 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
 
   static Widget buildListView(DashboardBloc bloc, DashboardAllModels listData,
       List<Case>? resultValue) {
-    // if(i == 1) {
-    //   print('--------------->>> $i');
-    //   resultValue!.clear();
-    // for (Case element in listData.result!.cases!) {
-    //   if(element.collSubStatus ==  Constants.ptp ||
-    //   element.collSubStatus ==  Constants.denial ||
-    //   element.collSubStatus ==  Constants.dispute ||
-    //   element.collSubStatus ==  Constants.remainder ||
-    //   element.collSubStatus ==  Constants.collections ||
-    //   element.collSubStatus ==  Constants.receipt ||
-    //   element.collSubStatus ==  Constants.ots){
-    //     resultValue!.add(element);
-    //   }
-    // }
-    // } else if(i == 2) {
-    //   print('--------------->>> $i');
-    //   resultValue!.clear();
-    // } else if(i == 3) {
-    //   print('--------------->>> $i');
-    //   // resultValue!.clear();
-    // }
-
     return bloc.selectedFilterDataLoading
         ? const Center(
             child: CircularProgressIndicator(),
           )
         : resultValue!.isEmpty
-            ? Center(
-                child: NoCaseAvailble.buildNoCaseAvailable(),
+            ? Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: NoCaseAvailble.buildNoCaseAvailable(),
+                  ),
+                ],
               )
             : ListView.builder(
                 scrollDirection: Axis.vertical,

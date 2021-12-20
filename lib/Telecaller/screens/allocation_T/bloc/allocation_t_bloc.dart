@@ -1,9 +1,20 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/priority_case_list.dart';
 
 part 'allocation_t_event.dart';
 part 'allocation_t_state.dart';
@@ -30,53 +41,131 @@ class AllocationTBloc extends Bloc<AllocationTEvent, AllocationTState> {
     '9765431239',
   ];
 
+  String? userType;
+  String? agentName;
+  String? agrRef;
+  bool isShowSearchPincode = false;
+  bool isNoInternet = false;
+
+  List starCount = [];
+  List<Result> resultList = [];
+
+  int page = 1;
+
+  // There is next page or not
+  bool hasNextPage = true;
+
   @override
   Stream<AllocationTState> mapEventToState(AllocationTEvent event) async* {
     if (event is AllocationTInitialEvent) {
       yield AllocationTLoadingState();
-      // print('--------------NK-------');
-      allocationList.addAll([
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 3,97,553.67',
-          address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-          date: 'Today, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'New User',
-          amount: '₹ 5,54,433.67',
-          address: '2/345, 6th Main Road, Bangalore - 534544',
-          date: 'Thu, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 8,97,553.67',
-          address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-          date: 'Sat, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
-        ),
-      ]);
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      Singleton.instance.buildContext = event.context;
+      userType = _pref.getString(Constants.userType);
+      agentName = _pref.getString(Constants.agentName);
+      agrRef = _pref.getString(Constants.agentRef);
+      isShowSearchPincode = false;
 
-      mobileNumberList.addAll([
-        AutoCallingModel(
-          mobileNumber: '9876321230',
-          callResponse: 'Declined Call',
-        ),
-        AutoCallingModel(
-          mobileNumber: '9876321230',
-        ),
-        AutoCallingModel(
-          mobileNumber: '9876321230',
-        ),
-      ]);
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternet = true;
+        yield NoInternetConnectionState();
+      } else {
+        isNoInternet = false;
 
-      yield AllocationTLoadedState();
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+          APIRequestType.GET,
+          HttpUrl.priorityCaseList +
+              'pageNo=${Constants.pageNo}' +
+              '&limit=${Constants.limit}' +
+              "&userType=$userType",
+        );
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in priorityListData['data']['result']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+
+          print("--------------NK--------Telecaller");
+          print(resultList.toString());
+        }
+
+        mobileNumberList.addAll([
+          AutoCallingModel(
+            mobileNumber: '9876321230',
+            callResponse: 'Declined Call',
+          ),
+          AutoCallingModel(
+            mobileNumber: '9876321230',
+          ),
+          AutoCallingModel(
+            mobileNumber: '9876321230',
+          ),
+        ]);
+
+        yield AllocationTLoadedState(successResponse: resultList);
+      }
     }
+
+    if (event is TapPriorityTEvent) {
+      yield CaseListViewLoadingState();
+
+      page = 1;
+      hasNextPage = true;
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=${Constants.pageNo}' +
+                '&limit=${Constants.limit}');
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in priorityListData['data']['result']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+        }
+      }
+      yield TapPriorityTState(successResponse: resultList);
+    }
+
+    if (event is PriorityLoadMoreTEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=$page' +
+                '&limit=${Constants.limit}');
+        if (priorityListData['data']['result'] != null) {
+          for (var element in priorityListData['data']['result']) {
+            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+                true) {
+              starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
+                  .starredCase as List);
+            }
+          }
+          hasNextPage = false;
+        }
+      }
+      yield PriorityLoadMoreTState(successResponse: resultList);
+    }
+
     if (event is NavigateSearchPageTEvent) {
       yield NavigateSearchPageTState();
     }

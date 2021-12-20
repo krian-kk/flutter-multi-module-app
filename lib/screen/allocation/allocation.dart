@@ -523,7 +523,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   paramValues: BuildRouteDataModel(
                       lat: position.latitude.toString(),
                       long: position.longitude.toString(),
-                      maxDistMeters: "1000")));
+                      maxDistMeters: "5000")));
               bloc.showFilterDistance = true;
             });
             break;
@@ -613,7 +613,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 ),
                 onTap: () {
                   getCurrentLocation();
-                  // AppUtils.showToast('Change address');
+                  AppUtils.showToast('Fetched current address.');
                 },
               ),
             ),
@@ -648,7 +648,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
       onTap: () {
         switch (index) {
           case 0:
-            maxDistance = '1000';
+            maxDistance = '5000';
             break;
           case 1:
             maxDistance = '5000';

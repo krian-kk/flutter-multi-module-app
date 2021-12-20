@@ -43,178 +43,170 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
           builder: (BuildContext context, StateSetter setState) {
         return WillPopScope(
           onWillPop: () async => false,
-          child: widget.bloc.myDeposistsData.result!.count == 0
-              ? Scaffold(
+          child: Container(
+            padding: const EdgeInsets.only(top: 16),
+            child: DefaultTabController(
+              length: 2,
+              child: SafeArea(
+                child: Scaffold(
+                  // bottomNavigationBar: Container(
+                  //   height: 66,
+                  //   color: ColorResource.colorFFFFFF,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
+                  //     child: CustomButton(
+                  //       Languages.of(context)!.enterDepositionDetails,
+                  //       fontSize: FontSize.sixteen,
+                  //       fontWeight: FontWeight.w600,
+                  //       onTap: () {
+                  //         depositionModeSheet(context);
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       BottomSheetAppbar(
                         title: Languages.of(context)!.myDeposists,
+                        onTap: () {
+                          widget.bloc.add(SetTimeperiodValueEvent());
+                          Navigator.pop(context);
+                        },
                       ),
-                      const SizedBox(
-                        height: 90,
-                      ),
-                      Center(
-                        child: NoCaseAvailble.buildNoCaseAvailable(),
-                      )
-                    ],
-                  ),
-                )
-              : Container(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: DefaultTabController(
-                    length: 2,
-                    child: SafeArea(
-                      child: Scaffold(
-                        // bottomNavigationBar: Container(
-                        //   height: 66,
-                        //   color: ColorResource.colorFFFFFF,
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
-                        //     child: CustomButton(
-                        //       Languages.of(context)!.enterDepositionDetails,
-                        //       fontSize: FontSize.sixteen,
-                        //       fontWeight: FontWeight.w600,
-                        //       onTap: () {
-                        //         depositionModeSheet(context);
-                        //       },
-                        //     ),
-                        //   ),
-                        // ),
-                        body: Column(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
-                            BottomSheetAppbar(
-                              title: Languages.of(context)!.myDeposists,
-                              onTap: () {
-                                widget.bloc.add(SetTimeperiodValueEvent());
-                                Navigator.pop(context);
-                              },
-                            ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              padding: const EdgeInsets.all(5.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                Languages.of(context)!.count,
-                                                fontSize: FontSize.ten,
-                                                color:
-                                                    ColorResource.color101010,
-                                              ),
-                                              CustomText(
-                                                widget.bloc.myDeposistsData
-                                                    .result!.count
-                                                    .toString(),
-                                                fontSize: FontSize.fourteen,
-                                                color:
-                                                    ColorResource.color101010,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ],
-                                          ),
+                                        CustomText(
+                                          Languages.of(context)!.count,
+                                          fontSize: FontSize.ten,
+                                          color: ColorResource.color101010,
                                         ),
-                                        Expanded(
-                                          flex: 7,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                Languages.of(context)!.amount,
-                                                fontSize: FontSize.ten,
-                                                color:
-                                                    ColorResource.color101010,
-                                              ),
-                                              CustomText(
-                                                widget.bloc.myDeposistsData
-                                                    .result!.totalAmt
-                                                    .toString(),
-                                                fontSize: FontSize.fourteen,
-                                                color:
-                                                    ColorResource.color101010,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ],
-                                          ),
+                                        CustomText(
+                                          widget.bloc.myDeposistsData.result!
+                                              .count
+                                              .toString(),
+                                          fontSize: FontSize.fourteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Wrap(
-                                    runSpacing: 0,
-                                    spacing: 7,
-                                    children: _buildFilterOptions(),
+                                  Expanded(
+                                    flex: 7,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!.amount,
+                                          fontSize: FontSize.ten,
+                                          color: ColorResource.color101010,
+                                        ),
+                                        CustomText(
+                                          widget.bloc.myDeposistsData.result!
+                                              .totalAmt
+                                              .toString(),
+                                          fontSize: FontSize.fourteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            Container(
-                              // width: MediaQuery.of(context).size.width,
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: ColorResource.colorD8D8D8))),
-                              child: TabBar(
-                                isScrollable: false,
-                                indicatorColor: ColorResource.colorD5344C,
-                                labelStyle: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: ColorResource.color23375A,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal),
-                                indicatorWeight: 5.0,
-                                labelColor: ColorResource.color23375A,
-                                unselectedLabelColor: ColorResource.colorC4C4C4,
-                                tabs: [
-                                  Tab(text: Languages.of(context)!.cheque),
-                                  Tab(text: Languages.of(context)!.cash)
-                                ],
-                              ),
+                            const SizedBox(
+                              height: 12,
                             ),
-                            Expanded(
-                              child: TabBarView(
-                                physics: const NeverScrollableScrollPhysics(),
-                                children: [
-                                  ChegueAndCasshResults(widget.bloc,
-                                      mode: "CHEQUE",
-                                      result:
-                                          widget.bloc.myDeposistsData.result!),
-                                  ChegueAndCasshResults(widget.bloc,
-                                      mode: "CASH",
-                                      result:
-                                          widget.bloc.myDeposistsData.result!),
-                                  // StatefulBuilder(
-                                  //     builder: (BuildContext context, StateSetter setState) {
-                                  //     return  CashResults.buildListCashAndChegue(widget.bloc, setState);
-                                  //   }
-                                  // ),
-                                ],
-                              ),
+                            Wrap(
+                              runSpacing: 0,
+                              spacing: 7,
+                              children: _buildFilterOptions(),
                             ),
                           ],
                         ),
                       ),
-                    ),
+                      Container(
+                        // width: MediaQuery.of(context).size.width,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: ColorResource.colorD8D8D8))),
+                        child: TabBar(
+                          isScrollable: false,
+                          indicatorColor: ColorResource.colorD5344C,
+                          labelStyle: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: ColorResource.color23375A,
+                              fontSize: FontSize.fourteen,
+                              fontStyle: FontStyle.normal),
+                          indicatorWeight: 5.0,
+                          labelColor: ColorResource.color23375A,
+                          unselectedLabelColor: ColorResource.colorC4C4C4,
+                          tabs: [
+                            Tab(text: Languages.of(context)!.cheque),
+                            Tab(text: Languages.of(context)!.cash)
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            widget.bloc.myDeposistsData.result!.count == 0
+                                ? Center(
+                                    child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child:
+                                        NoCaseAvailble.buildNoCaseAvailable(),
+                                  ))
+                                : ChegueAndCasshResults(widget.bloc,
+                                    mode: "CHEQUE",
+                                    result:
+                                        widget.bloc.myDeposistsData.result!),
+                            widget.bloc.myDeposistsData.result!.count == 0
+                                ? Center(
+                                    child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child:
+                                        NoCaseAvailble.buildNoCaseAvailable(),
+                                  ))
+                                : ChegueAndCasshResults(widget.bloc,
+                                    mode: "CASH",
+                                    result:
+                                        widget.bloc.myDeposistsData.result!),
+                            // StatefulBuilder(
+                            //     builder: (BuildContext context, StateSetter setState) {
+                            //     return  CashResults.buildListCashAndChegue(widget.bloc, setState);
+                            //   }
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
+            ),
+          ),
         );
       }),
     );

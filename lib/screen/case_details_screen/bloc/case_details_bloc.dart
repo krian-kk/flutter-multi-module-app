@@ -113,7 +113,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         yield NoInternetState();
       } else {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId');
+            APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
+            isPop: true);
 
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];

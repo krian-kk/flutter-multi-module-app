@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/case_details_priority_api_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -12,7 +13,9 @@ import 'package:origa/widgets/custom_text.dart';
 import 'bloc/allocation_t_bloc.dart';
 
 class CustomCardList {
-  static Widget buildListView(AllocationTBloc bloc) {
+  static Widget buildListView(AllocationTBloc bloc,
+      {List<Result>? resultData,
+      required ScrollController listViewController}) {
     return BlocListener<AllocationTBloc, AllocationTState>(
       bloc: bloc,
       listener: (context, state) {
@@ -26,7 +29,8 @@ class CustomCardList {
         builder: (context, state) {
           return ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: bloc.allocationList.length,
+              controller: listViewController,
+              itemCount: resultData!.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),

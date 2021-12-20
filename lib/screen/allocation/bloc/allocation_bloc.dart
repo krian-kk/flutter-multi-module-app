@@ -32,7 +32,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   String selectedDistance = StringResource.all;
 
-  SearchModel searchData = SearchModel();
+  // SearchModel searchData = SearchModel();
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
@@ -64,20 +64,20 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   // Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
   //     Hive.openBox<OrigoDynamicTable>('testBox4');
 
-  AllocationListModel searchResultData = AllocationListModel();
+  // AllocationListModel searchResultData = AllocationListModel();
   List starCount = [];
   List<Result> resultList = [];
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
+      yield AllocationLoadingState();
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      _pref.setString(Constants.buildcontext, event.context.toString());
+      // _pref.setString(Constants.buildcontext, event.context.toString());
       Singleton.instance.buildContext = event.context;
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
       agrRef = _pref.getString(Constants.agentRef);
-      yield AllocationLoadingState();
       isShowSearchPincode = false;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -90,7 +90,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             APIRequestType.GET,
             HttpUrl.priorityCaseList +
                 'pageNo=${Constants.pageNo}' +
-                '&limit=${Constants.limit}');
+                '&limit=${Constants.limit}'
+            //  +"&userType=$userType",
+            );
 
         resultList.clear();
         starCount.clear();
