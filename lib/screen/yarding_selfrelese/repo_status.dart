@@ -2,19 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/screen/my_deposists/deposistion_mode/bank_tab.dart';
-import 'package:origa/screen/my_deposists/deposistion_mode/company_branch.dart';
 import 'package:origa/screen/yarding_selfrelese/self_release_tab.dart';
 import 'package:origa/screen/yarding_selfrelese/yarding_tab.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
-import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_text.dart';
 
 class RepoStatus {
   static Widget buildRepoSelfReleaseTab(BuildContext context, String? caseID,

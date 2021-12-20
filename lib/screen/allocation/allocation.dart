@@ -22,7 +22,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
@@ -33,6 +32,8 @@ import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
 
 class AllocationScreen extends StatefulWidget {
+  const AllocationScreen({Key? key}) : super(key: key);
+
   // AuthenticationBloc authenticationBloc;
   // AllocationScreen(this.authenticationBloc);
 
@@ -57,7 +58,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = AllocationBloc()..add(AllocationInitialEvent());
+    bloc = AllocationBloc()..add(AllocationInitialEvent(context));
     _controller = ScrollController()..addListener(_loadMore);
     getCurrentLocation();
   }
@@ -77,19 +78,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
     });
     // print('position------> ${position.heading}');
     // print(position);
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-                        result.latitude, result.longitude);
-    
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(result.latitude, result.longitude);
+
     setState(() {
-     currentAddress = placemarks.toList().first.street.toString() +
-                              ', ' +
-                              placemarks.toList().first.subLocality.toString() +
-                              ', ' +
-                              placemarks.toList().first.postalCode.toString();
-      // print(currentAddress);                        
-
+      currentAddress = placemarks.toList().first.street.toString() +
+          ', ' +
+          placemarks.toList().first.subLocality.toString() +
+          ', ' +
+          placemarks.toList().first.postalCode.toString();
+      // print(currentAddress);
     });
-
   }
 
   // This function will be triggered whenver the user scroll
@@ -98,7 +97,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
       if (bloc.hasNextPage) {
         if (bloc.isShowSearchPincode) {
-          print('search api cal ---------------->');
         } else {
           bloc.page += 1;
           bloc.add(PriorityLoadMoreEvent());
@@ -229,6 +227,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 latitude: position.latitude,
                 longitude: position.longitude,
               ),
+              createdBy: bloc.agentName.toString(),
+              agentName: bloc.agentName.toString(),
+              eventModule: (bloc.userType == Constants.telecaller)
+                  ? 'Telecalling'
+                  : 'Field Allocation',
               eventCode: 'TELEVT017');
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.POST,
@@ -262,7 +265,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       ),
                       IconButton(
                           onPressed: () {
-                            bloc.add(AllocationInitialEvent());
+                            bloc.add(AllocationInitialEvent(context));
                           },
                           icon: const Icon(Icons.refresh)),
                     ],
@@ -278,7 +281,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           padding: const EdgeInsets.only(left: 30),
                           child: Visibility(
                             visible: bloc.isMessageThere,
-                            child: Container(
+                            child: SizedBox(
                               width: 175,
                               // padding: EdgeInsets.all(10),
                               child: CustomButton(
@@ -288,7 +291,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 isTrailing: true,
                                 leadingWidget: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 40,
                                     child: Container(
                                       height: 26,
@@ -384,7 +387,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     const SizedBox(
                                       width: 5.0,
                                     ),
-                                    Container(
+                                    SizedBox(
                                         width: 76,
                                         height: 40,
                                         child: CustomButton(
@@ -433,7 +436,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color000000,
                                       fontWeight: FontWeight.w700,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           overflow: TextOverflow.ellipsis),
                                     ),
                                   ],
@@ -469,13 +472,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               ? const Center(child: CircularProgressIndicator())
                               : resultList.isEmpty
                                   ? Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 50),
-                                        child: NoCaseAvailble.buildNoCaseAvailable(),
-                                      ),
-                                    ],
-                                  )
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 50, right: 20, left: 20),
+                                          child: NoCaseAvailble
+                                              .buildNoCaseAvailable(),
+                                        ),
+                                      ],
+                                    )
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0, vertical: 0.0),
@@ -585,7 +590,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             const SizedBox(
               width: 8,
             ),
-             SizedBox(
+            SizedBox(
               width: 213,
               child: CustomText(
                 currentAddress!,
@@ -653,7 +658,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
             break;
           default:
         }
-        print(maxDistance);
         setState(() {
           bloc.selectedDistance = distance;
           bloc.add(TapBuildRouteEvent(
@@ -723,7 +727,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   onWillPop: () async => false,
                   child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.86,
-                      child: MessageChatRoomScreen()),
+                      child: const MessageChatRoomScreen()),
                 )));
   }
 }

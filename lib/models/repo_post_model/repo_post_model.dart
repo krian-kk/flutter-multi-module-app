@@ -15,22 +15,23 @@ class RepoPostModel {
   late double? invalidNumber;
   late String agrRef;
 
-  RepoPostModel(
-      {this.eventId = 0,
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      required this.contact,
-      this.createdBy = 'YES_getwisecollector',
-      this.agentName = 'GETWISE COLLECTOR',
-      this.eventModule = 'Field Allocation',
-      this.callID,
-      this.callingID,
-      this.callerServiceID = 'Kaleyra_123',
-      this.voiceCallEventCode = 'TELEVT011',
-      this.invalidNumber,
-      this.agrRef = 'YES_SD81111'});
+  RepoPostModel({
+    this.eventId = 0,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    required this.contact,
+    required this.createdBy,
+    required this.agentName,
+    required this.eventModule,
+    this.callID,
+    this.callingID,
+    required this.callerServiceID,
+    this.voiceCallEventCode = 'TELEVT011',
+    this.invalidNumber,
+    required this.agrRef,
+  });
 
   RepoPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];

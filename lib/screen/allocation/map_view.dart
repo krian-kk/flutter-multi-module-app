@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MapView extends StatefulWidget {
   final AllocationBloc bloc;
-  List<String> listOfCity = [
+  final List<String> listOfCity = [
     'Guindy',
     'Perungudi',
     'Karuthapillaiyur',
@@ -70,9 +70,11 @@ class _MapViewState extends State<MapView> {
 
   Future getCurrentLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if (permission != PermissionStatus.granted) {
+    if (permission.toString() != PermissionStatus.granted.toString()) {
       LocationPermission permission = await Geolocator.requestPermission();
-      if (permission != PermissionStatus.granted) getLocation();
+      if (permission.toString() != PermissionStatus.granted.toString()) {
+        getLocation();
+      }
       return;
     }
     getLocation();

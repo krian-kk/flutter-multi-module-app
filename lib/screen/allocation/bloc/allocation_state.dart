@@ -7,7 +7,7 @@ class AllocationInitial extends AllocationState {}
 class AllocationLoadingState extends AllocationState {}
 
 class AllocationLoadedState extends AllocationState {
-  dynamic? successResponse;
+  final dynamic successResponse;
   AllocationLoadedState({this.successResponse});
 }
 
@@ -18,7 +18,7 @@ class MessageState extends AllocationState {}
 class NavigateSearchPageState extends AllocationState {}
 
 class NavigateCaseDetailState extends AllocationState {
-  dynamic paramValues;
+  final dynamic paramValues;
   NavigateCaseDetailState({this.paramValues});
 }
 
@@ -33,17 +33,17 @@ class SearchScreenNormalState extends AllocationState {}
 class TapAreYouAtOfficeOptionsState extends AllocationState {}
 
 class TapPriorityState extends AllocationState {
-  dynamic? successResponse;
+  final dynamic successResponse;
   TapPriorityState({this.successResponse});
 }
 
 class PriorityLoadMoreState extends AllocationState {
-  dynamic? successResponse;
+  final dynamic successResponse;
   PriorityLoadMoreState({this.successResponse});
 }
 
 class TapBuildRouteState extends AllocationState {
-  dynamic? successResponse;
+  final dynamic successResponse;
   TapBuildRouteState({this.successResponse});
 }
 

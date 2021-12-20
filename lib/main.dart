@@ -44,7 +44,7 @@ void main() async {
 
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) {
-      return AuthenticationBloc()..add(AppStarted());
+      return AuthenticationBloc()..add(AppStarted(context: context));
     },
     child: MyApp(),
   ));
@@ -117,11 +117,9 @@ class _MyAppState extends State<MyApp> {
           },
           onGenerateRoute: getRoute,
           debugShowCheckedModeBanner: false,
-          // ignore: prefer_double_quotes
-
           home: addAuthBloc(
             context,
-            SplashScreen(),
+            const SplashScreen(),
           ),
         );
       },

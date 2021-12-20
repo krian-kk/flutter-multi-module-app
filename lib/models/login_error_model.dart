@@ -8,17 +8,22 @@ class LoginErrorMessage {
 
   LoginErrorMessage.fromJson(Map<String, dynamic> json) {
     code = json['code'];
-    status = json['status'];
+    if (json['status'] is int) {
+      status = json['status'];
+    }
+    if (json['status'] is String) {
+      status = int.parse(json['status']);
+    }
     msg = json['msg'];
     auth = json['auth'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    data['status'] = this.status;
-    data['msg'] = this.msg;
-    data['auth'] = this.auth;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['status'] = status;
+    data['msg'] = msg;
+    data['auth'] = auth;
     return data;
   }
 }

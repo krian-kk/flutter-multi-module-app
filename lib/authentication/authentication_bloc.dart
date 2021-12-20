@@ -1,8 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/authentication/authentication_state.dart';
@@ -30,6 +28,7 @@ class AuthenticationBloc
       // print(response.isNotEmpty);
 
       // if (response.isNotEmpty) {}
+      Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         AppUtils.showErrorToast('No Internet Connection');
@@ -38,56 +37,63 @@ class AuthenticationBloc
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       String? getToken = _prefs.getString(Constants.accessToken) ?? "";
       String? getUserName = _prefs.getString(Constants.userId);
+      String? getUserType = _prefs.getString(Constants.userType) ?? "";
+
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {
         if (JwtDecoder.isExpired(getToken)) {
           yield AuthenticationUnAuthenticated();
         } else {
-          Singleton.instance.accessToken =
-              _prefs.getString(Constants.accessToken) ?? "";
-          Singleton.instance.refreshToken =
-              _prefs.getString(Constants.refreshToken) ?? "";
-          Singleton.instance.sessionID =
-              _prefs.getString(Constants.sessionId) ?? "";
-          Singleton.instance.agentRef =
-              _prefs.getString(Constants.agentRef) ?? "";
-
-          Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-              APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
-          // ignore: unnecessary_type_check
-
-          if (agentDetail['data'] is AgentDetailErrorModel) {
-            //May if logged in onther deveces
-            dynamic agentDetailError =
-                AgentDetailErrorModel.fromJson(agentDetail['data']);
-            AppUtils.showToast(agentDetailError.msg!);
+          if (getUserType == "") {
             yield AuthenticationUnAuthenticated();
           } else {
-            dynamic agentDetails =
-                AgentDetailsModel.fromJson(agentDetail['data']);
-            if (agentDetails.data![0].agentType == 'COLLECTOR') {
-              await _prefs.setString(Constants.userType, Constants.fieldagent);
+            Singleton.instance.accessToken =
+                _prefs.getString(Constants.accessToken) ?? "";
+            Singleton.instance.refreshToken =
+                _prefs.getString(Constants.refreshToken) ?? "";
+            Singleton.instance.sessionID =
+                _prefs.getString(Constants.sessionId) ?? "";
+            Singleton.instance.agentRef =
+                _prefs.getString(Constants.agentRef) ?? "";
+
+            Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
+                APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
+
+            if (agentDetail['success'] == false) {
+              AgentDetailErrorModel agentDetailError =
+                  AgentDetailErrorModel.fromJson(agentDetail['data']);
+              yield AuthenticationUnAuthenticated();
+              AppUtils.showToast(agentDetailError.msg!,
+                  backgroundColor: Colors.red);
             } else {
-              await _prefs.setString(Constants.userType, Constants.telecaller);
-            }
+              dynamic agentDetails =
+                  AgentDetailsModel.fromJson(agentDetail['data']);
+              if (agentDetails.data![0].agentType == 'COLLECTOR') {
+                await _prefs.setString(
+                    Constants.userType, Constants.fieldagent);
+              } else {
+                await _prefs.setString(
+                    Constants.userType, Constants.telecaller);
+              }
 
-            if (agentDetails.data![0].agentType != null) {
-              await _prefs.setString(
-                  Constants.agentName, agentDetails.data![0].agentName!);
-              await _prefs.setString(
-                  Constants.mobileNo, agentDetails.data![0].mobNo!);
-              await _prefs.setString(
-                  Constants.email, agentDetails.data![0].email!);
-              await _prefs.setString(
-                  Constants.contractor, agentDetails.data![0].contractor!);
-              await _prefs.setString(
-                  Constants.status, agentDetails.data![0].status!);
-              await _prefs.setString(Constants.code, agentDetails.code!);
-              await _prefs.setBool(
-                  Constants.userAdmin, agentDetails.data![0].userAdmin!);
+              if (agentDetails.data![0].agentType != null) {
+                await _prefs.setString(
+                    Constants.agentName, agentDetails.data![0].agentName!);
+                await _prefs.setString(
+                    Constants.mobileNo, agentDetails.data![0].mobNo!);
+                await _prefs.setString(
+                    Constants.email, agentDetails.data![0].email!);
+                await _prefs.setString(
+                    Constants.contractor, agentDetails.data![0].contractor!);
+                await _prefs.setString(
+                    Constants.status, agentDetails.data![0].status!);
+                await _prefs.setString(Constants.code, agentDetails.code!);
+                await _prefs.setBool(
+                    Constants.userAdmin, agentDetails.data![0].userAdmin!);
 
-              yield AuthenticationAuthenticated();
+                yield AuthenticationAuthenticated();
+              }
             }
           }
         }

@@ -1,34 +1,35 @@
 class PostImageCapturedModel {
-  int? eventId;
-  String? eventType;
+  late int eventId;
+  late String eventType;
   late String caseId;
-  String? eventCode;
+  late String? eventCode;
   late EventAttr eventAttr;
-  String? createdBy;
-  String? eventModule;
-  String? callID;
-  String? callingID;
-  String? callerServiceID;
-  String? voiceCallEventCode;
-  int? invalidNumber;
-  String? agentName;
-  String? agrRef;
+  late String createdBy;
+  late String eventModule;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late int? invalidNumber;
+  late String agentName;
+  late String agrRef;
 
-  PostImageCapturedModel(
-      {this.eventId = 22,
-      this.eventType = "IMAGE CAPTURED",
-      required this.caseId,
-      this.eventCode = "TELEVT015",
-      required this.eventAttr,
-      this.createdBy = 'YES_getwisecollector',
-      this.eventModule = 'Field Allocation',
-      this.callID,
-      this.callingID,
-      this.callerServiceID = "e",
-      this.voiceCallEventCode = "TELEVT011",
-      this.invalidNumber,
-      this.agentName = "GETWISE COLLECTOR",
-      this.agrRef = "YES_SD87628"});
+  PostImageCapturedModel({
+    this.eventId = 22,
+    required this.eventType,
+    required this.caseId,
+    this.eventCode = "TELEVT015",
+    required this.eventAttr,
+    required this.createdBy,
+    required this.eventModule,
+    this.callID,
+    this.callingID,
+    this.callerServiceID = "e",
+    this.voiceCallEventCode = "TELEVT011",
+    this.invalidNumber,
+    required this.agentName,
+    required this.agrRef,
+  });
 
   PostImageCapturedModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -55,9 +56,7 @@ class PostImageCapturedModel {
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
-    if (eventAttr != null) {
-      data['eventAttr'] = eventAttr.toJson();
-    }
+    data['eventAttr'] = eventAttr.toJson();
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['callID'] = callID;

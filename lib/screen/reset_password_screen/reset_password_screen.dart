@@ -1,11 +1,12 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/reset_password_model/reset_password_model.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -15,6 +16,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -23,11 +25,11 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  late Timer? timer;
+  late Timer? timer = Timer(const Duration(), () {});
   int secondsRemaining = Constants.otpWaitingTime;
-  late TextEditingController userNameFirstController = TextEditingController();
+  late TextEditingController userIdController = TextEditingController();
   late TextEditingController mobileNumberController = TextEditingController();
-  late TextEditingController userNameSecondController = TextEditingController();
+  late TextEditingController userNameController = TextEditingController();
   late TextEditingController emailController = TextEditingController();
   late TextEditingController pinCodeController = TextEditingController();
   bool isReset = false;
@@ -37,9 +39,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  FocusNode userNameFirstFocusNode = FocusNode();
+  FocusNode userIdFocusNode = FocusNode();
   FocusNode mobileNumberFocusNode = FocusNode();
-  FocusNode userNameSecondFocusNode = FocusNode();
+  FocusNode userNameFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
   FocusNode pinCodeFocusNode = FocusNode();
 
@@ -68,9 +70,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   void dispose() {
-    userNameFirstController.clear();
+    userIdController.clear();
     mobileNumberController.clear();
-    userNameSecondController.clear();
+    userNameController.clear();
     emailController.clear();
     cancelTimer();
     super.dispose();
@@ -96,6 +98,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     horizontal: 24,
                     vertical: 12,
                   ),
+                  onTap: () {
+                    cancelTimer();
+                    Navigator.pop(context);
+                  },
                 ),
                 Expanded(
                     child: SingleChildScrollView(
@@ -105,40 +111,95 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       children: [
                         CustomTextField(
                           Languages.of(context)!.userId,
-                          userNameFirstController,
+                          userIdController,
+                          keyBoardType: TextInputType.emailAddress,
+
                           // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
-                          focusNode: userNameFirstFocusNode,
+                          // validationRules: const ['required'],
+                          focusNode: userIdFocusNode,
                           onEditing: () {
-                            userNameFirstFocusNode.unfocus();
-                            mobileNumberFocusNode.requestFocus();
+                            userIdFocusNode.unfocus();
+                            // mobileNumberFocusNode.requestFocus();
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           // onChange: (){
                           //    _formKey.currentState!.validate();
                           // },
                           validatorCallBack: (bool values) {},
-                          suffixWidget: Container(
-                            decoration: BoxDecoration(
-                              color: ColorResource.color23375A,
-                              borderRadius: BorderRadius.circular(85),
-                              border: Border.all(
-                                  color: ColorResource.colorECECEC, width: 1.0),
-                            ),
-                            margin: const EdgeInsets.all(12),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 6),
-                            child: CustomText(
-                              Languages.of(context)!.check,
-                              color: ColorResource.colorFFFFFF,
-                              lineHeight: 1,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w700,
+                          suffixWidget: GestureDetector(
+                            onTap: () async {
+                              SharedPreferences _prefs =
+                                  await SharedPreferences.getInstance();
+                              if (userIdController.text ==
+                                  _prefs.getString(Constants.userId)) {
+                                setState(() {
+                                  mobileNumberController.text =
+                                      _prefs.getString(Constants.userId) ?? '';
+                                  userNameController.text =
+                                      _prefs.getString(Constants.accessToken) ??
+                                          '';
+                                  emailController.text =
+                                      _prefs.getString(Constants.accessToken) ??
+                                          '';
+                                });
+                              } else {
+                                AppUtils.showToast(
+                                    Constants.pleaseEnterCorrectUserId);
+                              }
+                            },
+                            child: GestureDetector(
+                              onTap: () async {
+                                userIdFocusNode.unfocus();
+                                Map<String, dynamic> getAgentDetail =
+                                    await APIRepository.apiRequest(
+                                        APIRequestType.GET,
+                                        HttpUrl.resetPasswordCheckUrl(
+                                            userIdController.text));
+
+                                if (getAgentDetail['success'] == false) {
+                                  AgentDetailErrorModel agentDetailError =
+                                      AgentDetailErrorModel.fromJson(
+                                          getAgentDetail['data']);
+                                  AppUtils.showToast(agentDetailError.msg!,
+                                      backgroundColor: Colors.red);
+                                } else {
+                                  setState(() {
+                                    mobileNumberController.text =
+                                        getAgentDetail['data']['data'][0]
+                                            ['mobileNumber'];
+                                    userNameController.text =
+                                        getAgentDetail['data']['data'][0]
+                                            ['Agent_name'];
+                                    emailController.text =
+                                        getAgentDetail['data']['data'][0]
+                                            ['email'];
+                                  });
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: ColorResource.color23375A,
+                                  borderRadius: BorderRadius.circular(85),
+                                  border: Border.all(
+                                      color: ColorResource.colorECECEC,
+                                      width: 1.0),
+                                ),
+                                margin: const EdgeInsets.all(12),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 6),
+                                child: CustomText(
+                                  Languages.of(context)!.check,
+                                  color: ColorResource.colorFFFFFF,
+                                  lineHeight: 1,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -150,15 +211,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
+                          isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required', 'number_only'],
+                          // validationRules: const ['required', 'number_only'],
                           maximumWordCount: 10,
-
                           focusNode: mobileNumberFocusNode,
                           onEditing: () {
                             mobileNumberFocusNode.unfocus();
-                            userNameSecondFocusNode.requestFocus();
+                            userNameFocusNode.requestFocus();
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           // onChange: (){
@@ -169,17 +230,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         const SizedBox(height: 20),
                         CustomTextField(
                           Languages.of(context)!.userId,
-                          userNameSecondController,
+                          userNameController,
+
                           // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
+                          isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
-                          focusNode: userNameSecondFocusNode,
+                          // validationRules: const ['required'],
+                          focusNode: userNameFocusNode,
                           onEditing: () {
-                            userNameSecondFocusNode.unfocus();
+                            userNameFocusNode.unfocus();
                             emailFocusNode.requestFocus();
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -191,12 +254,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           emailController,
                           // obscureText: _obscureText,
                           isFill: true,
+                          isReadOnly: true,
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
                           keyBoardType: TextInputType.emailAddress,
                           // errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['email'],
+                          // validationRules: const ['email'],
                           focusNode: emailFocusNode,
                           onChange: () {
                             setState(() {});
@@ -259,7 +323,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   const SizedBox(height: 12),
                                   Center(
                                     child: InkWell(
-                                      onTap: () => secondsOTP(),
+                                      onTap: isTime
+                                          ? () {}
+                                          : () async {
+                                              Map<String, dynamic> postResult =
+                                                  await APIRepository
+                                                      .apiRequest(
+                                                APIRequestType.POST,
+                                                HttpUrl.resendOTPUrl(),
+                                                requestBodydata: {},
+                                              );
+                                              if (postResult[
+                                                  Constants.success]) {
+                                                secondsOTP();
+                                              }
+                                            },
                                       child: CustomText(
                                         Languages.of(context)!
                                             .resendOTP
@@ -280,58 +358,56 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         isSendOTP
                             ? CustomButton(
                                 Languages.of(context)!.sendOTP.toUpperCase(),
-                                buttonBackgroundColor: (userNameFirstController
+                                buttonBackgroundColor: (userIdController
                                                 .text.isNotEmpty &&
                                             mobileNumberController
                                                 .text.isNotEmpty &&
-                                            userNameSecondController
+                                            userNameController
                                                 .text.isNotEmpty &&
                                             emailController.text.isNotEmpty) &&
-                                        (userNameFirstController.text != '' &&
+                                        (userIdController.text != '' &&
                                             mobileNumberController.text != '' &&
-                                            userNameSecondController.text !=
-                                                '' &&
+                                            userNameController.text != '' &&
                                             emailController.text != '')
                                     ? ColorResource.color23375A
                                     : ColorResource.colorBEC4CF,
-                                borderColor: (userNameFirstController
-                                                .text.isNotEmpty &&
-                                            mobileNumberController
-                                                .text.isNotEmpty &&
-                                            userNameSecondController
-                                                .text.isNotEmpty &&
-                                            emailController.text.isNotEmpty) &&
-                                        (userNameFirstController.text != '' &&
-                                            mobileNumberController.text != '' &&
-                                            userNameSecondController.text !=
-                                                '' &&
-                                            emailController.text != '')
-                                    ? ColorResource.color23375A
-                                    : ColorResource.colorBEC4CF,
-                                onTap:
-                                    (userNameFirstController.text.isNotEmpty ||
-                                            mobileNumberController
-                                                .text.isNotEmpty ||
-                                            userNameSecondController
-                                                .text.isNotEmpty ||
-                                            emailController.text.isNotEmpty)
-                                        ? () async {
-                                            Map<String, dynamic> postResult =
-                                                await APIRepository.apiRequest(
-                                              APIRequestType.POST,
-                                              HttpUrl.requestOTPUrl(),
-                                              requestBodydata: {},
-                                            );
-                                            if (await postResult[
-                                                Constants.success]) {
-                                              setState(() {
-                                                isSendOTP = false;
-                                                isTime = true;
-                                                secondsOTP();
-                                              });
-                                            } else {}
-                                          }
-                                        : () {},
+                                borderColor:
+                                    (userIdController.text.isNotEmpty &&
+                                                mobileNumberController
+                                                    .text.isNotEmpty &&
+                                                userNameController
+                                                    .text.isNotEmpty &&
+                                                emailController
+                                                    .text.isNotEmpty) &&
+                                            (userIdController.text != '' &&
+                                                mobileNumberController.text !=
+                                                    '' &&
+                                                userNameController.text != '' &&
+                                                emailController.text != '')
+                                        ? ColorResource.color23375A
+                                        : ColorResource.colorBEC4CF,
+                                onTap: (userIdController.text.isNotEmpty ||
+                                        mobileNumberController
+                                            .text.isNotEmpty ||
+                                        userNameController.text.isNotEmpty ||
+                                        emailController.text.isNotEmpty)
+                                    ? () async {
+                                        Map<String, dynamic> postResult =
+                                            await APIRepository.apiRequest(
+                                          APIRequestType.POST,
+                                          HttpUrl.requestOTPUrl(),
+                                          requestBodydata: {},
+                                        );
+                                        if (await postResult[
+                                            Constants.success]) {
+                                          setState(() {
+                                            isSendOTP = false;
+                                            isTime = true;
+                                            secondsOTP();
+                                          });
+                                        } else {}
+                                      }
+                                    : () {},
                                 cardShape: 85,
                                 fontSize: FontSize.sixteen,
                                 fontWeight: FontWeight.w600,
@@ -351,14 +427,30 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 onTap: (pinCodeController.text.isNotEmpty &&
                                         pinCodeController.text.length == 6)
                                     ? () {
-                                        // var requestBodyData = ResetPasswordModel(otp: pinCodeController.text, username: userNameFirstController.text, newPassword: newPassword) ;
-                                        Navigator.pop(context);
+                                        cancelTimer();
+                                        resetPasswordShowBottomSheet();
                                       }
                                     : () {},
                                 cardShape: 85,
                                 fontSize: FontSize.sixteen,
                                 fontWeight: FontWeight.w600,
                               ),
+                        const SizedBox(height: 20),
+                        CustomButton(
+                          Languages.of(context)!.clear.toUpperCase(),
+                          onTap: () {
+                            userIdController.clear();
+                            mobileNumberController.clear();
+                            userNameController.clear();
+                            emailController.clear();
+                          },
+                          borderColor: ColorResource.color23375A,
+                          cardShape: 85,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          textColor: ColorResource.color23375A,
+                          buttonBackgroundColor: ColorResource.colorffffff,
+                        ),
                       ],
                     ),
                   ),
@@ -369,5 +461,153 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
       ),
     );
+  }
+
+  resetPasswordShowBottomSheet() {
+    TextEditingController newPasswordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+    FocusNode newPasswordFocusNode = FocusNode();
+    FocusNode confirmPasswordFocusNode = FocusNode();
+    final formKey = GlobalKey<FormState>();
+
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorF8F9FB,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                WillPopScope(
+                  onWillPop: () async => false,
+                  child: Form(
+                    key: formKey,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.89,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          BottomSheetAppbar(
+                            title: Languages.of(context)!
+                                .resetPassword
+                                .toUpperCase(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomTextField(
+                                    Languages.of(context)!.enterNewPassword,
+                                    newPasswordController,
+                                    // obscureText: _obscureText,
+
+                                    isFill: true,
+                                    isBorder: true,
+                                    isLabel: true,
+                                    borderColor: ColorResource.colorFFFFFF,
+                                    // errorborderColor: ColorResource.color23375A,
+                                    validationRules: const ['required'],
+                                    maximumWordCount: 10,
+                                    focusNode: newPasswordFocusNode,
+                                    onEditing: () {
+                                      mobileNumberFocusNode.unfocus();
+                                      userNameFocusNode.requestFocus();
+                                    },
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    // onChange: (){
+                                    //    _formKey.currentState!.validate();
+                                    // },
+                                    validatorCallBack: (bool values) {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  CustomTextField(
+                                    Languages.of(context)!
+                                        .enterConfirmNewPassword,
+                                    confirmPasswordController,
+                                    // obscureText: _obscureText,
+                                    isFill: true,
+                                    isBorder: true,
+                                    isLabel: true,
+                                    // isReadOnly: true,
+                                    borderColor: ColorResource.colorFFFFFF,
+                                    // errorborderColor: ColorResource.color23375A,
+                                    validationRules: const ['required'],
+                                    maximumWordCount: 10,
+                                    focusNode: confirmPasswordFocusNode,
+                                    onEditing: () {
+                                      mobileNumberFocusNode.unfocus();
+                                      userNameFocusNode.requestFocus();
+                                    },
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    // onChange: (){
+                                    //    _formKey.currentState!.validate();
+                                    // },
+                                    validatorCallBack: (bool values) {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Spacer(),
+                                  CustomButton(
+                                    Languages.of(context)!
+                                        .saveNewPassword
+                                        .toUpperCase(),
+                                    textColor: ColorResource.colorFFFFFF,
+                                    fontSize: FontSize.sixteen,
+                                    fontWeight: FontWeight.w700,
+                                    padding: 15.0,
+                                    cardShape: 75.0,
+                                    onTap: () async {
+                                      formKey.currentState!.validate();
+                                      if (newPasswordController.text ==
+                                          confirmPasswordController.text) {
+                                        var requestBodyData =
+                                            ResetPasswordModel(
+                                                otp: pinCodeController.text,
+                                                username:
+                                                    userNameController.text,
+                                                newPassword:
+                                                    newPasswordController.text);
+                                        Map<String, dynamic> postResult =
+                                            await APIRepository.apiRequest(
+                                                APIRequestType.POST,
+                                                HttpUrl.resendPasswordUrl(),
+                                                requestBodydata: jsonEncode(
+                                                    requestBodyData.toJson()));
+                                        if (postResult[Constants.success]) {
+                                          AppUtils.topSnackBar(context,
+                                              Constants.successfullySubmitted);
+                                          Navigator.pop(context);
+                                        }
+                                      } else {
+                                        AppUtils.showToast(
+                                            'Please Enter Correct Password');
+                                      }
+                                    },
+                                    borderColor: ColorResource.colorBEC4CF,
+                                    buttonBackgroundColor:
+                                        ColorResource.color23375A,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )));
   }
 }

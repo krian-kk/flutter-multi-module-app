@@ -38,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = SearchScreenBloc()..add(SearchScreenInitialEvent());
+    bloc = SearchScreenBloc()..add(SearchScreenInitialEvent(context: context));
   }
 
   @override

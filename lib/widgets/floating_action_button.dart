@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   final GestureTapCallback? onTap;
-  CustomFloatingActionButton({Key? key, this.onTap}) : super(key: key);
+  const CustomFloatingActionButton({Key? key, this.onTap}) : super(key: key);
 
   @override
   _CustomFloatingActionButtonState createState() =>

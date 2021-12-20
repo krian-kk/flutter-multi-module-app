@@ -19,7 +19,7 @@ class CallCustomerModel {
     required this.from,
     required this.to,
     required this.callerId,
-    this.aRef = 'YES_sme4027003',
+    required this.aRef,
     required this.customerName,
     required this.service,
     this.eventCode = 'TELEVT011',

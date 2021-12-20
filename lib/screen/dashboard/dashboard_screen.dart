@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
 import 'package:origa/screen/my_deposists/my_deposists.dart';
@@ -22,7 +20,6 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../router.dart';
@@ -510,44 +507,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               MainAxisAlignment
                                                                   .center,
                                                           children: [
-                                                            Container(
-                                                              // height: 50,
-                                                              // color: ColorResource.color484848,
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  SizedBox(
-                                                                      // height: 40,
-                                                                      width:
-                                                                          105,
-                                                                      // color: ColorResource.color101010,
-                                                                      child:
-                                                                          CustomText(
-                                                                        bloc.dashboardList[index]
-                                                                            .title!,
-                                                                        fontSize:
-                                                                            FontSize.twelve,
-                                                                        fontWeight:
-                                                                            FontWeight.w700,
-                                                                        color: ColorResource
-                                                                            .color23375A,
-                                                                      )),
-                                                                  if (bloc
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                SizedBox(
+                                                                    // height: 40,
+                                                                    width: 105,
+                                                                    // color: ColorResource.color101010,
+                                                                    child:
+                                                                        CustomText(
+                                                                      bloc
                                                                           .dashboardList[
                                                                               index]
-                                                                          .image! !=
-                                                                      '')
-                                                                    SvgPicture.asset(bloc
+                                                                          .title!,
+                                                                      fontSize:
+                                                                          FontSize
+                                                                              .twelve,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color: ColorResource
+                                                                          .color23375A,
+                                                                    )),
+                                                                if (bloc
                                                                         .dashboardList[
                                                                             index]
-                                                                        .image!),
-                                                                ],
-                                                              ),
+                                                                        .image! !=
+                                                                    '')
+                                                                  SvgPicture.asset(bloc
+                                                                      .dashboardList[
+                                                                          index]
+                                                                      .image!),
+                                                              ],
                                                             ),
                                                             // const SizedBox(height: 4,),
                                                             const Spacer(),
@@ -588,10 +584,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                             ),
                                                             CustomText(
                                                               Constants.inr +
-                                                                  bloc
-                                                                      .dashboardList[
-                                                                          index]
-                                                                      .amountRs!,
+                                                                  double.parse(bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .amountRs!)
+                                                                      .toStringAsFixed(
+                                                                          2),
                                                               fontSize: FontSize
                                                                   .sixteen,
                                                               fontWeight:
@@ -599,6 +597,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                       .w700,
                                                               color: ColorResource
                                                                   .color23375A,
+                                                              isSingleLine:
+                                                                  true,
                                                             ),
                                                           ],
                                                         ),

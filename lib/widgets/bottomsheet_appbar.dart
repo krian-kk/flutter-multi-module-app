@@ -36,9 +36,12 @@ class BottomSheetAppbar extends StatelessWidget {
                 // () {
                 //   Navigator.pop(context);
                 // },
-                child: SvgPicture.asset(
-                  ImageResource.close,
-                  color: color,
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                  child: SvgPicture.asset(
+                    ImageResource.close,
+                    color: color,
+                  ),
                 )),
           ],
         ));

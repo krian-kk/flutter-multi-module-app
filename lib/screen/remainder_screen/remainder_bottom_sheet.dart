@@ -20,18 +20,23 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomRemainderBottomSheet extends StatefulWidget {
-  const CustomRemainderBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      this.postValue})
-      : super(key: key);
+  const CustomRemainderBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    required this.agentName,
+    required this.argRef,
+    this.postValue,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String argRef;
+  final String agentName;
 
   @override
   State<CustomRemainderBottomSheet> createState() =>
@@ -234,9 +239,18 @@ class _CustomRemainderBottomSheetState
                             });
                           }
                           var requestBodyData = ReminderPostAPI(
-                            eventType: Constants.remainder,
+                            eventType: (widget.userType == Constants.telecaller)
+                                ? 'TC : REMINDER'
+                                : 'REMINDER',
                             caseId: widget.caseId,
                             eventCode: 'TELEVT006',
+                            createdBy: widget.agentName,
+                            agentName: widget.agentName,
+                            agrRef: widget.argRef,
+                            eventModule:
+                                (widget.userType == Constants.telecaller)
+                                    ? 'Telecalling'
+                                    : 'Field Allocation',
                             eventAttr: EventAttr(
                               reminderDate: nextActionDateControlller.text,
                               time: nextActionTimeControlller.text,

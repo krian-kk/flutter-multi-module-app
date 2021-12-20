@@ -5,7 +5,7 @@ import 'repayment_info.dart';
 class CaseDetails {
   String? id;
   int? pos;
-  int? due;
+  dynamic? due;
   String? cust;
   String? accNo;
   String? collSubStatus;
@@ -46,7 +46,7 @@ class CaseDetails {
   factory CaseDetails.fromJson(Map<String, dynamic> json) => CaseDetails(
         id: json['_id'] as String?,
         pos: json['pos'] as int?,
-        due: json['due'] as int?,
+        due: json['due'],
         cust: json['cust'] as String?,
         accNo: json['accNo'] as String?,
         collSubStatus: json['collSubStatus'] as String?,

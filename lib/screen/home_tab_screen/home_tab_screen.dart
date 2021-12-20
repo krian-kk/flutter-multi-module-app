@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,12 +14,12 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'bloc/home_tab_event.dart';
 
 // ignore: must_be_immutable
 class HomeTabScreen extends StatefulWidget {
+  const HomeTabScreen({Key? key}) : super(key: key);
+
   // final String? userType;
   // HomeTabScreen(this.userType);
   @override
@@ -38,7 +37,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // getUserType();
     bloc = HomeTabBloc()..add(HomeTabInitialEvent());
@@ -56,17 +54,15 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 
     return BlocListener<HomeTabBloc, HomeTabState>(
       bloc: bloc,
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       child: BlocBuilder<HomeTabBloc, HomeTabState>(
         bloc: bloc,
         builder: (context, state) {
           if (state is HomeTabLoadingState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             body: SafeArea(
@@ -91,7 +87,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                     )),
                                 Expanded(
                                   flex: 7,
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 70,
                                     width: 45,
                                     child: TabBar(
@@ -246,14 +242,14 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  // if(bloc.userType == Constants.fieldagent) 
+                                  // if(bloc.userType == Constants.fieldagent)
                                   // AllocationScreen() else const AllocationTelecallerScreen(), //1
-                                  bloc.userType == Constants.fieldagent ? 
-                                  AllocationScreen() : const AllocationTelecallerScreen(), //1
-                                  DashboardScreen(), //2
+                                  bloc.userType == Constants.fieldagent
+                                      ? const AllocationScreen()
+                                      : const AllocationTelecallerScreen(), //1
+                                  const DashboardScreen(), //2
                                   const ProfileScreen(), //3
                                 ]),
-
                           )
                         ])),
                   ),

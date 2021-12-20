@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/priority_case_list.dart';
@@ -87,7 +86,7 @@ class CustomCardList {
                       const SizedBox(
                         width: 9.0,
                       ),
-                      Container(
+                      SizedBox(
                           height: 20,
                           width: 20,
                           child: SvgPicture.asset(ImageResource.star)),
@@ -128,7 +127,7 @@ class CustomCardList {
                           border: Border.all(
                               color: ColorResource.colorDADADA, width: 0.5),
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Color.fromRGBO(0, 0, 0, 0.25),
                               // spreadRadius: 1,
@@ -156,7 +155,7 @@ class CustomCardList {
                             AppUtils.showDivider(),
                             // const SizedBox(height: 6.0,),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(23, 0, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [

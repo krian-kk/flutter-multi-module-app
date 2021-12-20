@@ -26,11 +26,11 @@ class AgentDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['code'] = this.code;
-    data['status'] = this.status;
-    data['msg'] = this.msg;
-    data['auth'] = this.auth;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['status'] = status;
+    data['msg'] = msg;
+    data['auth'] = auth;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -76,17 +76,17 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['agent_ref'] = this.agentRef;
-    data['Agent_name'] = this.agentName;
-    data['Agent_type'] = this.agentType;
-    data['status'] = this.status;
-    data['mobileNumber'] = this.mobileNumber;
-    data['contractor'] = this.contractor;
-    data['userAdmin'] = this.userAdmin;
-    data['email'] = this.email;
-    data['contractorPrefix'] = this.contractorPrefix;
-    data['mobNo'] = this.mobNo;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['agent_ref'] = agentRef;
+    data['Agent_name'] = agentName;
+    data['Agent_type'] = agentType;
+    data['status'] = status;
+    data['mobileNumber'] = mobileNumber;
+    data['contractor'] = contractor;
+    data['userAdmin'] = userAdmin;
+    data['email'] = email;
+    data['contractorPrefix'] = contractorPrefix;
+    data['mobNo'] = mobNo;
     return data;
   }
 }

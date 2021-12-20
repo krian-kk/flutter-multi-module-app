@@ -1,29 +1,28 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_mydeposists_model/result.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-
-import '../../router.dart';
 import 'deposistion_mode/deposistion_mode.dart';
+
+class SelectedValue {
+  String caseId;
+  bool isSelected;
+  SelectedValue(this.caseId, this.isSelected);
+}
 
 class ChegueAndCasshResults extends StatefulWidget {
   final DashboardBloc bloc;
   final String? mode;
   final DashboardMyDeposistsResult? result;
-  ChegueAndCasshResults(this.bloc, {this.mode, this.result});
+  const ChegueAndCasshResults(this.bloc, {Key? key, this.mode, this.result})
+      : super(key: key);
 
   @override
   _ChegueAndCasshResultsState createState() => _ChegueAndCasshResultsState();
@@ -32,16 +31,22 @@ class ChegueAndCasshResults extends StatefulWidget {
 class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    for (int i = 0; i < widget.bloc.caseList.length; i++) {
+      selectedValue
+          .add(SelectedValue(widget.bloc.caseList[i].loanID.toString(), false));
+    }
   }
 
   int? _selectedIndex;
-  String? caseID;
+  List<String> caseIDs = [];
   String? custName;
+  List<SelectedValue> selectedValue = [];
 
   _onSelected(int index) {
-    setState(() => _selectedIndex = index);
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -61,8 +66,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
               onTap: () {
                 if (_selectedIndex != null) {
                   depositionModeSheet(context);
-                  print(widget.mode);
-                  print(caseID);
                 } else {
                   AppUtils.showToast(
                     Constants.notSelectedCase,
@@ -85,7 +88,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                     // widget.result!.cash!.cases!.length,
                     itemCount: widget.bloc.caseList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      int listCount = index + 1;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -132,7 +134,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           fontSize: FontSize.ten,
                                           color: ColorResource.color101010,
                                         ),
-                                        CustomText(
+                                        const CustomText(
                                           '₹ 3,97,553.67',
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
@@ -154,7 +156,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                     color: ColorResource.colorDADADA,
                                     width: 0.5),
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Color.fromRGBO(0, 0, 0, 0.25),
                                     // spreadRadius: 1,
@@ -175,7 +177,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 24, vertical: 2),
                                         child: CustomText(
                                           Languages.of(context)!
@@ -185,7 +187,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 24, vertical: 2),
                                         child: CustomText(
                                           widget.bloc.caseList[index].loanID!,
@@ -196,13 +198,14 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                       ),
                                     ],
                                   ),
-                                  Divider(
+                                  const Divider(
                                     color: ColorResource.colorDADADA,
                                     thickness: 0.5,
                                   ),
                                   // const SizedBox(height: 6.0,),
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(23, 0, 10, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(23, 0, 10, 0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -228,11 +231,11 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                   ),
 
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 15, vertical: 6),
                                     child: Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(20, 12, 15, 12),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 12, 15, 12),
                                       decoration: BoxDecoration(
                                         color: ColorResource.colorF8F9FB,
                                         borderRadius: BorderRadius.circular(10),
@@ -258,7 +261,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                   ),
                                   //  const SizedBox(height: 5,),
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(23, 5, 14, 13),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        23, 5, 14, 13),
                                     child: Row(
                                       children: [
                                         Column(
@@ -284,44 +288,44 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         SizedBox(
                                           width: 123,
                                           height: 47,
-                                          child: _selectedIndex != null &&
-                                                  _selectedIndex == index
-                                              ? CustomButton(
-                                                  Languages.of(context)!
-                                                      .selected,
-                                                  fontSize: FontSize.twelve,
-                                                  // onTap: (){
-                                                  //   _onSelected(index);
-                                                  // },
-                                                )
-                                              : CustomButton(
-                                                  Languages.of(context)!
-                                                      .select
-                                                      .toUpperCase(),
-                                                  fontSize: FontSize.twelve,
-                                                  buttonBackgroundColor:
-                                                      ColorResource.colorFEFFFF,
-                                                  borderColor:
-                                                      ColorResource.colorFEFFFF,
-                                                  textColor:
-                                                      ColorResource.color23375A,
-                                                  cardElevation: 3.0,
-                                                  onTap: () {
-                                                    _onSelected(index);
-                                                    setState(() {
-                                                      caseID = widget
-                                                          .bloc
-                                                          .caseList[index]
-                                                          .loanID;
-                                                      custName = widget
-                                                          .bloc
-                                                          .caseList[index]
-                                                          .customerName;
-                                                    });
-                                                    print(index);
-                                                    print(caseID);
-                                                  },
-                                                ),
+                                          child: CustomButton(
+                                            Languages.of(context)!
+                                                .selected
+                                                .toUpperCase(),
+                                            fontSize: FontSize.twelve,
+                                            buttonBackgroundColor:
+                                                !selectedValue[index].isSelected
+                                                    ? ColorResource.colorFEFFFF
+                                                    : ColorResource.colorEA6D48,
+                                            borderColor:
+                                                !selectedValue[index].isSelected
+                                                    ? ColorResource.colorFEFFFF
+                                                    : ColorResource.colorEA6D48,
+                                            textColor:
+                                                !selectedValue[index].isSelected
+                                                    ? ColorResource.color23375A
+                                                    : ColorResource.colorFFFFFF,
+                                            cardElevation: 3.0,
+                                            onTap: () {
+                                              _onSelected(index);
+                                              setState(() {
+                                                selectedValue[index]
+                                                        .isSelected =
+                                                    !selectedValue[index]
+                                                        .isSelected;
+                                                custName = widget
+                                                    .bloc
+                                                    .caseList[index]
+                                                    .customerName;
+                                              });
+                                              caseIDs.clear();
+                                              selectedValue.forEach((element) {
+                                                if (element.isSelected) {
+                                                  caseIDs.add(element.caseId);
+                                                }
+                                              });
+                                            },
+                                          ),
                                         )
                                       ],
                                     ),
@@ -355,7 +359,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                DepositionMode.buildDepositionMode(
-                    context, caseID, widget.mode, widget.bloc, custName)));
+                DepositionMode.buildDepositionMode(context, caseIDs,
+                    widget.mode.toString(), widget.bloc, custName)));
   }
 }

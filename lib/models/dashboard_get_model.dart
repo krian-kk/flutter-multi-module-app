@@ -8,15 +8,14 @@ class DashboardModel {
   DashboardModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    result =
-        json['result'] != null ? new Result.fromJson(json['result']) : null;
+    result = json['result'] != null ? Result.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
       data['result'] = result?.toJson();
     }
     return data;
@@ -43,50 +42,48 @@ class Result {
 
   Result.fromJson(Map<String, dynamic> json) {
     priorityFollowUp = json['priorityFollowUp'] != null
-        ? new PriorityFollowUp.fromJson(json['priorityFollowUp'])
+        ? PriorityFollowUp.fromJson(json['priorityFollowUp'])
         : null;
     brokenPtp = json['brokenPtp'] != null
-        ? new PriorityFollowUp.fromJson(json['brokenPtp'])
+        ? PriorityFollowUp.fromJson(json['brokenPtp'])
         : null;
     visits = json['visits'] != null
-        ? new PriorityFollowUp.fromJson(json['visits'])
+        ? PriorityFollowUp.fromJson(json['visits'])
         : null;
     receipts = json['receipts'] != null
-        ? new PriorityFollowUp.fromJson(json['receipts'])
+        ? PriorityFollowUp.fromJson(json['receipts'])
         : null;
     untouched = json['untouched'] != null
-        ? new PriorityFollowUp.fromJson(json['untouched'])
+        ? PriorityFollowUp.fromJson(json['untouched'])
         : null;
-    mtdCases = json['mtdCases'] != null
-        ? new MtdCases.fromJson(json['mtdCases'])
-        : null;
-    mtdAmount = json['mtdAmount'] != null
-        ? new MtdCases.fromJson(json['mtdAmount'])
-        : null;
+    mtdCases =
+        json['mtdCases'] != null ? MtdCases.fromJson(json['mtdCases']) : null;
+    mtdAmount =
+        json['mtdAmount'] != null ? MtdCases.fromJson(json['mtdAmount']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.priorityFollowUp != null) {
-      data['priorityFollowUp'] = this.priorityFollowUp?.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (priorityFollowUp != null) {
+      data['priorityFollowUp'] = priorityFollowUp?.toJson();
     }
-    if (this.brokenPtp != null) {
+    if (brokenPtp != null) {
       data['brokenPtp'] = brokenPtp?.toJson();
     }
-    if (this.visits != null) {
-      data['visits'] = this.visits?.toJson();
+    if (visits != null) {
+      data['visits'] = visits?.toJson();
     }
-    if (this.receipts != null) {
-      data['receipts'] = this.receipts?.toJson();
+    if (receipts != null) {
+      data['receipts'] = receipts?.toJson();
     }
-    if (this.untouched != null) {
-      data['untouched'] = this.untouched?.toJson();
+    if (untouched != null) {
+      data['untouched'] = untouched?.toJson();
     }
-    if (this.mtdCases != null) {
-      data['mtdCases'] = this.mtdCases?.toJson();
+    if (mtdCases != null) {
+      data['mtdCases'] = mtdCases?.toJson();
     }
-    if (this.mtdAmount != null) {
-      data['mtdAmount'] = this.mtdAmount?.toJson();
+    if (mtdAmount != null) {
+      data['mtdAmount'] = mtdAmount?.toJson();
     }
     return data;
   }
@@ -104,9 +101,9 @@ class PriorityFollowUp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
-    data['totalAmt'] = this.totalAmt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['totalAmt'] = totalAmt;
     return data;
   }
 }
@@ -123,9 +120,9 @@ class MtdCases {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['completed'] = this.completed;
-    data['total'] = this.total;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['completed'] = completed;
+    data['total'] = total;
     return data;
   }
 }

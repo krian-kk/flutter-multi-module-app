@@ -1,14 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/yarding_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -18,17 +11,16 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
 class YardingTab extends StatefulWidget {
   final DashboardBloc bloc;
   final String? caseId;
   final String? custname;
-  YardingTab(this.bloc, {this.caseId, this.custname});
+  const YardingTab(this.bloc, {Key? key, this.caseId, this.custname})
+      : super(key: key);
 
   @override
   _YardingTabState createState() => _YardingTabState();
@@ -45,13 +37,7 @@ class _YardingTabState extends State<YardingTab> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    var currentDateTime = DateTime.now();
-    String currentDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
-    setState(() {
-      dateController.text = currentDate;
-    });
   }
 
   getFiles() async {
@@ -60,7 +46,6 @@ class _YardingTabState extends State<YardingTab> {
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      print(uploadFileLists);
     } else {
       // User canceled the picker
       AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
@@ -75,7 +60,7 @@ class _YardingTabState extends State<YardingTab> {
         backgroundColor: ColorResource.colorffffff,
         bottomNavigationBar: Container(
           height: 66,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
           child: Padding(
@@ -110,26 +95,16 @@ class _YardingTabState extends State<YardingTab> {
                             gravity: ToastGravity.CENTER,
                           );
                         } else {
-                          var currentDateTime = DateTime.now();
                           var requestBodyData = YardingPostModel(
                               // caseId: widget.caseId!,
                               caseId: widget.caseId.toString(),
-                              eventAttr: EventAttr(
-                                  remarks: remarksController.text,
-                                  repo: Repo(
-                                      yard: yardNameController.text,
-                                      date: dateController.text,
-                                      time: timeController.text,
-                                      remarks: remarksController.text,
-                                      imageLocation:
-                                          uploadFileLists as List<String>),
-                                  imageLocation:
-                                      uploadFileLists as List<String>,
-                                  customerName: widget.custname!,
-                                  date: currentDateTime.toString()));
-
-                          // print("--------yarding--------");
-                          // print(jsonEncode(requestBodyData));
+                              repo: Repo(
+                                yard: yardNameController.text,
+                                date: dateController.text,
+                                time: timeController.text,
+                                remarks: remarksController.text,
+                                imageLocation: uploadFileLists as List<String>,
+                              ));
                           widget.bloc.add(
                               PostYardingDataEvent(postData: requestBodyData));
                         }
@@ -158,7 +133,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.yardName,
                             yardNameController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -168,7 +143,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.date,
                             dateController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                             onTapped: () => pickDate(context, dateController),
@@ -179,7 +154,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.time,
                             timeController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                             onTapped: () => pickTime(context, timeController),
@@ -190,7 +165,7 @@ class _YardingTabState extends State<YardingTab> {
                           child: CustomReadOnlyTextField(
                             Languages.of(context)!.remark,
                             remarksController,
-                            validationRules: ['required'],
+                            validationRules: const ['required'],
                             isLabel: true,
                             isEnable: true,
                           ),
@@ -254,7 +229,7 @@ class _YardingTabState extends State<YardingTab> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
       // _formKey.currentState!.validate();

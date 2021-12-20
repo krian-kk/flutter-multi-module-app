@@ -5,7 +5,8 @@ class CaseDetailsEvent extends BaseEquatable {}
 
 class CaseDetailsInitialEvent extends CaseDetailsEvent {
   final dynamic paramValues;
-  CaseDetailsInitialEvent({this.paramValues});
+  BuildContext? context;
+  CaseDetailsInitialEvent({this.paramValues, this.context});
 }
 
 class LaunchWhatsappEvent extends CaseDetailsEvent {

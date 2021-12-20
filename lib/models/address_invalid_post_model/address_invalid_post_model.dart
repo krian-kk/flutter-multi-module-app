@@ -16,22 +16,23 @@ class AddressInvalidPostModel {
   late int? invalidNumber;
   late String agrRef;
 
-  AddressInvalidPostModel(
-      {this.eventId = 24,
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      required this.contact,
-      this.createdBy = 'YES_getwisecollector',
-      this.eventModule = 'Field Allocation',
-      this.agentName = 'GETWISE COLLECTOR',
-      this.callID,
-      this.callingID,
-      this.callerServiceID = 'e',
-      this.voiceCallEventCode = 'TELEVT011',
-      this.invalidNumber,
-      this.agrRef = 'YES_SD87628'});
+  AddressInvalidPostModel({
+    this.eventId = 24,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    required this.contact,
+    required this.createdBy,
+    required this.eventModule,
+    required this.agentName,
+    this.callID,
+    this.callingID,
+    this.callerServiceID = 'e',
+    this.voiceCallEventCode = 'TELEVT011',
+    this.invalidNumber,
+    required this.agrRef,
+  });
 
   AddressInvalidPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];

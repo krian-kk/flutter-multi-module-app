@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -8,9 +10,11 @@ import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
 part 'allocation_state.dart';
@@ -19,6 +23,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationBloc() : super(AllocationInitial());
 
   int selectedOption = 0;
+
+  String? userType;
+  String? agentName;
+  String? agrRef;
 
   BuildRouteModel buildRouteData = BuildRouteModel();
 
@@ -63,6 +71,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      _pref.setString(Constants.buildcontext, event.context.toString());
+      Singleton.instance.buildContext = event.context;
+      userType = _pref.getString(Constants.userType);
+      agentName = _pref.getString(Constants.agentName);
+      agrRef = _pref.getString(Constants.agentRef);
       yield AllocationLoadingState();
       isShowSearchPincode = false;
 
@@ -253,7 +267,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     "customerId=${event.returnValue.customerID}&" +
                     "pincode=${event.returnValue.pincode}&" +
                     "collSubStatus=${event.returnValue.status}");
-                    
+
         resultList.clear();
         starCount.clear();
 

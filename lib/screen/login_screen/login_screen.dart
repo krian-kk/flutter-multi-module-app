@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
@@ -21,7 +16,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -48,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    bloc = LoginBloc()..add(LoginInitialEvent());
+    bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
@@ -127,9 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
+                          keyBoardType: TextInputType.emailAddress,
                           errorborderColor: ColorResource.color23375A,
                           borderColor: ColorResource.color23375A,
-                          validationRules: ['required'],
+                          validationRules: const ['required'],
                           focusNode: username,
                           onEditing: () {
                             username.unfocus();
@@ -153,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLabel: true,
                           borderColor: ColorResource.color23375A,
                           errorborderColor: ColorResource.color23375A,
-                          validationRules: ['required'],
+                          validationRules: const ['required'],
                           focusNode: passwords,
                           onEditing: () {
                             passwords.unfocus();

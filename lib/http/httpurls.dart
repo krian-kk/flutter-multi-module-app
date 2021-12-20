@@ -30,6 +30,14 @@ class HttpUrl {
   static const String profileUrl =
       baseUrl + version + fieldAgent + 'profile/userDetails';
 
+  // Call Customer Post API
+  static const String callCustomerUrl =
+      baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
+
+  // Mobile Info Post API
+  static const String mobileInfoUrl =
+      baseUrl + version + fieldAgent + 'profile/mobileInfo';
+
   // Post API ===================================================
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
@@ -47,12 +55,22 @@ class HttpUrl {
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
+  // Are You At Office?
+  static String resetPasswordCheckUrl(String agentName) =>
+      'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+  // baseUrl + version + fieldAgent + '';
   // Reques OTP
   static String requestOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
   // Home Address in Profile Screen
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
+  // Resent OTP Post API
+  static String resendOTPUrl() =>
+      baseUrl + version + fieldAgent + 'profile/requestOtp';
+  // Resent Password Post API
+  static String resendPasswordUrl() =>
+      baseUrl + version + fieldAgent + 'profile/resetPassword';
   // RTP(Denial) Post API
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +

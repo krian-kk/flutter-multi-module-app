@@ -18,14 +18,14 @@ class BrokenPTPState extends DashboardState {}
 class MyReceiptsState extends DashboardState {}
 
 class ReturnReceiptsApiState extends DashboardState {
-  dynamic returnData;
+  final dynamic returnData;
   ReturnReceiptsApiState({this.returnData});
 }
 
 class MyVisitsState extends DashboardState {}
 
 class ReturnVisitsApiState extends DashboardState {
-  dynamic returnData;
+  final dynamic returnData;
   ReturnVisitsApiState({this.returnData});
 }
 
@@ -34,14 +34,14 @@ class MyDeposistsState extends DashboardState {}
 class YardingAndSelfReleaseState extends DashboardState {}
 
 class NavigateCaseDetailState extends DashboardState {
-  dynamic paramValues;
+  final dynamic paramValues;
   NavigateCaseDetailState({this.paramValues});
 }
 
 class NavigateSearchState extends DashboardState {}
 
 class GetSearchDataState extends DashboardState {
-  dynamic getReturnValues;
+  final dynamic getReturnValues;
   GetSearchDataState({this.getReturnValues});
 }
 

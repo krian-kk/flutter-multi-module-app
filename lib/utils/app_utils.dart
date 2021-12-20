@@ -107,13 +107,14 @@ class AppUtils {
   }
 
   static void showToast(String text,
-      {ToastGravity gravity = ToastGravity.BOTTOM}) {
+      {ToastGravity gravity = ToastGravity.BOTTOM,
+      Color? backgroundColor = Colors.green}) {
     Fluttertoast.showToast(
         msg: text,
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
         gravity: gravity,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
+        timeInSecForIosWeb: 2,
+        backgroundColor: backgroundColor,
         textColor: Colors.white,
         fontSize: 14.0);
   }

@@ -637,4 +637,16 @@ class LanguageTa extends Languages {
 
   @override
   String get mode => 'Mode';
+
+  @override
+  String get saveNewPassword => 'SAVE NEW PASSWORD';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get enterConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get clear => 'Clear';
 }

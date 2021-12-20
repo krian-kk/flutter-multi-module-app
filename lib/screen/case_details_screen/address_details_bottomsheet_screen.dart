@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -165,38 +166,46 @@ class _AddressDetailsBottomSheetScreenState
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  SizedBox(
-                                                      child: Container(
-                                                          decoration: const BoxDecoration(
+                                                  GestureDetector(
+                                                    onTap: () => widget.bloc.add(
+                                                        ClickOpenBottomSheetEvent(
+                                                            Constants.viewMap,
+                                                            widget
+                                                                .bloc
+                                                                .offlineCaseDetailsValue
+                                                                .callDetails)),
+                                                    child: Container(
+                                                        decoration: const BoxDecoration(
+                                                            color: ColorResource
+                                                                .colorBEC4CF,
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        75.0))),
+                                                        child: Row(
+                                                          children: [
+                                                            Image.asset(
+                                                                ImageResource
+                                                                    .direction),
+                                                            const SizedBox(
+                                                                width: 12),
+                                                            CustomText(
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .viewMap,
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
                                                               color: ColorResource
-                                                                  .colorBEC4CF,
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          75.0))),
-                                                          child: Row(
-                                                            children: [
-                                                              Image.asset(
-                                                                  ImageResource
-                                                                      .direction),
-                                                              const SizedBox(
-                                                                  width: 12),
-                                                              CustomText(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .viewMap,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color: ColorResource
-                                                                    .color23375A,
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 12),
-                                                            ],
-                                                          ))),
+                                                                  .color23375A,
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 12),
+                                                          ],
+                                                        )),
+                                                  ),
                                                   const Spacer(),
                                                   const SizedBox(width: 5),
                                                   InkWell(

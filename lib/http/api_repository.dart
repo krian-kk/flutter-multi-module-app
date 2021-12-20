@@ -5,7 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/utils/app_utils.dart';
+import 'package:origa/router.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 
 enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
@@ -69,7 +70,11 @@ class APIRepository {
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
       print('response data -------->');
-      returnValue = {'success': true, 'data': response!.data};
+      returnValue = {
+        'success': true,
+        'data': response!.data,
+        'statusCode': response.data['status'],
+      };
     } on DioError catch (e) {
       dynamic error;
       if (e.response != null) {
@@ -80,24 +85,57 @@ class APIRepository {
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
       print('response dio error data -------->');
-      // AppUtils.showErrorToast(error);
-      Fluttertoast.showToast(
-          msg: error.toString(),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 2,
-          backgroundColor: ColorResource.color101010,
-          textColor: ColorResource.colorffffff,
-          fontSize: 14.0);
-      returnValue = {'success': false, 'data': error};
+
+      if (error.toString() != "DioErrorType.response") {
+        // 1 way get any data on login and auth page to check remove pop
+        // otherwise remove this pop bcot it affect dashboard and login
+        print('---------error');
+        print(error);
+        Navigator.pop(Singleton.instance.buildContext!);
+        apiErrorStatus(
+            ErrorValue: error.toString(), position: ToastGravity.CENTER);
+      }
+
+      if (e.response != null) {
+        if (e.response!.statusCode == 401) {
+          apiErrorStatus(
+              ErrorValue: e.response!.data['message'].toString(),
+              position: ToastGravity.BOTTOM);
+          Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
+              AppRoutes.loginScreen, (route) => false);
+        }
+      }
+
+      // returnValue = {
+      //   'success': false,
+      //   'data': error,
+      //   'statusCode': e.response!.statusCode ?? ''
+      // };
+
+      returnValue = {
+        'success': false,
+        'data': e.response != null ? e.response!.data : error,
+        'statusCode': e.response != null ? e.response!.statusCode : '',
+      };
     }
 
     return returnValue;
   }
 
+  static void apiErrorStatus({String? ErrorValue, ToastGravity? position}) {
+    Fluttertoast.showToast(
+        msg: ErrorValue!,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: position ?? ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: ColorResource.color101010,
+        textColor: ColorResource.colorffffff,
+        fontSize: 14.0);
+  }
+
   // get priority case list
   static Future<Map<String, dynamic>> getpriorityCaseList() async {
-    dynamic? returnableValues;
+    dynamic returnableValues;
     try {
       final Response response = await DioClient.dioConfig().get(
         HttpUrl.priorityCaseList,
@@ -120,7 +158,7 @@ class APIRepository {
 
   // get buildroute case list
   static Future<Map<String, dynamic>> getBuildRouteCaseList() async {
-    dynamic? returnableValues;
+    dynamic returnableValues;
     try {
       final Response response = await DioClient.dioConfig().get(
         HttpUrl.buildRouteCaseList,

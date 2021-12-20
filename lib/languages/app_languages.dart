@@ -428,4 +428,12 @@ abstract class Languages {
   String get noInternetConnection;
 
   String get mode;
+
+  String get saveNewPassword;
+
+  String get enterNewPassword;
+
+  String get enterConfirmNewPassword;
+
+  String get clear;
 }

@@ -16,6 +16,7 @@ import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart'
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
 import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -49,7 +50,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   void initState() {
     super.initState();
     bloc = CaseDetailsBloc()
-      ..add(CaseDetailsInitialEvent(paramValues: widget.paramValues));
+      ..add(CaseDetailsInitialEvent(
+          paramValues: widget.paramValues, context: context));
   }
 
   @override
@@ -63,7 +65,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);
             Navigator.pop(context);
           }
-
           if (state is ClickMainAddressBottomSheetState) {
             Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
@@ -836,19 +837,22 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       builder: (BuildContext context) {
         switch (cardTitle) {
           case Constants.ptp:
-            return CustomPtpBottomSheet(Languages.of(context)!.ptp,
-                caseId: bloc.caseId.toString(),
-                customerLoanUserWidget: CustomLoanUserDetails(
-                  userName:
-                      bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                  userId:
-                      bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                  userAmount: bloc.offlineCaseDetailsValue.caseDetails?.due
-                          ?.toDouble() ??
-                      0.0,
-                ),
-                userType: bloc.userType.toString(),
-                postValue: list[bloc.indexValue!]);
+            return CustomPtpBottomSheet(
+              Languages.of(context)!.ptp,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
+                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
+                userAmount:
+                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
+              userType: bloc.userType.toString(),
+              eventCode: 'TELEVT001',
+              postValue: list[bloc.indexValue!],
+            );
           case Constants.rtp:
             return CustomRtpBottomSheet(
               Languages.of(context)!.rtp,
@@ -861,6 +865,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
               userType: bloc.userType.toString(),
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
               postValue: list[bloc.indexValue!],
             );
           case Constants.dispute:
@@ -875,6 +881,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
               userType: bloc.userType.toString(),
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
+              // eventCode: bloc.eventCode,
               postValue: list[bloc.indexValue!],
             );
           case Constants.remainder:
@@ -890,6 +899,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
+              // eventCode: bloc.eventCode,
             );
           case Constants.collections:
             return CustomCollectionsBottomSheet(
@@ -902,6 +914,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
+              // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
             );
@@ -915,6 +930,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
+              // agentName: bloc.agentName.toString(),
+              // argRef: bloc.agrRef.toString(),
+              // eventCode: bloc.eventCode,
             );
           case Constants.repo:
             return CustomRepoBottomSheet(
@@ -928,6 +946,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
               userType: bloc.userType.toString(),
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
               postValue: list[bloc.indexValue!],
             );
           case Constants.captureImage:
@@ -941,6 +961,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
               bloc: bloc,
+              // agentName: bloc.agentName.toString(),
+              // argRef: bloc.agrRef.toString(),
             );
           case Constants.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
@@ -955,6 +977,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
               userType: bloc.userType.toString(),
+              // agentName: bloc.agentName.toString(),
+              // argRef: bloc.agrRef.toString(),
               postValue: list[bloc.indexValue!],
             );
           case Constants.eventDetails:
@@ -982,6 +1006,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
+              userType: bloc.userType.toString(),
+              agentName: bloc.agentName.toString(),
+              argRef: bloc.agrRef.toString(),
+              caseId: bloc.caseId.toString(),
+              sid: bloc.offlineCaseDetailsValue.caseDetails!.id.toString(),
             );
           case Constants.addNewContact:
             return AddNewContactBottomSheet(
@@ -993,6 +1022,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         0.0,
               ),
             );
+          case Constants.viewMap:
+            return MapViewBottomSheetScreen(
+                title: Languages.of(context)!.viewMap);
           default:
             return WillPopScope(
               onWillPop: () async => false,

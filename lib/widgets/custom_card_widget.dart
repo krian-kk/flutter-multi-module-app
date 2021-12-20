@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/widgets/custom_text.dart';
 
 class CustomCard extends StatefulWidget {
   final double? elevation;
@@ -15,12 +12,12 @@ class CustomCard extends StatefulWidget {
   Color? shadowColor;
   double? height;
   double? width;
-  dynamic? title;
-  dynamic? subTitle;
-  dynamic? amount;
-  dynamic? amountrs;
-  dynamic? price;
-  dynamic? count;
+  dynamic title;
+  dynamic subTitle;
+  dynamic amount;
+  dynamic amountrs;
+  dynamic price;
+  dynamic count;
 
   GlobalKey<_CustomCardState> _myKey = GlobalKey();
 

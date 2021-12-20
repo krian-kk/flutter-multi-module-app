@@ -8,9 +8,9 @@ import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'bloc/map_state.dart';
 
 class MapScreen extends StatefulWidget {
-  MapBloc bloc;
+  final MapBloc bloc;
 
-  MapScreen(this.bloc);
+  const MapScreen(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -54,7 +54,7 @@ class _MapScreenState extends State<MapScreen> {
         markerId: MarkerId(_lastMapPosition.toString()),
         position: LatLng(widget.bloc.currentLocation.latitude,
             widget.bloc.currentLocation.longitude),
-        infoWindow: InfoWindow(
+        infoWindow: const InfoWindow(
           title: 'Really cool place',
           snippet: '5 Star Rating',
         ),
@@ -79,7 +79,7 @@ class _MapScreenState extends State<MapScreen> {
         child: BlocBuilder(
           bloc: widget.bloc,
           builder: (BuildContext context, MapState state) {
-            return Container(
+            return SizedBox(
               height: MediaQuery.of(context).size.height * 80,
               child: Scaffold(
                 body: (state is MapLoadingState)
@@ -116,7 +116,7 @@ class _MapScreenState extends State<MapScreen> {
                                     backgroundColor: Colors.green,
                                     child: const Icon(Icons.map, size: 36.0),
                                   ),
-                                  SizedBox(height: 16.0),
+                                  const SizedBox(height: 16.0),
                                   FloatingActionButton(
                                     onPressed: _onAddMarkerButtonPressed,
                                     materialTapTargetSize:

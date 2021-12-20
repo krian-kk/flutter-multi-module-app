@@ -22,7 +22,7 @@ class CustomSnackBar extends StatefulWidget {
     this.messagePadding = const EdgeInsets.symmetric(horizontal: 24),
     this.icon = const Icon(
       Icons.sentiment_very_satisfied,
-      color: const Color(0x15000000),
+      color: Color(0x15000000),
       size: 80,
     ),
     this.textStyle = const TextStyle(
@@ -37,7 +37,7 @@ class CustomSnackBar extends StatefulWidget {
     this.boxShadow = kDefaultBoxShadow,
     this.borderRadius = kDefaultBorderRadius,
     this.textScaleFactor = 1.0,
-  });
+  }) : super(key: key);
 
   const CustomSnackBar.info({
     Key? key,
@@ -45,7 +45,7 @@ class CustomSnackBar extends StatefulWidget {
     this.messagePadding = const EdgeInsets.symmetric(horizontal: 24),
     this.icon = const Icon(
       Icons.sentiment_neutral,
-      color: const Color(0x15000000),
+      color: Color(0x15000000),
       size: 120,
     ),
     this.textStyle = const TextStyle(
@@ -60,7 +60,7 @@ class CustomSnackBar extends StatefulWidget {
     this.boxShadow = kDefaultBoxShadow,
     this.borderRadius = kDefaultBorderRadius,
     this.textScaleFactor = 1.0,
-  });
+  }) : super(key: key);
 
   const CustomSnackBar.error({
     Key? key,
@@ -68,7 +68,7 @@ class CustomSnackBar extends StatefulWidget {
     this.messagePadding = const EdgeInsets.symmetric(horizontal: 24),
     this.icon = const Icon(
       Icons.error_outline,
-      color: const Color(0x15000000),
+      color: Color(0x15000000),
       size: 120,
     ),
     this.textStyle = const TextStyle(
@@ -83,7 +83,7 @@ class CustomSnackBar extends StatefulWidget {
     this.boxShadow = kDefaultBoxShadow,
     this.borderRadius = kDefaultBorderRadius,
     this.textScaleFactor = 1.0,
-  });
+  }) : super(key: key);
 
   @override
   _CustomSnackBarState createState() => _CustomSnackBarState();
@@ -107,7 +107,7 @@ class _CustomSnackBarState extends State<CustomSnackBar> {
           Positioned(
             top: widget.iconPositionTop,
             left: widget.iconPositionLeft,
-            child: Container(
+            child: SizedBox(
               height: 95,
               child: Transform.rotate(
                 angle: widget.iconRotationAngle * pi / 180,
@@ -136,7 +136,7 @@ class _CustomSnackBarState extends State<CustomSnackBar> {
   }
 }
 
-const kDefaultBoxShadow = const [
+const kDefaultBoxShadow = [
   BoxShadow(
     color: Colors.black26,
     offset: Offset(0.0, 8.0),
@@ -145,4 +145,4 @@ const kDefaultBoxShadow = const [
   ),
 ];
 
-const kDefaultBorderRadius = const BorderRadius.all(Radius.circular(12));
+const kDefaultBorderRadius = BorderRadius.all(Radius.circular(12));

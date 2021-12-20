@@ -14,11 +14,22 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
-  final dynamic blocObject;
   final Widget customerLoanUserWidget;
-  const CallCustomerBottomSheet(
-      {Key? key, this.blocObject, required this.customerLoanUserWidget})
-      : super(key: key);
+  final String argRef;
+  final String agentName;
+  final String userType;
+  final String caseId;
+  final String sid;
+
+  const CallCustomerBottomSheet({
+    Key? key,
+    required this.customerLoanUserWidget,
+    required this.agentName,
+    required this.argRef,
+    required this.caseId,
+    required this.userType,
+    required this.sid,
+  }) : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -53,17 +64,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   @override
   void initState() {
     super.initState();
-    // agentContactNoControlller.text = '7002792169';
-    if (widget.blocObject is AllocationTBloc) {
-      allocationTBloc = widget.blocObject;
-    } else if (widget.blocObject is CaseDetailsBloc) {
-      caseDetailsBloc = widget.blocObject;
-    }
-    if (allocationTBloc != null) {
-      // print("Allocation");
-    } else if (caseDetailsBloc != null) {
-      // print("CaseDetails");
-    }
   }
 
   @override
@@ -205,7 +205,33 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       fontWeight: FontWeight.w600,
                       isLeading: true,
                       trailingWidget: SvgPicture.asset(ImageResource.vector),
-                      onTap: () => _formKey.currentState!.validate(),
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // var requestBodyData = await CallCustomerModel(
+                          //   from: '',
+                          //   to: '',
+                          //   callerId: '123',
+                          //   aRef: widget.argRef,
+                          //   customerName: widget.agentName,
+                          //   service: serviceProviderListValue,
+                          //   callerServiceID: callersIDDropdownValue,
+                          //   caseId: widget.caseId,
+                          //   sId: widget.sid,
+                          //   agrRef: widget.argRef,
+                          //   agentName: widget.agentName,
+                          //   agentType: (widget.userType == Constants.telecaller)
+                          //       ? 'Telecalling'
+                          //       : 'Field Allocation',
+                          // );
+                          // Map<String, dynamic> postResult =
+                          //     await APIRepository.apiRequest(
+                          //   APIRequestType.POST,
+                          //   HttpUrl.callCustomerUrl,
+                          //   requestBodydata: jsonEncode(requestBodyData),
+                          // );
+                          // print('Response Value => ${jsonEncode(postResult)}');
+                        }
+                      },
                       cardShape: 5,
                     ),
                   ),

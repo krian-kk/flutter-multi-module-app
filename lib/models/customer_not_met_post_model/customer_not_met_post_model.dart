@@ -22,15 +22,15 @@ class CustomerNotMetPostModel {
       required this.eventCode,
       required this.eventAttr,
       this.contact,
-      this.createdBy = '0',
-      this.eventModule = 'Field Allocation',
-      this.agentName = 'GETWISE COLLECTOR',
+      required this.createdBy,
+      required this.eventModule,
+      required this.agentName,
       this.callID,
       this.callingID,
       this.callerServiceID = 'e',
       this.voiceCallEventCode = 'TELEVT011',
       this.invalidNumber,
-      this.agrRef = 'YES_SD87628'});
+      required this.agrRef});
 
   CustomerNotMetPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];

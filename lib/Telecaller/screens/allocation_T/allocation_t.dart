@@ -45,7 +45,6 @@ class _AllocationTelecallerScreenState
           final dynamic returnValue =
               await Navigator.pushNamed(context, AppRoutes.searchScreen);
           if (returnValue != null) {
-            print('----NK----returnvalue');
             print(returnValue);
           }
         }
@@ -174,8 +173,6 @@ class _AllocationTelecallerScreenState
   Widget _buildFilterWidget(int index, String element) {
     return InkWell(
       onTap: () {
-        print(element);
-        print(index);
         setState(() {
           bloc.selectedOption = index;
         });

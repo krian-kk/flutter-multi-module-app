@@ -8,8 +8,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 
-import '../../router.dart';
-
 class PriorityFollowUpBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
   const PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
@@ -31,20 +29,19 @@ class _PriorityFollowUpBottomSheetState
     return BlocListener<DashboardBloc, DashboardState>(
       bloc: widget.bloc,
       listener: (context, state) async {
+        if (state is SelectedTimeperiodDataLoadingState) {
+          widget.bloc.selectedFilterDataLoading = true;
+        }
 
-         if (state is SelectedTimeperiodDataLoadingState) {
-            widget.bloc.selectedFilterDataLoading = true;
-          }
+        if (state is SelectedTimeperiodDataLoadedState) {
+          widget.bloc.selectedFilterDataLoading = false;
+        }
 
-          if (state is SelectedTimeperiodDataLoadedState) {
-            widget.bloc.selectedFilterDataLoading = false;
-          }
-
-        if(state is GetSearchDataState){
-          if (state.getReturnValues !=null) {
+        if (state is GetSearchDataState) {
+          if (state.getReturnValues != null) {
             setState(() {
-              widget.bloc.priortyFollowUpData = 
-            DashboardAllModels.fromJson(state.getReturnValues);
+              widget.bloc.priortyFollowUpData =
+                  DashboardAllModels.fromJson(state.getReturnValues);
             });
           }
         }

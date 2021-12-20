@@ -10,6 +10,7 @@ import 'package:origa/models/dashboard_model.dart';
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -59,6 +60,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
+      Singleton.instance.buildContext = event.context;
 
       var currentDateTime = DateTime.now();
       String currentDate = DateFormat.yMMMEd().format(currentDateTime);
@@ -67,92 +69,90 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-
-      Map<String, dynamic> DashboardData = await APIRepository.apiRequest(
+        Map<String, dynamic> dashboardData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
 
-        if (DashboardData['success']) {
-         var jsonData = DashboardData['data']['result'];
+        if (dashboardData['success']) {
+          var jsonData = dashboardData['data']['result'];
 
-         mtdCaseCompleted = jsonData['mtdCases']['completed'];
-         mtdCaseTotal = jsonData['mtdCases']['total'];
-         mtdAmountCompleted = jsonData['mtdAmount']['completed'];
-         mtdAmountTotal = jsonData['mtdAmount']['total'];
+          mtdCaseCompleted = jsonData['mtdCases']['completed'];
+          mtdCaseTotal = jsonData['mtdCases']['total'];
+          mtdAmountCompleted = jsonData['mtdAmount']['completed'];
+          mtdAmountTotal = jsonData['mtdAmount']['total'];
           // print(DashboardData['data']);
 
-      dashboardList.addAll([
-        DashboardListModel(
-          title: Languages.of(event.context!)!.priorityFollowUp,
-          image: ImageResource.vectorArrow,
-          count: jsonData['priorityFollowUp']['count'].toString(),
-          amountRs: jsonData['priorityFollowUp']['totalAmt'].toString(),
-         
-        ),
-        DashboardListModel(
-            title: Languages.of(event.context!)!.untouchedCases,
-            image: ImageResource.vectorArrow,
-            count: jsonData['untouched']['count'].toString(),
-            amountRs: jsonData['untouched']['totalAmt'].toString(),
-          ),
-          DashboardListModel(
-            title: Languages.of(event.context!)!.brokenPTP,
-            image: ImageResource.vectorArrow,
-            count: jsonData['brokenPtp']['count'].toString(),
-            amountRs: jsonData['brokenPtp']['totalAmt'].toString(),
-          ),
-          DashboardListModel(
-            title: Languages.of(event.context!)!.myReceipts,
-            image: ImageResource.vectorArrow,
-            count: jsonData['receipts']['count'].toString(),
-            amountRs: jsonData['receipts']['totalAmt'].toString(),
-          ),
-          DashboardListModel(
-            title: userType == Constants.fieldagent
-                ? Languages.of(event.context!)!.myVisits
-                : Languages.of(event.context!)!.myCalls,
-            image: ImageResource.vectorArrow,
-            count: jsonData['visits']['count'].toString(),
-            amountRs: jsonData['visits']['totalAmt'].toString(),
+          dashboardList.addAll([
+            DashboardListModel(
+              title: Languages.of(event.context!)!.priorityFollowUp,
+              image: ImageResource.vectorArrow,
+              count: jsonData['priorityFollowUp']['count'].toString(),
+              amountRs: jsonData['priorityFollowUp']['totalAmt'].toString(),
             ),
-        DashboardListModel(
-            title: Languages.of(event.context!)!.myDeposists,
-            image: '',
-            count: '',
-            amountRs: ''),
-        DashboardListModel(
-            title: Languages.of(event.context!)!.yardingSelfRelease,
-            image: '',
-            count: '',
-            amountRs: ''),
-      ]);
-    }
+            DashboardListModel(
+              title: Languages.of(event.context!)!.untouchedCases,
+              image: ImageResource.vectorArrow,
+              count: jsonData['untouched']['count'].toString(),
+              amountRs: jsonData['untouched']['totalAmt'].toString(),
+            ),
+            DashboardListModel(
+              title: Languages.of(event.context!)!.brokenPTP,
+              image: ImageResource.vectorArrow,
+              count: jsonData['brokenPtp']['count'].toString(),
+              amountRs: jsonData['brokenPtp']['totalAmt'].toString(),
+            ),
+            DashboardListModel(
+              title: Languages.of(event.context!)!.myReceipts,
+              image: ImageResource.vectorArrow,
+              count: jsonData['receipts']['count'].toString(),
+              amountRs: jsonData['receipts']['totalAmt'].toString(),
+            ),
+            DashboardListModel(
+              title: userType == Constants.fieldagent
+                  ? Languages.of(event.context!)!.myVisits
+                  : Languages.of(event.context!)!.myCalls,
+              image: ImageResource.vectorArrow,
+              count: jsonData['visits']['count'].toString(),
+              amountRs: jsonData['visits']['totalAmt'].toString(),
+            ),
+            DashboardListModel(
+                title: Languages.of(event.context!)!.myDeposists,
+                image: '',
+                count: '',
+                amountRs: ''),
+            DashboardListModel(
+                title: Languages.of(event.context!)!.yardingSelfRelease,
+                image: '',
+                count: '',
+                amountRs: ''),
+          ]);
+        }
       }
 // caseList.clear();
       caseList.addAll([
-        // CaseListModel(
-        //   newlyAdded: true,
-        //   customerName: 'Debashish Patnaik',
-        //   amount: '₹ 3,97,553.67',
-        //   address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-        //   date: 'Today, Thu 18 Oct, 2021',
-        //   loanID: 'TVS / TVSF_BFRT6524869550',
-        // ),
-        // CaseListModel(
-        //   newlyAdded: true,
-        //   customerName: 'New User',
-        //   amount: '₹ 5,54,433.67',
-        //   address: '2/345, 6th Main Road, Bangalore - 534544',
-        //   date: 'Thu, Thu 18 Oct, 2021',
-        //   loanID: 'TVS / TVSF_BFRT6524869550',
-        // ),
-        // CaseListModel(
-        //   newlyAdded: true,
-        //   customerName: 'Debashish Patnaik',
-        //   amount: '₹ 8,97,553.67',
-        //   address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-        //   date: 'Sat, Thu 18 Oct, 2021',
-        //   loanID: 'TVS / TVSF_BFRT6524869550',
-        // ),
+        CaseListModel(
+          newlyAdded: true,
+          customerName: 'Debashish Patnaik',
+          amount: '₹ 3,97,553.67',
+          address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+          date: 'Today, Thu 18 Oct, 2021',
+          loanID: '618e382004d8d040ac18841b',
+        ),
+        CaseListModel(
+          newlyAdded: true,
+          customerName: 'New User',
+          amount: '₹ 5,54,433.67',
+          address: '2/345, 6th Main Road, Bangalore - 534544',
+          date: 'Thu, Thu 18 Oct, 2021',
+          loanID: '618e382004d8d040ac18841b',
+        ),
+        CaseListModel(
+          newlyAdded: true,
+          customerName: 'Debashish Patnaik',
+          amount: '₹ 8,97,553.67',
+          address: '2/345, 1th Main Road Guindy, Chenai - 875032',
+          date: 'Sat, Thu 18 Oct, 2021',
+          loanID: '618e382004d8d040ac18841b',
+        ),
       ]);
 
       yield DashboardLoadedState();
@@ -293,6 +293,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             DashboardYardingandSelfReleaseModel.fromJson(
                 getYardingAndSelfReleaseData['data']);
       }
+
       yield YardingAndSelfReleaseState();
     }
 
@@ -372,7 +373,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                     "collSubStatus=${event.returnValue.status}");
 
         //             Map<String, dynamic> getSearchResultData = await APIRepository.apiRequest(
-        //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl + 
+        //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl +
         //     "timePeriod=MONTHLY");
         // print('getSearchResultData----->');
         // print(getSearchResultData['data']);

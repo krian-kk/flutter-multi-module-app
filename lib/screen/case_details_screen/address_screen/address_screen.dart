@@ -57,9 +57,9 @@ class _AddressScreenState extends State<AddressScreen>
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
-        if (state is ClickViewMapState) {
-          openViewMapBottomSheet(context);
-        }
+        // if (state is ClickViewMapState) {
+        //   // openViewMapBottomSheet(context);
+        // }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
@@ -144,8 +144,11 @@ class _AddressScreenState extends State<AddressScreen>
                               children: [
                                 Expanded(
                                     child: GestureDetector(
-                                  onTap: () =>
-                                      widget.bloc.add(ClickViewMapEvent()),
+                                  onTap: () => widget.bloc.add(
+                                      ClickOpenBottomSheetEvent(
+                                          Constants.viewMap,
+                                          widget.bloc.offlineCaseDetailsValue
+                                              .callDetails)),
                                   child: SizedBox(
                                       width: 10,
                                       child: Container(
@@ -376,30 +379,30 @@ class _AddressScreenState extends State<AddressScreen>
     );
   }
 
-  openViewMapBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: const CustomMapViewBottomSheet(),
-        );
-        // return CustomEventDetailsBottomSheet(
-        //   Languages.of(context)!.eventDetails.toUpperCase(),
-        //   widget.bloc,
-        // );
-      },
-    );
-  }
+  // openViewMapBottomSheet(BuildContext buildContext) {
+  //   showModalBottomSheet(
+  //     isScrollControlled: true,
+  //     enableDrag: false,
+  //     isDismissible: false,
+  //     context: buildContext,
+  //     backgroundColor: ColorResource.colorFFFFFF,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(
+  //         top: Radius.circular(20),
+  //       ),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       return WillPopScope(
+  //         onWillPop: () async => false,
+  //         child: const CustomMapViewBottomSheet(),
+  //       );
+  //       // return CustomEventDetailsBottomSheet(
+  //       //   Languages.of(context)!.eventDetails.toUpperCase(),
+  //       //   widget.bloc,
+  //       // );
+  //     },
+  //   );
+  // }
 }
 
 class CustomMapViewBottomSheet extends StatefulWidget {

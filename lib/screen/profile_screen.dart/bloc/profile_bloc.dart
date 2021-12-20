@@ -10,6 +10,7 @@ import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_api_result_model/result.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/preference_helper.dart';
@@ -37,7 +38,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ProfileLoadingState();
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString('userType');
+      userType = _pref.getString(Constants.userType);
+      Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetState();
@@ -103,6 +105,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is LoginEvent) {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       await _prefs.setString(Constants.accessToken, "");
+      await _prefs.setString(Constants.userType, "");
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {

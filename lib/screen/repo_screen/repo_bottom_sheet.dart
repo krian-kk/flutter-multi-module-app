@@ -21,18 +21,23 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
-  const CustomRepoBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      this.postValue,
-      required this.userType})
-      : super(key: key);
+  const CustomRepoBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    this.postValue,
+    required this.userType,
+    required this.agentName,
+    required this.argRef
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String argRef;
+  final String agentName;
 
   @override
   State<CustomRepoBottomSheet> createState() => _CustomRepoBottomSheetState();
@@ -308,6 +313,14 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                 eventType: Constants.repo,
                                 caseId: widget.caseId,
                                 eventCode: 'TELEVT016',
+                                agrRef: widget.argRef,
+                                callerServiceID: 'Kaleyra_123',
+                                createdBy: widget.agentName,
+                                agentName: widget.agentName,
+                                eventModule:
+                                    (widget.userType == Constants.telecaller)
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
                                 contact: [
                                   RepoContact(
                                     cType: widget.postValue['cType'],
