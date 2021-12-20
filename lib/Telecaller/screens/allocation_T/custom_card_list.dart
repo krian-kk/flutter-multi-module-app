@@ -75,11 +75,8 @@ class CustomCardList {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 19),
                             child: InkWell(
-                              onTap: () => bloc.add(
-                                  ClickCaseDetailsEvent(const {
-                                'caseID': '618e382004d8d040ac18841b',
-                                'isAddress': true
-                              })),
+                              onTap: () =>
+                                  bloc.add(ClickCaseDetailsEvent('caseid')),
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 margin:

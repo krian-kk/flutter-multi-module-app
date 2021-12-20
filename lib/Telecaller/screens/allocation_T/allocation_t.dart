@@ -74,6 +74,11 @@ class _AllocationTelecallerScreenState
           AppUtils.noInternetSnackbar(context);
         }
 
+        if (state is ClickCaseDetailsState) {
+          Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+              arguments: state.paramValue);
+        }
+
         if (state is NavigateSearchPageTState) {
           final dynamic returnValue =
               await Navigator.pushNamed(context, AppRoutes.searchScreen);
