@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/reset_password_model/reset_password_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -127,38 +128,50 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               SharedPreferences _prefs =
                                   await SharedPreferences.getInstance();
                               if (userIdController.text ==
-                                  _prefs.getString('userName')) {
+                                  _prefs.getString(Constants.userId)) {
                                 setState(() {
                                   mobileNumberController.text =
-                                      _prefs.getString('userName') ?? '';
+                                      _prefs.getString(Constants.userId) ?? '';
                                   userNameController.text =
-                                      _prefs.getString('accessToken') ?? '';
+                                      _prefs.getString(Constants.accessToken) ??
+                                          '';
                                   emailController.text =
-                                      _prefs.getString('accessToken') ?? '';
+                                      _prefs.getString(Constants.accessToken) ??
+                                          '';
                                 });
                               } else {
                                 AppUtils.showToast(
-                                    Constants.pleaseEnterCorrectUserName);
+                                    Constants.pleaseEnterCorrectUserId);
                               }
                             },
                             child: GestureDetector(
                               onTap: () async {
                                 userIdFocusNode.unfocus();
-                                Map<String, dynamic> getProfileData =
+                                Map<String, dynamic> getAgentDetail =
                                     await APIRepository.apiRequest(
                                         APIRequestType.GET,
                                         HttpUrl.resetPasswordCheckUrl(
                                             userIdController.text));
-                                setState(() {
-                                  mobileNumberController.text =
-                                      getProfileData['data']['data'][0]
-                                          ['mobileNumber'];
-                                  userNameController.text =
-                                      getProfileData['data']['data'][0]
-                                          ['Agent_name'];
-                                  emailController.text = getProfileData['data']
-                                      ['data'][0]['email'];
-                                });
+
+                                if (getAgentDetail['success'] == false) {
+                                  AgentDetailErrorModel agentDetailError =
+                                      AgentDetailErrorModel.fromJson(
+                                          getAgentDetail['data']);
+                                  AppUtils.showToast(agentDetailError.msg!,
+                                      backgroundColor: Colors.red);
+                                } else {
+                                  setState(() {
+                                    mobileNumberController.text =
+                                        getAgentDetail['data']['data'][0]
+                                            ['mobileNumber'];
+                                    userNameController.text =
+                                        getAgentDetail['data']['data'][0]
+                                            ['Agent_name'];
+                                    emailController.text =
+                                        getAgentDetail['data']['data'][0]
+                                            ['email'];
+                                  });
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(

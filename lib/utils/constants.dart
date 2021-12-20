@@ -4,8 +4,10 @@ class Constants {
   static const String pageNo = '1';
   static const String limit = '10';
   static const String help = 'Help';
+  // Type of userType
   static const String fieldagent = 'FIELDAGENT';
   static const String telecaller = 'TELECALLER';
+
   static const String ptp = 'PTP';
   static const String rtp = 'RTP (DENIAL)';
   static const String denial = 'DENIAL';
@@ -50,8 +52,7 @@ class Constants {
   static const String uploadDepositSlip = 'Please upload deposit slip';
   static const String pleaseSelectPaymentMode = 'Please Select Payment Mode!';
   static const String pleaseSelectOptions = 'Please Select Options';
-  static const String pleaseEnterCorrectUserName =
-      'Please Enter Currect User Name';
+  static const String pleaseEnterCorrectUserId = 'Please Enter Currect User ID';
   static const String pleaseSelectDropDownValue =
       'Please Select Drop Down Value';
   static const String success = 'success';
@@ -71,7 +72,7 @@ class Constants {
   static const String rememberUserId = 'rememberUserId';
   static const String rememberPassword = 'rememberPassword';
 
-  // local storage key
+  // sharedpreference local storage key
   static const String userType = 'userType';
   static const String userId = 'userId';
   static const String accessToken = 'accessToken';
@@ -88,4 +89,7 @@ class Constants {
   static const String status = 'status';
   static const String userAdmin = 'userAdmin';
   static const String code = 'code';
+  static const String buildcontext = 'buildcontext';
+  static const String callConnectedPleaseWait =
+      'Call Connected Quickly Please Wait!';
 }

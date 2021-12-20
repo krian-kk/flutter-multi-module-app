@@ -1,6 +1,6 @@
 class OtherLoanDetail {
   String? id;
-  double? due;
+  dynamic due;
   String? cust;
   String? accNo;
   String? caseId;

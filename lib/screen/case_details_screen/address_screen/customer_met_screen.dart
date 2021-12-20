@@ -134,8 +134,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                           onTap: () => widget.bloc.add(
                             ClickOpenBottomSheetEvent(
                               Constants.captureImage,
-                              widget
-                                  .bloc.offlineCaseDetailsValue.addressDetails,
+                              widget.bloc.caseDetailsAPIValue.result
+                                  ?.addressDetails,
                             ),
                           ),
                           trailingWidget:
@@ -172,7 +172,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
           setState(() => selectedOptionBottomSheetButton = element.title);
           widget.bloc.add(ClickOpenBottomSheetEvent(
             element.stringResourceValue,
-            widget.bloc.offlineCaseDetailsValue.addressDetails,
+            widget.bloc.caseDetailsAPIValue.result?.addressDetails,
           ));
         },
         child: Container(

@@ -54,9 +54,9 @@ class _CustomEventDetailsBottomSheetState
               const SizedBox(height: 10),
               Expanded(
                   child: ListView.builder(
-                itemCount: widget.bloc.offlineEventDetailsListValue.length,
+                itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
                 itemBuilder: (context, int index) =>
-                    expandList(widget.bloc.offlineEventDetailsListValue, index),
+                    expandList(widget.bloc.eventDetailsAPIValue.result!, index),
               )),
             ],
           ),

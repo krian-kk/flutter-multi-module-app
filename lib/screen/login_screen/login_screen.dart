@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    bloc = LoginBloc()..add(LoginInitialEvent());
+    bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();

@@ -11,7 +11,7 @@ class NoCaseAvailble {
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: SizedBox(
-        width: 320,
+        width: double.infinity,
         height: 210,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -9,6 +9,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -51,7 +52,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   List<String> customerContactNoDropdownList = [];
 
-  String customerContactNoDropDownValue = '9361441983';
+  String customerContactNoDropDownValue = '';
 
   List<String> serviceProviderListDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
 
@@ -236,7 +237,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                             requestBodydata: jsonEncode(requestBodyData),
                           );
                           if (postResult[Constants.success]) {
-                            Navigator.pop(context);
+                            AppUtils.showToast(
+                                Constants.callConnectedPleaseWait);
                             Navigator.pop(context);
                           } else {}
                         }

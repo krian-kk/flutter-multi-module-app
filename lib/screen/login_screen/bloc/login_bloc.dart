@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -31,6 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginEvent event,
   ) async* {
     if (event is LoginInitialEvent) {
+      Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       }
@@ -49,90 +51,87 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           APIRequestType.POST, HttpUrl.loginUrl,
           requestBodydata: event.paramValue);
 
-      if (response['data'] is LoginErrorMessage) {
+      print(response.toString());
+      if (response['success'] == false) {
+        yield SignInLoadedState();
+        AppUtils.showToast(response['data'], backgroundColor: Colors.red);
+      } else if (response['statusCode'] == 401) {
         loginErrorResponse = LoginErrorMessage.fromJson(response['data']);
         // if SignIn error to show again SignIn button
         yield SignInLoadedState();
-        AppUtils.showToast(loginErrorResponse.msg.toString());
+        AppUtils.showToast(loginErrorResponse.msg.toString(),
+            backgroundColor: Colors.red);
       } else {
-        // Successfully getting access-token
-        if (response['data'] is String) {
-          AppUtils.showToast(response['data']);
-        } else {
-          loginResponse = LoginResponseModel.fromJson(response['data']);
-          // Store the access-token in local storage
-          print('get header values---------->');
-          print(loginResponse.data!.accessToken!);
-          print(loginResponse.data!.refreshToken!);
-          print(loginResponse.data!.sessionState!);
-          print(event.userId!);
-          _prefs.setString(
-              Constants.accessToken, loginResponse.data!.accessToken!);
-          _prefs.setInt(
-              Constants.accessTokenExpireTime, loginResponse.data!.expiresIn!);
-          _prefs.setString(
-              Constants.refreshToken, loginResponse.data!.refreshToken!);
-          _prefs.setInt(Constants.refreshTokenExpireTime,
-              loginResponse.data!.refreshExpiresIn!);
-          _prefs.setString(
-              Constants.keycloakId, loginResponse.data!.keycloakId!);
-          _prefs.setString(
-              Constants.sessionId, loginResponse.data!.sessionState!);
-          _prefs.setString(Constants.agentRef, event.userId!);
-          _prefs.setString(Constants.userId, event.userId!);
-          Singleton.instance.accessToken = loginResponse.data!.accessToken!;
-          Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
-          Singleton.instance.sessionID = loginResponse.data!.sessionState!;
-          Singleton.instance.agentRef = event.userId!;
+        loginResponse = LoginResponseModel.fromJson(response['data']);
+        // Store the access-token in local storage
+        print('get header values---------->');
+        print(loginResponse.data!.accessToken!);
+        print(loginResponse.data!.refreshToken!);
+        print(loginResponse.data!.sessionState!);
+        print(event.userId!);
+        _prefs.setString(
+            Constants.accessToken, loginResponse.data!.accessToken!);
+        _prefs.setInt(
+            Constants.accessTokenExpireTime, loginResponse.data!.expiresIn!);
+        _prefs.setString(
+            Constants.refreshToken, loginResponse.data!.refreshToken!);
+        _prefs.setInt(Constants.refreshTokenExpireTime,
+            loginResponse.data!.refreshExpiresIn!);
+        _prefs.setString(Constants.keycloakId, loginResponse.data!.keycloakId!);
+        _prefs.setString(
+            Constants.sessionId, loginResponse.data!.sessionState!);
+        _prefs.setString(Constants.agentRef, event.userId!);
+        _prefs.setString(Constants.userId, event.userId!);
+        Singleton.instance.accessToken = loginResponse.data!.accessToken!;
+        Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
+        Singleton.instance.sessionID = loginResponse.data!.sessionState!;
+        Singleton.instance.agentRef = event.userId!;
 
-          if (loginResponse.data!.accessToken != null) {
-            // Execute agent detail URl to get Agent details
-            Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + event.userId!);
+        if (loginResponse.data!.accessToken != null) {
+          // Execute agent detail URl to get Agent details
+          Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
+              APIRequestType.GET, HttpUrl.agentDetailUrl + event.userId!);
 
-            if (agentDetail['data'] is AgentDetailErrorModel) {
-              // Error getting Agent Details
-              // user inactivity (or) already loggined another device
-              dynamic agentDetailError =
-                  AgentDetailErrorModel.fromJson(agentDetail['data']);
-              // Here facing error so close the loading
-              yield SignInLoadedState();
-              AppUtils.showToast(agentDetailError.msg!);
+          if (agentDetail['success'] == false) {
+            AgentDetailErrorModel agentDetailError =
+                AgentDetailErrorModel.fromJson(agentDetail['data']);
+            // Here facing error so close the loading
+            yield SignInLoadedState();
+            AppUtils.showToast(agentDetailError.msg!,
+                backgroundColor: Colors.red);
+          } else {
+            // getting Agent Details
+            dynamic agentDetails =
+                AgentDetailsModel.fromJson(agentDetail['data']);
+            // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
+            if (agentDetails.data![0].agentType == 'COLLECTOR') {
+              await _prefs.setString(Constants.userType, Constants.fieldagent);
             } else {
-              // getting Agent Details
-              dynamic agentDetails =
-                  AgentDetailsModel.fromJson(agentDetail['data']);
-              // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
-              if (agentDetails.data![0].agentType == 'COLLECTOR') {
-                await _prefs.setString(
-                    Constants.userType, Constants.fieldagent);
-              } else {
-                await _prefs.setString(
-                    Constants.userType, Constants.telecaller);
-              }
-              // here storing all agent details in local storage
-              if (agentDetails.data![0].agentType != null) {
-                await _prefs.setString(
-                    Constants.agentName, agentDetails.data![0].agentName!);
-                await _prefs.setString(
-                    Constants.mobileNo, agentDetails.data![0].mobNo!);
-                await _prefs.setString(
-                    Constants.email, agentDetails.data![0].email!);
-                await _prefs.setString(
-                    Constants.contractor, agentDetails.data![0].contractor!);
-                await _prefs.setString(
-                    Constants.status, agentDetails.data![0].status!);
-                await _prefs.setString(Constants.code, agentDetails.code!);
-                await _prefs.setBool(
-                    Constants.userAdmin, agentDetails.data![0].userAdmin!);
+              await _prefs.setString(Constants.userType, Constants.telecaller);
+            }
+            // here storing all agent details in local storage
+            if (agentDetails.data![0].agentType != null) {
+              await _prefs.setString(
+                  Constants.agentName, agentDetails.data![0].agentName!);
+              await _prefs.setString(
+                  Constants.mobileNo, agentDetails.data![0].mobNo!);
+              await _prefs.setString(
+                  Constants.email, agentDetails.data![0].email!);
+              await _prefs.setString(
+                  Constants.contractor, agentDetails.data![0].contractor!);
+              await _prefs.setString(
+                  Constants.status, agentDetails.data![0].status!);
+              await _prefs.setString(Constants.code, agentDetails.code!);
+              await _prefs.setBool(
+                  Constants.userAdmin, agentDetails.data![0].userAdmin!);
 
-                yield SignInCompletedState();
-                await Future.delayed(const Duration(milliseconds: 200));
+              yield SignInCompletedState();
+              await Future.delayed(const Duration(milliseconds: 200));
 
-                yield HomeTabState();
-              }
+              yield HomeTabState();
             }
           }
+          // }
         }
       }
     }

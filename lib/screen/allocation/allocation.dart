@@ -58,7 +58,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = AllocationBloc()..add(AllocationInitialEvent());
+    bloc = AllocationBloc()..add(AllocationInitialEvent(context));
     _controller = ScrollController()..addListener(_loadMore);
     getCurrentLocation();
   }
@@ -265,7 +265,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       ),
                       IconButton(
                           onPressed: () {
-                            bloc.add(AllocationInitialEvent());
+                            bloc.add(AllocationInitialEvent(context));
                           },
                           icon: const Icon(Icons.refresh)),
                     ],
@@ -474,8 +474,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   ? Column(
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 50),
+                                          padding: const EdgeInsets.only(
+                                              top: 50, right: 20, left: 20),
                                           child: NoCaseAvailble
                                               .buildNoCaseAvailable(),
                                         ),

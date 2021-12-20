@@ -9,15 +9,18 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
+import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
+import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
@@ -31,21 +34,24 @@ part 'case_details_state.dart';
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
   String? agentName;
-  String? agrRef;
+  // String? agrRef;
   // String eventCode = ;
 
   int? indexValue;
   String? userType;
 
-  // CaseDetailsApiModel o
+  // Online Purpose
+  bool isNoInternet = false;
+  CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
+  EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
 
-  CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
-  List<EventDetailsResultModel> offlineEventDetailsListValue = [];
+  // CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
+  // List<EventDetailsResultModel> offlineEventDetailsListValue = [];
 
-  Future<Box<OrigoMapDynamicTable>> caseDetailsHiveBox =
-      Hive.openBox<OrigoMapDynamicTable>('CaseDetailsHiveApiResultsBox');
-  Future<Box<OrigoDynamicTable>> eventDetailsHiveBox =
-      Hive.openBox<OrigoDynamicTable>('EventDetailsHiveApiResultsBox');
+  // Future<Box<OrigoMapDynamicTable>> caseDetailsHiveBox =
+  //     Hive.openBox<OrigoMapDynamicTable>('CaseDetailsHiveApiResultsBox');
+  // Future<Box<OrigoDynamicTable>> eventDetailsHiveBox =
+  //     Hive.openBox<OrigoDynamicTable>('EventDetailsHiveApiResultsBox');
   // var Box = Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox19');
 
   // Address Details Screen
@@ -102,115 +108,128 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
-
+      Singleton.instance.buildContext = event.context;
       caseId = event.paramValues['caseID'];
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString('userType');
-      agentName = _pref.getString('userName');
-      agrRef = _pref.getString('userName');
+      userType = _pref.getString(Constants.userType);
+      agentName = _pref.getString(Constants.agentName);
+      // agrRef = _pref.getString(Constants.agentRef);
+
       //check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+        isNoInternet = true;
         yield NoInternetState();
       } else {
+        isNoInternet = false;
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId');
 
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
-
-          caseDetailsHiveBox.then((value) => value.put(
-              'case' + caseId.toString(),
-              OrigoMapDynamicTable(
-                status: jsonData['status'],
-                message: jsonData['message'],
-                result: jsonData['result'],
-              )));
+          caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+          // caseDetailsHiveBox.then((value) => value.put(
+          //     'case' + caseId.toString(),
+          //     OrigoMapDynamicTable(
+          //       status: jsonData['status'],
+          //       message: jsonData['message'],
+          //       result: jsonData['result'],
+          //     )));
         } else {}
       }
 
-      await caseDetailsHiveBox.then(
-        (value) => offlineCaseDetailsValue = CaseDetailsResultModel.fromJson(
-            value.get('case' + caseId.toString())!.result),
-      );
+      // await caseDetailsHiveBox.then(
+      //   (value) => offlineCaseDetailsValue = CaseDetailsResultModel.fromJson(
+      //       value.get('case' + caseId.toString())!.result),
+      // );
 
-      loanAmountController.text = offlineCaseDetailsValue.caseDetails!.loanAmt
-          .toString()
-          .replaceAll('null', '-');
-      loanDurationController.text = offlineCaseDetailsValue
-          .caseDetails!.loanDuration
-          .toString()
-          .replaceAll('null', '-');
-      posController.text = offlineCaseDetailsValue.caseDetails!.pos
-          .toString()
-          .replaceAll('null', '-');
-      schemeCodeController.text = offlineCaseDetailsValue
-          .caseDetails!.schemeCode
-          .toString()
-          .replaceAll('null', '-');
-      emiStartDateController.text = offlineCaseDetailsValue
-          .caseDetails!.emiStartDate
-          .toString()
-          .replaceAll('null', '-');
-      bankNameController.text = offlineCaseDetailsValue.caseDetails!.bankName
-          .toString()
-          .replaceAll('null', '-');
-      productController.text = offlineCaseDetailsValue.caseDetails!.product
-          .toString()
-          .replaceAll('null', '-');
-      batchNoController.text = offlineCaseDetailsValue.caseDetails!.batchNo
-          .toString()
-          .replaceAll('null', '-');
+      loanAmountController.text = caseDetailsAPIValue
+              .result?.caseDetails!.loanAmt
+              .toString()
+              .replaceAll('null', '-') ??
+          '-';
+      loanDurationController.text = caseDetailsAPIValue
+              .result?.caseDetails!.loanDuration
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
+      posController.text = caseDetailsAPIValue.result?.caseDetails!.pos
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
+      schemeCodeController.text = caseDetailsAPIValue
+              .result?.caseDetails!.schemeCode
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
+      emiStartDateController.text = caseDetailsAPIValue
+              .result?.caseDetails!.emiStartDate
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
+      bankNameController.text = caseDetailsAPIValue
+              .result?.caseDetails!.bankName
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
+      productController.text = caseDetailsAPIValue.result?.caseDetails!.product
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
+      batchNoController.text = caseDetailsAPIValue.result?.caseDetails!.batchNo
+              .toString()
+              .replaceAll('null', '-') ??
+          '_';
 
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ptp, offlineCaseDetailsValue.addressDetails!))),
+                Constants.ptp, caseDetailsAPIValue.result?.addressDetails!))),
         CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.rtp, offlineCaseDetailsValue.addressDetails!))),
+                Constants.rtp, caseDetailsAPIValue.result?.addressDetails!))),
         CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.dispute, offlineCaseDetailsValue.addressDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
+                caseDetailsAPIValue.result?.addressDetails!))),
         CustomerMetGridModel(ImageResource.remainder,
             (Constants.remainder + '/CB').toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.remainder, offlineCaseDetailsValue.addressDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
+                caseDetailsAPIValue.result?.addressDetails!))),
         CustomerMetGridModel(ImageResource.collections, Constants.collections,
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
-                offlineCaseDetailsValue.addressDetails!))),
+                caseDetailsAPIValue.result?.addressDetails!))),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, offlineCaseDetailsValue.addressDetails!))),
+                Constants.ots, caseDetailsAPIValue.result?.addressDetails!))),
       ]);
 
-      expandOtherFeedback.addAll([
-        OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
-        OtherFeedbackExpandModel(
-            header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
-        OtherFeedbackExpandModel(
-            header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
-      ]);
+      // expandOtherFeedback.addAll([
+      //   OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
+      //   OtherFeedbackExpandModel(
+      //       header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
+      //   OtherFeedbackExpandModel(
+      //       header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
+      // ]);
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ptp, offlineCaseDetailsValue.callDetails!))),
+                Constants.ptp, caseDetailsAPIValue.result?.callDetails!))),
         CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.rtp, offlineCaseDetailsValue.callDetails!))),
+                Constants.rtp, caseDetailsAPIValue.result?.callDetails!))),
         CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.dispute, offlineCaseDetailsValue.callDetails!))),
+                Constants.dispute, caseDetailsAPIValue.result?.callDetails!))),
         CustomerMetGridModel(ImageResource.remainder,
             (Constants.remainder + '/CB').toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.remainder, offlineCaseDetailsValue.callDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
+                caseDetailsAPIValue.result?.callDetails!))),
         CustomerMetGridModel(ImageResource.collections, Constants.collections,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.collections, offlineCaseDetailsValue.callDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
+                caseDetailsAPIValue.result?.callDetails!))),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, offlineCaseDetailsValue.callDetails!))),
+                Constants.ots, caseDetailsAPIValue.result?.callDetails!))),
       ]);
 
       yield CaseDetailsLoadedState();
@@ -253,26 +272,23 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
             if (getEventDetailsData[Constants.success] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];
+              eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
 
-              eventDetailsHiveBox.then((value) => value.put(
-                  'EventDetails1',
-                  OrigoDynamicTable(
-                    status: jsonData['status'],
-                    message: jsonData['message'],
-                    result: jsonData['result'],
-                  )));
-            } else {
-              // message = weatherData["data"];
-              // yield SevenDaysFailureState();
-            }
+              // eventDetailsHiveBox.then((value) => value.put(
+              //     'EventDetails1',
+              //     OrigoDynamicTable(
+              //       status: jsonData['status'],
+              //       message: jsonData['message'],
+              //       result: jsonData['result'],
+              //     )));
+            } else {}
           }
-          await eventDetailsHiveBox.then((value) {
-            value.get('EventDetails1')?.result.forEach((element) {
-              offlineEventDetailsListValue.add(EventDetailsResultModel.fromJson(
-                  Map<String, dynamic>.from(element)));
-            });
-          });
-
+          // await eventDetailsHiveBox.then((value) {
+          //   value.get('EventDetails1')?.result.forEach((element) {
+          //     offlineEventDetailsListValue.add(EventDetailsResultModel.fromJson(
+          //         Map<String, dynamic>.from(element)));
+          //   });
+          // });
           break;
         default:
       }
@@ -306,11 +322,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           agentName.toString(),
           agentName.toString(),
           {
-            'cType': offlineCaseDetailsValue.addressDetails?[indexValue!]
-                    ['cType']
+            'cType': caseDetailsAPIValue
+                .result?.addressDetails?[indexValue!]['cType']
                 .toString(),
-            'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
-                    ['value']
+            'value': caseDetailsAPIValue
+                .result?.addressDetails?[indexValue!]['value']
                 .toString(),
             'health': '1',
             'resAddressId_0': '6181646813c5cf70dea671d2',
@@ -329,11 +345,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           agentName.toString(),
           [
             {
-              'cType': offlineCaseDetailsValue.addressDetails?[indexValue!]
-                      ['cType']
+              'cType': caseDetailsAPIValue
+                  .result?.addressDetails?[indexValue!]['cType']
                   .toString(),
-              'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
-                      ['value']
+              'value': caseDetailsAPIValue
+                  .result?.addressDetails?[indexValue!]['value']
                   .toString(),
               'health': '1',
               'resAddressId_0': '6181646813c5cf70dea671d2',
@@ -353,11 +369,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           agentName.toString(),
           [
             {
-              'cType': offlineCaseDetailsValue.addressDetails?[indexValue!]
-                      ['cType']
+              'cType': caseDetailsAPIValue
+                  .result?.addressDetails?[indexValue!]['cType']
                   .toString(),
-              'value': offlineCaseDetailsValue.addressDetails?[indexValue!]
-                      ['value']
+              'value': caseDetailsAPIValue
+                  .result?.addressDetails?[indexValue!]['value']
                   .toString(),
               'health': '1',
               'resAddressId_0': '6181646813c5cf70dea671d2',
@@ -436,14 +452,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 Constants.doesNotExist,
                 caseId.toString(),
                 'TELEVT008',
-                HttpUrl.numberNotWorkingUrl('doesNotExist', 'TELECALLER'));
+                HttpUrl.numberNotWorkingUrl(
+                    'doesNotExist', userType.toString()));
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.incorrectNumber) {
             resultValue = await phoneInvalidButtonClick(
               Constants.incorrectNumber,
               caseId.toString(),
               'TELEVT008',
-              HttpUrl.incorrectNumberUrl('incorrectNo', 'TELECALLER'),
+              HttpUrl.incorrectNumberUrl('incorrectNo', userType.toString()),
             );
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.numberNotWorking) {
@@ -451,7 +468,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               Constants.numberNotWorking,
               caseId.toString(),
               'TELEVT008',
-              HttpUrl.numberNotWorkingUrl('numberNotWorking', 'TELECALLER'),
+              HttpUrl.numberNotWorkingUrl(
+                  'numberNotWorking', userType.toString()),
             );
           } else if (phoneSelectedInvalidClip ==
               Languages.of(event.context)!.notOperational) {
@@ -459,7 +477,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 Constants.notOpeartional,
                 caseId.toString(),
                 'TELEVT008',
-                HttpUrl.notOperationalUrl('notOperational', 'TELECALLER'));
+                HttpUrl.notOperationalUrl(
+                    'notOperational', userType.toString()));
           }
         } else {
           AppUtils.showToast(Constants.pleaseSelectOptions);
@@ -480,7 +499,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT007',
           HttpUrl.unreachableUrl(
             'lineBusy',
-            'TELECALLER',
+            userType.toString(),
           ),
         );
       } else if (phoneSelectedUnreadableClip ==
@@ -491,7 +510,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT007',
           HttpUrl.unreachableUrl(
             'switchOff',
-            'TELECALLER',
+            userType.toString(),
           ),
         );
       } else if (phoneSelectedUnreadableClip ==
@@ -502,7 +521,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT011',
           HttpUrl.unreachableUrl(
             'RNR',
-            'TELECALLER',
+            userType.toString(),
           ),
         );
       } else if (phoneSelectedUnreadableClip ==
@@ -513,7 +532,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT007',
           HttpUrl.unreachableUrl(
             'outOfNetwork',
-            'TELECALLER',
+            userType.toString(),
           ),
         );
       } else if (phoneSelectedUnreadableClip ==
@@ -524,7 +543,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           'TELEVT011',
           HttpUrl.unreachableUrl(
             'disconnecting',
-            'TELECALLER',
+            userType.toString(),
           ),
         );
       }
@@ -554,8 +573,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         agentName: agentName.toString(),
         agrRef: agentName.toString(),
         contact: PhoneUnreachbleContact(
-          cType: offlineCaseDetailsValue.callDetails![indexValue!]['cType'],
-          value: offlineCaseDetailsValue.callDetails![indexValue!]['value'],
+          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
+          value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.POST,
@@ -687,9 +706,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             : 'Field Allocation',
         contact: [
           AddressInvalidContact(
-            cType: offlineCaseDetailsValue.addressDetails![indexValue!]
+            cType: caseDetailsAPIValue.result?.addressDetails![indexValue!]
                 ['cType'],
-            value: offlineCaseDetailsValue.addressDetails![indexValue!]
+            value: caseDetailsAPIValue.result?.addressDetails![indexValue!]
                 ['value'],
           )
         ]);
@@ -720,9 +739,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           remarks: phoneInvalidRemarksController.text,
           nextActionDate: DateTime.now().toString(),
         ),
+        eventModule: 'Telecalling',
+        agentName: agentName.toString(),
+        agrRef: Singleton.instance.agentRef.toString(),
         contact: PhoneInvalidContact(
-          cType: offlineCaseDetailsValue.callDetails![indexValue!]['cType'],
-          value: offlineCaseDetailsValue.callDetails![indexValue!]['value'],
+          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
+          value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.POST,

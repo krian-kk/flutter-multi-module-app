@@ -13,8 +13,8 @@ class DioClient {
     Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 5000,
-        receiveTimeout: 5000,
+        connectTimeout: 1000,
+        receiveTimeout: 1000,
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
                 '' != Singleton.instance.accessToken)

@@ -41,11 +41,13 @@ class _CallDetailsBottomSheetScreenState
               padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
               child: CustomLoanUserDetails(
                 userName:
-                    widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId:
-                    widget.bloc.offlineCaseDetailsValue.caseDetails?.accNo ??
-                        '',
-                userAmount: widget.bloc.offlineCaseDetailsValue.caseDetails?.due
+                    widget.bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                        '_',
+                userId: widget
+                        .bloc.caseDetailsAPIValue.result?.caseDetails?.accNo ??
+                    '_',
+                userAmount: widget
+                        .bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0,
               ),
@@ -62,8 +64,8 @@ class _CallDetailsBottomSheetScreenState
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: widget.bloc.offlineCaseDetailsValue
-                                .callDetails?.length ??
+                        itemCount: widget.bloc.caseDetailsAPIValue.result
+                                ?.callDetails?.length ??
                             0,
                         itemBuilder: (context, i) {
                           return SizedBox(
@@ -72,10 +74,11 @@ class _CallDetailsBottomSheetScreenState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  widget.bloc.offlineCaseDetailsValue
-                                      .callDetails![i]['cType']
-                                      .toString()
-                                      .toUpperCase(),
+                                  widget.bloc.caseDetailsAPIValue.result
+                                          ?.callDetails![i]['cType']
+                                          .toString()
+                                          .toUpperCase() ??
+                                      '_',
                                   fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
@@ -105,9 +108,11 @@ class _CallDetailsBottomSheetScreenState
                                                 children: [
                                                   CustomText(
                                                     widget
-                                                        .bloc
-                                                        .offlineCaseDetailsValue
-                                                        .callDetails![i]['value'],
+                                                            .bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.callDetails![i]
+                                                        ['value'],
                                                     fontSize: FontSize.fourteen,
                                                     fontWeight: FontWeight.w400,
                                                     fontStyle: FontStyle.normal,
@@ -139,8 +144,9 @@ class _CallDetailsBottomSheetScreenState
                                                         Constants.callCustomer,
                                                         widget
                                                             .bloc
-                                                            .offlineCaseDetailsValue
-                                                            .callDetails));
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.callDetails));
                                               },
                                               child: Container(
                                                   decoration: const BoxDecoration(

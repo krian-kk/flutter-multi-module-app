@@ -48,14 +48,14 @@ class _AddressDetailsBottomSheetScreenState
                   Padding(
                     padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
                     child: CustomLoanUserDetails(
-                      userName: widget
-                              .bloc.offlineCaseDetailsValue.caseDetails?.cust ??
+                      userName: widget.bloc.caseDetailsAPIValue.result
+                              ?.caseDetails?.cust ??
                           '',
-                      userId: widget.bloc.offlineCaseDetailsValue.caseDetails
-                              ?.accNo ??
+                      userId: widget.bloc.caseDetailsAPIValue.result
+                              ?.caseDetails?.accNo ??
                           '',
                       userAmount: widget
-                              .bloc.offlineCaseDetailsValue.caseDetails?.due
+                              .bloc.caseDetailsAPIValue.result?.caseDetails?.due
                               ?.toDouble() ??
                           0,
                     ),
@@ -72,8 +72,8 @@ class _AddressDetailsBottomSheetScreenState
                             ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: widget.bloc.offlineCaseDetailsValue
-                                      .addressDetails?.length ??
+                              itemCount: widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails?.length ??
                                   0,
                               itemBuilder: (context, i) {
                                 return SizedBox(
@@ -84,10 +84,11 @@ class _AddressDetailsBottomSheetScreenState
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CustomText(
-                                        widget.bloc.offlineCaseDetailsValue
-                                            .addressDetails![i]['cType']
-                                            .toString()
-                                            .toUpperCase(),
+                                        widget.bloc.caseDetailsAPIValue.result
+                                                ?.addressDetails![i]['cType']
+                                                .toString()
+                                                .toUpperCase() ??
+                                            '_',
                                         fontWeight: FontWeight.w700,
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color23375A,
@@ -114,12 +115,14 @@ class _AddressDetailsBottomSheetScreenState
                                                   Flexible(
                                                     child: CustomText(
                                                       widget
-                                                          .bloc
-                                                          .offlineCaseDetailsValue
-                                                          .addressDetails![i]
-                                                              ['value']
-                                                          .toString()
-                                                          .toUpperCase(),
+                                                              .bloc
+                                                              .caseDetailsAPIValue
+                                                              .result
+                                                              ?.addressDetails![
+                                                                  i]['value']
+                                                              .toString()
+                                                              .toUpperCase() ??
+                                                          '_',
                                                       fontSize:
                                                           FontSize.fourteen,
                                                       fontWeight:
@@ -157,8 +160,9 @@ class _AddressDetailsBottomSheetScreenState
                                                             Constants.viewMap,
                                                             widget
                                                                 .bloc
-                                                                .offlineCaseDetailsValue
-                                                                .callDetails)),
+                                                                .caseDetailsAPIValue
+                                                                .result
+                                                                ?.callDetails)),
                                                     child: Container(
                                                         decoration: const BoxDecoration(
                                                             color: ColorResource

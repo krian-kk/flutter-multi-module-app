@@ -73,7 +73,7 @@ class CustomCardList {
                             child: InkWell(
                               onTap: () => bloc.add(
                                   ClickCaseDetailsEvent(const {
-                                'caseID': '618e382004d8d040ac18841b',
+                                'caseID': '608a9aceaf87392758582ecc',
                                 'isAddress': true
                               })),
                               child: Container(

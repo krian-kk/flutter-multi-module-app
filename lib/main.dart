@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,23 +11,20 @@ import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:origa/utils/app_theme.dart';
-import 'package:path_provider/path_provider.dart';
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_event.dart';
 import 'bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Directory directory = await getApplicationDocumentsDirectory();
-  Hive
-    ..init(directory.path)
-    ..registerAdapter(OrigoDynamicTableAdapter())
-    ..registerAdapter(OrigoMapDynamicTableAdapter());
+  // Directory directory = await getApplicationDocumentsDirectory();
+  // Hive
+  //   ..init(directory.path)
+  //   ..registerAdapter(OrigoDynamicTableAdapter())
+  //   ..registerAdapter(OrigoMapDynamicTableAdapter());
 
-  await Hive.openBox<OrigoDynamicTable>('testBox4');
+  // await Hive.openBox<OrigoDynamicTable>('testBox4');
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -34,7 +33,7 @@ void main() async {
 
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) {
-      return AuthenticationBloc()..add(AppStarted());
+      return AuthenticationBloc()..add(AppStarted(context: context));
     },
     child: const MyApp(),
   ));

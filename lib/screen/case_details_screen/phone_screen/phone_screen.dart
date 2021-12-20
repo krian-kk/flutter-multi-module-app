@@ -78,10 +78,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CustomText(
-                              widget.bloc.offlineCaseDetailsValue
-                                  .callDetails![widget.index]['cType']
-                                  .toString()
-                                  .toUpperCase(),
+                              widget.bloc.caseDetailsAPIValue.result
+                                      ?.callDetails![widget.index]['cType']
+                                      .toString()
+                                      .toUpperCase() ??
+                                  '_',
                               fontWeight: FontWeight.w700,
                               fontSize: FontSize.fourteen,
                               fontStyle: FontStyle.normal,
@@ -107,10 +108,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                           child: SizedBox(
                             width: 255,
                             child: CustomText(
-                              widget.bloc.offlineCaseDetailsValue
-                                  .callDetails![widget.index]['value']
-                                  .toString()
-                                  .toUpperCase(),
+                              widget.bloc.caseDetailsAPIValue.result
+                                      ?.callDetails![widget.index]['value']
+                                      .toString()
+                                      .toUpperCase() ??
+                                  '_',
                               fontWeight: FontWeight.w400,
                               fontSize: FontSize.fourteen,
                               fontStyle: FontStyle.normal,
@@ -127,10 +129,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       onTap: () => widget.bloc.add(
                                           ClickOpenBottomSheetEvent(
                                               Constants.callCustomer,
-                                              widget
-                                                  .bloc
-                                                  .offlineCaseDetailsValue
-                                                  .callDetails)),
+                                              widget.bloc.caseDetailsAPIValue
+                                                  .result?.callDetails)),
                                       child: Container(
                                           decoration: const BoxDecoration(
                                               color: ColorResource.colorBEC4CF,
@@ -159,8 +159,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 onTap: () => widget.bloc.add(
                                     ClickOpenBottomSheetEvent(
                                         Constants.eventDetails,
-                                        widget.bloc.offlineCaseDetailsValue
-                                            .callDetails)),
+                                        widget.bloc.caseDetailsAPIValue.result
+                                            ?.callDetails)),
                                 fontSize: FontSize.twelve,
                                 textColor: ColorResource.color23375A,
                                 borderColor: ColorResource.color23375A,

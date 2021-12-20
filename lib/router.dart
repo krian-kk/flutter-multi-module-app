@@ -125,8 +125,8 @@ class PageBuilder {
 
   static Widget buildLoginScreen(AuthenticationBloc authBloc) {
     return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<LoginBloc>(context)..add(LoginInitialEvent()),
+      create: (BuildContext context) => BlocProvider.of<LoginBloc>(context)
+        ..add(LoginInitialEvent(context: context)),
       child: LoginScreen(authBloc),
     );
   }

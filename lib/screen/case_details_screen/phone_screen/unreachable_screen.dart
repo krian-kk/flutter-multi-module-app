@@ -165,7 +165,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.offlineCaseDetailsValue.callDetails));
+              widget.bloc.caseDetailsAPIValue.result?.callDetails));
         },
         child: Container(
           height: 45,

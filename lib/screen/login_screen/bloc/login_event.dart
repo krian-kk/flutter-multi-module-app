@@ -2,7 +2,10 @@ part of 'login_bloc.dart';
 
 abstract class LoginEvent extends BaseEquatable {}
 
-class LoginInitialEvent extends LoginEvent {}
+class LoginInitialEvent extends LoginEvent {
+  BuildContext? context;
+  LoginInitialEvent({this.context});
+}
 
 class SignInEvent extends LoginEvent {
   dynamic paramValue;

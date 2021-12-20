@@ -152,8 +152,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           onTap: () => widget.bloc.add(
                               ClickOpenBottomSheetEvent(
                                   Constants.captureImage,
-                                  widget.bloc.offlineCaseDetailsValue
-                                      .addressDetails)),
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails)),
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
@@ -196,7 +196,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           widget.bloc.add(
             ClickOpenBottomSheetEvent(
               element.stringResourceValue,
-              widget.bloc.offlineCaseDetailsValue.addressDetails,
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails,
             ),
           );
         },

@@ -28,7 +28,7 @@ class AddressInvalidPostModel {
     required this.agentName,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'e',
+    this.callerServiceID = 'Kaleyra_123',
     this.voiceCallEventCode = 'TELEVT011',
     this.invalidNumber,
     required this.agrRef,

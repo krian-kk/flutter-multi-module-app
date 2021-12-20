@@ -302,8 +302,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: (bloc.mtdAmountCompleted! /
-                                          bloc.mtdAmountTotal!),
+                                      percent: (53 / 100),
+                                      // percent: (bloc.mtdAmountCompleted! /
+                                      //     bloc.mtdAmountTotal!),
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,
@@ -584,10 +585,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                             ),
                                                             CustomText(
                                                               Constants.inr +
-                                                                  bloc
-                                                                      .dashboardList[
-                                                                          index]
-                                                                      .amountRs!,
+                                                                  double.parse(bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .amountRs!)
+                                                                      .toStringAsFixed(
+                                                                          2),
                                                               fontSize: FontSize
                                                                   .sixteen,
                                                               fontWeight:
@@ -595,6 +598,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                       .w700,
                                                               color: ColorResource
                                                                   .color23375A,
+                                                              isSingleLine:
+                                                                  true,
                                                             ),
                                                           ],
                                                         ),
