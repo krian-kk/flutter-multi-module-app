@@ -17,11 +17,11 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'profile/dashboard?';
   static const String caseDetailsUrl =
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
-  static String eventDetailsUrl({String? caseId, String? usertype}) =>
+  static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl +
       version +
       fieldAgent +
-      'case-details-events/eventDetails?userType=$caseId&caseId=$usertype';
+      'case-details-events/eventDetails?caseId=$caseId';
   static const String priorityCaseList =
       baseUrl + version + fieldAgent + 'case-details/priority?';
   static const String buildRouteCaseList =

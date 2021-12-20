@@ -268,7 +268,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 await APIRepository.apiRequest(
                     APIRequestType.GET,
                     HttpUrl.eventDetailsUrl(
-                        caseId: caseId, usertype: userType));
+                        caseId: caseId, userType: userType));
 
             if (getEventDetailsData[Constants.success] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];

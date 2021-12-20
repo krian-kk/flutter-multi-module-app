@@ -42,18 +42,24 @@ class AllocationScreen extends StatefulWidget {
 }
 
 class _AllocationScreenState extends State<AllocationScreen> {
+  bool areyouatOffice = true;
   late AllocationBloc bloc;
+  String? currentAddress;
+  bool isCaseDetailLoading = false;
   late MapBloc mapBloc;
   late Position position;
-  bool isCaseDetailLoading = false;
-  bool areyouatOffice = true;
-  String version = "";
   List<Result> resultList = [];
   String? searchBasedOnValue;
-  String? currentAddress;
+  String version = "";
 
   // The controller for the ListView
   late ScrollController _controller;
+
+  @override
+  void dispose() {
+    _controller.removeListener(_loadMore);
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -61,12 +67,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
     bloc = AllocationBloc()..add(AllocationInitialEvent(context));
     _controller = ScrollController()..addListener(_loadMore);
     getCurrentLocation();
-  }
-
-  @override
-  void dispose() {
-    _controller.removeListener(_loadMore);
-    super.dispose();
   }
 
   //get current location lat, alng and address
@@ -91,6 +91,45 @@ class _AllocationScreenState extends State<AllocationScreen> {
     });
   }
 
+  mapView(BuildContext buildContext) {
+    showModalBottomSheet(
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        context: buildContext,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        ),
+        backgroundColor: ColorResource.colorFFFFFF,
+        builder: (BuildContext context) {
+          return MapView(bloc);
+        });
+  }
+
+  messageShowBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                WillPopScope(
+                  onWillPop: () async => false,
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.86,
+                      child: const MessageChatRoomScreen()),
+                )));
+  }
+
   // This function will be triggered whenver the user scroll
   // to near the bottom of the list view
   void _loadMore() async {
@@ -103,6 +142,202 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
       }
     }
+  }
+
+  List<Widget> _buildFilterOptions() {
+    List<Widget> widgets = [];
+    bloc.selectOptions.asMap().forEach((index, element) {
+      widgets.add(_buildFilterWidget(index, element));
+    });
+    return widgets;
+  }
+
+  Widget _buildFilterWidget(int index, String element) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          bloc.selectedOption = index;
+        });
+        switch (index) {
+          case 0:
+            setState(() {
+              bloc.showFilterDistance = false;
+              bloc.add(TapPriorityEvent());
+            });
+            break;
+          case 1:
+            setState(() {
+              bloc.add(TapBuildRouteEvent(
+                  paramValues: BuildRouteDataModel(
+                      lat: position.latitude.toString(),
+                      long: position.longitude.toString(),
+                      maxDistMeters: "1000")));
+              bloc.showFilterDistance = true;
+            });
+            break;
+          case 2:
+            bloc.add(MapViewEvent());
+            setState(() {
+              bloc.showFilterDistance = false;
+            });
+            break;
+          default:
+            setState(() {
+              bloc.showFilterDistance = false;
+            });
+        }
+        // if (option == 'Build Route') {
+        //   setState(() {
+        //     bloc.showFilterDistance = true;
+        //   });
+        // } else {
+        //   setState(() {
+        //     bloc.showFilterDistance = false;
+        //   });
+        // }
+        // print(option);
+      },
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+        width: 90,
+        // height: 35,
+        decoration: BoxDecoration(
+          border: Border.all(color: ColorResource.color23375A, width: 0.5),
+          borderRadius: BorderRadius.circular(5),
+          color: index == bloc.selectedOption
+              ? ColorResource.color23375A
+              : Colors.white,
+        ),
+        child: Center(
+          child: CustomText(
+            element,
+            fontSize: FontSize.twelve,
+            fontWeight: FontWeight.w700,
+            color: index == bloc.selectedOption
+                ? Colors.white
+                : ColorResource.color000000,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBuildRoute() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 7,
+        ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 5,
+            ),
+            SvgPicture.asset(ImageResource.location2),
+            const SizedBox(
+              width: 8,
+            ),
+            SizedBox(
+              width: 213,
+              child: CustomText(
+                currentAddress!,
+                style: const TextStyle(overflow: TextOverflow.ellipsis),
+                fontSize: FontSize.twelve,
+                fontWeight: FontWeight.w700,
+                color: ColorResource.color101010,
+                isSingleLine: true,
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 13),
+              child: GestureDetector(
+                child: CustomText(
+                  Languages.of(context)!.change,
+                  fontSize: FontSize.twelve,
+                  fontWeight: FontWeight.w700,
+                  color: ColorResource.color23375A,
+                ),
+                onTap: () {
+                  getCurrentLocation();
+                  // AppUtils.showToast('Change address');
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Wrap(
+          runSpacing: 10,
+          spacing: 10,
+          children: _buildRouteFilterOptions(),
+        ),
+        const SizedBox(
+          height: 7,
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildRouteFilterOptions() {
+    List<Widget> widgets = [];
+    bloc.filterBuildRoute.asMap().forEach((index, element) {
+      widgets.add(_buildRouteFilterWidget(index, element));
+    });
+    return widgets;
+  }
+
+  Widget _buildRouteFilterWidget(int index, String distance) {
+    String? maxDistance;
+    return InkWell(
+      onTap: () {
+        switch (index) {
+          case 0:
+            maxDistance = '1000';
+            break;
+          case 1:
+            maxDistance = '5000';
+            break;
+          case 2:
+            maxDistance = '10000';
+            break;
+          default:
+        }
+        setState(() {
+          bloc.selectedDistance = distance;
+          bloc.add(TapBuildRouteEvent(
+              paramValues: BuildRouteDataModel(
+                  lat: position.latitude.toString(),
+                  long: position.longitude.toString(),
+                  maxDistMeters: maxDistance)));
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+        width: 93,
+        // height: 35,
+        decoration: BoxDecoration(
+          border: Border.all(color: ColorResource.color23375A, width: 0.5),
+          borderRadius: BorderRadius.circular(85),
+          color: distance == bloc.selectedDistance
+              ? ColorResource.color23375A
+              : Colors.white,
+        ),
+        child: Center(
+          child: CustomText(
+            distance,
+            fontSize: FontSize.twelve,
+            fontWeight: FontWeight.w700,
+            color: distance == bloc.selectedDistance
+                ? Colors.white
+                : ColorResource.color000000,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -494,240 +729,5 @@ class _AllocationScreenState extends State<AllocationScreen> {
         },
       ),
     );
-  }
-
-  List<Widget> _buildFilterOptions() {
-    List<Widget> widgets = [];
-    bloc.selectOptions.asMap().forEach((index, element) {
-      widgets.add(_buildFilterWidget(index, element));
-    });
-    return widgets;
-  }
-
-  Widget _buildFilterWidget(int index, String element) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          bloc.selectedOption = index;
-        });
-        switch (index) {
-          case 0:
-            setState(() {
-              bloc.showFilterDistance = false;
-              bloc.add(TapPriorityEvent());
-            });
-            break;
-          case 1:
-            setState(() {
-              bloc.add(TapBuildRouteEvent(
-                  paramValues: BuildRouteDataModel(
-                      lat: position.latitude.toString(),
-                      long: position.longitude.toString(),
-                      maxDistMeters: "1000")));
-              bloc.showFilterDistance = true;
-            });
-            break;
-          case 2:
-            bloc.add(MapViewEvent());
-            setState(() {
-              bloc.showFilterDistance = false;
-            });
-            break;
-          default:
-            setState(() {
-              bloc.showFilterDistance = false;
-            });
-        }
-        // if (option == 'Build Route') {
-        //   setState(() {
-        //     bloc.showFilterDistance = true;
-        //   });
-        // } else {
-        //   setState(() {
-        //     bloc.showFilterDistance = false;
-        //   });
-        // }
-        // print(option);
-      },
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-        width: 90,
-        // height: 35,
-        decoration: BoxDecoration(
-          border: Border.all(color: ColorResource.color23375A, width: 0.5),
-          borderRadius: BorderRadius.circular(5),
-          color: index == bloc.selectedOption
-              ? ColorResource.color23375A
-              : Colors.white,
-        ),
-        child: Center(
-          child: CustomText(
-            element,
-            fontSize: FontSize.twelve,
-            fontWeight: FontWeight.w700,
-            color: index == bloc.selectedOption
-                ? Colors.white
-                : ColorResource.color000000,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBuildRoute() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 7,
-        ),
-        Row(
-          children: [
-            const SizedBox(
-              width: 5,
-            ),
-            SvgPicture.asset(ImageResource.location2),
-            const SizedBox(
-              width: 8,
-            ),
-            SizedBox(
-              width: 213,
-              child: CustomText(
-                currentAddress!,
-                style: const TextStyle(overflow: TextOverflow.ellipsis),
-                fontSize: FontSize.twelve,
-                fontWeight: FontWeight.w700,
-                color: ColorResource.color101010,
-                isSingleLine: true,
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 13),
-              child: GestureDetector(
-                child: CustomText(
-                  Languages.of(context)!.change,
-                  fontSize: FontSize.twelve,
-                  fontWeight: FontWeight.w700,
-                  color: ColorResource.color23375A,
-                ),
-                onTap: () {
-                  getCurrentLocation();
-                  // AppUtils.showToast('Change address');
-                },
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Wrap(
-          runSpacing: 10,
-          spacing: 10,
-          children: _buildRouteFilterOptions(),
-        ),
-        const SizedBox(
-          height: 7,
-        ),
-      ],
-    );
-  }
-
-  List<Widget> _buildRouteFilterOptions() {
-    List<Widget> widgets = [];
-    bloc.filterBuildRoute.asMap().forEach((index, element) {
-      widgets.add(_buildRouteFilterWidget(index, element));
-    });
-    return widgets;
-  }
-
-  Widget _buildRouteFilterWidget(int index, String distance) {
-    String? maxDistance;
-    return InkWell(
-      onTap: () {
-        switch (index) {
-          case 0:
-            maxDistance = '1000';
-            break;
-          case 1:
-            maxDistance = '5000';
-            break;
-          case 2:
-            maxDistance = '10000';
-            break;
-          default:
-        }
-        setState(() {
-          bloc.selectedDistance = distance;
-          bloc.add(TapBuildRouteEvent(
-              paramValues: BuildRouteDataModel(
-                  lat: position.latitude.toString(),
-                  long: position.longitude.toString(),
-                  maxDistMeters: maxDistance)));
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-        width: 93,
-        // height: 35,
-        decoration: BoxDecoration(
-          border: Border.all(color: ColorResource.color23375A, width: 0.5),
-          borderRadius: BorderRadius.circular(85),
-          color: distance == bloc.selectedDistance
-              ? ColorResource.color23375A
-              : Colors.white,
-        ),
-        child: Center(
-          child: CustomText(
-            distance,
-            fontSize: FontSize.twelve,
-            fontWeight: FontWeight.w700,
-            color: distance == bloc.selectedDistance
-                ? Colors.white
-                : ColorResource.color000000,
-          ),
-        ),
-      ),
-    );
-  }
-
-  mapView(BuildContext buildContext) {
-    showModalBottomSheet(
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        context: buildContext,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-        ),
-        backgroundColor: ColorResource.colorFFFFFF,
-        builder: (BuildContext context) {
-          return MapView(bloc);
-        });
-  }
-
-  messageShowBottomSheet() {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                WillPopScope(
-                  onWillPop: () async => false,
-                  child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.86,
-                      child: const MessageChatRoomScreen()),
-                )));
   }
 }
