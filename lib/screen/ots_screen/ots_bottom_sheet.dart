@@ -32,14 +32,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   @override
   void initState() {
     super.initState();
-    // DateTime currentDateTime = DateTime.now();
-    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-    // otsProposedAmountControlller.text = '0';
-    // otsPaymentDateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    // otsPaymentTimeControlller.text = '$hours:$minutes';
-    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -110,7 +102,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         ImageResource.calendar,
                                         fit: BoxFit.scaleDown,
                                       ),
-                                      // focusColor: ColorResource.colorE5EAF6,
                                     ),
                                   ),
                                 ],
@@ -252,7 +243,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 
@@ -289,7 +279,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     final minutes = newTime.minute.toString().padLeft(2, '0');
     setState(() {
       controller.text = '$hours:$minutes';
-      // _formKey.currentState!.validate();
     });
   }
 }

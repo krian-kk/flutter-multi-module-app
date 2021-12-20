@@ -128,7 +128,6 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
                                   child: CustomText(
                                     'ADD MORE CONTACT',
                                     fontWeight: FontWeight.w700,
-                                    // lineHeight: 1,
                                     fontSize: FontSize.thirteen,
                                     fontStyle: FontStyle.normal,
                                   ),

@@ -35,7 +35,6 @@ class DioClient {
           (X509Certificate cert, String host, int port) => true;
       return client;
     };
-    // debugPrint('Dio Headers--> ${dio.toString()}');
     return dio;
   }
 

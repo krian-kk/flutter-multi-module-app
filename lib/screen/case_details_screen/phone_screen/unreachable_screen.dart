@@ -27,14 +27,10 @@ class PhoneUnreachableScreen extends StatefulWidget {
 }
 
 class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
-  // TextEditingController nextActionDateController = TextEditingController();
-
   String selectedOptionBottomSheetButton = '';
 
   @override
   void initState() {
-    // widget.bloc.phoneUnreachableNextActionDateController.text =
-    //     DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
     super.initState();
   }
 
@@ -138,7 +134,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                   const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
-                      // TextField(),
                       const SizedBox(height: 19),
                       Wrap(
                         spacing: 15,
@@ -148,30 +143,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           context,
                         ),
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Expanded(
-                      //       child: CustomButton(
-                      //         StringResource.addNewContact.toUpperCase(),
-                      //         textColor: ColorResource.colorFFFFFF,
-                      //         borderColor: ColorResource.color23375A,
-                      //         cardShape: 75,
-                      //         buttonBackgroundColor: ColorResource.color23375A,
-                      //       ),
-                      //     ),
-                      //     SizedBox(height: 11),
-                      //     Expanded(
-                      //       child: CustomButton(
-                      //         Languages.of(context)!.otherFeedBack,
-                      //         textColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         cardShape: 75,
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       const SizedBox(height: 120)
                     ],
                   ),
@@ -212,7 +183,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),

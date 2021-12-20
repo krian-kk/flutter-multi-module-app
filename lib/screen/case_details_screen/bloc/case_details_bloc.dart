@@ -37,6 +37,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   int? indexValue;
   String? userType;
 
+  // CaseDetailsApiModel o
+
   CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
   List<EventDetailsResultModel> offlineEventDetailsListValue = [];
 
@@ -118,7 +120,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
 
           caseDetailsHiveBox.then((value) => value.put(
-              'c1',
+              'case' + caseId.toString(),
               OrigoMapDynamicTable(
                 status: jsonData['status'],
                 message: jsonData['message'],
@@ -128,8 +130,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
 
       await caseDetailsHiveBox.then(
-        (value) => offlineCaseDetailsValue =
-            CaseDetailsResultModel.fromJson(value.get('c1')!.result),
+        (value) => offlineCaseDetailsValue = CaseDetailsResultModel.fromJson(
+            value.get('case' + caseId.toString())!.result),
       );
 
       loanAmountController.text = offlineCaseDetailsValue.caseDetails!.loanAmt
@@ -170,7 +172,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.dispute, offlineCaseDetailsValue.addressDetails!))),
-        CustomerMetGridModel(ImageResource.remainder, Constants.remainder,
+        CustomerMetGridModel(ImageResource.remainder,
+            (Constants.remainder + '/CB').toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.remainder, offlineCaseDetailsValue.addressDetails!))),
         CustomerMetGridModel(ImageResource.collections, Constants.collections,
@@ -198,7 +201,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.dispute, offlineCaseDetailsValue.callDetails!))),
-        CustomerMetGridModel(ImageResource.remainder, Constants.remainder,
+        CustomerMetGridModel(ImageResource.remainder,
+            (Constants.remainder + '/CB').toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.remainder, offlineCaseDetailsValue.callDetails!))),
         CustomerMetGridModel(ImageResource.collections, Constants.collections,
@@ -245,10 +249,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 await APIRepository.apiRequest(
                     APIRequestType.GET,
                     HttpUrl.eventDetailsUrl(
-                        caseId: '5f80375a86527c46deba2e62',
-                        usertype: 'FIELDAGENT')
-                    // + '5f80375a86527c46deba2e62'
-                    );
+                        caseId: caseId, usertype: userType));
 
             if (getEventDetailsData[Constants.success] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];
@@ -266,10 +267,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             }
           }
           await eventDetailsHiveBox.then((value) {
-            for (var element in value.get('EventDetails1')!.result) {
+            value.get('EventDetails1')?.result.forEach((element) {
               offlineEventDetailsListValue.add(EventDetailsResultModel.fromJson(
                   Map<String, dynamic>.from(element)));
-            }
+            });
           });
 
           break;
@@ -539,22 +540,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String eventCode,
     String urlString,
   ) async {
-    // Position position = Position(
-    //   longitude: 0,
-    //   latitude: 0,
-    //   timestamp: DateTime.now(),
-    //   accuracy: 0,
-    //   altitude: 0,
-    //   heading: 0,
-    //   speed: 0,
-    //   speedAccuracy: 0,
-    // );
-    // if (Geolocator.checkPermission().toString() !=
-    //     PermissionStatus.granted.toString()) {
-    //   Position res = await Geolocator.getCurrentPosition(
-    //       desiredAccuracy: LocationAccuracy.best);
-    //   position = res;
-    // }
     var requestBodyData = PhoneUnreachablePostModel(
         eventType: eventType,
         caseId: caseId,
@@ -717,8 +702,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (await postResult[Constants.success]) {
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
-
-      // Navigator.pop(context);
     }
     return postResult;
   }
@@ -729,22 +712,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String eventCode,
     String urlString,
   ) async {
-    // Position position = Position(
-    //   longitude: 0,
-    //   latitude: 0,
-    //   timestamp: DateTime.now(),
-    //   accuracy: 0,
-    //   altitude: 0,
-    //   heading: 0,
-    //   speed: 0,
-    //   speedAccuracy: 0,
-    // );
-    // if (Geolocator.checkPermission().toString() !=
-    //     PermissionStatus.granted.toString()) {
-    //   Position res = await Geolocator.getCurrentPosition(
-    //       desiredAccuracy: LocationAccuracy.best);
-    //   position = res;
-    // }
     var requestBodyData = PhoneInvalidPostModel(
         eventType: eventType,
         caseId: caseId,
@@ -765,8 +732,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (await postResult[Constants.success]) {
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
-
-      // Navigator.pop(context);
     }
     return postResult;
   }

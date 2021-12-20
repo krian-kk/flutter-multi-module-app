@@ -29,7 +29,7 @@ class PriorityCaseListModel {
 
 class Result {
   String? sId;
-  int? due;
+  double? due;
   bool? starredCase;
   String? cust;
   String? collSubStatus;

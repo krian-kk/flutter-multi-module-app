@@ -81,9 +81,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: BottomSheetAppbar(
                         title: Languages.of(context)!.searchAllocationDetails,
-                        // onTap: (){
-                        //   bloc.add(NavigatePopEvent());
-                        // },
                       ),
                     ),
                     Expanded(

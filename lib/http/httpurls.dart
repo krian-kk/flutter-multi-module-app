@@ -1,11 +1,12 @@
 class HttpUrl {
-  static const String baseUrl = 'https://devapi.instalmint.com/';
+  static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
+  // static const String baseUrl = 'https://devapi.instalmint.com/';
   static const String version = 'v1/';
   static const String fieldAgent = 'agent/';
 
   //login
-  static const String login_keycloak =
-      'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
+  // static const String login_keycloak =
+  //     'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
   static const String loginUrl =
       'https://uat-collect.origa.ai/node/api/user/loginWeb';
   static const String agentDetailUrl =
@@ -21,22 +22,16 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/eventDetails?userType=$caseId&caseId=$usertype';
-
   static const String priorityCaseList =
       baseUrl + version + fieldAgent + 'case-details/priority?';
   static const String buildRouteCaseList =
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl =
       baseUrl + version + fieldAgent + 'profile/userDetails';
-
-  // Call Customer Post API
   static const String callCustomerUrl =
       baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
-
-  // Mobile Info Post API
   static const String mobileInfoUrl =
       baseUrl + version + fieldAgent + 'profile/mobileInfo';
-
   // Post API ===================================================
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
@@ -58,58 +53,44 @@ class HttpUrl {
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
   // baseUrl + version + fieldAgent + '';
-  // Reques OTP
   static String requestOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
-  // Home Address in Profile Screen
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
-  // Resent OTP Post API
   static String resendOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
-  // Resent Password Post API
   static String resendPasswordUrl() =>
       baseUrl + version + fieldAgent + 'profile/resetPassword';
-  // RTP(Denial) Post API
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Reminder Post API
   static String reminderPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Repo Post API
   static String repoPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Dispute Post API
   static String disputePostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Dispute Post API
   static String ptpPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // Unreachable Post API
   static String unreachableUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // ==================
-  // Customer Not Met Post API
   static String leftMessageUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -125,8 +106,6 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // Address Invalid Post API
   static String wrongAddressUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -142,8 +121,6 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // Phone Invalid Post API
   static String doesNotExistUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -180,10 +157,8 @@ class HttpUrl {
   static const String dashboardMyDeposistsUrl =
       baseUrl + version + fieldAgent + 'case-details/deposits?';
 
-  static const String dashboardYardingAndSelfReleaseUrl = baseUrl +
-      version +
-      fieldAgent +
-      'case-details/yardingData?caseId=6181646813c5cf70dea671d2';
+  static const String dashboardYardingAndSelfReleaseUrl =
+      baseUrl + version + fieldAgent + 'case-details/yardingData';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
   static const String fileUpload = '';

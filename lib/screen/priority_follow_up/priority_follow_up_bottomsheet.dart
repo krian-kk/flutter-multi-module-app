@@ -66,7 +66,6 @@ class _PriorityFollowUpBottomSheetState
                   },
                 ),
                 body: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.priorityFollowUp,

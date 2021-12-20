@@ -67,7 +67,6 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
-      print('response data -------->');
       returnValue = {'success': true, 'data': response!.data};
     } on DioError catch (e) {
       dynamic error;
@@ -78,8 +77,6 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
-      print('response dio error data -------->');
-      // AppUtils.showErrorToast(error);
       Fluttertoast.showToast(
           msg: error.toString(),
           toastLength: Toast.LENGTH_LONG,

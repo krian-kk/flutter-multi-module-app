@@ -45,8 +45,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildCaseDetailsScreen(settings);
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
-    case AppRoutes.caseDetailsTelecallerScreen:
-      return _buildCaseDetailsTelecallerScreen();
+    // case AppRoutes.caseDetailsTelecallerScreen:
+    //   return _buildCaseDetailsTelecallerScreen();
     case AppRoutes.phoneTelecallerScreen:
       return _buildPhoneTelecallerScreen();
   }
@@ -91,12 +91,12 @@ Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
   );
 }
 
-Route<dynamic> _buildCaseDetailsTelecallerScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildCaseDetailsTelecallerPage()),
-  );
-}
+// Route<dynamic> _buildCaseDetailsTelecallerScreen() {
+//   return MaterialPageRoute(
+//     builder: (context) =>
+//         addAuthBloc(context, PageBuilder.buildCaseDetailsTelecallerPage()),
+//   );
+// }
 
 Route<dynamic> _buildPhoneTelecallerScreen() {
   return MaterialPageRoute(
@@ -157,14 +157,14 @@ class PageBuilder {
     );
   }
 
-  static Widget buildCaseDetailsTelecallerPage() {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<CasedetailsTelecallerBloc>(context)
-            ..add(CaseDetailsTelecallerInitialEvent()),
-      child: const CaseDetailsTelecallerScreen(),
-    );
-  }
+  // static Widget buildCaseDetailsTelecallerPage() {
+  //   return BlocProvider(
+  //     create: (BuildContext context) =>
+  //         BlocProvider.of<CasedetailsTelecallerBloc>(context)
+  //           ..add(CaseDetailsTelecallerInitialEvent()),
+  //     child: const CaseDetailsTelecallerScreen(),
+  //   );
+  // }
 
   static Widget buildPhoneTelecallerPage() {
     return BlocProvider(

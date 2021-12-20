@@ -58,7 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         AppUtils.showToast(StringResource.canceled,
             gravity: ToastGravity.CENTER);
       }
-      // if (image == null) return;
     } on PlatformException catch (e) {
       print(e.message);
     }
@@ -145,8 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color:
                                     ColorResource.color000000.withOpacity(0.2),
                                 blurRadius: 2.0,
-                                offset: const Offset(
-                                    1.0, 1.0), // shadow direction: bottom right
+                                offset: const Offset(1.0, 1.0),
                               )
                             ],
                             borderRadius:
@@ -158,11 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                // mainAxisAlignment:
-                                //     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // Image.asset(
-                                  //     bloc.offlineProfileValue.profileImgUrl!),
                                   GestureDetector(
                                     onTap: () =>
                                         bloc.add(ChangeProfileImageEvent()),
@@ -188,13 +182,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       width: MediaQuery.of(context).size.width *
                                           0.013),
                                   Column(
-                                    // mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CustomText(
-                                        bloc.offlineProfileValue.type
+                                        bloc.offlineProfileValue.aRef
                                             .toString(),
                                         fontSize: FontSize.eighteen,
                                         fontStyle: FontStyle.normal,
@@ -288,8 +280,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       (BuildContext context, int index) {
                                     return GestureDetector(
                                       onTap: profileNavigationList[index].onTap,
-                                      // onTap: () => bloc
-                                      //     .profileNavigationList[index].onTap,
                                       child: Container(
                                         width: double.infinity,
                                         margin: const EdgeInsets.symmetric(
@@ -487,7 +477,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             buttonBackgroundColor: ColorResource.colorBEC4CF,
                             isLeading: true,
                             onTap: () => pickImage(ImageSource.camera, context),
-                            // onTap: () => pickImage(source, cameraDialogueContext)
                             trailingWidget:
                                 SvgPicture.asset(ImageResource.captureImage),
                           ),

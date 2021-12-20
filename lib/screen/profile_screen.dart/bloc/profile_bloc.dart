@@ -21,7 +21,6 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
 
-  // For Offline Purpose
   ProfileResultModel offlineProfileValue = ProfileResultModel();
   Future<Box<OrigoMapDynamicTable>> profileHiveBox =
       Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
@@ -55,18 +54,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 message: jsonData['message'],
                 result: jsonData['result'][0],
               )));
-        } else {
-          // message = weatherData["data"];
-          // yield SevenDaysFailureState();
-        }
+        } else {}
       }
       await profileHiveBox.then(
         (value) => offlineProfileValue = ProfileResultModel.fromJson(
             Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
       );
-
-      // print(
-      //     'Offline Profile Value => ${jsonEncode(offlineProfileValue.address?.last)}');
 
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
@@ -119,15 +112,4 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
   }
-  // {
-  //   on<ProfileEvent>((event, emit) {
-  //     if (event is ProfileInitialEvent) {
-  //       profileNavigationList.addAll([
-  //         ProfileNavigation('Notification'),
-  //         ProfileNavigation('Change language'),
-  //         ProfileNavigation('Change Password')
-  //       ]);
-  //     }
-  //   });
-  // }
 }

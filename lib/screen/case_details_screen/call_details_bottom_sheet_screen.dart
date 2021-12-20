@@ -76,16 +76,6 @@ class _CallDetailsBottomSheetScreenState
                                       .callDetails![i]['cType']
                                       .toString()
                                       .toUpperCase(),
-                                  // (i + 1 > 9)
-                                  //     ? Languages.of(context)!
-                                  //             .phoneNumber
-                                  //             .toUpperCase() +
-                                  //         '${i + 1}'
-                                  //     : Languages.of(context)!
-                                  //             .phoneNumber
-                                  //             .toUpperCase() +
-                                  //         '0'
-                                  //             '${i + 1}',
                                   fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
@@ -96,11 +86,6 @@ class _CallDetailsBottomSheetScreenState
                                   width: double.infinity,
                                   decoration: const BoxDecoration(
                                       color: ColorResource.colorF8F9FB,
-                                      // color: widget
-                                      //         .bloc.multiCallDetilsList[i].isDeclinded
-                                      //     ? ColorResource.colorD5344C
-                                      //         .withOpacity(0.17)
-                                      //     : ColorResource.colorF8F9FB,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.0))),
                                   child: Padding(
@@ -130,18 +115,6 @@ class _CallDetailsBottomSheetScreenState
                                                         .color484848,
                                                   ),
                                                   const SizedBox(width: 10),
-                                                  // widget.bloc.multiCallDetilsList[i]
-                                                  //         .isDeclinded
-                                                  //     ? CustomText(
-                                                  //         Languages.of(context)!
-                                                  //             .declinedCall,
-                                                  //         fontSize: FontSize.fourteen,
-                                                  //         fontWeight: FontWeight.w400,
-                                                  //         fontStyle: FontStyle.normal,
-                                                  //         color: ColorResource
-                                                  //             .colorD5344C,
-                                                  //       )
-                                                  //     : SizedBox(),
                                                 ],
                                               ),
                                             ),

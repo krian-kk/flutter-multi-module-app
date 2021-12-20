@@ -86,9 +86,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             Navigator.pushReplacementNamed(context, AppRoutes.caseDetailsScreen,
                 arguments: state.paramValues);
           }
-          // if (state is ClickCallCustomerState) {
-          //   openBottomSheet(context, StringResource.callCustomer);
-          // }
         },
         child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
@@ -977,7 +974,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               // agentName: bloc.agentName.toString(),
-              // argRef: bloc.agrRef.toString(),
+
               postValue: list[bloc.indexValue!],
             );
           case Constants.eventDetails:
@@ -1005,6 +1002,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
+              listOfMobileNo:
+                  bloc.offlineCaseDetailsValue.callDetails as List<dynamic>,
               userType: bloc.userType.toString(),
               agentName: bloc.agentName.toString(),
               argRef: bloc.agrRef.toString(),

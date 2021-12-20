@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -20,6 +26,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final String userType;
   final String caseId;
   final String sid;
+  final List<dynamic> listOfMobileNo;
 
   const CallCustomerBottomSheet({
     Key? key,
@@ -29,6 +36,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.userType,
     required this.sid,
+    required this.listOfMobileNo,
   }) : super(key: key);
 
   @override
@@ -41,14 +49,9 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   final _formKey = GlobalKey<FormState>();
 
-  List<String> customerContactNoDropdownList = [
-    '6524869550',
-    '6524869534',
-    '6524869456',
-    '6524861234'
-  ];
+  List<String> customerContactNoDropdownList = [];
 
-  String customerContactNoDropDownValue = '6524869550';
+  String customerContactNoDropDownValue = '9361441983';
 
   List<String> serviceProviderListDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
 
@@ -64,6 +67,10 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   @override
   void initState() {
     super.initState();
+    widget.listOfMobileNo.forEach((element) {
+      customerContactNoDropDownValue = element['value'];
+      customerContactNoDropdownList.add(element['value']);
+    });
   }
 
   @override
@@ -117,7 +124,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     agentContactNoControlller,
                                     validationRules: const ['required'],
                                     height: 46,
-                                    // isReadOnly: true,
                                   ),
                                 ],
                               )),
@@ -207,29 +213,32 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       trailingWidget: SvgPicture.asset(ImageResource.vector),
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          // var requestBodyData = await CallCustomerModel(
-                          //   from: '',
-                          //   to: '',
-                          //   callerId: '123',
-                          //   aRef: widget.argRef,
-                          //   customerName: widget.agentName,
-                          //   service: serviceProviderListValue,
-                          //   callerServiceID: callersIDDropdownValue,
-                          //   caseId: widget.caseId,
-                          //   sId: widget.sid,
-                          //   agrRef: widget.argRef,
-                          //   agentName: widget.agentName,
-                          //   agentType: (widget.userType == Constants.telecaller)
-                          //       ? 'Telecalling'
-                          //       : 'Field Allocation',
-                          // );
-                          // Map<String, dynamic> postResult =
-                          //     await APIRepository.apiRequest(
-                          //   APIRequestType.POST,
-                          //   HttpUrl.callCustomerUrl,
-                          //   requestBodydata: jsonEncode(requestBodyData),
-                          // );
-                          // print('Response Value => ${jsonEncode(postResult)}');
+                          var requestBodyData = CallCustomerModel(
+                            from: agentContactNoControlller.text,
+                            to: customerContactNoDropDownValue,
+                            callerId: callersIDDropdownValue,
+                            aRef: widget.argRef,
+                            customerName: widget.agentName,
+                            service: serviceProviderListValue,
+                            callerServiceID: callersIDDropdownValue,
+                            caseId: widget.caseId,
+                            sId: widget.sid,
+                            agrRef: widget.argRef,
+                            agentName: widget.agentName,
+                            agentType: (widget.userType == Constants.telecaller)
+                                ? 'TELECALLER'
+                                : 'COLLECTOR',
+                          );
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                            APIRequestType.POST,
+                            HttpUrl.callCustomerUrl,
+                            requestBodydata: jsonEncode(requestBodyData),
+                          );
+                          if (postResult[Constants.success]) {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          } else {}
                         }
                       },
                       cardShape: 5,

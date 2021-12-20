@@ -112,23 +112,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           Languages.of(context)!.userId,
                           userIdController,
                           keyBoardType: TextInputType.emailAddress,
-
-                          // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
-                          // errorborderColor: ColorResource.color23375A,
-                          // validationRules: const ['required'],
                           focusNode: userIdFocusNode,
                           onEditing: () {
                             userIdFocusNode.unfocus();
-                            // mobileNumberFocusNode.requestFocus();
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // onChange: (){
-                          //    _formKey.currentState!.validate();
-                          // },
                           validatorCallBack: (bool values) {},
                           suffixWidget: GestureDetector(
                             onTap: () async {
@@ -194,14 +186,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         CustomTextField(
                           Languages.of(context)!.mobileNumber,
                           mobileNumberController,
-                          // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
                           isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
-                          // errorborderColor: ColorResource.color23375A,
-                          // validationRules: const ['required', 'number_only'],
                           maximumWordCount: 10,
                           focusNode: mobileNumberFocusNode,
                           onEditing: () {
@@ -209,24 +198,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             userNameFocusNode.requestFocus();
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // onChange: (){
-                          //    _formKey.currentState!.validate();
-                          // },
                           validatorCallBack: (bool values) {},
                         ),
                         const SizedBox(height: 20),
                         CustomTextField(
                           Languages.of(context)!.userId,
                           userNameController,
-
-                          // obscureText: _obscureText,
                           isFill: true,
                           isBorder: true,
                           isLabel: true,
                           isReadOnly: true,
                           borderColor: ColorResource.colorFFFFFF,
-                          // errorborderColor: ColorResource.color23375A,
-                          // validationRules: const ['required'],
                           focusNode: userNameFocusNode,
                           onEditing: () {
                             userNameFocusNode.unfocus();
@@ -239,15 +221,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         CustomTextField(
                           Languages.of(context)!.email,
                           emailController,
-                          // obscureText: _obscureText,
                           isFill: true,
                           isReadOnly: true,
                           isBorder: true,
                           isLabel: true,
                           borderColor: ColorResource.colorFFFFFF,
                           keyBoardType: TextInputType.emailAddress,
-                          // errorborderColor: ColorResource.color23375A,
-                          // validationRules: const ['email'],
                           focusNode: emailFocusNode,
                           onChange: () {
                             setState(() {});
@@ -498,13 +477,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   CustomTextField(
                                     Languages.of(context)!.enterNewPassword,
                                     newPasswordController,
-                                    // obscureText: _obscureText,
-
                                     isFill: true,
                                     isBorder: true,
                                     isLabel: true,
                                     borderColor: ColorResource.colorFFFFFF,
-                                    // errorborderColor: ColorResource.color23375A,
                                     validationRules: const ['required'],
                                     maximumWordCount: 10,
                                     focusNode: newPasswordFocusNode,
@@ -514,9 +490,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     },
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    // onChange: (){
-                                    //    _formKey.currentState!.validate();
-                                    // },
                                     validatorCallBack: (bool values) {},
                                   ),
                                   const SizedBox(height: 20),
@@ -524,13 +497,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     Languages.of(context)!
                                         .enterConfirmNewPassword,
                                     confirmPasswordController,
-                                    // obscureText: _obscureText,
                                     isFill: true,
                                     isBorder: true,
                                     isLabel: true,
-                                    // isReadOnly: true,
                                     borderColor: ColorResource.colorFFFFFF,
-                                    // errorborderColor: ColorResource.color23375A,
                                     validationRules: const ['required'],
                                     maximumWordCount: 10,
                                     focusNode: confirmPasswordFocusNode,
@@ -540,9 +510,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     },
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    // onChange: (){
-                                    //    _formKey.currentState!.validate();
-                                    // },
                                     validatorCallBack: (bool values) {},
                                   ),
                                   const SizedBox(height: 20),

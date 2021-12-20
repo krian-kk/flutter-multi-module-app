@@ -30,12 +30,7 @@ class _AddressDetailsBottomSheetScreenState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
-        // if (state is ClickMainAddressBottomSheetState) {
-        //   Navigator.pop(context);
-        //   addressBottomSheet(context, widget.bloc);
-        // }
-      },
+      listener: (context, state) {},
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
         builder: (context, state) {
@@ -93,16 +88,6 @@ class _AddressDetailsBottomSheetScreenState
                                             .addressDetails![i]['cType']
                                             .toString()
                                             .toUpperCase(),
-                                        // (i + 1 > 9)
-                                        //     ? Languages.of(context)!
-                                        //             .address
-                                        //             .toUpperCase() +
-                                        //         '${i + 1}'
-                                        //     : Languages.of(context)!
-                                        //             .address
-                                        //             .toUpperCase() +
-                                        //         '0'
-                                        //             '${i + 1}',
                                         fontWeight: FontWeight.w700,
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color23375A,

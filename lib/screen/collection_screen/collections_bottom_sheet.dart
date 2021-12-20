@@ -22,7 +22,6 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
   const CustomCollectionsBottomSheet(this.cardTitle,
@@ -76,27 +75,7 @@ class _CustomCollectionsBottomSheetState
   @override
   void initState() {
     super.initState();
-
-    // DateTime currentDateTime = DateTime.now();
-
-    // dateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    // chequeControlller.text = '123';
-    // remarksControlller.text = 'ABC';
   }
-
-  // KeyboardActionsConfig _buildConfig(BuildContext context) {
-  //   return KeyboardActionsConfig(
-  //     keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-  //     keyboardBarColor: Colors.grey[200],
-  //     nextFocus: true,
-  //     actions: [
-  //       KeyboardActionsItem(
-  //         focusNode: amountCollectedFocusNode,
-  //       ),
-  //     ],
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,31 +115,6 @@ class _CustomCollectionsBottomSheetState
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Flexible(
-                              //   child: SizedBox(
-                              //     width: (MediaQuery.of(context).size.width) / 2,
-                              //     child: CustomReadOnlyTextField(
-                              //       '',
-                              //       amountCollectedControlller,
-                              //       validatorCallBack: () {},
-                              //       isReadOnly: true,
-                              //       validationRules: const ['required'],
-                              //     ),
-                              //   ),
-                              //   // child: CustomDropDownButton(
-                              //   //   Languages.of(context)!.amountCollected,
-                              //   //   amountCollectionDropDownList,
-                              //   //   selectedValue: amountCollectionDropDownValue,
-                              //   //   onChanged: (newValue) {
-                              //   //     setState(() {
-                              //   //       amountCollectionDropDownValue =
-                              //   //           newValue.toString();
-                              //   //     });
-                              //   //   },
-                              //   //   icon: SvgPicture.asset(
-                              //   //       ImageResource.dropDownArrow),
-                              //   // ),
-                              // ),
                               Flexible(
                                   child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -257,7 +211,6 @@ class _CustomCollectionsBottomSheetState
                                         ImageResource.calendar,
                                         fit: BoxFit.scaleDown,
                                       ),
-                                      // focusColor: ColorResource.colorE5EAF6,
                                     ),
                                   ],
                                 ),
@@ -398,7 +351,6 @@ class _CustomCollectionsBottomSheetState
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
                               ),
-                              // deposition: CollectionsDeposition(),
                               eventAttr: EventAttr(
                                 amountCollected:
                                     int.parse(amountCollectedControlller.text),
@@ -486,7 +438,6 @@ class _CustomCollectionsBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 
