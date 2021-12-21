@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -63,7 +62,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   String callersIDDropdownValue = 'ABC';
 
   List<CaseListModel> caseDetaislListModel = [];
-  AllocationTBloc? allocationTBloc;
+  // AllocationTBloc? allocationTBloc;
   CaseDetailsBloc? caseDetailsBloc;
   @override
   void initState() {

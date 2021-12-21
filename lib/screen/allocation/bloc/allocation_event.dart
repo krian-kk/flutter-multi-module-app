@@ -37,3 +37,5 @@ class SearchReturnDataEvent extends AllocationEvent {
 }
 
 class PriorityLoadMoreEvent extends AllocationEvent {}
+
+class ShowAutoCallingEvent extends AllocationEvent {}

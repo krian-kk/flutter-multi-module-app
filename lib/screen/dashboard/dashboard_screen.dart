@@ -302,9 +302,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       animation: true,
                                       lineHeight: 12.0,
                                       animationDuration: 2500,
-                                      percent: (53 / 100),
                                       // percent: (bloc.mtdAmountCompleted! /
                                       //     bloc.mtdAmountTotal!),
+                                      percent: (5 / 10),
                                       // center: Text("80.0%"),
                                       linearStrokeCap: LinearStrokeCap.roundAll,
                                       progressColor: ColorResource.colorEA6D48,

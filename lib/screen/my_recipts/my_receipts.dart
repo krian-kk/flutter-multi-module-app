@@ -51,12 +51,10 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         }
 
         if (state is GetSearchDataState) {
+          widget.bloc.selectedFilter = '';
           if (state.getReturnValues != null) {
-            setState(() {
-              widget.bloc.selectedFilter = '';
-              widget.bloc.myReceiptsData =
-                  DashboardAllModels.fromJson(state.getReturnValues);
-            });
+            widget.bloc.myReceiptsData =
+                DashboardAllModels.fromJson(state.getReturnValues);
           }
         }
       },
@@ -74,6 +72,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
             child: Container(
               padding: const EdgeInsets.only(top: 16),
               child: Scaffold(
+                backgroundColor: ColorResource.colorF7F8FA,
                 floatingActionButton: CustomFloatingActionButton(
                   onTap: () async {
                     widget.bloc.add(NavigateSearchEvent());

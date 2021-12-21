@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:origa/Telecaller/screens/allocation_T/bloc/allocation_t_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -10,7 +10,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AutoCalling {
-  static Widget buildAutoCalling(BuildContext context, AllocationTBloc bloc) {
+  static Widget buildAutoCalling(BuildContext context, AllocationBloc bloc) {
     List<Widget> _buildRouteFilterOptions() {
       List<Widget> widgets = [];
       bloc.mobileNumberList.asMap().forEach((index, element) {
@@ -45,12 +45,12 @@ class AutoCalling {
                     const Spacer(),
                     InkWell(
                       onTap: () {
-                        bloc.add(NavigateCaseDetailTEvent(
-                          const {
-                            'caseID': '618e382004d8d040ac18841b',
-                            'isAddress': true,
-                          },
-                        ));
+                        // bloc.add(NavigateCaseDetailTEvent(
+                        //   const {
+                        //     'caseID': '618e382004d8d040ac18841b',
+                        //     'isAddress': true,
+                        //   },
+                        // ));
                       },
                       child: Row(
                         children: [
@@ -235,12 +235,12 @@ class AutoCalling {
                 ),
                 InkWell(
                   onTap: () {
-                    bloc.add(NavigateCaseDetailTEvent(
-                      const {
-                        'caseID': '618e382004d8d040ac18841b',
-                        'isAddress': true
-                      },
-                    ));
+                    // bloc.add(NavigateCaseDetailTEvent(
+                    //   const {
+                    //     'caseID': '618e382004d8d040ac18841b',
+                    //     'isAddress': true
+                    //   },
+                    // ));
                   },
                   child: SizedBox(
                     child: Column(
@@ -272,23 +272,4 @@ class AutoCalling {
       ),
     );
   }
-
-  // static caseDetailsBottomSheet(BuildContext buildContext) {
-  //   showModalBottomSheet(
-  //       isDismissible: false,
-  //       // enableDrag: false,
-  //       isScrollControlled: true,
-  //       context: buildContext,
-  //       shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //             topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-  //       ),
-  //       backgroundColor: ColorResource.colorFFFFFF,
-  //       builder: (BuildContext context) {
-  //         // return SizedBox(
-  //         //   height: MediaQuery.of(context).size.height * 0.89,
-  //         // );
-  //         return CaseDetailsTelecallerScreen();
-  //       });
-  // }
 }

@@ -60,15 +60,28 @@ class AuthenticationBloc
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
                 APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
 
-            if (agentDetail['success'] == false) {
+            if (agentDetail[Constants.success] == false) {
               AgentDetailErrorModel agentDetailError =
                   AgentDetailErrorModel.fromJson(agentDetail['data']);
               yield AuthenticationUnAuthenticated();
               AppUtils.showToast(agentDetailError.msg!,
                   backgroundColor: Colors.red);
             } else {
+              // print(agentDetail['data']['status']);
+              // print(JwtDecoder.isExpired(getToken));
+
+              // if user inactivity means go to login
+              if (agentDetail['data']['status'] == 440) {
+                AgentDetailErrorModel agentInactivityError =
+                    AgentDetailErrorModel.fromJson(agentDetail['data']);
+                yield AuthenticationUnAuthenticated();
+                AppUtils.showToast(agentInactivityError.msg!,
+                    backgroundColor: Colors.red);
+              }
+
               dynamic agentDetails =
                   AgentDetailsModel.fromJson(agentDetail['data']);
+              // print(agentDetails.data![0].agentName!);
               if (agentDetails.data![0].agentType == 'COLLECTOR') {
                 await _prefs.setString(
                     Constants.userType, Constants.fieldagent);

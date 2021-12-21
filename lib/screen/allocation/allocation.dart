@@ -14,6 +14,7 @@ import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/router.dart';
+import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/message_screen/message.dart';
@@ -166,14 +167,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             break;
           case 1:
-            setState(() {
-              bloc.add(TapBuildRouteEvent(
-                  paramValues: BuildRouteDataModel(
-                      lat: position.latitude.toString(),
-                      long: position.longitude.toString(),
-                      maxDistMeters: "1000")));
-              bloc.showFilterDistance = true;
-            });
+            if (bloc.userType == Constants.fieldagent) {
+              setState(() {
+                bloc.add(TapBuildRouteEvent(
+                    paramValues: BuildRouteDataModel(
+                        lat: position.latitude.toString(),
+                        long: position.longitude.toString(),
+                        maxDistMeters: "1000")));
+                bloc.showFilterDistance = true;
+              });
+            } else {
+              bloc.add(ShowAutoCallingEvent());
+              print('--------Auto calling-----------');
+            }
+
             break;
           case 2:
             bloc.add(MapViewEvent());
@@ -296,7 +303,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
       onTap: () {
         switch (index) {
           case 0:
-            maxDistance = '1000';
+            maxDistance = '5000';
             break;
           case 1:
             maxDistance = '5000';
@@ -508,60 +515,63 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 )
               : Scaffold(
                   backgroundColor: ColorResource.colorF7F8FA,
-                  floatingActionButton: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Visibility(
-                            visible: bloc.isMessageThere,
-                            child: SizedBox(
-                              width: 175,
-                              // padding: EdgeInsets.all(10),
-                              child: CustomButton(
-                                Languages.of(context)!.message,
-                                alignment: MainAxisAlignment.end,
-                                cardShape: 50,
-                                isTrailing: true,
-                                leadingWidget: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    width: 40,
-                                    child: Container(
-                                      height: 26,
-                                      width: 26,
-                                      // ignore: prefer_const_constructors
-                                      decoration: BoxDecoration(
-                                        color: ColorResource.colorFFFFFF,
-                                        shape: BoxShape.circle,
+                  floatingActionButton: Visibility(
+                    visible: bloc.isShowSearchFloatingButton,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: Visibility(
+                              visible: bloc.isMessageThere,
+                              child: SizedBox(
+                                width: 175,
+                                // padding: EdgeInsets.all(10),
+                                child: CustomButton(
+                                  Languages.of(context)!.message,
+                                  alignment: MainAxisAlignment.end,
+                                  cardShape: 50,
+                                  isTrailing: true,
+                                  leadingWidget: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      width: 40,
+                                      child: Container(
+                                        height: 26,
+                                        width: 26,
+                                        // ignore: prefer_const_constructors
+                                        decoration: BoxDecoration(
+                                          color: ColorResource.colorFFFFFF,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                            child: CustomText(
+                                          bloc.messageCount.toString(),
+                                          color: ColorResource.colorEA6D48,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          lineHeight: 1,
+                                        )),
                                       ),
-                                      child: Center(
-                                          child: CustomText(
-                                        bloc.messageCount.toString(),
-                                        color: ColorResource.colorEA6D48,
-                                        fontSize: FontSize.twelve,
-                                        fontWeight: FontWeight.w700,
-                                        lineHeight: 1,
-                                      )),
                                     ),
                                   ),
+                                  onTap: () {
+                                    bloc.add(MessageEvent());
+                                    AppUtils.showToast('Message');
+                                  },
                                 ),
-                                onTap: () {
-                                  bloc.add(MessageEvent());
-                                  AppUtils.showToast('Message');
-                                },
                               ),
                             ),
                           ),
-                        ),
-                        const Spacer(),
-                        CustomFloatingActionButton(
-                          onTap: () async {
-                            bloc.add(NavigateSearchPageEvent());
-                          },
-                        ),
-                      ],
+                          const Spacer(),
+                          CustomFloatingActionButton(
+                            onTap: () async {
+                              bloc.add(NavigateSearchPageEvent());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   body: Column(
@@ -702,28 +712,82 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           ],
                         ),
                       ),
-                      Expanded(
-                          child: isCaseDetailLoading
-                              ? const Center(child: CircularProgressIndicator())
-                              : resultList.isEmpty
-                                  ? Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 50, right: 20, left: 20),
-                                          child: NoCaseAvailble
-                                              .buildNoCaseAvailable(),
-                                        ),
-                                      ],
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 0.0),
-                                      child: CustomCardList.buildListView(bloc,
-                                          resultData: resultList,
-                                          listViewController: _controller),
-                                    )),
+                      bloc.isAutoCalling
+                          ? Expanded(
+                              child:
+                                  AutoCalling.buildAutoCalling(context, bloc))
+                          : Expanded(
+                              child: isCaseDetailLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : resultList.isEmpty
+                                      ? Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 50, right: 20, left: 20),
+                                              child: NoCaseAvailble
+                                                  .buildNoCaseAvailable(),
+                                            ),
+                                          ],
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 0.0),
+                                          child: CustomCardList.buildListView(
+                                              bloc,
+                                              resultData: resultList,
+                                              listViewController: _controller),
+                                        )),
                     ],
+                  ),
+                  bottomNavigationBar: Visibility(
+                    visible: bloc.isAutoCalling,
+                    child: Container(
+                      height: 88,
+                      decoration: const BoxDecoration(
+                          color: ColorResource.colorffffff,
+                          border: Border(
+                              top: BorderSide(
+                                  color: Color.fromRGBO(0, 0, 0, 0.13)))),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: CustomButton(
+                                Languages.of(context)!.stop.toUpperCase(),
+                                fontSize: FontSize.sixteen,
+                                textColor: ColorResource.colorEA6D48,
+                                fontWeight: FontWeight.w600,
+                                cardShape: 5,
+                                buttonBackgroundColor:
+                                    ColorResource.colorffffff,
+                                borderColor: ColorResource.colorffffff,
+                                onTap: () {
+                                  // Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: CustomButton(
+                                Languages.of(context)!
+                                    .startCalling
+                                    .toUpperCase(),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                cardShape: 5,
+                                trailingWidget:
+                                    SvgPicture.asset(ImageResource.vector),
+                                isLeading: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 );
         },

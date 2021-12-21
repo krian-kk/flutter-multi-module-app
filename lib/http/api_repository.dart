@@ -23,7 +23,10 @@ class APIRepository {
 
   static Future<Map<String, dynamic>> apiRequest(
       APIRequestType requestType, String urlString,
-      {dynamic requestBodydata, List<File>? file, String? savePath}) async {
+      {dynamic requestBodydata,
+      List<File>? file,
+      String? savePath,
+      bool isPop = false}) async {
     Map<String, dynamic> returnValue;
 
     try {
@@ -70,6 +73,7 @@ class APIRepository {
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
       print('response data -------->');
+      print(isPop);
       returnValue = {
         'success': true,
         'data': response!.data,
@@ -88,21 +92,25 @@ class APIRepository {
 
       if (error.toString() != "DioErrorType.response") {
         // 1 way get any data on login and auth page to check remove pop
-        // otherwise remove this pop bcot it affect dashboard and login
-        print('---------error');
-        print(error);
-        Navigator.pop(Singleton.instance.buildContext!);
+        // otherwise remove this pop bcoz it affect dashboard and login
+        if (isPop == true) {
+          Navigator.pop(Singleton.instance.buildContext!);
+        }
         apiErrorStatus(
             ErrorValue: error.toString(), position: ToastGravity.CENTER);
       }
 
       if (e.response != null) {
         if (e.response!.statusCode == 401) {
+          // apiErrorStatus(
+          //     ErrorValue: e.response!.data['message'].toString(),
+          //     position: ToastGravity.BOTTOM);
+          //  here check accestoken expire or not after go to login
           apiErrorStatus(
-              ErrorValue: e.response!.data['message'].toString(),
-              position: ToastGravity.BOTTOM);
-          Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
-              AppRoutes.loginScreen, (route) => false);
+              ErrorValue: "Session Expired! please logout",
+              position: ToastGravity.CENTER);
+          // Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
+          //     AppRoutes.loginScreen, (route) => false);
         }
       }
 

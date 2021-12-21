@@ -59,6 +59,7 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
             child: Container(
               padding: const EdgeInsets.only(top: 16),
               child: Scaffold(
+                backgroundColor: ColorResource.colorF7F8FA,
                 floatingActionButton: CustomFloatingActionButton(
                   onTap: () async {
                     widget.bloc.add(NavigateSearchEvent());

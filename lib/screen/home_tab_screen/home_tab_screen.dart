@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/Telecaller/screens/allocation_T/allocation_t.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -220,15 +218,13 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                               ],
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  bloc.userType == Constants.fieldagent
-                                      ? const AllocationScreen()
-                                      : const AllocationTelecallerScreen(), //1
-                                  const DashboardScreen(), //2
-                                  const ProfileScreen(), //3
+                                  AllocationScreen(), //1
+                                  DashboardScreen(), //2
+                                  ProfileScreen(), //3
                                 ]),
                           )
                         ])),

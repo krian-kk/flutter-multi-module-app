@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
@@ -32,7 +33,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   String selectedDistance = StringResource.all;
 
-  SearchModel searchData = SearchModel();
+  // SearchModel searchData = SearchModel();
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
@@ -45,12 +46,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // There is next page or not
   bool hasNextPage = true;
+  // Show autocalling
+  bool isAutoCalling = false;
+  // Enable or Disable the search floating button
+  bool isShowSearchFloatingButton = true;
 
-  List<String> selectOptions = [
-    StringResource.priority,
-    StringResource.buildRoute,
-    StringResource.mapView,
-  ];
+  List<String> selectOptions = [];
+  List<AutoCallingModel> mobileNumberList = [];
 
   List<String> filterBuildRoute = [
     StringResource.all,
@@ -64,21 +66,48 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   // Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
   //     Hive.openBox<OrigoDynamicTable>('testBox4');
 
-  AllocationListModel searchResultData = AllocationListModel();
+  // AllocationListModel searchResultData = AllocationListModel();
   List starCount = [];
   List<Result> resultList = [];
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
+      yield AllocationLoadingState();
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      _pref.setString(Constants.buildcontext, event.context.toString());
+      // _pref.setString(Constants.buildcontext, event.context.toString());
       Singleton.instance.buildContext = event.context;
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
       agrRef = _pref.getString(Constants.agentRef);
-      yield AllocationLoadingState();
       isShowSearchPincode = false;
+
+      // Here find FIELDAGENT or TELECALLER and set in allocation screen
+      if (userType == Constants.fieldagent) {
+        selectOptions = [
+          StringResource.priority,
+          StringResource.buildRoute,
+          StringResource.mapView,
+        ];
+      } else {
+        selectOptions = [
+          StringResource.priority,
+          StringResource.autoCalling,
+        ];
+      }
+
+      mobileNumberList.addAll([
+        AutoCallingModel(
+          mobileNumber: '9876321230',
+          callResponse: 'Declined Call',
+        ),
+        AutoCallingModel(
+          mobileNumber: '9876321230',
+        ),
+        AutoCallingModel(
+          mobileNumber: '9876321230',
+        ),
+      ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternet = true;
@@ -90,7 +119,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             APIRequestType.GET,
             HttpUrl.priorityCaseList +
                 'pageNo=${Constants.pageNo}' +
-                '&limit=${Constants.limit}');
+                '&limit=${Constants.limit}'
+            //  +"&userType=$userType",
+            );
 
         resultList.clear();
         starCount.clear();
@@ -103,40 +134,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
           }
         }
-
-        // offlineDatabaseBox.whenComplete(() {
-        //   offlineDatabaseBox.then((value) {
-        //         value.put('priority_caselist',
-        //         OrigoDynamicTable(
-        //           message: priorityListData['message'],
-        //           status: priorityListData['status'],
-        //           result: priorityListData['result'] as List<dynamic>,
-        //         ),
-        //       );
-        //       for (var element in value.get('priority_caselist')!.result) {
-        //         resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-        //         if (Result.fromJson(jsonDecode(jsonEncode(element)))
-        //                 .starredCase ==
-        //             true) {
-        //           starCount.add(Result.fromJson(jsonDecode(jsonEncode(element)))
-        //               .starredCase);
-        //         }
-        //       }
-        //     });
-        //   });
       }
-      // else {
-      //   await offlineDatabaseBox.then((value) {
-      //     for (var element in value.get('priority_caselist')!.result) {
-      //       resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-      //       if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-      //           true) {
-      //         starCount.add(
-      //             Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
-      //       }
-      //     }
-      //   });
-      // }
       yield AllocationLoadedState(successResponse: resultList);
     }
 
@@ -145,6 +143,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       page = 1;
       hasNextPage = true;
+      // Enable the search and hide autocalling screen
+      isAutoCalling = false;
+      isShowSearchFloatingButton = true;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -285,6 +286,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         showFilterDistance = false;
       }
       yield SearchReturnDataState();
+    }
+
+    if (event is ShowAutoCallingEvent) {
+      isAutoCalling = true;
+      isShowSearchFloatingButton = false;
     }
   }
 }

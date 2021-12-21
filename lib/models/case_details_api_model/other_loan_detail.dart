@@ -10,7 +10,7 @@ class OtherLoanDetail {
   factory OtherLoanDetail.fromJson(Map<String, dynamic> json) {
     return OtherLoanDetail(
       id: json['_id'] as String?,
-      due: json['due'] as double?,
+      due: json['due'],
       cust: json['cust'] as String?,
       accNo: json['accNo'] as String?,
       caseId: json['caseId'] as String?,

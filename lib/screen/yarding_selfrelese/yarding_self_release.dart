@@ -49,9 +49,11 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
           onWillPop: () async => false,
           child: Container(
             padding: const EdgeInsets.only(top: 16),
+            color: ColorResource.colorF7F8FA,
             child: SafeArea(
               child: widget.bloc.yardingAndSelfReleaseData.result!.isEmpty
                   ? Scaffold(
+                      backgroundColor: ColorResource.colorF7F8FA,
                       body: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -59,15 +61,19 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                             title: Languages.of(context)!.yardingSelfRelease,
                           ),
                           const SizedBox(
-                            height: 90,
+                            height: 30,
                           ),
                           Center(
-                            child: NoCaseAvailble.buildNoCaseAvailable(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: NoCaseAvailble.buildNoCaseAvailable(),
+                            ),
                           )
                         ],
                       ),
                     )
                   : Scaffold(
+                      backgroundColor: ColorResource.colorF7F8FA,
                       bottomNavigationBar: Container(
                         height: 66,
                         decoration: const BoxDecoration(
