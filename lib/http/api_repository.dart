@@ -107,7 +107,8 @@ class APIRepository {
           //     position: ToastGravity.BOTTOM);
           //  here check accestoken expire or not after go to login
           apiErrorStatus(
-              ErrorValue: "Session Expired", position: ToastGravity.CENTER);
+              ErrorValue: "Session Expired! please logout",
+              position: ToastGravity.CENTER);
           // Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
           //     AppRoutes.loginScreen, (route) => false);
         }

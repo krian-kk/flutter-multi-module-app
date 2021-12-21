@@ -54,14 +54,6 @@ class _CustomRemainderBottomSheetState
   @override
   void initState() {
     super.initState();
-
-    // DateTime currentDateTime = DateTime.now();
-    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-    // nextActionDateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    // nextActionTimeControlller.text = '$hours:$minutes';
-    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -328,7 +320,6 @@ class _CustomRemainderBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 
@@ -365,7 +356,6 @@ class _CustomRemainderBottomSheetState
     final minutes = newTime.minute.toString().padLeft(2, '0');
     setState(() {
       controller.text = '$hours:$minutes';
-      // _formKey.currentState!.validate();
     });
   }
 }

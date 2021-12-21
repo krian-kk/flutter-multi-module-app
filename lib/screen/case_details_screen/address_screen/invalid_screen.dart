@@ -98,7 +98,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                                   const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
-                      // TextField(),
                       const SizedBox(height: 19),
                       CustomButton(
                         Languages.of(context)!.captureImage.toUpperCase(),
@@ -112,10 +111,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         isLeading: true,
                         onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
                             Constants.captureImage,
-                            widget
-                                .bloc.offlineCaseDetailsValue.addressDetails)),
-
-                        // onTap: () => pickImage(source, cameraDialogueContext)
+                            widget.bloc.caseDetailsAPIValue.result
+                                ?.addressDetails)),
                         trailingWidget:
                             SvgPicture.asset(ImageResource.captureImage),
                       ),
@@ -128,7 +125,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           context,
                         ),
                       ),
-
                       const SizedBox(height: 135)
                     ],
                   ),
@@ -151,7 +147,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.offlineCaseDetailsValue.addressDetails));
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails));
         },
         child: Container(
           height: 45,
@@ -169,7 +165,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),

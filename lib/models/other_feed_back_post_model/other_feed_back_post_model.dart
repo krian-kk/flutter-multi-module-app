@@ -43,12 +43,6 @@ class OtherFeedBackPostModel {
     contact = json['contact'].forEach((v) {
       contact.add(v);
     });
-    // if (json['contact'] != null) {
-    //   contact = <Contact>[];
-    //   json['contact'].forEach((v) {
-    //     contact.add(Contact.fromJson(v));
-    //   });
-    // }
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];

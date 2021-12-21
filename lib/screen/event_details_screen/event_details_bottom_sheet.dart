@@ -54,9 +54,9 @@ class _CustomEventDetailsBottomSheetState
               const SizedBox(height: 10),
               Expanded(
                   child: ListView.builder(
-                itemCount: widget.bloc.offlineEventDetailsListValue.length,
+                itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
                 itemBuilder: (context, int index) =>
-                    expandList(widget.bloc.offlineEventDetailsListValue, index),
+                    expandList(widget.bloc.eventDetailsAPIValue.result!, index),
               )),
             ],
           ),
@@ -86,7 +86,6 @@ class _CustomEventDetailsBottomSheetState
                       onTap: () => Navigator.pop(context),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
-                      // onTap: () => bloc.add(ClickMessageEvent()),
                       cardShape: 5,
                     ),
                   ),
@@ -111,14 +110,6 @@ class _CustomEventDetailsBottomSheetState
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
             color: ColorResource.colorF4E8E4,
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey.withOpacity(0.2),
-            //     spreadRadius: 2,
-            //     blurRadius: 3,
-            //     offset: Offset(0, 3), // changes position of shadow
-            //   ),
-            // ],
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 3, 14, 15),
@@ -193,12 +184,6 @@ class _CustomEventDetailsBottomSheetState
                     color: ColorResource.color000000,
                   ),
                 ],
-                // onExpansionChanged: (bool status) {
-                //   setState(() {
-                //     // expandedList[index].expanded =
-                //     //     !expandedList[index].expanded;
-                //   });
-                // },
               ),
             ),
           ),

@@ -9,7 +9,6 @@ class PTPPostModel {
   late String eventModule;
   late PTPContact contact;
   late String agrRef;
-  // late String? contractor;
   late String? callID;
   late String? callingID;
   late String? callerServiceID;
@@ -27,7 +26,6 @@ class PTPPostModel {
       required this.eventModule,
       required this.contact,
       required this.agrRef,
-      // this.contractor = '',
       this.callID,
       this.callingID,
       this.callerServiceID = '',
@@ -45,7 +43,6 @@ class PTPPostModel {
     eventModule = json['eventModule'];
     contact = PTPContact.fromJson(json['contact']);
     agrRef = json['agrRef'];
-    // contractor = json['contractor'];
     callID = json['callID'];
     callingID = json['callingID'];
     callerServiceID = json['callerServiceID'];
@@ -65,7 +62,7 @@ class PTPPostModel {
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
     data['agrRef'] = agrRef;
-    // data['contractor'] = contractor;
+
     data['callID'] = callID;
     data['callingID'] = callingID;
     data['callerServiceID'] = callerServiceID;
@@ -91,8 +88,6 @@ class EventAttr {
   late double speed;
   late double latitude;
   late double longitude;
-  // late double distance;
-  // late AgentLocation agentLocation;
 
   EventAttr({
     required this.date,
@@ -110,8 +105,6 @@ class EventAttr {
     this.speed = 0,
     this.latitude = 0,
     this.longitude = 0,
-    // this.distance = 0,
-    // required this.agentLocation
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -130,8 +123,6 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    // distance = json['distance'];
-    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
   }
 
   Map<String, dynamic> toJson() {
@@ -151,8 +142,7 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    // data['distance'] = distance;
-    // data['agentLocation'] = agentLocation.toJson();
+
     return data;
   }
 }

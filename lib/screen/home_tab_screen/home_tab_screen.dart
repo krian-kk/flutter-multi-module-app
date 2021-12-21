@@ -2,50 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/Telecaller/screens/allocation_T/allocation_t.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'bloc/home_tab_event.dart';
 
-// ignore: must_be_immutable
 class HomeTabScreen extends StatefulWidget {
   const HomeTabScreen({Key? key}) : super(key: key);
 
-  // final String? userType;
-  // HomeTabScreen(this.userType);
   @override
   _HomeTabScreenState createState() => _HomeTabScreenState();
 }
 
 class _HomeTabScreenState extends State<HomeTabScreen> {
   late HomeTabBloc bloc;
-  // late MapBloc mapBloc;
 
   String? title = StringResource.allocation.toUpperCase();
 
   TabController? _controller;
-  // String? userType;
 
   @override
   void initState() {
     super.initState();
-    // getUserType();
+
     bloc = HomeTabBloc()..add(HomeTabInitialEvent());
   }
-
-  // void getUserType() async {
-  //  SharedPreferences _prefs = await SharedPreferences.getInstance();
-  //  userType = _prefs.getString('userType');
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +79,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                     height: 70,
                                     width: 45,
                                     child: TabBar(
-                                      // isScrollable: true,
-                                      // physics: const NeverScrollableScrollPhysics(),
                                       onTap: (index) {
                                         switch (index) {
                                           case 0:
@@ -170,7 +156,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                         ),
                                         Tab(
                                           child: Stack(
-                                            // alignment: Alignment.topLeft,
                                             children: [
                                               Column(
                                                 mainAxisAlignment:
@@ -233,22 +218,13 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                               ],
                             ),
                           ),
-                          // Expanded(
-                          //   child: Container(
-                          //     color: ColorResource.color23375A,
-                          //   ),
-                          // )
-                          Expanded(
+                          const Expanded(
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  // if(bloc.userType == Constants.fieldagent)
-                                  // AllocationScreen() else const AllocationTelecallerScreen(), //1
-                                  bloc.userType == Constants.fieldagent
-                                      ? const AllocationScreen()
-                                      : const AllocationTelecallerScreen(), //1
-                                  const DashboardScreen(), //2
-                                  const ProfileScreen(), //3
+                                  AllocationScreen(), //1
+                                  DashboardScreen(), //2
+                                  ProfileScreen(), //3
                                 ]),
                           )
                         ])),

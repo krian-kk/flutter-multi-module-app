@@ -44,6 +44,7 @@ class StringResource {
   // static const String no = 'NO';
   // static const String searchbasedOn = 'SEARCH BASED ON';
   static const String priority = 'Priority';
+  static const String autoCalling = 'Auto Calling';
   static const String buildRoute = 'Build Route';
   static const String mapView = 'Map View';
   static const String new_ = 'NEW';
@@ -79,7 +80,6 @@ class StringResource {
   // static const String addNewContact = 'ADD New contact';
   // static const String call = 'call';
   // static const String viewMap = 'VIEW MAP';
-  static const String autoCalling = 'Auto Calling';
   // static const String eventDetails = 'EVENT DETAILS';
   // static const String noCasesAvailable = 'No cases available';
   // static const String callCustomer = 'CALL CUSTOMER';

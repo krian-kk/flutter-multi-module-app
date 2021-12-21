@@ -1,14 +1,14 @@
 import 'result.dart';
 
-class ProfileApiResultModel {
+class ProfileApiModel {
   int? status;
   String? message;
   List<ProfileResultModel>? result;
 
-  ProfileApiResultModel({this.status, this.message, this.result});
+  ProfileApiModel({this.status, this.message, this.result});
 
-  factory ProfileApiResultModel.fromJson(Map<String, dynamic> json) {
-    return ProfileApiResultModel(
+  factory ProfileApiModel.fromJson(Map<String, dynamic> json) {
+    return ProfileApiModel(
       status: json['status'] as int?,
       message: json['message'] as String?,
       result: (json['result'] as List<dynamic>?)

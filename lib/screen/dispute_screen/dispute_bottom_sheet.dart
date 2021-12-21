@@ -55,10 +55,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   @override
   void initState() {
     super.initState();
-    // DateTime currentDateTime = DateTime.now();
-    // nextActionDateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -251,9 +247,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
                               ),
-                              createdBy: DateTime.now().toString(),
-                              callID: '0',
-                              callingID: '0',
+                              createdBy: widget.agentName,
                             );
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(
@@ -321,7 +315,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 }

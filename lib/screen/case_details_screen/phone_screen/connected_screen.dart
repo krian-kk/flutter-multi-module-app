@@ -74,8 +74,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                           color: ColorResource.color000000
                                               .withOpacity(0.2),
                                           blurRadius: 2.0,
-                                          offset: const Offset(1.0,
-                                              1.0), // shadow direction: bottom right
+                                          offset: const Offset(1.0, 1.0),
                                         )
                                       ],
                                       borderRadius: const BorderRadius.all(
@@ -139,7 +138,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.offlineCaseDetailsValue.callDetails));
+              widget.bloc.caseDetailsAPIValue.result?.callDetails));
         },
         child: Container(
           height: 45,
@@ -157,7 +156,6 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),

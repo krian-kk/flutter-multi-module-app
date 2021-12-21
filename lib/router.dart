@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/bloc/casedetails_telecaller_bloc.dart';
-import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
-import 'package:origa/Telecaller/screens/phone_t_screen.dart/bloc/phone_telecaller_bloc.dart';
-import 'package:origa/Telecaller/screens/phone_t_screen.dart/phone_telecaller_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/case_details_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
@@ -45,10 +41,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildCaseDetailsScreen(settings);
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
-    case AppRoutes.caseDetailsTelecallerScreen:
-      return _buildCaseDetailsTelecallerScreen();
-    case AppRoutes.phoneTelecallerScreen:
-      return _buildPhoneTelecallerScreen();
+    // case AppRoutes.caseDetailsTelecallerScreen:
+    //   return _buildCaseDetailsTelecallerScreen();
   }
   return _buildSplashScreen();
 }
@@ -91,19 +85,12 @@ Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
   );
 }
 
-Route<dynamic> _buildCaseDetailsTelecallerScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildCaseDetailsTelecallerPage()),
-  );
-}
-
-Route<dynamic> _buildPhoneTelecallerScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildPhoneTelecallerPage()),
-  );
-}
+// Route<dynamic> _buildCaseDetailsTelecallerScreen() {
+//   return MaterialPageRoute(
+//     builder: (context) =>
+//         addAuthBloc(context, PageBuilder.buildCaseDetailsTelecallerPage()),
+//   );
+// }
 
 class PageBuilder {
   static Widget buildSplashScreen() {
@@ -157,23 +144,15 @@ class PageBuilder {
     );
   }
 
-  static Widget buildCaseDetailsTelecallerPage() {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<CasedetailsTelecallerBloc>(context)
-            ..add(CaseDetailsTelecallerInitialEvent()),
-      child: const CaseDetailsTelecallerScreen(),
-    );
-  }
+  // static Widget buildCaseDetailsTelecallerPage() {
+  //   return BlocProvider(
+  //     create: (BuildContext context) =>
+  //         BlocProvider.of<CasedetailsTelecallerBloc>(context)
+  //           ..add(CaseDetailsTelecallerInitialEvent()),
+  //     child: const CaseDetailsTelecallerScreen(),
+  //   );
+  // }
 
-  static Widget buildPhoneTelecallerPage() {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<PhoneTelecallerBloc>(context)
-            ..add(PhoneTelecallerInitialEvent()),
-      child: const PhoneTelecallerScreen(),
-    );
-  }
 }
 
 Widget addAuthBloc(BuildContext context, Widget widget) {

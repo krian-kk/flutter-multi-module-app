@@ -145,8 +145,6 @@ class _DeviceInfoState extends State<DeviceInfo> {
           onPressed: () async {
             try {
               if (Platform.isAndroid) {
-                // print('Value => ${_deviceData['version.sdkInt']}');
-                // print('');
                 var requestBodyData = AndoridDeviceInfoModel(
                   board: _deviceData['board'],
                   bootloader: _deviceData['bootloader'],
@@ -168,7 +166,6 @@ class _DeviceInfoState extends State<DeviceInfo> {
                   isPhysicalDevice: _deviceData['isPhysicalDevice'] as bool,
                   androidId: _deviceData['androidId'],
                   systemFeatures: [],
-                  // systemFeatures: ['_deviceData[' ']'],
                   version: Version(
                     securityPatch: _deviceData['version.securityPatch'],
                     sdkInt: _deviceData['version.sdkInt'].toString(),
@@ -180,7 +177,6 @@ class _DeviceInfoState extends State<DeviceInfo> {
                     baseOs: _deviceData['version.baseOS'],
                   ),
                 );
-                // print('Request Body => ${requestBodyData}');
 
                 Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(

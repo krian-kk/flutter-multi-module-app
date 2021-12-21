@@ -54,10 +54,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
 
   @override
   void initState() {
-    // DateTime currentDateTime = DateTime.now();
-    // nextActionDateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    // remarksControlller.text = 'ABC';
     super.initState();
   }
 
@@ -248,6 +244,11 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
+                              agentName: widget.agentName,
+                              eventModule:
+                                  (widget.userType == Constants.telecaller)
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
                               contact: Contact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
@@ -318,7 +319,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 }

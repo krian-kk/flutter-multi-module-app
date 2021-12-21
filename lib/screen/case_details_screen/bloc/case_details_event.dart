@@ -50,8 +50,6 @@ class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
   ClickPhoneUnreachableSubmitedButtonEvent(this.context);
 }
 
-// class ClickCallCustomerEvent extends CaseDetailsEvent {}
-
 class ClickCaseDetailsEvent extends CaseDetailsEvent {
   final dynamic paramValues;
   ClickCaseDetailsEvent({this.paramValues});

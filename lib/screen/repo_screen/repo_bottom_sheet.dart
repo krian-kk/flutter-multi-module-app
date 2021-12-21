@@ -21,16 +21,15 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
-  const CustomRepoBottomSheet(
-    this.cardTitle, {
-    Key? key,
-    required this.caseId,
-    required this.customerLoanUserWidget,
-    this.postValue,
-    required this.userType,
-    required this.agentName,
-    required this.argRef
-  }) : super(key: key);
+  const CustomRepoBottomSheet(this.cardTitle,
+      {Key? key,
+      required this.caseId,
+      required this.customerLoanUserWidget,
+      this.postValue,
+      required this.userType,
+      required this.agentName,
+      required this.argRef})
+      : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
@@ -62,16 +61,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   @override
   void initState() {
     super.initState();
-    // DateTime currentDateTime = DateTime.now();
-    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-    // dateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-    // timeControlller.text = '$hours:$minutes';
-    // modelMakeControlller.text = '123';
-    // registrationNoControlller.text = '123';
-    // chassisNoControlller.text = '123';
-    // remarksControlller.text = 'ABC';
   }
 
   getFiles() async {
@@ -405,7 +394,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // formKey.currentState!.validate();
     });
   }
 
@@ -442,7 +430,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     final minutes = newTime.minute.toString().padLeft(2, '0');
     setState(() {
       controller.text = '$hours:$minutes';
-      // _formKey.currentState!.validate();
     });
   }
 }

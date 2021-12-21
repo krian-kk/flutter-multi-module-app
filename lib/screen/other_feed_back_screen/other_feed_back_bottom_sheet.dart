@@ -68,9 +68,6 @@ class _CustomOtherFeedBackBottomSheetState
   @override
   void initState() {
     super.initState();
-    // DateTime currentDateTime = DateTime.now();
-    // dateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
   }
 
   @override
@@ -155,7 +152,6 @@ class _CustomOtherFeedBackBottomSheetState
                             onTap: () {},
                             child: SizedBox(
                               width: double.infinity,
-                              // height: 56,
                               child: Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50),
@@ -363,7 +359,6 @@ class _CustomOtherFeedBackBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 

@@ -8,31 +8,30 @@ class DenialPostModel {
   late String createdBy;
   late String agentName;
   late String eventModule;
-  // late String contractor;
   late String agrRef;
   late String? callID;
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double invalidNumber;
+  late double? invalidNumber;
 
-  DenialPostModel(
-      {this.eventId = 20,
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      required this.contact,
-      required this.createdBy,
-      this.agentName = 'SUVODEEP TELECALLER changed 3',
-      this.eventModule = 'Telecalling',
-      // this.contractor = '',
-      this.agrRef = '',
-      this.callID,
-      this.callingID,
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0});
+  DenialPostModel({
+    this.eventId = 20,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    required this.contact,
+    required this.createdBy,
+    required this.agentName,
+    required this.eventModule,
+    required this.agrRef,
+    this.callID,
+    this.callingID,
+    this.callerServiceID = 'Kaleyra_123',
+    this.voiceCallEventCode = 'TELEVT011',
+    this.invalidNumber,
+  });
 
   DenialPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -44,7 +43,6 @@ class DenialPostModel {
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     eventModule = json['eventModule'];
-    // contractor = json['contractor'];
     agrRef = json['agrRef'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -64,7 +62,6 @@ class DenialPostModel {
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
-    // data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
     data['callingID'] = callingID;
@@ -89,7 +86,6 @@ class EventAttr {
   late double speed;
   late double latitude;
   late double longitude;
-  // late AgentLocation agentLocation;
 
   EventAttr({
     required this.actionDate,
@@ -104,7 +100,6 @@ class EventAttr {
     this.speed = 0,
     this.latitude = 0,
     this.longitude = 0,
-    // required this.agentLocation
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -120,8 +115,6 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-
-    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
   }
 
   Map<String, dynamic> toJson() {
@@ -139,7 +132,6 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    // data['agentLocation'] = agentLocation.toJson();
     return data;
   }
 }

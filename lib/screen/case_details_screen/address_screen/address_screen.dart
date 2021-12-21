@@ -100,10 +100,15 @@ class _AddressScreenState extends State<AddressScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  widget.bloc.offlineCaseDetailsValue
-                                      .addressDetails![widget.index]['cType']
-                                      .toString()
-                                      .toUpperCase(),
+                                  widget
+                                          .bloc
+                                          .caseDetailsAPIValue
+                                          .result
+                                          ?.addressDetails![widget.index]
+                                              ['cType']
+                                          .toString()
+                                          .toUpperCase() ??
+                                      '_',
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.fourteen,
                                   fontStyle: FontStyle.normal,
@@ -129,10 +134,15 @@ class _AddressScreenState extends State<AddressScreen>
                               child: SizedBox(
                                 width: 255,
                                 child: CustomText(
-                                  widget.bloc.offlineCaseDetailsValue
-                                      .addressDetails![widget.index]['value']
-                                      .toString()
-                                      .toUpperCase(),
+                                  widget
+                                          .bloc
+                                          .caseDetailsAPIValue
+                                          .result
+                                          ?.addressDetails![widget.index]
+                                              ['value']
+                                          .toString()
+                                          .toUpperCase() ??
+                                      '_',
                                   fontWeight: FontWeight.w400,
                                   fontSize: FontSize.fourteen,
                                   fontStyle: FontStyle.normal,
@@ -147,8 +157,8 @@ class _AddressScreenState extends State<AddressScreen>
                                   onTap: () => widget.bloc.add(
                                       ClickOpenBottomSheetEvent(
                                           Constants.viewMap,
-                                          widget.bloc.offlineCaseDetailsValue
-                                              .callDetails)),
+                                          widget.bloc.caseDetailsAPIValue.result
+                                              ?.callDetails)),
                                   child: SizedBox(
                                       width: 10,
                                       child: Container(
@@ -178,8 +188,8 @@ class _AddressScreenState extends State<AddressScreen>
                                   onTap: () => widget.bloc.add(
                                     ClickOpenBottomSheetEvent(
                                       Constants.eventDetails,
-                                      widget.bloc.offlineCaseDetailsValue
-                                          .addressDetails,
+                                      widget.bloc.caseDetailsAPIValue.result
+                                          ?.addressDetails,
                                     ),
                                   ),
                                   textColor: ColorResource.color23375A,

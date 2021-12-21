@@ -139,8 +139,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                   BoxShadow(
                     color: ColorResource.color000000.withOpacity(0.2),
                     blurRadius: 2.0,
-                    offset: const Offset(
-                        1.0, 1.0), // shadow direction: bottom right
+                    offset: const Offset(1.0, 1.0),
                   )
                 ],
               ),

@@ -90,4 +90,6 @@ class Constants {
   static const String userAdmin = 'userAdmin';
   static const String code = 'code';
   static const String buildcontext = 'buildcontext';
+  static const String callConnectedPleaseWait =
+      'Call Connected Quickly Please Wait!';
 }

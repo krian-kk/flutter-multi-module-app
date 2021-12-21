@@ -65,18 +65,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   @override
   void initState() {
     super.initState();
-
-    // DateTime currentDateTime = DateTime.now();
-    // final hours = currentDateTime.hour.toString().padLeft(2, '0');
-    // final minutes = currentDateTime.minute.toString().padLeft(2, '0');
-
-    // ptpDateControlller.text =
-    //     DateFormat('dd-MM-yyyy').format(currentDateTime).toString();
-
-    // ptpTimeControlller.text = '$hours:$minutes';
-    // ptpAmountControlller.text = '0';
-    // referenceControlller.text = 'ABC';
-    // remarksControlller.text = 'ABC';
   }
 
   @override
@@ -372,7 +360,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          // widget.bloc.selectedInvalidClip = element.clipTitle;
           setState(() {
             selectedPaymentModeButton = element.title;
           });
@@ -388,8 +375,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
-                  offset:
-                      const Offset(1.0, 1.0), // shadow direction: bottom right
+                  offset: const Offset(1.0, 1.0),
                 )
               ],
               borderRadius: const BorderRadius.all(Radius.circular(50.0))),
@@ -456,7 +442,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // _formKey.currentState!.validate();
     });
   }
 
@@ -493,7 +478,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     final minutes = newTime.minute.toString().padLeft(2, '0');
     setState(() {
       controller.text = '$hours:$minutes';
-      // _formKey.currentState!.validate();
     });
   }
 }

@@ -5,7 +5,7 @@ import 'repayment_info.dart';
 class CaseDetails {
   String? id;
   int? pos;
-  dynamic? due;
+  dynamic due;
   String? cust;
   String? accNo;
   String? collSubStatus;

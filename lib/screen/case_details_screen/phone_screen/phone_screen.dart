@@ -42,11 +42,6 @@ class _PhoneScreenState extends State<PhoneScreen>
 
   @override
   Widget build(BuildContext context) {
-    // List<CustomerMetNotButtonModel> customerMetNotButtonList = [
-    //   CustomerMetNotButtonModel(Languages.of(context)!.leftMessage),
-    //   CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
-    //   CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
-    // ];
     return WillPopScope(
       onWillPop: () async => false,
       child: SizedBox(
@@ -83,10 +78,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CustomText(
-                              widget.bloc.offlineCaseDetailsValue
-                                  .callDetails![widget.index]['cType']
-                                  .toString()
-                                  .toUpperCase(),
+                              widget.bloc.caseDetailsAPIValue.result
+                                      ?.callDetails![widget.index]['cType']
+                                      .toString()
+                                      .toUpperCase() ??
+                                  '_',
                               fontWeight: FontWeight.w700,
                               fontSize: FontSize.fourteen,
                               fontStyle: FontStyle.normal,
@@ -112,10 +108,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                           child: SizedBox(
                             width: 255,
                             child: CustomText(
-                              widget.bloc.offlineCaseDetailsValue
-                                  .callDetails![widget.index]['value']
-                                  .toString()
-                                  .toUpperCase(),
+                              widget.bloc.caseDetailsAPIValue.result
+                                      ?.callDetails![widget.index]['value']
+                                      .toString()
+                                      .toUpperCase() ??
+                                  '_',
                               fontWeight: FontWeight.w400,
                               fontSize: FontSize.fourteen,
                               fontStyle: FontStyle.normal,
@@ -124,41 +121,35 @@ class _PhoneScreenState extends State<PhoneScreen>
                           ),
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                                child: GestureDetector(
-                              //================================================
-                              // onTap: () {
-                              //   widget.bloc.add(ClickCallCustomerEvent());
-                              // },
-                              child: SizedBox(
-                                  width: 10,
-                                  child: InkWell(
-                                    onTap: () => widget.bloc.add(
-                                        ClickOpenBottomSheetEvent(
-                                            Constants.callCustomer,
-                                            widget.bloc.offlineCaseDetailsValue
-                                                .callDetails)),
-                                    child: Container(
-                                        decoration: const BoxDecoration(
-                                            color: ColorResource.colorBEC4CF,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(75.0))),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(ImageResource.phone),
-                                            const SizedBox(width: 12),
-                                            CustomText(
-                                              Constants.call.toUpperCase(),
-                                              fontSize: FontSize.fourteen,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color23375A,
-                                            )
-                                          ],
-                                        )),
-                                  )),
-                            )),
+                                child: SizedBox(
+                                    width: 10,
+                                    child: InkWell(
+                                      onTap: () => widget.bloc.add(
+                                          ClickOpenBottomSheetEvent(
+                                              Constants.callCustomer,
+                                              widget.bloc.caseDetailsAPIValue
+                                                  .result?.callDetails)),
+                                      child: Container(
+                                          decoration: const BoxDecoration(
+                                              color: ColorResource.colorBEC4CF,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(75.0))),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(ImageResource.phone),
+                                              const SizedBox(width: 12),
+                                              CustomText(
+                                                Constants.call.toUpperCase(),
+                                                fontSize: FontSize.fourteen,
+                                                fontWeight: FontWeight.w700,
+                                                color:
+                                                    ColorResource.color23375A,
+                                              )
+                                            ],
+                                          )),
+                                    ))),
                             const SizedBox(width: 40),
                             Expanded(
                                 child: SizedBox(
@@ -168,8 +159,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 onTap: () => widget.bloc.add(
                                     ClickOpenBottomSheetEvent(
                                         Constants.eventDetails,
-                                        widget.bloc.offlineCaseDetailsValue
-                                            .callDetails)),
+                                        widget.bloc.caseDetailsAPIValue.result
+                                            ?.callDetails)),
                                 fontSize: FontSize.twelve,
                                 textColor: ColorResource.color23375A,
                                 borderColor: ColorResource.color23375A,
@@ -309,7 +300,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                             child: _controller.index == 1
                                 ? CustomButton(
                                     Languages.of(context)!.submit.toUpperCase(),
-                                    // isEnabled: (bloc.selectedUnreadableClip == ''),
                                     fontSize: FontSize.sixteen,
                                     fontWeight: FontWeight.w600,
                                     onTap: () {

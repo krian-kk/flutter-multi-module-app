@@ -84,9 +84,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                                   const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
-                      // TextField(),
                       const SizedBox(height: 19),
-
                       Wrap(
                         spacing: 15,
                         runSpacing: 8,
@@ -95,32 +93,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                           context,
                         ),
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Expanded(
-                      //       child: CustomButton(
-                      //         StringResource.addNewContact.toUpperCase(),
-                      //         textColor: ColorResource.colorFFFFFF,
-                      //         borderColor: ColorResource.color23375A,
-                      //         fontSize: FontSize.twelve,
-                      //         cardShape: 75,
-                      //         buttonBackgroundColor: ColorResource.color23375A,
-                      //       ),
-                      //     ),
-                      //     SizedBox(height: 11),
-                      //     Expanded(
-                      //       child: CustomButton(
-                      //         Languages.of(context)!.otherFeedBack,
-                      //         fontSize: FontSize.twelve,
-                      //         textColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         cardShape: 75,
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       const SizedBox(height: 120)
                     ],
                   ),
@@ -143,7 +115,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.offlineCaseDetailsValue.callDetails));
+              widget.bloc.caseDetailsAPIValue.result?.callDetails));
         },
         child: Container(
           height: 45,
@@ -161,7 +133,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),

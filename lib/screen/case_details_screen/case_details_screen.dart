@@ -23,6 +23,7 @@ import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
 import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -49,6 +50,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
+
     bloc = CaseDetailsBloc()
       ..add(CaseDetailsInitialEvent(
           paramValues: widget.paramValues, context: context));
@@ -87,9 +89,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             Navigator.pushReplacementNamed(context, AppRoutes.caseDetailsScreen,
                 arguments: state.paramValues);
           }
-          // if (state is ClickCallCustomerState) {
-          //   openBottomSheet(context, StringResource.callCustomer);
-          // }
         },
         child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
@@ -116,589 +115,756 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         },
                       ),
                     ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                          child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
+                    bloc.isNoInternet
+                        ? Expanded(
+                            child: Center(
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Stack(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: CustomLoanUserDetails(
-                                          userName: bloc.offlineCaseDetailsValue
-                                                  .caseDetails?.cust ??
-                                              '',
-                                          userId: bloc.offlineCaseDetailsValue
-                                                  .caseDetails?.accNo ??
-                                              '',
-                                          userAmount: bloc
-                                                  .offlineCaseDetailsValue
-                                                  .caseDetails
-                                                  ?.due
-                                                  ?.toDouble() ??
-                                              0,
-                                          isAccountNo: true,
-                                          color: ColorResource.colorD4F5CF,
-                                          marginTop: 10,
-                                        ),
-                                      ),
-                                      if (bloc.offlineCaseDetailsValue
-                                              .caseDetails?.collSubStatus ==
-                                          'new')
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 12),
-                                          width: 55,
-                                          height: 18,
-                                          decoration: const BoxDecoration(
-                                              color: ColorResource.colorD5344C,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30.0))),
-                                          child: Center(
-                                            child: CustomText(
-                                              Languages.of(context)!.new_,
-                                              color: ColorResource.colorFFFFFF,
-                                              fontSize: FontSize.ten,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        )
-                                    ],
+                                  CustomText(Languages.of(context)!
+                                      .noInternetConnection),
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                  const SizedBox(height: 16),
-                                  CustomReadOnlyTextField(
-                                    Languages.of(context)!.loanAmount,
-                                    bloc.loanAmountController,
-                                    isLabel: true,
-                                    isEnable: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    children: [
-                                      Flexible(
-                                        child: SizedBox(
-                                          child: CustomReadOnlyTextField(
-                                            Languages.of(context)!.loanDuration,
-                                            bloc.loanDurationController,
-                                            isLabel: true,
-                                            isEnable: false,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 22),
-                                      Flexible(
-                                        child: SizedBox(
-                                          child: CustomReadOnlyTextField(
-                                            Languages.of(context)!.pos,
-                                            bloc.posController,
-                                            isLabel: true,
-                                            isEnable: false,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    children: [
-                                      Flexible(
-                                        child: CustomReadOnlyTextField(
-                                          Languages.of(context)!.schemeCode,
-                                          bloc.schemeCodeController,
-                                          isLabel: true,
-                                          isEnable: false,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 22),
-                                      Flexible(
-                                        child: CustomReadOnlyTextField(
-                                          Languages.of(context)!.emiStartDate,
-                                          bloc.emiStartDateController,
-                                          isLabel: true,
-                                          isEnable: false,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 15),
-                                  CustomReadOnlyTextField(
-                                    Languages.of(context)!.bankName,
-                                    bloc.bankNameController,
-                                    isLabel: true,
-                                    isEnable: false,
-                                  ),
-                                  const SizedBox(height: 17),
-                                  CustomReadOnlyTextField(
-                                    Languages.of(context)!.product,
-                                    bloc.productController,
-                                    isLabel: true,
-                                    isEnable: false,
-                                  ),
-                                  const SizedBox(height: 17),
-                                  CustomReadOnlyTextField(
-                                    Languages.of(context)!.batchNo,
-                                    bloc.batchNoController,
-                                    isLabel: true,
-                                    isEnable: false,
-                                  ),
-                                  const SizedBox(height: 23),
-                                  CustomText(
-                                    Languages.of(context)!.repaymentInfo,
-                                    fontSize: FontSize.sixteen,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: ColorResource.colorFFFFFF,
-                                        border: Border.all(
-                                            color: ColorResource.colorDADADA,
-                                            width: 0.5),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10.0))),
+                                  IconButton(
+                                      onPressed: () {
+                                        bloc.add(CaseDetailsInitialEvent(
+                                            paramValues: widget.paramValues,
+                                            context: context));
+                                      },
+                                      icon: const Icon(Icons.refresh)),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Expanded(
+                            child: SingleChildScrollView(
+                                child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20.0, 0, 20, 20),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          margin: const EdgeInsets.all(6.0),
-                                          width: double.infinity,
-                                          height: 97,
-                                          decoration: const BoxDecoration(
-                                              color: ColorResource.colorF7F8FA,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                CustomText(
-                                                  Languages.of(context)!
-                                                      .beneficiaryDetails,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: FontSize.twelve,
-                                                  fontStyle: FontStyle.normal,
-                                                  color:
-                                                      ColorResource.color666666,
-                                                ),
-                                                const SizedBox(height: 9),
-                                                CustomText(
-                                                  bloc
-                                                          .offlineCaseDetailsValue
-                                                          .caseDetails
-                                                          ?.repaymentInfo
-                                                          ?.benefeciaryAccName ??
-                                                      '-',
-                                                  fontWeight: FontWeight.w700,
-                                                  color:
-                                                      ColorResource.color333333,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontStyle: FontStyle.normal,
-                                                ),
-                                                const SizedBox(height: 7),
-                                                CustomText(
-                                                  bloc
-                                                          .offlineCaseDetailsValue
-                                                          .caseDetails
-                                                          ?.repaymentInfo
-                                                          ?.repaymentIfscCode ??
-                                                      '-',
-                                                  fontWeight: FontWeight.w700,
-                                                  color:
-                                                      ColorResource.color333333,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontStyle: FontStyle.normal,
-                                                ),
-                                              ],
+                                        Stack(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: CustomLoanUserDetails(
+                                                userName: bloc
+                                                        .caseDetailsAPIValue
+                                                        .result
+                                                        ?.caseDetails
+                                                        ?.cust ??
+                                                    '_',
+                                                userId: bloc
+                                                        .caseDetailsAPIValue
+                                                        .result
+                                                        ?.caseDetails
+                                                        ?.accNo ??
+                                                    '_',
+                                                userAmount: bloc
+                                                        .caseDetailsAPIValue
+                                                        .result
+                                                        ?.caseDetails
+                                                        ?.due
+                                                        ?.toDouble() ??
+                                                    0,
+                                                isAccountNo: true,
+                                                color:
+                                                    ColorResource.colorD4F5CF,
+                                                marginTop: 10,
+                                              ),
                                             ),
-                                          ),
+                                            if (bloc
+                                                    .caseDetailsAPIValue
+                                                    .result
+                                                    ?.caseDetails
+                                                    ?.collSubStatus ==
+                                                'new')
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 12),
+                                                width: 55,
+                                                height: 18,
+                                                decoration: const BoxDecoration(
+                                                    color: ColorResource
+                                                        .colorD5344C,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                30.0))),
+                                                child: Center(
+                                                  child: CustomText(
+                                                    Languages.of(context)!.new_,
+                                                    color: ColorResource
+                                                        .colorFFFFFF,
+                                                    fontSize: FontSize.ten,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              )
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 12.0),
+                                        const SizedBox(height: 16),
+                                        CustomReadOnlyTextField(
+                                          Languages.of(context)!.loanAmount,
+                                          bloc.loanAmountController,
+                                          isLabel: true,
+                                          isEnable: false,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              child: SizedBox(
+                                                child: CustomReadOnlyTextField(
+                                                  Languages.of(context)!
+                                                      .loanDuration,
+                                                  bloc.loanDurationController,
+                                                  isLabel: true,
+                                                  isEnable: false,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 22),
+                                            Flexible(
+                                              child: SizedBox(
+                                                child: CustomReadOnlyTextField(
+                                                  Languages.of(context)!.pos,
+                                                  bloc.posController,
+                                                  isLabel: true,
+                                                  isEnable: false,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              child: CustomReadOnlyTextField(
+                                                Languages.of(context)!
+                                                    .schemeCode,
+                                                bloc.schemeCodeController,
+                                                isLabel: true,
+                                                isEnable: false,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 22),
+                                            Flexible(
+                                              child: CustomReadOnlyTextField(
+                                                Languages.of(context)!
+                                                    .emiStartDate,
+                                                bloc.emiStartDateController,
+                                                isLabel: true,
+                                                isEnable: false,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
+                                        CustomReadOnlyTextField(
+                                          Languages.of(context)!.bankName,
+                                          bloc.bankNameController,
+                                          isLabel: true,
+                                          isEnable: false,
+                                        ),
+                                        const SizedBox(height: 17),
+                                        CustomReadOnlyTextField(
+                                          Languages.of(context)!.product,
+                                          bloc.productController,
+                                          isLabel: true,
+                                          isEnable: false,
+                                        ),
+                                        const SizedBox(height: 17),
+                                        CustomReadOnlyTextField(
+                                          Languages.of(context)!.batchNo,
+                                          bloc.batchNoController,
+                                          isLabel: true,
+                                          isEnable: false,
+                                        ),
+                                        const SizedBox(height: 23),
+                                        CustomText(
+                                          Languages.of(context)!.repaymentInfo,
+                                          fontSize: FontSize.sixteen,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Container(
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              color: ColorResource.colorFFFFFF,
+                                              border: Border.all(
+                                                  color:
+                                                      ColorResource.colorDADADA,
+                                                  width: 0.5),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10.0))),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              CustomText(
-                                                Languages.of(context)!
-                                                    .repaymentBankName,
-                                                fontSize: FontSize.twelve,
-                                                fontWeight: FontWeight.w400,
-                                                fontStyle: FontStyle.normal,
-                                                color:
-                                                    ColorResource.color666666,
-                                              ),
-                                              const SizedBox(height: 4),
-                                              CustomText(
-                                                bloc
-                                                        .offlineCaseDetailsValue
-                                                        .caseDetails
-                                                        ?.repaymentInfo
-                                                        ?.repayBankName ??
-                                                    '-',
-                                                fontSize: FontSize.fourteen,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    ColorResource.color333333,
-                                              ),
-                                              const SizedBox(height: 10),
-                                              CustomText(
-                                                Languages.of(context)!
-                                                    .referenceLender,
-                                                fontSize: FontSize.twelve,
-                                                fontWeight: FontWeight.w400,
-                                                fontStyle: FontStyle.normal,
-                                                color:
-                                                    ColorResource.color666666,
-                                              ),
-                                              const SizedBox(height: 4),
-                                              CustomText(
-                                                bloc
-                                                        .offlineCaseDetailsValue
-                                                        .caseDetails
-                                                        ?.repaymentInfo
-                                                        ?.refLender ??
-                                                    '-',
-                                                fontSize: FontSize.fourteen,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    ColorResource.color333333,
-                                              ),
-                                              const SizedBox(height: 10),
-                                              CustomText(
-                                                Languages.of(context)!
-                                                    .referenceUrl,
-                                                fontSize: FontSize.twelve,
-                                                fontWeight: FontWeight.w400,
-                                                fontStyle: FontStyle.normal,
-                                                color:
-                                                    ColorResource.color666666,
-                                              ),
-                                              const SizedBox(height: 4),
-                                              CustomText(
-                                                bloc
-                                                        .offlineCaseDetailsValue
-                                                        .caseDetails
-                                                        ?.repaymentInfo
-                                                        ?.refUrl ??
-                                                    '-',
-                                                fontSize: FontSize.fourteen,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    ColorResource.color333333,
-                                              ),
-                                              // const SizedBox(height: 12),
-                                              // Row(
-                                              //   mainAxisAlignment:
-                                              //       MainAxisAlignment
-                                              //           .spaceBetween,
-                                              //   children: [
-                                              //     Container(
-                                              //       padding: const EdgeInsets
-                                              //               .symmetric(
-                                              //           horizontal: 10,
-                                              //           vertical: 10),
-                                              //       decoration: BoxDecoration(
-                                              //         color: ColorResource
-                                              //             .color23375A,
-                                              //         borderRadius:
-                                              //             BorderRadius.circular(
-                                              //                 10),
-                                              //         border: Border.all(
-                                              //             color: ColorResource
-                                              //                 .colorECECEC,
-                                              //             width: 1.0),
-                                              //       ),
-                                              //       child: Row(
-                                              //         mainAxisSize:
-                                              //             MainAxisSize.min,
-                                              //         children: [
-                                              //           SvgPicture.asset(
-                                              //               ImageResource
-                                              //                   .whatsApp),
-                                              //           const SizedBox(
-                                              //               width: 5),
-                                              //           CustomText(
-                                              //               StringResource
-                                              //                   .sendSms
-                                              //                   .toUpperCase(),
-                                              //               lineHeight: 1.0,
-                                              //               color: ColorResource
-                                              //                   .colorffffff),
-                                              //         ],
-                                              //       ),
-                                              //     ),
-                                              //     const SizedBox(width: 10),
-                                              //     Container(
-                                              //       padding: const EdgeInsets
-                                              //               .symmetric(
-                                              //           horizontal: 10,
-                                              //           vertical: 10),
-                                              //       decoration: BoxDecoration(
-                                              //         color: ColorResource
-                                              //             .color23375A,
-                                              //         borderRadius:
-                                              //             BorderRadius.circular(
-                                              //                 10),
-                                              //         border: Border.all(
-                                              //             color: ColorResource
-                                              //                 .colorECECEC,
-                                              //             width: 1.0),
-                                              //       ),
-                                              //       child: Row(
-                                              //         mainAxisSize:
-                                              //             MainAxisSize.min,
-                                              //         children: [
-                                              //           SvgPicture.asset(
-                                              //               ImageResource
-                                              //                   .whatsApp),
-                                              //           const SizedBox(
-                                              //               width: 5),
-                                              //           CustomText(
-                                              //             StringResource
-                                              //                 .sendWhatsapp
-                                              //                 .toUpperCase(),
-                                              //             lineHeight: 1.0,
-                                              //             color: ColorResource
-                                              //                 .colorffffff,
-                                              //           ),
-                                              //         ],
-                                              //       ),
-                                              //     )
-                                              //   ],
-                                              // )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 27),
-                                  CustomText(
-                                    Languages.of(context)!.otherLoanOf,
-                                    color: ColorResource.color101010,
-                                    fontSize: FontSize.sixteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  CustomText(
-                                    bloc.offlineCaseDetailsValue.caseDetails
-                                            ?.cust
-                                            ?.toUpperCase() ??
-                                        '', //--------------- doubt -----------
-                                    color: ColorResource.color333333,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      itemCount: bloc.offlineCaseDetailsValue
-                                              .otherLoanDetails?.length ??
-                                          0,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const SizedBox(height: 10),
-                                            GestureDetector(
-                                              onTap: () => bloc.add(
-                                                  ClickPushAndPOPCaseDetailsEvent(
-                                                      paramValues: {
-                                                    'caseID': bloc
-                                                        .offlineCaseDetailsValue
-                                                        .otherLoanDetails![
-                                                            index]
-                                                        .caseId,
-                                                    'isAddress': true
-                                                  })),
-                                              child: Container(
+                                              Container(
+                                                margin:
+                                                    const EdgeInsets.all(6.0),
                                                 width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: ColorResource
-                                                            .color000000
-                                                            .withOpacity(.25),
-                                                        blurRadius: 2.0,
-                                                        offset: const Offset(
-                                                            1.0, 1.0),
-                                                      ),
-                                                    ],
-                                                    border: Border.all(
-                                                        color: ColorResource
-                                                            .colorDADADA,
-                                                        width: 0.5),
+                                                height: 97,
+                                                decoration: const BoxDecoration(
                                                     color: ColorResource
                                                         .colorF7F8FA,
                                                     borderRadius:
-                                                        const BorderRadius.all(
+                                                        BorderRadius.all(
                                                             Radius.circular(
                                                                 10.0))),
                                                 child: Padding(
                                                   padding: const EdgeInsets
                                                           .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 12),
+                                                      horizontal: 15.0),
                                                   child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
                                                       CustomText(
                                                         Languages.of(context)!
-                                                            .accountNo,
-                                                        color: ColorResource
-                                                            .color666666,
+                                                            .beneficiaryDetails,
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                         fontSize:
                                                             FontSize.twelve,
                                                         fontStyle:
                                                             FontStyle.normal,
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                        color: ColorResource
+                                                            .color666666,
                                                       ),
-                                                      const SizedBox(height: 5),
+                                                      const SizedBox(height: 9),
                                                       CustomText(
                                                         bloc
-                                                            .offlineCaseDetailsValue
-                                                            .otherLoanDetails![
-                                                                index]
-                                                            .cust!
-                                                            .toUpperCase(), // ----------- doubt ---------------
+                                                                .caseDetailsAPIValue
+                                                                .result
+                                                                ?.caseDetails
+                                                                ?.repaymentInfo
+                                                                ?.benefeciaryAccName ??
+                                                            '-',
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                         color: ColorResource
                                                             .color333333,
                                                         fontSize:
                                                             FontSize.fourteen,
                                                         fontStyle:
                                                             FontStyle.normal,
+                                                      ),
+                                                      const SizedBox(height: 7),
+                                                      CustomText(
+                                                        bloc
+                                                                .caseDetailsAPIValue
+                                                                .result
+                                                                ?.caseDetails
+                                                                ?.repaymentInfo
+                                                                ?.repaymentIfscCode ??
+                                                            '-',
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 11),
-                                                      CustomText(
-                                                        Languages.of(context)!
-                                                            .overdueAmount,
                                                         color: ColorResource
-                                                            .color666666,
+                                                            .color333333,
                                                         fontSize:
-                                                            FontSize.twelve,
+                                                            FontSize.fourteen,
                                                         fontStyle:
                                                             FontStyle.normal,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                      const SizedBox(height: 5),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          CustomText(
-                                                            bloc
-                                                                .offlineCaseDetailsValue
-                                                                .otherLoanDetails![
-                                                                    index]
-                                                                .due
-                                                                .toString(),
-                                                            color: ColorResource
-                                                                .color333333,
-                                                            fontSize: FontSize
-                                                                .fourteen,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              CustomText(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .view,
-                                                                color: ColorResource
-                                                                    .color23375A,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 10),
-                                                              SvgPicture.asset(
-                                                                  ImageResource
-                                                                      .forwardArrow)
-                                                            ],
-                                                          )
-                                                        ],
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 20),
-                                          ],
-                                        );
-                                      }),
-                                ],
-                              ))),
-                    ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 20.0,
+                                                        vertical: 12.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    CustomText(
+                                                      Languages.of(context)!
+                                                          .repaymentBankName,
+                                                      fontSize: FontSize.twelve,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: ColorResource
+                                                          .color666666,
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    CustomText(
+                                                      bloc
+                                                              .caseDetailsAPIValue
+                                                              .result
+                                                              ?.caseDetails
+                                                              ?.repaymentInfo
+                                                              ?.repayBankName ??
+                                                          '-',
+                                                      fontSize:
+                                                          FontSize.fourteen,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: ColorResource
+                                                          .color333333,
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    CustomText(
+                                                      Languages.of(context)!
+                                                          .referenceLender,
+                                                      fontSize: FontSize.twelve,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: ColorResource
+                                                          .color666666,
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    CustomText(
+                                                      bloc
+                                                              .caseDetailsAPIValue
+                                                              .result
+                                                              ?.caseDetails
+                                                              ?.repaymentInfo
+                                                              ?.refLender ??
+                                                          '-',
+                                                      fontSize:
+                                                          FontSize.fourteen,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: ColorResource
+                                                          .color333333,
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    CustomText(
+                                                      Languages.of(context)!
+                                                          .referenceUrl,
+                                                      fontSize: FontSize.twelve,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: ColorResource
+                                                          .color666666,
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    CustomText(
+                                                      bloc
+                                                              .caseDetailsAPIValue
+                                                              .result
+                                                              ?.caseDetails
+                                                              ?.repaymentInfo
+                                                              ?.refUrl ??
+                                                          '-',
+                                                      fontSize:
+                                                          FontSize.fourteen,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: ColorResource
+                                                          .color333333,
+                                                    ),
+                                                    // const SizedBox(height: 12),
+                                                    // Row(
+                                                    //   mainAxisAlignment:
+                                                    //       MainAxisAlignment
+                                                    //           .spaceBetween,
+                                                    //   children: [
+                                                    //     Container(
+                                                    //       padding: const EdgeInsets
+                                                    //               .symmetric(
+                                                    //           horizontal: 10,
+                                                    //           vertical: 10),
+                                                    //       decoration: BoxDecoration(
+                                                    //         color: ColorResource
+                                                    //             .color23375A,
+                                                    //         borderRadius:
+                                                    //             BorderRadius.circular(
+                                                    //                 10),
+                                                    //         border: Border.all(
+                                                    //             color: ColorResource
+                                                    //                 .colorECECEC,
+                                                    //             width: 1.0),
+                                                    //       ),
+                                                    //       child: Row(
+                                                    //         mainAxisSize:
+                                                    //             MainAxisSize.min,
+                                                    //         children: [
+                                                    //           SvgPicture.asset(
+                                                    //               ImageResource
+                                                    //                   .whatsApp),
+                                                    //           const SizedBox(
+                                                    //               width: 5),
+                                                    //           CustomText(
+                                                    //               StringResource
+                                                    //                   .sendSms
+                                                    //                   .toUpperCase(),
+                                                    //               lineHeight: 1.0,
+                                                    //               color: ColorResource
+                                                    //                   .colorffffff),
+                                                    //         ],
+                                                    //       ),
+                                                    //     ),
+                                                    //     const SizedBox(width: 10),
+                                                    //     Container(
+                                                    //       padding: const EdgeInsets
+                                                    //               .symmetric(
+                                                    //           horizontal: 10,
+                                                    //           vertical: 10),
+                                                    //       decoration: BoxDecoration(
+                                                    //         color: ColorResource
+                                                    //             .color23375A,
+                                                    //         borderRadius:
+                                                    //             BorderRadius.circular(
+                                                    //                 10),
+                                                    //         border: Border.all(
+                                                    //             color: ColorResource
+                                                    //                 .colorECECEC,
+                                                    //             width: 1.0),
+                                                    //       ),
+                                                    //       child: Row(
+                                                    //         mainAxisSize:
+                                                    //             MainAxisSize.min,
+                                                    //         children: [
+                                                    //           SvgPicture.asset(
+                                                    //               ImageResource
+                                                    //                   .whatsApp),
+                                                    //           const SizedBox(
+                                                    //               width: 5),
+                                                    //           CustomText(
+                                                    //             StringResource
+                                                    //                 .sendWhatsapp
+                                                    //                 .toUpperCase(),
+                                                    //             lineHeight: 1.0,
+                                                    //             color: ColorResource
+                                                    //                 .colorffffff,
+                                                    //           ),
+                                                    //         ],
+                                                    //       ),
+                                                    //     )
+                                                    //   ],
+                                                    // )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 27),
+                                        CustomText(
+                                          Languages.of(context)!.otherLoanOf,
+                                          color: ColorResource.color101010,
+                                          fontSize: FontSize.sixteen,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        CustomText(
+                                          bloc.caseDetailsAPIValue.result
+                                                  ?.caseDetails?.cust
+                                                  ?.toUpperCase() ??
+                                              '', //--------------- doubt -----------
+                                          color: ColorResource.color333333,
+                                          fontSize: FontSize.fourteen,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            itemCount: bloc
+                                                    .caseDetailsAPIValue
+                                                    .result
+                                                    ?.otherLoanDetails
+                                                    ?.length ??
+                                                0,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const SizedBox(height: 10),
+                                                  GestureDetector(
+                                                    onTap: () => bloc.add(
+                                                        ClickPushAndPOPCaseDetailsEvent(
+                                                            paramValues: {
+                                                          'caseID': bloc
+                                                              .caseDetailsAPIValue
+                                                              .result
+                                                              ?.otherLoanDetails![
+                                                                  index]
+                                                              .caseId,
+                                                          'isAddress': true
+                                                        })),
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: ColorResource
+                                                                  .color000000
+                                                                  .withOpacity(
+                                                                      .25),
+                                                              blurRadius: 2.0,
+                                                              offset:
+                                                                  const Offset(
+                                                                      1.0, 1.0),
+                                                            ),
+                                                          ],
+                                                          border: Border.all(
+                                                              color: ColorResource
+                                                                  .colorDADADA,
+                                                              width: 0.5),
+                                                          color: ColorResource
+                                                              .colorF7F8FA,
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius.circular(
+                                                                      10.0))),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 20,
+                                                                vertical: 12),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            CustomText(
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .accountNo,
+                                                              color: ColorResource
+                                                                  .color666666,
+                                                              fontSize: FontSize
+                                                                  .twelve,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5),
+                                                            CustomText(
+                                                              bloc
+                                                                      .caseDetailsAPIValue
+                                                                      .result
+                                                                      ?.otherLoanDetails![
+                                                                          index]
+                                                                      .cust!
+                                                                      .toUpperCase() ??
+                                                                  '_', // ----------- doubt ---------------
+                                                              color: ColorResource
+                                                                  .color333333,
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 11),
+                                                            CustomText(
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .overdueAmount,
+                                                              color: ColorResource
+                                                                  .color666666,
+                                                              fontSize: FontSize
+                                                                  .twelve,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                CustomText(
+                                                                  bloc
+                                                                          .caseDetailsAPIValue
+                                                                          .result
+                                                                          ?.otherLoanDetails![
+                                                                              index]
+                                                                          .due
+                                                                          .toString() ??
+                                                                      '_',
+                                                                  color: ColorResource
+                                                                      .color333333,
+                                                                  fontSize: FontSize
+                                                                      .fourteen,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    CustomText(
+                                                                      Languages.of(
+                                                                              context)!
+                                                                          .view,
+                                                                      color: ColorResource
+                                                                          .color23375A,
+                                                                      fontSize:
+                                                                          FontSize
+                                                                              .fourteen,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            10),
+                                                                    SvgPicture.asset(
+                                                                        ImageResource
+                                                                            .forwardArrow)
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20),
+                                                ],
+                                              );
+                                            }),
+                                      ],
+                                    ))),
+                          ),
                   ],
                 ),
-                bottomNavigationBar: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          color: ColorResource.colorFFFFFF,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(28.0),
-                              topRight: Radius.circular(28.0))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(21.0),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              bloc.userType == 'FIELDAGENT'
-                                  ? GestureDetector(
+                bottomNavigationBar: bloc.isNoInternet
+                    ? const SizedBox()
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                color: ColorResource.colorFFFFFF,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(28.0),
+                                    topRight: Radius.circular(28.0))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(21.0),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    bloc.userType == 'FIELDAGENT'
+                                        ? GestureDetector(
+                                            onTap: () => bloc.add(
+                                                ClickOpenBottomSheetEvent(
+                                                    Constants.addressDetails,
+                                                    const [])),
+                                            child: Container(
+                                              height: 50,
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      62) /
+                                                  2,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: ColorResource
+                                                          .color23375A,
+                                                      width: 0.5),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(
+                                                              10.0))),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 5.0),
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(ImageResource
+                                                        .direction),
+                                                    const SizedBox(width: 8),
+                                                    Expanded(
+                                                        child: CustomText(
+                                                      Languages.of(context)!
+                                                          .addressDetails
+                                                          .toString()
+                                                          .toUpperCase()
+                                                          .replaceAll(
+                                                              ' ', '\n'),
+                                                      fontSize: FontSize.twelve,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: ColorResource
+                                                          .color23375A,
+                                                    ))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                    SizedBox(
+                                        width: bloc.userType == 'FIELDAGENT'
+                                            ? 20
+                                            : 0),
+                                    GestureDetector(
                                       onTap: () => bloc.add(
                                           ClickOpenBottomSheetEvent(
-                                              Constants.addressDetails,
-                                              const [])),
+                                              Constants.callDetails, const [])),
                                       child: Container(
                                         height: 50,
                                         width:
@@ -718,16 +884,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               horizontal: 10.0, vertical: 5.0),
                                           child: Row(
                                             children: [
-                                              Image.asset(
-                                                  ImageResource.direction),
+                                              Image.asset(ImageResource.phone),
                                               const SizedBox(width: 8),
                                               Expanded(
                                                   child: CustomText(
                                                 Languages.of(context)!
-                                                    .addressDetails
-                                                    .toString()
+                                                    .callDetails
                                                     .toUpperCase()
-                                                    .replaceAll(' ', '\n'),
+                                                    .toString()
+                                                    .replaceAll(' ', ' \n'),
                                                 fontSize: FontSize.twelve,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
@@ -738,56 +903,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           ),
                                         ),
                                       ),
-                                    )
-                                  : const SizedBox(),
-                              SizedBox(
-                                  width:
-                                      bloc.userType == 'FIELDAGENT' ? 20 : 0),
-                              GestureDetector(
-                                onTap: () => bloc.add(ClickOpenBottomSheetEvent(
-                                    Constants.callDetails, const [])),
-                                child: Container(
-                                  height: 50,
-                                  width:
-                                      (MediaQuery.of(context).size.width - 62) /
-                                          2,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: ColorResource.color23375A,
-                                          width: 0.5),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0, vertical: 5.0),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(ImageResource.phone),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                            child: CustomText(
-                                          Languages.of(context)!
-                                              .callDetails
-                                              .toUpperCase()
-                                              .toString()
-                                              .replaceAll(' ', ' \n'),
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          fontStyle: FontStyle.normal,
-                                          color: ColorResource.color23375A,
-                                        ))
-                                      ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
               );
             }
           },
@@ -841,14 +964,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.ptp,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               userType: bloc.userType.toString(),
               eventCode: 'TELEVT001',
               postValue: list[bloc.indexValue!],
@@ -858,15 +983,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.rtp,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               userType: bloc.userType.toString(),
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
             );
           case Constants.dispute:
@@ -874,15 +1001,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.dispute,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               userType: bloc.userType.toString(),
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               // eventCode: bloc.eventCode,
               postValue: list[bloc.indexValue!],
             );
@@ -891,16 +1020,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.remainderCb,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               // eventCode: bloc.eventCode,
             );
           case Constants.collections:
@@ -908,14 +1039,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.collections,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
@@ -924,11 +1057,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             return CustomOtsBottomSheet(
               Languages.of(context)!.ots,
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               // agentName: bloc.agentName.toString(),
               // argRef: bloc.agrRef.toString(),
@@ -939,26 +1074,30 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.repo,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               userType: bloc.userType.toString(),
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
             );
           case Constants.captureImage:
             return CustomCaptureImageBottomSheet(
               Languages.of(context)!.captureImage,
               customerLoanUserDetailsWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               bloc: bloc,
               // agentName: bloc.agentName.toString(),
@@ -970,15 +1109,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
               userType: bloc.userType.toString(),
               // agentName: bloc.agentName.toString(),
-              // argRef: bloc.agrRef.toString(),
+
               postValue: list[bloc.indexValue!],
             );
           case Constants.eventDetails:
@@ -986,11 +1127,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.eventDetails,
               bloc,
               customeLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
             );
           case Constants.addressDetails:
@@ -1000,26 +1143,32 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callCustomer:
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
+              listOfMobileNo:
+                  bloc.caseDetailsAPIValue.result?.callDetails as List<dynamic>,
               userType: bloc.userType.toString(),
               agentName: bloc.agentName.toString(),
-              argRef: bloc.agrRef.toString(),
+              argRef: Singleton.instance.agentRef!,
               caseId: bloc.caseId.toString(),
-              sid: bloc.offlineCaseDetailsValue.caseDetails!.id.toString(),
+              sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
           case Constants.addNewContact:
             return AddNewContactBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId: bloc.offlineCaseDetailsValue.caseDetails?.caseId ?? '',
-                userAmount:
-                    bloc.offlineCaseDetailsValue.caseDetails?.due?.toDouble() ??
-                        0.0,
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
               ),
             );
           case Constants.viewMap:

@@ -8,9 +8,7 @@ part 'no_allocation_state.dart';
 class NoAllocationBloc extends Bloc<NoAllocationEvent, NoAllocationState> {
   NoAllocationBloc() : super(NoAllocationInitial()) {
     on<NoAllocationEvent>((event, emit) {
-      if (event is NoAllocationInitialEvent) {
-        // emit.call(NoAllocationLoadingState());
-      }
+      if (event is NoAllocationInitialEvent) {}
     });
   }
 }

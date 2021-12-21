@@ -86,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (state is SignInCompletedState) {
+          bloc.isSubmit = false;
           bloc.isLoaded = true;
         }
       },

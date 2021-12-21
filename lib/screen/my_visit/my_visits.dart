@@ -57,11 +57,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
 
         if (state is GetSearchDataState) {
           if (state.getReturnValues != null) {
-            setState(() {
-              widget.bloc.selectedFilter = '';
-              widget.bloc.myVisitsData =
-                  DashboardAllModels.fromJson(state.getReturnValues);
-            });
+            widget.bloc.selectedFilter = '';
+            widget.bloc.myVisitsData =
+                DashboardAllModels.fromJson(state.getReturnValues);
           }
         }
       },
@@ -93,7 +91,12 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           for (Case element in widget.bloc.myVisitsData.result!.cases!) {
             if (element.collSubStatus == Constants.leftMessage ||
                 element.collSubStatus == Constants.doorLocked ||
-                element.collSubStatus == Constants.entryRestricted) {
+                element.collSubStatus == Constants.entryRestricted ||
+                element.collSubStatus == Constants.lineBusy ||
+                element.collSubStatus == Constants.switchOff ||
+                element.collSubStatus == Constants.rnr ||
+                element.collSubStatus == Constants.outOfNetwork ||
+                element.collSubStatus == Constants.disconnecting) {
               custNotMet!.add(element);
             }
           }
@@ -101,7 +104,11 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           for (Case element in widget.bloc.myVisitsData.result!.cases!) {
             if (element.collSubStatus == Constants.wrongAddress ||
                 element.collSubStatus == Constants.shifted ||
-                element.collSubStatus == Constants.addressNotFound) {
+                element.collSubStatus == Constants.addressNotFound ||
+                element.collSubStatus == Constants.doesNotExist ||
+                element.collSubStatus == Constants.incorrectNumber ||
+                element.collSubStatus == Constants.numberNotWorking ||
+                element.collSubStatus == Constants.notOpeartional) {
               custInvalid!.add(element);
             }
           }
@@ -112,6 +119,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
+                  backgroundColor: ColorResource.colorF7F8FA,
                   floatingActionButton: CustomFloatingActionButton(
                     onTap: () async {
                       widget.bloc.add(NavigateSearchEvent());
@@ -122,7 +130,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       BottomSheetAppbar(
-                        title: Languages.of(context)!.myVisits,
+                        title: widget.bloc.userType == Constants.fieldagent
+                            ? Languages.of(context)!.myVisits
+                            : Languages.of(context)!.myCalls,
                         onTap: () {
                           widget.bloc.add(SetTimeperiodValueEvent());
                           Navigator.pop(context);
@@ -218,8 +228,16 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           labelColor: ColorResource.color23375A,
                           unselectedLabelColor: ColorResource.colorC4C4C4,
                           tabs: [
-                            Tab(text: Languages.of(context)!.customerMet),
-                            Tab(text: Languages.of(context)!.customerNotMet),
+                            Tab(
+                                text:
+                                    widget.bloc.userType == Constants.fieldagent
+                                        ? Languages.of(context)!.customerMet
+                                        : Languages.of(context)!.connected),
+                            Tab(
+                                text:
+                                    widget.bloc.userType == Constants.fieldagent
+                                        ? Languages.of(context)!.customerNotMet
+                                        : Languages.of(context)!.unreachable),
                             Tab(text: Languages.of(context)!.invalid)
                           ],
                         ),

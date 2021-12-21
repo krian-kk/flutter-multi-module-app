@@ -17,27 +17,21 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'profile/dashboard?';
   static const String caseDetailsUrl =
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
-  static String eventDetailsUrl({String? caseId, String? usertype}) =>
+  static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl +
       version +
       fieldAgent +
-      'case-details-events/eventDetails?userType=$caseId&caseId=$usertype';
-
+      'case-details-events/eventDetails?caseId=$caseId';
   static const String priorityCaseList =
       baseUrl + version + fieldAgent + 'case-details/priority?';
   static const String buildRouteCaseList =
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl =
       baseUrl + version + fieldAgent + 'profile/userDetails';
-
-  // Call Customer Post API
   static const String callCustomerUrl =
       baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
-
-  // Mobile Info Post API
   static const String mobileInfoUrl =
       baseUrl + version + fieldAgent + 'profile/mobileInfo';
-
   // Post API ===================================================
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
@@ -59,58 +53,44 @@ class HttpUrl {
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
   // baseUrl + version + fieldAgent + '';
-  // Reques OTP
   static String requestOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
-  // Home Address in Profile Screen
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
-  // Resent OTP Post API
   static String resendOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
-  // Resent Password Post API
   static String resendPasswordUrl() =>
       baseUrl + version + fieldAgent + 'profile/resetPassword';
-  // RTP(Denial) Post API
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Reminder Post API
   static String reminderPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Repo Post API
   static String repoPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Dispute Post API
   static String disputePostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-  // Dispute Post API
   static String ptpPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // Unreachable Post API
   static String unreachableUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // ==================
-  // Customer Not Met Post API
   static String leftMessageUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -126,8 +106,6 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // Address Invalid Post API
   static String wrongAddressUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -143,8 +121,6 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
-
-  // Phone Invalid Post API
   static String doesNotExistUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +

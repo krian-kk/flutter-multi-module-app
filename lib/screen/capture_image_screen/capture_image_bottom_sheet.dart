@@ -50,9 +50,7 @@ class _CustomCaptureImageBottomSheetState
     if (result != null) {
       uploadFileLists =
           result.files.map((path) => path.path.toString()).toList();
-      // print(uploadFileLists);
     } else {
-      // User canceled the picker
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
   }
@@ -109,7 +107,6 @@ class _CustomCaptureImageBottomSheetState
                             remarksControlller,
                             validationRules: const ['required'],
                             isLabel: true,
-                            // validationRules: ['required'],
                           )),
                           const SizedBox(height: 15),
                         ],

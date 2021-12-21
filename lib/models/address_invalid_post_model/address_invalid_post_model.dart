@@ -28,7 +28,7 @@ class AddressInvalidPostModel {
     required this.agentName,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'e',
+    this.callerServiceID = 'Kaleyra_123',
     this.voiceCallEventCode = 'TELEVT011',
     this.invalidNumber,
     required this.agrRef,
@@ -43,12 +43,6 @@ class AddressInvalidPostModel {
     contact = json['contact'].forEach((v) {
       contact.add(v);
     });
-    // if (json['contact'] != null) {
-    //   contact = new List<Null>();
-    //   json['contact'].forEach((v) {
-    //     contact.add(new Null.fromJson(v));
-    //   });
-    // }
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];

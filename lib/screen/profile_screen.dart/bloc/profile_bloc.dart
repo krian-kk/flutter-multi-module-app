@@ -8,6 +8,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
+import 'package:origa/models/profile_api_result_model/profile_api_result_model.dart';
 import 'package:origa/models/profile_api_result_model/result.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/singleton.dart';
@@ -22,10 +23,11 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
 
-  // For Offline Purpose
-  ProfileResultModel offlineProfileValue = ProfileResultModel();
-  Future<Box<OrigoMapDynamicTable>> profileHiveBox =
-      Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
+  ProfileApiModel profileAPIValue = ProfileApiModel();
+  bool isNoInternet = false;
+  // ProfileResultModel offlineProfileValue = ProfileResultModel();
+  // Future<Box<OrigoMapDynamicTable>> profileHiveBox =
+  //     Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
 
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
@@ -42,33 +44,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternet = true;
         yield NoInternetState();
       } else {
+        isNoInternet = false;
         Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.profileUrl);
 
         if (getProfileData['success']) {
           Map<String, dynamic> jsonData = getProfileData['data'];
+          profileAPIValue = ProfileApiModel.fromJson(jsonData);
 
-          profileHiveBox.then((value) => value.put(
-              'EventDetails1',
-              OrigoMapDynamicTable(
-                status: jsonData['status'],
-                message: jsonData['message'],
-                result: jsonData['result'][0],
-              )));
-        } else {
-          // message = weatherData["data"];
-          // yield SevenDaysFailureState();
-        }
+          // profileHiveBox.then((value) => value.put(
+          //     'EventDetails1',
+          //     OrigoMapDynamicTable(
+          //       status: jsonData['status'],
+          //       message: jsonData['message'],
+          //       result: jsonData['result'][0],
+          //     )));
+        } else {}
       }
-      await profileHiveBox.then(
-        (value) => offlineProfileValue = ProfileResultModel.fromJson(
-            Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
-      );
-
-      // print(
-      //     'Offline Profile Value => ${jsonEncode(offlineProfileValue.address?.last)}');
+      // await profileHiveBox.then(
+      //   (value) => offlineProfileValue = ProfileResultModel.fromJson(
+      //       Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
+      // );
 
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
@@ -122,15 +121,4 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
   }
-  // {
-  //   on<ProfileEvent>((event, emit) {
-  //     if (event is ProfileInitialEvent) {
-  //       profileNavigationList.addAll([
-  //         ProfileNavigation('Notification'),
-  //         ProfileNavigation('Change language'),
-  //         ProfileNavigation('Change Password')
-  //       ]);
-  //     }
-  //   });
-  // }
 }

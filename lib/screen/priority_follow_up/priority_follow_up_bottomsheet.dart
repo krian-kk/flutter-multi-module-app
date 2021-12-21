@@ -60,13 +60,13 @@ class _PriorityFollowUpBottomSheetState
             child: Container(
               padding: const EdgeInsets.only(top: 16),
               child: Scaffold(
+                backgroundColor: ColorResource.colorF7F8FA,
                 floatingActionButton: CustomFloatingActionButton(
                   onTap: () async {
                     widget.bloc.add(NavigateSearchEvent());
                   },
                 ),
                 body: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     BottomSheetAppbar(
                       title: Languages.of(context)!.priorityFollowUp,

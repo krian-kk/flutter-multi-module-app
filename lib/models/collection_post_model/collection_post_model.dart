@@ -8,10 +8,6 @@ class CollectionPostModel {
   late String agentName;
   late String eventModule;
   late CollectionsContact contact;
-  // late CollectionsDeposition deposition;
-  // late String createdAt;
-  // late String lastAction;
-  // late String contractor;
   late String agrRef;
   late String? callID;
   late String? callingID;
@@ -29,10 +25,6 @@ class CollectionPostModel {
     required this.agentName,
     required this.eventModule,
     required this.contact,
-    // required this.deposition,
-    // required this.createdAt,
-    // required this.lastAction,
-    // this.contractor = '',
     required this.agrRef,
     this.callID,
     this.callingID,
@@ -51,10 +43,6 @@ class CollectionPostModel {
     agentName = json['agentName'];
     eventModule = json['eventModule'];
     contact = CollectionsContact.fromJson(json['contact']);
-    // deposition = CollectionsDeposition.fromJson(json['deposition']);
-    // createdAt = json['createdAt'];
-    // lastAction = json['lastAction'];
-    // contractor = json['contractor'];
     agrRef = json['agrRef'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -74,10 +62,6 @@ class CollectionPostModel {
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
-    // data['deposition'] = contact.toJson();
-    // data['createdAt'] = createdAt;
-    // data['lastAction'] = lastAction;
-    // data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
     data['callingID'] = callingID;

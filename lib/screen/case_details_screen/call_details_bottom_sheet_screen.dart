@@ -41,11 +41,13 @@ class _CallDetailsBottomSheetScreenState
               padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),
               child: CustomLoanUserDetails(
                 userName:
-                    widget.bloc.offlineCaseDetailsValue.caseDetails?.cust ?? '',
-                userId:
-                    widget.bloc.offlineCaseDetailsValue.caseDetails?.accNo ??
-                        '',
-                userAmount: widget.bloc.offlineCaseDetailsValue.caseDetails?.due
+                    widget.bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                        '_',
+                userId: widget
+                        .bloc.caseDetailsAPIValue.result?.caseDetails?.accNo ??
+                    '_',
+                userAmount: widget
+                        .bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0,
               ),
@@ -62,8 +64,8 @@ class _CallDetailsBottomSheetScreenState
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: widget.bloc.offlineCaseDetailsValue
-                                .callDetails?.length ??
+                        itemCount: widget.bloc.caseDetailsAPIValue.result
+                                ?.callDetails?.length ??
                             0,
                         itemBuilder: (context, i) {
                           return SizedBox(
@@ -72,20 +74,11 @@ class _CallDetailsBottomSheetScreenState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  widget.bloc.offlineCaseDetailsValue
-                                      .callDetails![i]['cType']
-                                      .toString()
-                                      .toUpperCase(),
-                                  // (i + 1 > 9)
-                                  //     ? Languages.of(context)!
-                                  //             .phoneNumber
-                                  //             .toUpperCase() +
-                                  //         '${i + 1}'
-                                  //     : Languages.of(context)!
-                                  //             .phoneNumber
-                                  //             .toUpperCase() +
-                                  //         '0'
-                                  //             '${i + 1}',
+                                  widget.bloc.caseDetailsAPIValue.result
+                                          ?.callDetails![i]['cType']
+                                          .toString()
+                                          .toUpperCase() ??
+                                      '_',
                                   fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
@@ -96,11 +89,6 @@ class _CallDetailsBottomSheetScreenState
                                   width: double.infinity,
                                   decoration: const BoxDecoration(
                                       color: ColorResource.colorF8F9FB,
-                                      // color: widget
-                                      //         .bloc.multiCallDetilsList[i].isDeclinded
-                                      //     ? ColorResource.colorD5344C
-                                      //         .withOpacity(0.17)
-                                      //     : ColorResource.colorF8F9FB,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.0))),
                                   child: Padding(
@@ -120,9 +108,11 @@ class _CallDetailsBottomSheetScreenState
                                                 children: [
                                                   CustomText(
                                                     widget
-                                                        .bloc
-                                                        .offlineCaseDetailsValue
-                                                        .callDetails![i]['value'],
+                                                            .bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.callDetails![i]
+                                                        ['value'],
                                                     fontSize: FontSize.fourteen,
                                                     fontWeight: FontWeight.w400,
                                                     fontStyle: FontStyle.normal,
@@ -130,18 +120,6 @@ class _CallDetailsBottomSheetScreenState
                                                         .color484848,
                                                   ),
                                                   const SizedBox(width: 10),
-                                                  // widget.bloc.multiCallDetilsList[i]
-                                                  //         .isDeclinded
-                                                  //     ? CustomText(
-                                                  //         Languages.of(context)!
-                                                  //             .declinedCall,
-                                                  //         fontSize: FontSize.fourteen,
-                                                  //         fontWeight: FontWeight.w400,
-                                                  //         fontStyle: FontStyle.normal,
-                                                  //         color: ColorResource
-                                                  //             .colorD5344C,
-                                                  //       )
-                                                  //     : SizedBox(),
                                                 ],
                                               ),
                                             ),
@@ -166,8 +144,9 @@ class _CallDetailsBottomSheetScreenState
                                                         Constants.callCustomer,
                                                         widget
                                                             .bloc
-                                                            .offlineCaseDetailsValue
-                                                            .callDetails));
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.callDetails));
                                               },
                                               child: Container(
                                                   decoration: const BoxDecoration(

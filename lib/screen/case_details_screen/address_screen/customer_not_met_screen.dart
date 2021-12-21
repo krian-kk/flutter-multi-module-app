@@ -28,22 +28,11 @@ class CustomerNotMetScreen extends StatefulWidget {
 }
 
 class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
-  // TextEditingController nextActionDateController = TextEditingController();
-  // TextEditingController remarksController = TextEditingController();
-
   String selectedOptionBottomSheetButton = '';
-
-  // late FocusNode nextActionDateFocusNode;
-  // late FocusNode remarksFocusNode;
 
   @override
   void initState() {
     super.initState();
-    // widget.bloc.addressCustomerNotMetNextActionDateController.text =
-    //     DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
-    // nextActionDateFocusNode = FocusNode();
-    // remarksFocusNode = FocusNode();
-    // setState(() {});
   }
 
   @override
@@ -114,7 +103,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               ImageResource.calendar,
                               fit: BoxFit.scaleDown,
                             ),
-                            // validationRules: ['required'],
                             onEditing: () {
                               widget.bloc
                                   .addressCustomerNotMetNextActionDateFocusNode
@@ -137,8 +125,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         SizedBox(
                           width: double.infinity,
                           child: TextFormField(
-                            // keyboardType: TextInputType.multiline,
-                            // minLines: 2,
                             controller: widget
                                 .bloc.addressCustomerNotMetRemarksController,
                             focusNode: widget
@@ -149,14 +135,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               }
                               return null;
                             },
-                            // maxLines: null,
-                            // onFieldSubmitted: (s) {
-                            //   remarksFocusNode.unfocus();
-                            // },
-                            // onChanged: (S) {
-                            //   remarksFocusNode.unfocus();
-                            // },
-                            // textInputAction: TextInputAction.newline,
                             decoration: InputDecoration(
                                 hintText:
                                     Languages.of(context)!.writeYourRemarksHere,
@@ -165,7 +143,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                     const TextStyle(color: Color(0xFF424242))),
                           ),
                         ),
-                        // TextField(),
                         const SizedBox(height: 19),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),
@@ -175,15 +152,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           onTap: () => widget.bloc.add(
                               ClickOpenBottomSheetEvent(
                                   Constants.captureImage,
-                                  widget.bloc.offlineCaseDetailsValue
-                                      .addressDetails)),
-
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails)),
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
-                          // onTap: () => pickImage(source, cameraDialogueContext)
                           trailingWidget:
                               SvgPicture.asset(ImageResource.captureImage),
                         ),
@@ -195,34 +170,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             optionBottomSheetButtonList,
                             context,
                           ),
-                          // children: [
-                          //   SizedBox(
-                          //     width: 179,
-                          //     child: CustomButton(
-                          //       StringResource.addNewContact.toUpperCase(),
-                          //       buttonBackgroundColor:
-                          //           ColorResource.color23375A,
-                          //       borderColor: ColorResource.color23375A,
-                          //       textColor: ColorResource.colorFFFFFF,
-                          //       fontSize: FontSize.twelve,
-                          //       fontWeight: FontWeight.w700,
-                          //       cardShape: 75,
-                          //     ),
-                          //   ),
-                          //   SizedBox(
-                          //     width: 157,
-                          //     child: CustomButton(
-                          //       Languages.of(context)!.repo.toUpperCase(),
-                          //       buttonBackgroundColor:
-                          //           ColorResource.colorFFFFFF,
-                          //       borderColor: ColorResource.color23375A,
-                          //       textColor: ColorResource.color23375A,
-                          //       fontSize: FontSize.twelve,
-                          //       fontWeight: FontWeight.w700,
-                          //       cardShape: 75,
-                          //     ),
-                          //   ),
-                          // ],
                         ),
                         const SizedBox(height: 135),
                       ],
@@ -249,7 +196,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           widget.bloc.add(
             ClickOpenBottomSheetEvent(
               element.stringResourceValue,
-              widget.bloc.offlineCaseDetailsValue.addressDetails,
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails,
             ),
           );
         },
@@ -269,7 +216,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),
