@@ -25,7 +25,6 @@
 // //   }
 // // }
 
-
 // import 'dart:convert';
 // import 'dart:io';
 
@@ -317,17 +316,17 @@
 //     }
 //     _formKey.currentState!.save();
 //   }
-  
+
 //   LoginResponseModel loginResponse =
 //       LoginResponseModel();
 
 //   Future<void> keyCloak() async {
 //     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    
+
 //       var params =
 //       {
-//       "userName": "YES_suvodeepcollector", 
-//       "agentRef": "YES_suvodeepcollector", 
+//       "userName": "YES_suvodeepcollector",
+//       "agentRef": "YES_suvodeepcollector",
 //       "password": "Agent1234"
 //       };
 //         print('---------before execute----------');
@@ -352,7 +351,7 @@
 //       //         "password": "Agent1234",
 //       //         "grant_type": "password",
 //       //         "client_id": "admin-cli",
-//       //       }; 
+//       //       };
 
 //           // Response response = await _dio.post(
 //           //   "http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token",
@@ -362,7 +361,6 @@
 //           //   data: jsonEncode(params),
 //           // );
 //           // print(params);
-          
 
 //         // var response = await http.post(
 //         //     Uri.parse(HttpUrl.login_keycloak),
