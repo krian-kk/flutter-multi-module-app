@@ -1,8 +1,21 @@
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/auto_calling_model.dart';
+import 'package:origa/models/build_route_model/build_route_model.dart';
+import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/search_model/search_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
 part 'allocation_state.dart';
@@ -12,16 +25,34 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int selectedOption = 0;
 
+  String? userType;
+  String? agentName;
+  String? agrRef;
+
+  BuildRouteModel buildRouteData = BuildRouteModel();
+
   String selectedDistance = StringResource.all;
+
+  // SearchModel searchData = SearchModel();
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
+  bool isNoInternet = false;
 
-  List<String> selectOptions = [
-    StringResource.priority,
-    StringResource.buildRoute,
-    StringResource.mapView,
-  ];
+  int? messageCount = 0;
+  bool isMessageThere = false;
+
+  int page = 1;
+
+  // There is next page or not
+  bool hasNextPage = true;
+  // Show autocalling
+  bool isAutoCalling = false;
+  // Enable or Disable the search floating button
+  bool isShowSearchFloatingButton = true;
+
+  List<String> selectOptions = [];
+  List<AutoCallingModel> mobileNumberList = [];
 
   List<String> filterBuildRoute = [
     StringResource.all,
@@ -32,43 +63,175 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List<AllocationListModel> allocationList = [];
   late Position currentLocation;
 
+  // Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
+  //     Hive.openBox<OrigoDynamicTable>('testBox4');
+
+  // AllocationListModel searchResultData = AllocationListModel();
+  List starCount = [];
+  List<Result> resultList = [];
+
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
       yield AllocationLoadingState();
-      // print('--------------NK-------');
-      allocationList.addAll([
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 3,97,553.67',
-          address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-          date: 'Today, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      // _pref.setString(Constants.buildcontext, event.context.toString());
+      Singleton.instance.buildContext = event.context;
+      userType = _pref.getString(Constants.userType);
+      agentName = _pref.getString(Constants.agentName);
+      agrRef = _pref.getString(Constants.agentRef);
+      isShowSearchPincode = false;
+
+      // Here find FIELDAGENT or TELECALLER and set in allocation screen
+      if (userType == Constants.fieldagent) {
+        selectOptions = [
+          StringResource.priority,
+          StringResource.buildRoute,
+          StringResource.mapView,
+        ];
+      } else {
+        selectOptions = [
+          StringResource.priority,
+          StringResource.autoCalling,
+        ];
+      }
+
+      mobileNumberList.addAll([
+        AutoCallingModel(
+          mobileNumber: '9876321230',
+          callResponse: 'Declined Call',
         ),
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'New User',
-          amount: '₹ 5,54,433.67',
-          address: '2/345, 6th Main Road, Bangalore - 534544',
-          date: 'Thu, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
+        AutoCallingModel(
+          mobileNumber: '9876321230',
         ),
-        AllocationListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 8,97,553.67',
-          address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-          date: 'Sat, Thu 18 Oct, 2021',
-          loanID: 'TVS / TVSF_BFRT6524869550',
+        AutoCallingModel(
+          mobileNumber: '9876321230',
         ),
       ]);
 
-      yield AllocationLoadedState();
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternet = true;
+        yield NoInternetConnectionState();
+      } else {
+        isNoInternet = false;
+
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=${Constants.pageNo}' +
+                '&limit=${Constants.limit}'
+            //  +"&userType=$userType",
+            );
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in priorityListData['data']['result']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+        }
+      }
+      yield AllocationLoadedState(successResponse: resultList);
+    }
+
+    if (event is TapPriorityEvent) {
+      yield CaseListViewLoadingState();
+
+      page = 1;
+      hasNextPage = true;
+      // Enable the search and hide autocalling screen
+      isAutoCalling = false;
+      isShowSearchFloatingButton = true;
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=${Constants.pageNo}' +
+                '&limit=${Constants.limit}');
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in priorityListData['data']['result']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+        }
+      }
+      yield TapPriorityState(successResponse: resultList);
+    }
+
+    if (event is PriorityLoadMoreEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.GET,
+            HttpUrl.priorityCaseList +
+                'pageNo=$page' +
+                '&limit=${Constants.limit}');
+        if (priorityListData['data']['result'] != null) {
+          for (var element in priorityListData['data']['result']) {
+            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+                true) {
+              starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
+                  .starredCase as List);
+            }
+          }
+          hasNextPage = false;
+        }
+      }
+      yield PriorityLoadMoreState(successResponse: resultList);
+    }
+
+    if (event is TapBuildRouteEvent) {
+      yield CaseListViewLoadingState();
+
+      page = 1;
+      hasNextPage = true;
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> buildRouteListData =
+            await APIRepository.apiRequest(
+                APIRequestType.GET,
+                HttpUrl.buildRouteCaseList +
+                    "lat=${event.paramValues.lat}&" +
+                    "lng=${event.paramValues.long}&" +
+                    "maxDistMeters=${event.paramValues.maxDistMeters}");
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in buildRouteListData['data']['result']['cases']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+        }
+      }
+      yield TapBuildRouteState(successResponse: resultList);
     }
 
     if (event is MapViewEvent) {
       yield MapViewState();
+    }
+    if (event is TapAreYouAtOfficeOptionsEvent) {
+      yield TapAreYouAtOfficeOptionsState();
     }
 
     if (event is MessageEvent) {
@@ -80,12 +243,54 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is NavigateCaseDetailEvent) {
-      yield NavigateCaseDetailState();
+      yield NavigateCaseDetailState(paramValues: event.paramValues);
     }
 
     if (event is FilterSelectOptionEvent) {
       yield FilterSelectOptionState();
-      selectedOption = 0;
+    }
+
+    if (event is SearchReturnDataEvent) {
+      yield CaseListViewLoadingState();
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> getSearchResultData =
+            await APIRepository.apiRequest(
+                APIRequestType.GET,
+                HttpUrl.searchUrl +
+                    "starredOnly=${event.returnValue.isStarCases}&" +
+                    "recentActivity=${event.returnValue.isMyRecentActivity}&" +
+                    "accNo=${event.returnValue.accountNumber}&" +
+                    "cust=${event.returnValue.customerName}&" +
+                    "dpdStr=${event.returnValue.dpdBucket}&" +
+                    "customerId=${event.returnValue.customerID}&" +
+                    "pincode=${event.returnValue.pincode}&" +
+                    "collSubStatus=${event.returnValue.status}");
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in getSearchResultData['data']['result']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+        }
+
+        isShowSearchPincode = true;
+        selectedOption = 3;
+        showFilterDistance = false;
+      }
+      yield SearchReturnDataState();
+    }
+
+    if (event is ShowAutoCallingEvent) {
+      isAutoCalling = true;
+      isShowSearchFloatingButton = false;
     }
   }
 }

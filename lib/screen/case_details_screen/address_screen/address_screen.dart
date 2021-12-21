@@ -8,11 +8,11 @@ import 'package:origa/screen/case_details_screen/address_screen/customer_met_scr
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -22,7 +22,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 class AddressScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  const AddressScreen({Key? key, required this.bloc}) : super(key: key);
+  final int index;
+  const AddressScreen({Key? key, required this.bloc, required this.index})
+      : super(key: key);
 
   @override
   _AddressScreenState createState() => _AddressScreenState();
@@ -55,16 +57,9 @@ class _AddressScreenState extends State<AddressScreen>
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
-        if (state is ClickAddressBottomSheetState) {}
-        if (state is ClickPopState) {
-          Navigator.pop(context);
-        }
-        if (state is ClickViewMapState) {
-          openViewMapBottomSheet(context);
-        }
-        if (state is ClickEventDetailsState) {
-          openEventDetailsBottomSheet(context);
-        }
+        // if (state is ClickViewMapState) {
+        //   // openViewMapBottomSheet(context);
+        // }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
@@ -104,8 +99,16 @@ class _AddressScreenState extends State<AddressScreen>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const CustomText(
-                                  'ADDRESS 01',
+                                CustomText(
+                                  widget
+                                          .bloc
+                                          .caseDetailsAPIValue
+                                          .result
+                                          ?.addressDetails![widget.index]
+                                              ['cType']
+                                          .toString()
+                                          .toUpperCase() ??
+                                      '_',
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.fourteen,
                                   fontStyle: FontStyle.normal,
@@ -117,8 +120,7 @@ class _AddressScreenState extends State<AddressScreen>
                                     SvgPicture.asset(
                                         ImageResource.activePerson),
                                     InkWell(
-                                        onTap: () =>
-                                            widget.bloc.add(ClickPopEvent()),
+                                        onTap: () => Navigator.pop(context),
                                         child: Container(
                                           padding: const EdgeInsets.all(2),
                                           child: SvgPicture.asset(
@@ -128,11 +130,19 @@ class _AddressScreenState extends State<AddressScreen>
                                 )
                               ],
                             ),
-                            const Flexible(
+                            Flexible(
                               child: SizedBox(
                                 width: 255,
                                 child: CustomText(
-                                  '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+                                  widget
+                                          .bloc
+                                          .caseDetailsAPIValue
+                                          .result
+                                          ?.addressDetails![widget.index]
+                                              ['value']
+                                          .toString()
+                                          .toUpperCase() ??
+                                      '_',
                                   fontWeight: FontWeight.w400,
                                   fontSize: FontSize.fourteen,
                                   fontStyle: FontStyle.normal,
@@ -144,8 +154,11 @@ class _AddressScreenState extends State<AddressScreen>
                               children: [
                                 Expanded(
                                     child: GestureDetector(
-                                  onTap: () =>
-                                      widget.bloc.add(ClickViewMapEvent()),
+                                  onTap: () => widget.bloc.add(
+                                      ClickOpenBottomSheetEvent(
+                                          Constants.viewMap,
+                                          widget.bloc.caseDetailsAPIValue.result
+                                              ?.callDetails)),
                                   child: SizedBox(
                                       width: 10,
                                       child: Container(
@@ -159,7 +172,7 @@ class _AddressScreenState extends State<AddressScreen>
                                                   ImageResource.direction),
                                               const SizedBox(width: 10),
                                               const CustomText(
-                                                StringResource.viewMap,
+                                                Constants.viewMap,
                                                 fontSize: FontSize.fourteen,
                                                 fontWeight: FontWeight.w700,
                                                 color:
@@ -172,8 +185,13 @@ class _AddressScreenState extends State<AddressScreen>
                                 Expanded(
                                     child: CustomButton(
                                   Languages.of(context)!.eventDetails,
-                                  onTap: () =>
-                                      widget.bloc.add(ClickEventDetailsEvent()),
+                                  onTap: () => widget.bloc.add(
+                                    ClickOpenBottomSheetEvent(
+                                      Constants.eventDetails,
+                                      widget.bloc.caseDetailsAPIValue.result
+                                          ?.addressDetails,
+                                    ),
+                                  ),
                                   textColor: ColorResource.color23375A,
                                   borderColor: ColorResource.color23375A,
                                   buttonBackgroundColor:
@@ -324,7 +342,25 @@ class _AddressScreenState extends State<AddressScreen>
                                       // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
-                                      // onTap: () => bloc.add(ClickMessageEvent()),
+
+                                      onTap: () {
+                                        if (widget
+                                            .bloc
+                                            .addressCustomerNotMetFormKey
+                                            .currentState!
+                                            .validate()) {
+                                          if (widget.bloc
+                                                  .addressSelectedCustomerNotMetClip !=
+                                              '') {
+                                            widget.bloc.add(
+                                                ClickCustomerNotMetButtonEvent(
+                                                    context));
+                                          } else {
+                                            AppUtils.showToast(
+                                                Constants.pleaseSelectOptions);
+                                          }
+                                        } else {}
+                                      },
                                       cardShape: 5,
                                     )
                                   : CustomButton(
@@ -334,7 +370,11 @@ class _AddressScreenState extends State<AddressScreen>
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
-                                      // onTap: () => bloc.add(ClickMessageEvent()),
+                                      onTap: () {
+                                        widget.bloc.add(
+                                            ClickAddressInvalidButtonEvent(
+                                                context));
+                                      },
                                       cardShape: 5,
                                     ),
                             ),
@@ -349,46 +389,30 @@ class _AddressScreenState extends State<AddressScreen>
     );
   }
 
-  openEventDetailsBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return CustomEventDetailsBottomSheet(
-            Languages.of(context)!.eventDetails.toUpperCase(), widget.bloc);
-      },
-    );
-  }
-
-  openViewMapBottomSheet(BuildContext buildContext) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return const CustomMapViewBottomSheet();
-        // return CustomEventDetailsBottomSheet(
-        //   Languages.of(context)!.eventDetails.toUpperCase(),
-        //   widget.bloc,
-        // );
-      },
-    );
-  }
+  // openViewMapBottomSheet(BuildContext buildContext) {
+  //   showModalBottomSheet(
+  //     isScrollControlled: true,
+  //     enableDrag: false,
+  //     isDismissible: false,
+  //     context: buildContext,
+  //     backgroundColor: ColorResource.colorFFFFFF,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(
+  //         top: Radius.circular(20),
+  //       ),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       return WillPopScope(
+  //         onWillPop: () async => false,
+  //         child: const CustomMapViewBottomSheet(),
+  //       );
+  //       // return CustomEventDetailsBottomSheet(
+  //       //   Languages.of(context)!.eventDetails.toUpperCase(),
+  //       //   widget.bloc,
+  //       // );
+  //     },
+  //   );
+  // }
 }
 
 class CustomMapViewBottomSheet extends StatefulWidget {

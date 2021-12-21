@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/selectable.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -12,8 +13,9 @@ class SingleSelectionBottomSheet extends StatefulWidget {
   Function onDismiss;
   Function onSelect;
 
-  SingleSelectionBottomSheet(
-      this.selectableList, this.onDismiss, this.onSelect);
+  SingleSelectionBottomSheet(this.selectableList, this.onDismiss, this.onSelect,
+      {Key? key})
+      : super(key: key);
 
   @override
   _SingleSelectionBottomSheetState createState() =>
@@ -69,7 +71,7 @@ class _SingleSelectionBottomSheetState
                               child:
                                   const Icon(Icons.close, color: Colors.white)),
                         ),
-                        hintText: StringResource.search,
+                        hintText: Languages.of(context)!.search,
                         hintStyle: const TextStyle(color: Colors.white)),
                   ),
                 ),
@@ -86,7 +88,7 @@ class _SingleSelectionBottomSheetState
                                       title: CustomText(
                                           widget.filterList[i].displayName),
                                       trailing: widget.filterList[i].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )
@@ -110,7 +112,7 @@ class _SingleSelectionBottomSheetState
                                           .selectableList[index].displayName),
                                       trailing: widget
                                               .selectableList[index].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )

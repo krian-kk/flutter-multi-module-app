@@ -8,32 +8,31 @@ import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'bloc/map_state.dart';
 
 class MapScreen extends StatefulWidget {
-  MapBloc bloc;
+  final MapBloc bloc;
 
-  MapScreen(this.bloc);
+  const MapScreen(this.bloc, {Key? key}) : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng _center = const LatLng(11.0168, 76.9558);
+  static const LatLng _center = LatLng(11.0168, 76.9558);
 
   final Set<Marker> _markers = {};
   late BitmapDescriptor customIcon;
 
-  LatLng _lastMapPosition = _center;
+  final LatLng _lastMapPosition = _center;
 
   MapType _currentMapType = MapType.normal;
 
   @override
   void initState() {
-    // TODO: implement initState
     // make sure to initialize before map loading
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+            const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
         .then((d) {
       customIcon = d;
     });
@@ -55,7 +54,7 @@ class _MapScreenState extends State<MapScreen> {
         markerId: MarkerId(_lastMapPosition.toString()),
         position: LatLng(widget.bloc.currentLocation.latitude,
             widget.bloc.currentLocation.longitude),
-        infoWindow: InfoWindow(
+        infoWindow: const InfoWindow(
           title: 'Really cool place',
           snippet: '5 Star Rating',
         ),
@@ -80,58 +79,58 @@ class _MapScreenState extends State<MapScreen> {
         child: BlocBuilder(
           bloc: widget.bloc,
           builder: (BuildContext context, MapState state) {
-            return Container(
+            return SizedBox(
               height: MediaQuery.of(context).size.height * 80,
               child: Scaffold(
-                  body: (state is MapLoadingState)
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Stack(
-                          children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 90),
-                              child: GoogleMap(
-                                onMapCreated: _onMapCreated,
-                                initialCameraPosition: const CameraPosition(
-                                  target: _center,
-                                  zoom: 11.0,
-                                ),
-                                mapType: _currentMapType,
-                                markers: _markers,
-                                onCameraMove: _onCameraMove,
-                                myLocationButtonEnabled: true,
-                                myLocationEnabled: true,
+                body: (state is MapLoadingState)
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Stack(
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 90),
+                            child: GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              initialCameraPosition: const CameraPosition(
+                                target: _center,
+                                zoom: 11.0,
+                              ),
+                              mapType: _currentMapType,
+                              markers: _markers,
+                              onCameraMove: _onCameraMove,
+                              myLocationButtonEnabled: true,
+                              myLocationEnabled: true,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Column(
+                                children: <Widget>[
+                                  FloatingActionButton(
+                                    onPressed: _onMapTypeButtonPressed,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.padded,
+                                    backgroundColor: Colors.green,
+                                    child: const Icon(Icons.map, size: 36.0),
+                                  ),
+                                  const SizedBox(height: 16.0),
+                                  FloatingActionButton(
+                                    onPressed: _onAddMarkerButtonPressed,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.padded,
+                                    backgroundColor: Colors.green,
+                                    child: const Icon(Icons.add_location,
+                                        size: 36.0),
+                                  ),
+                                ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Column(
-                                  children: <Widget>[
-                                    FloatingActionButton(
-                                      onPressed: _onMapTypeButtonPressed,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.padded,
-                                      backgroundColor: Colors.green,
-                                      child: const Icon(Icons.map, size: 36.0),
-                                    ),
-                                    SizedBox(height: 16.0),
-                                    FloatingActionButton(
-                                      onPressed: _onAddMarkerButtonPressed,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.padded,
-                                      backgroundColor: Colors.green,
-                                      child: const Icon(Icons.add_location,
-                                          size: 36.0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
               ),
             );
           },

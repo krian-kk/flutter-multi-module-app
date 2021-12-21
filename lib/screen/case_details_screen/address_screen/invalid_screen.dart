@@ -4,11 +4,10 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -25,7 +24,6 @@ class AddressInvalidScreen extends StatefulWidget {
 }
 
 class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
-  final formKey = GlobalKey<FormState>();
   String selectedOptionBottomSheetButton = '';
 
   @override
@@ -44,17 +42,15 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.repo, StringResource.repo),
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
+          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
-        key: formKey,
-        autovalidate: true,
+        key: widget.bloc.addressInvalidFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -102,7 +98,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                                   const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
-                      // TextField(),
                       const SizedBox(height: 19),
                       CustomButton(
                         Languages.of(context)!.captureImage.toUpperCase(),
@@ -114,9 +109,10 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         borderColor: ColorResource.colorBEC4CF,
                         buttonBackgroundColor: ColorResource.colorBEC4CF,
                         isLeading: true,
-                        onTap: () => openBottomSheet(
-                            context, StringResource.captureImage),
-                        // onTap: () => pickImage(source, cameraDialogueContext)
+                        onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+                            Constants.captureImage,
+                            widget.bloc.caseDetailsAPIValue.result
+                                ?.addressDetails)),
                         trailingWidget:
                             SvgPicture.asset(ImageResource.captureImage),
                       ),
@@ -129,51 +125,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           context,
                         ),
                       ),
-                      // Wrap(
-                      //   spacing: 15,
-                      //   children: [
-                      //     SizedBox(
-                      //       width: 179,
-                      //       child: CustomButton(
-                      //         StringResource.addNewContact.toUpperCase(),
-                      //         buttonBackgroundColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         textColor: ColorResource.colorFFFFFF,
-                      //         fontSize: FontSize.twelve,
-                      //         fontWeight: FontWeight.w700,
-                      //         cardShape: 75,
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 157,
-                      //       child: CustomButton(
-                      //         Languages.of(context)!.repo.toUpperCase(),
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //         borderColor: ColorResource.color23375A,
-                      //         textColor: ColorResource.color23375A,
-                      //         fontSize: FontSize.twelve,
-                      //         fontWeight: FontWeight.w700,
-                      //         cardShape: 75,
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 165,
-                      //       child: CustomButton(
-                      //         Languages.of(context)!
-                      //             .otherFeedBack
-                      //             .toUpperCase(),
-                      //         // onTap: () => openBottomSheet(
-                      //         //     context, StringResource.otherFeedback),
-                      //         cardShape: 75,
-                      //         fontSize: FontSize.twelve,
-                      //         textColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      const SizedBox(height: 120)
+                      const SizedBox(height: 135)
                     ],
                   ),
                 ),
@@ -194,10 +146,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          // openBottomSheet(
-          //   context,
-          //   element.stringResourceValue,
-          // );
+          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails));
         },
         child: Container(
           height: 45,
@@ -215,7 +165,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),
@@ -226,48 +175,19 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
     return widgets;
   }
 
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case StringResource.captureImage:
-            return CustomCaptureImageBottomSheet(
-                Languages.of(context)!.captureImage);
-          default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-        }
-      },
-    );
-  }
-
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;
+          widget.bloc.addressSelectedInvalidClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle ==
-                    widget.bloc.addressSelectedCustomerNotMetClip
+            color: element.clipTitle == widget.bloc.addressSelectedInvalidClip
                 ? ColorResource.colorF1BCC4
                 : ColorResource.colorE7E7E7,
           ),

@@ -18,12 +18,10 @@ class CaseDetailsProirityModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result.map((v) => v.toJson()).toList();
-    }
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    data['result'] = result.map((v) => v.toJson()).toList();
     return data;
   }
 }
@@ -57,14 +55,14 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['due'] = this.due;
-    data['followUpDate'] = this.followUpDate;
-    data['customerId'] = this.customerId;
-    data['pincode'] = this.pincode;
-    data['caseId'] = this.caseId;
-    data['address'] = this.address;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['due'] = due;
+    data['followUpDate'] = followUpDate;
+    data['customerId'] = customerId;
+    data['pincode'] = pincode;
+    data['caseId'] = caseId;
+    data['address'] = address;
     return data;
   }
 }

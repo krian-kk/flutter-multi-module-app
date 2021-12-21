@@ -14,7 +14,7 @@ class LanguageHi extends Languages {
   String get password => 'पासवर्ड';
 
   @override
-  String get userName => 'उपयोगकर्ता नाम';
+  String get userId => 'उपयोगकर्ता नाम';
 
   @override
   String get rememberMe => 'मुझे याद रखें';
@@ -107,6 +107,9 @@ class LanguageHi extends Languages {
   String get myVisits => 'मेरा दौरा';
 
   @override
+  String get myCalls => 'मेरी कॉल';
+
+  @override
   String get myDeposists => 'मेरे जमाकर्ता';
 
   @override
@@ -162,6 +165,9 @@ class LanguageHi extends Languages {
 
   @override
   String get ifscCode => 'आईएफएससी कोड*';
+
+  @override
+  String get accNumber => 'खाता संख्या*';
 
   @override
   String get branchLocation => 'शाखा का स्थान*';
@@ -582,4 +588,64 @@ class LanguageHi extends Languages {
 
   @override
   String get searchErrorMessage => 'आपको कम से कम एक फ़ील्ड भरना चाहिए';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get check => 'जाँच';
+
+  @override
+  String get resendOTP => 'Resend OTP?';
+
+  @override
+  String get sendOTP => 'SEND OTP';
+
+  @override
+  String get businessLoss => 'Business Loss';
+
+  @override
+  String get covidImpacted => 'Covid Impacted';
+
+  @override
+  String get financialReason => 'Financial Reason';
+
+  @override
+  String get incomeLossInTheFamily => 'Income Loss In The Family';
+
+  @override
+  String get intention => 'Intention ';
+
+  @override
+  String get jobLoss => 'Job Loss';
+
+  @override
+  String get jobUncertaintly => 'Job Uncertaintly';
+
+  @override
+  String get medicalIssue => 'Medical Issue';
+
+  @override
+  String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं';
+
+  @override
+  String get mode => 'Mode';
+
+  @override
+  String get saveNewPassword => 'SAVE NEW PASSWORD';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get enterConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get clear => 'Clear';
 }

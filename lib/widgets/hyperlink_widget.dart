@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/font.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -6,9 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'custom_text.dart';
 
 class HyperlinkWidget extends StatefulWidget {
-  String title;
-  String link;
-  HyperlinkWidget(this.title, this.link);
+  final String title;
+  final String link;
+  const HyperlinkWidget(this.title, this.link, {Key? key}) : super(key: key);
   @override
   _HyperlinkWidgetState createState() => _HyperlinkWidgetState();
 }

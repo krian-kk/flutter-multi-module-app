@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/event_detail_model.dart';
+import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:intl/intl.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  const CustomEventDetailsBottomSheet(
-    this.cardTitle,
-    this.bloc, {
-    Key? key,
-  }) : super(key: key);
+  const CustomEventDetailsBottomSheet(this.cardTitle, this.bloc,
+      {Key? key, required this.customeLoanUserWidget})
+      : super(key: key);
   final String cardTitle;
+  final Widget customeLoanUserWidget;
 
   @override
   State<CustomEventDetailsBottomSheet> createState() =>
@@ -32,65 +31,66 @@ class _CustomEventDetailsBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18.0),
-              child: CustomLoanUserDetails(
-                userName: 'DEBASISH PATNAIK',
-                userId: 'TVSF_BFRT6458922993',
-                userAmount: 397553.67,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.89,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Colors.transparent,
+          body: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
               ),
-            ),
-            Expanded(
-                child: ListView.builder(
-              itemCount: widget.bloc.expandEvent.length,
-              itemBuilder: (context, int index) =>
-                  expandList(widget.bloc.expandEvent, index),
-            )),
-          ],
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: widget.customeLoanUserWidget,
               ),
+              const SizedBox(height: 10),
+              Expanded(
+                  child: ListView.builder(
+                itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
+                itemBuilder: (context, int index) =>
+                    expandList(widget.bloc.eventDetailsAPIValue.result!, index),
+              )),
             ],
           ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 190,
-                  child: CustomButton(
-                    Languages.of(context)!.okay.toUpperCase(),
-                    onTap: () => Navigator.pop(context),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    // onTap: () => bloc.add(ClickMessageEvent()),
-                    cardShape: 5,
-                  ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(.25),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
                 ),
               ],
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 190,
+                    child: CustomButton(
+                      Languages.of(context)!.okay.toUpperCase(),
+                      onTap: () => Navigator.pop(context),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      cardShape: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -98,7 +98,7 @@ class _CustomEventDetailsBottomSheetState
     );
   }
 
-  expandList(List<EventExpandModel> expandedList, int index) {
+  expandList(List<EventDetailsResultModel> expandedList, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -110,14 +110,6 @@ class _CustomEventDetailsBottomSheetState
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
             color: ColorResource.colorF4E8E4,
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey.withOpacity(0.2),
-            //     spreadRadius: 2,
-            //     blurRadius: 3,
-            //     offset: Offset(0, 3), // changes position of shadow
-            //   ),
-            // ],
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 3, 14, 15),
@@ -130,14 +122,19 @@ class _CustomEventDetailsBottomSheetState
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if (expandedList[index].date != null)
+                      CustomText(
+                        DateFormat('dd MMMM yyyy')
+                            .format(DateTime.parse(
+                                expandedList[index].date.toString()))
+                            .toString()
+                            .toUpperCase(),
+                        fontSize: FontSize.seventeen,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color000000,
+                      ),
                     CustomText(
-                      expandedList[index].date,
-                      fontSize: FontSize.seventeen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                    CustomText(
-                      expandedList[index].header,
+                      expandedList[index].eventType.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
@@ -147,32 +144,46 @@ class _CustomEventDetailsBottomSheetState
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: [
-                  CustomText(
-                    expandedList[index].colloctorID,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
+                  if (expandedList[index].date != null)
+                    CustomText(
+                      expandedList[index].caseId.toString().toUpperCase(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  const SizedBox(height: 8),
+                  if (expandedList[index].date != null)
+                    CustomText(
+                      Languages.of(context)!.mode.toString().toUpperCase(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].mode != null)
+                    CustomText(
+                      expandedList[index].mode.toString().toUpperCase(),
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  const SizedBox(height: 8),
                   const SizedBox(height: 8),
                   CustomText(
-                    Languages.of(context)!.remarks.replaceAll('*', ''),
+                    Languages.of(context)!
+                        .remarks
+                        .replaceAll('*', '')
+                        .toUpperCase(),
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                   CustomText(
-                    expandedList[index].remarks,
+                    expandedList[index].remarks ?? '-',
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 ],
-                onExpansionChanged: (bool status) {
-                  setState(() {
-                    expandedList[index].expanded =
-                        !expandedList[index].expanded;
-                  });
-                },
               ),
             ),
           ),

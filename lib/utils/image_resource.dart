@@ -5,6 +5,7 @@ class ImageResource {
   static const String checkOn = 'assets/svg/check_on.svg';
   // static const checkOff = 'assets/check_off.png';
   static const String checkOff = 'assets/svg/check_off.svg';
+  static const caseNotAvailable = 'assets/caseNotAvailable.png';
   // static const back = 'assets/back.png';
   // static const back1 = 'assets/svg/back.svg';
   // static const viewShape = 'assets/shape.png';
@@ -53,4 +54,12 @@ class ImageResource {
   static const String profileImagePicker =
       'assets/svg/profile_image_picker.svg';
   static const String declinedCall = 'assets/svg/declined.svg';
+  static const String dropDownIncreaseArrow =
+      'assets/svg/drop_down_increase_arrow.svg';
+  static const String dropDownDecreaseArrow =
+      'assets/svg/drop_down_decrease_arrow.svg';
+  static const String clock =
+      'assets/svg/clock.svg';
+  static const String noCaseAvailable =
+      'assets/svg/noCaseAvailable.svg';
 }

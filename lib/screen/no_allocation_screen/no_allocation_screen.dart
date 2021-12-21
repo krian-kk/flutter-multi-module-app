@@ -154,7 +154,6 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
                 width: 200,
                 child: CustomButton(
                   Languages.of(context)!.call.toUpperCase(),
-                  // onTap: () => bloc.add(ClickMessageEvent()),
                   fontSize: FontSize.sixteen,
                   cardShape: 5,
                   isLeading: true,

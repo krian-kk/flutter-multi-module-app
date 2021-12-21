@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/bloc/casedetails_telecaller_bloc.dart';
-import 'package:origa/Telecaller/screens/case_details_telecaller_screen.dart/case_details_telecaller_screen.dart';
-import 'package:origa/Telecaller/screens/phone_t_screen.dart/bloc/phone_telecaller_bloc.dart';
-import 'package:origa/Telecaller/screens/phone_t_screen.dart/phone_telecaller_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/case_details_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
@@ -26,7 +22,7 @@ class AppRoutes {
   static const String allocationScreen = 'allocation_screen';
   static const String allocationTelecallerScreen =
       'allocation_telecaller_screen';
-  static const String SearchScreen = 'search_allocation_details_screen';
+  static const String searchScreen = 'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
   static const String caseDetailsTelecallerScreen =
       'case_details_telecaller_screen';
@@ -39,17 +35,14 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildSplashScreen();
     case AppRoutes.homeTabScreen:
       return _buildHomeTabScreen(settings);
-
-    case AppRoutes.SearchScreen:
+    case AppRoutes.searchScreen:
       return _buildSearchScreen();
     case AppRoutes.caseDetailsScreen:
       return _buildCaseDetailsScreen(settings);
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
-    case AppRoutes.caseDetailsTelecallerScreen:
-      return _buildCaseDetailsTelecallerScreen();
-    case AppRoutes.phoneTelecallerScreen:
-      return _buildPhoneTelecallerScreen();
+    // case AppRoutes.caseDetailsTelecallerScreen:
+    //   return _buildCaseDetailsTelecallerScreen();
   }
   return _buildSplashScreen();
 }
@@ -62,14 +55,11 @@ Route<dynamic> _buildSplashScreen() {
 
 Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
-    String? loginType;
-    if (settings.arguments != null) {
-      loginType = settings.arguments.toString();
-    }
+    if (settings.arguments != null) {}
 
     // final AuthenticationBloc authBloc =
     //     BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildHomeTabScreen(loginType));
+    return addAuthBloc(context, PageBuilder.buildHomeTabScreen());
   });
 }
 
@@ -95,19 +85,12 @@ Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
   );
 }
 
-Route<dynamic> _buildCaseDetailsTelecallerScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildCaseDetailsTelecallerPage()),
-  );
-}
-
-Route<dynamic> _buildPhoneTelecallerScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        addAuthBloc(context, PageBuilder.buildPhoneTelecallerPage()),
-  );
-}
+// Route<dynamic> _buildCaseDetailsTelecallerScreen() {
+//   return MaterialPageRoute(
+//     builder: (context) =>
+//         addAuthBloc(context, PageBuilder.buildCaseDetailsTelecallerPage()),
+//   );
+// }
 
 class PageBuilder {
   static Widget buildSplashScreen() {
@@ -115,22 +98,22 @@ class PageBuilder {
       create: (BuildContext context) {
         return BlocProvider.of<AuthenticationBloc>(context);
       },
-      child: SplashScreen(),
+      child: const SplashScreen(),
     );
   }
 
-  static Widget buildHomeTabScreen(String? loginType) {
+  static Widget buildHomeTabScreen() {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<HomeTabBloc>(context)..add(HomeTabInitialEvent()),
-      child: HomeTabScreen(loginType),
+      child: HomeTabScreen(),
     );
   }
 
   static Widget buildLoginScreen(AuthenticationBloc authBloc) {
     return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<LoginBloc>(context)..add(LoginInitialEvent()),
+      create: (BuildContext context) => BlocProvider.of<LoginBloc>(context)
+        ..add(LoginInitialEvent(context: context)),
       child: LoginScreen(authBloc),
     );
   }
@@ -145,31 +128,31 @@ class PageBuilder {
   }
 
   static Widget buildCaseDetailsPage(RouteSettings settings) {
+    // // String? loginType;
+    // if (settings.arguments != null) {
+    //   // loginType = settings.arguments.toString();
+    // }
+
+    // print('event.paramValues------');
+    // print(settings.arguments);
+
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
-            ..add(CaseDetailsInitialEvent()),
-      child: CaseDetailsScreen(settings.arguments as bool),
+            ..add(CaseDetailsInitialEvent(paramValues: settings.arguments)),
+      child: CaseDetailsScreen(paramValues: settings.arguments),
     );
   }
 
-  static Widget buildCaseDetailsTelecallerPage() {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<CasedetailsTelecallerBloc>(context)
-            ..add(CaseDetailsTelecallerInitialEvent()),
-      child: const CaseDetailsTelecallerScreen(),
-    );
-  }
+  // static Widget buildCaseDetailsTelecallerPage() {
+  //   return BlocProvider(
+  //     create: (BuildContext context) =>
+  //         BlocProvider.of<CasedetailsTelecallerBloc>(context)
+  //           ..add(CaseDetailsTelecallerInitialEvent()),
+  //     child: const CaseDetailsTelecallerScreen(),
+  //   );
+  // }
 
-  static Widget buildPhoneTelecallerPage() {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<PhoneTelecallerBloc>(context)
-            ..add(PhoneTelecallerInitialEvent()),
-      child: const PhoneTelecallerScreen(),
-    );
-  }
 }
 
 Widget addAuthBloc(BuildContext context, Widget widget) {
@@ -180,8 +163,14 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+      }
+
+      if (state is AuthenticationUnAuthenticated) {
+        while (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
         Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
 
       if (state is SplashScreenState) {

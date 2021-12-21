@@ -1,9 +1,21 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
+import 'package:origa/models/profile_api_result_model/profile_api_result_model.dart';
+import 'package:origa/models/profile_api_result_model/result.dart';
+import 'package:origa/offline_helper/dynamic_table.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/preference_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -11,8 +23,15 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
 
+  ProfileApiModel profileAPIValue = ProfileApiModel();
+  bool isNoInternet = false;
+  // ProfileResultModel offlineProfileValue = ProfileResultModel();
+  // Future<Box<OrigoMapDynamicTable>> profileHiveBox =
+  //     Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
+
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
+  String? userType;
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
 
   @override
@@ -20,26 +39,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
 
-      // profileNavigationList.addAll([
-      //   ProfileNavigation(
-      //       title: Languages.of(event.context)!.notification,
-      //       count: true,
-      //       onTap: () {
-      //         add(ClickNotificationEvent());
-      //       }),
-      //   ProfileNavigation(
-      //       title: Languages.of(event.context)!.selectLanguage,
-      //       count: false,
-      //       onTap: () {
-      //         add(ClickChangeLaunguageEvent());
-      //       }),
-      //   ProfileNavigation(
-      //       title: Languages.of(event.context)!.changePassword,
-      //       count: false,
-      //       onTap: () {
-      //         add(ClickChangePassswordEvent());
-      //       })
-      // ]);
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      userType = _pref.getString(Constants.userType);
+      Singleton.instance.buildContext = event.context;
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternet = true;
+        yield NoInternetState();
+      } else {
+        isNoInternet = false;
+        Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.profileUrl);
+
+        if (getProfileData['success']) {
+          Map<String, dynamic> jsonData = getProfileData['data'];
+          profileAPIValue = ProfileApiModel.fromJson(jsonData);
+
+          // profileHiveBox.then((value) => value.put(
+          //     'EventDetails1',
+          //     OrigoMapDynamicTable(
+          //       status: jsonData['status'],
+          //       message: jsonData['message'],
+          //       result: jsonData['result'][0],
+          //     )));
+        } else {}
+      }
+      // await profileHiveBox.then(
+      //   (value) => offlineProfileValue = ProfileResultModel.fromJson(
+      //       Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
+      // );
+
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
           NotificationChildModel('Mr. Debashish Sr. Manager',
@@ -52,6 +81,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               'Hi, Check Case Details with all in pincode 600054 .')
         ]),
       ]);
+      yield ProfileLoadedState();
     }
     if (event is ClickNotificationEvent) {
       yield ClickNotificationState();
@@ -65,22 +95,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ClickMessageEvent) {
       yield ClickMessageState();
     }
+    if (event is ChangePasswordEvent) {
+      yield ClickChangePasswordState();
+    }
     if (event is ChangeProfileImageEvent) {
       yield ChangeProfileImageState();
     }
     if (event is LoginEvent) {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      await _prefs.setString(Constants.accessToken, "");
+      await _prefs.setString(Constants.userType, "");
       yield LoginState();
     }
+    if (event is ClickMarkAsHomeEvent) {
+      yield ClickMarkAsHomeState();
+    }
+
+    if (event is PostProfileImageEvent) {
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.POST, HttpUrl.changeProfileImage,
+          requestBodydata:
+              jsonEncode({"profileImgUrl": event.postValue.toString()}));
+      if (postResult[Constants.success]) {
+        yield PostDataApiSuccessState();
+      }
+    }
   }
-  // {
-  //   on<ProfileEvent>((event, emit) {
-  //     if (event is ProfileInitialEvent) {
-  //       profileNavigationList.addAll([
-  //         ProfileNavigation('Notification'),
-  //         ProfileNavigation('Change language'),
-  //         ProfileNavigation('Change Password')
-  //       ]);
-  //     }
-  //   });
-  // }
 }

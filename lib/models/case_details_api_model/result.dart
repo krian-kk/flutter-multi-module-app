@@ -1,27 +1,29 @@
 import 'case_details.dart';
 import 'other_loan_detail.dart';
 
-class Result {
+class CaseDetailsResultModel {
   CaseDetails? caseDetails;
   List<dynamic>? addressDetails;
   List<dynamic>? callDetails;
   List<OtherLoanDetail>? otherLoanDetails;
 
-  Result({
+  CaseDetailsResultModel({
     this.caseDetails,
     this.addressDetails,
     this.callDetails,
     this.otherLoanDetails,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory CaseDetailsResultModel.fromJson(Map<String, dynamic> json) =>
+      CaseDetailsResultModel(
         caseDetails: json['caseDetails'] == null
             ? null
-            : CaseDetails.fromJson(json['caseDetails'] as Map<String, dynamic>),
+            : CaseDetails.fromJson(
+                Map<String, dynamic>.from(json['caseDetails'])),
         addressDetails: json['addressDetails'] as List<dynamic>?,
         callDetails: json['callDetails'] as List<dynamic>?,
         otherLoanDetails: (json['otherLoanDetails'] as List<dynamic>?)
-            ?.map((e) => OtherLoanDetail.fromJson(e as Map<String, dynamic>))
+            ?.map((e) => OtherLoanDetail.fromJson(Map<String, dynamic>.from(e)))
             .toList(),
       );
 

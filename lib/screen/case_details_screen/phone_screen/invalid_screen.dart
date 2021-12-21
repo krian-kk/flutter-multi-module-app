@@ -3,11 +3,9 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhonenInvalidScreen extends StatefulWidget {
@@ -23,7 +21,6 @@ class PhonenInvalidScreen extends StatefulWidget {
 }
 
 class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
@@ -35,15 +32,14 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, StringResource.otherFeedback),
+          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
-        key: formKey,
-        autovalidate: true,
+        key: widget.bloc.phoneInvalidFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -88,7 +84,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                                   const TextStyle(color: Color(0xFF424242))),
                         ),
                       ),
-                      // TextField(),
                       const SizedBox(height: 19),
                       Wrap(
                         spacing: 15,
@@ -98,32 +93,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                           context,
                         ),
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Expanded(
-                      //       child: CustomButton(
-                      //         StringResource.addNewContact.toUpperCase(),
-                      //         textColor: ColorResource.colorFFFFFF,
-                      //         borderColor: ColorResource.color23375A,
-                      //         fontSize: FontSize.twelve,
-                      //         cardShape: 75,
-                      //         buttonBackgroundColor: ColorResource.color23375A,
-                      //       ),
-                      //     ),
-                      //     SizedBox(height: 11),
-                      //     Expanded(
-                      //       child: CustomButton(
-                      //         Languages.of(context)!.otherFeedBack,
-                      //         fontSize: FontSize.twelve,
-                      //         textColor: ColorResource.color23375A,
-                      //         borderColor: ColorResource.color23375A,
-                      //         cardShape: 75,
-                      //         buttonBackgroundColor: ColorResource.colorFFFFFF,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       const SizedBox(height: 120)
                     ],
                   ),
@@ -145,10 +114,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          openBottomSheet(
-            context,
-            element.stringResourceValue,
-          );
+          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
+              widget.bloc.caseDetailsAPIValue.result?.callDetails));
         },
         child: Container(
           height: 45,
@@ -166,7 +133,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),
@@ -175,48 +141,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
       ));
     }
     return widgets;
-  }
-
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case StringResource.otherFeedback:
-            return CustomOtherFeedBackBottomSheet(
-                Languages.of(context)!.otherFeedBack, widget.bloc);
-          case StringResource.addNewContact:
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    BottomSheetAppbar(
-                        title:
-                            Languages.of(context)!.addNewContact.toUpperCase(),
-                        padding: const EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    const Expanded(
-                        child: Center(child: CircularProgressIndicator())),
-                  ],
-                ));
-          default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-        }
-      },
-    );
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {

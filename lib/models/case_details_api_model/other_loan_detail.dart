@@ -1,17 +1,19 @@
 class OtherLoanDetail {
   String? id;
-  int? due;
+  dynamic due;
   String? cust;
   String? accNo;
+  String? caseId;
 
-  OtherLoanDetail({this.id, this.due, this.cust, this.accNo});
+  OtherLoanDetail({this.id, this.due, this.cust, this.accNo, this.caseId});
 
   factory OtherLoanDetail.fromJson(Map<String, dynamic> json) {
     return OtherLoanDetail(
       id: json['_id'] as String?,
-      due: json['due'] as int?,
+      due: json['due'],
       cust: json['cust'] as String?,
       accNo: json['accNo'] as String?,
+      caseId: json['caseId'] as String?,
     );
   }
 
@@ -20,5 +22,6 @@ class OtherLoanDetail {
         'due': due,
         'cust': cust,
         'accNo': accNo,
+        'caseId': caseId,
       };
 }

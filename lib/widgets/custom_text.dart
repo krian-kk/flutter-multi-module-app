@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -19,7 +18,7 @@ class CustomText extends StatefulWidget {
   final double? letterSpacing;
   final TextStyle? style;
 
-  const CustomText(String text,
+  const CustomText(this.text,
       {Key? key,
       this.fontWeight = FontWeight.w400,
       this.fontStyle = FontStyle.normal,
@@ -34,8 +33,7 @@ class CustomText extends StatefulWidget {
       this.letterSpacing,
       this.style,
       this.maxLines})
-      : text = text,
-        super(key: key);
+      : super(key: key);
 
   @override
   _CustomTextState createState() => _CustomTextState();

@@ -26,12 +26,12 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
   List<String> validationRules = [];
-  Function? oncomplete;
+  final EdgeInsetsGeometry? contentPadding;
   final Function? onEditing;
   final bool isBorder;
   final bool isFill;
   final Color cursorColor;
-  final Function(bool)? validatorCallBack;
+  final Function? validatorCallBack;
   final double height;
 
   CustomReadOnlyTextField(this.hintText, this.controller,
@@ -53,13 +53,13 @@ class CustomReadOnlyTextField extends StatefulWidget {
       this.height = 40,
       this.keyBoardType = TextInputType.name,
       this.descriptionText,
-      this.oncomplete,
       this.validatorCallBack,
       this.onEditing,
       this.inputformaters,
       this.isLabel = false,
       this.isBorder = true,
       this.isFill = false,
+      this.contentPadding,
       this.cursorColor = ColorResource.color666666,
       this.validationRules = const []})
       : super(key: key);
@@ -91,20 +91,17 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
         child: TextFormField(
           textInputAction: TextInputAction.done,
           cursorHeight: 17,
-
           validator: (String? value) {
             if (widget.validationRules.isNotEmpty) {
               final ValidationState validationStatus = Validator.validate(
                   value ?? '',
                   rules: widget.validationRules);
-              widget.validatorCallBack!(validationStatus.status);
               if (!validationStatus.status) {
                 return validationStatus.error;
               }
             }
             return null;
           },
-
           onEditingComplete: () {
             setState(() {});
             FocusScope.of(context).unfocus();
@@ -163,13 +160,17 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               labelText: widget.isLabel ? widget.hintText : null,
               isDense: true,
               counterText: widget.descriptionText,
-              contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 11),
+              contentPadding: widget.contentPadding ??
+                  const EdgeInsets.fromLTRB(0, 10, 0, 4),
               errorMaxLines: 1,
               suffixIcon: widget.suffixWidget,
-              errorStyle: Theme.of(context)
-                  .textTheme
-                  .subtitle1!
-                  .copyWith(color: Colors.red),
+              errorStyle: const TextStyle(
+                  color: Colors.red,
+                  height: 0.7,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 8),
               counterStyle: const TextStyle(
                   color: ColorResource.color666666,
                   fontFamily: 'Lato',

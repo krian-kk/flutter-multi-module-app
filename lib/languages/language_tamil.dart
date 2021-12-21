@@ -14,7 +14,7 @@ class LanguageTa extends Languages {
   String get password => 'கடவுச்சொல்';
 
   @override
-  String get userName => 'பயனர் பெயர்';
+  String get userId => 'பயனர் பெயர்';
 
   @override
   String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
@@ -107,6 +107,9 @@ class LanguageTa extends Languages {
   String get myVisits => 'எனது வருகைகள்';
 
   @override
+  String get myCalls => 'என் அழைப்புகள்';
+
+  @override
   String get myDeposists => 'என் டெபாசிஸ்ட்கள்';
 
   @override
@@ -162,6 +165,9 @@ class LanguageTa extends Languages {
 
   @override
   String get ifscCode => 'IFSC குறியீடு*';
+
+  @override
+  String get accNumber => 'கணக்கு எண்*';
 
   @override
   String get branchLocation => 'கிளை இடம்*';
@@ -583,4 +589,64 @@ class LanguageTa extends Languages {
 
   @override
   String get searchErrorMessage => 'குறைந்தபட்சம் ஒரு புலத்தை நிரப்ப வேண்டும்';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String get resendOTP => 'Resend OTP?';
+
+  @override
+  String get sendOTP => 'SEND OTP';
+
+  @override
+  String get businessLoss => 'Business Loss';
+
+  @override
+  String get covidImpacted => 'Covid Impacted';
+
+  @override
+  String get financialReason => 'Financial Reason';
+
+  @override
+  String get incomeLossInTheFamily => 'Income Loss In The Family';
+
+  @override
+  String get intention => 'Intention ';
+
+  @override
+  String get jobLoss => 'Job Loss';
+
+  @override
+  String get jobUncertaintly => 'Job Uncertaintly';
+
+  @override
+  String get medicalIssue => 'Medical Issue';
+
+  @override
+  String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'இணைய இணைப்பு இல்லை';
+
+  @override
+  String get mode => 'Mode';
+
+  @override
+  String get saveNewPassword => 'SAVE NEW PASSWORD';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get enterConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get clear => 'Clear';
 }

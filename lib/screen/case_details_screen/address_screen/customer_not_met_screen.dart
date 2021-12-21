@@ -4,11 +4,10 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -29,23 +28,11 @@ class CustomerNotMetScreen extends StatefulWidget {
 }
 
 class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
-  // TextEditingController nextActionDateController = TextEditingController();
-  // TextEditingController remarksController = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
   String selectedOptionBottomSheetButton = '';
-
-  // late FocusNode nextActionDateFocusNode;
-  // late FocusNode remarksFocusNode;
 
   @override
   void initState() {
     super.initState();
-    widget.bloc.addressCustomerNotMetNextActionDateController.text =
-        DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
-    // nextActionDateFocusNode = FocusNode();
-    // remarksFocusNode = FocusNode();
-    setState(() {});
   }
 
   @override
@@ -63,15 +50,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, StringResource.addNewContact),
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.repo, StringResource.repo),
+          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
-        key: formKey,
-        autovalidate: true,
+        key: widget.bloc.addressCustomerNotMetFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -109,6 +94,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             focusNode:
                                 widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,
+                            validationRules: const ['required'],
                             onTapped: () => pickDate(
                                 context,
                                 widget.bloc
@@ -117,7 +103,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               ImageResource.calendar,
                               fit: BoxFit.scaleDown,
                             ),
-                            // validationRules: ['required'],
                             onEditing: () {
                               widget.bloc
                                   .addressCustomerNotMetNextActionDateFocusNode
@@ -140,8 +125,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         SizedBox(
                           width: double.infinity,
                           child: TextFormField(
-                            // keyboardType: TextInputType.multiline,
-                            // minLines: 2,
                             controller: widget
                                 .bloc.addressCustomerNotMetRemarksController,
                             focusNode: widget
@@ -152,14 +135,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               }
                               return null;
                             },
-                            // maxLines: null,
-                            // onFieldSubmitted: (s) {
-                            //   remarksFocusNode.unfocus();
-                            // },
-                            // onChanged: (S) {
-                            //   remarksFocusNode.unfocus();
-                            // },
-                            // textInputAction: TextInputAction.newline,
                             decoration: InputDecoration(
                                 hintText:
                                     Languages.of(context)!.writeYourRemarksHere,
@@ -168,21 +143,22 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                     const TextStyle(color: Color(0xFF424242))),
                           ),
                         ),
-                        // TextField(),
                         const SizedBox(height: 19),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
-                          onTap: () => openBottomSheet(
-                              context, StringResource.captureImage),
+                          onTap: () => widget.bloc.add(
+                              ClickOpenBottomSheetEvent(
+                                  Constants.captureImage,
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails)),
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
                           buttonBackgroundColor: ColorResource.colorBEC4CF,
                           isLeading: true,
-                          // onTap: () => pickImage(source, cameraDialogueContext)
                           trailingWidget:
                               SvgPicture.asset(ImageResource.captureImage),
                         ),
@@ -194,36 +170,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             optionBottomSheetButtonList,
                             context,
                           ),
-                          // children: [
-                          //   SizedBox(
-                          //     width: 179,
-                          //     child: CustomButton(
-                          //       StringResource.addNewContact.toUpperCase(),
-                          //       buttonBackgroundColor:
-                          //           ColorResource.color23375A,
-                          //       borderColor: ColorResource.color23375A,
-                          //       textColor: ColorResource.colorFFFFFF,
-                          //       fontSize: FontSize.twelve,
-                          //       fontWeight: FontWeight.w700,
-                          //       cardShape: 75,
-                          //     ),
-                          //   ),
-                          //   SizedBox(
-                          //     width: 157,
-                          //     child: CustomButton(
-                          //       Languages.of(context)!.repo.toUpperCase(),
-                          //       buttonBackgroundColor:
-                          //           ColorResource.colorFFFFFF,
-                          //       borderColor: ColorResource.color23375A,
-                          //       textColor: ColorResource.color23375A,
-                          //       fontSize: FontSize.twelve,
-                          //       fontWeight: FontWeight.w700,
-                          //       cardShape: 75,
-                          //     ),
-                          //   ),
-                          // ],
                         ),
-                        const SizedBox(height: 120),
+                        const SizedBox(height: 135),
                       ],
                     ),
                   ),
@@ -236,34 +184,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     );
   }
 
-  openBottomSheet(BuildContext buildContext, String cardTitle) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      enableDrag: false,
-      isDismissible: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case StringResource.captureImage:
-            return CustomCaptureImageBottomSheet(
-                Languages.of(context)!.captureImage);
-          default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-        }
-      },
-    );
-  }
-
   List<Widget> _buildOptionBottomSheetOpenButton(
       List<OptionBottomSheetButtonModel> list, BuildContext context) {
     List<Widget> widgets = [];
@@ -273,10 +193,12 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          // openBottomSheet(
-          //   context,
-          //   element.stringResourceValue,
-          // );
+          widget.bloc.add(
+            ClickOpenBottomSheetEvent(
+              element.stringResourceValue,
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails,
+            ),
+          );
         },
         child: Container(
           height: 45,
@@ -294,7 +216,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                   ? ColorResource.colorFFFFFF
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
-              // lineHeight: 1,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
             ),
@@ -310,14 +231,15 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
-          widget.bloc.addressSelectedInvalidClip = element.clipTitle;
+          widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;
           setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: element.clipTitle == widget.bloc.addressSelectedInvalidClip
+            color: element.clipTitle ==
+                    widget.bloc.addressSelectedCustomerNotMetClip
                 ? ColorResource.colorFFB800.withOpacity(0.67)
                 : ColorResource.colorE7E7E7,
           ),
@@ -365,7 +287,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         });
 
     if (newDate == null) return null;
-    String formattedDate = DateFormat('dd-MM-yyyy').format(newDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
     });

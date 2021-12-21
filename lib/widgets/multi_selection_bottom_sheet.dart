@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/selectable.dart';
-import 'package:origa/utils/string_resource.dart';
-
 import 'custom_text.dart';
 
 class MultiSelectionBottomSheet extends StatefulWidget {
@@ -14,7 +12,9 @@ class MultiSelectionBottomSheet extends StatefulWidget {
   Function onDismiss;
   Function onSelect;
 
-  MultiSelectionBottomSheet(this.selectableList, this.onDismiss, this.onSelect);
+  MultiSelectionBottomSheet(this.selectableList, this.onDismiss, this.onSelect,
+      {Key? key})
+      : super(key: key);
   @override
   _MultiSelectionBottomSheetState createState() =>
       _MultiSelectionBottomSheetState();
@@ -85,8 +85,8 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                                     .toList();
                                 widget.onSelect(widget.selectedList);
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
                                 child: CustomText(
                                   'StringResource.done',
                                   font: Font.latoBold,
@@ -98,7 +98,7 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                             )
                           ],
                         ),
-                        hintText: StringResource.search,
+                        hintText: Languages.of(context)!.search,
                         hintStyle: const TextStyle(color: Colors.white)),
                   ),
                 ),
@@ -115,7 +115,7 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                                       title: CustomText(
                                           widget.filterList[i].displayName),
                                       trailing: widget.filterList[i].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )
@@ -142,7 +142,7 @@ class _MultiSelectionBottomSheetState extends State<MultiSelectionBottomSheet> {
                                           .selectableList[index].displayName),
                                       trailing: widget
                                               .selectableList[index].isSelected
-                                          ? Icon(
+                                          ? const Icon(
                                               Icons.check,
                                               color: ColorResource.color0066cc,
                                             )

@@ -9,7 +9,7 @@ abstract class Languages {
 
   String get splashScreen;
 
-  String get userName;
+  String get userId;
 
   String get password;
 
@@ -68,6 +68,8 @@ abstract class Languages {
   String get myReceipts;
 
   String get myVisits;
+
+  String get myCalls;
 
   String get myDeposists;
 
@@ -162,6 +164,8 @@ abstract class Languages {
   String get bankName;
 
   String get ifscCode;
+
+  String get accNumber;
 
   String get repoStatus;
 
@@ -392,4 +396,44 @@ abstract class Languages {
   String get startCalling;
 
   String get searchErrorMessage;
+
+  String get mobileNumber;
+
+  String get email;
+
+  String get check;
+
+  String get resendOTP;
+
+  String get sendOTP;
+
+  String get businessLoss;
+
+  String get covidImpacted;
+
+  String get financialReason;
+
+  String get incomeLossInTheFamily;
+
+  String get intention;
+
+  String get jobLoss;
+
+  String get jobUncertaintly;
+
+  String get medicalIssue;
+
+  String get salaryIssue;
+
+  String get noInternetConnection;
+
+  String get mode;
+
+  String get saveNewPassword;
+
+  String get enterNewPassword;
+
+  String get enterConfirmNewPassword;
+
+  String get clear;
 }

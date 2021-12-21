@@ -16,6 +16,12 @@ class ClickChangePasswordState extends ProfileState {}
 
 class ClickMessageState extends ProfileState {}
 
+class ClickMarkAsHomeState extends ProfileState {}
+
 class ChangeProfileImageState extends ProfileState {}
 
 class LoginState extends ProfileState {}
+
+class NoInternetState extends ProfileState {}
+
+class PostDataApiSuccessState extends ProfileState {}

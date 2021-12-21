@@ -14,7 +14,7 @@ class LanguageEn extends Languages {
   String get password => 'Password';
 
   @override
-  String get userName => 'User Name';
+  String get userId => 'User ID';
 
   @override
   String get rememberMe => 'Remember Me';
@@ -23,7 +23,7 @@ class LanguageEn extends Languages {
   String get passwordNotMatch => "Password doesn't match";
 
   @override
-  String get resetPassword => 'Reset password via OTP';
+  String get resetPassword => 'Reset password';
 
   @override
   String get loginViaDiffrentUser => 'Login via diffrent user';
@@ -107,6 +107,9 @@ class LanguageEn extends Languages {
   String get myVisits => 'MY VISITS';
 
   @override
+  String get myCalls => 'MY CALLS';
+
+  @override
   String get myDeposists => 'MY DEPOSISTS';
 
   @override
@@ -162,6 +165,9 @@ class LanguageEn extends Languages {
 
   @override
   String get ifscCode => 'IFSC Code*';
+
+  @override
+  String get accNumber => 'Account Number*';
 
   @override
   String get branchLocation => 'Branch Location*';
@@ -583,4 +589,64 @@ class LanguageEn extends Languages {
 
   @override
   String get searchErrorMessage => 'You should fill atleast one field';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String get resendOTP => 'Resend OTP?';
+
+  @override
+  String get sendOTP => 'SEND OTP';
+
+  @override
+  String get businessLoss => 'Business Loss';
+
+  @override
+  String get covidImpacted => 'Covid Impacted';
+
+  @override
+  String get financialReason => 'Financial Reason';
+
+  @override
+  String get incomeLossInTheFamily => 'Income Loss In The Family';
+
+  @override
+  String get intention => 'Intention ';
+
+  @override
+  String get jobLoss => 'Job Loss';
+
+  @override
+  String get jobUncertaintly => 'Job Uncertaintly';
+
+  @override
+  String get medicalIssue => 'Medical Issue';
+
+  @override
+  String get salaryIssue => 'Salary Issue';
+
+  @override
+  String get noInternetConnection => 'No Internet Connection';
+
+  @override
+  String get mode => 'Mode';
+
+  @override
+  String get saveNewPassword => 'SAVE NEW PASSWORD';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get enterConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get clear => 'Clear';
 }

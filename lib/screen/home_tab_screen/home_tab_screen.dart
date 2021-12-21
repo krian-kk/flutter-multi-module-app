@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/Telecaller/screens/allocation_T/allocation_t.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
@@ -14,33 +12,27 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
-
 import 'bloc/home_tab_event.dart';
 
-// ignore: must_be_immutable
 class HomeTabScreen extends StatefulWidget {
-  final String? loginType;
-  HomeTabScreen(this.loginType);
+  const HomeTabScreen({Key? key}) : super(key: key);
+
   @override
   _HomeTabScreenState createState() => _HomeTabScreenState();
 }
 
 class _HomeTabScreenState extends State<HomeTabScreen> {
   late HomeTabBloc bloc;
-  // late MapBloc mapBloc;
 
   String? title = StringResource.allocation.toUpperCase();
 
   TabController? _controller;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
-    bloc = HomeTabBloc()..add(HomeTabInitialEvent());
     super.initState();
-    print('---------NK-------');
-    print(widget.loginType);
+
+    bloc = HomeTabBloc()..add(HomeTabInitialEvent());
   }
 
   @override
@@ -50,12 +42,15 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 
     return BlocListener<HomeTabBloc, HomeTabState>(
       bloc: bloc,
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       child: BlocBuilder<HomeTabBloc, HomeTabState>(
         bloc: bloc,
         builder: (context, state) {
+          if (state is HomeTabLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             body: SafeArea(
@@ -80,12 +75,10 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                     )),
                                 Expanded(
                                   flex: 7,
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 70,
                                     width: 45,
                                     child: TabBar(
-                                      // isScrollable: true,
-                                      // physics: const NeverScrollableScrollPhysics(),
                                       onTap: (index) {
                                         switch (index) {
                                           case 0:
@@ -163,7 +156,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                         ),
                                         Tab(
                                           child: Stack(
-                                            // alignment: Alignment.topLeft,
                                             children: [
                                               Column(
                                                 mainAxisAlignment:
@@ -226,21 +218,13 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                               ],
                             ),
                           ),
-                          // Expanded(
-                          //   child: Container(
-                          //     color: ColorResource.color23375A,
-                          //   ),
-                          // )
-                          Expanded(
+                          const Expanded(
                             child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  if(widget.loginType == 'fos')
-                                  AllocationScreen(),
-                                  if(widget.loginType == 'tc')
-                                  const AllocationTelecallerScreen(),
-                                  DashboardScreen(widget.loginType),
-                                  const ProfileScreen(),
+                                  AllocationScreen(), //1
+                                  DashboardScreen(), //2
+                                  ProfileScreen(), //3
                                 ]),
                           )
                         ])),

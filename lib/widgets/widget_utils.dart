@@ -104,8 +104,10 @@ class WidgetUtils {
                     child: InkWell(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, AppRoutes.caseDetailsScreen,
-                            arguments: false);
+                            context, AppRoutes.caseDetailsScreen, arguments: {
+                          'caseID': '618e382004d8d040ac18841b',
+                          'isAddress': true
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -117,8 +119,8 @@ class WidgetUtils {
                           border: Border.all(
                               color: ColorResource.colorDADADA, width: 0.5),
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            const BoxShadow(
+                          boxShadow: const [
+                            BoxShadow(
                               color: Color.fromRGBO(0, 0, 0, 0.25),
                               // spreadRadius: 1,
                               blurRadius: 2,

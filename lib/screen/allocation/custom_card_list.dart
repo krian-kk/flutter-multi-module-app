@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/allocation_model.dart';
-import 'package:origa/router.dart';
+import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-// import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomCardList {
-  static Widget buildListView(AllocationBloc bloc) {
+  static Widget buildListView(AllocationBloc bloc,
+      {List<Result>? resultData,
+      required ScrollController listViewController}) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: bloc.allocationList.length,
+        controller: listViewController,
+        itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
           int listCount = index + 1;
           return Column(
@@ -57,7 +58,7 @@ class CustomCardList {
                               width: 7,
                             ),
                             CustomText(
-                              '2.4km 20min',
+                              resultData[index].distanceMeters.toString(),
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
                               color: ColorResource.color101010,
@@ -75,7 +76,9 @@ class CustomCardList {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomText(
-                        '10 ' + Languages.of(context)!.allocation,
+                        resultData.length.toString() +
+                            ' ' +
+                            Languages.of(context)!.allocation,
                         fontSize: FontSize.fourteen,
                         color: ColorResource.color000000,
                         fontWeight: FontWeight.w700,
@@ -83,7 +86,7 @@ class CustomCardList {
                       const SizedBox(
                         width: 9.0,
                       ),
-                      Container(
+                      SizedBox(
                           height: 20,
                           width: 20,
                           child: SvgPicture.asset(ImageResource.star)),
@@ -91,7 +94,7 @@ class CustomCardList {
                         width: 5.0,
                       ),
                       CustomText(
-                        bloc.allocationList.length.toString() +
+                        bloc.starCount.length.toString() +
                             " " +
                             Languages.of(context)!.hignPriority,
                         fontSize: FontSize.ten,
@@ -109,11 +112,14 @@ class CustomCardList {
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
                       onTap: () {
-                        bloc.add(NavigateCaseDetailEvent());
+                        bloc.add(NavigateCaseDetailEvent(paramValues: {
+                          'caseID': resultData[index].caseId!,
+                          'isAddress': true
+                        }));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: (index == bloc.allocationList.length - 1)
+                        margin: (index == resultData.length - 1)
                             ? const EdgeInsets.only(bottom: 70)
                             : EdgeInsets.zero,
                         decoration: BoxDecoration(
@@ -121,7 +127,7 @@ class CustomCardList {
                           border: Border.all(
                               color: ColorResource.colorDADADA, width: 0.5),
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Color.fromRGBO(0, 0, 0, 0.25),
                               // spreadRadius: 1,
@@ -138,10 +144,10 @@ class CustomCardList {
                               height: 2.0,
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 2),
                               child: CustomText(
-                                bloc.allocationList[index].loanID!,
+                                resultData[index].caseId!,
                                 fontSize: FontSize.twelve,
                                 color: ColorResource.color101010,
                               ),
@@ -149,7 +155,7 @@ class CustomCardList {
                             AppUtils.showDivider(),
                             // const SizedBox(height: 6.0,),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(23, 0, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -158,7 +164,8 @@ class CustomCardList {
                                         CrossAxisAlignment.start,
                                     children: [
                                       CustomText(
-                                        bloc.allocationList[index].amount!,
+                                        Constants.inr +
+                                            resultData[index].due.toString(),
                                         fontSize: FontSize.eighteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -167,8 +174,7 @@ class CustomCardList {
                                         height: 3.0,
                                       ),
                                       CustomText(
-                                        bloc.allocationList[index]
-                                            .customerName!,
+                                        resultData[index].cust!,
                                         fontSize: FontSize.sixteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w400,
@@ -176,42 +182,53 @@ class CustomCardList {
                                     ],
                                   ),
                                   const Spacer(),
-                                  bloc.allocationList[index].newlyAdded!
-                                      ? Container(
-                                          width: 55,
-                                          height: 19,
-                                          // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                          decoration: BoxDecoration(
-                                              color: ColorResource.colorD5344C,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          child: Center(
-                                            child: CustomText(
-                                              Languages.of(context)!.new_,
-                                              color: ColorResource.colorffffff,
-                                              fontSize: FontSize.ten,
-                                              lineHeight: 1,
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox(),
+                                  if (resultData[index].collSubStatus == "new")
+                                    Container(
+                                      width: 55,
+                                      height: 19,
+                                      // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                      decoration: BoxDecoration(
+                                          color: ColorResource.colorD5344C,
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      child: Center(
+                                        child: CustomText(
+                                          Languages.of(context)!.new_,
+                                          color: ColorResource.colorffffff,
+                                          fontSize: FontSize.ten,
+                                          lineHeight: 1,
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
 
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 6),
                               child: Container(
-                                padding: EdgeInsets.fromLTRB(20, 12, 15, 12),
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 12, 15, 12),
                                 decoration: BoxDecoration(
                                   color: ColorResource.colorF8F9FB,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: CustomText(
-                                  bloc.allocationList[index].address!,
-                                  color: ColorResource.color484848,
-                                  fontSize: FontSize.fourteen,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      resultData[index].address![0].value!,
+                                      color: ColorResource.color484848,
+                                      fontSize: FontSize.fourteen,
+                                    ),
+                                    // CustomText(
+                                    //   resultData[index].address![1].value!,
+                                    //   color: ColorResource.color484848,
+                                    //   fontSize: FontSize.fourteen,
+                                    // ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -226,7 +243,7 @@ class CustomCardList {
                             ),
                             //  const SizedBox(height: 5,),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(23, 5, 14, 13),
+                              padding: const EdgeInsets.fromLTRB(23, 5, 14, 13),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -239,7 +256,9 @@ class CustomCardList {
                                   Row(
                                     children: [
                                       CustomText(
-                                        bloc.allocationList[index].date!,
+                                        resultData[index].fieldfollowUpDate ??
+                                            resultData[index].followUpDate ??
+                                            '-',
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
@@ -270,14 +289,15 @@ class CustomCardList {
                       ),
                     ),
                   ),
-                  bloc.showFilterDistance
-                      ? SizedBox()
-                      : Container(
-                          alignment: Alignment.topRight,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: SvgPicture.asset(ImageResource.star),
-                        ),
+                  if (resultData[index].starredCase == true &&
+                      bloc.showFilterDistance == false)
+                    Container(
+                      alignment: Alignment.topRight,
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SvgPicture.asset(ImageResource.star),
+                    ),
+                  // : const SizedBox(),
                 ],
               ),
             ],
