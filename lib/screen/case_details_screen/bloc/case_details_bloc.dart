@@ -626,9 +626,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         agrRef: agrRef,
         createdBy: createdBy,
         agentName: agentName,
-        eventModule: (userType == Constants.telecaller)
-            ? 'Telecalling'
-            : 'Field Allocation',
+        eventModule: 'Field Allocation',
+        // eventModule: (userType == Constants.telecaller)
+        //     ? 'Telecalling'
+        //     : 'Field Allocation',
         eventAttr: CustomerNotMetEventAttr(
           remarks: addressCustomerNotMetRemarksController.text,
           followUpPriority: followUpPriority,
@@ -701,9 +702,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         agrRef: agrRef,
         createdBy: createdBy,
         agentName: agentName,
-        eventModule: (userType == Constants.telecaller)
-            ? 'Telecalling'
-            : 'Field Allocation',
+        eventModule: 'Field Allocation',
+        // eventModule: (userType == Constants.telecaller)
+        //     ? 'Telecalling'
+        //     : 'Field Allocation',
         contact: [
           AddressInvalidContact(
             cType: caseDetailsAPIValue.result?.addressDetails![indexValue!]

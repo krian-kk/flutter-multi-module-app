@@ -29,6 +29,7 @@ class DioClient {
         contentType: 'application/json',
       ),
     )..interceptors.add(Logging());
+
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
