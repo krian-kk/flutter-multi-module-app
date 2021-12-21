@@ -18,10 +18,12 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MapViewBottomSheetScreen extends StatefulWidget {
-  const MapViewBottomSheetScreen({Key? key, required this.title, this.onClose})
+  const MapViewBottomSheetScreen(
+      {Key? key, required this.title, this.onClose, this.agentLocation})
       : super(key: key);
   final Function? onClose;
   final String title;
+  final String? agentLocation;
 
   @override
   _MapViewBottomSheetScreenState createState() =>
@@ -31,7 +33,7 @@ class MapViewBottomSheetScreen extends StatefulWidget {
 class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   final Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = LatLng(28.644800, 77.216721);
-  late Position position;
+  late LatLng position;
   Set<Marker> _markers = {};
   LatLng tabLatLng = const LatLng(0.0, 0.0);
   late String? tabAddress;
@@ -41,6 +43,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   @override
   void initState() {
     super.initState();
+
     getPermission();
   }
 
@@ -57,11 +60,29 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   }
 
   void getLocation() async {
-    Position res = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    setState(() {
-      position = res;
-    });
+    if (widget.agentLocation == null) {
+      Position res = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      setState(() {
+        position = LatLng(res.latitude, res.longitude);
+      });
+    } else {
+      try {
+        List<Location> locations =
+            await locationFromAddress(widget.agentLocation!);
+        setState(() {
+          position =
+              LatLng(locations.first.latitude, locations.first.longitude);
+        });
+      } catch (e) {
+        Position res = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best);
+        setState(() {
+          position = LatLng(res.latitude, res.longitude);
+        });
+      }
+    }
+
     // print("------------------Nandhu---------------");
     // print(position.latitude);
     _onAddMarkerButtonPressed();

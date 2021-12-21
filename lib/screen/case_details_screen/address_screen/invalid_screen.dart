@@ -112,7 +112,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
                             Constants.captureImage,
                             widget.bloc.caseDetailsAPIValue.result
-                                ?.addressDetails)),
+                                ?.addressDetails,
+                            false)),
                         trailingWidget:
                             SvgPicture.asset(ImageResource.captureImage),
                       ),
@@ -147,7 +148,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.addressDetails));
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails, false));
         },
         child: Container(
           height: 45,

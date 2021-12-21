@@ -30,6 +30,7 @@ class CustomDisputeBottomSheet extends StatefulWidget {
     this.postValue,
     required this.agentName,
     required this.argRef,
+    this.isCall,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -38,6 +39,7 @@ class CustomDisputeBottomSheet extends StatefulWidget {
   final dynamic postValue;
   final String argRef;
   final String agentName;
+  final bool? isCall;
 
   @override
   State<CustomDisputeBottomSheet> createState() =>
@@ -228,10 +230,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               eventCode: 'TELEVT005',
                               agrRef: widget.argRef,
                               agentName: widget.agentName,
-                              eventModule:
-                                  (widget.userType == Constants.telecaller)
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
+                              eventModule: widget.isCall!
+                                  ? 'Telecalling'
+                                  : 'Field Allocation',
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
                                 remarks: remarksControlller.text,

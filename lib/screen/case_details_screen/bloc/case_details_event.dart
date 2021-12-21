@@ -63,7 +63,8 @@ class ClickPushAndPOPCaseDetailsEvent extends CaseDetailsEvent {
 class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String title;
   final List? list;
-  ClickOpenBottomSheetEvent(this.title, this.list);
+  final bool? isCall;
+  ClickOpenBottomSheetEvent(this.title, this.list, this.isCall);
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {

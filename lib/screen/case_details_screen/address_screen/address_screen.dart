@@ -158,7 +158,8 @@ class _AddressScreenState extends State<AddressScreen>
                                       ClickOpenBottomSheetEvent(
                                           Constants.viewMap,
                                           widget.bloc.caseDetailsAPIValue.result
-                                              ?.callDetails)),
+                                              ?.callDetails,
+                                          false)),
                                   child: SizedBox(
                                       width: 10,
                                       child: Container(
@@ -187,10 +188,10 @@ class _AddressScreenState extends State<AddressScreen>
                                   Languages.of(context)!.eventDetails,
                                   onTap: () => widget.bloc.add(
                                     ClickOpenBottomSheetEvent(
-                                      Constants.eventDetails,
-                                      widget.bloc.caseDetailsAPIValue.result
-                                          ?.addressDetails,
-                                    ),
+                                        Constants.eventDetails,
+                                        widget.bloc.caseDetailsAPIValue.result
+                                            ?.addressDetails,
+                                        false),
                                   ),
                                   textColor: ColorResource.color23375A,
                                   borderColor: ColorResource.color23375A,

@@ -153,7 +153,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               ClickOpenBottomSheetEvent(
                                   Constants.captureImage,
                                   widget.bloc.caseDetailsAPIValue.result
-                                      ?.addressDetails)),
+                                      ?.addressDetails,
+                                  false)),
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
@@ -194,10 +195,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(
-            ClickOpenBottomSheetEvent(
-              element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.addressDetails,
-            ),
+            ClickOpenBottomSheetEvent(element.stringResourceValue,
+                widget.bloc.caseDetailsAPIValue.result?.addressDetails, false),
           );
         },
         child: Container(

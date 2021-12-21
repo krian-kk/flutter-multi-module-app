@@ -43,7 +43,8 @@ class PushAndPOPNavigationCaseDetailsState extends CaseDetailsState {
 class ClickOpenBottomSheetState extends CaseDetailsState {
   final String title;
   final List list;
-  ClickOpenBottomSheetState(this.title, this.list);
+  final bool? isCall;
+  ClickOpenBottomSheetState(this.title, this.list, this.isCall);
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}

@@ -146,7 +146,8 @@ class _CallDetailsBottomSheetScreenState
                                                             .bloc
                                                             .caseDetailsAPIValue
                                                             .result
-                                                            ?.callDetails));
+                                                            ?.callDetails,
+                                                        false));
                                               },
                                               child: Container(
                                                   decoration: const BoxDecoration(

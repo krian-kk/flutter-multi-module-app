@@ -29,6 +29,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
     required this.agentName,
     required this.argRef,
     this.postValue,
+    this.isCall,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -37,6 +38,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
   final dynamic postValue;
   final String argRef;
   final String agentName;
+  final bool? isCall;
 
   @override
   State<CustomRemainderBottomSheet> createState() =>
@@ -239,10 +241,9 @@ class _CustomRemainderBottomSheetState
                             createdBy: widget.agentName,
                             agentName: widget.agentName,
                             agrRef: widget.argRef,
-                            eventModule:
-                                (widget.userType == Constants.telecaller)
-                                    ? 'Telecalling'
-                                    : 'Field Allocation',
+                            eventModule: widget.isCall!
+                                ? 'Telecalling'
+                                : 'Field Allocation',
                             eventAttr: EventAttr(
                               reminderDate: nextActionDateControlller.text,
                               time: nextActionTimeControlller.text,

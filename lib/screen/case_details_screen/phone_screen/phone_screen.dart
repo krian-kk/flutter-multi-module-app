@@ -130,7 +130,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           ClickOpenBottomSheetEvent(
                                               Constants.callCustomer,
                                               widget.bloc.caseDetailsAPIValue
-                                                  .result?.callDetails)),
+                                                  .result?.callDetails,
+                                              false)),
                                       child: Container(
                                           decoration: const BoxDecoration(
                                               color: ColorResource.colorBEC4CF,
@@ -160,7 +161,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     ClickOpenBottomSheetEvent(
                                         Constants.eventDetails,
                                         widget.bloc.caseDetailsAPIValue.result
-                                            ?.callDetails)),
+                                            ?.callDetails,
+                                        false)),
                                 fontSize: FontSize.twelve,
                                 textColor: ColorResource.color23375A,
                                 borderColor: ColorResource.color23375A,

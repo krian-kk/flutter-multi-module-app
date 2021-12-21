@@ -184,24 +184,24 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ptp, caseDetailsAPIValue.result?.addressDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.ptp,
+                caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.rtp, caseDetailsAPIValue.result?.addressDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.rtp,
+                caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
-                caseDetailsAPIValue.result?.addressDetails!))),
+                caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.remainder,
             (Constants.remainder + '/CB').toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
-                caseDetailsAPIValue.result?.addressDetails!))),
+                caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.collections, Constants.collections,
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
-                caseDetailsAPIValue.result?.addressDetails!))),
+                caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, caseDetailsAPIValue.result?.addressDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.ots,
+                caseDetailsAPIValue.result?.addressDetails!, false))),
       ]);
 
       // expandOtherFeedback.addAll([
@@ -214,23 +214,29 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ptp, caseDetailsAPIValue.result?.callDetails!))),
+                Constants.ptp, caseDetailsAPIValue.result?.callDetails!, true)),
+            isCall: true),
         CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.rtp, caseDetailsAPIValue.result?.callDetails!))),
+                Constants.rtp, caseDetailsAPIValue.result?.callDetails!, true)),
+            isCall: true),
         CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.dispute, caseDetailsAPIValue.result?.callDetails!))),
+            onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
+                caseDetailsAPIValue.result?.callDetails!, true)),
+            isCall: true),
         CustomerMetGridModel(ImageResource.remainder,
             (Constants.remainder + '/CB').toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
-                caseDetailsAPIValue.result?.callDetails!))),
+                caseDetailsAPIValue.result?.callDetails!, true)),
+            isCall: true),
         CustomerMetGridModel(ImageResource.collections, Constants.collections,
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
-                caseDetailsAPIValue.result?.callDetails!))),
+                caseDetailsAPIValue.result?.callDetails!, true)),
+            isCall: true),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, caseDetailsAPIValue.result?.callDetails!))),
+                Constants.ots, caseDetailsAPIValue.result?.callDetails!, true)),
+            isCall: true),
       ]);
 
       yield CaseDetailsLoadedState();
@@ -288,13 +294,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           //   value.get('EventDetails1')?.result.forEach((element) {
           //     offlineEventDetailsListValue.add(EventDetailsResultModel.fromJson(
           //         Map<String, dynamic>.from(element)));
-          //   });
+          //   })
           // });
           break;
         default:
       }
 
-      yield ClickOpenBottomSheetState(event.title, event.list!);
+      yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall);
     }
 
     if (event is PostImageCapturedEvent) {

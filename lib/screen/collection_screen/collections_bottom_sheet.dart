@@ -31,7 +31,8 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
       required this.userType,
       required this.agentName,
       required this.argRef,
-      this.postValue})
+      this.postValue,
+      this.isCall})
       : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -40,6 +41,7 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final bool? isCall;
 
   @override
   State<CustomCollectionsBottomSheet> createState() =>
@@ -368,10 +370,9 @@ class _CustomCollectionsBottomSheetState
                               ),
                               createdBy: widget.agentName,
                               agentName: widget.agentName,
-                              eventModule:
-                                  (widget.userType == Constants.telecaller)
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
+                              eventModule: widget.isCall!
+                                  ? 'Telecalling'
+                                  : 'Field Allocation',
                               agrRef: widget.argRef,
                             );
 

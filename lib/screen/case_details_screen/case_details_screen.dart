@@ -76,7 +76,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
-            openBottomSheet(context, state.title, state.list);
+            openBottomSheet(context, state.title, state.list, state.isCall);
           }
           if (state is NoInternetState) {
             AppUtils.noInternetSnackbar(context);
@@ -808,7 +808,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             onTap: () => bloc.add(
                                                 ClickOpenBottomSheetEvent(
                                                     Constants.addressDetails,
-                                                    const [])),
+                                                    const [],
+                                                    false)),
                                             child: Container(
                                               height: 50,
                                               width: (MediaQuery.of(context)
@@ -864,7 +865,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     GestureDetector(
                                       onTap: () => bloc.add(
                                           ClickOpenBottomSheetEvent(
-                                              Constants.callDetails, const [])),
+                                              Constants.callDetails,
+                                              const [],
+                                              false)),
                                       child: Container(
                                         height: 50,
                                         width:
@@ -945,7 +948,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         });
   }
 
-  openBottomSheet(BuildContext buildContext, String cardTitle, List list) {
+  openBottomSheet(
+      BuildContext buildContext, String cardTitle, List list, bool? isCall) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -977,6 +981,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               eventCode: 'TELEVT001',
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -995,6 +1000,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               agentName: bloc.agentName.toString(),
               argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -1014,6 +1020,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               argRef: Singleton.instance.agentRef!,
               // eventCode: bloc.eventCode,
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -1032,6 +1039,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               agentName: bloc.agentName.toString(),
               argRef: Singleton.instance.agentRef!,
+              isCall: isCall,
               // eventCode: bloc.eventCode,
             );
           case Constants.collections:
@@ -1049,6 +1057,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               agentName: bloc.agentName.toString(),
               argRef: Singleton.instance.agentRef!,
+              isCall: isCall,
               // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
@@ -1065,6 +1074,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
+              isCall: isCall,
               // agentName: bloc.agentName.toString(),
               // argRef: bloc.agrRef.toString(),
               // eventCode: bloc.eventCode,
@@ -1173,7 +1183,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             );
           case Constants.viewMap:
             return MapViewBottomSheetScreen(
-                title: Languages.of(context)!.viewMap);
+                title: Languages.of(context)!.viewMap,
+                agentLocation:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.pincode);
           default:
             return WillPopScope(
               onWillPop: () async => false,

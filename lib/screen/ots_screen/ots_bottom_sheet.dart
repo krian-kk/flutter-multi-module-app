@@ -12,10 +12,11 @@ import 'package:intl/intl.dart';
 
 class CustomOtsBottomSheet extends StatefulWidget {
   const CustomOtsBottomSheet(this.cardTitle,
-      {Key? key, required this.customerLoanUserWidget})
+      {Key? key, required this.customerLoanUserWidget, this.isCall})
       : super(key: key);
   final String cardTitle;
   final Widget customerLoanUserWidget;
+  final bool? isCall;
 
   @override
   State<CustomOtsBottomSheet> createState() => _CustomOtsBottomSheetState();
@@ -31,6 +32,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   @override
   void initState() {
+    print(widget.isCall);
     super.initState();
   }
 

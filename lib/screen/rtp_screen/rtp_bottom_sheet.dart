@@ -21,20 +21,23 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomRtpBottomSheet extends StatefulWidget {
-  const CustomRtpBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      required this.agentName,
-      required this.argRef,
-      this.postValue})
-      : super(key: key);
+  const CustomRtpBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    required this.agentName,
+    required this.argRef,
+    this.postValue,
+    this.isCall,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final bool? isCall;
 
   final String argRef;
   final String agentName;
@@ -245,10 +248,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 speed: position.speed,
                               ),
                               agentName: widget.agentName,
-                              eventModule:
-                                  (widget.userType == Constants.telecaller)
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
+                              eventModule: widget.isCall!
+                                  ? 'Telecalling'
+                                  : 'Field Allocation',
                               contact: Contact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],

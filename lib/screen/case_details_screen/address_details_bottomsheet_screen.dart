@@ -28,6 +28,8 @@ class _AddressDetailsBottomSheetScreenState
     extends State<AddressDetailsBottomSheetScreen> {
   @override
   Widget build(BuildContext context) {
+    print(
+        widget.bloc.caseDetailsAPIValue.result?.addressDetails?.first['value']);
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {},
@@ -162,7 +164,8 @@ class _AddressDetailsBottomSheetScreenState
                                                                 .bloc
                                                                 .caseDetailsAPIValue
                                                                 .result
-                                                                ?.callDetails)),
+                                                                ?.callDetails,
+                                                            false)),
                                                     child: Container(
                                                         decoration: const BoxDecoration(
                                                             color: ColorResource
