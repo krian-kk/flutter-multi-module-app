@@ -61,6 +61,7 @@ class AuthenticationBloc
                 APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
+              print(agentDetail['data']);
               AgentDetailErrorModel agentDetailError =
                   AgentDetailErrorModel.fromJson(agentDetail['data']);
               yield AuthenticationUnAuthenticated();

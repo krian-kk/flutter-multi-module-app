@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/case.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -56,11 +57,10 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         }
 
         if (state is GetSearchDataState) {
-          if (state.getReturnValues != null) {
-            widget.bloc.selectedFilter = '';
-            widget.bloc.myVisitsData =
-                DashboardAllModels.fromJson(state.getReturnValues);
-          }
+          setState(() {
+            widget.bloc.isShowSearchResult = true;
+          });
+          widget.bloc.selectedFilter = '';
         }
       },
       child: Container(
@@ -242,32 +242,56 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: TabBarView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            // CustomerMetNotmetInvalidTab(bloc.caseList),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: buildListView(widget.bloc,
-                                  widget.bloc.myVisitsData, custMet),
+                      widget.bloc.isShowSearchResult
+                          ? widget.bloc.searchResultList.isNotEmpty
+                              ? Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 0.0),
+                                    child: SearchCaseList.buildListView(
+                                      widget.bloc,
+                                      resultData: widget.bloc.searchResultList,
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 50, right: 20, left: 20),
+                                        child: NoCaseAvailble
+                                            .buildNoCaseAvailable(),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                          : Expanded(
+                              child: TabBarView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: [
+                                  // CustomerMetNotmetInvalidTab(bloc.caseList),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: buildListView(widget.bloc,
+                                        widget.bloc.myVisitsData, custMet),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: buildListView(widget.bloc,
+                                        widget.bloc.myVisitsData, custNotMet),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: buildListView(widget.bloc,
+                                        widget.bloc.myVisitsData, custInvalid),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: buildListView(widget.bloc,
-                                  widget.bloc.myVisitsData, custNotMet),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: buildListView(widget.bloc,
-                                  widget.bloc.myVisitsData, custInvalid),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),

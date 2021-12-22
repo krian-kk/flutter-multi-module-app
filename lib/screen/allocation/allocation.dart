@@ -43,7 +43,6 @@ class AllocationScreen extends StatefulWidget {
 }
 
 class _AllocationScreenState extends State<AllocationScreen> {
-  bool areyouatOffice = true;
   late AllocationBloc bloc;
   String? currentAddress;
   bool isCaseDetailLoading = false;
@@ -481,10 +480,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
             requestBodydata: jsonEncode(requestBodyData),
           );
           if (postResult[Constants.success]) {
-            // AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            //current location submitted success
             setState(() {
-              areyouatOffice = false;
+              bloc.areyouatOffice = false;
             });
+            AppUtils.showToast(Constants.successfullySubmitted);
           }
         }
       },
@@ -586,7 +586,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               height: 10,
                             ),
                             Visibility(
-                              visible: areyouatOffice,
+                              visible: bloc.areyouatOffice,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),

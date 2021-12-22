@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
+import 'package:origa/widgets/no_case_available.dart';
 
 class MyReceiptsBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
@@ -51,11 +53,10 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         }
 
         if (state is GetSearchDataState) {
-          widget.bloc.selectedFilter = '';
-          if (state.getReturnValues != null) {
-            widget.bloc.myReceiptsData =
-                DashboardAllModels.fromJson(state.getReturnValues);
-          }
+          setState(() {
+            widget.bloc.isShowSearchResult = true;
+            widget.bloc.selectedFilter = "";
+          });
         }
       },
       child: Container(
@@ -161,14 +162,38 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
-                        child: CaseLists.buildListView(
-                            widget.bloc, widget.bloc.myReceiptsData),
-                      ),
-                    ),
+                    widget.bloc.isShowSearchResult
+                        ? widget.bloc.searchResultList.isNotEmpty
+                            ? Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 0.0),
+                                  child: SearchCaseList.buildListView(
+                                    widget.bloc,
+                                    resultData: widget.bloc.searchResultList,
+                                  ),
+                                ),
+                              )
+                            : Expanded(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 50, right: 20, left: 20),
+                                      child:
+                                          NoCaseAvailble.buildNoCaseAvailable(),
+                                    ),
+                                  ],
+                                ),
+                              )
+                        : Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                              child: CaseLists.buildListView(
+                                  widget.bloc, widget.bloc.myReceiptsData),
+                            ),
+                          ),
                   ],
                 ),
               ),
