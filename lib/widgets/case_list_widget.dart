@@ -5,6 +5,7 @@ import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -15,11 +16,13 @@ class CaseLists {
     DashboardBloc bloc,
     DashboardAllModels listData,
   ) {
+    print('----------nk---------');
+    print(listData.result);
     return bloc.selectedFilterDataLoading
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : listData.result!.cases!.isEmpty
+        : listData.result == null || listData.result!.cases!.isEmpty
             ? Column(
                 children: [
                   Padding(
@@ -150,8 +153,10 @@ class CaseLists {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            listData.result!.cases![index].due
-                                                .toString(),
+                                            Constants.inr +
+                                                listData
+                                                    .result!.cases![index].due
+                                                    .toString(),
                                             fontSize: FontSize.eighteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,

@@ -10,12 +10,14 @@ import 'package:origa/models/dashboard_model.dart';
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
+import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
@@ -52,6 +54,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   int? mtdAmountTotal = 0;
 
   String? todayDate;
+  // this is search result cases
+  List<Result> searchResultList = [];
+  bool isShowSearchResult = false;
 
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
@@ -159,6 +164,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is PriorityFollowEvent) {
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -175,6 +183,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is UntouchedCasesEvent) {
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -191,6 +202,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is BrokenPTPEvent) {
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -205,8 +219,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyReceiptsEvent) {
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -221,9 +238,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is ReceiptsApiEvent) {
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       yield SelectedTimeperiodDataLoadingState();
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -236,9 +256,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyVisitsEvent) {
-      print(selectedFilter);
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -253,9 +275,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyVisitApiEvent) {
+      // Here we clear and flase the search resulte
+      searchResultList.clear();
+      isShowSearchResult = false;
       yield SelectedTimeperiodDataLoadingState();
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -390,19 +415,25 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                     "pincode=${event.returnValue.pincode}&" +
                     "collSubStatus=${event.returnValue.status}");
 
-        //             Map<String, dynamic> getSearchResultData = await APIRepository.apiRequest(
-        //     APIRequestType.GET, HttpUrl.dashboardMyVisitsUrl +
-        //     "timePeriod=MONTHLY");
-        // print('getSearchResultData----->');
-        // print(getSearchResultData['data']);
+        //         Map<String, dynamic> getSearchResultData =
+        // await APIRepository.apiRequest(
+        //     APIRequestType.GET,
+        //     HttpUrl.priorityCaseList +
+        //         'pageNo=${Constants.pageNo}' +
+        //         '&limit=${Constants.limit}');
+        // if get search result is show true
+        searchResultList.clear();
+        isShowSearchResult = true;
 
-        // for (var element in getSearchResultData['data']['result']) {
-        //   resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+        for (var element in getSearchResultData['data']['result']) {
+          searchResultList
+              .add(Result.fromJson(jsonDecode(jsonEncode(element))));
+        }
 
-        // }
-        yield GetSearchDataState(getReturnValues: getSearchResultData['data']);
+        yield SelectedTimeperiodDataLoadedState();
+
+        yield GetSearchDataState();
       }
-      yield SelectedTimeperiodDataLoadedState();
     }
   }
 }

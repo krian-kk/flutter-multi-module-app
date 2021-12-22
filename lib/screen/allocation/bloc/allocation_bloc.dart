@@ -34,6 +34,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   String selectedDistance = StringResource.all;
 
   // SearchModel searchData = SearchModel();
+  bool areyouatOffice = true;
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
@@ -94,6 +95,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           StringResource.priority,
           StringResource.autoCalling,
         ];
+        areyouatOffice = false;
       }
 
       mobileNumberList.addAll([

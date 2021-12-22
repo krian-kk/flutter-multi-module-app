@@ -1,7 +1,7 @@
 class DashboardYardingandSelfReleaseModel {
   int? status;
   String? message;
-  List<Result>? result;
+  List<YardingResult>? result;
 
   DashboardYardingandSelfReleaseModel({this.status, this.message, this.result});
 
@@ -11,7 +11,7 @@ class DashboardYardingandSelfReleaseModel {
     if (json['result'] != null) {
       result = [];
       json['result'].forEach((v) {
-        result?.add(Result.fromJson(v));
+        result?.add(YardingResult.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class DashboardYardingandSelfReleaseModel {
   }
 }
 
-class Result {
+class YardingResult {
   String? sId;
   int? due;
   String? cust;
@@ -36,7 +36,7 @@ class Result {
   String? caseId;
   List<Address>? address;
 
-  Result(
+  YardingResult(
       {this.sId,
       this.due,
       this.cust,
@@ -45,7 +45,7 @@ class Result {
       this.caseId,
       this.address});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  YardingResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     due = json['due'];
     cust = json['cust'];
