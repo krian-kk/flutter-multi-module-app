@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_api_result_model/profile_api_result_model.dart';
@@ -24,7 +25,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
 
   ProfileApiModel profileAPIValue = ProfileApiModel();
-  bool isNoInternet = false;
+  // it's manage the Refresh the page basaed on Internet connection
+  bool isNoInternetAndServerError = false;
+  String? noInternetAndServerErrorMsg = '';
   // ProfileResultModel offlineProfileValue = ProfileResultModel();
   // Future<Box<OrigoMapDynamicTable>> profileHiveBox =
   //     Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
@@ -45,10 +48,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        isNoInternet = true;
+        isNoInternetAndServerError = true;
+        noInternetAndServerErrorMsg =
+            Languages.of(event.context)!.noInternetConnection;
         yield NoInternetState();
       } else {
-        isNoInternet = false;
+        isNoInternetAndServerError = false;
         Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.profileUrl);
 
@@ -63,7 +68,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           //       message: jsonData['message'],
           //       result: jsonData['result'][0],
           //     )));
-        } else {}
+        } else if (getProfileData['statusCode'] == 401 ||
+            getProfileData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          noInternetAndServerErrorMsg = getProfileData['data'];
+        }
       }
       // await profileHiveBox.then(
       //   (value) => offlineProfileValue = ProfileResultModel.fromJson(
@@ -106,6 +115,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       await _prefs.setString(Constants.accessToken, "");
       await _prefs.setString(Constants.userType, "");
+      // await _prefs.setBool(Constants.rememberMe, false);
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {

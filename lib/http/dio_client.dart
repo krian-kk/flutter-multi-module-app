@@ -21,7 +21,7 @@ class DioClient {
             ? {
                 'authorization': 'Bearer ${Singleton.instance.accessToken}',
                 'access-token': '${Singleton.instance.accessToken}',
-                'refresh-token': '${Singleton.instance.refreshToken}',
+                'RefreshToken': '${Singleton.instance.refreshToken}',
                 'session-id': '${Singleton.instance.sessionID}',
                 'aRef': '${Singleton.instance.agentRef}',
               }

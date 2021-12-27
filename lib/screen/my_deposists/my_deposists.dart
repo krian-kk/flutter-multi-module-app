@@ -171,7 +171,8 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                         child: TabBarView(
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            widget.bloc.myDeposistsData.result!.count == 0
+                            widget.bloc.myDeposistsData.result!.cheque!.count ==
+                                    0
                                 ? Center(
                                     child: Padding(
                                     padding: const EdgeInsets.all(20),
@@ -180,9 +181,9 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                   ))
                                 : ChegueAndCasshResults(widget.bloc,
                                     mode: "CHEQUE",
-                                    result:
-                                        widget.bloc.myDeposistsData.result!),
-                            widget.bloc.myDeposistsData.result!.count == 0
+                                    result: widget
+                                        .bloc.myDeposistsData.result!.cheque),
+                            widget.bloc.myDeposistsData.result!.cash!.count == 0
                                 ? Center(
                                     child: Padding(
                                     padding: const EdgeInsets.all(20),
@@ -191,8 +192,8 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                   ))
                                 : ChegueAndCasshResults(widget.bloc,
                                     mode: "CASH",
-                                    result:
-                                        widget.bloc.myDeposistsData.result!),
+                                    result: widget
+                                        .bloc.myDeposistsData.result!.cash),
                             // StatefulBuilder(
                             //     builder: (BuildContext context, StateSetter setState) {
                             //     return  CashResults.buildListCashAndChegue(widget.bloc, setState);

@@ -276,9 +276,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                     APIRequestType.GET,
                     HttpUrl.eventDetailsUrl(
                         caseId: caseId, userType: userType));
+            print("Event Details");
+            print(getEventDetailsData);
 
             if (getEventDetailsData[Constants.success] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];
+
               eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
 
               // eventDetailsHiveBox.then((value) => value.put(
@@ -288,7 +291,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               //       message: jsonData['message'],
               //       result: jsonData['result'],
               //     )));
-            } else {}
+            } else {
+              AppUtils.showToast(getEventDetailsData['data']['message']);
+            }
           }
           // await eventDetailsHiveBox.then((value) {
           //   value.get('EventDetails1')?.result.forEach((element) {

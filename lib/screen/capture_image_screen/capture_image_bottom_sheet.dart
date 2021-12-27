@@ -203,7 +203,7 @@ class _CustomCaptureImageBottomSheetState
                                 postData: requestBodyData));
                           } else {
                             AppUtils.showToast(
-                              Languages.of(context)!.customUpload.toLowerCase(),
+                              'Upload Image',
                               gravity: ToastGravity.CENTER,
                             );
                           }

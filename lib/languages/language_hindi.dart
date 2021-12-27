@@ -17,6 +17,9 @@ class LanguageHi extends Languages {
   String get userId => 'उपयोगकर्ता नाम';
 
   @override
+  String get userName => 'उपयोगकर्ता नाम';
+
+  @override
   String get rememberMe => 'मुझे याद रखें';
 
   @override

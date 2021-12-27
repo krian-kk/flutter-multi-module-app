@@ -17,6 +17,9 @@ class LanguageTa extends Languages {
   String get userId => 'பயனர் பெயர்';
 
   @override
+  String get userName => 'பயனர் பெயர்';
+
+  @override
   String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
 
   @override

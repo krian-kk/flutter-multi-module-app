@@ -114,7 +114,6 @@ class CustomCardList {
                       onTap: () {
                         bloc.add(NavigateCaseDetailEvent(paramValues: {
                           'caseID': resultData[index].caseId!,
-                          'isAddress': true
                         }));
                       },
                       child: Container(
@@ -207,30 +206,65 @@ class CustomCardList {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 6),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 12, 15, 12),
-                                decoration: BoxDecoration(
-                                  color: ColorResource.colorF8F9FB,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      resultData[index].address![0].value!,
-                                      color: ColorResource.color484848,
-                                      fontSize: FontSize.fourteen,
+                              child: bloc.userType == Constants.fieldagent
+                                  ? Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 12, 15, 12),
+                                      decoration: BoxDecoration(
+                                        color: ColorResource.colorF8F9FB,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomText(
+                                            resultData[index]
+                                                .address![0]
+                                                .value!,
+                                            color: ColorResource.color484848,
+                                            fontSize: FontSize.fourteen,
+                                          ),
+                                          // CustomText(
+                                          //   resultData[index].address![1].value!,
+                                          //   color: ColorResource.color484848,
+                                          //   fontSize: FontSize.fourteen,
+                                          // ),
+                                        ],
+                                      ),
+                                    )
+                                  : Wrap(
+                                      children: [
+                                        for (var item
+                                            in resultData[index].address!)
+                                          item.cType!.contains('mobile') ||
+                                                  item.cType!.contains('phone')
+                                              ? Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10, right: 20),
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 17,
+                                                      vertical: 6),
+                                                  decoration: BoxDecoration(
+                                                    color: ColorResource
+                                                        .colorF8F9FB,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                  ),
+                                                  child: CustomText(
+                                                    item.value!,
+                                                    color: ColorResource
+                                                        .color484848,
+                                                    fontSize: FontSize.fourteen,
+                                                    lineHeight: 1.0,
+                                                  ),
+                                                )
+                                              : const SizedBox(),
+                                      ],
                                     ),
-                                    // CustomText(
-                                    //   resultData[index].address![1].value!,
-                                    //   color: ColorResource.color484848,
-                                    //   fontSize: FontSize.fourteen,
-                                    // ),
-                                  ],
-                                ),
-                              ),
                             ),
                             const SizedBox(
                               height: 5,

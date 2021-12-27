@@ -11,6 +11,8 @@ abstract class Languages {
 
   String get userId;
 
+  String get userName;
+
   String get password;
 
   String get signin;

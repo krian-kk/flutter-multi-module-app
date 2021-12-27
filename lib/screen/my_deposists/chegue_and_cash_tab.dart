@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/dashboard_mydeposists_model/result.dart';
+import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
@@ -20,9 +20,13 @@ class SelectedValue {
 class ChegueAndCasshResults extends StatefulWidget {
   final DashboardBloc bloc;
   final String? mode;
-  final DashboardMyDeposistsResult? result;
-  const ChegueAndCasshResults(this.bloc, {Key? key, this.mode, this.result})
-      : super(key: key);
+  final Cheque? result;
+  const ChegueAndCasshResults(
+    this.bloc, {
+    Key? key,
+    this.mode,
+    this.result,
+  }) : super(key: key);
 
   @override
   _ChegueAndCasshResultsState createState() => _ChegueAndCasshResultsState();
@@ -32,9 +36,9 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < widget.bloc.caseList.length; i++) {
-      selectedValue
-          .add(SelectedValue(widget.bloc.caseList[i].loanID.toString(), false));
+    for (int i = 0; i < widget.result!.cases!.length; i++) {
+      selectedValue.add(
+          SelectedValue(widget.result!.cases![i].caseId.toString(), false));
     }
   }
 
@@ -86,7 +90,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     // widget.result!.cash!.cases!.length,
-                    itemCount: widget.bloc.caseList.length,
+                    itemCount: widget.result!.cases!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,8 +116,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          widget.bloc.caseList.length
-                                              .toString(),
+                                          widget.result!.count!.toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -134,8 +137,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           fontSize: FontSize.ten,
                                           color: ColorResource.color101010,
                                         ),
-                                        const CustomText(
-                                          '₹ 3,97,553.67',
+                                        CustomText(
+                                          widget.result!.totalAmt!.toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -190,7 +193,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 24, vertical: 2),
                                         child: CustomText(
-                                          widget.bloc.caseList[index].loanID!,
+                                          widget.result!.cases![index].caseId!,
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -211,7 +214,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         CustomText(
-                                          widget.bloc.caseList[index].amount!,
+                                          widget.result!.cases![index].due!
+                                              .toString(),
                                           fontSize: FontSize.eighteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -220,8 +224,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           height: 3.0,
                                         ),
                                         CustomText(
-                                          widget.bloc.caseList[index]
-                                              .customerName!,
+                                          widget.result!.cases![index].cust!,
                                           fontSize: FontSize.sixteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w400,
@@ -241,7 +244,9 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: CustomText(
-                                        widget.bloc.caseList[index].address!,
+                                        widget.result!.cases![index].address![0]
+                                            .value!
+                                            .toString(),
                                         color: ColorResource.color484848,
                                         fontSize: FontSize.fourteen,
                                       ),
@@ -277,7 +282,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                               fontWeight: FontWeight.w400,
                                             ),
                                             CustomText(
-                                              widget.bloc.caseList[index].date!,
+                                              widget.result!.cases![index]
+                                                  .fieldfollowUpDate!,
                                               fontSize: FontSize.fourteen,
                                               color: ColorResource.color101010,
                                               fontWeight: FontWeight.w700,
@@ -314,9 +320,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                     !selectedValue[index]
                                                         .isSelected;
                                                 custName = widget
-                                                    .bloc
-                                                    .caseList[index]
-                                                    .customerName;
+                                                    .result!.cases![index].cust;
                                               });
                                               caseIDs.clear();
                                               selectedValue.forEach((element) {

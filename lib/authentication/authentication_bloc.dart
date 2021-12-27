@@ -31,7 +31,8 @@ class AuthenticationBloc
       Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        AppUtils.showErrorToast('No Internet Connection');
+        yield AuthenticationUnAuthenticated();
+        // AppUtils.showErrorToast('No Internet Connection');
       }
 
       SharedPreferences _prefs = await SharedPreferences.getInstance();

@@ -5,9 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
 
@@ -28,6 +29,7 @@ class APIRepository {
       String? savePath,
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
 
     try {
       Response? response;
@@ -73,14 +75,27 @@ class APIRepository {
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
       print('response data -------->');
-      print(isPop);
+      // print(response!.headers['access-token']);
+      print('response Headers -------->');
+
+      if (response!.headers['access-token'] != null) {
+        print('Here get New Access Token for every API call then store');
+        print(response.headers['access-token']);
+        // Here get New Access Token for every API call then store
+        _prefs.setString(Constants.accessToken,
+            response.headers['access-token']![0].toString());
+        Singleton.instance.accessToken =
+            response.headers['access-token']![0].toString();
+      }
+
       returnValue = {
         'success': true,
-        'data': response!.data,
+        'data': response.data,
         'statusCode': response.data['status'],
       };
     } on DioError catch (e) {
       dynamic error;
+      String? invalidAccessServerError;
       if (e.response != null) {
         error = DioClient.errorHandling(e);
       } else {
@@ -91,24 +106,33 @@ class APIRepository {
       print('response dio error data -------->');
 
       if (error.toString() != "DioErrorType.response") {
-        // 1 way get any data on login and auth page to check remove pop
-        // otherwise remove this pop bcoz it affect dashboard and login
+        // isPop is used for if i load new api then get any error then pop the back screen
         if (isPop == true) {
           Navigator.pop(Singleton.instance.buildContext!);
         }
         apiErrorStatus(
-            ErrorValue: error.toString(), position: ToastGravity.CENTER);
+            ErrorString: error.toString(), position: ToastGravity.CENTER);
+      }
+
+      if (e.response != null) {
+        if (e.response!.statusCode == 502) {
+          //  server not response so api not working
+          invalidAccessServerError = Constants.internalServerError;
+          apiErrorStatus(
+              ErrorString: Constants.internalServerError,
+              position: ToastGravity.BOTTOM);
+        }
       }
 
       if (e.response != null) {
         if (e.response!.statusCode == 401) {
-          // apiErrorStatus(
-          //     ErrorValue: e.response!.data['message'].toString(),
-          //     position: ToastGravity.BOTTOM);
           //  here check accestoken expire or not after go to login
+          invalidAccessServerError =
+              e.response!.data['message'] ?? "Session Expired! please logout";
           apiErrorStatus(
-              ErrorValue: "Session Expired! please logout",
-              position: ToastGravity.CENTER);
+              ErrorString: e.response!.data['message'] ??
+                  "Session Expired! please logout",
+              position: ToastGravity.BOTTOM);
           // Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
           //     AppRoutes.loginScreen, (route) => false);
         }
@@ -122,7 +146,11 @@ class APIRepository {
 
       returnValue = {
         'success': false,
-        'data': e.response != null ? e.response!.data : error,
+        'data': invalidAccessServerError != null
+            ? invalidAccessServerError
+            : e.response != null
+                ? e.response!.data
+                : error,
         'statusCode': e.response != null ? e.response!.statusCode : '',
       };
     }
@@ -130,9 +158,9 @@ class APIRepository {
     return returnValue;
   }
 
-  static void apiErrorStatus({String? ErrorValue, ToastGravity? position}) {
+  static void apiErrorStatus({String? ErrorString, ToastGravity? position}) {
     Fluttertoast.showToast(
-        msg: ErrorValue!,
+        msg: ErrorString!,
         toastLength: Toast.LENGTH_LONG,
         gravity: position ?? ToastGravity.CENTER,
         timeInSecForIosWeb: 3,

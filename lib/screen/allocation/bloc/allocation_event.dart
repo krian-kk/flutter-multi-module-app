@@ -3,7 +3,7 @@ part of 'allocation_bloc.dart';
 class AllocationEvent extends BaseEquatable {}
 
 class AllocationInitialEvent extends AllocationEvent {
-  final BuildContext? context;
+  final BuildContext context;
   AllocationInitialEvent(this.context);
 }
 

@@ -46,6 +46,7 @@ class Constants {
   static const String eventDetails = 'EVENT DETAILS';
   static const String callCustomer = 'CALL CUSTOMER';
   static const String successfullySubmitted = 'Successfully submitted!!';
+  static const String successfullyUpdated = 'Successfully Updated !!';
   static const String resetPassword = 'Reset password via OTP';
   static const String notSelectedCase = 'Should be select one loan';
   static const String noCasesAvailable = 'No Case Available';
@@ -92,4 +93,7 @@ class Constants {
   static const String buildcontext = 'buildcontext';
   static const String callConnectedPleaseWait =
       'Call Connected Quickly Please Wait!';
+  static const String internalServerError = 'Internal Server Error !!';
+  static const String emailNotAvailable =
+      'Email ID not available, Mobile number available, send OTP via SMS';
 }

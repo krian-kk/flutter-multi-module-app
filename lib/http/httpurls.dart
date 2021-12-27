@@ -1,6 +1,7 @@
 class HttpUrl {
   static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
   // static const String baseUrl = 'https://devapi.instalmint.com/';
+  // static const String baseUrl = 'https://origa-dev/';
   static const String version = 'v1/';
   static const String fieldAgent = 'agent/';
 
@@ -11,6 +12,9 @@ class HttpUrl {
       'https://uat-collect.origa.ai/node/api/user/loginWeb';
   static const String agentDetailUrl =
       'https://uat-collect.origa.ai/node/field-allocation/agents/';
+  // Get agent detail for Reset password screen
+  static String resetPasswordCheckUrl(String agentName) =>
+      'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
 
   //Get API
   static const String dashboardUrl =
@@ -51,9 +55,7 @@ class HttpUrl {
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
-  // Are You At Office?
-  static String resetPasswordCheckUrl(String agentName) =>
-      'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+
   // baseUrl + version + fieldAgent + '';
   static String requestOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
@@ -61,7 +63,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'profile/homeAddress';
   static String resendOTPUrl() =>
       baseUrl + version + fieldAgent + 'profile/requestOtp';
-  static String resendPasswordUrl() =>
+  static String resetPasswordUrl() =>
       baseUrl + version + fieldAgent + 'profile/resetPassword';
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
@@ -154,6 +156,8 @@ class HttpUrl {
 
   static const String dashboardMyVisitsUrl =
       baseUrl + version + fieldAgent + 'case-details/visits?';
+  static const String dashboardMyCallsUrl =
+      baseUrl + version + fieldAgent + 'case-details/myCalls?';
   static const String dashboardMyReceiptsUrl =
       baseUrl + version + fieldAgent + 'case-details/receipts?';
   static const String dashboardMyDeposistsUrl =

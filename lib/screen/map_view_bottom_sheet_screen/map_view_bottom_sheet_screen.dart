@@ -35,8 +35,10 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   static const LatLng _center = LatLng(28.644800, 77.216721);
   late LatLng position;
   Set<Marker> _markers = {};
-  LatLng tabLatLng = const LatLng(0.0, 0.0);
+  late LatLng tabLatLng;
   late String? tabAddress;
+  // var currentLatitude;
+  // var currentLontitude;
 
   // Set<Polyline> _polyline = {};
 
@@ -63,8 +65,20 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
     if (widget.agentLocation == null) {
       Position res = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(res.latitude, res.longitude);
       setState(() {
         position = LatLng(res.latitude, res.longitude);
+        tabLatLng = LatLng(res.latitude, res.longitude);
+        tabAddress = placemarks.toList().first.street.toString() +
+            ', ' +
+            placemarks.toList().first.subLocality.toString() +
+            ', ' +
+            placemarks.toList().first.locality.toString() +
+            ',' +
+            placemarks.toList().first.postalCode.toString();
+        // print('------------------locatio---------');
+        // print(res.latitude);
       });
     } else {
       try {
@@ -152,13 +166,17 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                     setState(() {
                       tabLatLng = tabPositions;
                     });
+                    print(tabPositions.latitude);
                     List<Placemark> placemarks = await placemarkFromCoordinates(
                         tabPositions.latitude, tabPositions.longitude);
                     setState(() {
-                      tabAddress =
+                      tabAddress = placemarks.toList().first.street.toString() +
+                          ', ' +
+                          placemarks.toList().first.subLocality.toString() +
+                          ', ' +
                           placemarks.toList().first.locality.toString() +
-                              ', ' +
-                              placemarks.toList().first.subLocality.toString();
+                          ',' +
+                          placemarks.toList().first.postalCode.toString();
                       _markers = {};
                       _markers.add(
                         Marker(
@@ -189,10 +207,22 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
                     onTap: () async {
+                      // var requestBodyData;
+                      // if (tabLatLng.latitude != null) {
+
+                      // } else if (position.latitude != null) {
+                      //   requestBodyData = HomeAddressPostModel(
+                      //     latitude: position.latitude,
+                      //     longitude: position.longitude,
+                      //   );
+                      // } else {
+                      //   AppUtils.topSnackBar(context, "Please Select address!");
+                      // }
                       var requestBodyData = HomeAddressPostModel(
                         latitude: tabLatLng.latitude,
                         longitude: tabLatLng.longitude,
                       );
+
                       Map<String, dynamic> postResult =
                           await APIRepository.apiRequest(
                         APIRequestType.POST,
@@ -201,10 +231,10 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                       );
 
                       if (postResult[Constants.success]) {
+                        Navigator.pop(context);
                         AppUtils.topSnackBar(
                             context, Constants.successfullySubmitted);
                         widget.onClose!(tabAddress);
-                        Navigator.pop(context);
                       }
                     },
                     cardShape: 5,

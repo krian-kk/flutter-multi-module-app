@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/build_route_model/build_route_model.dart';
@@ -38,7 +39,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
-  bool isNoInternet = false;
+
+  // it's manage the Refresh the page basaed on Internet connection
+  bool isNoInternetAndServerError = false;
+  String? isNoInternetAndServerErrorMsg = '';
 
   int? messageCount = 0;
   bool isMessageThere = false;
@@ -47,7 +51,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // There is next page or not
   bool hasNextPage = true;
-  // Show autocalling
+  // Show Telecaller Autocalling
   bool isAutoCalling = false;
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
@@ -83,6 +87,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       agrRef = _pref.getString(Constants.agentRef);
       isShowSearchPincode = false;
 
+      // check in office location capture or not
+      areyouatOffice = _pref.getBool('areyouatOffice') ?? true;
+
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
@@ -93,11 +100,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         selectOptions = [
           StringResource.priority,
-          StringResource.autoCalling,
+          // StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
 
+      // static Autocalling Values
       mobileNumberList.addAll([
         AutoCallingModel(
           mobileNumber: '9876321230',
@@ -112,10 +120,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        isNoInternet = true;
+        isNoInternetAndServerError = true;
+        isNoInternetAndServerErrorMsg =
+            Languages.of(event.context)!.noInternetConnection;
         yield NoInternetConnectionState();
       } else {
-        isNoInternet = false;
+        isNoInternetAndServerError = false;
 
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -128,13 +138,21 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         resultList.clear();
         starCount.clear();
 
-        for (var element in priorityListData['data']['result']) {
-          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-              true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+        if (priorityListData['success']) {
+          for (var element in priorityListData['data']['result']) {
+            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+                true) {
+              starCount.add(
+                  Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            }
           }
+        } else if (priorityListData['statusCode'] == 401 ||
+            priorityListData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          isNoInternetAndServerErrorMsg = priorityListData['data'];
+          print('------Api not working----------');
+          print(priorityListData['data']);
         }
       }
       yield AllocationLoadedState(successResponse: resultList);

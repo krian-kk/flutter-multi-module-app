@@ -200,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }),
                             width: bloc.isSubmit
                                 ? MediaQuery.of(context).size.width
-                                : 70,
+                                : 90,
                             height: 55,
                             child: bloc.isAnimating || bloc.isSubmit
                                 ? loginButton()

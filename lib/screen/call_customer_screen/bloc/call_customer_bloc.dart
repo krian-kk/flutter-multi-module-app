@@ -23,8 +23,11 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
           Map<String, dynamic> getEventDetailsData =
               await APIRepository.apiRequest(
                   APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
+
           if (getEventDetailsData[Constants.success]) {
             Map<String, dynamic> jsonData = getEventDetailsData['data'];
+            print('---------Voice Agency detail-------');
+            print(jsonData['result']['voiceAgencyData']);
             voiceAgencyDetails = VoiceAgencyDetailsModel.fromJson(jsonData);
             emit.call(CallCustomerSuccessState());
           } else {}

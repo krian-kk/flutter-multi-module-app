@@ -360,25 +360,25 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
 
 // static List<Case>? resultValue = [];
 
-  static List customerMet = [
-    Constants.ptp,
-    Constants.denial,
-    Constants.dispute,
-    Constants.remainder,
-    Constants.collections,
-    Constants.receipt,
-    Constants.ots,
-  ];
-  static List customerNotMet = [
-    Constants.leftMessage,
-    Constants.doorLocked,
-    Constants.entryRestricted,
-  ];
-  static List invalid = [
-    Constants.wrongAddress,
-    Constants.shifted,
-    Constants.addressNotFound,
-  ];
+  // static List customerMet = [
+  //   Constants.ptp,
+  //   Constants.denial,
+  //   Constants.dispute,
+  //   Constants.remainder,
+  //   Constants.collections,
+  //   Constants.receipt,
+  //   Constants.ots,
+  // ];
+  // static List customerNotMet = [
+  //   Constants.leftMessage,
+  //   Constants.doorLocked,
+  //   Constants.entryRestricted,
+  // ];
+  // static List invalid = [
+  //   Constants.wrongAddress,
+  //   Constants.shifted,
+  //   Constants.addressNotFound,
+  // ];
 
   static Widget buildListView(DashboardBloc bloc, DashboardAllModels listData,
       List<Case>? resultValue) {
@@ -555,20 +555,59 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 6),
-                                  child: Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 12, 15, 12),
-                                    decoration: BoxDecoration(
-                                      color: ColorResource.colorF8F9FB,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: CustomText(
-                                      resultValue[index].address![0].value!,
-                                      color: ColorResource.color484848,
-                                      fontSize: FontSize.fourteen,
-                                    ),
-                                  ),
+                                  child: bloc.userType == Constants.userType
+                                      ? Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 12, 15, 12),
+                                          decoration: BoxDecoration(
+                                            color: ColorResource.colorF8F9FB,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: CustomText(
+                                            resultValue[index]
+                                                .address![0]
+                                                .value!,
+                                            color: ColorResource.color484848,
+                                            fontSize: FontSize.fourteen,
+                                          ),
+                                        )
+                                      : Wrap(
+                                          children: [
+                                            for (var item in listData
+                                                .result!.cases![index].address!)
+                                              item.cType!.contains('mobile') ||
+                                                      item.cType!
+                                                          .contains('phone')
+                                                  ? Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 10,
+                                                              right: 20),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 17,
+                                                          vertical: 6),
+                                                      decoration: BoxDecoration(
+                                                        color: ColorResource
+                                                            .colorF8F9FB,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                      ),
+                                                      child: CustomText(
+                                                        item.value!,
+                                                        color: ColorResource
+                                                            .color484848,
+                                                        fontSize:
+                                                            FontSize.fourteen,
+                                                        lineHeight: 1.0,
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
+                                          ],
+                                        ),
                                 ),
                                 const SizedBox(
                                   height: 5,

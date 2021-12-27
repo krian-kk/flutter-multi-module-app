@@ -28,6 +28,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
@@ -470,9 +471,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
               ),
               createdBy: bloc.agentName.toString(),
               agentName: bloc.agentName.toString(),
-              eventModule: (bloc.userType == Constants.telecaller)
-                  ? 'Telecalling'
-                  : 'Field Allocation',
+              eventModule: 'Field Allocation',
               eventCode: 'TELEVT017');
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.POST,
@@ -480,9 +479,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
             requestBodydata: jsonEncode(requestBodyData),
           );
           if (postResult[Constants.success]) {
+            SharedPreferences _pref = await SharedPreferences.getInstance();
             //current location submitted success
             setState(() {
               bloc.areyouatOffice = false;
+              _pref.setBool('areyouatOffice', false);
             });
             AppUtils.showToast(Constants.successfullySubmitted);
           }
@@ -496,12 +497,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return bloc.isNoInternet
+          return bloc.isNoInternetAndServerError
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomText(Languages.of(context)!.noInternetConnection),
+                      CustomText(bloc.isNoInternetAndServerErrorMsg!),
                       const SizedBox(
                         height: 5,
                       ),

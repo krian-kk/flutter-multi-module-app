@@ -296,7 +296,10 @@ class _CustomCollectionsBottomSheetState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      AppUtils.showToast('Unable to send SMS');
+                      Navigator.pop(context);
+                    },
                     child: SizedBox(
                         width: 95,
                         child: Center(
@@ -318,79 +321,78 @@ class _CustomCollectionsBottomSheetState
                       onTap: () async {
                         if (_formKey.currentState!.validate() &&
                             selectedPaymentModeButton != '') {
-                          if (uploadFileLists.isEmpty) {
-                            AppUtils.showToast(
-                              Constants.uploadDepositSlip,
-                              gravity: ToastGravity.CENTER,
-                            );
-                          } else {
-                            Position position = Position(
-                              longitude: 0,
-                              latitude: 0,
-                              timestamp: DateTime.now(),
-                              accuracy: 0,
-                              altitude: 0,
-                              heading: 0,
-                              speed: 0,
-                              speedAccuracy: 0,
-                            );
-                            if (Geolocator.checkPermission().toString() !=
-                                PermissionStatus.granted.toString()) {
-                              Position res =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.best);
-                              setState(() {
-                                position = res;
-                              });
-                            }
-                            var requestBodyData = CollectionPostModel(
-                              eventType:
-                                  (widget.userType == Constants.telecaller)
-                                      ? 'TC : RECEIPT'
-                                      : 'RECEIPT',
-                              caseId: widget.caseId,
-                              contact: CollectionsContact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                              ),
-                              eventAttr: EventAttr(
-                                amountCollected:
-                                    int.parse(amountCollectedControlller.text),
-                                chequeRefNo: chequeControlller.text,
-                                date: dateControlller.text,
-                                remarks: remarksControlller.text,
-                                mode: selectedPaymentModeButton,
-                                imageLocation: uploadFileLists as List<String>,
-                                longitude: position.longitude,
-                                latitude: position.latitude,
-                                accuracy: position.accuracy,
-                                altitude: position.altitude,
-                                heading: position.heading,
-                                speed: position.speed,
-                              ),
-                              createdBy: widget.agentName,
-                              agentName: widget.agentName,
-                              eventModule: widget.isCall!
-                                  ? 'Telecalling'
-                                  : 'Field Allocation',
-                              agrRef: widget.argRef,
-                            );
-
-                            Map<String, dynamic> postResult =
-                                await APIRepository.apiRequest(
-                                    APIRequestType.POST,
-                                    HttpUrl.collectionPostUrl(
-                                      'collection',
-                                      widget.userType,
-                                    ),
-                                    requestBodydata:
-                                        jsonEncode(requestBodyData));
-                            if (postResult[Constants.success]) {
-                              AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
-                              Navigator.pop(context);
-                            }
+                          // if (uploadFileLists.isEmpty) {
+                          //   AppUtils.showToast(
+                          //     Constants.uploadDepositSlip,
+                          //     gravity: ToastGravity.CENTER,
+                          //   );
+                          // } else {
+                          Position position = Position(
+                            longitude: 0,
+                            latitude: 0,
+                            timestamp: DateTime.now(),
+                            accuracy: 0,
+                            altitude: 0,
+                            heading: 0,
+                            speed: 0,
+                            speedAccuracy: 0,
+                          );
+                          if (Geolocator.checkPermission().toString() !=
+                              PermissionStatus.granted.toString()) {
+                            Position res = await Geolocator.getCurrentPosition(
+                                desiredAccuracy: LocationAccuracy.best);
+                            setState(() {
+                              position = res;
+                            });
                           }
+                          var requestBodyData = CollectionPostModel(
+                            eventType: (widget.userType == Constants.telecaller)
+                                ? 'TC : RECEIPT'
+                                : 'RECEIPT',
+                            caseId: widget.caseId,
+                            contact: CollectionsContact(
+                              cType: widget.postValue['cType'],
+                              value: widget.postValue['value'],
+                            ),
+                            eventAttr: EventAttr(
+                              amountCollected:
+                                  int.parse(amountCollectedControlller.text),
+                              chequeRefNo: chequeControlller.text,
+                              date: dateControlller.text,
+                              remarks: remarksControlller.text,
+                              mode: selectedPaymentModeButton,
+                              imageLocation: uploadFileLists.isNotEmpty
+                                  ? uploadFileLists as List<String>
+                                  : [''],
+                              longitude: position.longitude,
+                              latitude: position.latitude,
+                              accuracy: position.accuracy,
+                              altitude: position.altitude,
+                              heading: position.heading,
+                              speed: position.speed,
+                            ),
+                            createdBy: widget.agentName,
+                            agentName: widget.agentName,
+                            eventModule: widget.isCall!
+                                ? 'Telecalling'
+                                : 'Field Allocation',
+                            agrRef: widget.argRef,
+                          );
+
+                          Map<String, dynamic> postResult =
+                              await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.collectionPostUrl(
+                                    'collection',
+                                    widget.userType,
+                                  ),
+                                  requestBodydata: jsonEncode(requestBodyData));
+                          if (postResult[Constants.success]) {
+                            AppUtils.topSnackBar(
+                                context, "Event updated successfully.");
+                            Navigator.pop(context);
+                          }
+                          // }
                         }
                       },
                       cardShape: 5,

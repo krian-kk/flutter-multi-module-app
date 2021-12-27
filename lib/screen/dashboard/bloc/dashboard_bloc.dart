@@ -7,8 +7,8 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/models/dashboard_model.dart';
-// import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
+// import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/singleton.dart';
@@ -24,7 +24,7 @@ part 'dashboard_state.dart';
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
-  List<CaseListModel> caseList = [];
+  // List<CaseListModel> caseList = [];
   String? userType;
   String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
@@ -38,7 +38,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   //     DashboardUntouchedCasesModel();
   // DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
   // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
-  DashboardMydeposistsModel myDeposistsData = DashboardMydeposistsModel();
+  MyDeposistModel myDeposistsData = MyDeposistModel();
   DashboardYardingandSelfReleaseModel yardingAndSelfReleaseData =
       DashboardYardingandSelfReleaseModel();
 
@@ -58,6 +58,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   List<Result> searchResultList = [];
   bool isShowSearchResult = false;
 
+  // it's manage the Refresh the page basaed on Internet connection
+  bool isNoInternetAndServerError = false;
+  String? noInternetAndServerErrorMsg = '';
+
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is DashboardInitialEvent) {
@@ -72,6 +76,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       todayDate = currentDate;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternetAndServerError = true;
+        noInternetAndServerErrorMsg =
+            Languages.of(event.context!)!.noInternetConnection;
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> dashboardData = await APIRepository.apiRequest(
@@ -130,35 +137,39 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                 count: '',
                 amountRs: ''),
           ]);
+        } else if (dashboardData['statusCode'] == 401 ||
+            dashboardData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          noInternetAndServerErrorMsg = dashboardData['data'];
         }
       }
 // caseList.clear();
-      caseList.addAll([
-        CaseListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 3,97,553.67',
-          address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
-          date: 'Today, Thu 18 Oct, 2021',
-          loanID: '618e382004d8d040ac18841b',
-        ),
-        CaseListModel(
-          newlyAdded: true,
-          customerName: 'New User',
-          amount: '₹ 5,54,433.67',
-          address: '2/345, 6th Main Road, Bangalore - 534544',
-          date: 'Thu, Thu 18 Oct, 2021',
-          loanID: '618e382004d8d040ac18841b',
-        ),
-        CaseListModel(
-          newlyAdded: true,
-          customerName: 'Debashish Patnaik',
-          amount: '₹ 8,97,553.67',
-          address: '2/345, 1th Main Road Guindy, Chenai - 875032',
-          date: 'Sat, Thu 18 Oct, 2021',
-          loanID: '618e382004d8d040ac18841b',
-        ),
-      ]);
+      // caseList.addAll([
+      //   CaseListModel(
+      //     newlyAdded: true,
+      //     customerName: 'Debashish Patnaik',
+      //     amount: '₹ 3,97,553.67',
+      //     address: '2/345, 6th Main Road Gomathipuram, Madurai - 625032',
+      //     date: 'Today, Thu 18 Oct, 2021',
+      //     loanID: '618e382004d8d040ac18841b',
+      //   ),
+      //   CaseListModel(
+      //     newlyAdded: true,
+      //     customerName: 'New User',
+      //     amount: '₹ 5,54,433.67',
+      //     address: '2/345, 6th Main Road, Bangalore - 534544',
+      //     date: 'Thu, Thu 18 Oct, 2021',
+      //     loanID: '618e382004d8d040ac18841b',
+      //   ),
+      //   CaseListModel(
+      //     newlyAdded: true,
+      //     customerName: 'Debashish Patnaik',
+      //     amount: '₹ 8,97,553.67',
+      //     address: '2/345, 1th Main Road Guindy, Chenai - 875032',
+      //     date: 'Sat, Thu 18 Oct, 2021',
+      //     loanID: '618e382004d8d040ac18841b',
+      //   ),
+      // ]);
 
       yield DashboardLoadedState();
     }
@@ -262,9 +273,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
-            HttpUrl.dashboardMyVisitsUrl + 'timePeriod=' + selectedFilter!);
+        Map<String, dynamic> getMyVisitsData;
+        if (userType == Constants.fieldagent) {
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+              HttpUrl.dashboardMyVisitsUrl + 'timePeriod=' + selectedFilter!);
+        } else {
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+              HttpUrl.dashboardMyCallsUrl + 'timePeriod=' + selectedFilter!);
+        }
+
         myVisitsData = DashboardAllModels.fromJson(getMyVisitsData['data']);
         // print(getMyVisitsData['data']);
         if (getMyVisitsData[Constants.success]) {
@@ -282,9 +299,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
-            HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
+        Map<String, dynamic> getMyVisitsData;
+        if (userType == Constants.fieldagent) {
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+              HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
+        } else {
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+              HttpUrl.dashboardMyCallsUrl + "timePeriod=${event.timePeiod}");
+        }
+        // Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
+        //     APIRequestType.GET,
+        //     HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
         if (getMyVisitsData[Constants.success]) {
           yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
         }
@@ -295,13 +320,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is MyDeposistsEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
             APIRequestType.GET,
             HttpUrl.dashboardMyDeposistsUrl + 'timePeriod=' + selectedFilter!);
-        myDeposistsData =
-            DashboardMydeposistsModel.fromJson(getMyDepositsData['data']);
+        myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
         // print(getMyDepositsData['data']);
         if (getMyDepositsData[Constants.success]) {
           yield MyDeposistsState();
@@ -312,19 +336,18 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is DeposistsApiEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
             APIRequestType.GET,
             HttpUrl.dashboardMyDeposistsUrl + "timePeriod=${event.timePeiod}");
-        myDeposistsData =
-            DashboardMydeposistsModel.fromJson(getMyDepositsData['data']);
+        myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
       }
     }
 
     if (event is YardingAndSelfReleaseEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        print('Please Connect Internet!');
+        yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getYardingAndSelfReleaseData =
             await APIRepository.apiRequest(

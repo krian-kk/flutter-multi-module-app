@@ -51,7 +51,7 @@ class _CustomOtherFeedBackBottomSheetState
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.audio);
+        .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast('Please Select Minimum 5 MB File.',
@@ -162,7 +162,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   ),
                                   color: ColorResource.color23375A,
                                   elevation: 2,
-                                  child: GestureDetector(
+                                  child: InkWell(
                                     onTap: () => getFiles(),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -300,7 +300,7 @@ class _CustomOtherFeedBackBottomSheetState
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(
                               APIRequestType.POST,
-                              HttpUrl.reminderPostUrl(
+                              HttpUrl.otherFeedBackPostUrl(
                                   'feedback', widget.userType),
                               requestBodydata:
                                   jsonEncode(requestBodyData.toJson()),

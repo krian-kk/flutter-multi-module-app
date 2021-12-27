@@ -23,6 +23,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -34,13 +35,18 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc bloc;
   File? image;
-  String addressValue = '_';
+  String addressValue = 'Address Not found';
 
   @override
   void initState() {
     bloc = ProfileBloc()..add(ProfileInitialEvent(context));
-
+    getAddress();
     super.initState();
+  }
+
+  void getAddress() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    addressValue = _pref.getString('addressValue') ?? 'Address Not found';
   }
 
   Future pickImage(
@@ -125,337 +131,319 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return bloc.isNoInternet
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomText(Languages.of(context)!.noInternetConnection),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              bloc.add(ProfileInitialEvent(context));
-                            },
-                            icon: const Icon(Icons.refresh)),
-                      ],
-                    ),
-                  )
-                : Scaffold(
-                    backgroundColor: ColorResource.colorF7F8FA,
-                    body: Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: ColorResource.colorFFFFFF,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: ColorResource.color000000
-                                          .withOpacity(0.2),
-                                      blurRadius: 2.0,
-                                      offset: const Offset(1.0, 1.0),
-                                    )
-                                  ],
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0))),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 19.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () => bloc
-                                              .add(ChangeProfileImageEvent()),
-                                          child: image == null
-                                              ? Container(
-                                                  child: SvgPicture.asset(
-                                                      ImageResource
-                                                          .profileImagePicker),
-                                                  width: 45,
-                                                  height: 45,
-                                                  decoration: BoxDecoration(
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            52.5),
-                                                  ),
-                                                )
-                                              : CircleAvatar(
-                                                  radius: 25,
-                                                  backgroundImage: FileImage(
-                                                      File(image!.path))),
-                                        ),
-                                        SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.013),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              bloc.profileAPIValue.result?.first
-                                                      .aRef
-                                                      .toString() ??
-                                                  '_',
-                                              fontSize: FontSize.eighteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color101010,
+            return
+                // bloc.isNoInternetAndServerError
+                //     ? Center(
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             CustomText(bloc.noInternetAndServerErrorMsg!),
+                //             const SizedBox(
+                //               height: 5,
+                //             ),
+                //             IconButton(
+                //                 onPressed: () {
+                //                   bloc.add(ProfileInitialEvent(context));
+                //                 },
+                //                 icon: const Icon(Icons.refresh)),
+                //           ],
+                //         ),
+                //       )
+                //     :
+                Scaffold(
+              backgroundColor: ColorResource.colorF7F8FA,
+              body: Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: ColorResource.colorFFFFFF,
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    ColorResource.color000000.withOpacity(0.2),
+                                blurRadius: 2.0,
+                                offset: const Offset(1.0, 1.0),
+                              )
+                            ],
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10.0))),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 19.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () =>
+                                        bloc.add(ChangeProfileImageEvent()),
+                                    child: image == null
+                                        ? Container(
+                                            child: SvgPicture.asset(
+                                                ImageResource
+                                                    .profileImagePicker),
+                                            width: 45,
+                                            height: 45,
+                                            decoration: BoxDecoration(
+                                              color: ColorResource.color23375A,
+                                              borderRadius:
+                                                  BorderRadius.circular(52.5),
                                             ),
-                                            const SizedBox(height: 11),
-                                            CustomText(
-                                              bloc.profileAPIValue.result?.first
-                                                      .name
-                                                      .toString() ??
-                                                  '_',
-                                              fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w400,
-                                              color: ColorResource.color101010,
-                                            ),
-                                            CustomText(
-                                              bloc.profileAPIValue.result?.first
-                                                      .defMobileNumber
-                                                      .toString() ??
-                                                  '_',
-                                              fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color101010,
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 30),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!
-                                              .homeAddress
-                                              .toUpperCase(),
-                                          fontSize: FontSize.fourteen,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color101010,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () =>
-                                              bloc.add(ClickMarkAsHomeEvent()),
-                                          child: SizedBox(
-                                            child: CustomText(
-                                              Languages.of(context)!.markAsHome,
-                                              fontSize: FontSize.twelve,
-                                              isUnderLine: true,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color101010,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Container(
-                                      width: double.infinity,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 5.0),
-                                      decoration: const BoxDecoration(
-                                          color: ColorResource.colorF8F9FB,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 16.0,
-                                        ),
-                                        child: CustomText(
-                                          (bloc.profileAPIValue.result?.first
-                                                      .address?.last['cType'] ==
-                                                  'address')
-                                              ? bloc.profileAPIValue.result
-                                                  ?.first.address?.last['value']
-                                              : addressValue,
-                                          fontSize: FontSize.fourteen,
-                                          fontWeight: FontWeight.w400,
-                                          fontStyle: FontStyle.normal,
-                                          color: ColorResource.color484848,
-                                        ),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage:
+                                                FileImage(File(image!.path))),
+                                  ),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.013),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        bloc.profileAPIValue.result?.first.aRef
+                                                .toString() ??
+                                            '_',
+                                        fontSize: FontSize.eighteen,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResource.color101010,
+                                      ),
+                                      const SizedBox(height: 11),
+                                      CustomText(
+                                        bloc.profileAPIValue.result?.first.name
+                                                .toString() ??
+                                            '_',
+                                        fontSize: FontSize.sixteen,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                        color: ColorResource.color101010,
+                                      ),
+                                      CustomText(
+                                        bloc.profileAPIValue.result?.first
+                                                .defMobileNumber
+                                                .toString() ??
+                                            '_',
+                                        fontSize: FontSize.sixteen,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResource.color101010,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 30),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    Languages.of(context)!
+                                        .homeAddress
+                                        .toUpperCase(),
+                                    fontSize: FontSize.fourteen,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w700,
+                                    color: ColorResource.color101010,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () =>
+                                        bloc.add(ClickMarkAsHomeEvent()),
+                                    child: SizedBox(
+                                      child: CustomText(
+                                        Languages.of(context)!.markAsHome,
+                                        fontSize: FontSize.twelve,
+                                        isUnderLine: true,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResource.color101010,
                                       ),
                                     ),
-                                    ListView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: profileNavigationList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return GestureDetector(
-                                            onTap: profileNavigationList[index]
-                                                .onTap,
-                                            child: Container(
-                                              width: double.infinity,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0),
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 21,
-                                                        vertical: 14),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    GestureDetector(
-                                                      child: Row(
-                                                        children: [
-                                                          CustomText(
-                                                            profileNavigationList[
-                                                                    index]
-                                                                .title
-                                                                .toUpperCase(),
-                                                            lineHeight: 1,
-                                                            fontSize: FontSize
-                                                                .sixteen,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            color: ColorResource
-                                                                .color23375A,
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          profileNavigationList[
-                                                                          index]
-                                                                      .notificationCount ==
-                                                                  null
-                                                              ? const SizedBox()
-                                                              : CircleAvatar(
-                                                                  backgroundColor:
-                                                                      ColorResource
-                                                                          .color23375A,
-                                                                  radius: 13,
-                                                                  child: Center(
-                                                                    child: CustomText(
-                                                                        profileNavigationList[index]
-                                                                            .notificationCount
-                                                                            .toString(),
-                                                                        lineHeight:
-                                                                            1,
-                                                                        fontSize:
-                                                                            FontSize
-                                                                                .twelve,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        color: ColorResource
-                                                                            .colorFFFFFF),
-                                                                  ),
-                                                                )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SvgPicture.asset(
-                                                        ImageResource
-                                                            .forwardArrow)
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 22),
-                            GestureDetector(
-                              onTap: () => bloc.add(LoginEvent()),
-                              child: Container(
-                                width: 125,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    color: ColorResource.colorFFFFFF,
-                                    border: Border.all(
-                                        color: ColorResource.color23375A,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(75.0))),
-                                child: Center(
+                              const SizedBox(height: 5),
+                              Container(
+                                width: double.infinity,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: const BoxDecoration(
+                                    color: ColorResource.colorF8F9FB,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 16.0,
+                                  ),
                                   child: CustomText(
-                                    Languages.of(context)!.logout.toUpperCase(),
-                                    fontSize: FontSize.twelve,
-                                    color: ColorResource.color23375A,
-                                    fontWeight: FontWeight.w700,
-                                    lineHeight: 1,
+                                    (bloc.profileAPIValue.result?.first.address
+                                                ?.last['cType'] ==
+                                            'address')
+                                        ? bloc.profileAPIValue.result?.first
+                                            .address?.last['value']
+                                        : addressValue,
+                                    fontSize: FontSize.fourteen,
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.normal,
+                                    color: ColorResource.color484848,
                                   ),
                                 ),
                               ),
-                            )
-                          ],
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: profileNavigationList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: profileNavigationList[index].onTap,
+                                      child: Container(
+                                        width: double.infinity,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 5.0),
+                                        decoration: const BoxDecoration(
+                                            color: ColorResource.colorF8F9FB,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 21, vertical: 14),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                child: Row(
+                                                  children: [
+                                                    CustomText(
+                                                      profileNavigationList[
+                                                              index]
+                                                          .title
+                                                          .toUpperCase(),
+                                                      lineHeight: 1,
+                                                      fontSize:
+                                                          FontSize.sixteen,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: ColorResource
+                                                          .color23375A,
+                                                    ),
+                                                    const SizedBox(width: 5),
+                                                    profileNavigationList[index]
+                                                                .notificationCount ==
+                                                            null
+                                                        ? const SizedBox()
+                                                        : CircleAvatar(
+                                                            backgroundColor:
+                                                                ColorResource
+                                                                    .color23375A,
+                                                            radius: 13,
+                                                            child: Center(
+                                                              child: CustomText(
+                                                                  profileNavigationList[
+                                                                          index]
+                                                                      .notificationCount
+                                                                      .toString(),
+                                                                  lineHeight: 1,
+                                                                  fontSize:
+                                                                      FontSize
+                                                                          .twelve,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: ColorResource
+                                                                      .colorFFFFFF),
+                                                            ),
+                                                          )
+                                                  ],
+                                                ),
+                                              ),
+                                              SvgPicture.asset(
+                                                  ImageResource.forwardArrow)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    bottomNavigationBar: Container(
-                      width: double.infinity,
-                      color: ColorResource.colorFFFFFF,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 11.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 200,
-                              child: CustomButton(
-                                Languages.of(context)!.message,
-                                onTap: () => bloc.add(ClickMessageEvent()),
-                                fontSize: FontSize.sixteen,
-                                cardShape: 5,
-                                isTrailing: true,
-                                leadingWidget: const CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: ColorResource.colorFFFFFF,
-                                  child: CustomText('2',
-                                      fontSize: FontSize.twelve,
-                                      lineHeight: 1,
-                                      color: ColorResource.colorEA6D48,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal),
-                                ),
-                              ),
+                      const SizedBox(height: 22),
+                      GestureDetector(
+                        onTap: () => bloc.add(LoginEvent()),
+                        child: Container(
+                          width: 125,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: ColorResource.colorFFFFFF,
+                              border: Border.all(
+                                  color: ColorResource.color23375A, width: 0.5),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(75.0))),
+                          child: Center(
+                            child: CustomText(
+                              Languages.of(context)!.logout.toUpperCase(),
+                              fontSize: FontSize.twelve,
+                              color: ColorResource.color23375A,
+                              fontWeight: FontWeight.w700,
+                              lineHeight: 1,
                             ),
-                          ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              bottomNavigationBar: Container(
+                width: double.infinity,
+                color: ColorResource.colorFFFFFF,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 11.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: CustomButton(
+                          Languages.of(context)!.message,
+                          onTap: () => bloc.add(ClickMessageEvent()),
+                          fontSize: FontSize.sixteen,
+                          cardShape: 5,
+                          isTrailing: true,
+                          leadingWidget: const CircleAvatar(
+                            radius: 13,
+                            backgroundColor: ColorResource.colorFFFFFF,
+                            child: CustomText('2',
+                                fontSize: FontSize.twelve,
+                                lineHeight: 1,
+                                color: ColorResource.colorEA6D48,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal),
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    ],
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),
@@ -638,9 +626,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext buildContext, BoxConstraints settate) =>
                 MapViewBottomSheetScreen(
                   title: Languages.of(context)!.markAsHome,
-                  onClose: (value) {
+                  onClose: (value) async {
+                    SharedPreferences _pref =
+                        await SharedPreferences.getInstance();
                     setState(() {
                       addressValue = value;
+                      _pref.setString('addressValue', value);
                     });
                   },
                 )));

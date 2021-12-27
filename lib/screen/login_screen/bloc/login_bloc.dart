@@ -54,13 +54,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print(response.toString());
       if (response['success'] == false) {
         yield SignInLoadedState();
+        // print("Login errors");
         AppUtils.showToast(response['data'], backgroundColor: Colors.red);
       } else if (response['statusCode'] == 401) {
         loginErrorResponse = LoginErrorMessage.fromJson(response['data']);
         // if SignIn error to show again SignIn button
         yield SignInLoadedState();
-        AppUtils.showToast(loginErrorResponse.msg.toString(),
-            backgroundColor: Colors.red);
+        if (loginErrorResponse.msg ==
+            "Invalid Credentails, Please contact the administrator") {
+          AppUtils.showToast(
+              'User ID does not exist. Please contact system administrator',
+              backgroundColor: Colors.red);
+        } else if (loginErrorResponse.msg ==
+            "Invalid password, Please enter correct password") {
+          AppUtils.showToast('Invalid password, Please enter correct password',
+              backgroundColor: Colors.red);
+        } else {
+          AppUtils.showToast(loginErrorResponse.msg.toString(),
+              backgroundColor: Colors.red);
+        }
       } else {
         print('---------status success------');
         if (response['data']['data'] != null) {
