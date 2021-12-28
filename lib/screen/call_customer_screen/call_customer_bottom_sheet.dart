@@ -53,13 +53,9 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   List<String> customerContactNoDropdownList = [];
   String customerContactNoDropDownValue = '';
-  List<String> serviceProviderListDropdownList = [
-    'ABC',
-  ];
+  List<String> serviceProviderListDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
   String serviceProviderListValue = 'ABC';
-  List<String> callersIDDropdownList = [
-    'ABC',
-  ];
+  List<String> callersIDDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
   String callersIDDropdownValue = 'ABC';
   List<CaseListModel> caseDetaislListModel = [];
 

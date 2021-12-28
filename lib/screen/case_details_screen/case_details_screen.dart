@@ -115,14 +115,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         },
                       ),
                     ),
-                    bloc.isNoInternet
+                    bloc.isNoInternetAndServerError
                         ? Expanded(
                             child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CustomText(Languages.of(context)!
-                                      .noInternetConnection),
+                                  CustomText(bloc.noInternetAndServerErrorMsg!),
                                   const SizedBox(
                                     height: 5,
                                   ),
@@ -783,7 +782,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           ),
                   ],
                 ),
-                bottomNavigationBar: bloc.isNoInternet
+                bottomNavigationBar: bloc.isNoInternetAndServerError
                     ? const SizedBox()
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.end,

@@ -9,3 +9,5 @@ class AppStarted extends AuthenticationEvent {
   BuildContext? context;
   AppStarted({this.context});
 }
+
+class UnAuthenticationEvent extends AuthenticationEvent {}

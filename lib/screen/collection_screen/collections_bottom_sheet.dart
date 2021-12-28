@@ -363,7 +363,7 @@ class _CustomCollectionsBottomSheetState
                               mode: selectedPaymentModeButton,
                               imageLocation: uploadFileLists.isNotEmpty
                                   ? uploadFileLists as List<String>
-                                  : [''],
+                                  : [],
                               longitude: position.longitude,
                               latitude: position.latitude,
                               accuracy: position.accuracy,

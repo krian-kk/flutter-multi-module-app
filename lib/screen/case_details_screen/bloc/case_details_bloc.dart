@@ -41,7 +41,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? userType;
 
   // Online Purpose
-  bool isNoInternet = false;
+  // bool isNoInternet = false;
+  bool isNoInternetAndServerError = false;
+  String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
   EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
 
@@ -118,10 +120,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       //check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-        isNoInternet = true;
+        isNoInternetAndServerError = true;
+        noInternetAndServerErrorMsg =
+            Languages.of(event.context!)!.noInternetConnection;
         yield NoInternetState();
       } else {
-        isNoInternet = false;
+        isNoInternetAndServerError = false;
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
             isPop: true);
@@ -136,7 +140,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           //       message: jsonData['message'],
           //       result: jsonData['result'],
           //     )));
-        } else {}
+        } else if (caseDetailsData['statusCode'] == 401 ||
+            caseDetailsData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          noInternetAndServerErrorMsg = caseDetailsData['data'];
+        }
       }
 
       // await caseDetailsHiveBox.then(

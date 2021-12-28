@@ -39,10 +39,14 @@ class AuthenticationBloc
       String? getToken = _prefs.getString(Constants.accessToken) ?? "";
       String? getUserName = _prefs.getString(Constants.userId);
       String? getUserType = _prefs.getString(Constants.userType) ?? "";
+      // print(_prefs.getString(Constants.accessToken));
 
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {
+        // var tokenIssue = getToken;
+        print('-----token issue---');
+        print(getToken);
         if (JwtDecoder.isExpired(getToken)) {
           yield AuthenticationUnAuthenticated();
         } else {
@@ -114,6 +118,10 @@ class AuthenticationBloc
         }
       }
       // yield AuthenticationAuthenticated();
+    }
+
+    if (event is UnAuthenticationEvent) {
+      yield AuthenticationUnAuthenticated();
     }
   }
 }

@@ -289,8 +289,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   child: CustomText(
                                     (bloc.profileAPIValue.result?.first.address
-                                                ?.last['cType'] ==
-                                            'address')
+                                                    ?.last['cType'] ==
+                                                'office address' ||
+                                            bloc.profileAPIValue.result?.first
+                                                    .address?.last['cType'] ==
+                                                'office_address' ||
+                                            bloc.profileAPIValue.result?.first
+                                                    .address?.last['cType'] ==
+                                                'residence address')
                                         ? bloc.profileAPIValue.result?.first
                                             .address?.last['value']
                                         : addressValue,

@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -74,18 +77,20 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
-      print('response data -------->');
+      // print('response data -------->');
       // print(response!.headers['access-token']);
-      print('response Headers -------->');
+      // print('response Headers -------->');
 
       if (response!.headers['access-token'] != null) {
         print('Here get New Access Token for every API call then store');
         print(response.headers['access-token']);
         // Here get New Access Token for every API call then store
-        _prefs.setString(Constants.accessToken,
-            response.headers['access-token']![0].toString());
-        Singleton.instance.accessToken =
-            response.headers['access-token']![0].toString();
+        if (response.headers['access-token']![0].toString() != 'false') {
+          _prefs.setString(Constants.accessToken,
+              response.headers['access-token']![0].toString());
+          Singleton.instance.accessToken =
+              response.headers['access-token']![0].toString();
+        }
       }
 
       returnValue = {
@@ -94,16 +99,19 @@ class APIRepository {
         'statusCode': response.data['status'],
       };
     } on DioError catch (e) {
+      // print("-------NK------");
+      // print(e.response!.statusCode);
       dynamic error;
       String? invalidAccessServerError;
       if (e.response != null) {
         error = DioClient.errorHandling(e);
       } else {
-        error = 'Error sending request!';
+        error =
+            'Error sending request!'; // connection timeout sometime will come
       }
-      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
-          '\n  response-->${jsonDecode(e.response.toString())}');
-      print('response dio error data -------->');
+      // debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+      //     '\n  response-->${jsonDecode(e.response.toString())}');
+      // print('response dio error data -------->');
 
       if (error.toString() != "DioErrorType.response") {
         // isPop is used for if i load new api then get any error then pop the back screen
@@ -114,27 +122,47 @@ class APIRepository {
             ErrorString: error.toString(), position: ToastGravity.CENTER);
       }
 
+      // if (e.response != null) {
+      //   if (e.response!.statusCode == 502) {
+      //     //  server not response so api not working
+      //     invalidAccessServerError = Constants.internalServerError;
+      //     apiErrorStatus(
+      //         ErrorString: Constants.internalServerError,
+      //         position: ToastGravity.BOTTOM);
+      //   }
+      // }
+
       if (e.response != null) {
-        if (e.response!.statusCode == 502) {
-          //  server not response so api not working
+        // print("---------------e.response!.data['message']");
+        // print(e.response!.data['message']);
+        // print(e.response!.statusCode);
+        if (e.response!.statusCode == 401) {
+          //  here check accestoken expire or not after go to login
+          invalidAccessServerError =
+              e.response!.data['message'] ?? "Session Expired!";
+          apiErrorStatus(
+              ErrorString: e.response!.data['message'] ?? "Session Expired!",
+              position: ToastGravity.BOTTOM);
+          if (e.response!.data['message'] ==
+                  'Error refreshing access token: Invalid refresh token' ||
+              e.response!.data['message'] == 'Error getting KeyCloak session' ||
+              invalidAccessServerError == 'Session Expired!') {
+            // AuthenticationBloc bloc;
+            // bloc = AuthenticationBloc()..add(UnAuthenticationEvent());
+            Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
+                AppRoutes.loginScreen, (route) => false);
+          }
+        } else if (e.response!.statusCode == 502) {
+          //  server not response --> api not working
           invalidAccessServerError = Constants.internalServerError;
           apiErrorStatus(
               ErrorString: Constants.internalServerError,
               position: ToastGravity.BOTTOM);
-        }
-      }
-
-      if (e.response != null) {
-        if (e.response!.statusCode == 401) {
-          //  here check accestoken expire or not after go to login
-          invalidAccessServerError =
-              e.response!.data['message'] ?? "Session Expired! please logout";
+        } else if (e.response!.statusCode == 400) {
+          //Event address not present
           apiErrorStatus(
-              ErrorString: e.response!.data['message'] ??
-                  "Session Expired! please logout",
+              ErrorString: e.response!.data['message'] ?? '',
               position: ToastGravity.BOTTOM);
-          // Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
-          //     AppRoutes.loginScreen, (route) => false);
         }
       }
 
