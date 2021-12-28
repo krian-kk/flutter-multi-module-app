@@ -1,19 +1,19 @@
 import 'result.dart';
 
-class VoiceAgencyDetailsModel {
+class VoiceAgencyDetailModel {
   int? status;
   String? message;
-  VoiceAgencyResult? result;
+  Result? result;
 
-  VoiceAgencyDetailsModel({this.status, this.message, this.result});
+  VoiceAgencyDetailModel({this.status, this.message, this.result});
 
-  factory VoiceAgencyDetailsModel.fromJson(Map<String, dynamic> json) {
-    return VoiceAgencyDetailsModel(
+  factory VoiceAgencyDetailModel.fromJson(Map<String, dynamic> json) {
+    return VoiceAgencyDetailModel(
       status: json['status'] as int?,
       message: json['message'] as String?,
       result: json['result'] == null
           ? null
-          : VoiceAgencyResult.fromJson(json['result'] as Map<String, dynamic>),
+          : Result.fromJson(json['result'] as Map<String, dynamic>),
     );
   }
 

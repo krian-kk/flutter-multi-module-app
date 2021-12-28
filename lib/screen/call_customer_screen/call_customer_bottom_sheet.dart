@@ -53,11 +53,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   List<String> customerContactNoDropdownList = [];
   String customerContactNoDropDownValue = '';
-  List<String> serviceProviderListDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
-  String serviceProviderListValue = 'ABC';
-  List<String> callersIDDropdownList = ['ABC', 'DEF', 'GHI', 'JKL'];
-  String callersIDDropdownValue = 'ABC';
-  List<CaseListModel> caseDetaislListModel = [];
+
+  // List<CaseListModel> caseDetaislListModel = [];
 
   @override
   void initState() {
@@ -173,10 +170,11 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   Flexible(
                                       child: CustomDropDownButton(
                                     Languages.of(context)!.serviceProvidersList,
-                                    serviceProviderListDropdownList,
-                                    selectedValue: serviceProviderListValue,
+                                    bloc.serviceProviderListDropdownList,
+                                    selectedValue:
+                                        bloc.serviceProviderListValue,
                                     onChanged: (newValue) => setState(() =>
-                                        serviceProviderListValue =
+                                        bloc.serviceProviderListValue =
                                             newValue.toString()),
                                     icon: SvgPicture.asset(
                                         ImageResource.downShape),
@@ -185,11 +183,11 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   Flexible(
                                       child: CustomDropDownButton(
                                     Languages.of(context)!.callersId,
-                                    callersIDDropdownList,
+                                    bloc.callersIDDropdownList.cast(),
                                     isExpanded: true,
-                                    selectedValue: callersIDDropdownValue,
+                                    selectedValue: bloc.callersIDDropdownValue,
                                     onChanged: (newValue) => setState(() =>
-                                        callersIDDropdownValue =
+                                        bloc.callersIDDropdownValue =
                                             newValue.toString()),
                                     icon: SvgPicture.asset(
                                         ImageResource.downShape),
@@ -250,11 +248,12 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
-                                    callerId: callersIDDropdownValue,
+                                    callerId: bloc.callersIDDropdownValue,
                                     aRef: widget.argRef,
                                     customerName: widget.agentName,
-                                    service: serviceProviderListValue,
-                                    callerServiceID: callersIDDropdownValue,
+                                    service: bloc.serviceProviderListValue,
+                                    callerServiceID:
+                                        bloc.callersIDDropdownValue,
                                     caseId: widget.caseId,
                                     sId: widget.sid,
                                     agrRef: widget.argRef,
