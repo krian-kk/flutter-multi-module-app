@@ -364,7 +364,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             'value': caseDetailsAPIValue
                 .result?.addressDetails?[indexValue!]['value']
                 .toString(),
-            'health': '1',
+            'health': ConstantEventValues.addressCustomerNotMetHealth,
             'resAddressId_0': '6181646813c5cf70dea671d2',
           },
         );
@@ -383,7 +383,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'value': caseDetailsAPIValue
                   .result?.addressDetails?[indexValue!]['value']
                   .toString(),
-              'health': ConstantEventValues.dummyHealth,
+              'health': ConstantEventValues.addressCustomerNotMetHealth,
               // 'resAddressId_0': '6181646813c5cf70dea671d2',
             }
           ],
@@ -403,7 +403,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               'value': caseDetailsAPIValue
                   .result?.addressDetails?[indexValue!]['value']
                   .toString(),
-              'health': ConstantEventValues.dummyHealth,
+              'health': ConstantEventValues.addressCustomerNotMetHealth,
               // 'resAddressId_0': '6181646813c5cf70dea671d2',
             }
           ],
@@ -588,9 +588,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String urlString,
   ) async {
     var requestBodyData = PhoneUnreachablePostModel(
+        eventId: ConstantEventValues.phoneUnreachableEventId,
         eventType: eventType,
         caseId: caseId,
+        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callID: Singleton.instance.callID,
+        callingID: Singleton.instance.callingID,
         eventCode: eventCode,
+        voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         eventAttr: PhoneUnreachableEventAttr(
           remarks: phoneUnreachableRemarksController.text,
           followUpPriority: 'REVIEW',
@@ -603,6 +608,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         contact: PhoneUnreachbleContact(
           cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
           value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
+          health: ConstantEventValues.phoneUnreachableHealth,
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.POST,
@@ -650,15 +656,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         contact: contact,
         eventModule: 'Field Allocation',
         callerServiceID: Singleton.instance.callerServiceID ?? '',
-        callID: Singleton.instance.callID ?? '',
+        callID: Singleton.instance.callID,
+        callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
-
-        // eventModule: (userType == Constants.telecaller)
-        //     ? 'Telecalling'
-        //     : 'Field Allocation',
         eventAttr: CustomerNotMetEventAttr(
           remarks: addressCustomerNotMetRemarksController.text,
           followUpPriority: followUpPriority,
@@ -715,6 +718,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       position = res;
     }
     var requestBodyData = AddressInvalidPostModel(
+        eventId: ConstantEventValues.addressInvalidEventId,
+        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callID: Singleton.instance.callID,
+        callingID: Singleton.instance.callingID,
+        voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        createdBy: Singleton.instance.agentRef ?? '',
+        agentName: Singleton.instance.agentName ?? '',
+        agrRef: Singleton.instance.agrRef ?? '',
         eventType: eventType,
         caseId: caseId,
         eventCode: eventCode,
@@ -728,20 +739,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           heading: position.heading,
           speed: position.speed,
         ),
-        agrRef: agrRef,
-        createdBy: createdBy,
-        agentName: agentName,
         eventModule: 'Field Allocation',
-        // eventModule: (userType == Constants.telecaller)
-        //     ? 'Telecalling'
-        //     : 'Field Allocation',
         contact: [
           AddressInvalidContact(
             cType: caseDetailsAPIValue.result?.addressDetails![indexValue!]
                 ['cType'],
             value: caseDetailsAPIValue.result?.addressDetails![indexValue!]
                 ['value'],
-            health: ConstantEventValues.dummyHealth,
+            health: ConstantEventValues.addressInvalidHealth,
           )
         ]);
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
@@ -764,7 +769,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String urlString,
   ) async {
     var requestBodyData = PhoneInvalidPostModel(
+        eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
+        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callID: Singleton.instance.callID,
+        callingID: Singleton.instance.callingID,
+        voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        createdBy: Singleton.instance.agentRef ?? '',
+        agentName: Singleton.instance.agentName ?? '',
+        agrRef: Singleton.instance.agrRef ?? '',
         caseId: caseId,
         eventCode: eventCode,
         eventAttr: PhoneInvalidEventAttr(
@@ -772,11 +785,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           nextActionDate: DateTime.now().toString(),
         ),
         eventModule: 'Telecalling',
-        agentName: agentName.toString(),
-        agrRef: Singleton.instance.agentRef.toString(),
         contact: PhoneInvalidContact(
           cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
           value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
+          health: ConstantEventValues.phoneInvalidHealth,
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.POST,

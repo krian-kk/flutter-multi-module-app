@@ -223,7 +223,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                             }
                             var requestBodyData = DisputePostModel(
                               eventType:
-                                  (widget.userType == Constants.telecaller)
+                                  (widget.userType == Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : DISPUTE'
                                       : 'DISPUTE',
                               caseId: widget.caseId,

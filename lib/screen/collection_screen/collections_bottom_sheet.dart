@@ -350,9 +350,11 @@ class _CustomCollectionsBottomSheetState
                           var requestBodyData = CollectionPostModel(
                             eventId: ConstantEventValues.collectionEventId,
                             eventCode: ConstantEventValues.collectionEvenCode,
-                            eventType: (widget.userType == Constants.telecaller)
-                                ? 'TC : RECEIPT'
-                                : 'RECEIPT',
+                            eventType:
+                                (widget.userType == Constants.telecaller ||
+                                        widget.isCall!)
+                                    ? 'TC : RECEIPT'
+                                    : 'RECEIPT',
                             caseId: widget.caseId,
                             contact: CollectionsContact(
                               cType: widget.postValue['cType'],

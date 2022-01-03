@@ -233,7 +233,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                             var requestBodyData = DenialPostModel(
                               eventId: ConstantEventValues.rtpDenialEventId,
                               eventType:
-                                  (widget.userType == Constants.telecaller)
+                                  (widget.userType == Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : DENIAL'
                                       : 'DENIAL',
                               caseId: widget.caseId,
@@ -266,7 +267,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               ),
                               callID: Singleton.instance.callID,
                               callerServiceID:
-                                  Singleton.instance.callerServiceID!,
+                                  Singleton.instance.callerServiceID ?? '',
                               callingID: Singleton.instance.callingID,
                             );
                             Map<String, dynamic> postResult =

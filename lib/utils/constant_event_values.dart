@@ -57,4 +57,9 @@ class ConstantEventValues {
   static const int phoneInvalidEventId = 24;
   static const String phoneInvalidEvenCode = 'TELEVT008';
   static const String phoneInvalidHealth = '0';
+
+  // CaptureImage Post Event
+  static const int captureImageEventId = 22;
+  static const String captureImageEvenCode = 'TELEVT015';
+  static const String captureImageHealth = '2';
 }

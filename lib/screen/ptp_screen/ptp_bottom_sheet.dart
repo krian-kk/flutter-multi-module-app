@@ -293,7 +293,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             var requestBodyData = PTPPostModel(
                               eventId: ConstantEventValues.ptpEventId,
                               eventType:
-                                  (widget.userType == Constants.telecaller)
+                                  (widget.userType == Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : PTP'
                                       : 'PTP',
                               callerServiceID:

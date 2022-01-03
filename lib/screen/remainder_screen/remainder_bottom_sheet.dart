@@ -236,9 +236,11 @@ class _CustomRemainderBottomSheetState
                           }
                           var requestBodyData = ReminderPostAPI(
                             eventId: ConstantEventValues.remainderEventId,
-                            eventType: (widget.userType == Constants.telecaller)
-                                ? 'TC : REMINDER'
-                                : 'REMINDER',
+                            eventType:
+                                (widget.userType == Constants.telecaller ||
+                                        widget.isCall!)
+                                    ? 'TC : REMINDER'
+                                    : 'REMINDER',
                             caseId: widget.caseId,
                             eventCode: ConstantEventValues.remainderEvenCode,
                             voiceCallEventCode:
