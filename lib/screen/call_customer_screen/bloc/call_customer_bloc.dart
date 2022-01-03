@@ -7,6 +7,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 
@@ -47,6 +48,14 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
             callersIDDropdownValue = ((voiceAgencyDetails
                     .result?.voiceAgencyData?.first.callerIds?.first) ??
                 '');
+            print('Before => ${Singleton.instance.callingID}');
+            Singleton.instance.callerServiceID =
+                voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId;
+            Singleton.instance.callingID = voiceAgencyDetails
+                .result?.voiceAgencyData?.first.callerIds?.first;
+            Singleton.instance.callID =
+                voiceAgencyDetails.result?.agentAgencyContact;
+            print('After => ${Singleton.instance.callingID}');
             emit.call(CallCustomerSuccessState());
           } else {}
         }

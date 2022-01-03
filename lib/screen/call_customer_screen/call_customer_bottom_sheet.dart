@@ -9,6 +9,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -173,9 +174,13 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     bloc.serviceProviderListDropdownList,
                                     selectedValue:
                                         bloc.serviceProviderListValue,
-                                    onChanged: (newValue) => setState(() =>
-                                        bloc.serviceProviderListValue =
-                                            newValue.toString()),
+                                    onChanged: (newValue) {
+                                      Singleton.instance.callerServiceID =
+                                          (newValue == '') ? null : newValue;
+                                      setState(() =>
+                                          bloc.serviceProviderListValue =
+                                              newValue.toString());
+                                    },
                                     icon: SvgPicture.asset(
                                         ImageResource.downShape),
                                   )),
@@ -186,9 +191,13 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     bloc.callersIDDropdownList.cast(),
                                     isExpanded: true,
                                     selectedValue: bloc.callersIDDropdownValue,
-                                    onChanged: (newValue) => setState(() =>
-                                        bloc.callersIDDropdownValue =
-                                            newValue.toString()),
+                                    onChanged: (newValue) {
+                                      Singleton.instance.callingID =
+                                          (newValue == '') ? null : newValue;
+                                      setState(() =>
+                                          bloc.callersIDDropdownValue =
+                                              newValue.toString());
+                                    },
                                     icon: SvgPicture.asset(
                                         ImageResource.downShape),
                                   )),

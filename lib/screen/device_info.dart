@@ -10,7 +10,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/device_info_model/android_device_info.dart';
 import 'package:origa/models/device_info_model/ios_device_model.dart';
 
-void main() {
+Future<void> main() async {
   runZonedGuarded(() {
     runApp(const DeviceInfo());
   }, (dynamic error, dynamic stack) {
@@ -50,9 +50,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
         'Error:': 'Failed to get platform version.'
       };
     }
-
     if (!mounted) return;
-
     setState(() {
       _deviceData = deviceData;
     });
