@@ -7,6 +7,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/denial_post_model/denial_post_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -235,7 +236,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                       : 'DENIAL',
                               caseId: widget.caseId,
                               eventCode: 'TELEVT004',
-                              agrRef: widget.argRef,
+                              agrRef: Singleton.instance.agrRef ?? '',
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
                                 remarks: remarksControlller.text,
@@ -247,7 +248,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
-                              agentName: widget.agentName,
+                              agentName: Singleton.instance.agentName ?? '',
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
                                   : 'Field Allocation',
@@ -255,7 +256,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
                               ),
-                              createdBy: DateTime.now().toString(),
+                              createdBy: Singleton.instance.agentRef ?? '',
                             );
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(

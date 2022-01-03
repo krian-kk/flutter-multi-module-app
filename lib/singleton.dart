@@ -5,6 +5,9 @@ class Singleton {
   String? refreshToken;
   String? sessionID;
   String? agentRef;
+  String? agentName;
+  String? agrRef;
+  String? usertype;
   BuildContext? buildContext;
   static final Singleton instance = Singleton.internal();
 

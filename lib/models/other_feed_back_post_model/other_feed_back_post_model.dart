@@ -1,5 +1,5 @@
 class OtherFeedBackPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -8,7 +8,7 @@ class OtherFeedBackPostModel {
   late String createdBy;
   late String eventModule;
   late String agentName;
-  late String contractor;
+  // late String contractor;
   late String agrRef;
   late String callID;
   late String callingID;
@@ -17,17 +17,17 @@ class OtherFeedBackPostModel {
   late double invalidNumber;
 
   OtherFeedBackPostModel(
-      {this.eventId = 0,
+      {this.eventId = 21, // static
       required this.eventType,
       required this.caseId,
       required this.eventCode,
       required this.eventAttr,
       required this.contact,
-      this.createdBy = '',
-      this.eventModule = 'Field Allocation',
-      this.agentName = '',
-      this.contractor = '',
-      this.agrRef = '0',
+      required this.createdBy,
+      required this.eventModule,
+      required this.agentName,
+      // this.contractor = '',
+      required this.agrRef,
       this.callID = '0',
       this.callingID = '0',
       this.callerServiceID = '',
@@ -46,7 +46,7 @@ class OtherFeedBackPostModel {
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
-    contractor = json['contractor'];
+    // contractor = json['contractor'];
     agrRef = json['agrRef'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -66,7 +66,7 @@ class OtherFeedBackPostModel {
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
-    data['contractor'] = contractor;
+    // data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
     data['callingID'] = callingID;
@@ -78,6 +78,9 @@ class OtherFeedBackPostModel {
 }
 
 class EventAttr {
+  late bool vehicleavailable;
+  late String collectorfeedback;
+  late String actionproposed;
   late String actionDate;
   late String remarks;
   late List<String> imageLocation;
@@ -89,25 +92,32 @@ class EventAttr {
   late double speed;
   late double latitude;
   late double longitude;
-  late double distance;
-  late AgentLocation agentLocation;
+  // late double distance;
+  // late AgentLocation agentLocation;
 
-  EventAttr(
-      {required this.actionDate,
-      this.remarks = '',
-      required this.imageLocation,
-      this.followUpPriority = 'RETRY',
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation});
+  EventAttr({
+    required this.vehicleavailable,
+    required this.actionDate,
+    required this.collectorfeedback,
+    required this.actionproposed,
+    required this.remarks,
+    required this.imageLocation,
+    this.followUpPriority = 'RETRY',
+    this.altitude = 0,
+    this.accuracy = 0,
+    this.altitudeAccuracy = 0,
+    this.heading = 0,
+    this.speed = 0,
+    this.latitude = 0,
+    this.longitude = 0,
+    // this.distance = 0,
+    // required this.agentLocation
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
+    vehicleavailable = json['vehicleavailable'];
+    collectorfeedback = json['collectorfeedback'];
+    actionproposed = json['actionproposed'];
     actionDate = json['actionDate'];
     remarks = json['remarks'];
     imageLocation = json['imageLocation'].cast<String>();
@@ -119,12 +129,15 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = AgentLocation.fromJson(json['agentLocation']);
+    // distance = json['distance'];
+    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['vehicleavailable'] = vehicleavailable;
+    data['collectorfeedback'] = collectorfeedback;
+    data['actionproposed'] = actionproposed;
     data['actionDate'] = actionDate;
     data['remarks'] = remarks;
     data['imageLocation'] = imageLocation;
@@ -136,8 +149,8 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
+    // data['distance'] = distance;
+    // data['agentLocation'] = agentLocation.toJson();
     return data;
   }
 }

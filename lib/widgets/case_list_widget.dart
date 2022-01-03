@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -97,8 +98,9 @@ class CaseLists {
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(paramValues: {
                               'caseID': listData.result!.cases![index].caseId,
-                              'isAddress': true
                             }));
+                            Singleton.instance.agrRef =
+                                listData.result!.cases![index].agrRef ?? '';
                           },
                           child: Container(
                             margin:
@@ -131,8 +133,11 @@ class CaseLists {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 2),
                                   child: CustomText(
-                                    listData.result!.cases![index].caseId!,
+                                    listData.result!.cases![index].bankName! +
+                                        ' / ' +
+                                        listData.result!.cases![index].agrRef!,
                                     fontSize: FontSize.twelve,
+                                    fontWeight: FontWeight.w500,
                                     color: ColorResource.color101010,
                                   ),
                                 ),
@@ -174,26 +179,61 @@ class CaseLists {
                                         ],
                                       ),
                                       const Spacer(),
-                                      if (listData.result!.cases![index]
-                                              .collSubStatus ==
-                                          'new')
-                                        Container(
-                                          width: 55,
-                                          height: 19,
-                                          // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                          decoration: BoxDecoration(
-                                              color: ColorResource.colorD5344C,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          child: Center(
-                                            child: CustomText(
-                                              Languages.of(context)!.new_,
-                                              color: ColorResource.colorffffff,
-                                              fontSize: FontSize.ten,
-                                              lineHeight: 1,
-                                            ),
-                                          ),
-                                        ),
+                                      // if (listData.result!.cases![index]
+                                      //         .collSubStatus ==
+                                      //     'new')
+                                      listData.result!.cases![index]
+                                                      .collSubStatus ==
+                                                  "new" &&
+                                              Singleton.instance.usertype ==
+                                                  Constants.fieldagent
+                                          ? Container(
+                                              width: 55,
+                                              height: 19,
+                                              // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorD5344C,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              child: Center(
+                                                child: CustomText(
+                                                  Languages.of(context)!.new_,
+                                                  color:
+                                                      ColorResource.colorffffff,
+                                                  fontSize: FontSize.ten,
+                                                  lineHeight: 1,
+                                                ),
+                                              ),
+                                            )
+                                          : listData.result!.cases![index]
+                                                          .telSubStatus ==
+                                                      "new" &&
+                                                  Singleton.instance.usertype ==
+                                                      Constants.telecaller
+                                              ? Container(
+                                                  width: 55,
+                                                  height: 19,
+                                                  // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                                  decoration: BoxDecoration(
+                                                      color: ColorResource
+                                                          .colorD5344C,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30)),
+                                                  child: Center(
+                                                    child: CustomText(
+                                                      Languages.of(context)!
+                                                          .new_,
+                                                      color: ColorResource
+                                                          .colorffffff,
+                                                      fontSize: FontSize.ten,
+                                                      lineHeight: 1,
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
                                     ],
                                   ),
                                 ),

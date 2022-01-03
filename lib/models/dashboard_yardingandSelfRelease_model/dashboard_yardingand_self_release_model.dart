@@ -32,6 +32,9 @@ class YardingResult {
   int? due;
   String? cust;
   String? collSubStatus;
+  String? telSubStatus;
+  String? agrRef;
+  String? bankName;
   String? customerId;
   String? caseId;
   List<Address>? address;
@@ -41,6 +44,9 @@ class YardingResult {
       this.due,
       this.cust,
       this.collSubStatus,
+      this.telSubStatus,
+      this.agrRef,
+      this.bankName,
       this.customerId,
       this.caseId,
       this.address});
@@ -50,6 +56,9 @@ class YardingResult {
     due = json['due'];
     cust = json['cust'];
     collSubStatus = json['collSubStatus'];
+    telSubStatus = json['telSubStatus'];
+    agrRef = json['agrRef'];
+    bankName = json['bankName'];
     customerId = json['customerId'];
     caseId = json['caseId'];
     if (json['address'] != null) {
@@ -66,6 +75,9 @@ class YardingResult {
     data['due'] = due;
     data['cust'] = cust;
     data['collSubStatus'] = collSubStatus;
+    data['telSubStatus'] = telSubStatus;
+    data['agrRef'] = agrRef;
+    data['bankName'] = bankName;
     data['customerId'] = customerId;
     data['caseId'] = caseId;
     if (address != null) {

@@ -91,12 +91,15 @@ class AuthenticationBloc
               if (agentDetails.data![0].agentType == 'COLLECTOR') {
                 await _prefs.setString(
                     Constants.userType, Constants.fieldagent);
+                Singleton.instance.usertype = Constants.fieldagent;
               } else {
                 await _prefs.setString(
                     Constants.userType, Constants.telecaller);
+                Singleton.instance.usertype = Constants.telecaller;
               }
 
               if (agentDetails.data![0].agentType != null) {
+                Singleton.instance.agentName = agentDetails.data![0].agentName!;
                 await _prefs.setString(
                     Constants.agentName, agentDetails.data![0].agentName!);
                 await _prefs.setString(

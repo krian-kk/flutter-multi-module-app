@@ -115,6 +115,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       await _prefs.setString(Constants.accessToken, "");
       await _prefs.setString(Constants.userType, "");
+      await _prefs.setString('addressValue', "");
+      await _prefs.setBool('areyouatOffice', true);
       // await _prefs.setBool(Constants.rememberMe, false);
       yield LoginState();
     }

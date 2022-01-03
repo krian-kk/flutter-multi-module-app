@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -115,6 +116,8 @@ class CustomCardList {
                         bloc.add(NavigateCaseDetailEvent(paramValues: {
                           'caseID': resultData[index].caseId!,
                         }));
+                        Singleton.instance.agrRef =
+                            resultData[index].agrRef ?? '';
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -146,9 +149,12 @@ class CustomCardList {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 2),
                               child: CustomText(
-                                resultData[index].caseId!,
+                                resultData[index].bankName! +
+                                    ' / ' +
+                                    resultData[index].agrRef!,
                                 fontSize: FontSize.twelve,
                                 color: ColorResource.color101010,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             AppUtils.showDivider(),
@@ -181,24 +187,51 @@ class CustomCardList {
                                     ],
                                   ),
                                   const Spacer(),
-                                  if (resultData[index].collSubStatus == "new")
-                                    Container(
-                                      width: 55,
-                                      height: 19,
-                                      // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                      decoration: BoxDecoration(
-                                          color: ColorResource.colorD5344C,
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Center(
-                                        child: CustomText(
-                                          Languages.of(context)!.new_,
-                                          color: ColorResource.colorffffff,
-                                          fontSize: FontSize.ten,
-                                          lineHeight: 1,
-                                        ),
-                                      ),
-                                    ),
+                                  resultData[index].collSubStatus == "new" &&
+                                          Singleton.instance.usertype ==
+                                              Constants.fieldagent
+                                      ? Container(
+                                          width: 55,
+                                          height: 19,
+                                          // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                          decoration: BoxDecoration(
+                                              color: ColorResource.colorD5344C,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Center(
+                                            child: CustomText(
+                                              Languages.of(context)!.new_,
+                                              color: ColorResource.colorffffff,
+                                              fontSize: FontSize.ten,
+                                              lineHeight: 1,
+                                            ),
+                                          ),
+                                        )
+                                      : resultData[index].telSubStatus ==
+                                                  "new" &&
+                                              Singleton.instance.usertype ==
+                                                  Constants.telecaller
+                                          ? Container(
+                                              width: 55,
+                                              height: 19,
+                                              // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorD5344C,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              child: Center(
+                                                child: CustomText(
+                                                  Languages.of(context)!.new_,
+                                                  color:
+                                                      ColorResource.colorffffff,
+                                                  fontSize: FontSize.ten,
+                                                  lineHeight: 1,
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox(),
                                 ],
                               ),
                             ),

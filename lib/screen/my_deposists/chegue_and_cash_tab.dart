@@ -193,7 +193,11 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 24, vertical: 2),
                                         child: CustomText(
-                                          widget.result!.cases![index].caseId!,
+                                          widget.result!.cases![index]
+                                                  .bankName! +
+                                              ' / ' +
+                                              widget.result!.cases![index]
+                                                  .agrRef!,
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,

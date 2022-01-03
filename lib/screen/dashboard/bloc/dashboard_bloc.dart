@@ -81,10 +81,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             Languages.of(event.context!)!.noInternetConnection;
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> dashboardData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
+        Map<String, dynamic>? dashboardData;
+        if (userType == Constants.fieldagent) {
+          dashboardData = await APIRepository.apiRequest(
+              APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
+        } else if (userType == Constants.telecaller) {
+          dashboardData = await APIRepository.apiRequest(APIRequestType.GET,
+              HttpUrl.telDashboardUrl + "userType=$userType");
+        }
 
-        if (dashboardData['success']) {
+        if (dashboardData!['success']) {
           var jsonData = dashboardData['data']['result'];
 
           mtdCaseCompleted = jsonData['mtdCases']['completed'];

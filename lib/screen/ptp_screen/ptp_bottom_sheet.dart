@@ -9,6 +9,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -312,12 +313,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
-                              createdBy: widget.agentName,
-                              agentName: widget.agentName,
+                              createdBy: Singleton.instance.agentRef ?? '',
+                              agentName: Singleton.instance.agentName ?? '',
+                              //  agentName: widget.agentName,
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
                                   : 'Field Allocation',
-                              agrRef: widget.argRef,
+                              // agrRef: widget.argRef,
+                              agrRef: Singleton.instance.agrRef ?? '',
                               contact: PTPContact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
