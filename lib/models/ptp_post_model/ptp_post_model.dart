@@ -1,5 +1,5 @@
 class PTPPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;

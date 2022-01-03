@@ -17,6 +17,7 @@ class CustomDropDownButton extends StatefulWidget {
   final bool isExpanded;
   final TextStyle? style;
   final Color? focusColor;
+  final Color? underlineColor;
   final FocusNode? focusNode;
   final bool autoFocus;
   final OnChange? onChanged;
@@ -30,6 +31,7 @@ class CustomDropDownButton extends StatefulWidget {
       this.isExpanded = true,
       this.style,
       this.focusNode,
+      this.underlineColor = ColorResource.colorE5EAF6,
       this.autoFocus = false,
       this.onChanged,
       this.focusColor,
@@ -82,7 +84,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
                       fontStyle: FontStyle.normal),
               underline: Container(
                 height: 1,
-                color: ColorResource.colorE5EAF6,
+                color: widget.underlineColor,
               ),
               menuMaxHeight: widget.menuMaxHeight,
               focusNode: widget.focusNode,
@@ -99,7 +101,10 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(
+                    value,
+                    style: const TextStyle(overflow: TextOverflow.ellipsis),
+                  ),
                 );
               }).toList(),
             ),

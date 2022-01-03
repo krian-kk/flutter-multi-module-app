@@ -9,7 +9,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
-import 'package:origa/models/build_route_model/build_route_model.dart';
+// import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/singleton.dart';
@@ -30,7 +30,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   String? agentName;
   String? agrRef;
 
-  BuildRouteModel buildRouteData = BuildRouteModel();
+  // BuildRouteModel buildRouteData = BuildRouteModel();
 
   String selectedDistance = StringResource.all;
 
@@ -73,6 +73,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // AllocationListModel searchResultData = AllocationListModel();
   List starCount = [];
+  List priorityCaseAddressList = [];
   List<Result> resultList = [];
 
   @override
@@ -146,6 +147,32 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               starCount.add(
                   Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
             }
+
+            // Here add the address its used for make view map show the mark for case location
+            if (userType == Constants.fieldagent) {
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .address![0]
+                      .cType ==
+                  "residence address") {
+                // And here checked for already addres added or not
+                if (priorityCaseAddressList.contains(
+                    Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .address![0]
+                        .value)) {
+                  print("already added");
+                } else {
+                  print("newly added");
+                  priorityCaseAddressList.add(
+                      Result.fromJson(jsonDecode(jsonEncode(element)))
+                          .address![0]
+                          .value
+                      // ?.splitMapJoin(' ')
+                      );
+                }
+              }
+            }
+            // print("priorityCaseAddressList--------------");
+            // print(priorityCaseAddressList);
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['statusCode'] == 502) {
@@ -155,6 +182,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           print(priorityListData['data']);
         }
       }
+
       yield AllocationLoadedState(successResponse: resultList);
     }
 
@@ -186,6 +214,29 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             starCount.add(
                 Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
           }
+          //Tap again priority so, Here add the address its used for make view map show the mark for case location
+          if (userType == Constants.fieldagent) {
+            if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                    .address![0]
+                    .cType ==
+                "residence address") {
+              // And here checked for already addres added or not
+              if (priorityCaseAddressList.contains(
+                  Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .address![0]
+                      .value)) {
+                print("already added");
+              } else {
+                print("newly added");
+                priorityCaseAddressList.add(
+                    Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .address![0]
+                        .value);
+              }
+            }
+          }
+          // print("priorityCaseAddressList--------------");
+          // print(priorityCaseAddressList);
         }
       }
       yield TapPriorityState(successResponse: resultList);
@@ -208,6 +259,29 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
                   .starredCase as List);
             }
+            //Load more priority list so, Here add the address its used for make view map show the mark for case location
+            if (userType == Constants.fieldagent) {
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .address![0]
+                      .cType ==
+                  "residence address") {
+                // And here checked for already addres added or not
+                if (priorityCaseAddressList.contains(
+                    Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .address![0]
+                        .value)) {
+                  print("already added");
+                } else {
+                  print("newly added");
+                  priorityCaseAddressList.add(
+                      Result.fromJson(jsonDecode(jsonEncode(element)))
+                          .address![0]
+                          .value);
+                }
+              }
+            }
+            // print("priorityCaseAddressList--------------");
+            // print(priorityCaseAddressList.length);
           }
           hasNextPage = false;
         }

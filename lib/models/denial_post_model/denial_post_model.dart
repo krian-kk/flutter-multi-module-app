@@ -1,5 +1,5 @@
 class DenialPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -28,7 +28,7 @@ class DenialPostModel {
     required this.agrRef,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
+    this.callerServiceID = '',
     this.voiceCallEventCode = 'TELEVT011',
     this.invalidNumber,
   });

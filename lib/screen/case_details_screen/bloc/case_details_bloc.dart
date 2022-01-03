@@ -11,6 +11,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/case_details_api_model/result.dart';
+import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
@@ -46,6 +47,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
   EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
+  ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   // CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
   // List<EventDetailsResultModel> offlineEventDetailsListValue = [];
@@ -309,6 +311,27 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           //         Map<String, dynamic>.from(element)));
           //   })
           // });
+          break;
+        case Constants.otherFeedback:
+          if (ConnectivityResult.none ==
+              await Connectivity().checkConnectivity()) {
+            yield NoInternetState();
+          } else {
+            Map<String, dynamic> getContractorDetails =
+                await APIRepository.apiRequest(
+                    APIRequestType.GET, HttpUrl.contractorDetail);
+            print("Contractor Details");
+            print(getContractorDetails);
+
+            if (getContractorDetails[Constants.success] == true) {
+              Map<String, dynamic> jsonData = getContractorDetails['data'];
+
+              contractorDetailsValue =
+                  ContractorDetailsModel.fromJson(jsonData);
+            } else {
+              AppUtils.showToast(getContractorDetails['data']['message']);
+            }
+          }
           break;
         default:
       }

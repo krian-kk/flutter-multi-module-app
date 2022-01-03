@@ -182,10 +182,16 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                           vertical: 2),
                                                       child: CustomText(
                                                         widget
-                                                            .bloc
-                                                            .yardingAndSelfReleaseData
-                                                            .result![index]
-                                                            .caseId!,
+                                                                .bloc
+                                                                .yardingAndSelfReleaseData
+                                                                .result![index]
+                                                                .bankName! +
+                                                            ' / ' +
+                                                            widget
+                                                                .bloc
+                                                                .yardingAndSelfReleaseData
+                                                                .result![index]
+                                                                .agrRef!,
                                                         fontSize:
                                                             FontSize.fourteen,
                                                         color: ColorResource

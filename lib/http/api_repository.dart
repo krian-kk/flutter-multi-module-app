@@ -109,9 +109,9 @@ class APIRepository {
         error =
             'Error sending request!'; // connection timeout sometime will come
       }
-      // debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
-      //     '\n  response-->${jsonDecode(e.response.toString())}');
-      // print('response dio error data -------->');
+      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+          '\n  response-->${jsonDecode(e.response.toString())}');
+      print('response dio error data -------->');
 
       if (error.toString() != "DioErrorType.response") {
         // isPop is used for if i load new api then get any error then pop the back screen
@@ -146,6 +146,7 @@ class APIRepository {
           if (e.response!.data['message'] ==
                   'Error refreshing access token: Invalid refresh token' ||
               e.response!.data['message'] == 'Error getting KeyCloak session' ||
+              e.response!.data['message'] == 'Daily token session expired' ||
               invalidAccessServerError == 'Session Expired!') {
             // AuthenticationBloc bloc;
             // bloc = AuthenticationBloc()..add(UnAuthenticationEvent());

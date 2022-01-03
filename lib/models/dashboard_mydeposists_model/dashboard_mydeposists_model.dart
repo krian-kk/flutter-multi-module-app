@@ -88,6 +88,9 @@ class Cases {
   double? due;
   String? cust;
   String? collSubStatus;
+  String? telSubStatus;
+  String? agrRef;
+  String? bankName;
   String? caseId;
   String? fieldfollowUpDate;
   String? customerId;
@@ -98,6 +101,9 @@ class Cases {
       this.due,
       this.cust,
       this.collSubStatus,
+      this.telSubStatus,
+      this.agrRef,
+      this.bankName,
       this.caseId,
       this.fieldfollowUpDate,
       this.customerId,
@@ -108,13 +114,16 @@ class Cases {
     due = json['due'];
     cust = json['cust'];
     collSubStatus = json['collSubStatus'];
+    telSubStatus = json['telSubStatus'];
+    agrRef = json['agrRef'] ?? '-';
+    bankName = json['bankName'] ?? '-';
     caseId = json['caseId'];
     fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
     customerId = json['customerId'];
     if (json['address'] != null) {
       address = [];
       json['address'].forEach((v) {
-        address?.add(new Address.fromJson(v));
+        address?.add(Address.fromJson(v));
       });
     }
   }
@@ -125,6 +134,9 @@ class Cases {
     data['due'] = this.due;
     data['cust'] = this.cust;
     data['collSubStatus'] = this.collSubStatus;
+    data['telSubStatus'] = telSubStatus;
+    data['agrRef'] = agrRef;
+    data['bankName'] = bankName;
     data['caseId'] = this.caseId;
     data['fieldfollowUpDate'] = this.fieldfollowUpDate;
     data['customerId'] = this.customerId;

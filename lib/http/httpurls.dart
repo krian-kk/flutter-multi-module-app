@@ -19,6 +19,8 @@ class HttpUrl {
   //Get API
   static const String dashboardUrl =
       baseUrl + version + fieldAgent + 'profile/dashboard?';
+  static const String telDashboardUrl =
+      baseUrl + version + fieldAgent + 'profile/telDashboard?';
   static const String caseDetailsUrl =
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
   static const String voiceAgencyDetailsUrl =
@@ -52,6 +54,9 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+  // Contractor detail api for FeedBack page
+  static String contractorDetail =
+      baseUrl + version + fieldAgent + 'case-details-events/contractorDetails';
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
