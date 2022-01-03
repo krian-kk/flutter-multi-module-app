@@ -48,14 +48,12 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
             callersIDDropdownValue = ((voiceAgencyDetails
                     .result?.voiceAgencyData?.first.callerIds?.first) ??
                 '');
-            print('Before => ${Singleton.instance.callingID}');
             Singleton.instance.callerServiceID =
                 voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId;
             Singleton.instance.callingID = voiceAgencyDetails
                 .result?.voiceAgencyData?.first.callerIds?.first;
             Singleton.instance.callID =
                 voiceAgencyDetails.result?.agentAgencyContact;
-            print('After => ${Singleton.instance.callingID}');
             emit.call(CallCustomerSuccessState());
           } else {}
         }

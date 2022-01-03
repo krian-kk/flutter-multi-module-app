@@ -133,7 +133,7 @@ class AddressInvalidContact {
   late String health;
 
   AddressInvalidContact(
-      {required this.cType, required this.value, this.health = '1'});
+      {required this.cType, required this.value, required this.health});
 
   AddressInvalidContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

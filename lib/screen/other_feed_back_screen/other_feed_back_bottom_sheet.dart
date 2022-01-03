@@ -18,6 +18,7 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -334,16 +335,25 @@ class _CustomOtherFeedBackBottomSheetState
                             print(Singleton.instance.agrRef);
                             print(Singleton.instance.agentRef);
                             var requestBodyData = OtherFeedBackPostModel(
+                                eventId:
+                                    ConstantEventValues.otherFeedbackEventId,
                                 eventType:
                                     _pref.getString(Constants.userType) ==
                                             Constants.fieldagent
                                         ? 'FEEDBACK'
                                         : 'TC : FEEDBACK',
-                                caseId: widget.caseId,
-                                eventCode: 'TELEVT002',
+                                voiceCallEventCode:
+                                    ConstantEventValues.voiceCallEventCode,
+                                createdBy: Singleton.instance.agentRef ?? '',
                                 agentName: Singleton.instance.agentName ?? '',
                                 agrRef: Singleton.instance.agrRef ?? '',
-                                createdBy: Singleton.instance.agentRef ?? '',
+                                callID: Singleton.instance.callID ?? '',
+                                callerServiceID:
+                                    Singleton.instance.callerServiceID ?? '',
+                                callingID: Singleton.instance.callingID ?? '',
+                                caseId: widget.caseId,
+                                eventCode:
+                                    ConstantEventValues.otherFeedbackEvenCode,
                                 eventModule:
                                     _pref.getString(Constants.userType) ==
                                             Constants.fieldagent
@@ -365,6 +375,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   altitude: position.altitude,
                                   heading: position.heading,
                                   speed: position.speed,
+                                  altitudeAccuracy: 0,
                                   // agentLocation: AgentLocation(),
                                 ),
                                 contact: [

@@ -10,8 +10,10 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -346,6 +348,8 @@ class _CustomCollectionsBottomSheetState
                             });
                           }
                           var requestBodyData = CollectionPostModel(
+                            eventId: ConstantEventValues.collectionEventId,
+                            eventCode: ConstantEventValues.collectionEvenCode,
                             eventType: (widget.userType == Constants.telecaller)
                                 ? 'TC : RECEIPT'
                                 : 'RECEIPT',
@@ -353,6 +357,7 @@ class _CustomCollectionsBottomSheetState
                             contact: CollectionsContact(
                               cType: widget.postValue['cType'],
                               value: widget.postValue['value'],
+                              health: ConstantEventValues.dummyHealth,
                             ),
                             eventAttr: EventAttr(
                               amountCollected:
@@ -371,12 +376,18 @@ class _CustomCollectionsBottomSheetState
                               heading: position.heading,
                               speed: position.speed,
                             ),
-                            createdBy: widget.agentName,
-                            agentName: widget.agentName,
+                            callID: Singleton.instance.callID,
+                            callingID: Singleton.instance.callingID,
+                            callerServiceID:
+                                Singleton.instance.callerServiceID ?? '',
+                            voiceCallEventCode:
+                                ConstantEventValues.voiceCallEventCode,
+                            createdBy: Singleton.instance.agentRef ?? '',
+                            agentName: Singleton.instance.agentName ?? '',
+                            agrRef: Singleton.instance.agrRef ?? '',
                             eventModule: widget.isCall!
                                 ? 'Telecalling'
                                 : 'Field Allocation',
-                            agrRef: widget.argRef,
                           );
 
                           Map<String, dynamic> postResult =

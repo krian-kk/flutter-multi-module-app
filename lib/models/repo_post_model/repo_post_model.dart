@@ -1,5 +1,5 @@
 class RepoPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -16,7 +16,7 @@ class RepoPostModel {
   late String agrRef;
 
   RepoPostModel({
-    this.eventId = 0,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -28,7 +28,7 @@ class RepoPostModel {
     this.callID,
     this.callingID,
     required this.callerServiceID,
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agrRef,
   });
@@ -103,12 +103,12 @@ class EventAttr {
     required this.imageLocation,
     required this.customerName,
     this.altitude,
-    this.accuracy = 0,
+    required this.accuracy,
     this.altitudeAccuracy,
     this.heading,
     this.speed,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.latitude,
+    required this.longitude,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -177,7 +177,7 @@ class RepoContact {
 
   RepoContact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});
