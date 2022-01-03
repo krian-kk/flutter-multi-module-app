@@ -239,6 +239,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // print(priorityCaseAddressList);
         }
       }
+
       yield TapPriorityState(successResponse: resultList);
     }
 

@@ -47,8 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void getAddress() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     addressValue = (_pref.getString('addressValue') != ""
-        ? _pref.getString('addressValue')
-        : 'Address Not found')!;
+            ? _pref.getString('addressValue')
+            : 'Address Not found')
+        .toString();
   }
 
   Future pickImage(

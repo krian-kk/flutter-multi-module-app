@@ -17,6 +17,7 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -104,7 +105,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
         ),
         backgroundColor: ColorResource.colorFFFFFF,
         builder: (BuildContext context) {
-          return MapView(bloc);
+          return MapViewBottomSheetScreen(
+            title: Languages.of(context)!.viewMap,
+            listOfAgentLocation: bloc.priorityCaseAddressList,
+          );
         });
   }
 
