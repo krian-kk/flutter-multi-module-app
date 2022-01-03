@@ -9,6 +9,11 @@ class Singleton {
   String? agrRef;
   String? usertype;
   BuildContext? buildContext;
+
+  // Localstorage for call details
+  String? callID;
+  String? callingID;
+  String? callerServiceID;
   static final Singleton instance = Singleton.internal();
 
   factory Singleton() {

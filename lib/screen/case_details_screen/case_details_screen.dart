@@ -978,7 +978,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               agentName: bloc.agentName.toString(),
               argRef: Singleton.instance.agentRef!,
               userType: bloc.userType.toString(),
-              eventCode: 'TELEVT001',
               postValue: list[bloc.indexValue!],
               isCall: isCall,
             );

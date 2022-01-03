@@ -12,6 +12,7 @@ import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -31,7 +32,6 @@ class CustomPtpBottomSheet extends StatefulWidget {
     required this.userType,
     required this.agentName,
     required this.argRef,
-    required this.eventCode,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -41,7 +41,6 @@ class CustomPtpBottomSheet extends StatefulWidget {
   final String agentName;
   final Widget customerLoanUserWidget;
   final String userType;
-  final String eventCode;
   final bool? isCall;
   final dynamic postValue;
 
@@ -292,13 +291,15 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               });
                             }
                             var requestBodyData = PTPPostModel(
+                              eventId: ConstantEventValues.ptpEventId,
                               eventType:
                                   (widget.userType == Constants.telecaller)
                                       ? 'TC : PTP'
                                       : 'PTP',
-                              eventCode: widget.eventCode,
+                              eventCode: ConstantEventValues.ptpEventCode,
                               caseId: widget.caseId,
                               eventAttr: EventAttr(
+                                pTPType: ConstantEventValues.ptpType,
                                 date: ptpDateControlller.text,
                                 time: ptpTimeControlller.text,
                                 remarks: remarksControlller.text,
@@ -313,6 +314,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
+                              voiceCallEventCode:
+                                  ConstantEventValues.voiceCallEventCode,
                               createdBy: Singleton.instance.agentRef ?? '',
                               agentName: Singleton.instance.agentName ?? '',
                               //  agentName: widget.agentName,
@@ -322,9 +325,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               // agrRef: widget.argRef,
                               agrRef: Singleton.instance.agrRef ?? '',
                               contact: PTPContact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                              ),
+                                  cType: widget.postValue['cType'],
+                                  value: widget.postValue['value'],
+                                  health: ConstantEventValues.dummyHealth),
                             );
 
                             Map<String, dynamic> postResult =
