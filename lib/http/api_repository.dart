@@ -147,6 +147,8 @@ class APIRepository {
                   'Error refreshing access token: Invalid refresh token' ||
               e.response!.data['message'] == 'Error getting KeyCloak session' ||
               e.response!.data['message'] == 'Daily token session expired' ||
+              e.response!.data['message'] ==
+                  'Error refreshing access token: Session not active' ||
               invalidAccessServerError == 'Session Expired!') {
             // AuthenticationBloc bloc;
             // bloc = AuthenticationBloc()..add(UnAuthenticationEvent());

@@ -16,7 +16,7 @@ class PTPPostModel {
   late double? invalidNumber;
 
   PTPPostModel(
-      {this.eventId = 16,
+      {required this.eventId,
       required this.eventType,
       required this.caseId,
       required this.eventCode,
@@ -28,8 +28,8 @@ class PTPPostModel {
       required this.agrRef,
       this.callID,
       this.callingID,
-      this.callerServiceID = '',
-      this.voiceCallEventCode = 'TELEVT011',
+      this.callerServiceID,
+      required this.voiceCallEventCode,
       this.invalidNumber});
 
   PTPPostModel.fromJson(Map<String, dynamic> json) {
@@ -96,7 +96,7 @@ class EventAttr {
     required this.ptpAmount,
     required this.reference,
     required this.mode,
-    this.pTPType = 'Money',
+    required this.pTPType,
     required this.followUpPriority,
     this.altitude = 0,
     this.accuracy = 0,
@@ -181,7 +181,7 @@ class PTPContact {
 
   PTPContact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});
