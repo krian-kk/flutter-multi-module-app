@@ -1,5 +1,5 @@
 class AddressInvalidPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -17,7 +17,7 @@ class AddressInvalidPostModel {
   late String agrRef;
 
   AddressInvalidPostModel({
-    this.eventId = 24,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -28,8 +28,8 @@ class AddressInvalidPostModel {
     required this.agentName,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agrRef,
   });
@@ -91,13 +91,13 @@ class AddressInvalidEventAttr {
   AddressInvalidEventAttr({
     required this.remarks,
     required this.followUpPriority,
-    this.altitude = 0,
-    this.accuracy = 0,
+    required this.altitude,
+    required this.accuracy,
     this.altitudeAccuracy = 0,
-    this.heading = 0,
-    this.speed = 0,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.heading,
+    required this.speed,
+    required this.latitude,
+    required this.longitude,
   });
 
   AddressInvalidEventAttr.fromJson(Map<String, dynamic> json) {

@@ -265,7 +265,7 @@ class _CustomRemainderBottomSheetState
                             contact: Contact(
                               cType: widget.postValue['cType'],
                               value: widget.postValue['value'],
-                              health: ConstantEventValues.dummyHealth,
+                              health: ConstantEventValues.remainderHealth,
                             ),
                             callID: Singleton.instance.callID,
                             callingID: Singleton.instance.callingID,

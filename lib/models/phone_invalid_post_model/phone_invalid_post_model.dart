@@ -16,18 +16,18 @@ class PhoneInvalidPostModel {
   late String agrRef;
 
   PhoneInvalidPostModel({
-    this.eventId = 0,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
     required this.eventAttr,
     required this.eventModule,
     required this.contact,
-    this.createdBy = '',
+    required this.createdBy,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
     required this.agrRef,
@@ -103,11 +103,12 @@ class PhoneInvalidContact {
   late String contactId0;
   late String health;
 
-  PhoneInvalidContact(
-      {required this.cType,
-      required this.value,
-      this.contactId0 = '',
-      this.health = ''});
+  PhoneInvalidContact({
+    required this.cType,
+    required this.value,
+    this.contactId0 = '',
+    required this.health,
+  });
 
   PhoneInvalidContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

@@ -296,6 +296,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   (widget.userType == Constants.telecaller)
                                       ? 'TC : PTP'
                                       : 'PTP',
+                              callerServiceID:
+                                  Singleton.instance.callerServiceID ?? '',
+                              callID: Singleton.instance.callID,
+                              callingID: Singleton.instance.callingID,
                               eventCode: ConstantEventValues.ptpEventCode,
                               caseId: widget.caseId,
                               eventAttr: EventAttr(
@@ -327,7 +331,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               contact: PTPContact(
                                   cType: widget.postValue['cType'],
                                   value: widget.postValue['value'],
-                                  health: ConstantEventValues.dummyHealth),
+                                  health: ConstantEventValues.ptpHealth),
                             );
 
                             Map<String, dynamic> postResult =

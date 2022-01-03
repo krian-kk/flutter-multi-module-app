@@ -357,7 +357,7 @@ class _CustomCollectionsBottomSheetState
                             contact: CollectionsContact(
                               cType: widget.postValue['cType'],
                               value: widget.postValue['value'],
-                              health: ConstantEventValues.dummyHealth,
+                              health: ConstantEventValues.collectionHealth,
                             ),
                             eventAttr: EventAttr(
                               amountCollected:

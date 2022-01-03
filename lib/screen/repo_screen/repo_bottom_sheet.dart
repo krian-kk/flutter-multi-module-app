@@ -319,7 +319,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   RepoContact(
                                     cType: widget.postValue['cType'],
                                     value: widget.postValue['value'],
-                                    health: ConstantEventValues.dummyHealth,
+                                    health: ConstantEventValues.repoHealth,
                                   )
                                 ],
                                 callID: Singleton.instance.callID,

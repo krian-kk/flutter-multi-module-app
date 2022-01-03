@@ -254,8 +254,10 @@ class CustomCardList {
                                         children: [
                                           CustomText(
                                             resultData[index]
-                                                .address![0]
-                                                .value!,
+                                                    .address
+                                                    ?.first
+                                                    .value ??
+                                                '',
                                             color: ColorResource.color484848,
                                             fontSize: FontSize.fourteen,
                                           ),

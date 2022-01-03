@@ -260,9 +260,10 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   ? 'Telecalling'
                                   : 'Field Allocation',
                               contact: Contact(
-                                  cType: widget.postValue['cType'],
-                                  value: widget.postValue['value'],
-                                  health: ConstantEventValues.dummyHealth),
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                                health: ConstantEventValues.rtpDenialHealth,
+                              ),
                               callID: Singleton.instance.callID,
                               callerServiceID:
                                   Singleton.instance.callerServiceID!,
