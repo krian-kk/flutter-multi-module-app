@@ -226,7 +226,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                             var requestBodyData = DisputePostModel(
                               eventId: ConstantEventValues.disputeEventId,
                               eventType:
-                                  (widget.userType == Constants.telecaller)
+                                  (widget.userType == Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : DISPUTE'
                                       : 'DISPUTE',
                               caseId: widget.caseId,
@@ -255,9 +256,14 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 speed: position.speed,
                               ),
                               contact: Contact(
-                                  cType: widget.postValue['cType'],
-                                  value: widget.postValue['value'],
-                                  health: ConstantEventValues.dummyHealth),
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                                health: ConstantEventValues.disputeHealth,
+                                resAddressId0:
+                                    Singleton.instance.resAddressId_0 ?? '',
+                                contactId0:
+                                    Singleton.instance.contactId_0 ?? '',
+                              ),
                             );
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(

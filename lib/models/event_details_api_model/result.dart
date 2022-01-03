@@ -23,9 +23,9 @@ class EventDetailsResultModel {
         caseId: json['caseId'] as String?,
         eventType: json['eventType'] as String?,
         remarks: json['eventAttr']['remarks'] as String?,
-        date: json['date'] as String?,
-        mode: json['mode'] as String?,
-        reference: json['reference'] as String?,
+        date: json['eventAttr']['date'] as String?,
+        mode: json['eventAttr']['mode'] as String?,
+        reference: json['eventAttr']['reference'] as String?,
       );
 
   Map<String, dynamic> toJson() => {

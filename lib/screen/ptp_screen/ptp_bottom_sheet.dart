@@ -332,7 +332,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               contact: PTPContact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
-                                health: ConstantEventValues.healthTwo,
+                                health: ConstantEventValues.ptpHealth,
                                 resAddressId0:
                                     Singleton.instance.resAddressId_0 ?? '',
                                 contactId0:

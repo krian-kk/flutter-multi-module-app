@@ -144,15 +144,15 @@ class _CustomEventDetailsBottomSheetState
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: [
-                  if (expandedList[index].date != null)
-                    CustomText(
-                      expandedList[index].caseId.toString().toUpperCase(),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  const SizedBox(height: 8),
-                  if (expandedList[index].date != null)
+                  // if (expandedList[index].caseId != null)
+                  //   CustomText(
+                  //     expandedList[index].caseId.toString().toUpperCase(),
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  // const SizedBox(height: 8),
+                  if (expandedList[index].mode != null)
                     CustomText(
                       Languages.of(context)!.mode.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
@@ -166,7 +166,6 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  const SizedBox(height: 8),
                   const SizedBox(height: 8),
                   CustomText(
                     Languages.of(context)!

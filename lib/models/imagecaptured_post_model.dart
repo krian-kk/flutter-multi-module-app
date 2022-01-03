@@ -2,7 +2,7 @@ class PostImageCapturedModel {
   late int eventId;
   late String eventType;
   late String caseId;
-  late String? eventCode;
+  late String eventCode;
   late EventAttr eventAttr;
   late String createdBy;
   late String eventModule;
@@ -15,17 +15,17 @@ class PostImageCapturedModel {
   late String agrRef;
 
   PostImageCapturedModel({
-    this.eventId = 22,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
-    this.eventCode = "TELEVT015",
+    required this.eventCode,
     required this.eventAttr,
     required this.createdBy,
     required this.eventModule,
     this.callID,
     this.callingID,
-    this.callerServiceID = "e",
-    this.voiceCallEventCode = "TELEVT011",
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
     required this.agrRef,

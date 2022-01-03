@@ -120,9 +120,9 @@ class Cases {
     caseId = json['caseId'];
     fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
     customerId = json['customerId'];
-    if (json['address'] != null) {
+    if (json['contact'] != null) {
       address = [];
-      json['address'].forEach((v) {
+      json['contact'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
     }
@@ -141,7 +141,7 @@ class Cases {
     data['fieldfollowUpDate'] = this.fieldfollowUpDate;
     data['customerId'] = this.customerId;
     if (this.address != null) {
-      data['address'] = this.address?.map((v) => v.toJson()).toList();
+      data['contact'] = this.address?.map((v) => v.toJson()).toList();
     }
     return data;
   }

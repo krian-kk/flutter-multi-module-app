@@ -1,5 +1,5 @@
 class CustomerNotMetPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -16,7 +16,7 @@ class CustomerNotMetPostModel {
   late String agrRef;
 
   CustomerNotMetPostModel(
-      {this.eventId = 24,
+      {required this.eventId,
       required this.eventType,
       required this.caseId,
       required this.eventCode,
@@ -27,8 +27,8 @@ class CustomerNotMetPostModel {
       required this.agentName,
       this.callID,
       this.callingID,
-      this.callerServiceID = 'e',
-      this.voiceCallEventCode = 'TELEVT011',
+      required this.callerServiceID,
+      required this.voiceCallEventCode,
       this.invalidNumber,
       required this.agrRef});
 

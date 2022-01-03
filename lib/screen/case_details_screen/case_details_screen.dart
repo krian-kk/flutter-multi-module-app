@@ -1129,6 +1129,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               // agentName: bloc.agentName.toString(),
 
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(

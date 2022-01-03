@@ -7,8 +7,10 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/reminder_post_model/reminder_post_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -233,14 +235,21 @@ class _CustomRemainderBottomSheetState
                             });
                           }
                           var requestBodyData = ReminderPostAPI(
-                            eventType: (widget.userType == Constants.telecaller)
-                                ? 'TC : REMINDER'
-                                : 'REMINDER',
+                            eventId: ConstantEventValues.remainderEventId,
+                            eventType:
+                                (widget.userType == Constants.telecaller ||
+                                        widget.isCall!)
+                                    ? 'TC : REMINDER'
+                                    : 'REMINDER',
                             caseId: widget.caseId,
-                            eventCode: 'TELEVT006',
-                            createdBy: widget.agentName,
-                            agentName: widget.agentName,
-                            agrRef: widget.argRef,
+                            eventCode: ConstantEventValues.remainderEvenCode,
+                            voiceCallEventCode:
+                                ConstantEventValues.voiceCallEventCode,
+                            callerServiceID:
+                                Singleton.instance.callerServiceID ?? '',
+                            createdBy: Singleton.instance.agentRef ?? '',
+                            agentName: Singleton.instance.agentName ?? '',
+                            agrRef: Singleton.instance.agrRef ?? '',
                             eventModule: widget.isCall!
                                 ? 'Telecalling'
                                 : 'Field Allocation',
@@ -258,9 +267,13 @@ class _CustomRemainderBottomSheetState
                             contact: Contact(
                               cType: widget.postValue['cType'],
                               value: widget.postValue['value'],
+                              health: ConstantEventValues.remainderHealth,
+                              resAddressId0:
+                                  Singleton.instance.resAddressId_0 ?? '',
+                              contactId0: Singleton.instance.contactId_0 ?? '',
                             ),
-                            callID: '0',
-                            callingID: '0',
+                            callID: Singleton.instance.callID,
+                            callingID: Singleton.instance.callingID,
                           );
                           Map<String, dynamic> postResult =
                               await APIRepository.apiRequest(

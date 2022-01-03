@@ -16,7 +16,7 @@ class PhoneUnreachablePostModel {
   late String agrRef;
 
   PhoneUnreachablePostModel({
-    this.eventId = 24,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -26,8 +26,8 @@ class PhoneUnreachablePostModel {
     required this.createdBy,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
     required this.agrRef,
@@ -103,11 +103,12 @@ class PhoneUnreachbleContact {
   late String contactId0;
   late String health;
 
-  PhoneUnreachbleContact(
-      {required this.cType,
-      required this.value,
-      this.contactId0 = '',
-      this.health = ''});
+  PhoneUnreachbleContact({
+    required this.cType,
+    required this.value,
+    required this.contactId0,
+    required this.health,
+  });
 
   PhoneUnreachbleContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

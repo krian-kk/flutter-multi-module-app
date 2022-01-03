@@ -16,23 +16,24 @@ class OtherFeedBackPostModel {
   late String voiceCallEventCode;
   late double invalidNumber;
 
-  OtherFeedBackPostModel(
-      {this.eventId = 21, // static
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      required this.contact,
-      required this.createdBy,
-      required this.eventModule,
-      required this.agentName,
-      // this.contractor = '',
-      required this.agrRef,
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0});
+  OtherFeedBackPostModel({
+    required this.eventId,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    required this.contact,
+    required this.createdBy,
+    required this.eventModule,
+    required this.agentName,
+    // this.contractor = '',
+    required this.agrRef,
+    required this.callID,
+    required this.callingID,
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
+    this.invalidNumber = 0,
+  });
 
   OtherFeedBackPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -103,13 +104,13 @@ class EventAttr {
     required this.remarks,
     required this.imageLocation,
     this.followUpPriority = 'RETRY',
-    this.altitude = 0,
-    this.accuracy = 0,
-    this.altitudeAccuracy = 0,
-    this.heading = 0,
-    this.speed = 0,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.altitude,
+    required this.accuracy,
+    required this.altitudeAccuracy,
+    required this.heading,
+    required this.speed,
+    required this.latitude,
+    required this.longitude,
     // this.distance = 0,
     // required this.agentLocation
   });

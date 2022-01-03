@@ -48,8 +48,14 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
         return WillPopScope(
           onWillPop: () async => false,
           child: Container(
+            decoration: const BoxDecoration(
+              color: ColorResource.colorF7F8FA,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0)),
+            ),
             padding: const EdgeInsets.only(top: 16),
-            color: ColorResource.colorF7F8FA,
+            // color: ColorResource.colorF7F8FA,
             child: SafeArea(
               child: widget.bloc.yardingAndSelfReleaseData.result!.isEmpty
                   ? Scaffold(

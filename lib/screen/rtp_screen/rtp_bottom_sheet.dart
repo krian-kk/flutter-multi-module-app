@@ -233,7 +233,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                             var requestBodyData = DenialPostModel(
                               eventId: ConstantEventValues.rtpDenialEventId,
                               eventType:
-                                  (widget.userType == Constants.telecaller)
+                                  (widget.userType == Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : DENIAL'
                                       : 'DENIAL',
                               caseId: widget.caseId,
@@ -261,9 +262,14 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   ? 'Telecalling'
                                   : 'Field Allocation',
                               contact: Contact(
-                                  cType: widget.postValue['cType'],
-                                  value: widget.postValue['value'],
-                                  health: ConstantEventValues.dummyHealth),
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                                health: ConstantEventValues.rtpDenialHealth,
+                                resAddressId0:
+                                    Singleton.instance.resAddressId_0 ?? '',
+                                contactId0:
+                                    Singleton.instance.contactId_0 ?? '',
+                              ),
                               callID: Singleton.instance.callID,
                               callerServiceID:
                                   Singleton.instance.callerServiceID ?? '',

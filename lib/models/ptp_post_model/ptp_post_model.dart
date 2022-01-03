@@ -11,7 +11,7 @@ class PTPPostModel {
   late String agrRef;
   late String? callID;
   late String? callingID;
-  late String? callerServiceID;
+  late String callerServiceID;
   late String? voiceCallEventCode;
   late double? invalidNumber;
 
@@ -28,7 +28,7 @@ class PTPPostModel {
       required this.agrRef,
       this.callID,
       this.callingID,
-      this.callerServiceID,
+      required this.callerServiceID,
       required this.voiceCallEventCode,
       this.invalidNumber});
 

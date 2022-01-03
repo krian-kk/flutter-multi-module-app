@@ -8,8 +8,10 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -299,13 +301,16 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               });
                             }
                             var requestBodyData = RepoPostModel(
+                                eventId: ConstantEventValues.repoEventId,
                                 eventType: Constants.repo,
                                 caseId: widget.caseId,
                                 eventCode: 'TELEVT016',
-                                agrRef: widget.argRef,
                                 callerServiceID: 'Kaleyra_123',
-                                createdBy: widget.agentName,
-                                agentName: widget.agentName,
+                                voiceCallEventCode:
+                                    ConstantEventValues.voiceCallEventCode,
+                                createdBy: Singleton.instance.agentRef ?? '',
+                                agentName: Singleton.instance.agentName ?? '',
+                                agrRef: Singleton.instance.agrRef ?? '',
                                 eventModule:
                                     (widget.userType == Constants.telecaller)
                                         ? 'Telecalling'
@@ -314,8 +319,15 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   RepoContact(
                                     cType: widget.postValue['cType'],
                                     value: widget.postValue['value'],
+                                    health: ConstantEventValues.repoHealth,
+                                    resAddressId0:
+                                        Singleton.instance.resAddressId_0 ?? '',
+                                    contactId0:
+                                        Singleton.instance.contactId_0 ?? '',
                                   )
                                 ],
+                                callID: Singleton.instance.callID,
+                                callingID: Singleton.instance.callingID,
                                 eventAttr: EventAttr(
                                   modelMake: modelMakeControlller.text,
                                   registrationNo:

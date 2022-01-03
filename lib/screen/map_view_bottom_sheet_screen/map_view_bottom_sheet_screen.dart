@@ -237,56 +237,60 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                       : (val) {},
                 ),
               ),
-              Container(
-                height: 70,
-                width: MediaQuery.of(context).size.width,
-                color: ColorResource.colorFFFFFF,
-                child: Center(
-                    child: SizedBox(
-                  width: 190,
-                  child: CustomButton(
-                    Languages.of(context)!.done.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    onTap: () async {
-                      if (widget.onClose != null) {
-                        // var requestBodyData;
-                        // if (tabLatLng.latitude != null) {
+              (widget.agentLocation == null &&
+                      widget.listOfAgentLocation == null &&
+                      widget.listOfAgentLocation == [])
+                  ? const SizedBox()
+                  : Container(
+                      height: 70,
+                      width: MediaQuery.of(context).size.width,
+                      color: ColorResource.colorFFFFFF,
+                      child: Center(
+                          child: SizedBox(
+                        width: 190,
+                        child: CustomButton(
+                          Languages.of(context)!.done.toUpperCase(),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          onTap: () async {
+                            if (widget.onClose != null) {
+                              // var requestBodyData;
+                              // if (tabLatLng.latitude != null) {
 
-                        // } else if (position.latitude != null) {
-                        //   requestBodyData = HomeAddressPostModel(
-                        //     latitude: position.latitude,
-                        //     longitude: position.longitude,
-                        //   );
-                        // } else {
-                        //   AppUtils.topSnackBar(context, "Please Select address!");
-                        // }
-                        var requestBodyData = HomeAddressPostModel(
-                          latitude: tabLatLng.latitude,
-                          longitude: tabLatLng.longitude,
-                        );
+                              // } else if (position.latitude != null) {
+                              //   requestBodyData = HomeAddressPostModel(
+                              //     latitude: position.latitude,
+                              //     longitude: position.longitude,
+                              //   );
+                              // } else {
+                              //   AppUtils.topSnackBar(context, "Please Select address!");
+                              // }
+                              var requestBodyData = HomeAddressPostModel(
+                                latitude: tabLatLng.latitude,
+                                longitude: tabLatLng.longitude,
+                              );
 
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.POST,
-                          HttpUrl.homeAddressUrl(),
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
+                              Map<String, dynamic> postResult =
+                                  await APIRepository.apiRequest(
+                                APIRequestType.POST,
+                                HttpUrl.homeAddressUrl(),
+                                requestBodydata: jsonEncode(requestBodyData),
+                              );
 
-                        if (postResult[Constants.success]) {
-                          Navigator.pop(context);
-                          AppUtils.topSnackBar(
-                              context, Constants.successfullySubmitted);
-                          widget.onClose!(tabAddress);
-                        } else {}
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    cardShape: 5,
-                  ),
-                )),
-              ),
+                              if (postResult[Constants.success]) {
+                                Navigator.pop(context);
+                                AppUtils.topSnackBar(
+                                    context, Constants.successfullySubmitted);
+                                widget.onClose!(tabAddress);
+                              } else {}
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
+                          cardShape: 5,
+                        ),
+                      )),
+                    ),
             ],
           ),
         ));

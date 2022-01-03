@@ -6,8 +6,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -179,10 +181,20 @@ class _CustomCaptureImageBottomSheetState
                               });
                             }
                             var requestBodyData = PostImageCapturedModel(
+                                eventId:
+                                    ConstantEventValues.captureImageEventId,
+                                eventCode:
+                                    ConstantEventValues.captureImageEvenCode,
                                 caseId: widget.bloc.caseId.toString(),
-                                createdBy: widget.bloc.agentName.toString(),
-                                agentName: widget.bloc.agentName.toString(),
-                                agrRef: widget.bloc.agentName.toString(),
+                                voiceCallEventCode:
+                                    ConstantEventValues.voiceCallEventCode,
+                                createdBy: Singleton.instance.agentRef ?? '',
+                                agentName: Singleton.instance.agentName ?? '',
+                                agrRef: Singleton.instance.agrRef ?? '',
+                                callerServiceID:
+                                    Singleton.instance.callerServiceID ?? '',
+                                callID: Singleton.instance.callID,
+                                callingID: Singleton.instance.callingID,
                                 eventType: 'IMAGE CAPTURED',
                                 eventModule: (widget.bloc.userType ==
                                         Constants.telecaller)

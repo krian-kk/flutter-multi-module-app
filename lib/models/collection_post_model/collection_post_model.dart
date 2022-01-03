@@ -16,11 +16,11 @@ class CollectionPostModel {
   late double? invalidNumber;
 
   CollectionPostModel({
-    this.eventId = 17,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventAttr,
-    this.eventCode = 'TELEVT003',
+    required this.eventCode,
     required this.createdBy,
     required this.agentName,
     required this.eventModule,
@@ -28,8 +28,8 @@ class CollectionPostModel {
     required this.agrRef,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'e',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
   });
 
@@ -155,7 +155,7 @@ class CollectionsContact {
 
   CollectionsContact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});

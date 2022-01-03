@@ -7,7 +7,7 @@ class CaseDetails {
   int? pos;
   dynamic due;
   String? cust;
-  String? odVal;
+  dynamic? odVal;
   String? accNo;
   String? collSubStatus;
   String? bankName;
@@ -50,7 +50,7 @@ class CaseDetails {
         pos: json['pos'] as int?,
         due: json['due'],
         cust: json['cust'] as String?,
-        odVal: json['odVal'] as String?,
+        odVal: json['odVal'],
         accNo: json['accNo'] as String?,
         collSubStatus: json['collSubStatus'] as String?,
         bankName: json['bankName'] as String?,

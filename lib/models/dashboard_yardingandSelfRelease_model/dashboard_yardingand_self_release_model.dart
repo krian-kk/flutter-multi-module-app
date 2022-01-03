@@ -61,9 +61,9 @@ class YardingResult {
     bankName = json['bankName'];
     customerId = json['customerId'];
     caseId = json['caseId'];
-    if (json['address'] != null) {
+    if (json['contact'] != null) {
       address = [];
-      json['address'].forEach((v) {
+      json['contact'].forEach((v) {
         address!.add(Address.fromJson(v));
       });
     }
@@ -81,7 +81,7 @@ class YardingResult {
     data['customerId'] = customerId;
     data['caseId'] = caseId;
     if (address != null) {
-      data['address'] = address!.map((v) => v.toJson()).toList();
+      data['contact'] = address!.map((v) => v.toJson()).toList();
     }
     return data;
   }
