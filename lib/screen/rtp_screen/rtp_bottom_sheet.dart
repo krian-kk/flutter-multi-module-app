@@ -10,6 +10,7 @@ import 'package:origa/models/denial_post_model/denial_post_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -230,12 +231,18 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               });
                             }
                             var requestBodyData = DenialPostModel(
+                              eventId: ConstantEventValues.rtpDenialEventId,
                               eventType:
                                   (widget.userType == Constants.telecaller)
                                       ? 'TC : DENIAL'
                                       : 'DENIAL',
                               caseId: widget.caseId,
-                              eventCode: 'TELEVT004',
+                              eventCode: ConstantEventValues.rtpDenialEventCode,
+                              voiceCallEventCode:
+                                  ConstantEventValues.voiceCallEventCode,
+                              createdBy: Singleton.instance.agentRef ?? '',
+                              agentName: Singleton.instance.agentName ?? '',
+                              // agrRef: Singleton.instance.agrRef ?? '',
                               agrRef: Singleton.instance.agrRef ?? '',
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
@@ -247,16 +254,19 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 altitude: position.altitude,
                                 heading: position.heading,
                                 speed: position.speed,
+                                amountDenied: '',
                               ),
-                              agentName: Singleton.instance.agentName ?? '',
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
                                   : 'Field Allocation',
                               contact: Contact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                              ),
-                              createdBy: Singleton.instance.agentRef ?? '',
+                                  cType: widget.postValue['cType'],
+                                  value: widget.postValue['value'],
+                                  health: ConstantEventValues.dummyHealth),
+                              callID: Singleton.instance.callID,
+                              callerServiceID:
+                                  Singleton.instance.callerServiceID!,
+                              callingID: Singleton.instance.callingID,
                             );
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(

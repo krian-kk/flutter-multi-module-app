@@ -16,7 +16,7 @@ class DenialPostModel {
   late double? invalidNumber;
 
   DenialPostModel({
-    this.eventId = 20,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -26,10 +26,10 @@ class DenialPostModel {
     required this.agentName,
     required this.eventModule,
     required this.agrRef,
-    this.callID,
-    this.callingID,
-    this.callerServiceID = '',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callID,
+    required this.callingID,
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
   });
 
@@ -91,7 +91,7 @@ class EventAttr {
     required this.actionDate,
     this.reasons,
     required this.remarks,
-    this.amountDenied = '',
+    required this.amountDenied,
     this.followUpPriority = 'REVIEW',
     this.altitude = 0,
     this.accuracy = 0,
@@ -170,7 +170,7 @@ class Contact {
 
   Contact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});

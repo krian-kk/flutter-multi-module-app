@@ -10,6 +10,5 @@ class ConstantEventValues {
 
   // RTP Denial post event
   static const int rtpDenialEventId = 20;
-  static const String rtpDenialEventCode = 'TELEVT001';
-  static const String rtpDenialType = 'Money';
+  static const String rtpDenialEventCode = 'TELEVT004';
 }
