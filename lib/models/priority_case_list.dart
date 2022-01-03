@@ -91,9 +91,9 @@ class Result {
     distanceMeters = json['distanceMeters'];
     repoStatus = json['repoStatus'];
     accNo = json['accNo'];
-    if (json['address'] != null) {
+    if (json['contact'] != null) {
       address = <Address>[];
-      json['address'].forEach((v) {
+      json['contact'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
     }

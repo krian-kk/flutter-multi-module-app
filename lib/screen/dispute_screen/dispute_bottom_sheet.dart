@@ -7,8 +7,10 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -222,17 +224,25 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               });
                             }
                             var requestBodyData = DisputePostModel(
+                              eventId: ConstantEventValues.disputeEventId,
                               eventType:
                                   (widget.userType == Constants.telecaller)
                                       ? 'TC : DISPUTE'
                                       : 'DISPUTE',
                               caseId: widget.caseId,
-                              eventCode: 'TELEVT005',
-                              agrRef: widget.argRef,
-                              agentName: widget.agentName,
+                              eventCode: ConstantEventValues.disputeEventCode,
+                              voiceCallEventCode:
+                                  ConstantEventValues.voiceCallEventCode,
+                              createdBy: Singleton.instance.agentRef ?? '',
+                              agentName: Singleton.instance.agentName ?? '',
+                              agrRef: Singleton.instance.agrRef ?? '',
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
                                   : 'Field Allocation',
+                              callID: Singleton.instance.callID,
+                              callerServiceID:
+                                  Singleton.instance.callerServiceID ?? '',
+                              callingID: Singleton.instance.callingID,
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
                                 remarks: remarksControlller.text,
@@ -245,10 +255,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 speed: position.speed,
                               ),
                               contact: Contact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                              ),
-                              createdBy: widget.agentName,
+                                  cType: widget.postValue['cType'],
+                                  value: widget.postValue['value'],
+                                  health: ConstantEventValues.dummyHealth),
                             );
                             Map<String, dynamic> postResult =
                                 await APIRepository.apiRequest(

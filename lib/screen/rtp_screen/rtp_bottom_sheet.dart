@@ -254,7 +254,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 altitude: position.altitude,
                                 heading: position.heading,
                                 speed: position.speed,
-                                amountDenied: '',
+                                amountDenied:
+                                    Singleton.instance.overDueAmount ?? '',
                               ),
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
@@ -265,7 +266,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   health: ConstantEventValues.dummyHealth),
                               callID: Singleton.instance.callID,
                               callerServiceID:
-                                  Singleton.instance.callerServiceID!,
+                                  Singleton.instance.callerServiceID ?? '',
                               callingID: Singleton.instance.callingID,
                             );
                             Map<String, dynamic> postResult =

@@ -293,7 +293,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             var requestBodyData = PTPPostModel(
                               eventId: ConstantEventValues.ptpEventId,
                               eventType:
-                                  (widget.userType == Constants.telecaller)
+                                  (widget.userType == Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : PTP'
                                       : 'PTP',
                               eventCode: ConstantEventValues.ptpEventCode,
@@ -314,6 +315,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 heading: position.heading,
                                 speed: position.speed,
                               ),
+                              callID: Singleton.instance.callID ?? " ",
+                              callingID: Singleton.instance.callingID ?? " ",
+                              callerServiceID:
+                                  Singleton.instance.callerServiceID ?? " ",
                               voiceCallEventCode:
                                   ConstantEventValues.voiceCallEventCode,
                               createdBy: Singleton.instance.agentRef ?? '',
@@ -325,9 +330,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               // agrRef: widget.argRef,
                               agrRef: Singleton.instance.agrRef ?? '',
                               contact: PTPContact(
-                                  cType: widget.postValue['cType'],
-                                  value: widget.postValue['value'],
-                                  health: ConstantEventValues.dummyHealth),
+                                cType: widget.postValue['cType'],
+                                value: widget.postValue['value'],
+                                health: ConstantEventValues.healthTwo,
+                                resAddressId0:
+                                    Singleton.instance.resAddressId_0 ?? '',
+                                contactId0:
+                                    Singleton.instance.contactId_0 ?? '',
+                              ),
                             );
 
                             Map<String, dynamic> postResult =

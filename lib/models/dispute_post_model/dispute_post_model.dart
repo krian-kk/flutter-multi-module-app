@@ -1,5 +1,5 @@
 class DisputePostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -16,7 +16,7 @@ class DisputePostModel {
   late double? invalidNumber;
 
   DisputePostModel({
-    this.eventId = 19,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -26,10 +26,10 @@ class DisputePostModel {
     required this.agentName,
     required this.eventModule,
     required this.agrRef,
-    this.callID,
-    this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callID,
+    required this.callingID,
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
   });
 
@@ -76,7 +76,6 @@ class EventAttr {
   late String actionDate;
   late String? disputereasons;
   late String remarks;
-  late String amountDenied;
   late String followUpPriority;
   late double altitude;
   late double accuracy;
@@ -90,7 +89,6 @@ class EventAttr {
     required this.actionDate,
     this.disputereasons,
     required this.remarks,
-    this.amountDenied = '',
     this.followUpPriority = 'REVIEW',
     this.altitude = 0,
     this.accuracy = 0,
@@ -105,7 +103,6 @@ class EventAttr {
     actionDate = json['actionDate'];
     disputereasons = json['disputereasons'];
     remarks = json['remarks'];
-    amountDenied = json['amountDenied'];
     followUpPriority = json['followUpPriority'];
     altitude = json['altitude'];
     accuracy = json['accuracy'];
@@ -121,7 +118,6 @@ class EventAttr {
     data['actionDate'] = actionDate;
     data['disputereasons'] = disputereasons;
     data['remarks'] = remarks;
-    data['amountDenied'] = amountDenied;
     data['followUpPriority'] = followUpPriority;
     data['altitude'] = altitude;
     data['accuracy'] = accuracy;
@@ -168,7 +164,7 @@ class Contact {
 
   Contact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});

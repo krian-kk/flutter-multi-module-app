@@ -14,6 +14,10 @@ class Singleton {
   String? callID;
   String? callingID;
   String? callerServiceID;
+  String? resAddressId_0;
+  String? contactId_0;
+
+  String? overDueAmount;
   static final Singleton instance = Singleton.internal();
 
   factory Singleton() {

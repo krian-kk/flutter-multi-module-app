@@ -154,6 +154,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       value.get('case' + caseId.toString())!.result),
       // );
 
+      Singleton.instance.overDueAmount =
+          caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
+
       loanAmountController.text = caseDetailsAPIValue
               .result?.caseDetails!.loanAmt
               .toString()

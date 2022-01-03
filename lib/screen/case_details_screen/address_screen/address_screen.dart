@@ -16,6 +16,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/health_status_widget.dart';
 import 'dart:async';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -117,8 +118,14 @@ class _AddressScreenState extends State<AddressScreen>
                                 Wrap(
                                   spacing: 27,
                                   children: [
-                                    SvgPicture.asset(
-                                        ImageResource.activePerson),
+                                    // SvgPicture.asset(
+                                    //     ImageResource.activePerson),
+                                    ShowHealthStatus.healthStatus(widget
+                                            .bloc
+                                            .caseDetailsAPIValue
+                                            .result
+                                            ?.addressDetails![widget.index]
+                                        ['health']),
                                     InkWell(
                                         onTap: () => Navigator.pop(context),
                                         child: Container(

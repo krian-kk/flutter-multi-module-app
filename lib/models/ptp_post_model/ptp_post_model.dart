@@ -183,8 +183,8 @@ class PTPContact {
       {required this.cType,
       required this.health,
       required this.value,
-      this.resAddressId0 = '',
-      this.contactId0 = ''});
+      required this.resAddressId0,
+      required this.contactId0});
 
   PTPContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

@@ -7,6 +7,7 @@ class CaseDetails {
   int? pos;
   dynamic due;
   String? cust;
+  String? odVal;
   String? accNo;
   String? collSubStatus;
   String? bankName;
@@ -27,6 +28,7 @@ class CaseDetails {
     this.pos,
     this.due,
     this.cust,
+    this.odVal,
     this.accNo,
     this.collSubStatus,
     this.bankName,
@@ -48,6 +50,7 @@ class CaseDetails {
         pos: json['pos'] as int?,
         due: json['due'],
         cust: json['cust'] as String?,
+        odVal: json['odVal'] as String?,
         accNo: json['accNo'] as String?,
         collSubStatus: json['collSubStatus'] as String?,
         bankName: json['bankName'] as String?,
@@ -78,6 +81,7 @@ class CaseDetails {
         'pos': pos,
         'due': due,
         'cust': cust,
+        'odVal': odVal,
         'accNo': accNo,
         'collSubStatus': collSubStatus,
         'bankName': bankName,

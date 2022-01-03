@@ -41,7 +41,7 @@ class Case {
         fieldfollowUpDate: json['fieldfollowUpDate'] as String? ?? "-",
         customerId: json['customerId'] as String?,
         caseId: json['caseId'] as String?,
-        address: (json['address'] as List<dynamic>?)
+        address: (json['contact'] as List<dynamic>?)
             ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
             .toList(),
       );

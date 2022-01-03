@@ -22,7 +22,7 @@ class EventDetailsResultModel {
         id: json['_id'] as String?,
         caseId: json['caseId'] as String?,
         eventType: json['eventType'] as String?,
-        remarks: json['remarks'] as String?,
+        remarks: json['eventAttr']['remarks'] as String?,
         date: json['date'] as String?,
         mode: json['mode'] as String?,
         reference: json['reference'] as String?,

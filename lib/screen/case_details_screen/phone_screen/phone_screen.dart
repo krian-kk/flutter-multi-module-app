@@ -12,6 +12,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/health_status_widget.dart';
 
 class PhoneScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
@@ -91,7 +92,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                             Wrap(
                               spacing: 27,
                               children: [
-                                SvgPicture.asset(ImageResource.activePerson),
+                                // SvgPicture.asset(ImageResource.activePerson),
+                                ShowHealthStatus.healthStatus(widget
+                                    .bloc
+                                    .caseDetailsAPIValue
+                                    .result
+                                    ?.callDetails![widget.index]['health']),
                                 GestureDetector(
                                   onTap: () => Navigator.pop(context),
                                   child: Container(
