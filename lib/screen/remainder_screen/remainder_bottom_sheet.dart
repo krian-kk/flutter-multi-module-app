@@ -249,6 +249,7 @@ class _CustomRemainderBottomSheetState
                                 Singleton.instance.callerServiceID ?? '',
                             createdBy: Singleton.instance.agentRef ?? '',
                             agentName: Singleton.instance.agentName ?? '',
+                            contractor: Singleton.instance.contractor ?? '',
                             agrRef: Singleton.instance.agrRef ?? '',
                             eventModule: widget.isCall!
                                 ? 'Telecalling'
@@ -284,7 +285,7 @@ class _CustomRemainderBottomSheetState
                           );
                           if (postResult[Constants.success]) {
                             AppUtils.topSnackBar(
-                                context, Constants.successfullySubmitted);
+                                context, Constants.eventUpdatedSuccess);
                             Navigator.pop(context);
                           }
                         }

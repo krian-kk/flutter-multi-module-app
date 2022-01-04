@@ -198,6 +198,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                     Constants.email, agentDetails.data![0].email!);
                 await _prefs.setString(
                     Constants.contractor, agentDetails.data![0].contractor!);
+                Singleton.instance.contractor =
+                    agentDetails.data![0].contractor!;
                 await _prefs.setString(
                     Constants.status, agentDetails.data![0].status!);
                 await _prefs.setString(Constants.code, agentDetails.code!);

@@ -329,6 +329,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   : 'Field Allocation',
                               // agrRef: widget.argRef,
                               agrRef: Singleton.instance.agrRef ?? '',
+                              contractor: Singleton.instance.contractor ?? '',
                               contact: PTPContact(
                                 cType: widget.postValue['cType'],
                                 value: widget.postValue['value'],
@@ -351,7 +352,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             );
                             if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
+                                  context, Constants.eventUpdatedSuccess);
                               Navigator.pop(context);
                             }
                           } else {

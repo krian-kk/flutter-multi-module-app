@@ -36,6 +36,17 @@ class Constants {
   static const String notOpeartional = 'TC : Not Operational';
   static const String numberNotWorking = 'TC : Number Not Working';
 
+  // This is used for check telsubstatus
+  static const String telsubstatuslineBusy = 'Line Busy';
+  static const String telsubstatusswitchOff = 'Switch Off';
+  static const String telsubstatusrnr = 'RNR';
+  static const String telsubstatusoutOfNetwork = 'Out Of Network';
+  static const String telsubstatusdisconnecting = 'Disconnecting';
+  static const String telsubstatusdoesNotExist = 'Does Not Exist';
+  static const String telsubstatusincorrectNumber = 'Incorrect Number';
+  static const String telsubstatusnotOpeartional = 'Not Operational';
+  static const String telsubstatusnumberNotWorking = 'Number Not Working';
+
   static const String addressDetails = 'Address Details';
   static const String callDetails = 'Call Details';
   static const String captureImage = 'CAPTURE IMAGE';
@@ -46,6 +57,7 @@ class Constants {
   static const String eventDetails = 'EVENT DETAILS';
   static const String callCustomer = 'CALL CUSTOMER';
   static const String successfullySubmitted = 'Successfully submitted!!';
+  static const String eventUpdatedSuccess = 'Event updated successfully.';
   static const String successfullyUpdated = 'Successfully Updated !!';
   static const String resetPassword = 'Reset password via OTP';
   static const String notSelectedCase = 'Should be select one loan';

@@ -236,6 +236,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                   ConstantEventValues.voiceCallEventCode,
                               createdBy: Singleton.instance.agentRef ?? '',
                               agentName: Singleton.instance.agentName ?? '',
+                              contractor: Singleton.instance.contractor ?? '',
                               agrRef: Singleton.instance.agrRef ?? '',
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
@@ -276,7 +277,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                         jsonEncode(requestBodyData));
                             if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
+                                  context, Constants.eventUpdatedSuccess);
                               Navigator.pop(context);
                             }
                           } else {

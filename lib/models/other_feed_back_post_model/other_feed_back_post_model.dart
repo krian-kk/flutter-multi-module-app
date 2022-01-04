@@ -8,7 +8,7 @@ class OtherFeedBackPostModel {
   late String createdBy;
   late String eventModule;
   late String agentName;
-  // late String contractor;
+  late String contractor;
   late String agrRef;
   late String callID;
   late String callingID;
@@ -26,7 +26,7 @@ class OtherFeedBackPostModel {
     required this.createdBy,
     required this.eventModule,
     required this.agentName,
-    // this.contractor = '',
+    required this.contractor,
     required this.agrRef,
     required this.callID,
     required this.callingID,
@@ -47,7 +47,7 @@ class OtherFeedBackPostModel {
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
-    // contractor = json['contractor'];
+    contractor = json['contractor'];
     agrRef = json['agrRef'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -67,7 +67,7 @@ class OtherFeedBackPostModel {
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
-    // data['contractor'] = contractor;
+    data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
     data['callingID'] = callingID;

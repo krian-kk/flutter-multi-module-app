@@ -7,6 +7,7 @@ class RepoPostModel {
   late List<RepoContact> contact;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late String? callID;
   late String? callingID;
@@ -24,6 +25,7 @@ class RepoPostModel {
     required this.contact,
     required this.createdBy,
     required this.agentName,
+    required this.contractor,
     required this.eventModule,
     this.callID,
     this.callingID,
@@ -44,6 +46,7 @@ class RepoPostModel {
     });
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -63,6 +66,7 @@ class RepoPostModel {
     data['contact'] = contact.map((v) => v.toJson()).toList();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['callID'] = callID;
     data['callingID'] = callingID;

@@ -350,6 +350,7 @@ class _CustomOtherFeedBackBottomSheetState
                                     ConstantEventValues.voiceCallEventCode,
                                 createdBy: Singleton.instance.agentRef ?? '',
                                 agentName: Singleton.instance.agentName ?? '',
+                                contractor: Singleton.instance.contractor ?? '',
                                 agrRef: Singleton.instance.agrRef ?? '',
                                 callID: Singleton.instance.callID ?? '',
                                 callerServiceID:
@@ -397,7 +398,7 @@ class _CustomOtherFeedBackBottomSheetState
                             );
                             if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
+                                  context, Constants.eventUpdatedSuccess);
                               Navigator.pop(context);
                             } else {}
                             // }

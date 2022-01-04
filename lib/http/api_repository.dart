@@ -9,6 +9,7 @@ import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -140,9 +141,7 @@ class APIRepository {
           //  here check accestoken expire or not after go to login
           invalidAccessServerError =
               e.response!.data['message'] ?? "Session Expired!";
-          apiErrorStatus(
-              ErrorString: e.response!.data['message'] ?? "Session Expired!",
-              position: ToastGravity.BOTTOM);
+          String? errVal;
           if (e.response!.data['message'] ==
                   'Error refreshing access token: Invalid refresh token' ||
               e.response!.data['message'] == 'Error getting KeyCloak session' ||
@@ -150,11 +149,28 @@ class APIRepository {
               e.response!.data['message'] ==
                   'Error refreshing access token: Session not active' ||
               invalidAccessServerError == 'Session Expired!') {
-            // AuthenticationBloc bloc;
-            // bloc = AuthenticationBloc()..add(UnAuthenticationEvent());
+            errVal = "Logout triggered due to inactivity / another";
             Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
                 AppRoutes.loginScreen, (route) => false);
           }
+          //  else {
+          //   errVal = e.response!.data['message'];
+          // }
+          apiErrorStatus(
+              ErrorString: errVal ?? e.response!.data['message'],
+              position: ToastGravity.BOTTOM);
+          // if (e.response!.data['message'] ==
+          //         'Error refreshing access token: Invalid refresh token' ||
+          //     e.response!.data['message'] == 'Error getting KeyCloak session' ||
+          //     e.response!.data['message'] == 'Daily token session expired' ||
+          //     e.response!.data['message'] ==
+          //         'Error refreshing access token: Session not active' ||
+          //     invalidAccessServerError == 'Session Expired!') {
+          //   // AuthenticationBloc bloc;
+          //   // bloc = AuthenticationBloc()..add(UnAuthenticationEvent());
+          //   Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
+          //       AppRoutes.loginScreen, (route) => false);
+          // }
         } else if (e.response!.statusCode == 502) {
           //  server not response --> api not working
           invalidAccessServerError = Constants.internalServerError;

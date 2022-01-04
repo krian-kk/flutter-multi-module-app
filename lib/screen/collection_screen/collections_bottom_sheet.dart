@@ -389,6 +389,7 @@ class _CustomCollectionsBottomSheetState
                                 ConstantEventValues.voiceCallEventCode,
                             createdBy: Singleton.instance.agentRef ?? '',
                             agentName: Singleton.instance.agentName ?? '',
+                            contractor: Singleton.instance.contractor ?? '',
                             agrRef: Singleton.instance.agrRef ?? '',
                             eventModule: widget.isCall!
                                 ? 'Telecalling'
@@ -405,7 +406,7 @@ class _CustomCollectionsBottomSheetState
                                   requestBodydata: jsonEncode(requestBodyData));
                           if (postResult[Constants.success]) {
                             AppUtils.topSnackBar(
-                                context, "Event updated successfully.");
+                                context, Constants.eventUpdatedSuccess);
                             Navigator.pop(context);
                           }
                           // }

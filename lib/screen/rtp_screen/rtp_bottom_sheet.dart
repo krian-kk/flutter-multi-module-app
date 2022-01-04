@@ -244,6 +244,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               createdBy: Singleton.instance.agentRef ?? '',
                               agentName: Singleton.instance.agentName ?? '',
                               // agrRef: Singleton.instance.agrRef ?? '',
+                              contractor: Singleton.instance.contractor ?? '',
                               agrRef: Singleton.instance.agrRef ?? '',
                               eventAttr: EventAttr(
                                 actionDate: nextActionDateControlller.text,
@@ -284,7 +285,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                         jsonEncode(requestBodyData));
                             if (postResult[Constants.success]) {
                               AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
+                                  context, Constants.eventUpdatedSuccess);
                               Navigator.pop(context);
                             }
                           } else {
