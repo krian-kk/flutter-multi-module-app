@@ -334,18 +334,14 @@ class _CustomOtherFeedBackBottomSheetState
                                 position = res;
                               });
                             }
-                            print("Singleton.instance.agentName-----------");
-                            print(Singleton.instance.agentName);
-                            print(Singleton.instance.agrRef);
-                            print(Singleton.instance.agentRef);
                             var requestBodyData = OtherFeedBackPostModel(
                                 eventId:
                                     ConstantEventValues.otherFeedbackEventId,
                                 eventType:
-                                    _pref.getString(Constants.userType) ==
-                                            Constants.fieldagent
-                                        ? 'FEEDBACK'
-                                        : 'TC : FEEDBACK',
+                                    (widget.userType == Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : FEEDBACK'
+                                        : 'FEEDBACK',
                                 voiceCallEventCode:
                                     ConstantEventValues.voiceCallEventCode,
                                 createdBy: Singleton.instance.agentRef ?? '',
