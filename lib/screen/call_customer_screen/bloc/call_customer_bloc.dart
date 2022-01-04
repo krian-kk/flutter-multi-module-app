@@ -19,6 +19,7 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
   String serviceProviderListValue = '';
   List<String> callersIDDropdownList = [''];
   String callersIDDropdownValue = '';
+  bool isSubmit = true;
 
   VoiceAgencyDetailModel voiceAgencyDetails = VoiceAgencyDetailModel();
   CallCustomerBloc() : super(CallCustomerInitial()) {
@@ -63,6 +64,12 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
           } else {}
         }
         emit.call(CallCustomerLoadingState());
+      }
+      if (event is DisableSubmitEvent) {
+        isSubmit = false;
+      }
+      if (event is EnableSubmitEvent) {
+        isSubmit = true;
       }
     });
   }

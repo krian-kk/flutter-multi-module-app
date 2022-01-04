@@ -57,6 +57,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   FocusNode ptpReferenceFocusNode = FocusNode();
   FocusNode ptpRemarksFocusNode = FocusNode();
 
+  bool isSubmit = true;
+
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -262,99 +264,119 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   SizedBox(
                     width: 191,
                     child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
+                      isSubmit
+                          ? Languages.of(context)!.submit.toUpperCase()
+                          : null,
+                      isLeading: !isSubmit,
+                      trailingWidget: const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorResource.colorFFFFFF,
+                        ),
+                      ),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          if (selectedPaymentModeButton != '') {
-                            Position position = Position(
-                              longitude: 0,
-                              latitude: 0,
-                              timestamp: DateTime.now(),
-                              accuracy: 0,
-                              altitude: 0,
-                              heading: 0,
-                              speed: 0,
-                              speedAccuracy: 0,
-                            );
-                            if (Geolocator.checkPermission().toString() !=
-                                PermissionStatus.granted.toString()) {
-                              Position res =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.best);
-                              setState(() {
-                                position = res;
-                              });
-                            }
-                            var requestBodyData = PTPPostModel(
-                              eventId: ConstantEventValues.ptpEventId,
-                              eventType:
-                                  (widget.userType == Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : PTP'
-                                      : 'PTP',
-                              eventCode: ConstantEventValues.ptpEventCode,
-                              caseId: widget.caseId,
-                              eventAttr: EventAttr(
-                                pTPType: ConstantEventValues.ptpType,
-                                date: ptpDateControlller.text,
-                                time: ptpTimeControlller.text,
-                                remarks: remarksControlller.text,
-                                ptpAmount: int.parse(ptpAmountControlller.text),
-                                reference: referenceControlller.text,
-                                mode: selectedPaymentModeButton,
-                                followUpPriority: 'PTP',
-                                longitude: position.longitude,
-                                latitude: position.latitude,
-                                accuracy: position.accuracy,
-                                altitude: position.altitude,
-                                heading: position.heading,
-                                speed: position.speed,
-                              ),
-                              callID: Singleton.instance.callID ?? " ",
-                              callingID: Singleton.instance.callingID ?? " ",
-                              callerServiceID:
-                                  Singleton.instance.callerServiceID ?? " ",
-                              voiceCallEventCode:
-                                  ConstantEventValues.voiceCallEventCode,
-                              createdBy: Singleton.instance.agentRef ?? '',
-                              agentName: Singleton.instance.agentName ?? '',
-                              eventModule: widget.isCall!
-                                  ? 'Telecalling'
-                                  : 'Field Allocation',
-                              agrRef: Singleton.instance.agrRef ?? '',
-                              contact: PTPContact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                                health: ConstantEventValues.ptpHealth,
-                                resAddressId0:
-                                    Singleton.instance.resAddressId_0 ?? '',
-                                contactId0:
-                                    Singleton.instance.contactId_0 ?? '',
-                              ),
-                            );
+                      onTap: isSubmit
+                          ? () async {
+                              if (_formKey.currentState!.validate()) {
+                                if (selectedPaymentModeButton != '') {
+                                  setState(() => isSubmit = false);
+                                  Position position = Position(
+                                    longitude: 0,
+                                    latitude: 0,
+                                    timestamp: DateTime.now(),
+                                    accuracy: 0,
+                                    altitude: 0,
+                                    heading: 0,
+                                    speed: 0,
+                                    speedAccuracy: 0,
+                                  );
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    setState(() {
+                                      position = res;
+                                    });
+                                  }
+                                  var requestBodyData = PTPPostModel(
+                                    eventId: ConstantEventValues.ptpEventId,
+                                    eventType: (widget.userType ==
+                                                Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : PTP'
+                                        : 'PTP',
+                                    eventCode: ConstantEventValues.ptpEventCode,
+                                    caseId: widget.caseId,
+                                    eventAttr: EventAttr(
+                                      pTPType: ConstantEventValues.ptpType,
+                                      date: ptpDateControlller.text,
+                                      time: ptpTimeControlller.text,
+                                      remarks: remarksControlller.text,
+                                      ptpAmount:
+                                          int.parse(ptpAmountControlller.text),
+                                      reference: referenceControlller.text,
+                                      mode: selectedPaymentModeButton,
+                                      followUpPriority: 'PTP',
+                                      longitude: position.longitude,
+                                      latitude: position.latitude,
+                                      accuracy: position.accuracy,
+                                      altitude: position.altitude,
+                                      heading: position.heading,
+                                      speed: position.speed,
+                                    ),
+                                    callID: Singleton.instance.callID ?? " ",
+                                    callingID:
+                                        Singleton.instance.callingID ?? " ",
+                                    callerServiceID:
+                                        Singleton.instance.callerServiceID ??
+                                            " ",
+                                    voiceCallEventCode:
+                                        ConstantEventValues.voiceCallEventCode,
+                                    createdBy:
+                                        Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    eventModule: widget.isCall!
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
+                                    agrRef: Singleton.instance.agrRef ?? '',
+                                    contact: PTPContact(
+                                      cType: widget.postValue['cType'],
+                                      value: widget.postValue['value'],
+                                      health: ConstantEventValues.ptpHealth,
+                                      resAddressId0:
+                                          Singleton.instance.resAddressId_0 ??
+                                              '',
+                                      contactId0:
+                                          Singleton.instance.contactId_0 ?? '',
+                                    ),
+                                  );
 
-                            Map<String, dynamic> postResult =
-                                await APIRepository.apiRequest(
-                              APIRequestType.POST,
-                              HttpUrl.ptpPostUrl(
-                                'ptp',
-                                widget.userType,
-                              ),
-                              requestBodydata: jsonEncode(requestBodyData),
-                            );
-                            if (postResult[Constants.success]) {
-                              AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
-                              Navigator.pop(context);
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                    APIRequestType.POST,
+                                    HttpUrl.ptpPostUrl(
+                                      'ptp',
+                                      widget.userType,
+                                    ),
+                                    requestBodydata:
+                                        jsonEncode(requestBodyData),
+                                  );
+                                  if (postResult[Constants.success]) {
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  AppUtils.showToast(
+                                      Constants.pleaseSelectPaymentMode);
+                                }
+                              }
+                              setState(() => isSubmit = true);
                             }
-                          } else {
-                            AppUtils.showToast(
-                                Constants.pleaseSelectPaymentMode);
-                          }
-                        }
-                      },
+                          : () {},
                       cardShape: 5,
                     ),
                   ),

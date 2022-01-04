@@ -35,6 +35,9 @@ class _AddressScreenState extends State<AddressScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
 
+  bool isSubmitFirst = true;
+  bool isSubmitSecond = true;
+
   @override
   void initState() {
     super.initState();
@@ -58,9 +61,18 @@ class _AddressScreenState extends State<AddressScreen>
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
-        // if (state is ClickViewMapState) {
-        //   // openViewMapBottomSheet(context);
-        // }
+        if (state is DisableCustomerNotMetBtnState) {
+          setState(() => isSubmitFirst = false);
+        }
+        if (state is EnableCustomerNotMetBtnState) {
+          setState(() => isSubmitFirst = true);
+        }
+        if (state is DisableAddressInvalidBtnState) {
+          setState(() => isSubmitSecond = false);
+        }
+        if (state is EnableAddressInvalidBtnState) {
+          setState(() => isSubmitSecond = true);
+        }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
@@ -344,45 +356,65 @@ class _AddressScreenState extends State<AddressScreen>
                               width: 191,
                               child: _controller.index == 1
                                   ? CustomButton(
-                                      Languages.of(context)!
-                                          .submit
-                                          .toUpperCase(),
+                                      isSubmitFirst
+                                          ? Languages.of(context)!
+                                              .submit
+                                              .toUpperCase()
+                                          : null,
+                                      isLeading: !isSubmitFirst,
+                                      trailingWidget: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: ColorResource.colorFFFFFF,
+                                        ),
+                                      ),
                                       // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
 
-                                      onTap: () {
-                                        if (widget
-                                            .bloc
-                                            .addressCustomerNotMetFormKey
-                                            .currentState!
-                                            .validate()) {
-                                          if (widget.bloc
-                                                  .addressSelectedCustomerNotMetClip !=
-                                              '') {
-                                            widget.bloc.add(
-                                                ClickCustomerNotMetButtonEvent(
-                                                    context));
-                                          } else {
-                                            AppUtils.showToast(
-                                                Constants.pleaseSelectOptions);
-                                          }
-                                        } else {}
-                                      },
+                                      onTap: isSubmitFirst
+                                          ? () {
+                                              if (widget
+                                                  .bloc
+                                                  .addressCustomerNotMetFormKey
+                                                  .currentState!
+                                                  .validate()) {
+                                                if (widget.bloc
+                                                        .addressSelectedCustomerNotMetClip !=
+                                                    '') {
+                                                  widget.bloc.add(
+                                                      ClickCustomerNotMetButtonEvent(
+                                                          context));
+                                                } else {
+                                                  AppUtils.showToast(Constants
+                                                      .pleaseSelectOptions);
+                                                }
+                                              } else {}
+                                            }
+                                          : () {},
                                       cardShape: 5,
                                     )
                                   : CustomButton(
-                                      Languages.of(context)!
-                                          .submit
-                                          .toUpperCase(),
+                                      isSubmitSecond
+                                          ? Languages.of(context)!
+                                              .submit
+                                              .toUpperCase()
+                                          : null,
+                                      isLeading: !isSubmitSecond,
+                                      trailingWidget: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: ColorResource.colorFFFFFF,
+                                        ),
+                                      ),
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
-                                      onTap: () {
-                                        widget.bloc.add(
-                                            ClickAddressInvalidButtonEvent(
-                                                context));
-                                      },
+                                      onTap: isSubmitSecond
+                                          ? () {
+                                              widget.bloc.add(
+                                                  ClickAddressInvalidButtonEvent(
+                                                      context));
+                                            }
+                                          : () {},
                                       cardShape: 5,
                                     ),
                             ),

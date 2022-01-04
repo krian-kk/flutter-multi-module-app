@@ -5,7 +5,7 @@ class CaseDetailsEvent extends BaseEquatable {}
 
 class CaseDetailsInitialEvent extends CaseDetailsEvent {
   final dynamic paramValues;
-  BuildContext? context;
+  final BuildContext? context;
   CaseDetailsInitialEvent({this.paramValues, this.context});
 }
 
@@ -71,3 +71,11 @@ class PostImageCapturedEvent extends CaseDetailsEvent {
   final dynamic postData;
   PostImageCapturedEvent({this.postData});
 }
+
+class EnableUnreachableBtnEvent extends CaseDetailsEvent {}
+
+class DisableUnreachableBtnEvent extends CaseDetailsEvent {}
+
+class EnablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
+
+class DisablePhoneInvalidBtnEvent extends CaseDetailsEvent {}

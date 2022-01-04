@@ -35,6 +35,7 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
+  bool isSubmit = true;
 
   // String? agrRef;
   // String eventCode = ;
@@ -350,6 +351,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ClickCustomerNotMetButtonEvent) {
+      yield DisableCustomerNotMetBtnState();
       Map<String, dynamic> resultValue = {'success': false};
       if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.leftMessage) {
@@ -418,9 +420,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableCustomerNotMetBtnState();
     }
 
     if (event is ClickAddressInvalidButtonEvent) {
+      yield DisableAddressInvalidBtnState();
       late Map<String, dynamic> resultValue = {Constants.success: false};
       if (addressInvalidFormKey.currentState!.validate()) {
         if (addressSelectedInvalidClip != '') {
@@ -465,9 +469,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableAddressInvalidBtnState();
     }
 
     if (event is ClickPhoneInvalidButtonEvent) {
+      yield DisablePhoneInvalidBtnState();
       late Map<String, dynamic> resultValue = {Constants.success: false};
       if (phoneInvalidFormKey.currentState!.validate()) {
         if (phoneSelectedInvalidClip != '') {
@@ -512,9 +518,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnablePhoneInvalidBtnState();
     }
 
     if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
+      yield DisableUnreachableBtnState();
       late Map<String, dynamic> resultValue;
       if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.lineBusy) {
@@ -575,6 +583,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableUnreachableBtnState();
     }
   }
 
