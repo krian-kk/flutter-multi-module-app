@@ -35,7 +35,7 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
-  String? agentName;
+
   // String? agrRef;
   // String eventCode = ;
 
@@ -118,7 +118,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
-      agentName = _pref.getString(Constants.agentName);
+
       // agrRef = _pref.getString(Constants.agentRef);
 
       //check internet
@@ -434,9 +434,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 'invalidAddress',
                 userType.toString(),
               ),
-              agentName.toString(),
-              agentName.toString(),
-              agentName.toString(),
               'PTP',
             );
           } else if (addressSelectedInvalidClip ==
@@ -446,9 +443,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId.toString(),
               'TELEVT008',
               HttpUrl.shiftedUrl('shifted', userType.toString()),
-              agentName.toString(),
-              agentName.toString(),
-              agentName.toString(),
               'REVIEW',
             );
           } else if (addressSelectedInvalidClip ==
@@ -461,9 +455,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 'addressNotFound',
                 userType.toString(),
               ),
-              agentName.toString(),
-              agentName.toString(),
-              agentName.toString(),
               'PTP',
             );
           }
@@ -702,9 +693,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String caseId,
     String eventCode,
     String urlString,
-    String createdBy,
-    String agentName,
-    String agrRef,
     String followUpPriority,
   ) async {
     Position position = Position(

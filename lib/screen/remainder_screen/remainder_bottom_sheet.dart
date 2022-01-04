@@ -28,8 +28,6 @@ class CustomRemainderBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.agentName,
-    required this.argRef,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -38,8 +36,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  final String argRef;
-  final String agentName;
+
   final bool? isCall;
 
   @override

@@ -23,8 +23,7 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
-  final String argRef;
-  final String agentName;
+
   final String userType;
   final String caseId;
   final String sid;
@@ -33,8 +32,6 @@ class CallCustomerBottomSheet extends StatefulWidget {
   const CallCustomerBottomSheet({
     Key? key,
     required this.customerLoanUserWidget,
-    required this.agentName,
-    required this.argRef,
     required this.caseId,
     required this.userType,
     required this.sid,
@@ -257,16 +254,20 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
-                                    callerId: bloc.callersIDDropdownValue,
-                                    aRef: widget.argRef,
-                                    customerName: widget.agentName,
+                                    callerId:
+                                        Singleton.instance.callingID ?? '123',
+                                    aRef: Singleton.instance.agentRef ?? '',
+                                    customerName:
+                                        Singleton.instance.agentName ?? '',
                                     service: bloc.serviceProviderListValue,
                                     callerServiceID:
-                                        bloc.callersIDDropdownValue,
+                                        Singleton.instance.callerServiceID ??
+                                            'e',
                                     caseId: widget.caseId,
                                     sId: widget.sid,
-                                    agrRef: widget.argRef,
-                                    agentName: widget.agentName,
+                                    agrRef: Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
                                     agentType: (widget.userType ==
                                             Constants.telecaller)
                                         ? 'TELECALLER'

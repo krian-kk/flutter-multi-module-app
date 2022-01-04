@@ -201,6 +201,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     Languages.of(context)!.new_,
                                                     color: ColorResource
                                                         .colorFFFFFF,
+                                                    lineHeight: 1,
                                                     fontSize: FontSize.ten,
                                                     fontWeight: FontWeight.w700,
                                                   ),
@@ -975,8 +976,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,
@@ -995,8 +994,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
               isCall: isCall,
             );
@@ -1014,9 +1011,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
-              // eventCode: bloc.eventCode,
               postValue: list[bloc.indexValue!],
               isCall: isCall,
             );
@@ -1035,8 +1029,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
+
               isCall: isCall,
               // eventCode: bloc.eventCode,
             );
@@ -1053,8 +1046,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               isCall: isCall,
               // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
@@ -1073,9 +1064,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               isCall: isCall,
-              // agentName: bloc.agentName.toString(),
-              // argRef: bloc.agrRef.toString(),
-              // eventCode: bloc.eventCode,
             );
           case Constants.repo:
             return CustomRepoBottomSheet(
@@ -1091,8 +1079,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
             );
           case Constants.captureImage:
@@ -1108,8 +1094,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               bloc: bloc,
-              // agentName: bloc.agentName.toString(),
-              // argRef: bloc.agrRef.toString(),
             );
           case Constants.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
@@ -1126,8 +1110,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              // agentName: bloc.agentName.toString(),
-
               postValue: list[bloc.indexValue!],
               isCall: isCall,
             );
@@ -1163,8 +1145,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               listOfMobileNo:
                   bloc.caseDetailsAPIValue.result?.callDetails as List<dynamic>,
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               caseId: bloc.caseId.toString(),
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );

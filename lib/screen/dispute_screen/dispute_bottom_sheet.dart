@@ -30,8 +30,6 @@ class CustomDisputeBottomSheet extends StatefulWidget {
     required this.customerLoanUserWidget,
     required this.userType,
     this.postValue,
-    required this.agentName,
-    required this.argRef,
     this.isCall,
   }) : super(key: key);
   final String cardTitle;
@@ -39,8 +37,6 @@ class CustomDisputeBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  final String argRef;
-  final String agentName;
   final bool? isCall;
 
   @override

@@ -30,15 +30,12 @@ class CustomPtpBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.agentName,
-    required this.argRef,
     this.postValue,
     this.isCall,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
-  final String argRef;
-  final String agentName;
+
   final Widget customerLoanUserWidget;
   final String userType;
   final bool? isCall;
@@ -323,11 +320,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   ConstantEventValues.voiceCallEventCode,
                               createdBy: Singleton.instance.agentRef ?? '',
                               agentName: Singleton.instance.agentName ?? '',
-                              //  agentName: widget.agentName,
                               eventModule: widget.isCall!
                                   ? 'Telecalling'
                                   : 'Field Allocation',
-                              // agrRef: widget.argRef,
                               agrRef: Singleton.instance.agrRef ?? '',
                               contact: PTPContact(
                                 cType: widget.postValue['cType'],

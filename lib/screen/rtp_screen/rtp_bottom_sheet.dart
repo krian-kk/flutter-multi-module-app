@@ -29,8 +29,6 @@ class CustomRtpBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.agentName,
-    required this.argRef,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -40,9 +38,6 @@ class CustomRtpBottomSheet extends StatefulWidget {
   final String userType;
   final dynamic postValue;
   final bool? isCall;
-
-  final String argRef;
-  final String agentName;
 
   @override
   State<CustomRtpBottomSheet> createState() => _CustomRtpBottomSheetState();

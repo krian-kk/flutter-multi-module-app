@@ -26,20 +26,18 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
-  const CustomCollectionsBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      required this.agentName,
-      required this.argRef,
-      this.postValue,
-      this.isCall})
-      : super(key: key);
+  const CustomCollectionsBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    this.postValue,
+    this.isCall,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
-  final String argRef;
-  final String agentName;
+
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
