@@ -32,7 +32,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   @override
   void initState() {
-    print(widget.isCall);
     super.initState();
   }
 

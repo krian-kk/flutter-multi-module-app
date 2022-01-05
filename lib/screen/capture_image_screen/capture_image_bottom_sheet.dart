@@ -20,11 +20,12 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
-  const CustomCaptureImageBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.customerLoanUserDetailsWidget,
-      required this.bloc})
-      : super(key: key);
+  const CustomCaptureImageBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.customerLoanUserDetailsWidget,
+    required this.bloc,
+  }) : super(key: key);
   final String cardTitle;
   final Widget customerLoanUserDetailsWidget;
   final CaseDetailsBloc bloc;

@@ -23,7 +23,6 @@ import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
 import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/selectable.dart';
-import 'package:origa/utils/string_resource.dart';
 
 import 'custom_text.dart';
 

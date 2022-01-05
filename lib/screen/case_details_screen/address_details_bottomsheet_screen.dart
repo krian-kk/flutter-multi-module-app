@@ -30,8 +30,6 @@ class _AddressDetailsBottomSheetScreenState
     extends State<AddressDetailsBottomSheetScreen> {
   @override
   Widget build(BuildContext context) {
-    print(
-        widget.bloc.caseDetailsAPIValue.result?.addressDetails?.first['value']);
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {},
@@ -231,7 +229,6 @@ class _AddressDetailsBottomSheetScreenState
                                                             width: 5),
                                                         InkWell(
                                                           onTap: () {
-                                                            print("123456667");
                                                             widget.bloc.add(
                                                                 ClickMainAddressBottomSheetEvent(
                                                                     i));

@@ -106,7 +106,7 @@ class PageBuilder {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<HomeTabBloc>(context)..add(HomeTabInitialEvent()),
-      child: HomeTabScreen(),
+      child: const HomeTabScreen(),
     );
   }
 

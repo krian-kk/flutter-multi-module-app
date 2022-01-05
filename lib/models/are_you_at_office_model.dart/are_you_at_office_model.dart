@@ -1,5 +1,5 @@
 class AreYouAtOfficeModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late AreYouAtOfficeEventAttr eventAttr;
   late String eventCode;
@@ -12,14 +12,14 @@ class AreYouAtOfficeModel {
   late bool tokenVerified;
 
   AreYouAtOfficeModel({
-    this.eventId = 0,
+    required this.eventId,
     required this.eventType,
     required this.eventAttr,
     required this.eventCode,
     required this.createdBy,
     required this.agentName,
     required this.eventModule,
-    this.contractor = '',
+    required this.contractor,
     this.roleLevel = 0,
     this.version = '',
     this.tokenVerified = true,

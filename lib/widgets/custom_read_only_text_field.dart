@@ -25,7 +25,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final bool isLabel;
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
-  List<String> validationRules = [];
+  final List<String> validationRules;
   final EdgeInsetsGeometry? contentPadding;
   final Function? onEditing;
   final bool isBorder;
@@ -34,35 +34,37 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final Function? validatorCallBack;
   final double height;
 
-  CustomReadOnlyTextField(this.hintText, this.controller,
-      {Key? key,
-      this.obscureText = false,
-      this.suffixWidget,
-      this.prefixWidget,
-      this.isEnable = true,
-      this.onTapped,
-      this.isReadOnly = false,
-      this.maximumWordCount,
-      this.titleColor = ColorResource.color666666,
-      this.textColor = ColorResource.color333333,
-      this.borderColor = ColorResource.colorDADADA,
-      this.isHighlighted = false,
-      this.highlightColor = ColorResource.colorDADADA,
-      this.focusNode,
-      this.focusTextColor,
-      this.height = 40,
-      this.keyBoardType = TextInputType.name,
-      this.descriptionText,
-      this.validatorCallBack,
-      this.onEditing,
-      this.inputformaters,
-      this.isLabel = false,
-      this.isBorder = true,
-      this.isFill = false,
-      this.contentPadding,
-      this.cursorColor = ColorResource.color666666,
-      this.validationRules = const []})
-      : super(key: key);
+  const CustomReadOnlyTextField(
+    this.hintText,
+    this.controller, {
+    Key? key,
+    this.obscureText = false,
+    this.suffixWidget,
+    this.prefixWidget,
+    this.isEnable = true,
+    this.onTapped,
+    this.isReadOnly = false,
+    this.maximumWordCount,
+    this.titleColor = ColorResource.color666666,
+    this.textColor = ColorResource.color333333,
+    this.borderColor = ColorResource.colorDADADA,
+    this.isHighlighted = false,
+    this.highlightColor = ColorResource.colorDADADA,
+    this.focusNode,
+    this.focusTextColor,
+    this.height = 40,
+    this.keyBoardType = TextInputType.name,
+    this.descriptionText,
+    this.validatorCallBack,
+    this.onEditing,
+    this.inputformaters,
+    this.isLabel = false,
+    this.isBorder = true,
+    this.isFill = false,
+    this.contentPadding,
+    this.cursorColor = ColorResource.color666666,
+    this.validationRules = const [],
+  }) : super(key: key);
 
   @override
   _CustomReadOnlyTextFieldState createState() =>

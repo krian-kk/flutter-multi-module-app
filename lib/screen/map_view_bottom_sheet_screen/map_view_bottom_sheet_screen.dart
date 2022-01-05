@@ -72,8 +72,8 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
         widget.listOfAgentLocation == []) {
       Position res = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(res.latitude, res.longitude);
+      // List<Placemark> placemarks =
+      //     await placemarkFromCoordinates(res.latitude, res.longitude);
 
       setState(() {
         position = LatLng(res.latitude, res.longitude);
@@ -245,8 +245,8 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                       : (val) {},
                 ),
               ),
-              (widget.agentLocation == null &&
-                      widget.listOfAgentLocation == null &&
+              (widget.agentLocation == null ||
+                      widget.listOfAgentLocation == null ||
                       widget.listOfAgentLocation == [])
                   ? const SizedBox()
                   : Container(

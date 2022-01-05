@@ -76,4 +76,8 @@ class ConstantEventValues {
   static const int captureImageEventId = 22;
   static const String captureImageEvenCode = 'TELEVT015';
   static const String captureImageHealth = '2';
+
+  // Are You At Office
+  static const int areYouAtOfficeEventId = 16;
+  static const String areYouAtOfficeEvenCode = 'TELEVT017';
 }

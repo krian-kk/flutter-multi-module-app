@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';

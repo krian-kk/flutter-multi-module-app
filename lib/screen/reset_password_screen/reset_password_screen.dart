@@ -17,7 +17,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -164,7 +163,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           userIdController.text));
 
                               if (getAgentDetail['success'] == false) {
-                                print(getAgentDetail);
                                 AgentDetailErrorModel agentDetailError =
                                     AgentDetailErrorModel.fromJson(
                                         getAgentDetail['data']);
@@ -323,7 +321,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     onTap: isTime
                                         ? () {}
                                         : () async {
-                                            print('resendOTPUrl');
                                             Map<String, dynamic> postResult =
                                                 await APIRepository.apiRequest(
                                               APIRequestType.POST,
@@ -395,7 +392,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   // emailController.text.isNotEmpty
                                   )
                                   ? () async {
-                                      print('requestOTPUrl');
                                       Map<String, dynamic> postResult =
                                           await APIRepository.apiRequest(
                                         APIRequestType.POST,

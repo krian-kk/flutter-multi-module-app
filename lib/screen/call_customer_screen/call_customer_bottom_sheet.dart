@@ -7,7 +7,6 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
-import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';

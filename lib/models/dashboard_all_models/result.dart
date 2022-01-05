@@ -2,7 +2,7 @@ import 'case.dart';
 
 class Result {
   int? count;
-  dynamic? totalAmt;
+  dynamic totalAmt;
   List<Case>? cases;
 
   Result({this.count, this.totalAmt, this.cases});

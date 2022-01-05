@@ -88,11 +88,11 @@ class LoginResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['code'] = this.code;
-    data['status'] = this.status;
-    data['msg'] = this.msg;
-    data['auth'] = this.auth;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['status'] = status;
+    data['msg'] = msg;
+    data['auth'] = auth;
     if (this.data != null) {
       data['data'] = this.data?.toJson();
     }
@@ -102,30 +102,30 @@ class LoginResponseModel {
     // if (this.flag != null) {
     //   data['flag'] = this.flag?.toJson();
     // }
-    data['path'] = this.path;
-    if (this.bank != null) {
-      data['bank'] = this.bank?.map((v) => v.toJson()).toList();
+    data['path'] = path;
+    if (bank != null) {
+      data['bank'] = bank?.map((v) => v.toJson()).toList();
     }
-    if (this.region != null) {
-      data['region'] = this.region?.map((v) => v.toJson()).toList();
+    if (region != null) {
+      data['region'] = region?.map((v) => v.toJson()).toList();
     }
-    if (this.area != null) {
-      data['area'] = this.area?.map((v) => v.toJson()).toList();
+    if (area != null) {
+      data['area'] = area?.map((v) => v.toJson()).toList();
     }
-    if (this.contractor != null) {
-      data['contractor'] = this.contractor?.map((v) => v.toJson()).toList();
+    if (contractor != null) {
+      data['contractor'] = contractor?.map((v) => v.toJson()).toList();
     }
-    if (this.summary != null) {
-      data['summary'] = this.summary?.toJson();
+    if (summary != null) {
+      data['summary'] = summary?.toJson();
     }
-    if (this.usageSummary != null) {
-      data['usageSummary'] = this.usageSummary?.toJson();
+    if (usageSummary != null) {
+      data['usageSummary'] = usageSummary?.toJson();
     }
-    data['searchKey'] = this.searchKey;
-    data['searchValue'] = this.searchValue;
-    data['totalCaseCount'] = this.totalCaseCount;
-    if (this.totalsEventObj != null) {
-      data['totalsEventObj'] = this.totalsEventObj?.toJson();
+    data['searchKey'] = searchKey;
+    data['searchValue'] = searchValue;
+    data['totalCaseCount'] = totalCaseCount;
+    if (totalsEventObj != null) {
+      data['totalsEventObj'] = totalsEventObj?.toJson();
     }
     return data;
   }
@@ -169,17 +169,17 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['access_token'] = this.accessToken;
-    data['expires_in'] = this.expiresIn;
-    data['refresh_expires_in'] = this.refreshExpiresIn;
-    data['refresh_token'] = this.refreshToken;
-    data['token_type'] = this.tokenType;
-    data['not-before-policy'] = this.notBeforePolicy;
-    data['session_state'] = this.sessionState;
-    data['scope'] = this.scope;
-    data['resetFlag'] = this.resetFlag;
-    data['keycloak_id'] = this.keycloakId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['access_token'] = accessToken;
+    data['expires_in'] = expiresIn;
+    data['refresh_expires_in'] = refreshExpiresIn;
+    data['refresh_token'] = refreshToken;
+    data['token_type'] = tokenType;
+    data['not-before-policy'] = notBeforePolicy;
+    data['session_state'] = sessionState;
+    data['scope'] = scope;
+    data['resetFlag'] = resetFlag;
+    data['keycloak_id'] = keycloakId;
     return data;
   }
 }
@@ -190,7 +190,7 @@ class Casecount {
   Casecount.fromJson(Map<String, dynamic> json) {}
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     return data;
   }
 }

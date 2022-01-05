@@ -2,7 +2,7 @@ import 'address.dart';
 
 class Case {
   String? id;
-  dynamic? due;
+  dynamic due;
   String? cust;
   String? collSubStatus;
   String? telSubStatus;

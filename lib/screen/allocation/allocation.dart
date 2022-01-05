@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -19,8 +20,10 @@ import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -445,7 +448,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           }
         }
         if (state is TapAreYouAtOfficeOptionsState) {
-          Position position = Position(
+          Position positions = Position(
             longitude: 0,
             latitude: 0,
             timestamp: DateTime.now(),
@@ -460,23 +463,26 @@ class _AllocationScreenState extends State<AllocationScreen> {
             Position res = await Geolocator.getCurrentPosition(
                 desiredAccuracy: LocationAccuracy.best);
             setState(() {
-              position = res;
+              positions = res;
             });
           }
           var requestBodyData = AreYouAtOfficeModel(
-              eventType: 'Office Check In',
-              eventAttr: AreYouAtOfficeEventAttr(
-                altitude: position.altitude,
-                accuracy: position.accuracy,
-                heading: position.heading,
-                speed: position.speed,
-                latitude: position.latitude,
-                longitude: position.longitude,
-              ),
-              createdBy: bloc.agentName.toString(),
-              agentName: bloc.agentName.toString(),
-              eventModule: 'Field Allocation',
-              eventCode: 'TELEVT017');
+            eventId: ConstantEventValues.areYouAtOfficeEventId,
+            eventType: 'Office Check In',
+            eventAttr: AreYouAtOfficeEventAttr(
+              altitude: positions.altitude,
+              accuracy: positions.accuracy,
+              heading: positions.heading,
+              speed: positions.speed,
+              latitude: positions.latitude,
+              longitude: positions.longitude,
+            ),
+            createdBy: Singleton.instance.agentRef ?? '',
+            agentName: Singleton.instance.agentName ?? '',
+            contractor: Singleton.instance.contractor ?? '',
+            eventModule: 'Field Allocation',
+            eventCode: ConstantEventValues.areYouAtOfficeEvenCode,
+          );
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.POST,
             HttpUrl.areYouAtOfficeUrl(),
@@ -484,7 +490,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
           );
           if (postResult[Constants.success]) {
             SharedPreferences _pref = await SharedPreferences.getInstance();
-            //current location submitted success
             setState(() {
               bloc.areyouatOffice = false;
               _pref.setBool('areyouatOffice', false);

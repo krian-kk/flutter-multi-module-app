@@ -37,9 +37,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   static List<Case>? custNotMet = [];
   static List<Case>? custInvalid = [];
 
-  static dynamic? custMetTotalAmt = 0.0;
-  static dynamic? custNotMetTotalAmt = 0.0;
-  static dynamic? invalidTotalAmt = 0.0;
+  static dynamic custMetTotalAmt = 0.0;
+  static dynamic custNotMetTotalAmt = 0.0;
+  static dynamic invalidTotalAmt = 0.0;
 
   @override
   Widget build(BuildContext context) {

@@ -12,11 +12,11 @@ class ContractorDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -33,17 +33,17 @@ class Result {
     if (json['feedbackTemplate'] != null) {
       feedbackTemplate = [];
       json['feedbackTemplate'].forEach((v) {
-        feedbackTemplate!.add(new FeedbackTemplate.fromJson(v));
+        feedbackTemplate!.add(FeedbackTemplate.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.feedbackTemplate != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (feedbackTemplate != null) {
       data['feedbackTemplate'] =
-          this.feedbackTemplate!.map((v) => v.toJson()).toList();
+          feedbackTemplate!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -77,19 +77,19 @@ class FeedbackTemplate {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['hide'] = this.hide;
-    data['expanded'] = this.expanded;
-    data['label'] = this.label;
-    data['reportColumnMerged'] = this.reportColumnMerged;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['type'] = type;
+    data['hide'] = hide;
+    data['expanded'] = expanded;
+    data['label'] = label;
+    data['reportColumnMerged'] = reportColumnMerged;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -128,22 +128,22 @@ class Data {
     if (json['options'] != null) {
       options = [];
       json['options'].forEach((v) {
-        options!.add(new Options.fromJson(v));
+        options!.add(Options.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['hide'] = this.hide;
-    data['value'] = this.value;
-    data['label'] = this.label;
-    data['required'] = this.required;
-    data['disabled'] = this.disabled;
-    if (this.options != null) {
-      data['options'] = this.options!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['type'] = type;
+    data['hide'] = hide;
+    data['value'] = value;
+    data['label'] = label;
+    data['required'] = required;
+    data['disabled'] = disabled;
+    if (options != null) {
+      data['options'] = options!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -161,9 +161,9 @@ class Options {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['viewValue'] = this.viewValue;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['viewValue'] = viewValue;
     return data;
   }
 }

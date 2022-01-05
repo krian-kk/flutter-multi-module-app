@@ -7,7 +7,7 @@ class CaseDetails {
   int? pos;
   dynamic due;
   String? cust;
-  dynamic? odVal;
+  dynamic odVal;
   String? accNo;
   String? collSubStatus;
   String? bankName;

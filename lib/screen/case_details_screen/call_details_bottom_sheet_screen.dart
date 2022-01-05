@@ -212,7 +212,6 @@ class _CallDetailsBottomSheetScreenState
                                                   const SizedBox(width: 5),
                                                   InkWell(
                                                     onTap: () {
-                                                      print("------NK-----");
                                                       widget.bloc.add(
                                                           ClickMainCallBottomSheetEvent(
                                                               i));

@@ -27,7 +27,6 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
@@ -546,7 +545,6 @@ class _CustomOtherFeedBackBottomSheetState
                   )
                 ],
                 onExpansionChanged: (bool status) {
-                  print(status);
                   setState(() {
                     if (list[index].data![0].name == 'actionproposed' &&
                         status &&

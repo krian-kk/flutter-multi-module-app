@@ -14,11 +14,11 @@ class MyDeposistModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result?.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result?.toJson();
     }
     return data;
   }
@@ -35,20 +35,19 @@ class MyDepositResult {
   MyDepositResult.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     totalAmt = json['totalAmt'];
-    cheque =
-        json['cheque'] != null ? new Cheque.fromJson(json['cheque']) : null;
-    cash = json['cash'] != null ? new Cheque.fromJson(json['cash']) : null;
+    cheque = json['cheque'] != null ? Cheque.fromJson(json['cheque']) : null;
+    cash = json['cash'] != null ? Cheque.fromJson(json['cash']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
-    data['totalAmt'] = this.totalAmt;
-    if (this.cheque != null) {
-      data['cheque'] = this.cheque?.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['totalAmt'] = totalAmt;
+    if (cheque != null) {
+      data['cheque'] = cheque?.toJson();
     }
-    if (this.cash != null) {
-      data['cash'] = this.cash?.toJson();
+    if (cash != null) {
+      data['cash'] = cash?.toJson();
     }
     return data;
   }
@@ -66,19 +65,19 @@ class Cheque {
     if (json['cases'] != null) {
       cases = [];
       json['cases'].forEach((v) {
-        cases?.add(new Cases.fromJson(v));
+        cases?.add(Cases.fromJson(v));
       });
     }
     totalAmt = json['totalAmt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
-    if (this.cases != null) {
-      data['cases'] = this.cases?.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    if (cases != null) {
+      data['cases'] = cases?.map((v) => v.toJson()).toList();
     }
-    data['totalAmt'] = this.totalAmt;
+    data['totalAmt'] = totalAmt;
     return data;
   }
 }
@@ -129,19 +128,19 @@ class Cases {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['due'] = this.due;
-    data['cust'] = this.cust;
-    data['collSubStatus'] = this.collSubStatus;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['due'] = due;
+    data['cust'] = cust;
+    data['collSubStatus'] = collSubStatus;
     data['telSubStatus'] = telSubStatus;
     data['agrRef'] = agrRef;
     data['bankName'] = bankName;
-    data['caseId'] = this.caseId;
-    data['fieldfollowUpDate'] = this.fieldfollowUpDate;
-    data['customerId'] = this.customerId;
-    if (this.address != null) {
-      data['contact'] = this.address?.map((v) => v.toJson()).toList();
+    data['caseId'] = caseId;
+    data['fieldfollowUpDate'] = fieldfollowUpDate;
+    data['customerId'] = customerId;
+    if (address != null) {
+      data['contact'] = address?.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -159,9 +158,9 @@ class Address {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cType'] = this.cType;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['value'] = value;
     return data;
   }
 }
