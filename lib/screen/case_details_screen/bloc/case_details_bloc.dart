@@ -433,7 +433,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await addressInvalidButtonClick(
               Constants.wrongAddress,
               caseId.toString(),
-              'TELEVT008',
               HttpUrl.wrongAddressUrl(
                 'invalidAddress',
                 userType.toString(),
@@ -445,7 +444,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await addressInvalidButtonClick(
               Constants.shifted,
               caseId.toString(),
-              'TELEVT008',
               HttpUrl.shiftedUrl('shifted', userType.toString()),
               'REVIEW',
             );
@@ -454,7 +452,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await addressInvalidButtonClick(
               Constants.addressNotFound,
               caseId.toString(),
-              'TELEVT008',
               HttpUrl.addressNotFoundUrl(
                 'addressNotFound',
                 userType.toString(),
@@ -482,7 +479,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await phoneInvalidButtonClick(
                 Constants.doesNotExist,
                 caseId.toString(),
-                'TELEVT008',
                 HttpUrl.numberNotWorkingUrl(
                     'doesNotExist', userType.toString()));
           } else if (phoneSelectedInvalidClip ==
@@ -490,7 +486,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await phoneInvalidButtonClick(
               Constants.incorrectNumber,
               caseId.toString(),
-              'TELEVT008',
               HttpUrl.incorrectNumberUrl('incorrectNo', userType.toString()),
             );
           } else if (phoneSelectedInvalidClip ==
@@ -498,7 +493,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await phoneInvalidButtonClick(
               Constants.numberNotWorking,
               caseId.toString(),
-              'TELEVT008',
               HttpUrl.numberNotWorkingUrl(
                   'numberNotWorking', userType.toString()),
             );
@@ -507,7 +501,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resultValue = await phoneInvalidButtonClick(
                 Constants.notOpeartional,
                 caseId.toString(),
-                'TELEVT008',
                 HttpUrl.notOperationalUrl(
                     'notOperational', userType.toString()));
           }
@@ -529,7 +522,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         resultValue = await unreachableButtonClick(
           Constants.lineBusy,
           caseId.toString(),
-          'TELEVT007',
+          ConstantEventValues.lineBusyEvenCode,
           HttpUrl.unreachableUrl(
             'lineBusy',
             userType.toString(),
@@ -540,7 +533,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         resultValue = await unreachableButtonClick(
           Constants.switchOff,
           caseId.toString(),
-          'TELEVT007',
+          ConstantEventValues.switchOffEvenCode,
           HttpUrl.unreachableUrl(
             'switchOff',
             userType.toString(),
@@ -551,7 +544,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         resultValue = await unreachableButtonClick(
           Constants.rnr,
           caseId.toString(),
-          'TELEVT011',
+          ConstantEventValues.rnrEvenCode,
           HttpUrl.unreachableUrl(
             'RNR',
             userType.toString(),
@@ -562,7 +555,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         resultValue = await unreachableButtonClick(
           Constants.outOfNetwork,
           caseId.toString(),
-          'TELEVT007',
+          ConstantEventValues.outOfNetworkEvenCode,
           HttpUrl.unreachableUrl(
             'outOfNetwork',
             userType.toString(),
@@ -573,7 +566,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         resultValue = await unreachableButtonClick(
           Constants.disconnecting,
           caseId.toString(),
-          'TELEVT011',
+          ConstantEventValues.disConnectingEvenCode,
           HttpUrl.unreachableUrl(
             'disconnecting',
             userType.toString(),
@@ -702,7 +695,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Future<Map<String, dynamic>> addressInvalidButtonClick(
     String eventType,
     String caseId,
-    String eventCode,
     String urlString,
     String followUpPriority,
   ) async {
@@ -735,7 +727,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         agrRef: Singleton.instance.agrRef ?? '',
         eventType: eventType,
         caseId: caseId,
-        eventCode: eventCode,
+        eventCode: ConstantEventValues.addressInvalidEvenCode,
         eventAttr: AddressInvalidEventAttr(
           remarks: addressInvalidRemarksController.text,
           followUpPriority: followUpPriority,
@@ -773,7 +765,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Future<Map<String, dynamic>> phoneInvalidButtonClick(
     String eventType,
     String caseId,
-    String eventCode,
     String urlString,
   ) async {
     var requestBodyData = PhoneInvalidPostModel(
@@ -788,7 +779,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         caseId: caseId,
-        eventCode: eventCode,
+        eventCode: ConstantEventValues.phoneInvalidEvenCode,
         eventAttr: PhoneInvalidEventAttr(
           remarks: phoneInvalidRemarksController.text,
           nextActionDate: DateTime.now().toString(),

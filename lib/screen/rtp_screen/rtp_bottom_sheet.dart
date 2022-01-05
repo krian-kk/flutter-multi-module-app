@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -218,16 +219,17 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 if (_formKey.currentState!.validate()) {
                                   if (selectedDropdownValue != 'select') {
                                     setState(() => isSubmit = false);
-                                    Position position = Position(
-                                      longitude: 0,
-                                      latitude: 0,
-                                      timestamp: DateTime.now(),
-                                      accuracy: 0,
-                                      altitude: 0,
-                                      heading: 0,
-                                      speed: 0,
-                                      speedAccuracy: 0,
-                                    );
+                                    // Position position = Position(
+                                    //   longitude: 0,
+                                    //   latitude: 0,
+                                    //   timestamp: DateTime.now(),
+                                    //   accuracy: 0,
+                                    //   altitude: 0,
+                                    //   heading: 0,
+                                    //   speed: 0,
+                                    //   speedAccuracy: 0,
+                                    // );
+                                    LatLng latLng = const LatLng(0, 0);
                                     if (Geolocator.checkPermission()
                                             .toString() !=
                                         PermissionStatus.granted.toString()) {
@@ -236,7 +238,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                               desiredAccuracy:
                                                   LocationAccuracy.best);
                                       setState(() {
-                                        position = res;
+                                        // position = res;
+                                        latLng =
+                                            LatLng(res.latitude, res.longitude);
                                       });
                                     }
                                     var requestBodyData = DenialPostModel(
@@ -264,12 +268,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                             nextActionDateControlller.text,
                                         remarks: remarksControlller.text,
                                         reasons: selectedDropdownValue,
-                                        longitude: position.longitude,
-                                        latitude: position.latitude,
-                                        accuracy: position.accuracy,
-                                        altitude: position.altitude,
-                                        heading: position.heading,
-                                        speed: position.speed,
+                                        longitude: latLng.longitude,
+                                        latitude: latLng.latitude,
                                         amountDenied:
                                             Singleton.instance.overDueAmount ??
                                                 '',

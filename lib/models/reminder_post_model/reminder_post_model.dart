@@ -81,11 +81,6 @@ class EventAttr {
   late String time;
   late String remarks;
   late String followUpPriority;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
   late double latitude;
   late double longitude;
 
@@ -94,13 +89,8 @@ class EventAttr {
     required this.time,
     required this.remarks,
     this.followUpPriority = 'RETRY',
-    this.altitude = 0,
-    this.accuracy = 0,
-    this.altitudeAccuracy = 0,
-    this.heading = 0,
-    this.speed = 0,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.latitude,
+    required this.longitude,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -108,11 +98,6 @@ class EventAttr {
     time = json['time'];
     remarks = json['remarks'];
     followUpPriority = json['followUpPriority'];
-    altitude = json['altitude'];
-    accuracy = json['accuracy'];
-    altitudeAccuracy = json['altitudeAccuracy'];
-    heading = json['heading'];
-    speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
   }
@@ -123,11 +108,6 @@ class EventAttr {
     data['time'] = time;
     data['remarks'] = remarks;
     data['followUpPriority'] = followUpPriority;
-    data['altitude'] = altitude;
-    data['accuracy'] = accuracy;
-    data['altitudeAccuracy'] = altitudeAccuracy;
-    data['heading'] = heading;
-    data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     return data;
