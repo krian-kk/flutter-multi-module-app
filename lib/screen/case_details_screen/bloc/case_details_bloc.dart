@@ -35,8 +35,7 @@ part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
-  bool isSubmit = true;
-
+  String? agentName;
   // String? agrRef;
   // String eventCode = ;
 
@@ -119,7 +118,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
-
+      agentName = _pref.getString(Constants.agentName);
       // agrRef = _pref.getString(Constants.agentRef);
 
       //check internet
@@ -351,7 +350,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ClickCustomerNotMetButtonEvent) {
-      yield DisableCustomerNotMetBtnState();
       Map<String, dynamic> resultValue = {'success': false};
       if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.leftMessage) {
@@ -420,11 +418,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
-      yield EnableCustomerNotMetBtnState();
     }
 
     if (event is ClickAddressInvalidButtonEvent) {
-      yield DisableAddressInvalidBtnState();
       late Map<String, dynamic> resultValue = {Constants.success: false};
       if (addressInvalidFormKey.currentState!.validate()) {
         if (addressSelectedInvalidClip != '') {
@@ -437,6 +433,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 'invalidAddress',
                 userType.toString(),
               ),
+              agentName.toString(),
+              agentName.toString(),
+              agentName.toString(),
               'PTP',
             );
           } else if (addressSelectedInvalidClip ==
@@ -445,6 +444,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               Constants.shifted,
               caseId.toString(),
               HttpUrl.shiftedUrl('shifted', userType.toString()),
+              agentName.toString(),
+              agentName.toString(),
+              agentName.toString(),
               'REVIEW',
             );
           } else if (addressSelectedInvalidClip ==
@@ -456,6 +458,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 'addressNotFound',
                 userType.toString(),
               ),
+              agentName.toString(),
+              agentName.toString(),
+              agentName.toString(),
               'PTP',
             );
           }
@@ -466,11 +471,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
-      yield EnableAddressInvalidBtnState();
     }
 
     if (event is ClickPhoneInvalidButtonEvent) {
-      yield DisablePhoneInvalidBtnState();
       late Map<String, dynamic> resultValue = {Constants.success: false};
       if (phoneInvalidFormKey.currentState!.validate()) {
         if (phoneSelectedInvalidClip != '') {
@@ -511,11 +514,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
-      yield EnablePhoneInvalidBtnState();
     }
 
     if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
-      yield DisableUnreachableBtnState();
       late Map<String, dynamic> resultValue;
       if (phoneSelectedUnreadableClip ==
           Languages.of(event.context)!.lineBusy) {
@@ -576,7 +577,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
       }
-      yield EnableUnreachableBtnState();
     }
   }
 
@@ -696,6 +696,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String eventType,
     String caseId,
     String urlString,
+    String createdBy,
+    String agentName,
+    String agrRef,
     String followUpPriority,
   ) async {
     Position position = Position(
