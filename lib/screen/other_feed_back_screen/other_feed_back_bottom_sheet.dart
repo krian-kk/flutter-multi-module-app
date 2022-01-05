@@ -90,7 +90,7 @@ class _CustomOtherFeedBackBottomSheetState
   @override
   void initState() {
     isVehicleAvailable = widget.bloc.contractorDetailsValue.result!
-            .feedbackTemplate![0].data![0].value ??
+            .feedbackTemplate?[0].data![0].value ??
         false;
 // for (var element in widget.bloc.contractorDetailsValue.result!
 //             .feedbackTemplate![0].data![0].options![0].viewValue!) {}
@@ -182,7 +182,8 @@ class _CustomOtherFeedBackBottomSheetState
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: widget.bloc.contractorDetailsValue
-                                    .result!.feedbackTemplate!.length,
+                                        .result!.feedbackTemplate?.length ??
+                                    0,
                                 itemBuilder: (context, int index) {
                                   // isVehicleAvailable = widget
                                   //         .bloc
