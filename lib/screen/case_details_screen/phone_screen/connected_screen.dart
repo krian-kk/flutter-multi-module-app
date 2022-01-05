@@ -28,8 +28,8 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   @override
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -139,7 +139,8 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
           });
           widget.bloc.add(
             ClickOpenBottomSheetEvent(element.stringResourceValue,
-                widget.bloc.caseDetailsAPIValue.result?.callDetails, false),
+                widget.bloc.caseDetailsAPIValue.result?.callDetails, false,
+                health: '2'),
           );
         },
         child: Container(

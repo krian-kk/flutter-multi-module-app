@@ -279,6 +279,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ClickOpenBottomSheetEvent) {
+      print('Event = >>>>> ${event.health}');
       switch (event.title) {
         case Constants.eventDetails:
           if (ConnectivityResult.none ==
@@ -328,14 +329,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               contractorDetailsValue =
                   ContractorDetailsModel.fromJson(jsonData);
             } else {
-              AppUtils.showToast(getContractorDetails['data']['message']);
+              AppUtils.showToast(getContractorDetails['data']);
             }
           }
           break;
         default:
       }
+      print('Event => ${event.health}');
 
-      yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall);
+      yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
+          health: event.health);
     }
 
     if (event is PostImageCapturedEvent) {

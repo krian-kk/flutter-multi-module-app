@@ -75,7 +75,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
-            openBottomSheet(context, state.title, state.list, state.isCall);
+            openBottomSheet(context, state.title, state.list, state.isCall,
+                health: state.health);
           }
           if (state is NoInternetState) {
             AppUtils.noInternetSnackbar(context);
@@ -948,7 +949,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   }
 
   openBottomSheet(
-      BuildContext buildContext, String cardTitle, List list, bool? isCall) {
+      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+      {String? health}) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -1108,6 +1110,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
+              health: health ?? '2',
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,

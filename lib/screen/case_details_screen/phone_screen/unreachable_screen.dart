@@ -44,8 +44,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -165,7 +165,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails, false));
+              widget.bloc.caseDetailsAPIValue.result?.callDetails, false,
+              health: '1'));
         },
         child: Container(
           height: 45,

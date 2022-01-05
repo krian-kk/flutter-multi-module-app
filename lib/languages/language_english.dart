@@ -652,4 +652,10 @@ class LanguageEn extends Languages {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get customerContactType => 'Customer Contact Type*';
+
+  @override
+  String get contact => 'Contact';
 }

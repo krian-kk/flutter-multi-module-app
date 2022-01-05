@@ -7,5 +7,8 @@ class OptionBottomSheetButtonModel {
   final String title;
   final String stringResourceValue;
 
-  OptionBottomSheetButtonModel(this.title, this.stringResourceValue);
+  OptionBottomSheetButtonModel(
+    this.title,
+    this.stringResourceValue,
+  );
 }

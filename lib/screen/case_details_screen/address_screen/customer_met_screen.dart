@@ -37,8 +37,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
   @override
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
@@ -136,7 +136,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                 Constants.captureImage,
                                 widget.bloc.caseDetailsAPIValue.result
                                     ?.addressDetails,
-                                false),
+                                false,
+                                health: '2'),
                           ),
                           trailingWidget:
                               SvgPicture.asset(ImageResource.captureImage),
@@ -170,8 +171,11 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       widgets.add(InkWell(
         onTap: () {
           setState(() => selectedOptionBottomSheetButton = element.title);
-          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.addressDetails, false));
+          widget.bloc.add(ClickOpenBottomSheetEvent(
+            element.stringResourceValue,
+            widget.bloc.caseDetailsAPIValue.result?.addressDetails,
+            false,
+          ));
         },
         child: Container(
           height: 45,

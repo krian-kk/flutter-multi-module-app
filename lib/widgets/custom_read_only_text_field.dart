@@ -16,7 +16,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final TextInputType keyBoardType;
   final int? maximumWordCount;
   final Color titleColor;
-  final Color? borderColor;
+  final Color borderColor;
   final Color textColor;
   final bool isHighlighted;
   final Color highlightColor;
@@ -47,7 +47,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.maximumWordCount,
     this.titleColor = ColorResource.color666666,
     this.textColor = ColorResource.color333333,
-    this.borderColor = ColorResource.colorDADADA,
+    this.borderColor = ColorResource.colorE5EAF6,
     this.isHighlighted = false,
     this.highlightColor = ColorResource.colorDADADA,
     this.focusNode,
@@ -191,20 +191,20 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               //         ? ColorResource.color333333
               //         : ColorResource.color666666),
               focusedBorder: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               border: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               enabledBorder: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               disabledBorder: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               errorBorder: widget.isBorder
                   ? const UnderlineInputBorder(

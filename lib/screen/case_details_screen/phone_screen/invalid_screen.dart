@@ -31,8 +31,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -115,7 +115,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails, false));
+              widget.bloc.caseDetailsAPIValue.result?.callDetails, false,
+              health: '0'));
         },
         child: Container(
           height: 45,
