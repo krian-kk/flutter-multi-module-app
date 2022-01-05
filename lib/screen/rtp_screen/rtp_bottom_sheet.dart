@@ -256,7 +256,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                           Singleton.instance.agentRef ?? '',
                                       agentName:
                                           Singleton.instance.agentName ?? '',
-                                      // agrRef: Singleton.instance.agrRef ?? '',
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
                                       agrRef: Singleton.instance.agrRef ?? '',
                                       eventAttr: EventAttr(
                                         actionDate:

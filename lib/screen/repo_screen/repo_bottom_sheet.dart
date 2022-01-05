@@ -323,6 +323,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       agentName:
                                           Singleton.instance.agentName ?? '',
                                       agrRef: Singleton.instance.agrRef ?? '',
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
                                       eventModule: (widget.userType ==
                                               Constants.telecaller)
                                           ? 'Telecalling'

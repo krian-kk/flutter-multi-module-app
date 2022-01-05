@@ -8,6 +8,7 @@ class AddressInvalidPostModel {
   late String createdBy;
   late String eventModule;
   late String agentName;
+  late String contractor;
 
   late String? callID;
   late String? callingID;
@@ -26,6 +27,7 @@ class AddressInvalidPostModel {
     required this.createdBy,
     required this.eventModule,
     required this.agentName,
+    required this.contractor,
     this.callID,
     this.callingID,
     required this.callerServiceID,
@@ -46,6 +48,7 @@ class AddressInvalidPostModel {
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
 
     callID = json['callID'];
     callingID = json['callingID'];
@@ -66,6 +69,7 @@ class AddressInvalidPostModel {
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
 
     data['callID'] = callID;
     data['callingID'] = callingID;

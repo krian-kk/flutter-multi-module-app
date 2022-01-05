@@ -610,6 +610,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventModule: 'Telecalling',
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
+        contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         contact: PhoneUnreachbleContact(
           cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
@@ -668,6 +669,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
+        contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         eventAttr: CustomerNotMetEventAttr(
           remarks: addressCustomerNotMetRemarksController.text,
@@ -729,6 +731,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
+        contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         eventType: eventType,
         caseId: caseId,
@@ -782,6 +785,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
+        contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         caseId: caseId,
         eventCode: eventCode,

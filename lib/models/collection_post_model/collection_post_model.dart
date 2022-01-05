@@ -6,6 +6,7 @@ class CollectionPostModel {
   late String eventCode;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late CollectionsContact contact;
   late String agrRef;
@@ -23,6 +24,7 @@ class CollectionPostModel {
     required this.eventCode,
     required this.createdBy,
     required this.agentName,
+    required this.contractor,
     required this.eventModule,
     required this.contact,
     required this.agrRef,
@@ -41,6 +43,7 @@ class CollectionPostModel {
     eventCode = json['eventCode'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     contact = CollectionsContact.fromJson(json['contact']);
     agrRef = json['agrRef'];
@@ -60,6 +63,7 @@ class CollectionPostModel {
     data['eventCode'] = eventCode;
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
     data['agrRef'] = agrRef;

@@ -406,6 +406,8 @@ class _CustomCollectionsBottomSheetState
                                   createdBy: Singleton.instance.agentRef ?? '',
                                   agentName: Singleton.instance.agentName ?? '',
                                   agrRef: Singleton.instance.agrRef ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
                                   eventModule: widget.isCall!
                                       ? 'Telecalling'
                                       : 'Field Allocation',

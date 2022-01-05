@@ -357,6 +357,8 @@ class _CustomOtherFeedBackBottomSheetState
                                       agentName:
                                           Singleton.instance.agentName ?? '',
                                       agrRef: Singleton.instance.agrRef ?? '',
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
                                       callID: Singleton.instance.callID ?? '',
                                       callerServiceID:
                                           Singleton.instance.callerServiceID ??

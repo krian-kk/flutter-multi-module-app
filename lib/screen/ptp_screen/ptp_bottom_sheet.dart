@@ -338,6 +338,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                         Singleton.instance.agentRef ?? '',
                                     agentName:
                                         Singleton.instance.agentName ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
                                     eventModule: widget.isCall!
                                         ? 'Telecalling'
                                         : 'Field Allocation',

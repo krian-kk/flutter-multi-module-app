@@ -13,6 +13,7 @@ class PhoneUnreachablePostModel {
   late String voiceCallEventCode;
   late int? invalidNumber;
   late String agentName;
+  late String contractor;
   late String agrRef;
 
   PhoneUnreachablePostModel({
@@ -30,6 +31,7 @@ class PhoneUnreachablePostModel {
     required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
+    required this.contractor,
     required this.agrRef,
   });
 
@@ -48,6 +50,7 @@ class PhoneUnreachablePostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     agrRef = json['agrRef'];
   }
 
@@ -67,6 +70,7 @@ class PhoneUnreachablePostModel {
     data['voiceCallEventCode'] = voiceCallEventCode;
     data['invalidNumber'] = invalidNumber;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     return data;
   }

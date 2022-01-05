@@ -37,6 +37,10 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   static List<Case>? custNotMet = [];
   static List<Case>? custInvalid = [];
 
+  static dynamic? custMetTotalAmt = 0.0;
+  static dynamic? custNotMetTotalAmt = 0.0;
+  static dynamic? invalidTotalAmt = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
@@ -76,6 +80,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           custMet!.clear();
           custNotMet!.clear();
           custInvalid!.clear();
+          custMetTotalAmt = 0.0;
+          custNotMetTotalAmt = 0.0;
+          invalidTotalAmt = 0.0;
           for (Case element in widget.bloc.myVisitsData.result!.cases!) {
             if (element.collSubStatus == Constants.ptp ||
                 element.collSubStatus == Constants.denial ||
@@ -86,6 +93,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                 element.collSubStatus == Constants.receipt ||
                 element.collSubStatus == Constants.ots) {
               custMet!.add(element);
+              custMetTotalAmt = (custMetTotalAmt + element.due);
             }
           }
 
@@ -93,12 +101,13 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             if (element.collSubStatus == Constants.leftMessage ||
                 element.collSubStatus == Constants.doorLocked ||
                 element.collSubStatus == Constants.entryRestricted ||
-                element.collSubStatus == Constants.lineBusy ||
-                element.collSubStatus == Constants.switchOff ||
-                element.collSubStatus == Constants.rnr ||
-                element.collSubStatus == Constants.outOfNetwork ||
-                element.collSubStatus == Constants.disconnecting) {
+                element.telSubStatus == Constants.telsubstatuslineBusy ||
+                element.telSubStatus == Constants.telsubstatusswitchOff ||
+                element.telSubStatus == Constants.telsubstatusrnr ||
+                element.telSubStatus == Constants.telsubstatusoutOfNetwork ||
+                element.telSubStatus == Constants.telsubstatusdisconnecting) {
               custNotMet!.add(element);
+              custNotMetTotalAmt = (custNotMetTotalAmt + element.due);
             }
           }
 
@@ -106,11 +115,13 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             if (element.collSubStatus == Constants.wrongAddress ||
                 element.collSubStatus == Constants.shifted ||
                 element.collSubStatus == Constants.addressNotFound ||
-                element.collSubStatus == Constants.doesNotExist ||
-                element.collSubStatus == Constants.incorrectNumber ||
-                element.collSubStatus == Constants.numberNotWorking ||
-                element.collSubStatus == Constants.notOpeartional) {
+                element.telSubStatus == Constants.telsubstatusdoesNotExist ||
+                element.telSubStatus == Constants.telsubstatusincorrectNumber ||
+                element.telSubStatus ==
+                    Constants.telsubstatusnumberNotWorking ||
+                element.telSubStatus == Constants.telsubstatusnotOpeartional) {
               custInvalid!.add(element);
+              invalidTotalAmt = (invalidTotalAmt + element.due);
             }
           }
           return WillPopScope(
@@ -275,20 +286,29 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
-                                    child: buildListView(widget.bloc,
-                                        widget.bloc.myVisitsData, custMet),
+                                    child: buildListView(
+                                        widget.bloc,
+                                        widget.bloc.myVisitsData,
+                                        custMet,
+                                        custMetTotalAmt),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
-                                    child: buildListView(widget.bloc,
-                                        widget.bloc.myVisitsData, custNotMet),
+                                    child: buildListView(
+                                        widget.bloc,
+                                        widget.bloc.myVisitsData,
+                                        custNotMet,
+                                        custNotMetTotalAmt),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
-                                    child: buildListView(widget.bloc,
-                                        widget.bloc.myVisitsData, custInvalid),
+                                    child: buildListView(
+                                        widget.bloc,
+                                        widget.bloc.myVisitsData,
+                                        custInvalid,
+                                        invalidTotalAmt),
                                   ),
                                 ],
                               ),
@@ -382,7 +402,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   // ];
 
   static Widget buildListView(DashboardBloc bloc, DashboardAllModels listData,
-      List<Case>? resultValue) {
+      List<Case>? resultValue, dueTotalAmt) {
     return bloc.selectedFilterDataLoading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -444,7 +464,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      listData.result!.totalAmt.toString(),
+                                      dueTotalAmt.toString(),
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
@@ -594,7 +614,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 6),
-                                  child: bloc.userType == Constants.userType
+                                  child: bloc.userType == Constants.fieldagent
                                       ? Container(
                                           width: double.infinity,
                                           padding: const EdgeInsets.fromLTRB(

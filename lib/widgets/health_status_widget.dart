@@ -27,7 +27,7 @@ class ShowHealthStatus {
       default:
         returnWidget = SvgPicture.asset(
           ImageResource.activePerson,
-          color: Colors.pink[100],
+          color: Colors.grey,
         );
         break;
     }

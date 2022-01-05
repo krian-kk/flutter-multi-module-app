@@ -64,7 +64,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         bloc: bloc,
         listener: (context, state) {
           if (state is PostDataApiSuccessState) {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             Navigator.pop(context);
           }
           if (state is ClickMainAddressBottomSheetState) {

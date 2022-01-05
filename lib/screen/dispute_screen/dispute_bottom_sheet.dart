@@ -247,6 +247,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                         Singleton.instance.agentRef ?? '',
                                     agentName:
                                         Singleton.instance.agentName ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
                                     agrRef: Singleton.instance.agrRef ?? '',
                                     eventModule: widget.isCall!
                                         ? 'Telecalling'

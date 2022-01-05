@@ -7,6 +7,7 @@ class Singleton {
   String? agentRef;
   String? agentName;
   String? agrRef;
+  String? contractor;
   String? usertype;
   BuildContext? buildContext;
 

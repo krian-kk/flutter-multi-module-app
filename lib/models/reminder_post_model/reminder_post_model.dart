@@ -7,6 +7,7 @@ class ReminderPostAPI {
   late Contact contact;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late String agrRef;
   late String? callID;
@@ -24,6 +25,7 @@ class ReminderPostAPI {
     required this.contact,
     required this.createdBy,
     required this.agentName,
+    required this.contractor,
     required this.eventModule,
     required this.agrRef,
     required this.callID,
@@ -42,6 +44,7 @@ class ReminderPostAPI {
     contact = Contact.fromJson(json['contact']);
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     agrRef = json['agrRef'];
     callID = json['callID'];
@@ -61,6 +64,7 @@ class ReminderPostAPI {
     data['contact'] = contact.toJson();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
