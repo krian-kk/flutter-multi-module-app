@@ -48,3 +48,19 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}
+
+class EnableUnreachableBtnState extends CaseDetailsState {}
+
+class DisableUnreachableBtnState extends CaseDetailsState {}
+
+class EnablePhoneInvalidBtnState extends CaseDetailsState {}
+
+class DisablePhoneInvalidBtnState extends CaseDetailsState {}
+
+class EnableCustomerNotMetBtnState extends CaseDetailsState {}
+
+class DisableCustomerNotMetBtnState extends CaseDetailsState {}
+
+class EnableAddressInvalidBtnState extends CaseDetailsState {}
+
+class DisableAddressInvalidBtnState extends CaseDetailsState {}

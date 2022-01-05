@@ -19,6 +19,7 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
   String serviceProviderListValue = '';
   List<String> callersIDDropdownList = [''];
   String callersIDDropdownValue = '';
+  bool isSubmit = true;
 
   VoiceAgencyDetailModel voiceAgencyDetails = VoiceAgencyDetailModel();
   CallCustomerBloc() : super(CallCustomerInitial()) {
@@ -32,6 +33,11 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
           Map<String, dynamic> getEventDetailsData =
               await APIRepository.apiRequest(
                   APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
+          // Map<String, dynamic> getEventDetailsData1 =
+          //     await APIRepository.apiRequest(APIRequestType.POST,
+          //         'https://devapi.instalmint.com/v1/chat/tokenRequest',
+          //         requestBodydata: {});
+          // print('Ably Get Values => ${getEventDetailsData1}');
 
           if (getEventDetailsData[Constants.success]) {
             Map<String, dynamic> jsonData = getEventDetailsData['data'];
@@ -58,6 +64,12 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
           } else {}
         }
         emit.call(CallCustomerLoadingState());
+      }
+      if (event is DisableSubmitEvent) {
+        isSubmit = false;
+      }
+      if (event is EnableSubmitEvent) {
+        isSubmit = true;
       }
     });
   }

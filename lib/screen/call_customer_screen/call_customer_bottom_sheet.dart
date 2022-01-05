@@ -23,8 +23,6 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
-  final String argRef;
-  final String agentName;
   final String userType;
   final String caseId;
   final String sid;
@@ -33,8 +31,6 @@ class CallCustomerBottomSheet extends StatefulWidget {
   const CallCustomerBottomSheet({
     Key? key,
     required this.customerLoanUserWidget,
-    required this.agentName,
-    required this.argRef,
     required this.caseId,
     required this.userType,
     required this.sid,
@@ -250,23 +246,31 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                               fontSize: FontSize.sixteen,
                               fontWeight: FontWeight.w600,
                               isLeading: true,
+                              isEnabled: bloc.isSubmit,
                               trailingWidget:
                                   SvgPicture.asset(ImageResource.vector),
                               onTap: () async {
+                                setState(() {
+                                  bloc.isSubmit = false;
+                                });
                                 if (_formKey.currentState!.validate()) {
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
-                                    callerId: bloc.callersIDDropdownValue,
-                                    aRef: widget.argRef,
-                                    customerName: widget.agentName,
+                                    callerId:
+                                        Singleton.instance.callingID ?? '',
+                                    aRef: Singleton.instance.agentRef ?? '',
+                                    customerName:
+                                        Singleton.instance.agentName ?? '',
                                     service: bloc.serviceProviderListValue,
                                     callerServiceID:
-                                        bloc.callersIDDropdownValue,
+                                        Singleton.instance.callerServiceID ??
+                                            '',
                                     caseId: widget.caseId,
                                     sId: widget.sid,
-                                    agrRef: widget.argRef,
-                                    agentName: widget.agentName,
+                                    agrRef: Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
                                     agentType: (widget.userType ==
                                             Constants.telecaller)
                                         ? 'TELECALLER'
@@ -285,6 +289,9 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     Navigator.pop(context);
                                   } else {}
                                 }
+                                setState(() {
+                                  bloc.isSubmit = true;
+                                });
                               },
                               cardShape: 5,
                             ),

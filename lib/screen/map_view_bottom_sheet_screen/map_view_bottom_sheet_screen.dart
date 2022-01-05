@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/models/home_address_post_model/home_address_post_model.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -41,8 +40,9 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   static const LatLng _center = LatLng(28.644800, 77.216721);
   late LatLng position;
   Set<Marker> _markers = {};
-  late LatLng tabLatLng;
-  String? tabAddress;
+  LatLng tabLatLng = const LatLng(0, 0);
+  String tabAddress = '';
+
   // var currentLatitude;
   // var currentLontitude;
 
@@ -51,7 +51,6 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   @override
   void initState() {
     super.initState();
-
     getPermission();
   }
 
@@ -75,9 +74,12 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
           desiredAccuracy: LocationAccuracy.best);
       List<Placemark> placemarks =
           await placemarkFromCoordinates(res.latitude, res.longitude);
+
       setState(() {
         position = LatLng(res.latitude, res.longitude);
         tabLatLng = LatLng(res.latitude, res.longitude);
+
+        // tabAddress = placemarks.first.toString();
         // tabAddress = placemarks.toList().first.street.toString() +
         //     ', ' +
         //     placemarks.toList().first.subLocality.toString() +
@@ -108,9 +110,8 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
       try {
         List<Location> locations =
             await locationFromAddress(widget.agentLocation!);
-
         setState(() {
-          tabAddress = widget.agentLocation;
+          tabAddress = widget.agentLocation!;
           position =
               LatLng(locations.first.latitude, locations.first.longitude);
         });
@@ -124,9 +125,6 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
         _onAddMarkerButtonPressed();
       }
     }
-
-    // print("------------------Nandhu---------------");
-    // print(position.latitude);
   }
 
   _onMapCreated(GoogleMapController controller) {
@@ -142,16 +140,26 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
     );
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
     setState(() {
       // currentLatitude = position.latitude;
       // currentLontitude = position.longitude;
 
+      tabAddress = placemarks.toList().first.street.toString() +
+          ', ' +
+          placemarks.toList().first.subLocality.toString() +
+          ', ' +
+          placemarks.toList().first.locality.toString() +
+          ',' +
+          placemarks.toList().first.postalCode.toString();
+
       _markers.add(
         Marker(
-          markerId: MarkerId(tabAddress ?? 'current location'),
+          markerId: MarkerId(tabAddress),
           position: LatLng(position.latitude, position.longitude),
           infoWindow: InfoWindow(
-            title: tabAddress ?? 'current location',
+            title: tabAddress,
           ),
           // icon: customIcon,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
@@ -253,6 +261,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w600,
                           onTap: () async {
+                            // print('Tap Address => ${placemark}');
                             if (widget.onClose != null) {
                               // var requestBodyData;
                               // if (tabLatLng.latitude != null) {

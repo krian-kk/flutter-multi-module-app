@@ -1163,8 +1163,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               listOfMobileNo:
                   bloc.caseDetailsAPIValue.result?.callDetails as List<dynamic>,
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
+              // agentName: bloc.agentName.toString(),
+              // argRef: Singleton.instance.agentRef!,
               caseId: bloc.caseId.toString(),
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
