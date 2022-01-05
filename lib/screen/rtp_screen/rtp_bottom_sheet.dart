@@ -29,8 +29,6 @@ class CustomRtpBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.agentName,
-    required this.argRef,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -40,9 +38,6 @@ class CustomRtpBottomSheet extends StatefulWidget {
   final String userType;
   final dynamic postValue;
   final bool? isCall;
-
-  final String argRef;
-  final String agentName;
 
   @override
   State<CustomRtpBottomSheet> createState() => _CustomRtpBottomSheetState();
@@ -54,6 +49,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool isSubmit = true;
 
   late String selectedDropdownValue = 'select';
 
@@ -203,100 +200,123 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                   ),
                   const SizedBox(width: 25),
                   SizedBox(
-                    width: 191,
-                    child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          if (selectedDropdownValue != 'select') {
-                            Position position = Position(
-                              longitude: 0,
-                              latitude: 0,
-                              timestamp: DateTime.now(),
-                              accuracy: 0,
-                              altitude: 0,
-                              heading: 0,
-                              speed: 0,
-                              speedAccuracy: 0,
-                            );
-                            if (Geolocator.checkPermission().toString() !=
-                                PermissionStatus.granted.toString()) {
-                              Position res =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.best);
-                              setState(() {
-                                position = res;
-                              });
-                            }
-                            var requestBodyData = DenialPostModel(
-                              eventId: ConstantEventValues.rtpDenialEventId,
-                              eventType:
-                                  (widget.userType == Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : DENIAL'
-                                      : 'DENIAL',
-                              caseId: widget.caseId,
-                              eventCode: ConstantEventValues.rtpDenialEventCode,
-                              voiceCallEventCode:
-                                  ConstantEventValues.voiceCallEventCode,
-                              createdBy: Singleton.instance.agentRef ?? '',
-                              agentName: Singleton.instance.agentName ?? '',
-                              // agrRef: Singleton.instance.agrRef ?? '',
-                              contractor: Singleton.instance.contractor ?? '',
-                              agrRef: Singleton.instance.agrRef ?? '',
-                              eventAttr: EventAttr(
-                                actionDate: nextActionDateControlller.text,
-                                remarks: remarksControlller.text,
-                                reasons: selectedDropdownValue,
-                                longitude: position.longitude,
-                                latitude: position.latitude,
-                                accuracy: position.accuracy,
-                                altitude: position.altitude,
-                                heading: position.heading,
-                                speed: position.speed,
-                                amountDenied:
-                                    Singleton.instance.overDueAmount ?? '',
-                              ),
-                              eventModule: widget.isCall!
-                                  ? 'Telecalling'
-                                  : 'Field Allocation',
-                              contact: Contact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                                health: ConstantEventValues.rtpDenialHealth,
-                                resAddressId0:
-                                    Singleton.instance.resAddressId_0 ?? '',
-                                contactId0:
-                                    Singleton.instance.contactId_0 ?? '',
-                              ),
-                              callID: Singleton.instance.callID,
-                              callerServiceID:
-                                  Singleton.instance.callerServiceID ?? '',
-                              callingID: Singleton.instance.callingID,
-                            );
-                            Map<String, dynamic> postResult =
-                                await APIRepository.apiRequest(
-                                    APIRequestType.POST,
-                                    HttpUrl.denialPostUrl(
-                                        'denial', widget.userType),
-                                    requestBodydata:
-                                        jsonEncode(requestBodyData));
-                            if (postResult[Constants.success]) {
-                              AppUtils.topSnackBar(
-                                  context, Constants.eventUpdatedSuccess);
-                              Navigator.pop(context);
-                            }
-                          } else {
-                            AppUtils.showToast(
-                                Constants.pleaseSelectDropDownValue);
-                          }
-                        }
-                      },
-                      cardShape: 5,
-                    ),
-                  ),
+                      width: 191,
+                      child: CustomButton(
+                        isSubmit
+                            ? Languages.of(context)!.submit.toUpperCase()
+                            : null,
+                        isLeading: !isSubmit,
+                        trailingWidget: const Center(
+                          child: CircularProgressIndicator(
+                            color: ColorResource.colorFFFFFF,
+                          ),
+                        ),
+                        fontSize: FontSize.sixteen,
+                        fontWeight: FontWeight.w600,
+                        onTap: isSubmit
+                            ? () async {
+                                if (_formKey.currentState!.validate()) {
+                                  if (selectedDropdownValue != 'select') {
+                                    setState(() => isSubmit = false);
+                                    Position position = Position(
+                                      longitude: 0,
+                                      latitude: 0,
+                                      timestamp: DateTime.now(),
+                                      accuracy: 0,
+                                      altitude: 0,
+                                      heading: 0,
+                                      speed: 0,
+                                      speedAccuracy: 0,
+                                    );
+                                    if (Geolocator.checkPermission()
+                                            .toString() !=
+                                        PermissionStatus.granted.toString()) {
+                                      Position res =
+                                          await Geolocator.getCurrentPosition(
+                                              desiredAccuracy:
+                                                  LocationAccuracy.best);
+                                      setState(() {
+                                        position = res;
+                                      });
+                                    }
+                                    var requestBodyData = DenialPostModel(
+                                      eventId:
+                                          ConstantEventValues.rtpDenialEventId,
+                                      eventType: (widget.userType ==
+                                                  Constants.telecaller ||
+                                              widget.isCall!)
+                                          ? 'TC : DENIAL'
+                                          : 'DENIAL',
+                                      caseId: widget.caseId,
+                                      eventCode: ConstantEventValues
+                                          .rtpDenialEventCode,
+                                      voiceCallEventCode: ConstantEventValues
+                                          .voiceCallEventCode,
+                                      createdBy:
+                                          Singleton.instance.agentRef ?? '',
+                                      agentName:
+                                          Singleton.instance.agentName ?? '',
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
+                                      agrRef: Singleton.instance.agrRef ?? '',
+                                      eventAttr: EventAttr(
+                                        actionDate:
+                                            nextActionDateControlller.text,
+                                        remarks: remarksControlller.text,
+                                        reasons: selectedDropdownValue,
+                                        longitude: position.longitude,
+                                        latitude: position.latitude,
+                                        accuracy: position.accuracy,
+                                        altitude: position.altitude,
+                                        heading: position.heading,
+                                        speed: position.speed,
+                                        amountDenied:
+                                            Singleton.instance.overDueAmount ??
+                                                '',
+                                      ),
+                                      eventModule: widget.isCall!
+                                          ? 'Telecalling'
+                                          : 'Field Allocation',
+                                      contact: Contact(
+                                        cType: widget.postValue['cType'],
+                                        value: widget.postValue['value'],
+                                        health:
+                                            ConstantEventValues.rtpDenialHealth,
+                                        resAddressId0:
+                                            Singleton.instance.resAddressId_0 ??
+                                                '',
+                                        contactId0:
+                                            Singleton.instance.contactId_0 ??
+                                                '',
+                                      ),
+                                      callID: Singleton.instance.callID,
+                                      callerServiceID:
+                                          Singleton.instance.callerServiceID ??
+                                              '',
+                                      callingID: Singleton.instance.callingID,
+                                    );
+                                    Map<String, dynamic> postResult =
+                                        await APIRepository.apiRequest(
+                                            APIRequestType.POST,
+                                            HttpUrl.denialPostUrl(
+                                                'denial', widget.userType),
+                                            requestBodydata:
+                                                jsonEncode(requestBodyData));
+                                    if (postResult[Constants.success]) {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                      Navigator.pop(context);
+                                    }
+                                  } else {
+                                    AppUtils.showToast(
+                                        Constants.pleaseSelectDropDownValue);
+                                  }
+                                }
+                                setState(() => isSubmit = true);
+                              }
+                            : () {},
+                        cardShape: 5,
+                      )),
                 ],
               ),
             ),

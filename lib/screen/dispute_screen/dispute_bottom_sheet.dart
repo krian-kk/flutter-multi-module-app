@@ -30,8 +30,6 @@ class CustomDisputeBottomSheet extends StatefulWidget {
     required this.customerLoanUserWidget,
     required this.userType,
     this.postValue,
-    required this.agentName,
-    required this.argRef,
     this.isCall,
   }) : super(key: key);
   final String cardTitle;
@@ -39,8 +37,6 @@ class CustomDisputeBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  final String argRef;
-  final String agentName;
   final bool? isCall;
 
   @override
@@ -53,6 +49,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
 
   String disputeDropDownValue = 'select';
+  bool isSubmit = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -198,94 +195,114 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   SizedBox(
                     width: 191,
                     child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
+                      isSubmit
+                          ? Languages.of(context)!.submit.toUpperCase()
+                          : null,
+                      isLeading: !isSubmit,
+                      trailingWidget: const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorResource.colorFFFFFF,
+                        ),
+                      ),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          if (disputeDropDownValue != 'select') {
-                            Position position = Position(
-                              longitude: 0,
-                              latitude: 0,
-                              timestamp: DateTime.now(),
-                              accuracy: 0,
-                              altitude: 0,
-                              heading: 0,
-                              speed: 0,
-                              speedAccuracy: 0,
-                            );
-                            if (Geolocator.checkPermission().toString() !=
-                                PermissionStatus.granted.toString()) {
-                              Position res =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.best);
-                              setState(() {
-                                position = res;
-                              });
-                            }
-                            var requestBodyData = DisputePostModel(
-                              eventId: ConstantEventValues.disputeEventId,
-                              eventType:
-                                  (widget.userType == Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : DISPUTE'
-                                      : 'DISPUTE',
-                              caseId: widget.caseId,
-                              eventCode: ConstantEventValues.disputeEventCode,
-                              voiceCallEventCode:
-                                  ConstantEventValues.voiceCallEventCode,
-                              createdBy: Singleton.instance.agentRef ?? '',
-                              agentName: Singleton.instance.agentName ?? '',
-                              contractor: Singleton.instance.contractor ?? '',
-                              agrRef: Singleton.instance.agrRef ?? '',
-                              eventModule: widget.isCall!
-                                  ? 'Telecalling'
-                                  : 'Field Allocation',
-                              callID: Singleton.instance.callID,
-                              callerServiceID:
-                                  Singleton.instance.callerServiceID ?? '',
-                              callingID: Singleton.instance.callingID,
-                              eventAttr: EventAttr(
-                                actionDate: nextActionDateControlller.text,
-                                remarks: remarksControlller.text,
-                                disputereasons: disputeDropDownValue,
-                                longitude: position.longitude,
-                                latitude: position.latitude,
-                                accuracy: position.accuracy,
-                                altitude: position.altitude,
-                                heading: position.heading,
-                                speed: position.speed,
-                              ),
-                              contact: Contact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                                health: ConstantEventValues.disputeHealth,
-                                resAddressId0:
-                                    Singleton.instance.resAddressId_0 ?? '',
-                                contactId0:
-                                    Singleton.instance.contactId_0 ?? '',
-                              ),
-                            );
-                            Map<String, dynamic> postResult =
-                                await APIRepository.apiRequest(
-                                    APIRequestType.POST,
-                                    HttpUrl.disputePostUrl(
-                                      'dispute',
-                                      widget.userType,
+                      onTap: isSubmit
+                          ? () async {
+                              if (_formKey.currentState!.validate()) {
+                                if (disputeDropDownValue != 'select') {
+                                  setState(() => isSubmit = false);
+                                  Position position = Position(
+                                    longitude: 0,
+                                    latitude: 0,
+                                    timestamp: DateTime.now(),
+                                    accuracy: 0,
+                                    altitude: 0,
+                                    heading: 0,
+                                    speed: 0,
+                                    speedAccuracy: 0,
+                                  );
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    setState(() {
+                                      position = res;
+                                    });
+                                  }
+                                  var requestBodyData = DisputePostModel(
+                                    eventId: ConstantEventValues.disputeEventId,
+                                    eventType: (widget.userType ==
+                                                Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : DISPUTE'
+                                        : 'DISPUTE',
+                                    caseId: widget.caseId,
+                                    eventCode:
+                                        ConstantEventValues.disputeEventCode,
+                                    voiceCallEventCode:
+                                        ConstantEventValues.voiceCallEventCode,
+                                    createdBy:
+                                        Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
+                                    agrRef: Singleton.instance.agrRef ?? '',
+                                    eventModule: widget.isCall!
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
+                                    callID: Singleton.instance.callID,
+                                    callerServiceID:
+                                        Singleton.instance.callerServiceID ??
+                                            '',
+                                    callingID: Singleton.instance.callingID,
+                                    eventAttr: EventAttr(
+                                      actionDate:
+                                          nextActionDateControlller.text,
+                                      remarks: remarksControlller.text,
+                                      disputereasons: disputeDropDownValue,
+                                      longitude: position.longitude,
+                                      latitude: position.latitude,
+                                      accuracy: position.accuracy,
+                                      altitude: position.altitude,
+                                      heading: position.heading,
+                                      speed: position.speed,
                                     ),
-                                    requestBodydata:
-                                        jsonEncode(requestBodyData));
-                            if (postResult[Constants.success]) {
-                              AppUtils.topSnackBar(
-                                  context, Constants.eventUpdatedSuccess);
-                              Navigator.pop(context);
+                                    contact: Contact(
+                                      cType: widget.postValue['cType'],
+                                      value: widget.postValue['value'],
+                                      health: ConstantEventValues.disputeHealth,
+                                      resAddressId0:
+                                          Singleton.instance.resAddressId_0 ??
+                                              '',
+                                      contactId0:
+                                          Singleton.instance.contactId_0 ?? '',
+                                    ),
+                                  );
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                          APIRequestType.POST,
+                                          HttpUrl.disputePostUrl(
+                                            'dispute',
+                                            widget.userType,
+                                          ),
+                                          requestBodydata:
+                                              jsonEncode(requestBodyData));
+                                  if (postResult[Constants.success]) {
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  AppUtils.showToast(
+                                      Constants.pleaseSelectDropDownValue);
+                                }
+                                setState(() => isSubmit = true);
+                              }
                             }
-                          } else {
-                            AppUtils.showToast(
-                                Constants.pleaseSelectDropDownValue);
-                          }
-                        }
-                      },
+                          : () {},
                       cardShape: 5,
                     ),
                   ),

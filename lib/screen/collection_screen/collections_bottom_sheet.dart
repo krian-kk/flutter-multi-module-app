@@ -26,20 +26,18 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
-  const CustomCollectionsBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      required this.agentName,
-      required this.argRef,
-      this.postValue,
-      this.isCall})
-      : super(key: key);
+  const CustomCollectionsBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    this.postValue,
+    this.isCall,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
-  final String argRef;
-  final String agentName;
+
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
@@ -60,6 +58,8 @@ class _CustomCollectionsBottomSheetState
 
   final _formKey = GlobalKey<FormState>();
   List uploadFileLists = [];
+
+  bool isSubmit = true;
 
   FocusNode amountCollectedFocusNode = FocusNode();
   FocusNode chequeFocusNode = FocusNode();
@@ -317,101 +317,121 @@ class _CustomCollectionsBottomSheetState
                   SizedBox(
                     width: 191,
                     child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
+                      isSubmit
+                          ? Languages.of(context)!.submit.toUpperCase()
+                          : null,
+                      isLeading: !isSubmit,
+                      trailingWidget: const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorResource.colorFFFFFF,
+                        ),
+                      ),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w700,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate() &&
-                            selectedPaymentModeButton != '') {
-                          // if (uploadFileLists.isEmpty) {
-                          //   AppUtils.showToast(
-                          //     Constants.uploadDepositSlip,
-                          //     gravity: ToastGravity.CENTER,
-                          //   );
-                          // } else {
-                          Position position = Position(
-                            longitude: 0,
-                            latitude: 0,
-                            timestamp: DateTime.now(),
-                            accuracy: 0,
-                            altitude: 0,
-                            heading: 0,
-                            speed: 0,
-                            speedAccuracy: 0,
-                          );
-                          if (Geolocator.checkPermission().toString() !=
-                              PermissionStatus.granted.toString()) {
-                            Position res = await Geolocator.getCurrentPosition(
-                                desiredAccuracy: LocationAccuracy.best);
-                            setState(() {
-                              position = res;
-                            });
-                          }
-                          var requestBodyData = CollectionPostModel(
-                            eventId: ConstantEventValues.collectionEventId,
-                            eventCode: ConstantEventValues.collectionEvenCode,
-                            eventType:
-                                (widget.userType == Constants.telecaller ||
-                                        widget.isCall!)
-                                    ? 'TC : RECEIPT'
-                                    : 'RECEIPT',
-                            caseId: widget.caseId,
-                            contact: CollectionsContact(
-                              cType: widget.postValue['cType'],
-                              value: widget.postValue['value'],
-                              health: ConstantEventValues.collectionHealth,
-                              resAddressId0:
-                                  Singleton.instance.resAddressId_0 ?? '',
-                              contactId0: Singleton.instance.contactId_0 ?? '',
-                            ),
-                            eventAttr: EventAttr(
-                              amountCollected:
-                                  int.parse(amountCollectedControlller.text),
-                              chequeRefNo: chequeControlller.text,
-                              date: dateControlller.text,
-                              remarks: remarksControlller.text,
-                              mode: selectedPaymentModeButton,
-                              imageLocation: uploadFileLists.isNotEmpty
-                                  ? uploadFileLists as List<String>
-                                  : [],
-                              longitude: position.longitude,
-                              latitude: position.latitude,
-                              accuracy: position.accuracy,
-                              altitude: position.altitude,
-                              heading: position.heading,
-                              speed: position.speed,
-                            ),
-                            callID: Singleton.instance.callID,
-                            callingID: Singleton.instance.callingID,
-                            callerServiceID:
-                                Singleton.instance.callerServiceID ?? '',
-                            voiceCallEventCode:
-                                ConstantEventValues.voiceCallEventCode,
-                            createdBy: Singleton.instance.agentRef ?? '',
-                            agentName: Singleton.instance.agentName ?? '',
-                            contractor: Singleton.instance.contractor ?? '',
-                            agrRef: Singleton.instance.agrRef ?? '',
-                            eventModule: widget.isCall!
-                                ? 'Telecalling'
-                                : 'Field Allocation',
-                          );
-
-                          Map<String, dynamic> postResult =
-                              await APIRepository.apiRequest(
-                                  APIRequestType.POST,
-                                  HttpUrl.collectionPostUrl(
-                                    'collection',
-                                    widget.userType,
+                      onTap: isSubmit
+                          ? () async {
+                              if (_formKey.currentState!.validate() &&
+                                  selectedPaymentModeButton != '') {
+                                // if (uploadFileLists.isEmpty) {
+                                //   AppUtils.showToast(
+                                //     Constants.uploadDepositSlip,
+                                //     gravity: ToastGravity.CENTER,
+                                //   );
+                                // } else {
+                                setState(() => isSubmit = false);
+                                Position position = Position(
+                                  longitude: 0,
+                                  latitude: 0,
+                                  timestamp: DateTime.now(),
+                                  accuracy: 0,
+                                  altitude: 0,
+                                  heading: 0,
+                                  speed: 0,
+                                  speedAccuracy: 0,
+                                );
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    position = res;
+                                  });
+                                }
+                                var requestBodyData = CollectionPostModel(
+                                  eventId:
+                                      ConstantEventValues.collectionEventId,
+                                  eventCode:
+                                      ConstantEventValues.collectionEvenCode,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
+                                      ? 'TC : RECEIPT'
+                                      : 'RECEIPT',
+                                  caseId: widget.caseId,
+                                  contact: CollectionsContact(
+                                    cType: widget.postValue['cType'],
+                                    value: widget.postValue['value'],
+                                    health:
+                                        ConstantEventValues.collectionHealth,
+                                    resAddressId0:
+                                        Singleton.instance.resAddressId_0 ?? '',
+                                    contactId0:
+                                        Singleton.instance.contactId_0 ?? '',
                                   ),
-                                  requestBodydata: jsonEncode(requestBodyData));
-                          if (postResult[Constants.success]) {
-                            AppUtils.topSnackBar(
-                                context, Constants.eventUpdatedSuccess);
-                            Navigator.pop(context);
-                          }
-                          // }
-                        }
-                      },
+                                  eventAttr: EventAttr(
+                                    amountCollected: int.parse(
+                                        amountCollectedControlller.text),
+                                    chequeRefNo: chequeControlller.text,
+                                    date: dateControlller.text,
+                                    remarks: remarksControlller.text,
+                                    mode: selectedPaymentModeButton,
+                                    imageLocation: uploadFileLists.isNotEmpty
+                                        ? uploadFileLists as List<String>
+                                        : [],
+                                    longitude: position.longitude,
+                                    latitude: position.latitude,
+                                    accuracy: position.accuracy,
+                                    altitude: position.altitude,
+                                    heading: position.heading,
+                                    speed: position.speed,
+                                  ),
+                                  callID: Singleton.instance.callID,
+                                  callingID: Singleton.instance.callingID,
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? '',
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  eventModule: widget.isCall!
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                                );
+
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                        APIRequestType.POST,
+                                        HttpUrl.collectionPostUrl(
+                                          'collection',
+                                          widget.userType,
+                                        ),
+                                        requestBodydata:
+                                            jsonEncode(requestBodyData));
+                                if (postResult[Constants.success]) {
+                                  AppUtils.topSnackBar(
+                                      context, "Event updated successfully.");
+                                  Navigator.pop(context);
+                                }
+                                // }
+                              }
+                              setState(() => isSubmit = true);
+                            }
+                          : () {},
                       cardShape: 5,
                     ),
                   ),

@@ -28,8 +28,6 @@ class CustomRemainderBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.agentName,
-    required this.argRef,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -38,8 +36,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  final String argRef;
-  final String agentName;
+
   final bool? isCall;
 
   @override
@@ -52,6 +49,8 @@ class _CustomRemainderBottomSheetState
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController nextActionTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
+
+  bool isSubmit = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -210,86 +209,104 @@ class _CustomRemainderBottomSheetState
                   SizedBox(
                     width: 191,
                     child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
+                      isSubmit
+                          ? Languages.of(context)!.submit.toUpperCase()
+                          : null,
+                      isLeading: !isSubmit,
+                      trailingWidget: const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorResource.colorFFFFFF,
+                        ),
+                      ),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
                       cardShape: 5,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          Position position = Position(
-                            longitude: 0,
-                            latitude: 0,
-                            timestamp: DateTime.now(),
-                            accuracy: 0,
-                            altitude: 0,
-                            heading: 0,
-                            speed: 0,
-                            speedAccuracy: 0,
-                          );
-                          if (Geolocator.checkPermission().toString() !=
-                              PermissionStatus.granted.toString()) {
-                            Position res = await Geolocator.getCurrentPosition(
-                                desiredAccuracy: LocationAccuracy.best);
-                            setState(() {
-                              position = res;
-                            });
-                          }
-                          var requestBodyData = ReminderPostAPI(
-                            eventId: ConstantEventValues.remainderEventId,
-                            eventType:
-                                (widget.userType == Constants.telecaller ||
-                                        widget.isCall!)
-                                    ? 'TC : REMINDER'
-                                    : 'REMINDER',
-                            caseId: widget.caseId,
-                            eventCode: ConstantEventValues.remainderEvenCode,
-                            voiceCallEventCode:
-                                ConstantEventValues.voiceCallEventCode,
-                            callerServiceID:
-                                Singleton.instance.callerServiceID ?? '',
-                            createdBy: Singleton.instance.agentRef ?? '',
-                            agentName: Singleton.instance.agentName ?? '',
-                            contractor: Singleton.instance.contractor ?? '',
-                            agrRef: Singleton.instance.agrRef ?? '',
-                            eventModule: widget.isCall!
-                                ? 'Telecalling'
-                                : 'Field Allocation',
-                            eventAttr: EventAttr(
-                              reminderDate: nextActionDateControlller.text,
-                              time: nextActionTimeControlller.text,
-                              remarks: remarksControlller.text,
-                              longitude: position.longitude,
-                              latitude: position.latitude,
-                              accuracy: position.accuracy,
-                              altitude: position.altitude,
-                              heading: position.heading,
-                              speed: position.speed,
-                            ),
-                            contact: Contact(
-                              cType: widget.postValue['cType'],
-                              value: widget.postValue['value'],
-                              health: ConstantEventValues.remainderHealth,
-                              resAddressId0:
-                                  Singleton.instance.resAddressId_0 ?? '',
-                              contactId0: Singleton.instance.contactId_0 ?? '',
-                            ),
-                            callID: Singleton.instance.callID,
-                            callingID: Singleton.instance.callingID,
-                          );
-                          Map<String, dynamic> postResult =
-                              await APIRepository.apiRequest(
-                            APIRequestType.POST,
-                            HttpUrl.reminderPostUrl(
-                                'reminder', widget.userType),
-                            requestBodydata: jsonEncode(requestBodyData),
-                          );
-                          if (postResult[Constants.success]) {
-                            AppUtils.topSnackBar(
-                                context, Constants.eventUpdatedSuccess);
-                            Navigator.pop(context);
-                          }
-                        }
-                      },
+                      onTap: isSubmit
+                          ? () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() => isSubmit = false);
+                                Position position = Position(
+                                  longitude: 0,
+                                  latitude: 0,
+                                  timestamp: DateTime.now(),
+                                  accuracy: 0,
+                                  altitude: 0,
+                                  heading: 0,
+                                  speed: 0,
+                                  speedAccuracy: 0,
+                                );
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    position = res;
+                                  });
+                                }
+                                var requestBodyData = ReminderPostAPI(
+                                  eventId: ConstantEventValues.remainderEventId,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
+                                      ? 'TC : REMINDER'
+                                      : 'REMINDER',
+                                  caseId: widget.caseId,
+                                  eventCode:
+                                      ConstantEventValues.remainderEvenCode,
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? '',
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  eventModule: widget.isCall!
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                                  eventAttr: EventAttr(
+                                    reminderDate:
+                                        nextActionDateControlller.text,
+                                    time: nextActionTimeControlller.text,
+                                    remarks: remarksControlller.text,
+                                    longitude: position.longitude,
+                                    latitude: position.latitude,
+                                    accuracy: position.accuracy,
+                                    altitude: position.altitude,
+                                    heading: position.heading,
+                                    speed: position.speed,
+                                  ),
+                                  contact: Contact(
+                                    cType: widget.postValue['cType'],
+                                    value: widget.postValue['value'],
+                                    health: ConstantEventValues.remainderHealth,
+                                    resAddressId0:
+                                        Singleton.instance.resAddressId_0 ?? '',
+                                    contactId0:
+                                        Singleton.instance.contactId_0 ?? '',
+                                  ),
+                                  callID: Singleton.instance.callID,
+                                  callingID: Singleton.instance.callingID,
+                                );
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.reminderPostUrl(
+                                      'reminder', widget.userType),
+                                  requestBodydata: jsonEncode(requestBodyData),
+                                );
+                                if (postResult[Constants.success]) {
+                                  AppUtils.topSnackBar(
+                                      context, Constants.successfullySubmitted);
+                                  Navigator.pop(context);
+                                }
+                              }
+                              setState(() => isSubmit = true);
+                            }
+                          : () {},
                     ),
                   ),
                 ],
