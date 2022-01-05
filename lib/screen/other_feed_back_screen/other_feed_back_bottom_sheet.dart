@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -37,6 +38,7 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
+    required this.health,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -45,6 +47,7 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String health;
   final bool? isCall;
 
   @override
@@ -60,7 +63,11 @@ class _CustomOtherFeedBackBottomSheetState
   List uploadFileLists = [];
   bool isSubmit = true;
 
-  TextEditingController dummyController = TextEditingController();
+  List<AddNewContactFieldModel> listOfContact = [
+    AddNewContactFieldModel(TextEditingController(), ''),
+  ];
+
+  List<OtherFeedBackContact> otherFeedbackContact = [];
 
   // check vehicle available or not
   bool isVehicleAvailable = false;
@@ -92,10 +99,10 @@ class _CustomOtherFeedBackBottomSheetState
     isVehicleAvailable = widget.bloc.contractorDetailsValue.result!
             .feedbackTemplate?[0].data![0].value ??
         false;
-// for (var element in widget.bloc.contractorDetailsValue.result!
-//             .feedbackTemplate![0].data![0].options![0].viewValue!) {}
-//         collectorFeedBackValueDropdownList.addAll(widget.bloc.contractorDetailsValue.result!
-//             .feedbackTemplate![0].data![0].options![0].viewValue!);
+    // for (var element in widget.bloc.contractorDetailsValue.result!
+    //             .feedbackTemplate![0].data![0].options![0].viewValue!) {}
+    //         collectorFeedBackValueDropdownList.addAll(widget.bloc.contractorDetailsValue.result!
+    //             .feedbackTemplate![0].data![0].options![0].viewValue!);
     super.initState();
   }
 
@@ -400,14 +407,7 @@ class _CustomOtherFeedBackBottomSheetState
                                         altitudeAccuracy: 0,
                                         // agentLocation: AgentLocation(),
                                       ),
-                                      contact: [
-                                        OtherFeedBackContact(
-                                          cType: widget.postValue['cType']
-                                              .toString(),
-                                          value: widget.postValue['value']
-                                              .toString(),
-                                        )
-                                      ]);
+                                      contact: otherFeedbackContact);
 
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
@@ -478,7 +478,7 @@ class _CustomOtherFeedBackBottomSheetState
   }
 
   expandList(List<FeedbackTemplate> list, int index) {
-    print('List => ${jsonEncode(list[0])}');
+    // print('List => ${jsonEncode(list[0])}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -551,42 +551,111 @@ class _CustomOtherFeedBackBottomSheetState
                       icon: SvgPicture.asset(ImageResource.downShape),
                     ),
                   if (list[index].data![0].name == 'addNewContact')
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                              child: CustomDropDownButton(
-                            Languages.of(context)!.customerContactNo,
-                            const [
-                              'select',
-                              'Residence Address',
-                              'Mobile',
-                              'Office Address',
-                              'Office Contact No.',
-                              'Email Id',
-                              'Residence Contact No.'
-                            ],
-                            selectedValue: 'select',
-                            onChanged: (newValue) {
-                              //   setState(
-                              //   // () => listOfContact[index].formValue =
-                              //   //     newValue.toString()
-
-                              // );
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: listOfContact.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                        child: CustomDropDownButton(
+                                      Languages.of(context)!
+                                          .customerContactType,
+                                      const [
+                                        '',
+                                        'Residence Address',
+                                        'Mobile',
+                                        'Office Address',
+                                        'Office Contact No.',
+                                        'Email Id',
+                                        'Residence Contact No.'
+                                      ],
+                                      underlineColor: ColorResource.color000000,
+                                      selectedValue:
+                                          listOfContact[index].formValue,
+                                      onChanged: (newValue) => setState(
+                                        () => listOfContact[index].formValue =
+                                            newValue.toString(),
+                                      ),
+                                      icon: SvgPicture.asset(
+                                          ImageResource.downShape),
+                                    )),
+                                    CustomReadOnlyTextField(
+                                      Languages.of(context)!.contact,
+                                      listOfContact[index].controller,
+                                      isLabel: true,
+                                      borderColor: ColorResource.color000000,
+                                      keyBoardType: TextInputType.name,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              if ((listOfContact.last.formValue == '' ||
+                                  listOfContact.last.controller.text.isEmpty)) {
+                                print(
+                                    '========= > ${jsonEncode(otherFeedbackContact)}');
+                                AppUtils.showToast('Please Added the Contact');
+                              } else {
+                                setState(() {
+                                  listOfContact.add(AddNewContactFieldModel(
+                                    TextEditingController(),
+                                    '',
+                                  ));
+                                  otherFeedbackContact.clear();
+                                  for (int i = 0;
+                                      i < (listOfContact.length - 1);
+                                      i++) {
+                                    otherFeedbackContact
+                                        .add(OtherFeedBackContact(
+                                      cType: listOfContact[i].formValue,
+                                      health: widget.health,
+                                      value: listOfContact[i].controller.text,
+                                      contactId0:
+                                          Singleton.instance.contactId_0 ?? '',
+                                    ));
+                                  }
+                                });
+                              }
                             },
-                            icon: SvgPicture.asset(ImageResource.downShape),
-                          )),
-                          CustomReadOnlyTextField(
-                            'Phone Number 01',
-                            dummyController,
-                            isLabel: true,
+                            child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: ColorResource.colorFFFFFF,
+                                  border: Border.all(
+                                      color: ColorResource.color23375A,
+                                      width: 0.5),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50.0))),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 11),
+                                child: CustomText(
+                                  'ADD MORE CONTACT',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: FontSize.thirteen,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   const SizedBox(
                     height: 13,

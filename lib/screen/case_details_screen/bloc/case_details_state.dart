@@ -44,7 +44,8 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
   final String title;
   final List list;
   final bool? isCall;
-  ClickOpenBottomSheetState(this.title, this.list, this.isCall);
+  final String? health;
+  ClickOpenBottomSheetState(this.title, this.list, this.isCall, {this.health});
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}

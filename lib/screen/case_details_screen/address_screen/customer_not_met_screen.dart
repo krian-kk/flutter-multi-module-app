@@ -49,8 +49,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     ];
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
     ];
     return GestureDetector(
@@ -154,7 +154,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                   Constants.captureImage,
                                   widget.bloc.caseDetailsAPIValue.result
                                       ?.addressDetails,
-                                  false)),
+                                  false,
+                                  health: '1')),
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
@@ -196,7 +197,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           });
           widget.bloc.add(
             ClickOpenBottomSheetEvent(element.stringResourceValue,
-                widget.bloc.caseDetailsAPIValue.result?.addressDetails, false),
+                widget.bloc.caseDetailsAPIValue.result?.addressDetails, false,
+                health: '1'),
           );
         },
         child: Container(

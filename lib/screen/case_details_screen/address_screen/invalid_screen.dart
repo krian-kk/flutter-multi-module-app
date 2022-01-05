@@ -41,8 +41,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
     ];
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
@@ -113,7 +113,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                             Constants.captureImage,
                             widget.bloc.caseDetailsAPIValue.result
                                 ?.addressDetails,
-                            false)),
+                            false,
+                            health: '0')),
                         trailingWidget:
                             SvgPicture.asset(ImageResource.captureImage),
                       ),
@@ -148,7 +149,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.addressDetails, false));
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails, false,
+              health: '0'));
         },
         child: Container(
           height: 45,
