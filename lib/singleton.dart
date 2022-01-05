@@ -9,6 +9,7 @@ class Singleton {
   String? agrRef;
   String? contractor;
   String? usertype;
+  String? caseCustomerName;
   BuildContext? buildContext;
 
   // Localstorage for call details

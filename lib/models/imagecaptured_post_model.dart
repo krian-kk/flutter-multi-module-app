@@ -12,6 +12,7 @@ class PostImageCapturedModel {
   late String voiceCallEventCode;
   late int? invalidNumber;
   late String agentName;
+  late String contractor;
   late String agrRef;
 
   PostImageCapturedModel({
@@ -28,6 +29,7 @@ class PostImageCapturedModel {
     required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
+    required this.contractor,
     required this.agrRef,
   });
 
@@ -47,6 +49,7 @@ class PostImageCapturedModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     agrRef = json['agrRef'];
   }
 
@@ -65,6 +68,7 @@ class PostImageCapturedModel {
     data['voiceCallEventCode'] = voiceCallEventCode;
     data['invalidNumber'] = invalidNumber;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     return data;
   }

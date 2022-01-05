@@ -167,6 +167,37 @@ class _CustomEventDetailsBottomSheetState
                       color: ColorResource.color000000,
                     ),
                   const SizedBox(height: 8),
+                  if (expandedList[index].eventType == 'REPO')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          expandedList[index].customerName,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Model Make: " + expandedList[index].modelMake,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Registration No: " +
+                              expandedList[index].registrationNo,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Chassis No: " + expandedList[index].chassisNo,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      ],
+                    ),
                   CustomText(
                     Languages.of(context)!
                         .remarks

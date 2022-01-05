@@ -200,6 +200,8 @@ class _CustomCaptureImageBottomSheetState
                                       eventCode: ConstantEventValues
                                           .captureImageEvenCode,
                                       caseId: widget.bloc.caseId.toString(),
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
                                       voiceCallEventCode: ConstantEventValues
                                           .voiceCallEventCode,
                                       createdBy:

@@ -101,11 +101,13 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             if (element.collSubStatus == Constants.leftMessage ||
                 element.collSubStatus == Constants.doorLocked ||
                 element.collSubStatus == Constants.entryRestricted ||
+                element.collSubStatus == 'new' ||
                 element.telSubStatus == Constants.telsubstatuslineBusy ||
                 element.telSubStatus == Constants.telsubstatusswitchOff ||
                 element.telSubStatus == Constants.telsubstatusrnr ||
                 element.telSubStatus == Constants.telsubstatusoutOfNetwork ||
-                element.telSubStatus == Constants.telsubstatusdisconnecting) {
+                element.telSubStatus == Constants.telsubstatusdisconnecting ||
+                element.telSubStatus == 'new') {
               custNotMet!.add(element);
               custNotMetTotalAmt = (custNotMetTotalAmt + element.due);
             }
