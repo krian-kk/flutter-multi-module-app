@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -53,7 +54,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController remarksControlller = TextEditingController();
   TextEditingController loanDurationController = TextEditingController();
 
-  FocusNode ptpDataFocusNode = FocusNode();
+  FocusNode ptpAmountFocusNode = FocusNode();
   FocusNode ptpReferenceFocusNode = FocusNode();
   FocusNode ptpRemarksFocusNode = FocusNode();
 
@@ -91,136 +92,146 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                         .copyWith(bottom: 5),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          widget.customerLoanUserWidget,
-                          const SizedBox(height: 11),
-                          Row(
-                            children: [
-                              Flexible(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!.ptpDate,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorResource.color666666,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        (MediaQuery.of(context).size.width) / 2,
-                                    child: CustomReadOnlyTextField(
-                                      '',
-                                      ptpDateControlller,
-                                      isReadOnly: true,
-                                      validationRules: const ['required'],
-                                      onTapped: () =>
-                                          pickDate(context, ptpDateControlller),
-                                      suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
-                                        fit: BoxFit.scaleDown,
+                child: KeyboardActions(
+                  config: KeyboardActionsConfig(
+                    actions: [
+                      KeyboardActionsItem(focusNode: ptpAmountFocusNode),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            widget.customerLoanUserWidget,
+                            const SizedBox(height: 11),
+                            Row(
+                              children: [
+                                Flexible(
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      Languages.of(context)!.ptpDate,
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w400,
+                                      color: ColorResource.color666666,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width) /
+                                              2,
+                                      child: CustomReadOnlyTextField(
+                                        '',
+                                        ptpDateControlller,
+                                        isReadOnly: true,
+                                        validationRules: const ['required'],
+                                        onTapped: () => pickDate(
+                                            context, ptpDateControlller),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.calendar,
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
-                              const SizedBox(width: 7),
-                              Flexible(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!.ptpTime,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorResource.color666666,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        (MediaQuery.of(context).size.width) / 2,
-                                    child: CustomReadOnlyTextField(
-                                      '',
-                                      ptpTimeControlller,
-                                      validatorCallBack: () {},
-                                      isReadOnly: true,
-                                      validationRules: const ['required'],
-                                      onTapped: () =>
-                                          pickTime(context, ptpTimeControlller),
-                                      suffixWidget: SvgPicture.asset(
-                                        ImageResource.clock,
-                                        fit: BoxFit.scaleDown,
+                                  ],
+                                )),
+                                const SizedBox(width: 7),
+                                Flexible(
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      Languages.of(context)!.ptpTime,
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w400,
+                                      color: ColorResource.color666666,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width) /
+                                              2,
+                                      child: CustomReadOnlyTextField(
+                                        '',
+                                        ptpTimeControlller,
+                                        validatorCallBack: () {},
+                                        isReadOnly: true,
+                                        validationRules: const ['required'],
+                                        onTapped: () => pickTime(
+                                            context, ptpTimeControlller),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.clock,
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                          Flexible(
-                              child: CustomReadOnlyTextField(
-                            Languages.of(context)!.ptpAmount,
-                            ptpAmountControlller,
-                            focusNode: ptpDataFocusNode,
-                            validatorCallBack: () {},
-                            keyBoardType: TextInputType.number,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            onEditing: () {
-                              ptpReferenceFocusNode.requestFocus();
-                            },
-                          )),
-                          const SizedBox(height: 15),
-                          CustomText(
-                            Languages.of(context)!.paymentMode,
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                            color: ColorResource.color101010,
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            runSpacing: 10,
-                            spacing: 18,
-                            children:
-                                _buildPaymentButton(paymentModeButtonList),
-                          ),
-                          const SizedBox(height: 21),
-                          CustomReadOnlyTextField(
-                            Languages.of(context)!.reference,
-                            referenceControlller,
-                            focusNode: ptpReferenceFocusNode,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            validatorCallBack: () {},
-                            onEditing: () => ptpRemarksFocusNode.requestFocus(),
-                          ),
-                          const SizedBox(height: 20),
-                          CustomReadOnlyTextField(
-                            Languages.of(context)!.remarks,
-                            remarksControlller,
-                            focusNode: ptpRemarksFocusNode,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            validatorCallBack: () {},
-                            onEditing: () => ptpRemarksFocusNode.unfocus(),
-                          ),
-                          const SizedBox(height: 15)
-                        ],
+                                  ],
+                                )),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Flexible(
+                                child: CustomReadOnlyTextField(
+                              Languages.of(context)!.ptpAmount,
+                              ptpAmountControlller,
+                              focusNode: ptpAmountFocusNode,
+                              validatorCallBack: () {},
+                              keyBoardType: TextInputType.number,
+                              validationRules: const ['required'],
+                              isLabel: true,
+                              onEditing: () {
+                                ptpReferenceFocusNode.requestFocus();
+                              },
+                            )),
+                            const SizedBox(height: 15),
+                            CustomText(
+                              Languages.of(context)!.paymentMode,
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                              color: ColorResource.color101010,
+                            ),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              runSpacing: 10,
+                              spacing: 18,
+                              children:
+                                  _buildPaymentButton(paymentModeButtonList),
+                            ),
+                            const SizedBox(height: 21),
+                            CustomReadOnlyTextField(
+                              Languages.of(context)!.reference,
+                              referenceControlller,
+                              focusNode: ptpReferenceFocusNode,
+                              validationRules: const ['required'],
+                              isLabel: true,
+                              validatorCallBack: () {},
+                              onEditing: () =>
+                                  ptpRemarksFocusNode.requestFocus(),
+                            ),
+                            const SizedBox(height: 20),
+                            CustomReadOnlyTextField(
+                              Languages.of(context)!.remarks,
+                              remarksControlller,
+                              focusNode: ptpRemarksFocusNode,
+                              validationRules: const ['required'],
+                              isLabel: true,
+                              validatorCallBack: () {},
+                              onEditing: () => ptpRemarksFocusNode.unfocus(),
+                            ),
+                            const SizedBox(height: 15)
+                          ],
+                        ),
                       ),
                     ),
                   ),

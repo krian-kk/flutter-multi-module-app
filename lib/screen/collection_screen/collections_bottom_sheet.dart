@@ -108,170 +108,181 @@ class _CustomCollectionsBottomSheetState
                           .copyWith(bottom: 5),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          widget.customerLoanUserWidget,
-                          const SizedBox(height: 11),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!.amountCollected,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorResource.color666666,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        (MediaQuery.of(context).size.width) / 2,
-                                    child: CustomReadOnlyTextField(
-                                      '',
-                                      amountCollectedControlller,
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          1, 23, 5, 10),
-                                      validatorCallBack: () {},
-                                      keyBoardType: TextInputType.number,
-                                      focusNode: amountCollectedFocusNode,
-                                      validationRules: const ['required'],
-                                      suffixWidget: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                amountCollectedControlller
-                                                    .text = (int.parse(
-                                                            amountCollectedControlller
-                                                                .text) +
-                                                        1)
-                                                    .toString();
-                                              });
-                                            },
-                                            child: SvgPicture.asset(
-                                              ImageResource
-                                                  .dropDownIncreaseArrow,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                amountCollectedControlller
-                                                    .text = (int.parse(
-                                                            amountCollectedControlller
-                                                                .text) -
-                                                        1)
-                                                    .toString();
-                                              });
-                                            },
-                                            child: SvgPicture.asset(
-                                              ImageResource
-                                                  .dropDownDecreaseArrow,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                              const SizedBox(width: 7),
-                              Flexible(
-                                  child: SizedBox(
-                                child: Column(
+                  child: KeyboardActions(
+                    config: KeyboardActionsConfig(
+                      actions: [
+                        KeyboardActionsItem(
+                            focusNode: amountCollectedFocusNode),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            widget.customerLoanUserWidget,
+                            const SizedBox(height: 11),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                    child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     CustomText(
-                                      Languages.of(context)!.date,
+                                      Languages.of(context)!.amountCollected,
                                       fontSize: FontSize.twelve,
                                       fontWeight: FontWeight.w400,
                                       color: ColorResource.color666666,
                                       fontStyle: FontStyle.normal,
                                     ),
-                                    CustomReadOnlyTextField(
-                                      '',
-                                      dateControlller,
-                                      validationRules: const ['required'],
-                                      isReadOnly: true,
-                                      onTapped: () =>
-                                          pickDate(context, dateControlller),
-                                      suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
-                                        fit: BoxFit.scaleDown,
+                                    SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width) /
+                                              2,
+                                      child: CustomReadOnlyTextField(
+                                        '',
+                                        amountCollectedControlller,
+                                        contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                                1, 23, 5, 10),
+                                        validatorCallBack: () {},
+                                        keyBoardType: TextInputType.number,
+                                        focusNode: amountCollectedFocusNode,
+                                        validationRules: const ['required'],
+                                        suffixWidget: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  amountCollectedControlller
+                                                      .text = (int.parse(
+                                                              amountCollectedControlller
+                                                                  .text) +
+                                                          1)
+                                                      .toString();
+                                                });
+                                              },
+                                              child: SvgPicture.asset(
+                                                ImageResource
+                                                    .dropDownIncreaseArrow,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  amountCollectedControlller
+                                                      .text = (int.parse(
+                                                              amountCollectedControlller
+                                                                  .text) -
+                                                          1)
+                                                      .toString();
+                                                });
+                                              },
+                                              child: SvgPicture.asset(
+                                                ImageResource
+                                                    .dropDownDecreaseArrow,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ),
-                              )),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                          CustomText(
-                            Languages.of(context)!.paymentMode,
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                            color: ColorResource.color101010,
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            runSpacing: 10,
-                            spacing: 18,
-                            children:
-                                _buildPaymentButton(paymentModeButtonList),
-                          ),
-                          const SizedBox(height: 15),
-                          Flexible(
-                              child: CustomReadOnlyTextField(
-                            Languages.of(context)!.refCheque,
-                            chequeControlller,
-                            focusNode: chequeFocusNode,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            onEditing: () => remarksFocusNode.requestFocus(),
-                          )),
-                          const SizedBox(height: 15),
-                          CustomReadOnlyTextField(
-                            Languages.of(context)!.remarks,
-                            remarksControlller,
-                            focusNode: remarksFocusNode,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            onEditing: () => remarksFocusNode.unfocus(),
-                          ),
-                          const SizedBox(height: 15),
-                          CustomButton(
-                            Languages.of(context)!.customUpload,
-                            fontWeight: FontWeight.w700,
-                            onTap: () => getFiles(),
-                            trailingWidget:
-                                SvgPicture.asset(ImageResource.upload),
-                            fontSize: FontSize.sixteen,
-                            buttonBackgroundColor: ColorResource.color23375A,
-                            borderColor: ColorResource.colorDADADA,
-                            cardShape: 50,
-                            cardElevation: 1,
-                            isLeading: true,
-                          ),
-                          const SizedBox(height: 15),
-                        ],
+                                )),
+                                const SizedBox(width: 7),
+                                Flexible(
+                                    child: SizedBox(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomText(
+                                        Languages.of(context)!.date,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w400,
+                                        color: ColorResource.color666666,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      CustomReadOnlyTextField(
+                                        '',
+                                        dateControlller,
+                                        validationRules: const ['required'],
+                                        isReadOnly: true,
+                                        onTapped: () =>
+                                            pickDate(context, dateControlller),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.calendar,
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            CustomText(
+                              Languages.of(context)!.paymentMode,
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                              color: ColorResource.color101010,
+                            ),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              runSpacing: 10,
+                              spacing: 18,
+                              children:
+                                  _buildPaymentButton(paymentModeButtonList),
+                            ),
+                            const SizedBox(height: 15),
+                            Flexible(
+                                child: CustomReadOnlyTextField(
+                              Languages.of(context)!.refCheque,
+                              chequeControlller,
+                              focusNode: chequeFocusNode,
+                              validationRules: const ['required'],
+                              isLabel: true,
+                              onEditing: () => remarksFocusNode.requestFocus(),
+                            )),
+                            const SizedBox(height: 15),
+                            CustomReadOnlyTextField(
+                              Languages.of(context)!.remarks,
+                              remarksControlller,
+                              focusNode: remarksFocusNode,
+                              validationRules: const ['required'],
+                              isLabel: true,
+                              onEditing: () => remarksFocusNode.unfocus(),
+                            ),
+                            const SizedBox(height: 15),
+                            CustomButton(
+                              Languages.of(context)!.customUpload,
+                              fontWeight: FontWeight.w700,
+                              onTap: () => getFiles(),
+                              trailingWidget:
+                                  SvgPicture.asset(ImageResource.upload),
+                              fontSize: FontSize.sixteen,
+                              buttonBackgroundColor: ColorResource.color23375A,
+                              borderColor: ColorResource.colorDADADA,
+                              cardShape: 50,
+                              cardElevation: 1,
+                              isLeading: true,
+                            ),
+                            const SizedBox(height: 15),
+                          ],
+                        ),
                       ),
                     ),
                   ),

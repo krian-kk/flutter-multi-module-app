@@ -38,7 +38,7 @@ class MapViewBottomSheetScreen extends StatefulWidget {
 class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
   final Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = LatLng(28.644800, 77.216721);
-  late LatLng position;
+  LatLng position = const LatLng(0, 0);
   Set<Marker> _markers = {};
   LatLng tabLatLng = const LatLng(0, 0);
   String tabAddress = '';
@@ -245,11 +245,9 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                       : (val) {},
                 ),
               ),
-              (widget.agentLocation == null ||
-                      widget.listOfAgentLocation == null ||
-                      widget.listOfAgentLocation == [])
-                  ? const SizedBox()
-                  : Container(
+              (widget.agentLocation == null &&
+                      widget.listOfAgentLocation == null)
+                  ? Container(
                       height: 70,
                       width: MediaQuery.of(context).size.width,
                       color: ColorResource.colorFFFFFF,
@@ -275,8 +273,8 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                               //   AppUtils.topSnackBar(context, "Please Select address!");
                               // }
                               var requestBodyData = HomeAddressPostModel(
-                                latitude: tabLatLng.latitude,
-                                longitude: tabLatLng.longitude,
+                                latitude: position.latitude,
+                                longitude: position.longitude,
                               );
 
                               Map<String, dynamic> postResult =
@@ -299,7 +297,8 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                           cardShape: 5,
                         ),
                       )),
-                    ),
+                    )
+                  : const SizedBox(),
             ],
           ),
         ));

@@ -323,10 +323,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             Map<String, dynamic> getContractorDetails =
                 await APIRepository.apiRequest(
                     APIRequestType.GET, HttpUrl.contractorDetail);
-
             if (getContractorDetails[Constants.success] == true) {
               Map<String, dynamic> jsonData = getContractorDetails['data'];
-
               contractorDetailsValue =
                   ContractorDetailsModel.fromJson(jsonData);
             } else {

@@ -60,6 +60,8 @@ class _CustomOtherFeedBackBottomSheetState
   List uploadFileLists = [];
   bool isSubmit = true;
 
+  TextEditingController dummyController = TextEditingController();
+
   // check vehicle available or not
   bool isVehicleAvailable = false;
 
@@ -170,6 +172,12 @@ class _CustomOtherFeedBackBottomSheetState
                               fontStyle: FontStyle.normal,
                             ),
                             const SizedBox(height: 10),
+                            expandList([
+                              FeedbackTemplate(
+                                  name: 'addNewConact',
+                                  expanded: false,
+                                  data: [Data(name: 'addNewContact')])
+                            ], 0),
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
@@ -469,6 +477,7 @@ class _CustomOtherFeedBackBottomSheetState
   }
 
   expandList(List<FeedbackTemplate> list, int index) {
+    print('List => ${jsonEncode(list[0])}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -539,6 +548,44 @@ class _CustomOtherFeedBackBottomSheetState
                       onChanged: (newValue) => setState(
                           () => actionproposedValue = newValue.toString()),
                       icon: SvgPicture.asset(ImageResource.downShape),
+                    ),
+                  if (list[index].data![0].name == 'addNewContact')
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                              child: CustomDropDownButton(
+                            Languages.of(context)!.customerContactNo,
+                            const [
+                              'select',
+                              'Residence Address',
+                              'Mobile',
+                              'Office Address',
+                              'Office Contact No.',
+                              'Email Id',
+                              'Residence Contact No.'
+                            ],
+                            selectedValue: 'select',
+                            onChanged: (newValue) {
+                              //   setState(
+                              //   // () => listOfContact[index].formValue =
+                              //   //     newValue.toString()
+
+                              // );
+                            },
+                            icon: SvgPicture.asset(ImageResource.downShape),
+                          )),
+                          CustomReadOnlyTextField(
+                            'Phone Number 01',
+                            dummyController,
+                            isLabel: true,
+                          ),
+                        ],
+                      ),
                     ),
                   const SizedBox(
                     height: 13,
