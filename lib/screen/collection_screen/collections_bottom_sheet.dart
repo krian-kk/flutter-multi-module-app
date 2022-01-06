@@ -109,9 +109,12 @@ class _CustomCollectionsBottomSheetState
                 Expanded(
                   child: KeyboardActions(
                     config: KeyboardActionsConfig(
+                      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                       actions: [
                         KeyboardActionsItem(
-                            focusNode: amountCollectedFocusNode),
+                          focusNode: amountCollectedFocusNode,
+                          displayArrows: false,
+                        ),
                       ],
                     ),
                     child: Padding(

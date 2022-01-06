@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -249,10 +250,20 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                               trailingWidget:
                                   SvgPicture.asset(ImageResource.vector),
                               onTap: () async {
-                                setState(() {
-                                  bloc.isSubmit = false;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    bloc.isSubmit = false;
+                                  });
+                                }
                                 if (_formKey.currentState!.validate()) {
+                                  if (Singleton.instance.callingID == null ||
+                                      Singleton.instance.callingID == '') {
+                                    if (widget.listOfMobileNo.first != null) {
+                                      Navigator.pop(context);
+                                      await FlutterPhoneDirectCaller.callNumber(
+                                          customerContactNoDropDownValue);
+                                    }
+                                  }
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
@@ -288,9 +299,11 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     Navigator.pop(context);
                                   } else {}
                                 }
-                                setState(() {
-                                  bloc.isSubmit = true;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    bloc.isSubmit = true;
+                                  });
+                                }
                               },
                               cardShape: 5,
                             ),

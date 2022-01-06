@@ -93,8 +93,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               Expanded(
                 child: KeyboardActions(
                   config: KeyboardActionsConfig(
+                    keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                     actions: [
-                      KeyboardActionsItem(focusNode: ptpAmountFocusNode),
+                      KeyboardActionsItem(
+                        focusNode: ptpAmountFocusNode,
+                        displayArrows: false,
+                      ),
                     ],
                   ),
                   child: Padding(

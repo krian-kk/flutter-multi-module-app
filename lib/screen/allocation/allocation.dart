@@ -185,9 +185,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
               });
             } else {
               bloc.add(ShowAutoCallingEvent());
-              print('--------Auto calling-----------');
             }
-
             break;
           case 2:
             bloc.add(MapViewEvent());

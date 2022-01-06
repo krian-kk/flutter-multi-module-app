@@ -88,9 +88,11 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   Expanded(
                     child: KeyboardActions(
                       config: KeyboardActionsConfig(
+                        keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                         actions: [
                           KeyboardActionsItem(
                             focusNode: otsProposedAmountFocusNode,
+                            displayArrows: false,
                           ),
                         ],
                       ),
@@ -112,10 +114,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                 isLabel: true,
                                 focusNode: otsProposedAmountFocusNode,
                                 keyBoardType: TextInputType.number,
-                                // inputformaters: [
-                                //   FilteringTextInputFormatter.allow(
-                                //       RegExp(r'[0-9]')),
-                                // ],
                               )),
                               const SizedBox(height: 17),
                               Row(
