@@ -1064,7 +1064,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
+              caseId: bloc.caseId.toString(),
+              userType: bloc.userType.toString(),
               isCall: isCall,
+              postValue: list[bloc.indexValue!],
             );
           case Constants.repo:
             return CustomRepoBottomSheet(

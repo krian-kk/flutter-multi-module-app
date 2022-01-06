@@ -38,7 +38,6 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
-
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;

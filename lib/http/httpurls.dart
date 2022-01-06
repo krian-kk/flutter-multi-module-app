@@ -47,6 +47,8 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+  static const String otsPostUrl =
+      baseUrl + version + fieldAgent + 'case-details-events/ots';
   // Other FeedBack Post API
   static String otherFeedBackPostUrl(
           String selectValue, String userTypeValue) =>

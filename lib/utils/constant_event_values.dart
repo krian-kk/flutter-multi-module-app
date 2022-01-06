@@ -80,4 +80,9 @@ class ConstantEventValues {
   // Are You At Office
   static const int areYouAtOfficeEventId = 16;
   static const String areYouAtOfficeEvenCode = 'TELEVT017';
+
+  // OTS Post Event
+  static const int otsEventId = 25;
+  static const String otsEvenCode = 'EVT02';
+  static const String otsHealth = '2';
 }
