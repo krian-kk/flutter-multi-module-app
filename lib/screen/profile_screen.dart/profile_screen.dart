@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final getProfileImage = File(image.path);
         setState(() {
           this.image = getProfileImage;
-          bloc.add(PostProfileImageEvent(postValue: getProfileImage.path));
+          bloc.add(PostProfileImageEvent(postValue: getProfileImage));
         });
       } else {
         AppUtils.showToast(StringResource.canceled,

@@ -70,11 +70,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   void dispose() {
-    userIdController.clear();
-    mobileNumberController.clear();
-    userNameController.clear();
-    emailController.clear();
-    cancelTimer();
+    // userIdController.clear();
+    // mobileNumberController.clear();
+    // userNameController.clear();
+    // emailController.clear();
+    // cancelTimer();
     super.dispose();
   }
 
@@ -325,7 +325,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                 await APIRepository.apiRequest(
                                               APIRequestType.POST,
                                               HttpUrl.resendOTPUrl(),
-                                              requestBodydata: {},
+                                              requestBodydata: {
+                                                "aRef": userIdController.text
+                                              },
                                             );
                                             if (postResult[Constants.success]) {
                                               secondsOTP();
@@ -396,7 +398,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           await APIRepository.apiRequest(
                                         APIRequestType.POST,
                                         HttpUrl.requestOTPUrl(),
-                                        requestBodydata: {},
+                                        requestBodydata: {
+                                          "aRef": userIdController.text
+                                        },
                                       );
                                       if (await postResult[Constants.success]) {
                                         setState(() {
@@ -442,21 +446,33 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                       // const SizedBox(height: 20),
-                      // CustomButton(
-                      //   Languages.of(context)!.clear.toUpperCase(),
-                      //   onTap: () {
-                      //     userIdController.clear();
-                      //     mobileNumberController.clear();
-                      //     userNameController.clear();
-                      //     emailController.clear();
-                      //   },
-                      //   borderColor: ColorResource.color23375A,
-                      //   cardShape: 85,
-                      //   fontSize: FontSize.sixteen,
-                      //   fontWeight: FontWeight.w600,
-                      //   textColor: ColorResource.color23375A,
-                      //   buttonBackgroundColor: ColorResource.colorffffff,
-                      // ),
+                      // if (mobileNumberController.text.isNotEmpty &&
+                      //     userNameController.text.isNotEmpty &&
+                      //     emailController.text.isNotEmpty &&
+                      //     userIdController.text.isNotEmpty)
+                      //   CustomButton(
+                      //     Languages.of(context)!.clear.toUpperCase(),
+                      //     onTap: () {
+                      //       setState(() {
+                      //         isTime = false;
+                      //         // isReset = false;
+                      //         isSubmit = false;
+                      //         isSendOTP = true;
+                      //         mobileNumberController.clear();
+                      //         userNameController.clear();
+                      //         emailController.clear();
+                      //         userIdController.clear();
+                      //         pinCodeController.clear();
+                      //         // isSendOTP = true;
+                      //       });
+                      //     },
+                      //     borderColor: ColorResource.color23375A,
+                      //     cardShape: 85,
+                      //     fontSize: FontSize.sixteen,
+                      //     fontWeight: FontWeight.w600,
+                      //     textColor: ColorResource.color23375A,
+                      //     buttonBackgroundColor: ColorResource.colorffffff,
+                      //   ),
                     ],
                   ),
                 ),

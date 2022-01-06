@@ -51,8 +51,7 @@ class APIRepository {
             final FormData data = FormData.fromMap({
               'file': DioClient.listOfMultiPart(file),
             });
-            response = await DioClient.dioConfig()
-                .post(HttpUrl.fileUpload, data: data);
+            response = await DioClient.dioConfig().post(urlString, data: data);
             break;
           }
         case APIRequestType.DOWNLOAD:

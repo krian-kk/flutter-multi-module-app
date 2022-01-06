@@ -16,6 +16,9 @@ class HttpUrl {
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
 
+  // static String resetOTP =
+  //     'https://uat-collect.origa.ai/app_otc/public/requestOtp';
+
   //Get API
   static const String dashboardUrl =
       baseUrl + version + fieldAgent + 'profile/dashboard?';
@@ -63,11 +66,11 @@ class HttpUrl {
 
   // baseUrl + version + fieldAgent + '';
   static String requestOTPUrl() =>
-      baseUrl + version + fieldAgent + 'profile/requestOtp';
+      'https://uat-collect.origa.ai/app_otc/public/requestOtp';
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
   static String resendOTPUrl() =>
-      baseUrl + version + fieldAgent + 'profile/requestOtp';
+      'https://uat-collect.origa.ai/app_otc/public/requestOtp';
   static String resetPasswordUrl() =>
       baseUrl + version + fieldAgent + 'profile/resetPassword';
   static String denialPostUrl(String selectValue, String userTypeValue) =>
@@ -172,7 +175,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/yardingData';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
-  static const String fileUpload = '';
+  // static const String fileUpload = '';
 
   //post API
 
