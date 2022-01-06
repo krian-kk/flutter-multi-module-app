@@ -159,7 +159,7 @@ class EventAttr {
 class Repo {
   late String status;
 
-  Repo({this.status = ''});
+  Repo({this.status = 'pending'});
 
   Repo.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -176,22 +176,23 @@ class RepoContact {
   late String cType;
   late String health;
   late String value;
-  late String resAddressId0;
-  late String contactId0;
+  // late String resAddressId0;
+  // late String contactId0;
 
-  RepoContact(
-      {required this.cType,
-      required this.health,
-      required this.value,
-      this.resAddressId0 = '',
-      this.contactId0 = ''});
+  RepoContact({
+    required this.cType,
+    required this.health,
+    required this.value,
+    // this.resAddressId0 = '',
+    // this.contactId0 = ''
+  });
 
   RepoContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     health = json['health'];
     value = json['value'];
-    resAddressId0 = json['resAddressId_0'];
-    contactId0 = json['contactId_0'];
+    // resAddressId0 = json['resAddressId_0'];
+    // contactId0 = json['contactId_0'];
   }
 
   Map<String, dynamic> toJson() {
@@ -199,8 +200,8 @@ class RepoContact {
     data['cType'] = cType;
     data['health'] = health;
     data['value'] = value;
-    data['resAddressId_0'] = resAddressId0;
-    data['contactId_0'] = contactId0;
+    // data['resAddressId_0'] = resAddressId0;
+    // data['contactId_0'] = contactId0;
     return data;
   }
 }

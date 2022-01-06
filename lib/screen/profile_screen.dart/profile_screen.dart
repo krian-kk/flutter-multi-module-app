@@ -35,7 +35,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc bloc;
   File? image;
-  String addressValue = 'Address Not found';
+  String addressValue = '';
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     addressValue = (_pref.getString('addressValue') != ""
             ? _pref.getString('addressValue')
-            : 'Address Not found')
+            : '')
         .toString();
   }
 
@@ -291,21 +291,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     vertical: 16.0,
                                   ),
                                   child: CustomText(
-                                    (bloc.profileAPIValue
-                                                    .result?.first.contact?.first.cType ==
-                                                'office address' ||
-                                            bloc.profileAPIValue
-                                                    .result?.first.contact?.first.cType ==
-                                                'office_address' ||
-                                            bloc.profileAPIValue.result?.first
-                                                    .contact?.first.cType ==
-                                                'residence_address' ||
-                                            bloc.profileAPIValue.result?.first
-                                                    .contact?.first.cType ==
-                                                'residence address')
-                                        ? bloc.profileAPIValue.result!.first
-                                            .contact!.first.cType!
-                                        : addressValue,
+                                    addressValue != ''
+                                        ? addressValue
+                                        : bloc.profileAPIValue.result?.first
+                                                .homeAddress ??
+                                            'Home address not available.',
                                     fontSize: FontSize.fourteen,
                                     fontWeight: FontWeight.w400,
                                     fontStyle: FontStyle.normal,

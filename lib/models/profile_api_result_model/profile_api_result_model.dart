@@ -45,6 +45,7 @@ class Result {
   String? type;
   bool? userAdmin;
   int? failedLoginCounter;
+  String? homeAddress;
 
   Result(
       {this.sId,
@@ -63,7 +64,8 @@ class Result {
       this.status,
       this.type,
       this.userAdmin,
-      this.failedLoginCounter});
+      this.failedLoginCounter,
+      this.homeAddress});
 
   Result.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -90,6 +92,7 @@ class Result {
     type = json['type'];
     userAdmin = json['userAdmin'];
     failedLoginCounter = json['failedLoginCounter'];
+    homeAddress = json['homeAddress'];
   }
 
   Map<String, dynamic> toJson() {
@@ -117,6 +120,7 @@ class Result {
     data['type'] = this.type;
     data['userAdmin'] = this.userAdmin;
     data['failedLoginCounter'] = this.failedLoginCounter;
+    data['homeAddress'] = this.homeAddress;
     return data;
   }
 }

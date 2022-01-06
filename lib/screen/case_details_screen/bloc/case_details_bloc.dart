@@ -136,6 +136,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+          Singleton.instance.caseCustomerName =
+              caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
           // caseDetailsHiveBox.then((value) => value.put(
           //     'case' + caseId.toString(),
           //     OrigoMapDynamicTable(
@@ -329,7 +331,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               contractorDetailsValue =
                   ContractorDetailsModel.fromJson(jsonData);
             } else {
-              AppUtils.showToast(getContractorDetails['data']);
+              // print('getContractorDetails');
+              // print(getContractorDetails['data']);
+              AppUtils.showToast(getContractorDetails['data']['message'] ?? '');
+              // AppUtils.showToast(getContractorDetails['data']);
             }
           }
           break;
