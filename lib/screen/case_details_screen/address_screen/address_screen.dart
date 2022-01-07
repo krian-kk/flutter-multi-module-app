@@ -428,31 +428,6 @@ class _AddressScreenState extends State<AddressScreen>
       ),
     );
   }
-
-  // openViewMapBottomSheet(BuildContext buildContext) {
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-  //     enableDrag: false,
-  //     isDismissible: false,
-  //     context: buildContext,
-  //     backgroundColor: ColorResource.colorFFFFFF,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(20),
-  //       ),
-  //     ),
-  //     builder: (BuildContext context) {
-  //       return WillPopScope(
-  //         onWillPop: () async => false,
-  //         child: const CustomMapViewBottomSheet(),
-  //       );
-  //       // return CustomEventDetailsBottomSheet(
-  //       //   Languages.of(context)!.eventDetails.toUpperCase(),
-  //       //   widget.bloc,
-  //       // );
-  //     },
-  //   );
-  // }
 }
 
 class CustomMapViewBottomSheet extends StatefulWidget {
@@ -552,34 +527,32 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
         height: MediaQuery.of(context).size.height * 0.82,
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-          return WillPopScope(
-              onWillPop: () async => false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
-                    child: BottomSheetAppbar(
-                      title: Languages.of(context)!.mapView,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 16),
-                    ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
+                child: BottomSheetAppbar(
+                  title: Languages.of(context)!.mapView,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                ),
+              ),
+              Expanded(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: const CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
                   ),
-                  Expanded(
-                    child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: const CameraPosition(
-                        target: _center,
-                        zoom: 11.0,
-                      ),
-                      mapType: MapType.normal,
-                      markers: _markers,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                    ),
-                  ),
-                ],
-              ));
+                  mapType: MapType.normal,
+                  markers: _markers,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                ),
+              ),
+            ],
+          );
         }),
       ),
     );

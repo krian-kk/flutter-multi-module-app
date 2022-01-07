@@ -467,68 +467,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                WillPopScope(
-                  onWillPop: () async => false,
-                  child: SizedBox(
-                    height: 270.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!
-                                    .addAProfilePhoto
-                                    .toUpperCase(),
-                                color: ColorResource.color23375A,
-                                fontSize: FontSize.fourteen,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: SvgPicture.asset(ImageResource.close))
-                            ],
-                          ),
-                          const SizedBox(height: 60),
-                          CustomButton(
-                            Languages.of(context)!.captureImage.toUpperCase(),
-                            cardShape: 75.0,
-                            textColor: ColorResource.color23375A,
-                            fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w700,
-                            padding: 15.0,
-                            borderColor: ColorResource.colorBEC4CF,
-                            buttonBackgroundColor: ColorResource.colorBEC4CF,
-                            isLeading: true,
-                            onTap: () => pickImage(ImageSource.camera, context),
-                            trailingWidget:
-                                SvgPicture.asset(ImageResource.captureImage),
-                          ),
-                          const SizedBox(height: 20),
-                          CustomButton(
-                            Languages.of(context)!.uploadPhoto,
-                            textColor: ColorResource.color23375A,
-                            fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w700,
-                            padding: 15.0,
-                            cardShape: 75.0,
-                            onTap: () =>
-                                pickImage(ImageSource.gallery, context),
-                            borderColor: ColorResource.colorBEC4CF,
-                            buttonBackgroundColor: ColorResource.colorBEC4CF,
-                            isLeading: true,
-                            trailingWidget:
-                                SvgPicture.asset(ImageResource.uploadPhoto),
-                          ),
-                        ],
-                      ),
+                SizedBox(
+                  height: 270.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              Languages.of(context)!
+                                  .addAProfilePhoto
+                                  .toUpperCase(),
+                              color: ColorResource.color23375A,
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: SvgPicture.asset(ImageResource.close))
+                          ],
+                        ),
+                        const SizedBox(height: 60),
+                        CustomButton(
+                          Languages.of(context)!.captureImage.toUpperCase(),
+                          cardShape: 75.0,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w700,
+                          padding: 15.0,
+                          borderColor: ColorResource.colorBEC4CF,
+                          buttonBackgroundColor: ColorResource.colorBEC4CF,
+                          isLeading: true,
+                          onTap: () => pickImage(ImageSource.camera, context),
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.captureImage),
+                        ),
+                        const SizedBox(height: 20),
+                        CustomButton(
+                          Languages.of(context)!.uploadPhoto,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w700,
+                          padding: 15.0,
+                          cardShape: 75.0,
+                          onTap: () => pickImage(ImageSource.gallery, context),
+                          borderColor: ColorResource.colorBEC4CF,
+                          buttonBackgroundColor: ColorResource.colorBEC4CF,
+                          isLeading: true,
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.uploadPhoto),
+                        ),
+                      ],
                     ),
                   ),
                 )));
@@ -585,12 +581,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                WillPopScope(
-                  onWillPop: () async => false,
-                  child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.86,
-                      child: const MessageChatRoomScreen()),
-                )));
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.86,
+                    child: const MessageChatRoomScreen())));
   }
 
   notificationShowBottomSheet(BuildContext context) {

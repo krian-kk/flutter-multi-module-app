@@ -65,274 +65,263 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: BlocListener<CallCustomerBloc, CallCustomerState>(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: BlocListener<CallCustomerBloc, CallCustomerState>(
+        bloc: bloc,
+        listener: (context, state) {
+          if (state is NoInternetState) {
+            AppUtils.noInternetSnackbar(context);
+          }
+          if (state is CallCustomerSuccessState) {
+            setState(() {
+              agentContactNoControlller.text =
+                  bloc.voiceAgencyDetails.result?.agentAgencyContact ?? '';
+            });
+          }
+        },
+        child: BlocBuilder<CallCustomerBloc, CallCustomerState>(
           bloc: bloc,
-          listener: (context, state) {
-            if (state is NoInternetState) {
-              AppUtils.noInternetSnackbar(context);
-            }
-            if (state is CallCustomerSuccessState) {
-              setState(() {
-                agentContactNoControlller.text =
-                    bloc.voiceAgencyDetails.result?.agentAgencyContact ?? '';
-              });
-            }
-          },
-          child: BlocBuilder<CallCustomerBloc, CallCustomerState>(
-            bloc: bloc,
-            builder: (context, state) {
-              if (state is CallCustomerLoadedState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is CallCustomerSuccessState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return Scaffold(
-                  resizeToAvoidBottomInset: true,
-                  backgroundColor: Colors.transparent,
-                  body: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        BottomSheetAppbar(
-                          title: Languages.of(context)!.callCustomer,
-                          padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15)
-                              .copyWith(bottom: 5),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 18.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  widget.customerLoanUserWidget,
-                                  const SizedBox(height: 18),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Flexible(
-                                          child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CustomText(
-                                            Languages.of(context)!
-                                                .agentContactNo,
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w400,
-                                            color: ColorResource.color666666,
-                                            fontStyle: FontStyle.normal,
-                                          ),
-                                          CustomReadOnlyTextField(
-                                            '',
-                                            agentContactNoControlller,
-                                            validationRules: const ['required'],
-                                            height: 46,
-                                          ),
-                                        ],
-                                      )),
-                                      const SizedBox(width: 5),
-                                      Flexible(
-                                          child: CustomDropDownButton(
-                                        Languages.of(context)!
-                                            .customerContactNo,
-                                        customerContactNoDropdownList,
-                                        selectedValue:
-                                            customerContactNoDropDownValue,
-                                        onChanged: (newValue) => setState(() =>
-                                            customerContactNoDropDownValue =
-                                                newValue.toString()),
-                                        icon: SvgPicture.asset(
-                                            ImageResource.downShape),
-                                      )),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Flexible(
-                                      child: CustomDropDownButton(
-                                    Languages.of(context)!.serviceProvidersList,
-                                    bloc.serviceProviderListDropdownList,
-                                    selectedValue:
-                                        bloc.serviceProviderListValue,
-                                    onChanged: (newValue) {
-                                      Singleton.instance.callerServiceID =
-                                          (newValue == '') ? null : newValue;
-                                      setState(() =>
-                                          bloc.serviceProviderListValue =
-                                              newValue.toString());
-                                    },
-                                    icon: SvgPicture.asset(
-                                        ImageResource.downShape),
-                                  )),
-                                  const SizedBox(height: 20),
-                                  Flexible(
-                                      child: CustomDropDownButton(
-                                    Languages.of(context)!.callersId,
-                                    bloc.callersIDDropdownList,
-                                    isExpanded: true,
-                                    selectedValue: bloc.callersIDDropdownValue,
-                                    onChanged: (newValue) {
-                                      Singleton.instance.callingID =
-                                          (newValue == '') ? null : newValue;
-                                      setState(() =>
-                                          bloc.callersIDDropdownValue =
-                                              newValue.toString());
-                                    },
-                                    icon: SvgPicture.asset(
-                                        ImageResource.downShape),
-                                  )),
-                                  const SizedBox(height: 15)
-                                ],
-                              ),
+          builder: (context, state) {
+            if (state is CallCustomerLoadedState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is CallCustomerSuccessState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor: Colors.transparent,
+                body: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      BottomSheetAppbar(
+                        title: Languages.of(context)!.callCustomer,
+                        padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15)
+                            .copyWith(bottom: 5),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                widget.customerLoanUserWidget,
+                                const SizedBox(height: 18),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!.agentContactNo,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w400,
+                                          color: ColorResource.color666666,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        CustomReadOnlyTextField(
+                                          '',
+                                          agentContactNoControlller,
+                                          validationRules: const ['required'],
+                                          height: 46,
+                                        ),
+                                      ],
+                                    )),
+                                    const SizedBox(width: 5),
+                                    Flexible(
+                                        child: CustomDropDownButton(
+                                      Languages.of(context)!.customerContactNo,
+                                      customerContactNoDropdownList,
+                                      selectedValue:
+                                          customerContactNoDropDownValue,
+                                      onChanged: (newValue) => setState(() =>
+                                          customerContactNoDropDownValue =
+                                              newValue.toString()),
+                                      icon: SvgPicture.asset(
+                                          ImageResource.downShape),
+                                    )),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Flexible(
+                                    child: CustomDropDownButton(
+                                  Languages.of(context)!.serviceProvidersList,
+                                  bloc.serviceProviderListDropdownList,
+                                  selectedValue: bloc.serviceProviderListValue,
+                                  onChanged: (newValue) {
+                                    Singleton.instance.callerServiceID =
+                                        (newValue == '') ? null : newValue;
+                                    setState(() =>
+                                        bloc.serviceProviderListValue =
+                                            newValue.toString());
+                                  },
+                                  icon:
+                                      SvgPicture.asset(ImageResource.downShape),
+                                )),
+                                const SizedBox(height: 20),
+                                Flexible(
+                                    child: CustomDropDownButton(
+                                  Languages.of(context)!.callersId,
+                                  bloc.callersIDDropdownList,
+                                  isExpanded: true,
+                                  selectedValue: bloc.callersIDDropdownValue,
+                                  onChanged: (newValue) {
+                                    Singleton.instance.callingID =
+                                        (newValue == '') ? null : newValue;
+                                    setState(() => bloc.callersIDDropdownValue =
+                                        newValue.toString());
+                                  },
+                                  icon:
+                                      SvgPicture.asset(ImageResource.downShape),
+                                )),
+                                const SizedBox(height: 15)
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  bottomNavigationBar: Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    decoration: BoxDecoration(
-                      color: ColorResource.colorFFFFFF,
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorResource.color000000.withOpacity(.25),
-                          blurRadius: 2.0,
-                          offset: const Offset(1.0, 1.0),
+                ),
+                bottomNavigationBar: Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  decoration: BoxDecoration(
+                    color: ColorResource.colorFFFFFF,
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorResource.color000000.withOpacity(.25),
+                        blurRadius: 2.0,
+                        offset: const Offset(1.0, 1.0),
+                      ),
+                    ],
+                  ),
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: SizedBox(
+                              width: 95,
+                              child: Center(
+                                  child: CustomText(
+                                Languages.of(context)!.done.toUpperCase(),
+                                color: ColorResource.colorEA6D48,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                                fontSize: FontSize.sixteen,
+                              ))),
                         ),
-                      ],
-                    ),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: SizedBox(
-                                width: 95,
-                                child: Center(
-                                    child: CustomText(
-                                  Languages.of(context)!.done.toUpperCase(),
-                                  color: ColorResource.colorEA6D48,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: FontSize.sixteen,
-                                ))),
-                          ),
-                          const SizedBox(width: 25),
-                          SizedBox(
-                            width: 191,
-                            child: CustomButton(
-                              Languages.of(context)!.call.toUpperCase(),
-                              fontSize: FontSize.sixteen,
-                              fontWeight: FontWeight.w600,
-                              isLeading: true,
-                              isEnabled: bloc.isSubmit,
-                              trailingWidget:
-                                  SvgPicture.asset(ImageResource.vector),
-                              onTap: () async {
-                                if (mounted) {
-                                  setState(() {
-                                    bloc.isSubmit = false;
-                                  });
-                                }
-                                if (_formKey.currentState!.validate()) {
-                                  print(Singleton.instance.contractor);
-                                  Map<String, dynamic> enableCloudTel =
+                        const SizedBox(width: 25),
+                        SizedBox(
+                          width: 191,
+                          child: CustomButton(
+                            Languages.of(context)!.call.toUpperCase(),
+                            fontSize: FontSize.sixteen,
+                            fontWeight: FontWeight.w600,
+                            isLeading: true,
+                            isEnabled: bloc.isSubmit,
+                            trailingWidget:
+                                SvgPicture.asset(ImageResource.vector),
+                            onTap: () async {
+                              if (mounted) {
+                                setState(() {
+                                  bloc.isSubmit = false;
+                                });
+                              }
+                              if (_formKey.currentState!.validate()) {
+                                Map<String, dynamic> enableCloudTel =
+                                    await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.enableCloudTelephony,
+                                  requestBodydata: {
+                                    "contractor": Singleton.instance.contractor
+                                  },
+                                );
+                                // print(enableCloudTel['data']['result']);
+                                // if (Singleton.instance.callingID == null ||
+                                //     Singleton.instance.callingID == '') {
+                                //   if (widget.listOfMobileNo.first != null) {
+                                //     // Navigator.pop(context);
+                                //     await FlutterPhoneDirectCaller.callNumber(
+                                //         customerContactNoDropDownValue);
+                                //   }
+                                // }
+                                if (enableCloudTel['data']['result']) {
+                                  // print(enableCloudTel['data']);
+                                  var requestBodyData = CallCustomerModel(
+                                    from: agentContactNoControlller.text,
+                                    to: customerContactNoDropDownValue,
+                                    callerId:
+                                        Singleton.instance.callingID ?? '',
+                                    aRef: Singleton.instance.agentRef ?? '',
+                                    customerName:
+                                        Singleton.instance.agentName ?? '',
+                                    service: bloc.serviceProviderListValue,
+                                    callerServiceID:
+                                        Singleton.instance.callerServiceID ??
+                                            '',
+                                    caseId: widget.caseId,
+                                    sId: widget.sid,
+                                    agrRef: Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    agentType: (widget.userType ==
+                                            Constants.telecaller)
+                                        ? 'TELECALLER'
+                                        : 'COLLECTOR',
+                                  );
+                                  Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
                                     APIRequestType.POST,
-                                    HttpUrl.enableCloudTelephony,
-                                    requestBodydata: {
-                                      "contractor":
-                                          Singleton.instance.contractor
-                                    },
+                                    HttpUrl.callCustomerUrl,
+                                    requestBodydata:
+                                        jsonEncode(requestBodyData),
                                   );
-                                  // print(enableCloudTel['data']['result']);
-                                  // if (Singleton.instance.callingID == null ||
-                                  //     Singleton.instance.callingID == '') {
-                                  //   if (widget.listOfMobileNo.first != null) {
-                                  //     // Navigator.pop(context);
-                                  //     await FlutterPhoneDirectCaller.callNumber(
-                                  //         customerContactNoDropDownValue);
-                                  //   }
-                                  // }
-                                  if (enableCloudTel['data']['result']) {
-                                    // print(enableCloudTel['data']);
-                                    var requestBodyData = CallCustomerModel(
-                                      from: agentContactNoControlller.text,
-                                      to: customerContactNoDropDownValue,
-                                      callerId:
-                                          Singleton.instance.callingID ?? '',
-                                      aRef: Singleton.instance.agentRef ?? '',
-                                      customerName:
-                                          Singleton.instance.agentName ?? '',
-                                      service: bloc.serviceProviderListValue,
-                                      callerServiceID:
-                                          Singleton.instance.callerServiceID ??
-                                              '',
-                                      caseId: widget.caseId,
-                                      sId: widget.sid,
-                                      agrRef: Singleton.instance.agentRef ?? '',
-                                      agentName:
-                                          Singleton.instance.agentName ?? '',
-                                      agentType: (widget.userType ==
-                                              Constants.telecaller)
-                                          ? 'TELECALLER'
-                                          : 'COLLECTOR',
-                                    );
-                                    Map<String, dynamic> postResult =
-                                        await APIRepository.apiRequest(
-                                      APIRequestType.POST,
-                                      HttpUrl.callCustomerUrl,
-                                      requestBodydata:
-                                          jsonEncode(requestBodyData),
-                                    );
-                                    if (postResult[Constants.success]) {
-                                      AppUtils.showToast(
-                                          Constants.callConnectedPleaseWait);
-                                      // Navigator.pop(context);
-                                    } else {}
-                                  } else {
-                                    await FlutterPhoneDirectCaller.callNumber(
-                                        customerContactNoDropDownValue);
-                                  }
+                                  if (postResult[Constants.success]) {
+                                    AppUtils.showToast(
+                                        Constants.callConnectedPleaseWait);
+                                    // Navigator.pop(context);
+                                  } else {}
+                                } else {
+                                  await FlutterPhoneDirectCaller.callNumber(
+                                      customerContactNoDropDownValue);
                                 }
-                                if (mounted) {
-                                  setState(() {
-                                    bloc.isSubmit = true;
-                                  });
-                                }
-                              },
-                              cardShape: 5,
-                            ),
+                              }
+                              if (mounted) {
+                                setState(() {
+                                  bloc.isSubmit = true;
+                                });
+                              }
+                            },
+                            cardShape: 5,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }
-            },
-          ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );

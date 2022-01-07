@@ -42,7 +42,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
       child: StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         return WillPopScope(
-          onWillPop: () async => false,
+          onWillPop: () async => true,
           child: Container(
             padding: const EdgeInsets.only(top: 16),
             child: DefaultTabController(

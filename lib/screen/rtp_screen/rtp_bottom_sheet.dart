@@ -62,263 +62,257 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          resizeToAvoidBottomInset: true,
-          body: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BottomSheetAppbar(
-                  title: widget.cardTitle,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                          .copyWith(bottom: 5),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          widget.customerLoanUserWidget,
-                          const SizedBox(height: 11),
-                          SizedBox(
-                            width: (MediaQuery.of(context).size.width - 36) / 2,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionDate,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width - 42) /
-                                          2,
-                                  child: CustomReadOnlyTextField(
-                                    '',
-                                    nextActionDateControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onEditing: () =>
-                                        _formKey.currentState!.validate(),
-                                    onTapped: () => pickDate(
-                                        context, nextActionDateControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
-                                    ),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        widget.customerLoanUserWidget,
+                        const SizedBox(height: 11),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 36) / 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.nextActionDate,
+                                fontSize: FontSize.twelve,
+                                fontWeight: FontWeight.w400,
+                                color: ColorResource.color666666,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              SizedBox(
+                                width:
+                                    (MediaQuery.of(context).size.width - 42) /
+                                        2,
+                                child: CustomReadOnlyTextField(
+                                  '',
+                                  nextActionDateControlller,
+                                  validationRules: const ['required'],
+                                  isReadOnly: true,
+                                  onEditing: () =>
+                                      _formKey.currentState!.validate(),
+                                  onTapped: () => pickDate(
+                                      context, nextActionDateControlller),
+                                  suffixWidget: SvgPicture.asset(
+                                    ImageResource.calendar,
+                                    fit: BoxFit.scaleDown,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          Flexible(
-                              child: CustomReadOnlyTextField(
-                            Languages.of(context)!.remarks,
-                            remarksControlller,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                          )),
-                          const SizedBox(height: 15),
-                          CustomDropDownButton(
-                            Languages.of(context)!.rtpDenialReason,
-                            [
-                              'select',
-                              Languages.of(context)!.businessLoss,
-                              Languages.of(context)!.covidImpacted,
-                              Languages.of(context)!.dispute,
-                              Languages.of(context)!.financialReason,
-                              Languages.of(context)!.incomeLossInTheFamily,
-                              Languages.of(context)!.intention,
-                              Languages.of(context)!.jobLoss,
-                              Languages.of(context)!.jobUncertaintly,
-                              Languages.of(context)!.medicalIssue,
-                              Languages.of(context)!.salaryIssue,
+                              ),
                             ],
-                            selectedValue: selectedDropdownValue,
-                            menuMaxHeight: 200,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedDropdownValue = newValue.toString();
-                              });
-                            },
                           ),
-                          const SizedBox(height: 15),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          remarksControlller,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 15),
+                        CustomDropDownButton(
+                          Languages.of(context)!.rtpDenialReason,
+                          [
+                            'select',
+                            Languages.of(context)!.businessLoss,
+                            Languages.of(context)!.covidImpacted,
+                            Languages.of(context)!.dispute,
+                            Languages.of(context)!.financialReason,
+                            Languages.of(context)!.incomeLossInTheFamily,
+                            Languages.of(context)!.intention,
+                            Languages.of(context)!.jobLoss,
+                            Languages.of(context)!.jobUncertaintly,
+                            Languages.of(context)!.medicalIssue,
+                            Languages.of(context)!.salaryIssue,
+                          ],
+                          selectedValue: selectedDropdownValue,
+                          menuMaxHeight: 200,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedDropdownValue = newValue.toString();
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
-                ),
-              ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: SizedBox(
-                        width: 95,
-                        child: Center(
-                            child: CustomText(
-                          Languages.of(context)!.cancel.toUpperCase(),
-                          color: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          fontSize: FontSize.sixteen,
-                        ))),
-                  ),
-                  const SizedBox(width: 25),
-                  SizedBox(
-                      width: 191,
-                      child: CustomButton(
-                        isSubmit
-                            ? Languages.of(context)!.submit.toUpperCase()
-                            : null,
-                        isLeading: !isSubmit,
-                        trailingWidget: const Center(
-                          child: CircularProgressIndicator(
-                            color: ColorResource.colorFFFFFF,
-                          ),
-                        ),
-                        fontSize: FontSize.sixteen,
-                        fontWeight: FontWeight.w600,
-                        onTap: isSubmit
-                            ? () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (selectedDropdownValue != 'select') {
-                                    setState(() => isSubmit = false);
-                                    // Position position = Position(
-                                    //   longitude: 0,
-                                    //   latitude: 0,
-                                    //   timestamp: DateTime.now(),
-                                    //   accuracy: 0,
-                                    //   altitude: 0,
-                                    //   heading: 0,
-                                    //   speed: 0,
-                                    //   speedAccuracy: 0,
-                                    // );
-                                    LatLng latLng = const LatLng(0, 0);
-                                    if (Geolocator.checkPermission()
-                                            .toString() !=
-                                        PermissionStatus.granted.toString()) {
-                                      Position res =
-                                          await Geolocator.getCurrentPosition(
-                                              desiredAccuracy:
-                                                  LocationAccuracy.best);
-                                      setState(() {
-                                        // position = res;
-                                        latLng =
-                                            LatLng(res.latitude, res.longitude);
-                                      });
-                                    }
-                                    var requestBodyData = DenialPostModel(
-                                      eventId:
-                                          ConstantEventValues.rtpDenialEventId,
-                                      eventType: (widget.userType ==
-                                                  Constants.telecaller ||
-                                              widget.isCall!)
-                                          ? 'TC : DENIAL'
-                                          : 'DENIAL',
-                                      caseId: widget.caseId,
-                                      eventCode: ConstantEventValues
-                                          .rtpDenialEventCode,
-                                      voiceCallEventCode: ConstantEventValues
-                                          .voiceCallEventCode,
-                                      createdBy:
-                                          Singleton.instance.agentRef ?? '',
-                                      agentName:
-                                          Singleton.instance.agentName ?? '',
-                                      contractor:
-                                          Singleton.instance.contractor ?? '',
-                                      agrRef: Singleton.instance.agrRef ?? '',
-                                      eventAttr: EventAttr(
-                                        actionDate:
-                                            nextActionDateControlller.text,
-                                        remarks: remarksControlller.text,
-                                        reasons: selectedDropdownValue,
-                                        longitude: latLng.longitude,
-                                        latitude: latLng.latitude,
-                                        amountDenied:
-                                            Singleton.instance.overDueAmount ??
-                                                '',
-                                      ),
-                                      eventModule: widget.isCall!
-                                          ? 'Telecalling'
-                                          : 'Field Allocation',
-                                      contact: Contact(
-                                        cType: widget.postValue['cType'],
-                                        value: widget.postValue['value'],
-                                        health:
-                                            ConstantEventValues.rtpDenialHealth,
-                                        resAddressId0:
-                                            Singleton.instance.resAddressId_0 ??
-                                                '',
-                                        contactId0:
-                                            Singleton.instance.contactId_0 ??
-                                                '',
-                                      ),
-                                      callID: Singleton.instance.callID,
-                                      callerServiceID:
-                                          Singleton.instance.callerServiceID ??
-                                              '',
-                                      callingID: Singleton.instance.callingID,
-                                    );
-                                    Map<String, dynamic> postResult =
-                                        await APIRepository.apiRequest(
-                                            APIRequestType.POST,
-                                            HttpUrl.denialPostUrl(
-                                                'denial', widget.userType),
-                                            requestBodydata:
-                                                jsonEncode(requestBodyData));
-                                    if (postResult[Constants.success]) {
-                                      AppUtils.topSnackBar(context,
-                                          Constants.successfullySubmitted);
-                                      Navigator.pop(context);
-                                    }
-                                  } else {
-                                    AppUtils.showToast(
-                                        Constants.pleaseSelectDropDownValue);
-                                  }
-                                }
-                                setState(() => isSubmit = true);
-                              }
-                            : () {},
-                        cardShape: 5,
-                      )),
-                ],
               ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
+            ],
+          ),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
+                      width: 95,
+                      child: Center(
+                          child: CustomText(
+                        Languages.of(context)!.cancel.toUpperCase(),
+                        color: ColorResource.colorEA6D48,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        fontSize: FontSize.sixteen,
+                      ))),
+                ),
+                const SizedBox(width: 25),
+                SizedBox(
+                    width: 191,
+                    child: CustomButton(
+                      isSubmit
+                          ? Languages.of(context)!.submit.toUpperCase()
+                          : null,
+                      isLeading: !isSubmit,
+                      trailingWidget: const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorResource.colorFFFFFF,
+                        ),
+                      ),
+                      fontSize: FontSize.sixteen,
+                      fontWeight: FontWeight.w600,
+                      onTap: isSubmit
+                          ? () async {
+                              if (_formKey.currentState!.validate()) {
+                                if (selectedDropdownValue != 'select') {
+                                  setState(() => isSubmit = false);
+                                  // Position position = Position(
+                                  //   longitude: 0,
+                                  //   latitude: 0,
+                                  //   timestamp: DateTime.now(),
+                                  //   accuracy: 0,
+                                  //   altitude: 0,
+                                  //   heading: 0,
+                                  //   speed: 0,
+                                  //   speedAccuracy: 0,
+                                  // );
+                                  LatLng latLng = const LatLng(0, 0);
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    setState(() {
+                                      // position = res;
+                                      latLng =
+                                          LatLng(res.latitude, res.longitude);
+                                    });
+                                  }
+                                  var requestBodyData = DenialPostModel(
+                                    eventId:
+                                        ConstantEventValues.rtpDenialEventId,
+                                    eventType: (widget.userType ==
+                                                Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : DENIAL'
+                                        : 'DENIAL',
+                                    caseId: widget.caseId,
+                                    eventCode:
+                                        ConstantEventValues.rtpDenialEventCode,
+                                    voiceCallEventCode:
+                                        ConstantEventValues.voiceCallEventCode,
+                                    createdBy:
+                                        Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
+                                    agrRef: Singleton.instance.agrRef ?? '',
+                                    eventAttr: EventAttr(
+                                      actionDate:
+                                          nextActionDateControlller.text,
+                                      remarks: remarksControlller.text,
+                                      reasons: selectedDropdownValue,
+                                      longitude: latLng.longitude,
+                                      latitude: latLng.latitude,
+                                      amountDenied:
+                                          Singleton.instance.overDueAmount ??
+                                              '',
+                                    ),
+                                    eventModule: widget.isCall!
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
+                                    contact: Contact(
+                                      cType: widget.postValue['cType'],
+                                      value: widget.postValue['value'],
+                                      health:
+                                          ConstantEventValues.rtpDenialHealth,
+                                      resAddressId0:
+                                          Singleton.instance.resAddressId_0 ??
+                                              '',
+                                      contactId0:
+                                          Singleton.instance.contactId_0 ?? '',
+                                    ),
+                                    callID: Singleton.instance.callID,
+                                    callerServiceID:
+                                        Singleton.instance.callerServiceID ??
+                                            '',
+                                    callingID: Singleton.instance.callingID,
+                                  );
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                          APIRequestType.POST,
+                                          HttpUrl.denialPostUrl(
+                                              'denial', widget.userType),
+                                          requestBodydata:
+                                              jsonEncode(requestBodyData));
+                                  if (postResult[Constants.success]) {
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  AppUtils.showToast(
+                                      Constants.pleaseSelectDropDownValue);
+                                }
+                              }
+                              setState(() => isSubmit = true);
+                            }
+                          : () {},
+                      cardShape: 5,
+                    )),
+              ],
             ),
           ),
         ),

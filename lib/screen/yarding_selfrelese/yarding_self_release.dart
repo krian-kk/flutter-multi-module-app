@@ -46,7 +46,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
       child: StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         return WillPopScope(
-          onWillPop: () async => false,
+          onWillPop: () async => true,
           child: Container(
             decoration: const BoxDecoration(
               color: ColorResource.colorF7F8FA,

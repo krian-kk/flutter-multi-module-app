@@ -21,14 +21,14 @@ class _PriorityFollowUpBottomSheetState
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return WillPopScope(
-        onWillPop: () async => false,
+        onWillPop: () async => true,
         child: SafeArea(
           bottom: false,
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.82,
             child: Scaffold(
               body: Container(
-                child: Text('data'),
+                child: const Text('data'),
               ),
             ),
           ),

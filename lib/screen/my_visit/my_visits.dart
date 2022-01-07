@@ -127,7 +127,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             }
           }
           return WillPopScope(
-            onWillPop: () async => false,
+            onWillPop: () async => true,
             child: Container(
               padding: const EdgeInsets.only(top: 16),
               child: DefaultTabController(

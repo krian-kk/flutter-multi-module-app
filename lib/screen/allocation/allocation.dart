@@ -131,7 +131,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 WillPopScope(
-                  onWillPop: () async => false,
+                  onWillPop: () async => true,
                   child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.86,
                       child: const MessageChatRoomScreen()),

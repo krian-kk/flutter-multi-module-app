@@ -31,67 +31,62 @@ class _CustomEventDetailsBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetAppbar(
+              title: widget.cardTitle,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                  .copyWith(bottom: 5),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: widget.customeLoanUserWidget,
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+                child: ListView.builder(
+              reverse: true,
+              itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
+              itemBuilder: (context, int index) =>
+                  expandList(widget.bloc.eventDetailsAPIValue.result!, index),
+            )),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: widget.customeLoanUserWidget,
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                  child: ListView.builder(
-                reverse: true,
-                itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
-                itemBuilder: (context, int index) =>
-                    expandList(widget.bloc.eventDetailsAPIValue.result!, index),
-              )),
             ],
           ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 190,
+                  child: CustomButton(
+                    Languages.of(context)!.okay.toUpperCase(),
+                    onTap: () => Navigator.pop(context),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    cardShape: 5,
+                  ),
                 ),
               ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 190,
-                    child: CustomButton(
-                      Languages.of(context)!.okay.toUpperCase(),
-                      onTap: () => Navigator.pop(context),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      cardShape: 5,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),
@@ -217,7 +212,7 @@ class _CustomEventDetailsBottomSheetState
                     color: ColorResource.color000000,
                   ),
                   CustomText(
-                    expandedList[index].remarks,
+                    expandedList[index].remarks.toString(),
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
