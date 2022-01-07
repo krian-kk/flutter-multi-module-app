@@ -36,7 +36,6 @@ class CustomPtpBottomSheet extends StatefulWidget {
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
-
   final Widget customerLoanUserWidget;
   final String userType;
   final bool? isCall;
@@ -94,8 +93,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               Expanded(
                 child: KeyboardActions(
                   config: KeyboardActionsConfig(
+                    keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                     actions: [
-                      KeyboardActionsItem(focusNode: ptpAmountFocusNode),
+                      KeyboardActionsItem(
+                        focusNode: ptpAmountFocusNode,
+                        displayArrows: false,
+                      ),
                     ],
                   ),
                   child: Padding(

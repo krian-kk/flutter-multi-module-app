@@ -27,7 +27,7 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
             await Connectivity().checkConnectivity()) {
           emit.call(NoInternetState());
         } else {
-          Map<String, dynamic> getEventDetailsData =
+          Map<String, dynamic> getAgencyDetailsData =
               await APIRepository.apiRequest(
                   APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
           // Map<String, dynamic> getEventDetailsData1 =
@@ -36,8 +36,8 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
           //         requestBodydata: {});
           // print('Ably Get Values => ${getEventDetailsData1}');
 
-          if (getEventDetailsData[Constants.success]) {
-            Map<String, dynamic> jsonData = getEventDetailsData['data'];
+          if (getAgencyDetailsData[Constants.success]) {
+            Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
             voiceAgencyDetails = VoiceAgencyDetailModel.fromJson(jsonData);
             serviceProviderListDropdownList.add(
                 (voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId) ??
@@ -45,16 +45,22 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
             serviceProviderListValue =
                 voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId ??
                     '';
-            callersIDDropdownList = ((voiceAgencyDetails
-                    .result?.voiceAgencyData?.first.callerIds) ??
-                ['']);
-            callersIDDropdownValue = ((voiceAgencyDetails
-                    .result?.voiceAgencyData?.first.callerIds?.first) ??
-                '');
+            print("------nk1-----");
+            print(getAgencyDetailsData['data']['result']['voiceAgencyData'][0]
+                ['callerIds']);
+            callersIDDropdownList = getAgencyDetailsData['data']['result']
+                        ['voiceAgencyData'][0]['callerIds']
+                    .cast<String>() ??
+                [''];
+            callersIDDropdownValue = getAgencyDetailsData['data']['result']
+                    ['voiceAgencyData'][0]['callerIds'][0] ??
+                '';
+            Singleton.instance.callingID = getAgencyDetailsData['data']
+                    ['result']['voiceAgencyData'][0]['callerIds'][0] ??
+                '';
             Singleton.instance.callerServiceID =
                 voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId;
-            Singleton.instance.callingID = voiceAgencyDetails
-                .result?.voiceAgencyData?.first.callerIds?.first;
+
             Singleton.instance.callID =
                 voiceAgencyDetails.result?.agentAgencyContact;
             emit.call(CallCustomerSuccessState());

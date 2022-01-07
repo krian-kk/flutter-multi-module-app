@@ -463,7 +463,7 @@ class LanguageHi extends Languages {
   String get otsPaymentDate => 'ओटीएस भुगतान तिथि*';
 
   @override
-  String get otsPaymentTime => 'ओटीएस भुगतान समय*';
+  String get otsPaymentTime => 'ओटीएस भुगतान समय';
 
   @override
   String get rtpDenialReason => 'आरटीपी/अस्वीकार कारण*';

@@ -181,7 +181,7 @@ class _CustomOtherFeedBackBottomSheetState
                             const SizedBox(height: 10),
                             expandList([
                               FeedbackTemplate(
-                                  name: 'addNewConact',
+                                  name: 'Add New Contact',
                                   expanded: false,
                                   data: [Data(name: 'addNewContact')])
                             ], 0),

@@ -281,7 +281,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ClickOpenBottomSheetEvent) {
-      print('Event = >>>>> ${event.health}');
       switch (event.title) {
         case Constants.eventDetails:
           if (ConnectivityResult.none ==
@@ -340,8 +339,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           break;
         default:
       }
-      print('Event => ${event.health}');
-
       yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
           health: event.health);
     }

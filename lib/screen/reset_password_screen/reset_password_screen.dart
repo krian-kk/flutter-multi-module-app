@@ -432,12 +432,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   : ColorResource.colorBEC4CF,
                               onTap: (pinCodeController.text.isNotEmpty &&
                                       pinCodeController.text.length == 6)
-                                  ? () {
-                                      cancelTimer();
-                                      Navigator.pop(context);
+                                  ? () async {
                                       if (userNameController.text.isNotEmpty) {
-                                        resetPasswordShowBottomSheet(
-                                            userIdController.text);
+                                        Map<String, dynamic> postResult =
+                                            await APIRepository.apiRequest(
+                                                APIRequestType.POST,
+                                                HttpUrl.verifyOTP(),
+                                                requestBodydata: {
+                                              "aRef": userIdController.text,
+                                              "otp": pinCodeController.text
+                                            });
+                                        if (postResult[Constants.success]) {
+                                          cancelTimer();
+                                          Navigator.pop(context);
+                                          resetPasswordShowBottomSheet(
+                                              userIdController.text);
+                                        } else {
+                                          AppUtils.showErrorToast(
+                                              "OTP does't match");
+                                        }
                                       }
                                     }
                                   : () {},
@@ -599,7 +612,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                         if (postResult[Constants.success]) {
                                           AppUtils.showToast(
                                               Constants.successfullyUpdated,
-                                              gravity: ToastGravity.CENTER);
+                                              gravity: ToastGravity.BOTTOM);
                                           Navigator.pop(context);
                                         }
                                       } else {

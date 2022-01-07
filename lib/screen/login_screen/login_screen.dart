@@ -98,8 +98,12 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: ColorResource.colorF8F9FB,
             body: KeyboardActions(
               config: KeyboardActionsConfig(
+                keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                 actions: [
-                  KeyboardActionsItem(focusNode: passwords),
+                  KeyboardActionsItem(
+                    focusNode: passwords,
+                    displayArrows: false,
+                  ),
                 ],
               ),
               child: SingleChildScrollView(

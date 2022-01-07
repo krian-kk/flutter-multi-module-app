@@ -38,7 +38,6 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
-
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
@@ -110,9 +109,12 @@ class _CustomCollectionsBottomSheetState
                 Expanded(
                   child: KeyboardActions(
                     config: KeyboardActionsConfig(
+                      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                       actions: [
                         KeyboardActionsItem(
-                            focusNode: amountCollectedFocusNode),
+                          focusNode: amountCollectedFocusNode,
+                          displayArrows: false,
+                        ),
                       ],
                     ),
                     child: Padding(

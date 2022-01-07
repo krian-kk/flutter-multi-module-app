@@ -41,6 +41,10 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'profile/userDetails';
   static const String callCustomerUrl =
       baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
+  static const String enableCloudTelephony = baseUrl +
+      version +
+      fieldAgent +
+      'case-details-events/enableCloudTelephony';
   static const String mobileInfoUrl =
       baseUrl + version + fieldAgent + 'profile/mobileInfo';
   // Post API ===================================================
@@ -50,6 +54,8 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+  static const String otsPostUrl =
+      baseUrl + version + fieldAgent + 'case-details-events/ots';
   // Other FeedBack Post API
   static String otherFeedBackPostUrl(
           String selectValue, String userTypeValue) =>
@@ -65,14 +71,12 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
 
   // baseUrl + version + fieldAgent + '';
-  static String requestOTPUrl() =>
-      'https://uat-collect.origa.ai/app_otc/public/requestOtp';
+  static String requestOTPUrl() => baseUrl + 'public/requestOtp';
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
-  static String resendOTPUrl() =>
-      'https://uat-collect.origa.ai/app_otc/public/requestOtp';
-  static String resetPasswordUrl() =>
-      baseUrl + version + fieldAgent + 'profile/resetPassword';
+  static String resendOTPUrl() => baseUrl + 'public/requestOtp';
+  static String resetPasswordUrl() => baseUrl + 'public/resetPassword';
+  static String verifyOTP() => baseUrl + 'public/verifyOtp';
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +

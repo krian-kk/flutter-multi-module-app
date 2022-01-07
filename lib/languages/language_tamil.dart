@@ -464,7 +464,7 @@ class LanguageTa extends Languages {
   String get otsPaymentDate => 'OTS செலுத்தும் தேதி*';
 
   @override
-  String get otsPaymentTime => 'OTS செலுத்தும் நேரம்*';
+  String get otsPaymentTime => 'OTS செலுத்தும் நேரம்';
 
   @override
   String get rtpDenialReason => 'RTP/மறுப்பு காரணம்*';

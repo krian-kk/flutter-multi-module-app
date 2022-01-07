@@ -1064,7 +1064,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
+              caseId: bloc.caseId.toString(),
+              userType: bloc.userType.toString(),
               isCall: isCall,
+              postValue: list[bloc.indexValue!],
             );
           case Constants.repo:
             return CustomRepoBottomSheet(
@@ -1134,6 +1137,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callCustomer:
+            List<dynamic> l1 = [];
+            bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+              if (element['cType'] == 'mobile') {
+                l1.add(element);
+              }
+            });
+
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
@@ -1144,8 +1154,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              listOfMobileNo:
-                  bloc.caseDetailsAPIValue.result?.callDetails as List<dynamic>,
+              listOfMobileNo: l1,
               userType: bloc.userType.toString(),
               caseId: bloc.caseId.toString(),
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -183,7 +184,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   Flexible(
                                       child: CustomDropDownButton(
                                     Languages.of(context)!.callersId,
-                                    bloc.callersIDDropdownList.cast(),
+                                    bloc.callersIDDropdownList,
                                     isExpanded: true,
                                     selectedValue: bloc.callersIDDropdownValue,
                                     onChanged: (newValue) {
@@ -249,48 +250,77 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                               trailingWidget:
                                   SvgPicture.asset(ImageResource.vector),
                               onTap: () async {
-                                setState(() {
-                                  bloc.isSubmit = false;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    bloc.isSubmit = false;
+                                  });
+                                }
                                 if (_formKey.currentState!.validate()) {
-                                  var requestBodyData = CallCustomerModel(
-                                    from: agentContactNoControlller.text,
-                                    to: customerContactNoDropDownValue,
-                                    callerId:
-                                        Singleton.instance.callingID ?? '',
-                                    aRef: Singleton.instance.agentRef ?? '',
-                                    customerName:
-                                        Singleton.instance.agentName ?? '',
-                                    service: bloc.serviceProviderListValue,
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    caseId: widget.caseId,
-                                    sId: widget.sid,
-                                    agrRef: Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    agentType: (widget.userType ==
-                                            Constants.telecaller)
-                                        ? 'TELECALLER'
-                                        : 'COLLECTOR',
-                                  );
-                                  Map<String, dynamic> postResult =
+                                  print(Singleton.instance.contractor);
+                                  Map<String, dynamic> enableCloudTel =
                                       await APIRepository.apiRequest(
                                     APIRequestType.POST,
-                                    HttpUrl.callCustomerUrl,
-                                    requestBodydata:
-                                        jsonEncode(requestBodyData),
+                                    HttpUrl.enableCloudTelephony,
+                                    requestBodydata: {
+                                      "contractor":
+                                          Singleton.instance.contractor
+                                    },
                                   );
-                                  if (postResult[Constants.success]) {
-                                    AppUtils.showToast(
-                                        Constants.callConnectedPleaseWait);
-                                    Navigator.pop(context);
-                                  } else {}
+                                  // print(enableCloudTel['data']['result']);
+                                  // if (Singleton.instance.callingID == null ||
+                                  //     Singleton.instance.callingID == '') {
+                                  //   if (widget.listOfMobileNo.first != null) {
+                                  //     // Navigator.pop(context);
+                                  //     await FlutterPhoneDirectCaller.callNumber(
+                                  //         customerContactNoDropDownValue);
+                                  //   }
+                                  // }
+                                  if (enableCloudTel['data']['result']) {
+                                    // print(enableCloudTel['data']);
+                                    var requestBodyData = CallCustomerModel(
+                                      from: agentContactNoControlller.text,
+                                      to: customerContactNoDropDownValue,
+                                      callerId:
+                                          Singleton.instance.callingID ?? '',
+                                      aRef: Singleton.instance.agentRef ?? '',
+                                      customerName:
+                                          Singleton.instance.agentName ?? '',
+                                      service: bloc.serviceProviderListValue,
+                                      callerServiceID:
+                                          Singleton.instance.callerServiceID ??
+                                              '',
+                                      caseId: widget.caseId,
+                                      sId: widget.sid,
+                                      agrRef: Singleton.instance.agentRef ?? '',
+                                      agentName:
+                                          Singleton.instance.agentName ?? '',
+                                      agentType: (widget.userType ==
+                                              Constants.telecaller)
+                                          ? 'TELECALLER'
+                                          : 'COLLECTOR',
+                                    );
+                                    Map<String, dynamic> postResult =
+                                        await APIRepository.apiRequest(
+                                      APIRequestType.POST,
+                                      HttpUrl.callCustomerUrl,
+                                      requestBodydata:
+                                          jsonEncode(requestBodyData),
+                                    );
+                                    if (postResult[Constants.success]) {
+                                      AppUtils.showToast(
+                                          Constants.callConnectedPleaseWait);
+                                      // Navigator.pop(context);
+                                    } else {}
+                                  } else {
+                                    await FlutterPhoneDirectCaller.callNumber(
+                                        customerContactNoDropDownValue);
+                                  }
                                 }
-                                setState(() {
-                                  bloc.isSubmit = true;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    bloc.isSubmit = true;
+                                  });
+                                }
                               },
                               cardShape: 5,
                             ),

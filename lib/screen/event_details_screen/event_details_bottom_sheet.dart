@@ -54,6 +54,7 @@ class _CustomEventDetailsBottomSheetState
               const SizedBox(height: 10),
               Expanded(
                   child: ListView.builder(
+                reverse: true,
                 itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
                 itemBuilder: (context, int index) =>
                     expandList(widget.bloc.eventDetailsAPIValue.result!, index),
@@ -152,6 +153,14 @@ class _CustomEventDetailsBottomSheetState
                   //     color: ColorResource.color000000,
                   //   ),
                   // const SizedBox(height: 8),
+                  expandedList[index].eventType == 'OTS'
+                      ? CustomText(
+                          "OTS Amount: " + expandedList[index].otsAmt,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        )
+                      : const SizedBox(),
                   if (expandedList[index].mode != null)
                     CustomText(
                       Languages.of(context)!.mode.toString().toUpperCase(),
@@ -208,7 +217,7 @@ class _CustomEventDetailsBottomSheetState
                     color: ColorResource.color000000,
                   ),
                   CustomText(
-                    expandedList[index].remarks ?? '-',
+                    expandedList[index].remarks,
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,

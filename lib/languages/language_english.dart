@@ -464,7 +464,7 @@ class LanguageEn extends Languages {
   String get otsPaymentDate => 'OTS Payment Date*';
 
   @override
-  String get otsPaymentTime => 'OTS Payment Time*';
+  String get otsPaymentTime => 'OTS Payment Time';
 
   @override
   String get rtpDenialReason => 'RTP/Denial Reason*';
