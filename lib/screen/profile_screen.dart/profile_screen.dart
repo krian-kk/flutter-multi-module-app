@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,8 +37,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc bloc;
-  File? image;
   String addressValue = '';
+  Uint8List? profileImage;
 
   @override
   void initState() {
@@ -60,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (image != null) {
         final getProfileImage = File(image.path);
         setState(() {
-          this.image = getProfileImage;
+          bloc.image = getProfileImage;
           bloc.add(PostProfileImageEvent(postValue: getProfileImage));
         });
       } else {
@@ -134,6 +137,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: CircularProgressIndicator(),
             );
           } else {
+            if (bloc.profileAPIValue.result?.first.profileImgUrl != null) {
+              profileImage = base64
+                  .decode(bloc.profileAPIValue.result!.first.profileImgUrl!);
+            }
             return
                 // bloc.isNoInternetAndServerError
                 //     ? Center(
@@ -185,26 +192,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () =>
-                                        bloc.add(ChangeProfileImageEvent()),
-                                    child: image == null
-                                        ? Container(
-                                            child: SvgPicture.asset(
-                                                ImageResource
-                                                    .profileImagePicker),
-                                            width: 45,
-                                            height: 45,
-                                            decoration: BoxDecoration(
-                                              color: ColorResource.color23375A,
-                                              borderRadius:
-                                                  BorderRadius.circular(52.5),
+                                  Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () =>
+                                            bloc.add(ChangeProfileImageEvent()),
+                                        child: bloc.image != null
+                                            ? CircleAvatar(
+                                                radius: 25,
+                                                backgroundImage: FileImage(
+                                                    File(bloc.image!.path)))
+                                            : profileImage != null
+                                                ? CircleAvatar(
+                                                    radius: 25,
+                                                    backgroundImage:
+                                                        Image.memory(
+                                                                profileImage!)
+                                                            .image)
+                                                : Container(
+                                                    child: SvgPicture.asset(
+                                                        ImageResource
+                                                            .profileImagePicker),
+                                                    width: 45,
+                                                    height: 45,
+                                                    decoration: BoxDecoration(
+                                                      color: ColorResource
+                                                          .color23375A,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              52.5),
+                                                    ),
+                                                  ),
+                                      ),
+                                      if (bloc.isProfileImageUpdating)
+                                        const CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor:
+                                              ColorResource.color23375A,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 3.0,
+                                              color: ColorResource.colorffffff,
                                             ),
-                                          )
-                                        : CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage:
-                                                FileImage(File(image!.path))),
+                                          ),
+                                        )
+                                    ],
                                   ),
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *

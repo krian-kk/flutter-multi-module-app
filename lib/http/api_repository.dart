@@ -14,7 +14,15 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
+enum APIRequestType {
+  GET,
+  POST,
+  PUT,
+  DELETE,
+  UPLOAD,
+  DOWNLOAD,
+  singleFileUpload
+}
 
 class APIRepository {
   //Progress sample model
@@ -30,6 +38,7 @@ class APIRepository {
       APIRequestType requestType, String urlString,
       {dynamic requestBodydata,
       List<File>? file,
+      File? imageFile,
       String? savePath,
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
@@ -51,7 +60,16 @@ class APIRepository {
             final FormData data = FormData.fromMap({
               'file': DioClient.listOfMultiPart(file),
             });
-            response = await DioClient.dioConfig().post(urlString, data: data);
+            response =
+                await DioClient.dioFileConfig().post(urlString, data: data);
+            break;
+          }
+        case APIRequestType.singleFileUpload:
+          {
+            final FormData data = FormData.fromMap(
+                {'file': await MultipartFile.fromFile(imageFile!.path)});
+            response =
+                await DioClient.dioFileConfig().post(urlString, data: data);
             break;
           }
         case APIRequestType.DOWNLOAD:

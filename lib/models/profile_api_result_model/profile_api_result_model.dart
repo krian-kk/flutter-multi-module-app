@@ -46,26 +46,29 @@ class Result {
   bool? userAdmin;
   int? failedLoginCounter;
   String? homeAddress;
+  String? profileImgUrl;
 
-  Result(
-      {this.sId,
-      this.aRef,
-      this.areaCode,
-      this.audit,
-      this.children,
-      this.contact,
-      this.contractor,
-      this.dateJoining,
-      this.dateResign,
-      this.defMobileNumber,
-      this.name,
-      this.parent,
-      this.roleLevel,
-      this.status,
-      this.type,
-      this.userAdmin,
-      this.failedLoginCounter,
-      this.homeAddress});
+  Result({
+    this.sId,
+    this.aRef,
+    this.areaCode,
+    this.audit,
+    this.children,
+    this.contact,
+    this.contractor,
+    this.dateJoining,
+    this.dateResign,
+    this.defMobileNumber,
+    this.name,
+    this.parent,
+    this.roleLevel,
+    this.status,
+    this.type,
+    this.userAdmin,
+    this.failedLoginCounter,
+    this.homeAddress,
+    this.profileImgUrl,
+  });
 
   Result.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -93,6 +96,7 @@ class Result {
     userAdmin = json['userAdmin'];
     failedLoginCounter = json['failedLoginCounter'];
     homeAddress = json['homeAddress'];
+    profileImgUrl = json['profileImgUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -121,6 +125,7 @@ class Result {
     data['userAdmin'] = this.userAdmin;
     data['failedLoginCounter'] = this.failedLoginCounter;
     data['homeAddress'] = this.homeAddress;
+    data['profileImgUrl'] = this.profileImgUrl;
     return data;
   }
 }

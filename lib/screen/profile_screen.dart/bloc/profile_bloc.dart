@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -13,6 +14,7 @@ import 'package:origa/models/profile_api_result_model/profile_api_result_model.d
 import 'package:origa/models/profile_api_result_model/result.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/preference_helper.dart';
@@ -36,6 +38,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   List<LanguageModel> languageList = [];
   String? userType;
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
+  bool isProfileImageUpdating = false;
+  File? image;
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
@@ -125,11 +129,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     if (event is PostProfileImageEvent) {
+      isProfileImageUpdating = true;
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.UPLOAD, HttpUrl.changeProfileImage,
-          file: [event.postValue]);
+          APIRequestType.singleFileUpload, HttpUrl.changeProfileImage,
+          // file: [event.postValue]
+          imageFile: event.postValue);
       if (postResult[Constants.success]) {
+        isProfileImageUpdating = false;
         yield PostDataApiSuccessState();
+      } else {
+        isProfileImageUpdating = false;
+        image = null;
+        AppUtils.showErrorToast('Uploding Failed!');
       }
     }
   }

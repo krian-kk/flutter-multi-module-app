@@ -13,8 +13,8 @@ class DioClient {
     Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 10000, //10s
-        receiveTimeout: 10000, //10s
+        connectTimeout: 60000, //60s
+        receiveTimeout: 60000, //60s
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
                 '' != Singleton.instance.accessToken)
@@ -27,6 +27,32 @@ class DioClient {
               }
             : null,
         contentType: 'application/json',
+      ),
+    )..interceptors.add(Logging());
+
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+    return dio;
+  }
+
+  static dynamic dioFileConfig() {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: HttpUrl.baseUrl,
+        connectTimeout: 60000, //60s
+        receiveTimeout: 60000, //60s
+        followRedirects: true,
+        headers: (Singleton.instance.accessToken != null ||
+                '' != Singleton.instance.accessToken)
+            ? {
+                'authorization': 'Bearer ${Singleton.instance.accessToken}',
+              }
+            : null,
+        contentType: 'multipart/form-data',
       ),
     )..interceptors.add(Logging());
 
