@@ -162,10 +162,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     padding: const EdgeInsets.all(7.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
-                                            width: 110,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.275,
                                             child: Container(
                                               child: userActivity(
                                                 header: bloc.userType ==
@@ -176,17 +179,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                         .connected
                                                         .trim(),
                                                 count: '0',
+                                                size:
+                                                    MediaQuery.of(context).size,
                                                 backgrountColor:
                                                     ColorResource.colorE0ECDF,
                                                 leadingColor:
                                                     ColorResource.color73C170,
                                               ),
                                             )),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
+                                        // const SizedBox(
+                                        //   width: 8,
+                                        // ),
                                         SizedBox(
-                                            width: 110,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.275,
                                             child: Container(
                                               child: userActivity(
                                                 header: bloc.userType ==
@@ -197,23 +205,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                         .unreachable
                                                         .trim(),
                                                 count: '0',
+                                                size:
+                                                    MediaQuery.of(context).size,
                                                 backgrountColor:
                                                     ColorResource.colorF2EEDC,
                                                 leadingColor:
                                                     ColorResource.colorE5C55B,
                                               ),
                                             )),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
+                                        // const SizedBox(
+                                        //   width: 8,
+                                        // ),
                                         SizedBox(
-                                            width: 110,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.275,
                                             child: Container(
                                               child: userActivity(
                                                 header: Languages.of(context)!
                                                     .invalid
                                                     .trim(),
                                                 count: '0',
+                                                size:
+                                                    MediaQuery.of(context).size,
                                                 backgrountColor:
                                                     ColorResource.colorF4ECEF,
                                                 leadingColor:
@@ -702,47 +717,58 @@ class _DashboardScreenState extends State<DashboardScreen> {
       {String? header,
       String? count,
       Color? backgrountColor,
+      Size? size,
       required Color leadingColor}) {
-    return Container(
-      height: 55,
-      width: 125,
-      decoration: BoxDecoration(
-          color: backgrountColor, borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        children: [
-          Container(
-            width: 6,
-            decoration: BoxDecoration(
-              color: leadingColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topLeft: Radius.circular(10),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 55,
+        maxHeight: 60,
+        minWidth: (MediaQuery.of(context).size.width * 1 / 3) - 30,
+        maxWidth: 124,
+      ),
+      child: Container(
+        height: size!.height * 0.090,
+        width: size.width * 0.279,
+        decoration: BoxDecoration(
+            color: backgrountColor, borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          children: [
+            Container(
+              width: 6,
+              decoration: BoxDecoration(
+                color: leadingColor,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                ),
               ),
             ),
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 7),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomText(
-                  header!,
-                  color: ColorResource.color23375A,
-                  fontSize: FontSize.eleven,
-                  fontWeight: FontWeight.w700,
-                ),
-                CustomText(
-                  count!,
-                  color: ColorResource.color23375A,
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                ),
-              ],
-            ),
-          ))
-        ],
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomText(
+                    header!,
+                    color: ColorResource.color23375A,
+                    fontSize: FontSize.eleven,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  const Spacer(),
+                  CustomText(
+                    count!,
+                    color: ColorResource.color23375A,
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }
