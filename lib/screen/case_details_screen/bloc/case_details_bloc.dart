@@ -330,9 +330,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               contractorDetailsValue =
                   ContractorDetailsModel.fromJson(jsonData);
             } else {
-              // print('getContractorDetails');
-              // print(getContractorDetails['data']);
-              AppUtils.showToast(getContractorDetails['data']['message'] ?? '');
+              AppUtils.showToast(getContractorDetails['data'] ?? '');
               // AppUtils.showToast(getContractorDetails['data']);
             }
           }

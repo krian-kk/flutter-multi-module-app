@@ -11,17 +11,17 @@ class ProfileApiModel {
     if (json['result'] != null) {
       result = <Result>[];
       json['result'].forEach((v) {
-        result!.add(new Result.fromJson(v));
+        result!.add(Result.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -74,14 +74,14 @@ class Result {
     sId = json['_id'];
     aRef = json['aRef'];
     areaCode = json['areaCode'].cast<String>();
-    audit = json['audit'] != null ? new Audit.fromJson(json['audit']) : null;
+    audit = json['audit'] != null ? Audit.fromJson(json['audit']) : null;
     if (json['children'] != null) {
       children = [];
     }
     if (json['contact'] != null) {
       contact = <Contact>[];
       json['contact'].forEach((v) {
-        contact!.add(new Contact.fromJson(v));
+        contact!.add(Contact.fromJson(v));
       });
     }
     contractor = json['contractor'];
@@ -100,32 +100,32 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['aRef'] = this.aRef;
-    data['areaCode'] = this.areaCode;
-    if (this.audit != null) {
-      data['audit'] = this.audit!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['aRef'] = aRef;
+    data['areaCode'] = areaCode;
+    if (audit != null) {
+      data['audit'] = audit!.toJson();
     }
-    if (this.children != null) {
-      data['children'] = this.children!.map((v) => v.toJson()).toList();
+    if (children != null) {
+      data['children'] = children!.map((v) => v.toJson()).toList();
     }
-    if (this.contact != null) {
-      data['contact'] = this.contact!.map((v) => v.toJson()).toList();
+    if (contact != null) {
+      data['contact'] = contact!.map((v) => v.toJson()).toList();
     }
-    data['contractor'] = this.contractor;
-    data['dateJoining'] = this.dateJoining;
-    data['dateResign'] = this.dateResign;
-    data['defMobileNumber'] = this.defMobileNumber;
-    data['name'] = this.name;
-    data['parent'] = this.parent;
-    data['roleLevel'] = this.roleLevel;
-    data['status'] = this.status;
-    data['type'] = this.type;
-    data['userAdmin'] = this.userAdmin;
-    data['failedLoginCounter'] = this.failedLoginCounter;
-    data['homeAddress'] = this.homeAddress;
-    data['profileImgUrl'] = this.profileImgUrl;
+    data['contractor'] = contractor;
+    data['dateJoining'] = dateJoining;
+    data['dateResign'] = dateResign;
+    data['defMobileNumber'] = defMobileNumber;
+    data['name'] = name;
+    data['parent'] = parent;
+    data['roleLevel'] = roleLevel;
+    data['status'] = status;
+    data['type'] = type;
+    data['userAdmin'] = userAdmin;
+    data['failedLoginCounter'] = failedLoginCounter;
+    data['homeAddress'] = homeAddress;
+    data['profileImgUrl'] = profileImgUrl;
     return data;
   }
 }
@@ -148,12 +148,12 @@ class Audit {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['crBy'] = this.crBy;
-    data['crAt'] = this.crAt;
-    data['syncAt'] = this.syncAt;
-    data['upBy'] = this.upBy;
-    data['upAt'] = this.upAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['crBy'] = crBy;
+    data['crAt'] = crAt;
+    data['syncAt'] = syncAt;
+    data['upBy'] = upBy;
+    data['upAt'] = upAt;
     return data;
   }
 }
@@ -170,9 +170,9 @@ class Contact {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cType'] = this.cType;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['value'] = value;
     return data;
   }
 }

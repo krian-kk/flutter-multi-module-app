@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -78,6 +80,8 @@ class _CustomOtherFeedBackBottomSheetState
   List<String> actionproposedDropdownValue = [];
   String? actionproposedValue;
 
+  FocusNode focusNode = FocusNode();
+
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(allowMultiple: true, type: FileType.any);
@@ -128,147 +132,158 @@ class _CustomOtherFeedBackBottomSheetState
                           .copyWith(bottom: 5),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          widget.customerLoanUserWidget,
-                          const SizedBox(height: 11),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                Languages.of(context)!.date,
-                                fontSize: FontSize.twelve,
-                                fontWeight: FontWeight.w400,
-                                color: ColorResource.color666666,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              SizedBox(
-                                width:
-                                    (MediaQuery.of(context).size.width - 44) /
-                                        2,
-                                child: CustomReadOnlyTextField(
-                                  '',
-                                  dateControlller,
-                                  validationRules: const ['required'],
-                                  isReadOnly: true,
-                                  onTapped: () =>
-                                      pickDate(context, dateControlller),
-                                  suffixWidget: SvgPicture.asset(
-                                    ImageResource.calendar,
-                                    fit: BoxFit.scaleDown,
+                  child: KeyboardActions(
+                    config: KeyboardActionsConfig(
+                      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                      actions: [
+                        KeyboardActionsItem(
+                          focusNode: focusNode,
+                          displayArrows: false,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            widget.customerLoanUserWidget,
+                            const SizedBox(height: 11),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  Languages.of(context)!.date,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                SizedBox(
+                                  width:
+                                      (MediaQuery.of(context).size.width - 44) /
+                                          2,
+                                  child: CustomReadOnlyTextField(
+                                    '',
+                                    dateControlller,
+                                    validationRules: const ['required'],
+                                    isReadOnly: true,
+                                    onTapped: () =>
+                                        pickDate(context, dateControlller),
+                                    suffixWidget: SvgPicture.asset(
+                                      ImageResource.calendar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          // CustomText(
-                          //   Languages.of(context)!.customerMetCategory,
-                          //   fontSize: FontSize.fourteen,
-                          //   fontWeight: FontWeight.w700,
-                          //   color: ColorResource.color000000,
-                          //   fontStyle: FontStyle.normal,
-                          // ),
-                          // const SizedBox(height: 10),
-                          expandList([
-                            FeedbackTemplate(
-                                name: 'Add New Contact',
-                                expanded: false,
-                                data: [Data(name: 'addNewContact')])
-                          ], 0),
-                          ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: widget.bloc.contractorDetailsValue
-                                      .result!.feedbackTemplate?.length ??
-                                  0,
-                              itemBuilder: (context, int index) {
-                                // isVehicleAvailable = widget
-                                //         .bloc
-                                //         .contractorDetailsValue
-                                //         .result!
-                                //         .feedbackTemplate![index]
-                                //         .data![0]
-                                //         .value ??
-                                //     false;
-
-                                return expandList(
-                                    widget.bloc.contractorDetailsValue.result!
-                                        .feedbackTemplate!,
-                                    index);
-                              }),
-                          const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 13),
-                            child: CustomReadOnlyTextField(
-                              Languages.of(context)!.remark + '*',
-                              remarksController,
-                              validationRules: const ['required'],
-                              isLabel: true,
-                              isEnable: true,
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 25),
-                          GestureDetector(
-                            onTap: () {},
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                    side: const BorderSide(
-                                      width: 0.5,
-                                      color: ColorResource.colorDADADA,
-                                    ),
-                                  ),
-                                  color: ColorResource.color23375A,
-                                  elevation: 2,
-                                  child: InkWell(
-                                    onTap: () => getFiles(),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  ImageResource.upload),
-                                              const SizedBox(width: 5),
-                                              const CustomText(
-                                                'UPLOAD AUDIO FILE',
-                                                color:
-                                                    ColorResource.colorFFFFFF,
-                                                fontSize: FontSize.sixteen,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w700,
-                                              )
-                                            ],
-                                          ),
-                                          const CustomText(
-                                            'UPTO 5MB',
-                                            lineHeight: 1,
-                                            color: ColorResource.colorFFFFFF,
-                                            fontSize: FontSize.twelve,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w700,
-                                          )
-                                        ],
+                            const SizedBox(height: 20),
+                            // CustomText(
+                            //   Languages.of(context)!.customerMetCategory,
+                            //   fontSize: FontSize.fourteen,
+                            //   fontWeight: FontWeight.w700,
+                            //   color: ColorResource.color000000,
+                            //   fontStyle: FontStyle.normal,
+                            // ),
+                            // const SizedBox(height: 10),
+                            expandList([
+                              FeedbackTemplate(
+                                  name: 'Add New Contact',
+                                  expanded: false,
+                                  data: [Data(name: 'addNewContact')])
+                            ], 0),
+                            ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: widget.bloc.contractorDetailsValue
+                                        .result!.feedbackTemplate?.length ??
+                                    0,
+                                itemBuilder: (context, int index) {
+                                  // isVehicleAvailable = widget
+                                  //         .bloc
+                                  //         .contractorDetailsValue
+                                  //         .result!
+                                  //         .feedbackTemplate![index]
+                                  //         .data![0]
+                                  //         .value ??
+                                  //     false;
+
+                                  return expandList(
+                                      widget.bloc.contractorDetailsValue.result!
+                                          .feedbackTemplate!,
+                                      index);
+                                }),
+                            const SizedBox(height: 5),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 13),
+                              child: CustomReadOnlyTextField(
+                                Languages.of(context)!.remark + '*',
+                                remarksController,
+                                validationRules: const ['required'],
+                                isLabel: true,
+                                isEnable: true,
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            GestureDetector(
+                              onTap: () {},
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      side: const BorderSide(
+                                        width: 0.5,
+                                        color: ColorResource.colorDADADA,
                                       ),
                                     ),
-                                  )),
+                                    color: ColorResource.color23375A,
+                                    elevation: 2,
+                                    child: InkWell(
+                                      onTap: () => getFiles(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    ImageResource.upload),
+                                                const SizedBox(width: 5),
+                                                const CustomText(
+                                                  'UPLOAD AUDIO FILE',
+                                                  color:
+                                                      ColorResource.colorFFFFFF,
+                                                  fontSize: FontSize.sixteen,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w700,
+                                                )
+                                              ],
+                                            ),
+                                            const CustomText(
+                                              'UPTO 5MB',
+                                              lineHeight: 1,
+                                              color: ColorResource.colorFFFFFF,
+                                              fontSize: FontSize.twelve,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w700,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 15),
-                        ],
+                            const SizedBox(height: 15),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -589,9 +604,33 @@ class _CustomOtherFeedBackBottomSheetState
                                     CustomReadOnlyTextField(
                                       Languages.of(context)!.contact,
                                       listOfContact[index].controller,
+                                      focusNode: focusNode,
                                       isLabel: true,
+                                      isEnable:
+                                          (listOfContact[index].formValue !=
+                                              ''),
                                       borderColor: ColorResource.color000000,
-                                      keyBoardType: TextInputType.name,
+                                      keyBoardType: (listOfContact[index]
+                                                      .formValue ==
+                                                  'Mobile' ||
+                                              listOfContact[index].formValue ==
+                                                  'Office Contact No.' ||
+                                              listOfContact[index].formValue ==
+                                                  'Residence Contact No.')
+                                          ? TextInputType.number
+                                          : TextInputType.name,
+                                      inputformaters: (listOfContact[index]
+                                                      .formValue ==
+                                                  'Mobile' ||
+                                              listOfContact[index].formValue ==
+                                                  'Office Contact No.' ||
+                                              listOfContact[index].formValue ==
+                                                  'Residence Contact No.')
+                                          ? [
+                                              LengthLimitingTextInputFormatter(
+                                                  10),
+                                            ]
+                                          : [],
                                     ),
                                   ],
                                 ),
@@ -603,8 +642,6 @@ class _CustomOtherFeedBackBottomSheetState
                             onTap: () {
                               if ((listOfContact.last.formValue == '' ||
                                   listOfContact.last.controller.text.isEmpty)) {
-                                print(
-                                    '========= > ${jsonEncode(otherFeedbackContact)}');
                                 AppUtils.showToast('Please Added the Contact');
                               } else {
                                 setState(() {

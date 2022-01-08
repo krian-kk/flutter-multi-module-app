@@ -104,6 +104,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             }
             return null;
           },
+
           onEditingComplete: () {
             setState(() {});
             FocusScope.of(context).unfocus();

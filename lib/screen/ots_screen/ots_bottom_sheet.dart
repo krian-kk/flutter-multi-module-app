@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -11,6 +10,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
+import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -51,6 +51,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   TextEditingController otsPaymentDateControlller = TextEditingController();
   // TextEditingController otsPaymentTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
+  String selectedPaymentModeButton = '';
 
   FocusNode otsProposedAmountFocusNode = FocusNode();
 
@@ -65,6 +66,11 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    List<PaymentModeButtonModel> paymentModeButtonList = [
+      PaymentModeButtonModel(Languages.of(context)!.cheque),
+      PaymentModeButtonModel(Languages.of(context)!.cash),
+      PaymentModeButtonModel(Languages.of(context)!.digital),
+    ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: SizedBox(
@@ -194,6 +200,21 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                               isLabel: true,
                             )),
                             const SizedBox(height: 15),
+                            CustomText(
+                              Languages.of(context)!.paymentMode,
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                              color: ColorResource.color101010,
+                            ),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              runSpacing: 10,
+                              spacing: 18,
+                              children:
+                                  _buildPaymentButton(paymentModeButtonList),
+                            ),
+                            const SizedBox(height: 25),
                           ],
                         ),
                       ),
@@ -253,79 +274,88 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       onTap: isSubmit
                           ? () async {
                               if (_formKey.currentState!.validate()) {
-                                setState(() => isSubmit = false);
-                                Position position = Position(
-                                  longitude: 0,
-                                  latitude: 0,
-                                  timestamp: DateTime.now(),
-                                  accuracy: 0,
-                                  altitude: 0,
-                                  heading: 0,
-                                  speed: 0,
-                                  speedAccuracy: 0,
-                                );
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    position = res;
-                                  });
-                                }
-                                var requestBodyData = OtsPostModel(
-                                  eventId: ConstantEventValues.otsEventId,
-                                  eventType: (widget.userType ==
-                                              Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : OTS'
-                                      : 'OTS',
-                                  caseId: widget.caseId,
-                                  eventAttr: OTSEventAttr(
-                                      date: otsPaymentDateControlller.text,
-                                      remarkOts: remarksControlller.text,
-                                      amntOts:
-                                          otsProposedAmountControlller.text,
-                                      appStatus: 'OTS',
-                                      mode: 'CASH',
-                                      altitude: position.altitude,
-                                      accuracy: position.accuracy,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      latitude: position.latitude,
-                                      longitude: position.longitude),
-                                  eventCode: ConstantEventValues.otsEvenCode,
-                                  createdBy: Singleton.instance.agentRef ?? '',
-                                  agentName: Singleton.instance.agentName ?? '',
-                                  eventModule: widget.isCall!
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                                  contact: OTSContact(
-                                    cType: widget.postValue['cType'],
-                                    health: ConstantEventValues.otsHealth,
-                                    value: widget.postValue['value'],
-                                  ),
-                                  callId: Singleton.instance.callID,
-                                  callingId: Singleton.instance.callingID,
-                                  callerServiceId:
-                                      Singleton.instance.callerServiceID ?? '',
-                                  voiceCallEventCode:
-                                      ConstantEventValues.voiceCallEventCode,
-                                  agrRef: Singleton.instance.agrRef ?? '',
-                                  contractor:
-                                      Singleton.instance.contractor ?? '',
-                                );
+                                if (selectedPaymentModeButton == '') {
+                                  AppUtils.showToast(
+                                      Constants.pleaseSelectOptions);
+                                } else {
+                                  setState(() => isSubmit = false);
+                                  Position position = Position(
+                                    longitude: 0,
+                                    latitude: 0,
+                                    timestamp: DateTime.now(),
+                                    accuracy: 0,
+                                    altitude: 0,
+                                    heading: 0,
+                                    speed: 0,
+                                    speedAccuracy: 0,
+                                  );
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    setState(() {
+                                      position = res;
+                                    });
+                                  }
+                                  var requestBodyData = OtsPostModel(
+                                    eventId: ConstantEventValues.otsEventId,
+                                    eventType: (widget.userType ==
+                                                Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : OTS'
+                                        : 'OTS',
+                                    caseId: widget.caseId,
+                                    eventAttr: OTSEventAttr(
+                                        date: otsPaymentDateControlller.text,
+                                        remarkOts: remarksControlller.text,
+                                        amntOts:
+                                            otsProposedAmountControlller.text,
+                                        appStatus: 'OTS',
+                                        mode: selectedPaymentModeButton,
+                                        altitude: position.altitude,
+                                        accuracy: position.accuracy,
+                                        heading: position.heading,
+                                        speed: position.speed,
+                                        latitude: position.latitude,
+                                        longitude: position.longitude),
+                                    eventCode: ConstantEventValues.otsEvenCode,
+                                    createdBy:
+                                        Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    eventModule: widget.isCall!
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
+                                    contact: OTSContact(
+                                      cType: widget.postValue['cType'],
+                                      health: ConstantEventValues.otsHealth,
+                                      value: widget.postValue['value'],
+                                    ),
+                                    callId: Singleton.instance.callID,
+                                    callingId: Singleton.instance.callingID,
+                                    callerServiceId:
+                                        Singleton.instance.callerServiceID ??
+                                            '',
+                                    voiceCallEventCode:
+                                        ConstantEventValues.voiceCallEventCode,
+                                    agrRef: Singleton.instance.agrRef ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
+                                  );
 
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                        APIRequestType.POST, HttpUrl.otsPostUrl,
-                                        requestBodydata:
-                                            jsonEncode(requestBodyData));
-                                if (postResult[Constants.success]) {
-                                  AppUtils.topSnackBar(
-                                      context, "Event updated successfully.");
-                                  Navigator.pop(context);
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                          APIRequestType.POST,
+                                          HttpUrl.otsPostUrl,
+                                          requestBodydata:
+                                              jsonEncode(requestBodyData));
+                                  if (postResult[Constants.success]) {
+                                    AppUtils.topSnackBar(
+                                        context, "Event updated successfully.");
+                                    Navigator.pop(context);
+                                  }
                                 }
                               }
                               setState(() => isSubmit = true);
@@ -414,5 +444,58 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     setState(() {
       controller.text = '$hours:$minutes';
     });
+  }
+
+  List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
+    List<Widget> widgets = [];
+    for (var element in list) {
+      widgets.add(InkWell(
+        onTap: () {
+          setState(() {
+            selectedPaymentModeButton = element.title;
+          });
+        },
+        child: Container(
+          width: 150,
+          height: 50,
+          decoration: BoxDecoration(
+              color: element.title == selectedPaymentModeButton
+                  ? ColorResource.color23375A
+                  : ColorResource.colorBEC4CF,
+              boxShadow: [
+                BoxShadow(
+                  color: ColorResource.color000000.withOpacity(0.2),
+                  blurRadius: 2.0,
+                  offset: const Offset(1.0, 1.0),
+                )
+              ],
+              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: ColorResource.colorFFFFFF,
+                  child: Center(
+                    child: SvgPicture.asset(ImageResource.money),
+                  ),
+                ),
+                const SizedBox(width: 7),
+                CustomText(
+                  element.title,
+                  color: ColorResource.colorFFFFFF,
+                  fontWeight: FontWeight.w700,
+                  lineHeight: 1,
+                  fontSize: FontSize.sixteen,
+                  fontStyle: FontStyle.normal,
+                )
+              ],
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
   }
 }
