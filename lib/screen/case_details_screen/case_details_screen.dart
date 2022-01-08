@@ -1110,7 +1110,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              health: health ?? '2',
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,

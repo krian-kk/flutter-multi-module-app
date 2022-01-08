@@ -183,33 +183,33 @@ class AgentLocation {
 
 class OtherFeedBackContact {
   late String cType;
-  late String health;
+  // late String health;
   late String value;
-  // late String resAddressId0;
+  late String resAddressId0;
   late String contactId0;
 
   OtherFeedBackContact({
     required this.cType,
-    required this.health,
+    // required this.health,
     required this.value,
-    // this.resAddressId0 = '',
+    required this.resAddressId0,
     required this.contactId0,
   });
 
   OtherFeedBackContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
-    health = json['health'];
+    // health = json['health'];
     value = json['value'];
-    // resAddressId0 = json['resAddressId_0'];
+    resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
-    data['health'] = health;
+    // data['health'] = health;
     data['value'] = value;
-    // data['resAddressId_0'] = resAddressId0;
+    data['resAddressId_0'] = resAddressId0;
     data['contactId_0'] = contactId0;
     return data;
   }

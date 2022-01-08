@@ -40,7 +40,8 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.health,
+    // required this.resAddressId_0,
+    // required this.contactId_0,
     this.postValue,
     this.isCall,
   }) : super(key: key);
@@ -49,7 +50,8 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  final String health;
+  // final String contactId_0;
+  // final String resAddressId_0;
   final bool? isCall;
 
   @override
@@ -397,8 +399,8 @@ class _CustomOtherFeedBackBottomSheetState
                                     eventCode: ConstantEventValues
                                         .otherFeedbackEvenCode,
                                     eventModule: widget.isCall!
-                                        ? 'Field Allocation'
-                                        : 'Telecalling',
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
                                     eventAttr: EventAttr(
                                       remarks: remarksController.text,
                                       vehicleavailable: isVehicleAvailable,
@@ -601,36 +603,50 @@ class _CustomOtherFeedBackBottomSheetState
                                       icon: SvgPicture.asset(
                                           ImageResource.downShape),
                                     )),
-                                    CustomReadOnlyTextField(
-                                      Languages.of(context)!.contact,
-                                      listOfContact[index].controller,
-                                      focusNode: focusNode,
-                                      isLabel: true,
-                                      isEnable:
-                                          (listOfContact[index].formValue !=
-                                              ''),
-                                      borderColor: ColorResource.color000000,
-                                      keyBoardType: (listOfContact[index]
-                                                      .formValue ==
-                                                  'Mobile' ||
-                                              listOfContact[index].formValue ==
-                                                  'Office Contact No.' ||
-                                              listOfContact[index].formValue ==
-                                                  'Residence Contact No.')
-                                          ? TextInputType.number
-                                          : TextInputType.name,
-                                      inputformaters: (listOfContact[index]
-                                                      .formValue ==
-                                                  'Mobile' ||
-                                              listOfContact[index].formValue ==
-                                                  'Office Contact No.' ||
-                                              listOfContact[index].formValue ==
-                                                  'Residence Contact No.')
-                                          ? [
-                                              LengthLimitingTextInputFormatter(
-                                                  10),
-                                            ]
-                                          : [],
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (listOfContact[index].formValue ==
+                                            '') {
+                                          AppUtils.showErrorToast(
+                                              "Please select customer contact type");
+                                        }
+                                        // print('object');
+                                      },
+                                      child: CustomReadOnlyTextField(
+                                        Languages.of(context)!.contact,
+                                        listOfContact[index].controller,
+                                        focusNode: focusNode,
+                                        isLabel: true,
+                                        isEnable:
+                                            (listOfContact[index].formValue !=
+                                                ''),
+                                        borderColor: ColorResource.color000000,
+                                        keyBoardType:
+                                            (listOfContact[index].formValue ==
+                                                        'Mobile' ||
+                                                    listOfContact[index]
+                                                            .formValue ==
+                                                        'Office Contact No.' ||
+                                                    listOfContact[index]
+                                                            .formValue ==
+                                                        'Residence Contact No.')
+                                                ? TextInputType.number
+                                                : TextInputType.name,
+                                        inputformaters:
+                                            (listOfContact[index].formValue ==
+                                                        'Mobile' ||
+                                                    listOfContact[index]
+                                                            .formValue ==
+                                                        'Office Contact No.' ||
+                                                    listOfContact[index]
+                                                            .formValue ==
+                                                        'Residence Contact No.')
+                                                ? [
+                                                    LengthLimitingTextInputFormatter(
+                                                        10),
+                                                  ]
+                                                : [],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -642,7 +658,8 @@ class _CustomOtherFeedBackBottomSheetState
                             onTap: () {
                               if ((listOfContact.last.formValue == '' ||
                                   listOfContact.last.controller.text.isEmpty)) {
-                                AppUtils.showToast('Please Added the Contact');
+                                AppUtils.showErrorToast(
+                                    'Please fill the contact');
                               } else {
                                 setState(() {
                                   listOfContact.add(AddNewContactFieldModel(
@@ -656,10 +673,12 @@ class _CustomOtherFeedBackBottomSheetState
                                     otherFeedbackContact
                                         .add(OtherFeedBackContact(
                                       cType: listOfContact[i].formValue,
-                                      health: widget.health,
                                       value: listOfContact[i].controller.text,
                                       contactId0:
                                           Singleton.instance.contactId_0 ?? '',
+                                      resAddressId0:
+                                          Singleton.instance.resAddressId_0 ??
+                                              '',
                                     ));
                                   }
                                 });
