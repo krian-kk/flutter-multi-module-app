@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -1133,11 +1134,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callCustomer:
-            List<dynamic> l1 = [];
+            List<String> s1 = [];
             bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
-              if (element['cType'] == 'mobile') {
-                l1.add(element);
-              }
+              if (element['cType'].contains('mobile')) {
+                if (!(s1.contains(element['value']))) {
+                  s1.add(element['value']);
+                }
+              } else {}
             });
 
             return CallCustomerBottomSheet(
@@ -1150,7 +1153,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              listOfMobileNo: l1,
+              listOfMobileNo: s1,
               userType: bloc.userType.toString(),
               caseId: bloc.caseId.toString(),
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),

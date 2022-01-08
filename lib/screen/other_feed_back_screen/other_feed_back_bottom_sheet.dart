@@ -68,7 +68,7 @@ class _CustomOtherFeedBackBottomSheetState
   bool isSubmit = true;
 
   List<AddNewContactFieldModel> listOfContact = [
-    AddNewContactFieldModel(TextEditingController(), ''),
+    AddNewContactFieldModel(TextEditingController(), '', FocusNode()),
   ];
 
   List<OtherFeedBackContact> otherFeedbackContact = [];
@@ -81,8 +81,6 @@ class _CustomOtherFeedBackBottomSheetState
 
   List<String> actionproposedDropdownValue = [];
   String? actionproposedValue;
-
-  FocusNode focusNode = FocusNode();
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
@@ -135,14 +133,9 @@ class _CustomOtherFeedBackBottomSheetState
                 ),
                 Expanded(
                   child: KeyboardActions(
-                    config: KeyboardActionsConfig(
+                    config: const KeyboardActionsConfig(
                       keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                      actions: [
-                        KeyboardActionsItem(
-                          focusNode: focusNode,
-                          displayArrows: false,
-                        ),
-                      ],
+                      actions: [],
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -342,6 +335,21 @@ class _CustomOtherFeedBackBottomSheetState
                       fontWeight: FontWeight.w600,
                       onTap: isSubmit
                           ? () async {
+                              setState(() {});
+                              print('jdjdkjdj => ${listOfContact.length}');
+                              otherFeedbackContact.clear();
+                              for (int i = 0; i < (listOfContact.length); i++) {
+                                otherFeedbackContact.add(OtherFeedBackContact(
+                                  cType: listOfContact[i].formValue,
+                                  value: listOfContact[i].controller.text,
+                                  contactId0:
+                                      Singleton.instance.contactId_0 ?? '',
+                                  resAddressId0:
+                                      Singleton.instance.resAddressId_0 ?? '',
+                                ));
+                              }
+                              print(
+                                  'kdjkdjkdj => ${jsonEncode(otherFeedbackContact)}');
                               // SharedPreferences _pref =
                               //     await SharedPreferences.getInstance();
                               if (_formKey.currentState!.validate()) {
@@ -352,6 +360,7 @@ class _CustomOtherFeedBackBottomSheetState
                                 //   );
                                 // } else {
                                 setState(() => isSubmit = false);
+
                                 Position position = Position(
                                   longitude: 0,
                                   latitude: 0,
@@ -596,10 +605,31 @@ class _CustomOtherFeedBackBottomSheetState
                                       underlineColor: ColorResource.color000000,
                                       selectedValue:
                                           listOfContact[index].formValue,
-                                      onChanged: (newValue) => setState(
-                                        () => listOfContact[index].formValue =
-                                            newValue.toString(),
-                                      ),
+                                      onChanged: (newValue) {
+                                        setState(
+                                          () => listOfContact[index].formValue =
+                                              newValue.toString(),
+                                        );
+                                        otherFeedbackContact.clear();
+                                        for (int i = 0;
+                                            i < (listOfContact.length - 1);
+                                            i++) {
+                                          otherFeedbackContact
+                                              .add(OtherFeedBackContact(
+                                            cType: listOfContact[i].formValue,
+                                            value: listOfContact[i]
+                                                .controller
+                                                .text,
+                                            contactId0: Singleton
+                                                    .instance.contactId_0 ??
+                                                '',
+                                            resAddressId0: Singleton
+                                                    .instance.resAddressId_0 ??
+                                                '',
+                                          ));
+                                        }
+                                        setState(() {});
+                                      },
                                       icon: SvgPicture.asset(
                                           ImageResource.downShape),
                                     )),
@@ -615,7 +645,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       child: CustomReadOnlyTextField(
                                         Languages.of(context)!.contact,
                                         listOfContact[index].controller,
-                                        focusNode: focusNode,
+                                        // focusNode: focusNode,
                                         isLabel: true,
                                         isEnable:
                                             (listOfContact[index].formValue !=
@@ -665,22 +695,8 @@ class _CustomOtherFeedBackBottomSheetState
                                   listOfContact.add(AddNewContactFieldModel(
                                     TextEditingController(),
                                     '',
+                                    FocusNode(),
                                   ));
-                                  otherFeedbackContact.clear();
-                                  for (int i = 0;
-                                      i < (listOfContact.length - 1);
-                                      i++) {
-                                    otherFeedbackContact
-                                        .add(OtherFeedBackContact(
-                                      cType: listOfContact[i].formValue,
-                                      value: listOfContact[i].controller.text,
-                                      contactId0:
-                                          Singleton.instance.contactId_0 ?? '',
-                                      resAddressId0:
-                                          Singleton.instance.resAddressId_0 ??
-                                              '',
-                                    ));
-                                  }
                                 });
                               }
                             },

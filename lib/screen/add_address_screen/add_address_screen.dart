@@ -25,7 +25,7 @@ class AddNewContactBottomSheet extends StatefulWidget {
 class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
   List<AddNewContactFieldModel> listOfContact = [
-    AddNewContactFieldModel(TextEditingController(), 'select'),
+    AddNewContactFieldModel(TextEditingController(), 'select', FocusNode()),
   ];
 
   @override
@@ -105,6 +105,7 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
                                 listOfContact.add(AddNewContactFieldModel(
                                   TextEditingController(),
                                   'select',
+                                  FocusNode(),
                                 ));
                               });
                             },

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -20,13 +19,14 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final String caseId;
   final String sid;
-  final List<dynamic> listOfMobileNo;
+  final List<String> listOfMobileNo;
 
   const CallCustomerBottomSheet({
     Key? key,
@@ -57,10 +57,12 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   void initState() {
     super.initState();
     bloc = CallCustomerBloc()..add(CallCustomerInitialEvent());
-    widget.listOfMobileNo.forEach((element) {
-      customerContactNoDropDownValue = element['value'];
-      customerContactNoDropdownList.add(element['value']);
-    });
+
+    for (var element in widget.listOfMobileNo) {
+      customerContactNoDropdownList.add(element);
+    }
+
+    customerContactNoDropDownValue = customerContactNoDropdownList.first;
   }
 
   @override
@@ -302,8 +304,11 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     // Navigator.pop(context);
                                   } else {}
                                 } else {
-                                  await FlutterPhoneDirectCaller.callNumber(
-                                      customerContactNoDropDownValue);
+                                  if (await canLaunch('tel:' +
+                                      customerContactNoDropDownValue)) {
+                                    await launch('tel:' +
+                                        customerContactNoDropDownValue);
+                                  }
                                 }
                               }
                               if (mounted) {
