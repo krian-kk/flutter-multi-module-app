@@ -51,11 +51,15 @@ class _CustomEventDetailsBottomSheetState
             const SizedBox(height: 10),
             Expanded(
                 child: ListView.builder(
-              reverse: true,
-              itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
-              itemBuilder: (context, int index) =>
-                  expandList(widget.bloc.eventDetailsAPIValue.result!, index),
-            )),
+                    // reverse: true,
+                    itemCount:
+                        widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
+                    itemBuilder: (context, int index) {
+                      dynamic listVal = widget
+                          .bloc.eventDetailsAPIValue.result!.reversed
+                          .toList();
+                      return expandList(listVal, index);
+                    })),
           ],
         ),
         bottomNavigationBar: Container(

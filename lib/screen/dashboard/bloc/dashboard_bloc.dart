@@ -238,7 +238,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyReceiptsEvent) {
-      // Here we clear and flase the search resulte
+      // Here we clear and false the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -257,7 +257,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is ReceiptsApiEvent) {
-      // Here we clear and flase the search resulte
+      // Here we clear and false the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
       yield SelectedTimeperiodDataLoadingState();
@@ -270,12 +270,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         if (getMyReceiptsData[Constants.success]) {
           yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
         }
-        yield SelectedTimeperiodDataLoadedState();
       }
+      yield SelectedTimeperiodDataLoadedState();
     }
 
     if (event is MyVisitsEvent) {
-      // Here we clear and flase the search resulte
+      // Here we clear and false the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -305,6 +305,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       isShowSearchResult = false;
       yield SelectedTimeperiodDataLoadingState();
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        // yield SelectedTimeperiodDataLoadedState();
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyVisitsData;
@@ -321,9 +322,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         if (getMyVisitsData[Constants.success]) {
           yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
         }
-
-        yield SelectedTimeperiodDataLoadedState();
       }
+      yield SelectedTimeperiodDataLoadedState();
     }
 
     if (event is MyDeposistsEvent) {
@@ -336,6 +336,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
         // print(getMyDepositsData['data']);
         if (getMyDepositsData[Constants.success]) {
+          // yield SelectedTimeperiodDataLoadedState();
+
           yield MyDeposistsState();
         }
       }
@@ -343,6 +345,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is DeposistsApiEvent) {
+      yield SelectedTimeperiodDataLoadingState();
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -350,7 +353,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             APIRequestType.GET,
             HttpUrl.dashboardMyDeposistsUrl + "timePeriod=${event.timePeiod}");
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
+        if (getMyDepositsData[Constants.success]) {}
       }
+      yield SelectedTimeperiodDataLoadedState();
     }
 
     if (event is YardingAndSelfReleaseEvent) {

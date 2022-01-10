@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
@@ -58,10 +60,27 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   final _formKey = GlobalKey<FormState>();
 
   bool isSubmit = true;
+  List uploadFileLists = [];
 
   @override
   void initState() {
     super.initState();
+  }
+
+  getFiles() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: true, type: FileType.any);
+    if (result != null) {
+      if ((result.files.first.size) / 1048576.ceil() > 5) {
+        AppUtils.showToast('Please Select Minimum 5 MB File.',
+            gravity: ToastGravity.CENTER);
+      } else {
+        uploadFileLists =
+            result.files.map((path) => path.path.toString()).toList();
+      }
+    } else {
+      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+    }
   }
 
   @override
@@ -215,6 +234,54 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   _buildPaymentButton(paymentModeButtonList),
                             ),
                             const SizedBox(height: 25),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    side: const BorderSide(
+                                      width: 0.5,
+                                      color: ColorResource.colorDADADA,
+                                    ),
+                                  ),
+                                  color: ColorResource.color23375A,
+                                  elevation: 2,
+                                  child: InkWell(
+                                    onTap: () => getFiles(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                  ImageResource.upload),
+                                              const SizedBox(width: 5),
+                                              const CustomText(
+                                                'UPLOAD FILE',
+                                                color:
+                                                    ColorResource.colorFFFFFF,
+                                                fontSize: FontSize.sixteen,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w700,
+                                              )
+                                            ],
+                                          ),
+                                          const CustomText(
+                                            'UPTO 5MB',
+                                            lineHeight: 1,
+                                            color: ColorResource.colorFFFFFF,
+                                            fontSize: FontSize.twelve,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                            ),
                           ],
                         ),
                       ),
@@ -307,19 +374,23 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         ? 'TC : OTS'
                                         : 'OTS',
                                     caseId: widget.caseId,
+                                    imageLocation: uploadFileLists.isNotEmpty
+                                        ? uploadFileLists as List<String>
+                                        : [''],
                                     eventAttr: OTSEventAttr(
-                                        date: otsPaymentDateControlller.text,
-                                        remarkOts: remarksControlller.text,
-                                        amntOts:
-                                            otsProposedAmountControlller.text,
-                                        appStatus: 'OTS',
-                                        mode: selectedPaymentModeButton,
-                                        altitude: position.altitude,
-                                        accuracy: position.accuracy,
-                                        heading: position.heading,
-                                        speed: position.speed,
-                                        latitude: position.latitude,
-                                        longitude: position.longitude),
+                                      date: otsPaymentDateControlller.text,
+                                      remarkOts: remarksControlller.text,
+                                      amntOts:
+                                          otsProposedAmountControlller.text,
+                                      appStatus: 'OTS',
+                                      mode: selectedPaymentModeButton,
+                                      altitude: position.altitude,
+                                      accuracy: position.accuracy,
+                                      heading: position.heading,
+                                      speed: position.speed,
+                                      latitude: position.latitude,
+                                      longitude: position.longitude,
+                                    ),
                                     eventCode: ConstantEventValues.otsEvenCode,
                                     createdBy:
                                         Singleton.instance.agentRef ?? '',

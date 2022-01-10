@@ -18,7 +18,7 @@ class OtsPostModel {
   double? invalidNumber;
   String agrRef;
   String contractor;
-
+  List<String> imageLocation;
   OtsPostModel({
     required this.eventId,
     required this.eventType,
@@ -36,6 +36,7 @@ class OtsPostModel {
     this.invalidNumber,
     required this.agrRef,
     required this.contractor,
+    required this.imageLocation,
   });
 
   factory OtsPostModel.fromJson(Map<String, dynamic> json) => OtsPostModel(
@@ -56,6 +57,7 @@ class OtsPostModel {
         invalidNumber: json['invalidNumber'] as dynamic,
         agrRef: json['agrRef'] as String,
         contractor: json['contractor'] as String,
+        imageLocation: json['imageLocation'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,5 +77,6 @@ class OtsPostModel {
         'invalidNumber': invalidNumber,
         'agrRef': agrRef,
         'contractor': contractor,
+        'imageLocation': imageLocation,
       };
 }

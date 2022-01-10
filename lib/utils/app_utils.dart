@@ -8,6 +8,7 @@ import 'package:origa/utils/custom_snackbar/custom_snackbar.dart';
 import 'package:origa/utils/custom_snackbar/top_snack_bar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DebugMode {
   static bool get isInDebugMode {
@@ -31,6 +32,15 @@ class AppUtils {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 14.0);
+  }
+
+  static Future<void> makePhoneCall(String value) async {
+    if (await canLaunch(value)) {
+      await launch(value);
+    } else {
+      //  throw 'Could not make call $value';
+      showErrorToast('Could not make call $value');
+    }
   }
 
   // static void showSnackBar(
@@ -101,8 +111,9 @@ class AppUtils {
       context,
       CustomSnackBar.success(
         message: value,
-        backgroundColor: ColorResource.colorEA6D48,
+        backgroundColor: ColorResource.color3BCD25,
       ),
+      displayDuration: Duration(milliseconds: 1500),
     );
   }
 

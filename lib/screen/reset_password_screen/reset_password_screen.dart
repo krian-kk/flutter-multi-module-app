@@ -610,9 +610,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                 requestBodydata: jsonEncode(
                                                     requestBodyData.toJson()));
                                         if (postResult[Constants.success]) {
-                                          AppUtils.showToast(
-                                              Constants.successfullyUpdated,
-                                              gravity: ToastGravity.BOTTOM);
+                                          AppUtils.topSnackBar(context,
+                                              Constants.successfullyUpdated);
+                                          // AppUtils.showToast(
+                                          //     Constants.successfullyUpdated,
+                                          //     gravity: ToastGravity.BOTTOM);
+                                          await Future.delayed(
+                                              const Duration(seconds: 2));
                                           Navigator.pop(context);
                                         }
                                       } else {
