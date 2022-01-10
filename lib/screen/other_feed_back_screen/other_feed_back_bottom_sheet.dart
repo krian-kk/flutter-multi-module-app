@@ -87,7 +87,7 @@ class _CustomOtherFeedBackBottomSheetState
         .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
-        AppUtils.showToast('Please Select Minimum 5 MB File.',
+        AppUtils.showToast('Please Select Maximum 5 MB File.',
             gravity: ToastGravity.CENTER);
       } else {
         uploadFileLists =
@@ -103,11 +103,15 @@ class _CustomOtherFeedBackBottomSheetState
     isVehicleAvailable = widget.bloc.contractorDetailsValue.result!
             .feedbackTemplate?[0].data![0].value ??
         false;
+    setState(() {
+      dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
     // for (var element in widget.bloc.contractorDetailsValue.result!
     //             .feedbackTemplate![0].data![0].options![0].viewValue!) {}
     //         collectorFeedBackValueDropdownList.addAll(widget.bloc.contractorDetailsValue.result!
     //             .feedbackTemplate![0].data![0].options![0].viewValue!);
     super.initState();
+    print(widget.postValue);
   }
 
   @override
@@ -151,19 +155,19 @@ class _CustomOtherFeedBackBottomSheetState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CustomText(
-                                  Languages.of(context)!.date,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                // CustomText(
+                                //   Languages.of(context)!.date,
+                                //   fontSize: FontSize.twelve,
+                                //   fontWeight: FontWeight.w400,
+                                //   color: ColorResource.color666666,
+                                //   fontStyle: FontStyle.normal,
+                                // ),
                                 SizedBox(
                                   width:
                                       (MediaQuery.of(context).size.width - 44) /
                                           2,
                                   child: CustomReadOnlyTextField(
-                                    '',
+                                    Languages.of(context)!.date,
                                     dateControlller,
                                     validationRules: const ['required'],
                                     isReadOnly: true,
@@ -340,13 +344,17 @@ class _CustomOtherFeedBackBottomSheetState
                               otherFeedbackContact.clear();
                               for (int i = 0; i < (listOfContact.length); i++) {
                                 otherFeedbackContact.add(OtherFeedBackContact(
-                                  cType: listOfContact[i].formValue,
-                                  value: listOfContact[i].controller.text,
-                                  contactId0:
-                                      Singleton.instance.contactId_0 ?? '',
-                                  resAddressId0:
-                                      Singleton.instance.resAddressId_0 ?? '',
-                                ));
+                                    cType: listOfContact[i]
+                                        .formValue
+                                        .toLowerCase(),
+                                    value: listOfContact[i].controller.text,
+                                    contactId0: '',
+                                    resAddressId0: ''
+                                    // contactId0:
+                                    //     Singleton.instance.contactId_0 ?? '',
+                                    // resAddressId0:
+                                    //     Singleton.instance.resAddressId_0 ?? '',
+                                    ));
                               }
                               print(
                                   'kdjkdjkdj => ${jsonEncode(otherFeedbackContact)}');
@@ -382,35 +390,31 @@ class _CustomOtherFeedBackBottomSheetState
                                   });
                                 }
                                 var requestBodyData = OtherFeedBackPostModel(
-                                    eventId: ConstantEventValues
-                                        .otherFeedbackEventId,
-                                    eventType: (widget.userType ==
-                                                Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : FEEDBACK'
-                                        : 'FEEDBACK',
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                    callID: Singleton.instance.callID ?? '',
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    callingID:
-                                        Singleton.instance.callingID ?? '',
-                                    caseId: widget.caseId,
-                                    eventCode: ConstantEventValues
-                                        .otherFeedbackEvenCode,
-                                    eventModule: widget.isCall!
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    eventAttr: EventAttr(
+                                  eventId:
+                                      ConstantEventValues.otherFeedbackEventId,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
+                                      ? 'TC : FEEDBACK'
+                                      : 'FEEDBACK',
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  callID: Singleton.instance.callID ?? '',
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? '',
+                                  callingID: Singleton.instance.callingID ?? '',
+                                  caseId: widget.caseId,
+                                  eventCode:
+                                      ConstantEventValues.otherFeedbackEvenCode,
+                                  eventModule: widget.isCall!
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                                  eventAttr: EventAttr(
                                       remarks: remarksController.text,
                                       vehicleavailable: isVehicleAvailable,
                                       collectorfeedback:
@@ -428,8 +432,19 @@ class _CustomOtherFeedBackBottomSheetState
                                       speed: position.speed,
                                       altitudeAccuracy: 0,
                                       // agentLocation: AgentLocation(),
-                                    ),
-                                    contact: otherFeedbackContact);
+                                      contact: otherFeedbackContact),
+                                  contact: OtherFeedBackContact(
+                                    cType: widget.postValue['cType'],
+                                    health:
+                                        ConstantEventValues.otherFeedbackHealth,
+                                    value: widget.postValue['value'],
+                                    resAddressId0:
+                                        widget.postValue['resAddressId_0'] ??
+                                            '',
+                                    contactId0:
+                                        widget.postValue['contactId0'] ?? '',
+                                  ),
+                                );
 
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
@@ -616,7 +631,9 @@ class _CustomOtherFeedBackBottomSheetState
                                             i++) {
                                           otherFeedbackContact
                                               .add(OtherFeedBackContact(
-                                            cType: listOfContact[i].formValue,
+                                            cType: listOfContact[i]
+                                                .formValue
+                                                .toLowerCase(),
                                             value: listOfContact[i]
                                                 .controller
                                                 .text,

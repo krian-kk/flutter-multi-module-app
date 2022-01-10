@@ -250,25 +250,17 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 });
                               }
                               if (_formKey.currentState!.validate()) {
-                                Map<String, dynamic> enableCloudTel =
-                                    await APIRepository.apiRequest(
-                                  APIRequestType.POST,
-                                  HttpUrl.enableCloudTelephony,
-                                  requestBodydata: {
-                                    "contractor": Singleton.instance.contractor
-                                  },
-                                );
-                                // print(enableCloudTel['data']['result']);
-                                // if (Singleton.instance.callingID == null ||
-                                //     Singleton.instance.callingID == '') {
-                                //   if (widget.listOfMobileNo.first != null) {
-                                //     // Navigator.pop(context);
-                                //     await FlutterPhoneDirectCaller.callNumber(
-                                //         customerContactNoDropDownValue);
-                                //   }
-                                // }
-                                if (enableCloudTel['data']['result']) {
-                                  // print(enableCloudTel['data']);
+                                // Map<String, dynamic> enableCloudTel =
+                                //     await APIRepository.apiRequest(
+                                //   APIRequestType.POST,
+                                //   HttpUrl.enableCloudTelephony,
+                                //   requestBodydata: {
+                                //     "contractor": Singleton.instance.contractor
+                                //   },
+                                // );
+                                // if (enableCloudTel['data']['result']) {
+                                // print(enableCloudTel['data']);
+                                if (Singleton.instance.callingID != '') {
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
@@ -291,6 +283,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         ? 'TELECALLER'
                                         : 'COLLECTOR',
                                   );
+
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
                                     APIRequestType.POST,
@@ -302,14 +295,16 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     AppUtils.showToast(
                                         Constants.callConnectedPleaseWait);
                                     // Navigator.pop(context);
-                                  } else {}
-                                } else {
-                                  if (await canLaunch('tel:' +
-                                      customerContactNoDropDownValue)) {
-                                    await launch('tel:' +
-                                        customerContactNoDropDownValue);
                                   }
+                                  // else {}
+                                } else {
+                                  AppUtils.makePhoneCall(
+                                      'tel:' + customerContactNoDropDownValue);
                                 }
+                                // } else {
+                                //   AppUtils.makePhoneCall(
+                                //       'tel:' + customerContactNoDropDownValue);
+                                // }
                               }
                               if (mounted) {
                                 setState(() {

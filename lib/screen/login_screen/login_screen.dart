@@ -237,13 +237,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           CustomButton(
                             StringResource.loginViaDifferentUser,
-                            onTap: () {
-                              setState(() {
-                                userId.clear();
-                                password.clear();
-                                _isChecked = false;
-                              });
-                            },
+                            onTap: bloc.isSubmit
+                                ? () {
+                                    setState(() {
+                                      userId.clear();
+                                      password.clear();
+                                      _isChecked = false;
+                                      // signin submit button activities
+                                    });
+                                  }
+                                : () {
+                                    AppUtils.showToast("Please wait..");
+                                  },
                             borderColor: ColorResource.color23375A,
                             cardShape: 85,
                             fontSize: FontSize.sixteen,

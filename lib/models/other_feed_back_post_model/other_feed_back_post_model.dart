@@ -4,7 +4,7 @@ class OtherFeedBackPostModel {
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
-  late List<OtherFeedBackContact> contact;
+  late OtherFeedBackContact contact;
   late String createdBy;
   late String eventModule;
   late String agentName;
@@ -41,9 +41,7 @@ class OtherFeedBackPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((v) {
-      contact.add(v);
-    });
+    contact = OtherFeedBackContact.fromJson(json['contact']);
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
@@ -63,7 +61,7 @@ class OtherFeedBackPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] = contact.map((v) => v.toJson()).toList();
+    data['contact'] = contact.toJson();
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
@@ -95,6 +93,7 @@ class EventAttr {
   late double longitude;
   // late double distance;
   // late AgentLocation agentLocation;
+  late List<OtherFeedBackContact> contact;
 
   EventAttr({
     required this.vehicleavailable,
@@ -112,7 +111,8 @@ class EventAttr {
     required this.latitude,
     required this.longitude,
     // this.distance = 0,
-    // required this.agentLocation
+    // required this.agentLocation,
+    required this.contact,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -132,6 +132,9 @@ class EventAttr {
     longitude = json['Longitude'];
     // distance = json['distance'];
     // agentLocation = AgentLocation.fromJson(json['agentLocation']);
+    contact = json['contact'].forEach((v) {
+      contact.add(v);
+    });
   }
 
   Map<String, dynamic> toJson() {
@@ -152,6 +155,7 @@ class EventAttr {
     data['Longitude'] = longitude;
     // data['distance'] = distance;
     // data['agentLocation'] = agentLocation.toJson();
+    data['contact'] = contact.map((v) => v.toJson()).toList();
     return data;
   }
 }
@@ -183,14 +187,14 @@ class AgentLocation {
 
 class OtherFeedBackContact {
   late String cType;
-  // late String health;
+  late String? health;
   late String value;
   late String resAddressId0;
   late String contactId0;
 
   OtherFeedBackContact({
     required this.cType,
-    // required this.health,
+    this.health,
     required this.value,
     required this.resAddressId0,
     required this.contactId0,
@@ -198,7 +202,7 @@ class OtherFeedBackContact {
 
   OtherFeedBackContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
-    // health = json['health'];
+    health = json['health'];
     value = json['value'];
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
@@ -207,7 +211,7 @@ class OtherFeedBackContact {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
-    // data['health'] = health;
+    data['health'] = health;
     data['value'] = value;
     data['resAddressId_0'] = resAddressId0;
     data['contactId_0'] = contactId0;

@@ -48,21 +48,33 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
             print("------nk1-----");
             print(getAgencyDetailsData['data']['result']['voiceAgencyData'][0]
                 ['callerIds']);
-            callersIDDropdownList = getAgencyDetailsData['data']['result']
-                        ['voiceAgencyData'][0]['callerIds']
-                    .cast<String>() ??
-                [''];
-            callersIDDropdownValue = getAgencyDetailsData['data']['result']
-                    ['voiceAgencyData'][0]['callerIds'][0] ??
-                '';
-            Singleton.instance.callingID = getAgencyDetailsData['data']
-                    ['result']['voiceAgencyData'][0]['callerIds'][0] ??
-                '';
+
+            callersIDDropdownList =
+                voiceAgencyDetails.result?.voiceAgencyData?.first.callerIds !=
+                        []
+                    ? getAgencyDetailsData['data']['result']['voiceAgencyData']
+                            [0]['callerIds']
+                        .cast<String>()
+                    : [''];
+
+            callersIDDropdownValue =
+                voiceAgencyDetails.result?.voiceAgencyData?.first.callerIds !=
+                        []
+                    ? getAgencyDetailsData['data']['result']['voiceAgencyData']
+                        [0]['callerIds'][0]
+                    : '';
+            Singleton.instance.callingID =
+                voiceAgencyDetails.result?.voiceAgencyData?.first.callerIds !=
+                        []
+                    ? getAgencyDetailsData['data']['result']['voiceAgencyData']
+                        [0]['callerIds'][0]
+                    : '';
             Singleton.instance.callerServiceID =
-                voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId;
+                voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId ??
+                    '';
 
             Singleton.instance.callID =
-                voiceAgencyDetails.result?.agentAgencyContact;
+                voiceAgencyDetails.result?.agentAgencyContact ?? '';
             emit.call(CallCustomerSuccessState());
           } else {}
         }

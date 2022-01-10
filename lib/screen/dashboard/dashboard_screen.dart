@@ -164,77 +164,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.275,
-                                            child: Container(
-                                              child: userActivity(
-                                                header: bloc.userType ==
-                                                        Constants.fieldagent
-                                                    ? Languages.of(context)!
-                                                        .customerMet
-                                                    : Languages.of(context)!
-                                                        .connected
-                                                        .trim(),
-                                                count: '0',
-                                                size:
-                                                    MediaQuery.of(context).size,
-                                                backgrountColor:
-                                                    ColorResource.colorE0ECDF,
-                                                leadingColor:
-                                                    ColorResource.color73C170,
-                                              ),
-                                            )),
-                                        // const SizedBox(
-                                        //   width: 8,
-                                        // ),
-                                        SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.275,
-                                            child: Container(
-                                              child: userActivity(
-                                                header: bloc.userType ==
-                                                        Constants.fieldagent
-                                                    ? Languages.of(context)!
-                                                        .customerNotMet
-                                                    : Languages.of(context)!
-                                                        .unreachable
-                                                        .trim(),
-                                                count: '0',
-                                                size:
-                                                    MediaQuery.of(context).size,
-                                                backgrountColor:
-                                                    ColorResource.colorF2EEDC,
-                                                leadingColor:
-                                                    ColorResource.colorE5C55B,
-                                              ),
-                                            )),
-                                        // const SizedBox(
-                                        //   width: 8,
-                                        // ),
-                                        SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.275,
-                                            child: Container(
-                                              child: userActivity(
-                                                header: Languages.of(context)!
-                                                    .invalid
+                                        Expanded(
+                                          flex: 1,
+                                          child: userActivity(
+                                            header: bloc.userType ==
+                                                    Constants.fieldagent
+                                                ? Languages.of(context)!
+                                                    .customerMet
+                                                : Languages.of(context)!
+                                                    .connected
                                                     .trim(),
-                                                count: '0',
-                                                size:
-                                                    MediaQuery.of(context).size,
-                                                backgrountColor:
-                                                    ColorResource.colorF4ECEF,
-                                                leadingColor:
-                                                    ColorResource.colorF1BCC4,
-                                              ),
-                                            )),
+                                            count: '0',
+                                            backgrountColor:
+                                                ColorResource.colorE0ECDF,
+                                            leadingColor:
+                                                ColorResource.color73C170,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: userActivity(
+                                            header: bloc.userType ==
+                                                    Constants.fieldagent
+                                                ? Languages.of(context)!
+                                                    .customerNotMet
+                                                : Languages.of(context)!
+                                                    .unreachable
+                                                    .trim(),
+                                            count: '0',
+                                            backgrountColor:
+                                                ColorResource.colorF2EEDC,
+                                            leadingColor:
+                                                ColorResource.colorE5C55B,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: userActivity(
+                                            header: Languages.of(context)!
+                                                .invalid
+                                                .trim(),
+                                            count: '0',
+                                            backgrountColor:
+                                                ColorResource.colorF4ECEF,
+                                            leadingColor:
+                                                ColorResource.colorF1BCC4,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -409,12 +391,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 bloc.add(BrokenPTPEvent());
                                                 break;
                                               case 3:
+                                                bloc.add(
+                                                    SetTimeperiodValueEvent());
                                                 bloc.add(MyReceiptsEvent());
                                                 break;
                                               case 4:
+                                                bloc.add(
+                                                    SetTimeperiodValueEvent());
                                                 bloc.add(MyVisitsEvent());
                                                 break;
                                               case 5:
+                                                bloc.add(
+                                                    SetTimeperiodValueEvent());
                                                 bloc.add(MyDeposistsEvent());
                                                 break;
                                               case 6:
@@ -717,58 +705,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
       {String? header,
       String? count,
       Color? backgrountColor,
-      Size? size,
       required Color leadingColor}) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 55,
-        maxHeight: 60,
-        minWidth: (MediaQuery.of(context).size.width * 1 / 3) - 30,
-        maxWidth: 124,
-      ),
-      child: Container(
-        height: size!.height * 0.090,
-        width: size.width * 0.279,
-        decoration: BoxDecoration(
-            color: backgrountColor, borderRadius: BorderRadius.circular(10)),
-        child: Row(
-          children: [
-            Container(
-              width: 6,
-              decoration: BoxDecoration(
-                color: leadingColor,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  topLeft: Radius.circular(10),
-                ),
+    return Container(
+      // width: 120,
+      height: 60,
+      decoration: BoxDecoration(
+          color: backgrountColor, borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: BoxDecoration(
+              color: leadingColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                topLeft: Radius.circular(10),
               ),
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomText(
-                    header!,
-                    color: ColorResource.color23375A,
-                    fontSize: FontSize.eleven,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  const Spacer(),
-                  CustomText(
-                    count!,
-                    color: ColorResource.color23375A,
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ],
-              ),
-            ))
-          ],
-        ),
+          ),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                  header!,
+                  color: ColorResource.color23375A,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  lineHeight: 1.0,
+                ),
+                // const Spacer(),
+                CustomText(
+                  count!,
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.sixteen,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ))
+        ],
       ),
     );
   }
