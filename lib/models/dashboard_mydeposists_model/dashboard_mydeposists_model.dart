@@ -94,7 +94,7 @@ class Cases {
   String? fieldfollowUpDate;
   String? customerId;
   List<Address>? address;
-
+  String? accNo;
   Cases(
       {this.sId,
       this.due,
@@ -106,7 +106,8 @@ class Cases {
       this.caseId,
       this.fieldfollowUpDate,
       this.customerId,
-      this.address});
+      this.address,
+      this.accNo});
 
   Cases.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -125,6 +126,7 @@ class Cases {
         address?.add(Address.fromJson(v));
       });
     }
+    accNo = json['accNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -142,6 +144,7 @@ class Cases {
     if (address != null) {
       data['contact'] = address?.map((v) => v.toJson()).toList();
     }
+    data['accNo'] = accNo;
     return data;
   }
 }

@@ -29,7 +29,7 @@ class DashboardYardingandSelfReleaseModel {
 
 class YardingResult {
   String? sId;
-  int? due;
+  dynamic? due;
   String? cust;
   String? collSubStatus;
   String? telSubStatus;

@@ -84,9 +84,13 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           custNotMetTotalAmt = 0.0;
           invalidTotalAmt = 0.0;
           for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+            print(element.collSubStatus);
             if (element.collSubStatus == Constants.ptp ||
                 element.collSubStatus == Constants.denial ||
+                element.collSubStatus == 'Denial' ||
                 element.collSubStatus == Constants.dispute ||
+                element.collSubStatus == 'Dispute' ||
+                element.collSubStatus == 'Feedback' ||
                 element.collSubStatus == Constants.remainder ||
                 element.collSubStatus == Constants.remainder_1 ||
                 element.collSubStatus == Constants.collections ||
