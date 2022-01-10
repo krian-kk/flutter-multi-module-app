@@ -36,7 +36,6 @@ class ConstantEventValues {
   // Repo Post Event
   static const int repoEventId = 16;
   static const String repoEvenCode = 'TELEVT016';
-  static const String repoHealth = '2';
 
   // Collections Post Event
   static const int collectionEventId = 17;
@@ -46,7 +45,6 @@ class ConstantEventValues {
   // otherFeedback Post Event
   static const int otherFeedbackEventId = 21;
   static const String otherFeedbackEvenCode = 'TELEVT002';
-  static const String otherFeedbackHealth = '2';
 
   // AddressCustomerNotMet Post Event
   static const int addressCustomerNotMetEventId = 24;

@@ -1082,6 +1082,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
+              health: health ?? '2',
             );
           case Constants.captureImage:
             return CustomCaptureImageBottomSheet(
@@ -1114,6 +1115,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,
+              health: health ?? '2',
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
