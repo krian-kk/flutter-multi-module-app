@@ -39,6 +39,8 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl =
       baseUrl + version + fieldAgent + 'profile/userDetails';
+  static const String dashboardEventCountUrl =
+      baseUrl + version + fieldAgent + 'profile/dashEventCount';
   static const String callCustomerUrl =
       baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
   static const String enableCloudTelephony = baseUrl +

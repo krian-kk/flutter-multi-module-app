@@ -6,6 +6,8 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
+import 'package:origa/models/dashboard_event_count_model/dashboard_event_count_model.dart';
+import 'package:origa/models/dashboard_event_count_model/result.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
@@ -47,6 +49,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'MONTHLY',
   ];
 
+  // Show the Options
+  int customerMetCountValue = 0;
+  int customerNotMetCountValue = 0;
+  int customerInvalidCountValue = 0;
+
   int? mtdCaseCompleted = 0;
   int? mtdCaseTotal = 0;
   int? mtdAmountCompleted = 0;
@@ -60,6 +67,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // it's manage the Refresh the page basaed on Internet connection
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
+
+  DashboardEventCountModel dashboardEventCountValue =
+      DashboardEventCountModel();
 
   @override
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
@@ -147,6 +157,39 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           isNoInternetAndServerError = true;
           noInternetAndServerErrorMsg = dashboardData['data'];
         }
+        Map<String, dynamic> getDashboardEventCountValue =
+            await APIRepository.apiRequest(
+                APIRequestType.GET, HttpUrl.dashboardEventCountUrl);
+
+        if (getDashboardEventCountValue['success']) {
+          Map<String, dynamic> jsonData = getDashboardEventCountValue['data'];
+          dashboardEventCountValue =
+              DashboardEventCountModel.fromJson(jsonData);
+        }
+
+        dashboardEventCountValue.result?.forEach((element) {
+          if (element.eventType!.contains('PTP') ||
+              element.eventType!.contains('DENIAL') ||
+              element.eventType!.contains('DISPUTE') ||
+              element.eventType!.contains('REMINDER') ||
+              element.eventType!.contains('RECEIPT') ||
+              element.eventType!.contains('OTS')) {
+            customerMetCountValue++;
+          }
+          if (element.eventType!.contains('Left Message') ||
+              element.eventType!.contains('Door Locked') ||
+              element.eventType!.contains('Entry Restricted')) {
+            customerNotMetCountValue++;
+          }
+          if (element.eventType!.contains('Wrong Address') ||
+              element.eventType!.contains('Shifted') ||
+              element.eventType!.contains('Address Not Found')) {
+            customerInvalidCountValue++;
+          }
+        });
+
+        // print(
+        //     'Dashboard Evnet Vaaldjkd d = ======== > ${jsonEncode(dashboardEventCountValue.result)}');
       }
 // caseList.clear();
       // caseList.addAll([
