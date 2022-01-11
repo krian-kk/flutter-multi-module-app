@@ -216,9 +216,10 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         CustomText(
-                                          widget.result!.cases![index]
-                                              .eventAttr!.amountCollected
-                                              .toString(),
+                                          Constants.inr +
+                                              widget.result!.cases![index]
+                                                  .eventAttr!.amountCollected
+                                                  .toString(),
                                           fontSize: FontSize.eighteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
