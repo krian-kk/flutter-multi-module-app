@@ -1,27 +1,27 @@
-class DashboardYardingandSelfReleaseModel {
+class YardingData {
   int? status;
   String? message;
   List<YardingResult>? result;
 
-  DashboardYardingandSelfReleaseModel({this.status, this.message, this.result});
+  YardingData({this.status, this.message, this.result});
 
-  DashboardYardingandSelfReleaseModel.fromJson(Map<String, dynamic> json) {
+  YardingData.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['result'] != null) {
-      result = [];
+      result = <YardingResult>[];
       json['result'].forEach((v) {
-        result?.add(YardingResult.fromJson(v));
+        result!.add(new YardingResult.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    if (result != null) {
-      data['result'] = result!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.result != null) {
+      data['result'] = this.result!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -29,79 +29,48 @@ class DashboardYardingandSelfReleaseModel {
 
 class YardingResult {
   String? sId;
-  dynamic? due;
-  String? cust;
-  String? collSubStatus;
-  String? telSubStatus;
+  EventAttr? eventAttr;
   String? agrRef;
-  String? bankName;
-  String? customerId;
-  String? caseId;
-  List<Address>? address;
 
-  YardingResult(
-      {this.sId,
-      this.due,
-      this.cust,
-      this.collSubStatus,
-      this.telSubStatus,
-      this.agrRef,
-      this.bankName,
-      this.customerId,
-      this.caseId,
-      this.address});
+  YardingResult({this.sId, this.eventAttr, this.agrRef});
 
   YardingResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    due = json['due'];
-    cust = json['cust'];
-    collSubStatus = json['collSubStatus'];
-    telSubStatus = json['telSubStatus'];
+    eventAttr = json['eventAttr'] != null
+        ? new EventAttr.fromJson(json['eventAttr'])
+        : null;
     agrRef = json['agrRef'];
-    bankName = json['bankName'];
-    customerId = json['customerId'];
-    caseId = json['caseId'];
-    if (json['contact'] != null) {
-      address = [];
-      json['contact'].forEach((v) {
-        address!.add(Address.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['due'] = due;
-    data['cust'] = cust;
-    data['collSubStatus'] = collSubStatus;
-    data['telSubStatus'] = telSubStatus;
-    data['agrRef'] = agrRef;
-    data['bankName'] = bankName;
-    data['customerId'] = customerId;
-    data['caseId'] = caseId;
-    if (address != null) {
-      data['contact'] = address!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    if (this.eventAttr != null) {
+      data['eventAttr'] = this.eventAttr!.toJson();
     }
+    data['agrRef'] = this.agrRef;
     return data;
   }
 }
 
-class Address {
-  String? cType;
-  String? value;
+class EventAttr {
+  String? registrationNo;
+  String? customerName;
+  String? date;
 
-  Address({this.cType, this.value});
+  EventAttr({this.registrationNo, this.customerName, this.date});
 
-  Address.fromJson(Map<String, dynamic> json) {
-    cType = json['cType'];
-    value = json['value'];
+  EventAttr.fromJson(Map<String, dynamic> json) {
+    registrationNo = json['registrationNo'];
+    customerName = json['customerName'];
+    date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['cType'] = cType;
-    data['value'] = value;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['registrationNo'] = this.registrationNo;
+    data['customerName'] = this.customerName;
+    data['date'] = this.date;
     return data;
   }
 }

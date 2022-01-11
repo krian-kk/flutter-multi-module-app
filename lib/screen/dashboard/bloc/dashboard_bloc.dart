@@ -39,8 +39,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
   // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
   MyDeposistModel myDeposistsData = MyDeposistModel();
-  DashboardYardingandSelfReleaseModel yardingAndSelfReleaseData =
-      DashboardYardingandSelfReleaseModel();
+  YardingData yardingAndSelfReleaseData = YardingData();
 
   List<String> filterOption = [
     'TODAY',
@@ -366,8 +365,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             await APIRepository.apiRequest(
                 APIRequestType.GET, HttpUrl.dashboardYardingAndSelfReleaseUrl);
         yardingAndSelfReleaseData =
-            DashboardYardingandSelfReleaseModel.fromJson(
-                getYardingAndSelfReleaseData['data']);
+            YardingData.fromJson(getYardingAndSelfReleaseData['data']);
         if (getYardingAndSelfReleaseData[Constants.success]) {
           yield YardingAndSelfReleaseState();
         }

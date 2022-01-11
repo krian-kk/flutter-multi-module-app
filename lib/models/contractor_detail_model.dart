@@ -1,14 +1,16 @@
 class ContractorDetailsModel {
   int? status;
   String? message;
-  Result? result;
+  ContractorResult? result;
 
   ContractorDetailsModel({this.status, this.message, this.result});
 
   ContractorDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    result = json['result'] != null ? Result.fromJson(json['result']) : null;
+    result = json['result'] != null
+        ? ContractorResult.fromJson(json['result'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +24,13 @@ class ContractorDetailsModel {
   }
 }
 
-class Result {
+class ContractorResult {
   String? sId;
   List<FeedbackTemplate>? feedbackTemplate;
 
-  Result({this.sId, this.feedbackTemplate});
+  ContractorResult({this.sId, this.feedbackTemplate});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     if (json['feedbackTemplate'] != null) {
       feedbackTemplate = [];

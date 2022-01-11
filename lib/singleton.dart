@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:origa/models/contractor_detail_model.dart';
 
 class Singleton {
   String? accessToken;
@@ -11,6 +12,8 @@ class Singleton {
   String? usertype;
   String? caseCustomerName;
   BuildContext? buildContext;
+  ContractorDetailsModel? feedbackTemplate;
+  bool? cloudTelephony;
 
   // Localstorage for call details
   String? callID;

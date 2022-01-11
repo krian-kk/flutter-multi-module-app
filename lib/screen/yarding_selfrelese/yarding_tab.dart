@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/yarding_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -98,6 +99,7 @@ class _YardingTabState extends State<YardingTab> {
                           var requestBodyData = YardingPostModel(
                               // caseId: widget.caseId!,
                               caseId: widget.caseId.toString(),
+                              contractor: Singleton.instance.contractor!,
                               repo: Repo(
                                 yard: yardNameController.text,
                                 date: dateController.text,

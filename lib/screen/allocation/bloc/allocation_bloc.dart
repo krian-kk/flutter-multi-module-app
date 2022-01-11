@@ -9,11 +9,13 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
+import 'package:origa/models/contractor_detail_model.dart';
 // import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -76,6 +78,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List starCount = [];
   List priorityCaseAddressList = [];
   List<Result> resultList = [];
+  ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
@@ -181,6 +184,21 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           isNoInternetAndServerErrorMsg = priorityListData['data'];
           print('------Api not working----------');
           print(priorityListData['data']);
+        }
+
+        Map<String, dynamic> getContractorDetails =
+            await APIRepository.apiRequest(
+                APIRequestType.GET, HttpUrl.contractorDetail);
+        if (getContractorDetails[Constants.success] == true) {
+          Map<String, dynamic> jsonData = getContractorDetails['data'];
+          Singleton.instance.cloudTelephony =
+              jsonData['result']['cloudTelephony'] ?? false;
+          Singleton.instance.feedbackTemplate =
+              ContractorDetailsModel.fromJson(jsonData);
+          // contractorDetailsValue = ContractorDetailsModel.fromJson(jsonData);
+        } else {
+          AppUtils.showToast(getContractorDetails['data'] ?? '');
+          // AppUtils.showToast(getContractorDetails['data']);
         }
       }
 

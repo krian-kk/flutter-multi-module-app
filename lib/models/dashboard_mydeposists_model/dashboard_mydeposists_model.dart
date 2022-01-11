@@ -1,7 +1,7 @@
 class MyDeposistModel {
   int? status;
   String? message;
-  MyDepositResult? result;
+  DeposistResult? result;
 
   MyDeposistModel({this.status, this.message, this.result});
 
@@ -9,45 +9,46 @@ class MyDeposistModel {
     status = json['status'];
     message = json['message'];
     result = json['result'] != null
-        ? MyDepositResult.fromJson(json['result'])
+        ? new DeposistResult.fromJson(json['result'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    if (result != null) {
-      data['result'] = result?.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.result != null) {
+      data['result'] = this.result!.toJson();
     }
     return data;
   }
 }
 
-class MyDepositResult {
+class DeposistResult {
   int? count;
-  int? totalAmt;
+  dynamic? totalAmt;
   Cheque? cheque;
   Cheque? cash;
 
-  MyDepositResult({this.count, this.totalAmt, this.cheque, this.cash});
+  DeposistResult({this.count, this.totalAmt, this.cheque, this.cash});
 
-  MyDepositResult.fromJson(Map<String, dynamic> json) {
+  DeposistResult.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     totalAmt = json['totalAmt'];
-    cheque = json['cheque'] != null ? Cheque.fromJson(json['cheque']) : null;
-    cash = json['cash'] != null ? Cheque.fromJson(json['cash']) : null;
+    cheque =
+        json['cheque'] != null ? new Cheque.fromJson(json['cheque']) : null;
+    cash = json['cash'] != null ? new Cheque.fromJson(json['cash']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['count'] = count;
-    data['totalAmt'] = totalAmt;
-    if (cheque != null) {
-      data['cheque'] = cheque?.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['count'] = this.count;
+    data['totalAmt'] = this.totalAmt;
+    if (this.cheque != null) {
+      data['cheque'] = this.cheque!.toJson();
     }
-    if (cash != null) {
-      data['cash'] = cash?.toJson();
+    if (this.cash != null) {
+      data['cash'] = this.cash!.toJson();
     }
     return data;
   }
@@ -56,114 +57,79 @@ class MyDepositResult {
 class Cheque {
   int? count;
   List<Cases>? cases;
-  int? totalAmt;
+  dynamic? totalAmt;
 
   Cheque({this.count, this.cases, this.totalAmt});
 
   Cheque.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     if (json['cases'] != null) {
-      cases = [];
+      cases = <Cases>[];
       json['cases'].forEach((v) {
-        cases?.add(Cases.fromJson(v));
+        cases!.add(new Cases.fromJson(v));
       });
     }
     totalAmt = json['totalAmt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['count'] = count;
-    if (cases != null) {
-      data['cases'] = cases?.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['count'] = this.count;
+    if (this.cases != null) {
+      data['cases'] = this.cases!.map((v) => v.toJson()).toList();
     }
-    data['totalAmt'] = totalAmt;
+    data['totalAmt'] = this.totalAmt;
     return data;
   }
 }
 
 class Cases {
   String? sId;
-  double? due;
-  String? cust;
-  String? collSubStatus;
-  String? telSubStatus;
+  EventAttr? eventAttr;
   String? agrRef;
-  String? bankName;
-  String? caseId;
-  String? fieldfollowUpDate;
-  String? customerId;
-  List<Address>? address;
-  String? accNo;
-  Cases(
-      {this.sId,
-      this.due,
-      this.cust,
-      this.collSubStatus,
-      this.telSubStatus,
-      this.agrRef,
-      this.bankName,
-      this.caseId,
-      this.fieldfollowUpDate,
-      this.customerId,
-      this.address,
-      this.accNo});
+
+  Cases({this.sId, this.eventAttr, this.agrRef});
 
   Cases.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    due = json['due'];
-    cust = json['cust'];
-    collSubStatus = json['collSubStatus'];
-    telSubStatus = json['telSubStatus'];
-    agrRef = json['agrRef'] ?? '-';
-    bankName = json['bankName'] ?? '-';
-    caseId = json['caseId'];
-    fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
-    customerId = json['customerId'];
-    if (json['contact'] != null) {
-      address = [];
-      json['contact'].forEach((v) {
-        address?.add(Address.fromJson(v));
-      });
-    }
-    accNo = json['accNo'];
+    eventAttr = json['eventAttr'] != null
+        ? new EventAttr.fromJson(json['eventAttr'])
+        : null;
+    agrRef = json['agrRef'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['due'] = due;
-    data['cust'] = cust;
-    data['collSubStatus'] = collSubStatus;
-    data['telSubStatus'] = telSubStatus;
-    data['agrRef'] = agrRef;
-    data['bankName'] = bankName;
-    data['caseId'] = caseId;
-    data['fieldfollowUpDate'] = fieldfollowUpDate;
-    data['customerId'] = customerId;
-    if (address != null) {
-      data['contact'] = address?.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    if (this.eventAttr != null) {
+      data['eventAttr'] = this.eventAttr!.toJson();
     }
-    data['accNo'] = accNo;
+    data['agrRef'] = this.agrRef;
     return data;
   }
 }
 
-class Address {
-  String? cType;
-  String? value;
+class EventAttr {
+  dynamic? amountCollected;
+  String? date;
+  String? mode;
+  String? customerName;
 
-  Address({this.cType, this.value});
+  EventAttr({this.amountCollected, this.date, this.mode, this.customerName});
 
-  Address.fromJson(Map<String, dynamic> json) {
-    cType = json['cType'];
-    value = json['value'];
+  EventAttr.fromJson(Map<String, dynamic> json) {
+    amountCollected = json['amountCollected'];
+    date = json['date'];
+    mode = json['mode'];
+    customerName = json['customerName'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['cType'] = cType;
-    data['value'] = value;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['amountCollected'] = this.amountCollected;
+    data['date'] = this.date;
+    data['mode'] = this.mode;
+    data['customerName'] = this.customerName;
     return data;
   }
 }

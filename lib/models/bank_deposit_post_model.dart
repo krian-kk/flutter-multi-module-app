@@ -1,10 +1,12 @@
 class BankDepositPostModel {
   late List<String> caseIds;
   late Deposition deposition;
+  late String contractor;
 
   BankDepositPostModel({
     required this.caseIds,
     required this.deposition,
+    required this.contractor,
   });
 
   BankDepositPostModel.fromJson(Map<String, dynamic> json) {
@@ -12,12 +14,14 @@ class BankDepositPostModel {
       caseIds.add(v);
     });
     deposition = json['deposition'];
+    contractor = json['contractor'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['caseIds'] = caseIds;
     data['deposition'] = deposition;
+    data['contractor'] = contractor;
     return data;
   }
 }

@@ -19,12 +19,12 @@ class SelectedValue {
 
 class ChegueAndCasshResults extends StatefulWidget {
   final DashboardBloc bloc;
-  final String? mode;
+  // final String? mode;
   final Cheque? result;
   const ChegueAndCasshResults(
     this.bloc, {
     Key? key,
-    this.mode,
+    // this.mode,
     this.result,
   }) : super(key: key);
 
@@ -37,14 +37,15 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   void initState() {
     super.initState();
     for (int i = 0; i < widget.result!.cases!.length; i++) {
-      selectedValue.add(
-          SelectedValue(widget.result!.cases![i].caseId.toString(), false));
+      selectedValue
+          .add(SelectedValue(widget.result!.cases![i].sId.toString(), false));
     }
   }
 
   int? _selectedIndex;
   List<String> caseIDs = [];
   String? custName;
+  String? mode;
   List<SelectedValue> selectedValue = [];
 
   _onSelected(int index) {
@@ -193,11 +194,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 24, vertical: 2),
                                         child: CustomText(
-                                          widget.result!.cases![index]
-                                                  .bankName! +
-                                              ' / ' +
-                                              widget.result!.cases![index]
-                                                  .agrRef!,
+                                          widget.result!.cases![index].agrRef ??
+                                              '',
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -218,7 +216,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         CustomText(
-                                          widget.result!.cases![index].due!
+                                          widget.result!.cases![index]
+                                              .eventAttr!.amountCollected
                                               .toString(),
                                           fontSize: FontSize.eighteen,
                                           color: ColorResource.color101010,
@@ -228,7 +227,9 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           height: 3.0,
                                         ),
                                         CustomText(
-                                          widget.result!.cases![index].cust!,
+                                          widget.result!.cases![index]
+                                                  .eventAttr!.customerName ??
+                                              '',
                                           fontSize: FontSize.sixteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w400,
@@ -237,25 +238,25 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                     ),
                                   ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 6),
-                                    child: Container(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 12, 15, 12),
-                                      decoration: BoxDecoration(
-                                        color: ColorResource.colorF8F9FB,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: CustomText(
-                                        widget.result!.cases![index].address![0]
-                                            .value!
-                                            .toString(),
-                                        color: ColorResource.color484848,
-                                        fontSize: FontSize.fourteen,
-                                      ),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.symmetric(
+                                  //       horizontal: 15, vertical: 6),
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.fromLTRB(
+                                  //         20, 12, 15, 12),
+                                  //     decoration: BoxDecoration(
+                                  //       color: ColorResource.colorF8F9FB,
+                                  //       borderRadius: BorderRadius.circular(10),
+                                  //     ),
+                                  //     child: CustomText(
+                                  //       widget.result!.cases![index].address![0]
+                                  //           .value!
+                                  //           .toString(),
+                                  //       color: ColorResource.color484848,
+                                  //       fontSize: FontSize.fourteen,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   const SizedBox(
                                     height: 5,
                                   ),
@@ -287,7 +288,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                             ),
                                             CustomText(
                                               widget.result!.cases![index]
-                                                  .fieldfollowUpDate!,
+                                                      .eventAttr!.date ??
+                                                  '-',
                                               fontSize: FontSize.fourteen,
                                               color: ColorResource.color101010,
                                               fontWeight: FontWeight.w700,
@@ -324,7 +326,17 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                     !selectedValue[index]
                                                         .isSelected;
                                                 custName = widget
-                                                    .result!.cases![index].cust;
+                                                        .result!
+                                                        .cases![index]
+                                                        .eventAttr!
+                                                        .customerName ??
+                                                    '';
+                                                mode = widget
+                                                        .result!
+                                                        .cases![index]
+                                                        .eventAttr!
+                                                        .mode ??
+                                                    '';
                                               });
                                               caseIDs.clear();
                                               selectedValue.forEach((element) {
@@ -367,7 +379,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                DepositionMode.buildDepositionMode(context, caseIDs,
-                    widget.mode.toString(), widget.bloc, custName)));
+                DepositionMode.buildDepositionMode(
+                    context, caseIDs, mode!, widget.bloc, custName)));
   }
 }

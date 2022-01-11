@@ -260,7 +260,10 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 // );
                                 // if (enableCloudTel['data']['result']) {
                                 // print(enableCloudTel['data']);
-                                if (Singleton.instance.callingID != '') {
+                                // Singleton.instance.callingID != ''
+                                if (Singleton.instance.cloudTelephony! &&
+                                    Singleton.instance.callingID != null) {
+                                  // print("call id checking");
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
@@ -298,6 +301,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   }
                                   // else {}
                                 } else {
+                                  // print(" no call call id checking");
+
                                   AppUtils.makePhoneCall(
                                       'tel:' + customerContactNoDropDownValue);
                                 }
