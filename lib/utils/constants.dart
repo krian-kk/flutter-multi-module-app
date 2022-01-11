@@ -73,7 +73,7 @@ class Constants {
 
   // My Receipts Tab
   static const String approved = 'Approved';
-  static const String pendingApproved = 'Pending Approved';
+  static const String pendingApproval = 'Pending Approval';
   static const String rejected = 'Rejected';
   static const int otpWaitingTime = 60;
 

@@ -44,6 +44,7 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     // required this.contactId_0,
     this.postValue,
     this.isCall,
+    required this.health,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -53,6 +54,7 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   // final String contactId_0;
   // final String resAddressId_0;
   final bool? isCall;
+  final String health;
 
   @override
   State<CustomOtherFeedBackBottomSheet> createState() =>
@@ -71,7 +73,7 @@ class _CustomOtherFeedBackBottomSheetState
     AddNewContactFieldModel(TextEditingController(), '', FocusNode()),
   ];
 
-  List<OtherFeedBackContact> otherFeedbackContact = [];
+  List<OtherFeedBackContact>? otherFeedbackContact;
 
   // check vehicle available or not
   bool isVehicleAvailable = false;
@@ -115,7 +117,6 @@ class _CustomOtherFeedBackBottomSheetState
     //         collectorFeedBackValueDropdownList.addAll(widget.bloc.contractorDetailsValue.result!
     //             .feedbackTemplate![0].data![0].options![0].viewValue!);
     super.initState();
-    print(widget.postValue);
   }
 
   @override
@@ -344,10 +345,9 @@ class _CustomOtherFeedBackBottomSheetState
                       onTap: isSubmit
                           ? () async {
                               setState(() {});
-                              print('jdjdkjdj => ${listOfContact.length}');
-                              otherFeedbackContact.clear();
+                              otherFeedbackContact?.clear();
                               for (int i = 0; i < (listOfContact.length); i++) {
-                                otherFeedbackContact.add(OtherFeedBackContact(
+                                otherFeedbackContact?.add(OtherFeedBackContact(
                                     cType: listOfContact[i]
                                         .formValue
                                         .toLowerCase(),
@@ -360,8 +360,6 @@ class _CustomOtherFeedBackBottomSheetState
                                     //     Singleton.instance.resAddressId_0 ?? '',
                                     ));
                               }
-                              print(
-                                  'kdjkdjkdj => ${jsonEncode(otherFeedbackContact)}');
                               // SharedPreferences _pref =
                               //     await SharedPreferences.getInstance();
                               if (_formKey.currentState!.validate()) {
@@ -439,8 +437,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       contact: otherFeedbackContact),
                                   contact: OtherFeedBackContact(
                                     cType: widget.postValue['cType'],
-                                    health:
-                                        ConstantEventValues.otherFeedbackHealth,
+                                    health: widget.health,
                                     value: widget.postValue['value'],
                                     resAddressId0:
                                         widget.postValue['resAddressId_0'] ??
@@ -629,12 +626,12 @@ class _CustomOtherFeedBackBottomSheetState
                                           () => listOfContact[index].formValue =
                                               newValue.toString(),
                                         );
-                                        otherFeedbackContact.clear();
+                                        otherFeedbackContact?.clear();
                                         for (int i = 0;
                                             i < (listOfContact.length - 1);
                                             i++) {
                                           otherFeedbackContact
-                                              .add(OtherFeedBackContact(
+                                              ?.add(OtherFeedBackContact(
                                             cType: listOfContact[i]
                                                 .formValue
                                                 .toLowerCase(),

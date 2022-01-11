@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -140,7 +141,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
           widget.bloc.add(
             ClickOpenBottomSheetEvent(element.stringResourceValue,
                 widget.bloc.caseDetailsAPIValue.result?.callDetails, false,
-                health: '2'),
+                health: ConstantEventValues.healthTwo),
           );
         },
         child: Container(

@@ -7,30 +7,31 @@ class UnReachablePostModel {
   late String eventModule;
   late UnreachableContact contact;
   late String createdBy;
-  late String callID;
-  late String callingID;
+  late String? callID;
+  late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int invalidNumber;
+  late int? invalidNumber;
   late String agentName;
   late String agrRef;
 
-  UnReachablePostModel(
-      {this.eventId = 0,
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      this.eventModule = 'Telecalling',
-      required this.contact,
-      this.createdBy = '',
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0,
-      this.agentName = '0',
-      this.agrRef = '0'});
+  UnReachablePostModel({
+    required this.eventId,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    this.eventModule = 'Telecalling',
+    required this.contact,
+    required this.createdBy,
+    required this.callID,
+    required this.callingID,
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
+    required this.invalidNumber,
+    required this.agentName,
+    required this.agrRef,
+  });
 
   UnReachablePostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -102,11 +103,12 @@ class UnreachableContact {
   late String contactId0;
   late String health;
 
-  UnreachableContact(
-      {this.cType = '',
-      this.value = '',
-      this.contactId0 = '',
-      this.health = '1'});
+  UnreachableContact({
+    required this.cType,
+    required this.value,
+    required this.contactId0,
+    required this.health,
+  });
 
   UnreachableContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

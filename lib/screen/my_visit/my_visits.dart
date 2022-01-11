@@ -289,6 +289,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: [
                                   // CustomerMetNotmetInvalidTab(bloc.caseList),
+                                  // Customer Met
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
@@ -298,6 +299,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         custMet,
                                         custMetTotalAmt),
                                   ),
+                                  // Customer Not Met
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
@@ -307,6 +309,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         custNotMet,
                                         custNotMetTotalAmt),
                                   ),
+                                  // Invalid
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),

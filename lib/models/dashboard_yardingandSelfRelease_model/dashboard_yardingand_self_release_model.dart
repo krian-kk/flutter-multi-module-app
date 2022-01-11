@@ -11,17 +11,17 @@ class YardingData {
     if (json['result'] != null) {
       result = <YardingResult>[];
       json['result'].forEach((v) {
-        result!.add(new YardingResult.fromJson(v));
+        result!.add(YardingResult.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -31,24 +31,27 @@ class YardingResult {
   String? sId;
   EventAttr? eventAttr;
   String? agrRef;
+  String? caseId;
 
-  YardingResult({this.sId, this.eventAttr, this.agrRef});
+  YardingResult({this.sId, this.eventAttr, this.agrRef, this.caseId});
 
   YardingResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     eventAttr = json['eventAttr'] != null
-        ? new EventAttr.fromJson(json['eventAttr'])
+        ? EventAttr.fromJson(json['eventAttr'])
         : null;
     agrRef = json['agrRef'];
+    caseId = json['caseId'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.eventAttr != null) {
-      data['eventAttr'] = this.eventAttr!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (eventAttr != null) {
+      data['eventAttr'] = eventAttr!.toJson();
     }
-    data['agrRef'] = this.agrRef;
+    data['agrRef'] = agrRef;
+    data['caseId'] = caseId;
     return data;
   }
 }
@@ -67,10 +70,10 @@ class EventAttr {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['registrationNo'] = this.registrationNo;
-    data['customerName'] = this.customerName;
-    data['date'] = this.date;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['registrationNo'] = registrationNo;
+    data['customerName'] = customerName;
+    data['date'] = date;
     return data;
   }
 }

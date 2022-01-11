@@ -26,6 +26,7 @@ import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -1082,6 +1083,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
+              health: health ?? ConstantEventValues.healthTwo,
             );
           case Constants.captureImage:
             return CustomCaptureImageBottomSheet(
@@ -1114,6 +1116,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,
+              health: health ?? ConstantEventValues.healthTwo,
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(

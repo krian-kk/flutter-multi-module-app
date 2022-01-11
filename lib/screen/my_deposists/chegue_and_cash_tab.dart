@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -37,8 +39,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   void initState() {
     super.initState();
     for (int i = 0; i < widget.result!.cases!.length; i++) {
-      selectedValue
-          .add(SelectedValue(widget.result!.cases![i].sId.toString(), false));
+      selectedValue.add(
+          SelectedValue(widget.result!.cases![i].caseId.toString(), false));
     }
   }
 
@@ -69,14 +71,25 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
               fontSize: FontSize.sixteen,
               fontWeight: FontWeight.w600,
               onTap: () {
-                if (_selectedIndex != null) {
-                  depositionModeSheet(context);
-                } else {
-                  AppUtils.showToast(
-                    Constants.notSelectedCase,
-                    gravity: ToastGravity.CENTER,
-                  );
+                for (var element in selectedValue) {
+                  if (element.isSelected) {
+                    depositionModeSheet(context);
+                  } else {
+                    AppUtils.showToast(
+                      Constants.notSelectedCase,
+                      gravity: ToastGravity.CENTER,
+                    );
+                  }
                 }
+
+                // if (_selectedIndex == null || _selectedIndex == 0) {
+                //   AppUtils.showToast(
+                //     Constants.notSelectedCase,
+                //     gravity: ToastGravity.CENTER,
+                //   );
+                // } else {
+                //   depositionModeSheet(context);
+                // }
               },
             ),
           ),
@@ -342,6 +355,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                               caseIDs.clear();
                                               selectedValue.forEach((element) {
                                                 if (element.isSelected) {
+                                                  print(element.caseId);
                                                   caseIDs.add(element.caseId);
                                                 }
                                               });

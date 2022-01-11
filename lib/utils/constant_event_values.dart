@@ -1,7 +1,7 @@
 class ConstantEventValues {
   // this is static for all post events
   static const String voiceCallEventCode = 'TELEVT011';
-  static const String dummyHealth = '1';
+  // static const String dummyHealth = '1';
   //Health values and color showing based on health status
 // Cust met, connected -> health 2  -> green
 // Cust not met, unreachable -> health 1 -> orange
@@ -36,7 +36,6 @@ class ConstantEventValues {
   // Repo Post Event
   static const int repoEventId = 16;
   static const String repoEvenCode = 'TELEVT016';
-  static const String repoHealth = '2';
 
   // Collections Post Event
   static const int collectionEventId = 17;
@@ -46,7 +45,6 @@ class ConstantEventValues {
   // otherFeedback Post Event
   static const int otherFeedbackEventId = 21;
   static const String otherFeedbackEvenCode = 'TELEVT002';
-  static const String otherFeedbackHealth = '2';
 
   // AddressCustomerNotMet Post Event
   static const int addressCustomerNotMetEventId = 24;
@@ -75,7 +73,7 @@ class ConstantEventValues {
   // CaptureImage Post Event
   static const int captureImageEventId = 22;
   static const String captureImageEvenCode = 'TELEVT015';
-  static const String captureImageHealth = '2';
+  // static const String captureImageHealth = '2';
 
   // Are You At Office
   static const int areYouAtOfficeEventId = 16;

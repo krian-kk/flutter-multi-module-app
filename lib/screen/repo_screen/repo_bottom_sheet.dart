@@ -30,12 +30,14 @@ class CustomRepoBottomSheet extends StatefulWidget {
     required this.customerLoanUserWidget,
     this.postValue,
     required this.userType,
+    required this.health,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String health;
 
   @override
   State<CustomRepoBottomSheet> createState() => _CustomRepoBottomSheetState();
@@ -332,7 +334,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       RepoContact(
                                         cType: widget.postValue['cType'],
                                         value: widget.postValue['value'],
-                                        health: ConstantEventValues.repoHealth,
+                                        health: widget.health,
                                         // resAddressId0:
                                         //     Singleton.instance.resAddressId_0 ??
                                         //         '',

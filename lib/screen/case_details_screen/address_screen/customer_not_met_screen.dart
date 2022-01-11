@@ -5,6 +5,7 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -149,13 +150,14 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
-                          onTap: () => widget.bloc.add(
-                              ClickOpenBottomSheetEvent(
-                                  Constants.captureImage,
-                                  widget.bloc.caseDetailsAPIValue.result
-                                      ?.addressDetails,
-                                  false,
-                                  health: '1')),
+                          onTap: () =>
+                              widget.bloc.add(ClickOpenBottomSheetEvent(
+                            Constants.captureImage,
+                            widget.bloc.caseDetailsAPIValue.result
+                                ?.addressDetails,
+                            false,
+                            health: ConstantEventValues.healthOne,
+                          )),
                           fontWeight: FontWeight.w700,
                           padding: 15.0,
                           borderColor: ColorResource.colorBEC4CF,
@@ -196,9 +198,12 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(
-            ClickOpenBottomSheetEvent(element.stringResourceValue,
-                widget.bloc.caseDetailsAPIValue.result?.addressDetails, false,
-                health: '1'),
+            ClickOpenBottomSheetEvent(
+              element.stringResourceValue,
+              widget.bloc.caseDetailsAPIValue.result?.addressDetails,
+              false,
+              health: ConstantEventValues.healthOne,
+            ),
           );
         },
         child: Container(

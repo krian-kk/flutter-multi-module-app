@@ -93,7 +93,7 @@ class EventAttr {
   late double longitude;
   // late double distance;
   // late AgentLocation agentLocation;
-  late List<OtherFeedBackContact> contact;
+  late List<OtherFeedBackContact>? contact;
 
   EventAttr({
     required this.vehicleavailable,
@@ -133,7 +133,7 @@ class EventAttr {
     // distance = json['distance'];
     // agentLocation = AgentLocation.fromJson(json['agentLocation']);
     contact = json['contact'].forEach((v) {
-      contact.add(v);
+      contact?.add(v);
     });
   }
 
@@ -155,7 +155,7 @@ class EventAttr {
     data['Longitude'] = longitude;
     // data['distance'] = distance;
     // data['agentLocation'] = agentLocation.toJson();
-    data['contact'] = contact.map((v) => v.toJson()).toList();
+    data['contact'] = contact?.map((v) => v.toJson()).toList();
     return data;
   }
 }
