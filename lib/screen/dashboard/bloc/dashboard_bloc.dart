@@ -208,8 +208,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic> getUntouchedCasesData =
             await APIRepository.apiRequest(
                 APIRequestType.GET, HttpUrl.dashboardUntouchedCasesUrl);
-        print("------un----");
-        print(getUntouchedCasesData);
         untouchedCasesData =
             DashboardAllModels.fromJson(getUntouchedCasesData['data']);
         // print(getUntouchedCasesData['data']);
@@ -375,15 +373,18 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is PostBankDepositDataEvent) {
+      yield DisableMDBankSubmitBtnState();
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST, HttpUrl.bankDeposit + "userType=$userType",
           requestBodydata: jsonEncode(event.postData));
       if (postResult['success']) {
         yield PostDataApiSuccessState();
       }
+      yield EnableMDBankSubmitBtnState();
     }
 
     if (event is PostCompanyDepositDataEvent) {
+      yield DisableMDCompanyBranchSubmitBtnState();
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST,
           HttpUrl.companyBranchDeposit + "userType=$userType",
@@ -391,27 +392,29 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableMDCompanyBranchSubmitBtnState();
     }
 
     if (event is PostYardingDataEvent) {
+      yield DisableRSYardingSubmitBtnState();
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST, HttpUrl.yarding + "userType=$userType",
           requestBodydata: jsonEncode(event.postData));
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableRSYardingSubmitBtnState();
     }
 
     if (event is PostSelfreleaseDataEvent) {
-      print('userType----------');
-      print(userType);
+      yield DisableRSSelfReleaseSubmitBtnState();
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST, HttpUrl.selfRelease + "userType=$userType",
           requestBodydata: jsonEncode(event.postData));
-
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableRSSelfReleaseSubmitBtnState();
     }
 
     if (event is NavigateCaseDetailEvent) {

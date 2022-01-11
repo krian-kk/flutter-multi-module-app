@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -32,6 +33,8 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
   late TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  bool isSubmit = true;
+
   List uploadFileLists = [];
 
   @override
@@ -59,130 +62,162 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-      return Scaffold(
-        backgroundColor: ColorResource.colorffffff,
-        bottomNavigationBar: Container(
-          height: 66,
-          decoration: const BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(13, 5, 20, 5),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: CustomButton(
-                    Languages.of(context)!.cancel.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    textColor: ColorResource.colorEA6D48,
-                    fontWeight: FontWeight.w600,
-                    cardShape: 5,
-                    buttonBackgroundColor: ColorResource.colorffffff,
-                    borderColor: ColorResource.colorffffff,
-                    onTap: () => Navigator.pop(context),
-                  ),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: CustomButton(
-                    Languages.of(context)!.submit.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    cardShape: 5,
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (uploadFileLists.isEmpty) {
-                          AppUtils.showToast(
-                            Constants.uploadDepositSlip,
-                            gravity: ToastGravity.CENTER,
-                          );
-                        } else {
-                          var requestBodyData = SelfReleasePostModel(
-                              caseId: widget.caseId.toString(),
-                              contractor: Singleton.instance.contractor!,
-                              repo: Repo(
-                                date: dateController.text,
-                                time: timeController.text,
-                                remarks: remarksController.text,
-                                imageLocation: uploadFileLists as List<String>,
-                              ));
-                          widget.bloc.add(PostSelfreleaseDataEvent(
-                              postData: requestBodyData));
-                        }
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: Column(
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 13),
-                          child: CustomReadOnlyTextField(
-                            Languages.of(context)!.date,
-                            dateController,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            isEnable: true,
-                            onTapped: () => pickDate(context, dateController),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 13),
-                          child: CustomReadOnlyTextField(
-                            Languages.of(context)!.time,
-                            timeController,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            isEnable: true,
-                            onTapped: () => pickTime(context, timeController),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 13),
-                          child: CustomReadOnlyTextField(
-                            Languages.of(context)!.remark,
-                            remarksController,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            isEnable: true,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 7,
-                        ),
-                        CustomButton(
-                          Languages.of(context)!.uploadDepositSlip,
-                          fontWeight: FontWeight.w700,
+      return BlocListener<DashboardBloc, DashboardState>(
+        bloc: widget.bloc,
+        listener: (context, state) {
+          if (state is DisableRSSelfReleaseSubmitBtnState) {
+            setState(() => isSubmit = false);
+          }
+          if (state is EnableRSSelfReleaseSubmitBtnState) {
+            setState(() => isSubmit = true);
+          }
+        },
+        child: BlocBuilder<DashboardBloc, DashboardState>(
+          bloc: widget.bloc,
+          builder: (context, state) {
+            return Scaffold(
+              backgroundColor: ColorResource.colorffffff,
+              bottomNavigationBar: Container(
+                height: 66,
+                decoration: const BoxDecoration(
+                    border: Border(
+                        top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 5, 20, 5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: CustomButton(
+                          Languages.of(context)!.cancel.toUpperCase(),
                           fontSize: FontSize.sixteen,
-                          buttonBackgroundColor: ColorResource.color23375A,
-                          cardShape: 50,
-                          isLeading: true,
-                          trailingWidget:
-                              SvgPicture.asset(ImageResource.upload),
-                          onTap: () => getFiles(),
-                        )
-                      ],
-                    ),
+                          textColor: ColorResource.colorEA6D48,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          buttonBackgroundColor: ColorResource.colorffffff,
+                          borderColor: ColorResource.colorffffff,
+                          onTap: () => Navigator.pop(context),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: CustomButton(
+                          isSubmit
+                              ? Languages.of(context)!.submit.toUpperCase()
+                              : null,
+                          isLeading: !isSubmit,
+                          trailingWidget: const Center(
+                            child: CircularProgressIndicator(
+                              color: ColorResource.colorFFFFFF,
+                            ),
+                          ),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          onTap: isSubmit
+                              ? () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (uploadFileLists.isEmpty) {
+                                      AppUtils.showToast(
+                                        Constants.uploadDepositSlip,
+                                        gravity: ToastGravity.CENTER,
+                                      );
+                                    } else {
+                                      var requestBodyData =
+                                          SelfReleasePostModel(
+                                              caseId: widget.caseId.toString(),
+                                              contractor: Singleton
+                                                  .instance.contractor!,
+                                              repo: Repo(
+                                                date: dateController.text,
+                                                time: timeController.text,
+                                                remarks: remarksController.text,
+                                                imageLocation: uploadFileLists
+                                                    as List<String>,
+                                              ));
+                                      widget.bloc.add(PostSelfreleaseDataEvent(
+                                          postData: requestBodyData));
+                                    }
+                                  }
+                                }
+                              : () {},
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            )
-          ],
+              body: Column(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 13),
+                                child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.date,
+                                  dateController,
+                                  validationRules: const ['required'],
+                                  isLabel: true,
+                                  isEnable: true,
+                                  onTapped: () =>
+                                      pickDate(context, dateController),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 13),
+                                child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.time,
+                                  timeController,
+                                  validationRules: const ['required'],
+                                  isLabel: true,
+                                  isEnable: true,
+                                  onTapped: () =>
+                                      pickTime(context, timeController),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 13),
+                                child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.remark,
+                                  remarksController,
+                                  validationRules: const ['required'],
+                                  isLabel: true,
+                                  isEnable: true,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 7,
+                              ),
+                              CustomButton(
+                                Languages.of(context)!.uploadDepositSlip,
+                                fontWeight: FontWeight.w700,
+                                fontSize: FontSize.sixteen,
+                                buttonBackgroundColor:
+                                    ColorResource.color23375A,
+                                cardShape: 50,
+                                isLeading: true,
+                                trailingWidget:
+                                    SvgPicture.asset(ImageResource.upload),
+                                onTap: () => getFiles(),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
         ),
       );
     });
