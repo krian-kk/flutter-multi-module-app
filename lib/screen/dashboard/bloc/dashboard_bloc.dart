@@ -13,6 +13,8 @@ import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_m
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/receipts_weekly_model/case.dart';
+import 'package:origa/models/receipts_weekly_model/receipts_weekly_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
@@ -22,6 +24,13 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
+
+class DashboardReceiptWeekly {
+  late String caseId;
+  late String appStatus;
+  late ReceiptWeeklyCase caseValue;
+  DashboardReceiptWeekly(this.caseId, this.appStatus, this.caseValue);
+}
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
@@ -188,8 +197,60 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           }
         });
 
-        // print(
-        //     'Dashboard Evnet Vaaldjkd d = ======== > ${jsonEncode(dashboardEventCountValue.result)}');
+        Map<String, dynamic> getDashboardEventCountValue1 =
+            await APIRepository.apiRequest(APIRequestType.GET,
+                'https://uat-collect.origa.ai/app_otc/v1/agent/case-details/receipts?timePeriod=WEEKLY');
+
+        ReceiptsWeeklyModel tempModel = ReceiptsWeeklyModel();
+        List<String> tempNewCaseId = [];
+        List<String> tempApporvedCaseId = [];
+        List<String> tempPendingCaseId = [];
+        if (getDashboardEventCountValue1['success']) {
+          Map<String, dynamic> jsonData = getDashboardEventCountValue1['data'];
+          tempModel = ReceiptsWeeklyModel.fromJson(jsonData);
+        }
+
+        tempModel.result?.receiptEvent?.forEach((element) {
+          if (element.eventAttr!.appStatus!.contains('new')) {
+            tempNewCaseId.add(element.caseId.toString());
+          }
+          if (element.eventAttr!.appStatus!.contains('approved')) {
+            tempApporvedCaseId.add(element.caseId.toString());
+          }
+          if (element.eventAttr!.appStatus!.contains('pending')) {
+            tempPendingCaseId.add(element.caseId.toString());
+          }
+        });
+
+        List<DashboardReceiptWeekly> tempReceiptWeekly = [];
+        tempNewCaseId.forEach((ele) {
+          tempModel.result?.cases?.forEach((element) {
+            if (element.caseId!.contains(ele)) {
+              tempReceiptWeekly
+                  .add(DashboardReceiptWeekly(ele, 'new', element));
+            }
+          });
+        });
+        tempApporvedCaseId.forEach((ele) {
+          tempModel.result?.cases?.forEach((element) {
+            if (element.caseId!.contains(ele)) {
+              tempReceiptWeekly
+                  .add(DashboardReceiptWeekly(ele, 'apporved', element));
+            }
+          });
+        });
+        tempPendingCaseId.forEach((ele) {
+          tempModel.result?.cases?.forEach((element) {
+            if (element.caseId!.contains(ele)) {
+              tempReceiptWeekly
+                  .add(DashboardReceiptWeekly(ele, 'pending', element));
+            }
+          });
+        });
+
+        tempReceiptWeekly.forEach((element) {
+          print('Element Value is => ${element.caseId}');
+        });
       }
 // caseList.clear();
       // caseList.addAll([

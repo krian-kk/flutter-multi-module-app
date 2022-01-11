@@ -137,11 +137,12 @@ class AddressInvalidContact {
   late String health;
   late String resAddressId_0;
 
-  AddressInvalidContact(
-      {required this.cType,
-      required this.value,
-      required this.health,
-      required this.resAddressId_0});
+  AddressInvalidContact({
+    required this.cType,
+    required this.value,
+    required this.health,
+    required this.resAddressId_0,
+  });
 
   AddressInvalidContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
