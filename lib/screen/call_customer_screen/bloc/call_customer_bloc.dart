@@ -18,7 +18,7 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
   String callersIDDropdownValue = '';
   bool isSubmit = true;
 
-  VoiceAgencyDetailModel voiceAgencyDetails = VoiceAgencyDetailModel();
+  AgencyDetailsModel voiceAgencyDetails = AgencyDetailsModel();
   CallCustomerBloc() : super(CallCustomerInitial()) {
     on<CallCustomerEvent>((event, emit) async {
       if (event is CallCustomerInitialEvent) {
@@ -38,37 +38,29 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
 
           if (getAgencyDetailsData[Constants.success]) {
             Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
-            voiceAgencyDetails = VoiceAgencyDetailModel.fromJson(jsonData);
+            voiceAgencyDetails = AgencyDetailsModel.fromJson(jsonData);
             serviceProviderListDropdownList.add(
                 (voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId) ??
                     '');
             serviceProviderListValue =
                 voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId ??
                     '';
-            print("------nk1-----");
-            print(getAgencyDetailsData['data']['result']['voiceAgencyData'][0]
-                ['callerIds']);
+            if (voiceAgencyDetails
+                .result!.voiceAgencyData!.first.callerIds!.isNotEmpty) {
+              print("0987654321-------");
+              callersIDDropdownList = voiceAgencyDetails
+                  .result!.voiceAgencyData!.first.callerIds!
+                  .cast<String>();
 
-            callersIDDropdownList =
-                voiceAgencyDetails.result?.voiceAgencyData?.first.callerIds !=
-                        []
-                    ? getAgencyDetailsData['data']['result']['voiceAgencyData']
-                            [0]['callerIds']
-                        .cast<String>()
-                    : [''];
+              callersIDDropdownValue = voiceAgencyDetails
+                  .result!.voiceAgencyData!.first.callerIds!.first;
+              Singleton.instance.callingID = voiceAgencyDetails
+                  .result!.voiceAgencyData!.first.callerIds!.first;
+            } else {
+              print("----------0987654321-------");
+              Singleton.instance.callingID = null;
+            }
 
-            callersIDDropdownValue =
-                voiceAgencyDetails.result?.voiceAgencyData?.first.callerIds !=
-                        []
-                    ? getAgencyDetailsData['data']['result']['voiceAgencyData']
-                        [0]['callerIds'][0]
-                    : '';
-            Singleton.instance.callingID =
-                voiceAgencyDetails.result?.voiceAgencyData?.first.callerIds !=
-                        []
-                    ? getAgencyDetailsData['data']['result']['voiceAgencyData']
-                        [0]['callerIds'][0]
-                    : '';
             Singleton.instance.callerServiceID =
                 voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId ??
                     '';

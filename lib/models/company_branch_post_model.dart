@@ -1,6 +1,7 @@
 class CompanyBranchDepositPostModel {
   late List<String> caseIds;
   late Deposition deposition;
+  late String contractor;
   // String? eventModule;
   // String? callID;
   // String? callingID;
@@ -14,6 +15,7 @@ class CompanyBranchDepositPostModel {
   CompanyBranchDepositPostModel({
     required this.caseIds,
     required this.deposition,
+    required this.contractor,
     // this.eventModule = 'Field Allocation',
     // this.callID = '0',
     // this.callingID = '0',
@@ -30,6 +32,7 @@ class CompanyBranchDepositPostModel {
       caseIds.add(v);
     });
     deposition = json['deposition'];
+    contractor = json['contractor'];
     // callID = json['callID'];
     // callingID = json['callingID'];
     // callerServiceID = json['callerServiceID'];
@@ -44,6 +47,7 @@ class CompanyBranchDepositPostModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['caseIds'] = caseIds;
     data['deposition'] = deposition;
+    data['contractor'] = contractor;
 
     // data['eventModule'] = eventModule;
     // data['callID'] = callID;

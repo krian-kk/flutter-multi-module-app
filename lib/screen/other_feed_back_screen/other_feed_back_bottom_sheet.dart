@@ -102,9 +102,13 @@ class _CustomOtherFeedBackBottomSheetState
 
   @override
   void initState() {
-    isVehicleAvailable = widget.bloc.contractorDetailsValue.result!
-            .feedbackTemplate?[0].data![0].value ??
-        false;
+    // print(Singleton
+    //     .instance.feedbackTemplate?.result!.feedbackTemplate![0].data!);
+    if (Singleton.instance.feedbackTemplate?.result!.feedbackTemplate != null) {
+      isVehicleAvailable = Singleton.instance.feedbackTemplate?.result!
+              .feedbackTemplate![0].data![0].value ??
+          false;
+    }
     setState(() {
       dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     });
@@ -200,8 +204,8 @@ class _CustomOtherFeedBackBottomSheetState
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: widget.bloc.contractorDetailsValue
-                                        .result!.feedbackTemplate?.length ??
+                                itemCount: Singleton.instance.feedbackTemplate
+                                        ?.result?.feedbackTemplate?.length ??
                                     0,
                                 itemBuilder: (context, int index) {
                                   // isVehicleAvailable = widget
@@ -214,8 +218,8 @@ class _CustomOtherFeedBackBottomSheetState
                                   //     false;
 
                                   return expandList(
-                                      widget.bloc.contractorDetailsValue.result!
-                                          .feedbackTemplate!,
+                                      Singleton.instance.feedbackTemplate!
+                                          .result!.feedbackTemplate!,
                                       index);
                                 }),
                             const SizedBox(height: 5),
@@ -747,7 +751,7 @@ class _CustomOtherFeedBackBottomSheetState
                     if (list[index].data![0].name == 'actionproposed' &&
                         status &&
                         actionproposedDropdownValue.isEmpty) {
-                      widget.bloc.contractorDetailsValue.result!
+                      Singleton.instance.feedbackTemplate!.result!
                           .feedbackTemplate![index].data![0].options
                           ?.forEach((element) {
                         actionproposedDropdownValue
@@ -757,7 +761,7 @@ class _CustomOtherFeedBackBottomSheetState
                             'collectorfeedback' &&
                         status &&
                         collectorFeedBackValueDropdownList.isEmpty) {
-                      widget.bloc.contractorDetailsValue.result!
+                      Singleton.instance.feedbackTemplate!.result!
                           .feedbackTemplate![index].data![0].options
                           ?.forEach((element) {
                         collectorFeedBackValueDropdownList

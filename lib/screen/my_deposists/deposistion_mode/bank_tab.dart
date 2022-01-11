@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/bank_deposit_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -101,6 +102,7 @@ class _BankTabState extends State<BankTab> {
                         var requestBodyData = BankDepositPostModel(
                             // caseId: widget.caseId,
                             caseIds: widget.caseIds as List<String>,
+                            contractor: Singleton.instance.contractor ?? '',
                             deposition: Deposition(
                               bankName: bankNameController.text,
                               bankBranch: branchController.text,

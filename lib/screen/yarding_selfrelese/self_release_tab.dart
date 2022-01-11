@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/self_release_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -98,7 +99,8 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           );
                         } else {
                           var requestBodyData = SelfReleasePostModel(
-                              caseId: "61932bce3e29eb34b4149841",
+                              caseId: widget.caseId.toString(),
+                              contractor: Singleton.instance.contractor!,
                               repo: Repo(
                                 date: dateController.text,
                                 time: timeController.text,

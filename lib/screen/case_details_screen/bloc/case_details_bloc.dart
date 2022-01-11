@@ -48,7 +48,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
   EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
-  ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
+  // ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   // CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
   // List<EventDetailsResultModel> offlineEventDetailsListValue = [];
@@ -318,22 +318,22 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           // });
           break;
         case Constants.otherFeedback:
-          if (ConnectivityResult.none ==
-              await Connectivity().checkConnectivity()) {
-            yield NoInternetState();
-          } else {
-            Map<String, dynamic> getContractorDetails =
-                await APIRepository.apiRequest(
-                    APIRequestType.GET, HttpUrl.contractorDetail);
-            if (getContractorDetails[Constants.success] == true) {
-              Map<String, dynamic> jsonData = getContractorDetails['data'];
-              contractorDetailsValue =
-                  ContractorDetailsModel.fromJson(jsonData);
-            } else {
-              AppUtils.showToast(getContractorDetails['data'] ?? '');
-              // AppUtils.showToast(getContractorDetails['data']);
-            }
-          }
+          // if (ConnectivityResult.none ==
+          //     await Connectivity().checkConnectivity()) {
+          //   yield NoInternetState();
+          // } else {
+          //   Map<String, dynamic> getContractorDetails =
+          //       await APIRepository.apiRequest(
+          //           APIRequestType.GET, HttpUrl.contractorDetail);
+          //   if (getContractorDetails[Constants.success] == true) {
+          //     Map<String, dynamic> jsonData = getContractorDetails['data'];
+          //     contractorDetailsValue =
+          //         ContractorDetailsModel.fromJson(jsonData);
+          //   } else {
+          //     AppUtils.showToast(getContractorDetails['data'] ?? '');
+          //     // AppUtils.showToast(getContractorDetails['data']);
+          //   }
+          // }
           break;
         default:
       }

@@ -206,7 +206,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                   .buildNoCaseAvailable(),
                                             ))
                                           : ChegueAndCasshResults(widget.bloc,
-                                              mode: "CHEQUE",
+                                              // mode: "CHEQUE",
                                               result: widget
                                                   .bloc
                                                   .myDeposistsData
@@ -227,7 +227,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                   .buildNoCaseAvailable(),
                                             ))
                                           : ChegueAndCasshResults(widget.bloc,
-                                              mode: "CASH",
+                                              // mode: "CASH",
                                               result: widget
                                                   .bloc
                                                   .myDeposistsData
