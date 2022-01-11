@@ -85,8 +85,9 @@ class Cases {
   String? sId;
   EventAttr? eventAttr;
   String? agrRef;
+  String? caseId;
 
-  Cases({this.sId, this.eventAttr, this.agrRef});
+  Cases({this.sId, this.eventAttr, this.agrRef, this.caseId});
 
   Cases.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -94,6 +95,7 @@ class Cases {
         ? EventAttr.fromJson(json['eventAttr'])
         : null;
     agrRef = json['agrRef'];
+    caseId = json['caseId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +105,7 @@ class Cases {
       data['eventAttr'] = eventAttr!.toJson();
     }
     data['agrRef'] = agrRef;
+    data['caseId'] = caseId;
     return data;
   }
 }

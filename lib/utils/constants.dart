@@ -70,6 +70,11 @@ class Constants {
       'Please Select Drop Down Value';
   static const String success = 'success';
   static const String receipt = 'RECEIPT';
+
+  // My Receipts Tab
+  static const String approved = 'Approved';
+  static const String pendingApproval = 'Pending Approval';
+  static const String rejected = 'Rejected';
   static const int otpWaitingTime = 60;
 
   static List<int> keyBoardNumberList() {

@@ -225,20 +225,26 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                             fontWeight:
                                                                 FontWeight.w400,
                                                           ),
-                                                          CustomText(
-                                                            widget
-                                                                .bloc
-                                                                .yardingAndSelfReleaseData
-                                                                .result![index]
-                                                                .eventAttr!
-                                                                .registrationNo
-                                                                .toString(),
-                                                            fontSize: FontSize
-                                                                .eighteen,
-                                                            color: ColorResource
-                                                                .color101010,
-                                                            fontWeight:
-                                                                FontWeight.w700,
+                                                          Flexible(
+                                                            child: CustomText(
+                                                              widget
+                                                                  .bloc
+                                                                  .yardingAndSelfReleaseData
+                                                                  .result![
+                                                                      index]
+                                                                  .eventAttr!
+                                                                  .registrationNo
+                                                                  .toString(),
+                                                              isSingleLine:
+                                                                  true,
+                                                              fontSize: FontSize
+                                                                  .seventeen,
+                                                              color: ColorResource
+                                                                  .color101010,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -392,7 +398,9 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                         .yardingAndSelfReleaseData
                                                                         .result![
                                                                             index]
-                                                                        .sId!;
+                                                                        .caseId!;
+                                                                    // print(
+                                                                    //     caseID);
                                                                     custName = widget
                                                                             .bloc
                                                                             .yardingAndSelfReleaseData

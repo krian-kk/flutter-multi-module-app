@@ -39,8 +39,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   void initState() {
     super.initState();
     for (int i = 0; i < widget.result!.cases!.length; i++) {
-      selectedValue
-          .add(SelectedValue(widget.result!.cases![i].sId.toString(), false));
+      selectedValue.add(
+          SelectedValue(widget.result!.cases![i].caseId.toString(), false));
     }
   }
 
@@ -229,9 +229,10 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         CustomText(
-                                          widget.result!.cases![index]
-                                              .eventAttr!.amountCollected
-                                              .toString(),
+                                          Constants.inr +
+                                              widget.result!.cases![index]
+                                                  .eventAttr!.amountCollected
+                                                  .toString(),
                                           fontSize: FontSize.eighteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -354,6 +355,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                               caseIDs.clear();
                                               selectedValue.forEach((element) {
                                                 if (element.isSelected) {
+                                                  print(element.caseId);
                                                   caseIDs.add(element.caseId);
                                                 }
                                               });

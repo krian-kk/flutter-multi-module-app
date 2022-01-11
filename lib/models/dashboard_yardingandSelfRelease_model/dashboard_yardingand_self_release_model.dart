@@ -31,8 +31,9 @@ class YardingResult {
   String? sId;
   EventAttr? eventAttr;
   String? agrRef;
+  String? caseId;
 
-  YardingResult({this.sId, this.eventAttr, this.agrRef});
+  YardingResult({this.sId, this.eventAttr, this.agrRef, this.caseId});
 
   YardingResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -40,6 +41,7 @@ class YardingResult {
         ? EventAttr.fromJson(json['eventAttr'])
         : null;
     agrRef = json['agrRef'];
+    caseId = json['caseId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +51,7 @@ class YardingResult {
       data['eventAttr'] = eventAttr!.toJson();
     }
     data['agrRef'] = agrRef;
+    data['caseId'] = caseId;
     return data;
   }
 }
