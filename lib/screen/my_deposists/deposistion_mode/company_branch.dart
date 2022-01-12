@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:objectid/objectid.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/company_branch_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -19,11 +20,11 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 
 class CompanyBranch extends StatefulWidget {
   final DashboardBloc bloc;
-  final List<String>? caseIds;
+  final List<String>? selected_case_Ids;
   final String? mode;
   final String? custname;
   const CompanyBranch(this.bloc,
-      {Key? key, this.caseIds, this.mode, this.custname})
+      {Key? key, this.selected_case_Ids, this.mode, this.custname})
       : super(key: key);
 
   @override
@@ -116,50 +117,55 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           onTap: isSubmited
                               ? () async {
                                   if (_formKey.currentState!.validate()) {
-                                    if (uploadFileLists.isEmpty) {
-                                      AppUtils.showToast(
-                                        Constants.uploadDepositSlip,
-                                        gravity: ToastGravity.CENTER,
-                                      );
-                                    } else {
-                                      var requestBodyData =
-                                          CompanyBranchDepositPostModel(
-                                        // caseId: widget.caseId,
-                                        caseIds: widget.caseIds as List<String>,
-                                        contractor:
-                                            Singleton.instance.contractor ?? "",
-                                        deposition: Deposition(
-                                          companyBranchName:
-                                              branchNameController.text,
-                                          companyBranchLocation:
-                                              branchLocationController.text,
-                                          recptAmount: receiptController.text,
-                                          deptAmount: depositController.text,
-                                          reference: referenceController.text,
-                                          imageLocation: [''],
-                                          mode: widget.mode.toString(),
-                                          depositDate:
-                                              DateTime.now().toString(),
-                                          status: 'deposited',
-                                        ),
-                                      );
-                                      widget.bloc
-                                          .add(PostCompanyDepositDataEvent(
-                                        postData: requestBodyData,
-                                        fileData: uploadFileLists,
-                                      ));
+                                    // if (uploadFileLists.isEmpty) {
+                                    //   AppUtils.showToast(
+                                    //     Constants.uploadDepositSlip,
+                                    //     gravity: ToastGravity.CENTER,
+                                    //   );
+                                    // } else {
+                                    final id = ObjectId();
+                                    var requestBodyData =
+                                        CompanyBranchDepositPostModel(
+                                      caseIds:
+                                          widget.selected_case_Ids!.length == 1
+                                              ? [
+                                                  ...widget.selected_case_Ids!,
+                                                  '$id'
+                                                ]
+                                              : widget.selected_case_Ids!,
+                                      contractor:
+                                          Singleton.instance.contractor ?? "",
+                                      deposition: Deposition(
+                                        companyBranchName:
+                                            branchNameController.text,
+                                        companyBranchLocation:
+                                            branchLocationController.text,
+                                        recptAmount: receiptController.text,
+                                        deptAmount: depositController.text,
+                                        reference: referenceController.text,
+                                        imageLocation: [''],
+                                        mode: widget.mode.toString(),
+                                        depositDate: DateTime.now().toString(),
+                                        status: 'deposited',
+                                      ),
+                                    );
+                                    widget.bloc.add(PostCompanyDepositDataEvent(
+                                      postData: requestBodyData,
+                                      fileData: uploadFileLists,
+                                      context: context,
+                                    ));
 
-                                      // Map<String, dynamic> postResult =
-                                      //     await APIRepository.apiRequest(APIRequestType.POST,
-                                      //     HttpUrl.companyBranchDeposit,
-                                      //         requestBodydata: jsonEncode(requestBodyData));
-                                      // if (postResult['success']) {
-                                      //   AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
-                                      //   Navigator.pop(context);
-                                      // }
-                                    }
+                                    // Map<String, dynamic> postResult =
+                                    //     await APIRepository.apiRequest(APIRequestType.POST,
+                                    //     HttpUrl.companyBranchDeposit,
+                                    //         requestBodydata: jsonEncode(requestBodyData));
+                                    // if (postResult['success']) {
+                                    //   AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+                                    //   Navigator.pop(context);
+                                    // }
                                   }
                                 }
+                              // }
                               : () {},
                         ),
                       ),

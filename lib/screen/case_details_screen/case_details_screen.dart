@@ -869,7 +869,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           ClickOpenBottomSheetEvent(
                                               Constants.callDetails,
                                               const [],
-                                              false)),
+                                              true)),
                                       child: Container(
                                         height: 50,
                                         width:
@@ -1100,6 +1100,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc: bloc,
             );
           case Constants.otherFeedback:
+            print(isCall);
+            print(bloc.userType);
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,
               bloc,

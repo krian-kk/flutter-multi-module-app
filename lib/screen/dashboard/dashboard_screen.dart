@@ -61,8 +61,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is PostDataApiSuccessState) {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
             Navigator.pop(context);
+            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
           }
 
           if (state is NoInternetConnectionState) {

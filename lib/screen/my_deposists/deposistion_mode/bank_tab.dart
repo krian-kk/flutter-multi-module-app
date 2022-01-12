@@ -17,13 +17,15 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
+import 'package:objectid/objectid.dart';
 
 class BankTab extends StatefulWidget {
   final DashboardBloc bloc;
-  final List<String>? caseIds;
+  final List<String>? selected_case_Ids;
   final String? mode;
   final String? custname;
-  const BankTab(this.bloc, {Key? key, this.caseIds, this.mode, this.custname})
+  const BankTab(this.bloc,
+      {Key? key, this.selected_case_Ids, this.mode, this.custname})
       : super(key: key);
 
   @override
@@ -118,48 +120,54 @@ class _BankTabState extends State<BankTab> {
                         onTap: isSubmited
                             ? () async {
                                 if (_formKey.currentState!.validate()) {
-                                  if (uploadFileLists.isEmpty) {
-                                    AppUtils.showToast(
-                                      Constants.uploadDepositSlip,
-                                      gravity: ToastGravity.CENTER,
-                                    );
-                                  } else {
-                                    var requestBodyData = BankDepositPostModel(
-                                        // caseId: widget.caseId,
-                                        caseIds: widget.caseIds as List<String>,
-                                        contractor:
-                                            Singleton.instance.contractor ?? '',
-                                        deposition: Deposition(
-                                          bankName: bankNameController.text,
-                                          bankBranch: branchController.text,
-                                          ifscCode: ifscCodeController.text,
-                                          accNumber: accNoController.text,
-                                          recptAmount: receiptController.text,
-                                          deptAmount: depositController.text,
-                                          reference: referenceController.text,
-                                          imageLocation: [''],
-                                          mode: widget.mode.toString(),
-                                          depositDate:
-                                              DateTime.now().toString(),
-                                          status: 'deposited',
-                                        ));
+                                  // if (uploadFileLists.isEmpty) {
+                                  //   AppUtils.showToast(
+                                  //     Constants.uploadDepositSlip,
+                                  //     gravity: ToastGravity.CENTER,
+                                  //   );
+                                  // } else {
+                                  final id = ObjectId();
+                                  var requestBodyData = BankDepositPostModel(
+                                      caseIds:
+                                          widget.selected_case_Ids!.length == 1
+                                              ? [
+                                                  ...widget.selected_case_Ids!,
+                                                  '$id'
+                                                ]
+                                              : widget.selected_case_Ids!,
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
+                                      deposition: Deposition(
+                                        bankName: bankNameController.text,
+                                        bankBranch: branchController.text,
+                                        ifscCode: ifscCodeController.text,
+                                        accNumber: accNoController.text,
+                                        recptAmount: receiptController.text,
+                                        deptAmount: depositController.text,
+                                        reference: referenceController.text,
+                                        imageLocation: [''],
+                                        mode: widget.mode.toString(),
+                                        depositDate: DateTime.now().toString(),
+                                        status: 'deposited',
+                                      ));
 
-                                    widget.bloc.add(PostBankDepositDataEvent(
-                                      postData: requestBodyData,
-                                      fileData: uploadFileLists,
-                                    ));
+                                  widget.bloc.add(PostBankDepositDataEvent(
+                                    postData: requestBodyData,
+                                    fileData: uploadFileLists,
+                                    context: context,
+                                  ));
 
-                                    // Map<String, dynamic> postResult =
-                                    //     await APIRepository.apiRequest(APIRequestType.POST,
-                                    //     HttpUrl.bankDeposit,
-                                    //         requestBodydata: jsonEncode(requestBodyData));
-                                    // if (postResult['success']) {
-                                    //   AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
-                                    //   Navigator.pop(context);
-                                    // }
-                                  }
+                                  // Map<String, dynamic> postResult =
+                                  //     await APIRepository.apiRequest(APIRequestType.POST,
+                                  //     HttpUrl.bankDeposit,
+                                  //         requestBodydata: jsonEncode(requestBodyData));
+                                  // if (postResult['success']) {
+                                  //   AppUtils.topSnackBar(context, StringResource.successfullySubmitted);
+                                  //   Navigator.pop(context);
+                                  // }
                                 }
                               }
+                            // }
                             : () {},
                       ),
                     ),

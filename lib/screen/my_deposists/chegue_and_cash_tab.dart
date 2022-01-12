@@ -14,9 +14,9 @@ import 'package:origa/widgets/custom_text.dart';
 import 'deposistion_mode/deposistion_mode.dart';
 
 class SelectedValue {
-  String caseId;
+  String _id;
   bool isSelected;
-  SelectedValue(this.caseId, this.isSelected);
+  SelectedValue(this._id, this.isSelected);
 }
 
 class ChegueAndCasshResults extends StatefulWidget {
@@ -39,15 +39,14 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   void initState() {
     super.initState();
     for (int i = 0; i < widget.result!.cases!.length; i++) {
-      selectedValue.add(
-          SelectedValue(widget.result!.cases![i].caseId.toString(), false));
+      selectedValue
+          .add(SelectedValue(widget.result!.cases![i].sId.toString(), false));
     }
   }
 
   int? _selectedIndex;
-  List<String> caseIDs = [];
+  List<String> ids = [];
   String? custName;
-  String? mode;
   List<SelectedValue> selectedValue = [];
 
   _onSelected(int index) {
@@ -345,18 +344,12 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                         .eventAttr!
                                                         .customerName ??
                                                     '';
-                                                mode = widget
-                                                        .result!
-                                                        .cases![index]
-                                                        .eventAttr!
-                                                        .mode ??
-                                                    '';
                                               });
-                                              caseIDs.clear();
+                                              ids.clear();
                                               selectedValue.forEach((element) {
                                                 if (element.isSelected) {
-                                                  print(element.caseId);
-                                                  caseIDs.add(element.caseId);
+                                                  // print(element._id);
+                                                  ids.add(element._id);
                                                 }
                                               });
                                             },
@@ -395,6 +388,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 DepositionMode.buildDepositionMode(
-                    context, caseIDs, mode!, widget.bloc, custName)));
+                    context, ids, widget.bloc, custName)));
   }
 }

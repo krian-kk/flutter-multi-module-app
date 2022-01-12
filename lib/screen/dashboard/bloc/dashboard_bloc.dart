@@ -181,14 +181,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         // dashboardEventCountValue.result?.forEach((element) {
         for (DashboardEventCountResult element
             in dashboardEventCountValue.result!) {
-          if (element.eventType! == "PTP" ||
-              element.eventType! == "DENIAL" ||
-              element.eventType! == "DISPUTE" ||
-              element.eventType! == "REMINDER" ||
-              element.eventType! == "RECEIPT" ||
+          if (element.eventType! == Constants.ptp ||
+              element.eventType! == Constants.denial ||
+              element.eventType! == Constants.dispute ||
+              element.eventType! == Constants.remainder.toUpperCase() ||
+              element.eventType! == Constants.receipt ||
               element.eventType! == "REPO" ||
               element.eventType! == "Feedback" ||
-              element.eventType! == "OTS") {
+              element.eventType! == Constants.ots) {
             print("customerMetCountValue=========");
             print(element.eventType!);
             customerMetCountValue.add(element.eventType!);
@@ -197,76 +197,85 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
         for (DashboardEventCountResult element
             in dashboardEventCountValue.result!) {
-          if (element.eventType! == "Left Message" ||
-              element.eventType! == "Door Locked" ||
-              element.eventType! == "Entry Restricted") {
+          if (element.eventType! == Constants.leftMessage ||
+              element.eventType! == Constants.doorLocked ||
+              element.eventType! == Constants.entryRestricted ||
+              element.eventType! == Constants.switchOff ||
+              element.eventType! == Constants.rnr ||
+              element.eventType! == Constants.outOfNetwork ||
+              element.eventType! == Constants.disconnecting ||
+              element.eventType! == Constants.lineBusy) {
             customerNotMetCountValue.add(element.eventType!);
           }
         }
 
         for (DashboardEventCountResult element
             in dashboardEventCountValue.result!) {
-          if (element.eventType! == "Wrong Address" ||
-              element.eventType! == "Shifted" ||
-              element.eventType! == "Address Not Found") {
+          if (element.eventType! == Constants.wrongAddress ||
+              element.eventType! == Constants.shifted ||
+              element.eventType! == Constants.addressNotFound ||
+              element.eventType! == Constants.doesNotExist ||
+              element.eventType! == Constants.incorrectNumber ||
+              element.eventType! == Constants.notOpeartional ||
+              element.eventType! == Constants.numberNotWorking) {
             customerInvalidCountValue.add(element.eventType!);
           }
         }
 
-        Map<String, dynamic> getDashboardEventCountValue1 =
-            await APIRepository.apiRequest(APIRequestType.GET,
-                'https://uat-collect.origa.ai/app_otc/v1/agent/case-details/receipts?timePeriod=WEEKLY');
+        // Map<String, dynamic> getDashboardEventCountValue1 =
+        //     await APIRepository.apiRequest(APIRequestType.GET,
+        //         'https://uat-collect.origa.ai/app_otc/v1/agent/case-details/receipts?timePeriod=WEEKLY');
 
-        ReceiptsWeeklyModel tempModel = ReceiptsWeeklyModel();
-        List<String> tempNewCaseId = [];
-        List<String> tempApporvedCaseId = [];
-        List<String> tempPendingCaseId = [];
-        if (getDashboardEventCountValue1['success']) {
-          Map<String, dynamic> jsonData = getDashboardEventCountValue1['data'];
-          tempModel = ReceiptsWeeklyModel.fromJson(jsonData);
-        }
+        // ReceiptsWeeklyModel tempModel = ReceiptsWeeklyModel();
+        // List<String> tempNewCaseId = [];
+        // List<String> tempApporvedCaseId = [];
+        // List<String> tempPendingCaseId = [];
+        // if (getDashboardEventCountValue1['success']) {
+        //   Map<String, dynamic> jsonData = getDashboardEventCountValue1['data'];
+        //   tempModel = ReceiptsWeeklyModel.fromJson(jsonData);
+        // }
 
-        tempModel.result?.receiptEvent?.forEach((element) {
-          if (element.eventAttr!.appStatus!.contains('new')) {
-            tempNewCaseId.add(element.caseId.toString());
-          }
-          if (element.eventAttr!.appStatus!.contains('approved')) {
-            tempApporvedCaseId.add(element.caseId.toString());
-          }
-          if (element.eventAttr!.appStatus!.contains('pending')) {
-            tempPendingCaseId.add(element.caseId.toString());
-          }
-        });
+        // tempModel.result?.receiptEvent?.forEach((element) {
+        //   if (element.eventAttr!.appStatus!.contains('new')) {
+        //     tempNewCaseId.add(element.caseId.toString());
+        //   }
+        //   if (element.eventAttr!.appStatus!.contains('approved')) {
+        //     tempApporvedCaseId.add(element.caseId.toString());
+        //   }
+        //   if (element.eventAttr!.appStatus!.contains('pending')) {
+        //     tempPendingCaseId.add(element.caseId.toString());
+        //   }
+        // });
 
-        List<DashboardReceiptWeekly> tempReceiptWeekly = [];
-        tempNewCaseId.forEach((ele) {
-          tempModel.result?.cases?.forEach((element) {
-            if (element.caseId!.contains(ele)) {
-              tempReceiptWeekly
-                  .add(DashboardReceiptWeekly(ele, 'new', element));
-            }
-          });
-        });
-        tempApporvedCaseId.forEach((ele) {
-          tempModel.result?.cases?.forEach((element) {
-            if (element.caseId!.contains(ele)) {
-              tempReceiptWeekly
-                  .add(DashboardReceiptWeekly(ele, 'apporved', element));
-            }
-          });
-        });
-        tempPendingCaseId.forEach((ele) {
-          tempModel.result?.cases?.forEach((element) {
-            if (element.caseId!.contains(ele)) {
-              tempReceiptWeekly
-                  .add(DashboardReceiptWeekly(ele, 'pending', element));
-            }
-          });
-        });
+        // List<DashboardReceiptWeekly> tempReceiptWeekly = [];
+        // tempNewCaseId.forEach((ele) {
+        //   tempModel.result?.cases?.forEach((element) {
+        //     if (element.caseId!.contains(ele)) {
+        //       tempReceiptWeekly
+        //           .add(DashboardReceiptWeekly(ele, 'new', element));
+        //     }
+        //   });
+        // });
+        // tempApporvedCaseId.forEach((ele) {
+        //   tempModel.result?.cases?.forEach((element) {
+        //     if (element.caseId!.contains(ele)) {
+        //       tempReceiptWeekly
+        //           .add(DashboardReceiptWeekly(ele, 'apporved', element));
+        //     }
+        //   });
+        // });
+        // tempPendingCaseId.forEach((ele) {
+        //   tempModel.result?.cases?.forEach((element) {
+        //     if (element.caseId!.contains(ele)) {
+        //       tempReceiptWeekly
+        //           .add(DashboardReceiptWeekly(ele, 'pending', element));
+        //     }
+        //   });
+        // });
 
-        tempReceiptWeekly.forEach((element) {
-          print('Element Value is => ${element.caseId}');
-        });
+        // tempReceiptWeekly.forEach((element) {
+        //   print('Element Value is => ${element.caseId}');
+        // });
       }
 // caseList.clear();
       // caseList.addAll([
@@ -494,27 +503,27 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PostBankDepositDataEvent) {
       yield DisableMDBankSubmitBtnState();
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST, HttpUrl.bankDeposit + "userType=$userType",
-          requestBodydata: jsonEncode(event.postData));
-      // final Map<String, dynamic> postdata =
-      //     jsonDecode(jsonEncode(event.postData!.toJson()))
-      //         as Map<String, dynamic>;
-      // List<dynamic> value = [];
-      // for (var element in event.fileData!) {
-      //   value.add(await MultipartFile.fromFile(element.path.toString()));
-      // }
-      // postdata.addAll({
-      //   'files': value,
-      // });
       // Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      //   APIRequestType.UPLOAD,
-      //   HttpUrl.bankDeposit + "userType=$userType",
-      //   formDatas: FormData.fromMap(postdata),
-      // );
-      // print('Post Data => ${postdata}');
+      //     APIRequestType.POST, HttpUrl.bankDeposit + "userType=$userType",
+      //     requestBodydata: jsonEncode(event.postData));
+      final Map<String, dynamic> postdata =
+          jsonDecode(jsonEncode(event.postData!.toJson()))
+              as Map<String, dynamic>;
+      List<dynamic> value = [];
+      for (var element in event.fileData!) {
+        value.add(await MultipartFile.fromFile(element.path.toString()));
+      }
+      postdata.addAll({
+        'files': value,
+      });
+      print('Post Data => ${postdata}');
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.UPLOAD,
+        HttpUrl.bankDeposit + "userType=$userType",
+        formDatas: FormData.fromMap(postdata),
+      );
 
-      if (postResult['success']) {
+      if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
       yield EnableMDBankSubmitBtnState();

@@ -414,7 +414,9 @@ class _CustomOtherFeedBackBottomSheetState
                                   caseId: widget.caseId,
                                   eventCode:
                                       ConstantEventValues.otherFeedbackEvenCode,
-                                  eventModule: widget.isCall!
+                                  eventModule: widget.isCall! ||
+                                          Constants.telecaller ==
+                                              widget.userType
                                       ? 'Telecalling'
                                       : 'Field Allocation',
                                   invalidNumber: false,

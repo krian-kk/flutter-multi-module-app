@@ -2,11 +2,13 @@ class BankDepositPostModel {
   late List<String> caseIds;
   late Deposition deposition;
   late String contractor;
+  // late CaseIds caseIDs;
 
   BankDepositPostModel({
     required this.caseIds,
     required this.deposition,
     required this.contractor,
+    // required this.caseIDs,
   });
 
   BankDepositPostModel.fromJson(Map<String, dynamic> json) {
@@ -15,6 +17,7 @@ class BankDepositPostModel {
     });
     deposition = json['deposition'];
     contractor = json['contractor'];
+    // caseIDs = json['caseIDs'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +25,7 @@ class BankDepositPostModel {
     data['caseIds'] = caseIds;
     data['deposition'] = deposition;
     data['contractor'] = contractor;
+    // data['caseIDs'] = caseIDs;
     return data;
   }
 }
@@ -105,6 +109,22 @@ class AgentLocation {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['missingAgentLocation'] = missingAgentLocation;
+    return data;
+  }
+}
+
+class CaseIds {
+  String? caseid;
+
+  CaseIds({this.caseid});
+
+  CaseIds.fromJson(Map<String, dynamic> json) {
+    caseid = json['caseid'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['caseid'] = caseid;
     return data;
   }
 }
