@@ -53,22 +53,26 @@ class SetTimeperiodValueEvent extends DashboardEvent {}
 
 class PostBankDepositDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostBankDepositDataEvent({this.postData});
+  final List<File>? fileData;
+  PostBankDepositDataEvent({this.postData, this.fileData});
 }
 
 class PostCompanyDepositDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostCompanyDepositDataEvent({this.postData});
+  final List<File>? fileData;
+  PostCompanyDepositDataEvent({this.postData, this.fileData});
 }
 
 class PostYardingDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostYardingDataEvent({this.postData});
+  final List<File>? fileData;
+  PostYardingDataEvent({this.postData, this.fileData});
 }
 
 class PostSelfreleaseDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostSelfreleaseDataEvent({this.postData});
+  final List<File>? fileData;
+  PostSelfreleaseDataEvent({this.postData, this.fileData});
 }
 
 class HelpEvent extends DashboardEvent {}

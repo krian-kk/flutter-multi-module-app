@@ -349,13 +349,20 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      postdata.addAll({'files': DioClient.listOfMultiPart(event.fileData!)});
+      List<dynamic> value = [];
+      for (var element in event.fileData!) {
+        value.add(await MultipartFile.fromFile(element.path.toString()));
+      }
+      postdata.addAll({
+        'files': value,
+      });
+      print('Post Data => ${postdata}');
 
       // print(postdata);
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.UPLOAD, HttpUrl.imageCaptured + "userType=$userType",
+        APIRequestType.UPLOAD,
+        HttpUrl.imageCaptured + "userType=$userType",
         formDatas: FormData.fromMap(postdata),
-        // requestBodydata: jsonEncode(event.postData)
       );
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();

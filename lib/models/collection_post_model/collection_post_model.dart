@@ -14,7 +14,7 @@ class CollectionPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late double invalidNumber;
 
   CollectionPostModel({
     required this.eventId,
@@ -32,7 +32,7 @@ class CollectionPostModel {
     this.callingID,
     required this.callerServiceID,
     required this.voiceCallEventCode,
-    this.invalidNumber,
+    this.invalidNumber = 0,
   });
 
   CollectionPostModel.fromJson(Map<String, dynamic> json) {
@@ -87,7 +87,7 @@ class EventAttr {
   late List<String> imageLocation;
   late double? altitude;
   late double accuracy;
-  late double? altitudeAccuracy;
+  late double altitudeAccuracy;
   late double? heading;
   late double? speed;
   late double latitude;
@@ -104,9 +104,9 @@ class EventAttr {
     required this.imageLocation,
     this.altitude,
     this.accuracy = 0,
-    this.altitudeAccuracy,
-    this.heading,
-    this.speed,
+    this.altitudeAccuracy = 0,
+    this.heading = 0,
+    this.speed = 0,
     this.latitude = 0,
     this.longitude = 0,
   });

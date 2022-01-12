@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -481,6 +483,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.POST, HttpUrl.bankDeposit + "userType=$userType",
           requestBodydata: jsonEncode(event.postData));
+      // final Map<String, dynamic> postdata =
+      //     jsonDecode(jsonEncode(event.postData!.toJson()))
+      //         as Map<String, dynamic>;
+      // List<dynamic> value = [];
+      // for (var element in event.fileData!) {
+      //   value.add(await MultipartFile.fromFile(element.path.toString()));
+      // }
+      // postdata.addAll({
+      //   'files': value,
+      // });
+      // Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      //   APIRequestType.UPLOAD,
+      //   HttpUrl.bankDeposit + "userType=$userType",
+      //   formDatas: FormData.fromMap(postdata),
+      // );
+      // print('Post Data => ${postdata}');
+
       if (postResult['success']) {
         yield PostDataApiSuccessState();
       }
@@ -489,10 +508,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PostCompanyDepositDataEvent) {
       yield DisableMDCompanyBranchSubmitBtnState();
+      final Map<String, dynamic> postdata =
+          jsonDecode(jsonEncode(event.postData!.toJson()))
+              as Map<String, dynamic>;
+      List<dynamic> value = [];
+      for (var element in event.fileData!) {
+        value.add(await MultipartFile.fromFile(element.path.toString()));
+      }
+      postdata.addAll({
+        'files': value,
+      });
+      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST,
-          HttpUrl.companyBranchDeposit + "userType=$userType",
-          requestBodydata: jsonEncode(event.postData));
+        APIRequestType.UPLOAD,
+        HttpUrl.companyBranchDeposit + "userType=$userType",
+        formDatas: FormData.fromMap(postdata),
+      );
+
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
@@ -501,9 +533,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PostYardingDataEvent) {
       yield DisableRSYardingSubmitBtnState();
+      final Map<String, dynamic> postdata =
+          jsonDecode(jsonEncode(event.postData!.toJson()))
+              as Map<String, dynamic>;
+      List<dynamic> value = [];
+      for (var element in event.fileData!) {
+        value.add(await MultipartFile.fromFile(element.path.toString()));
+      }
+      postdata.addAll({
+        'files': value,
+      });
+      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST, HttpUrl.yarding + "userType=$userType",
-          requestBodydata: jsonEncode(event.postData));
+        APIRequestType.UPLOAD,
+        HttpUrl.yarding + "userType=$userType",
+        formDatas: FormData.fromMap(postdata),
+      );
+
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
@@ -512,9 +558,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is PostSelfreleaseDataEvent) {
       yield DisableRSSelfReleaseSubmitBtnState();
+      final Map<String, dynamic> postdata =
+          jsonDecode(jsonEncode(event.postData!.toJson()))
+              as Map<String, dynamic>;
+      List<dynamic> value = [];
+      for (var element in event.fileData!) {
+        value.add(await MultipartFile.fromFile(element.path.toString()));
+      }
+      postdata.addAll({
+        'files': value,
+      });
+      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST, HttpUrl.selfRelease + "userType=$userType",
-          requestBodydata: jsonEncode(event.postData));
+        APIRequestType.UPLOAD,
+        HttpUrl.selfRelease + "userType=$userType",
+        formDatas: FormData.fromMap(postdata),
+      );
+
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }

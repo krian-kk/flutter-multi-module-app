@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +40,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
 
   bool isSubmited = true;
 
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
 
   @override
   void initState() {
@@ -47,10 +49,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+        .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
-      uploadFileLists =
-          result.files.map((path) => path.path.toString()).toList();
+      uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
@@ -135,17 +136,18 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                           recptAmount: receiptController.text,
                                           deptAmount: depositController.text,
                                           reference: referenceController.text,
-                                          imageLocation:
-                                              uploadFileLists as List<String>,
+                                          imageLocation: [''],
                                           mode: widget.mode.toString(),
                                           depositDate:
                                               DateTime.now().toString(),
                                           status: 'deposited',
                                         ),
                                       );
-                                      widget.bloc.add(
-                                          PostCompanyDepositDataEvent(
-                                              postData: requestBodyData));
+                                      widget.bloc
+                                          .add(PostCompanyDepositDataEvent(
+                                        postData: requestBodyData,
+                                        fileData: uploadFileLists,
+                                      ));
 
                                       // Map<String, dynamic> postResult =
                                       //     await APIRepository.apiRequest(APIRequestType.POST,

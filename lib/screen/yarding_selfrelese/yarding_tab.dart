@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +37,7 @@ class _YardingTabState extends State<YardingTab> {
   late TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
 
   bool isSubmited = true;
 
@@ -46,13 +48,11 @@ class _YardingTabState extends State<YardingTab> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+        .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
-      uploadFileLists =
-          result.files.map((path) => path.path.toString()).toList();
+      uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
-      // User canceled the picker
-      AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
+      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
   }
 
@@ -131,11 +131,11 @@ class _YardingTabState extends State<YardingTab> {
                                             date: dateController.text,
                                             time: timeController.text,
                                             remarks: remarksController.text,
-                                            imageLocation:
-                                                uploadFileLists as List<String>,
+                                            imageLocation: [''],
                                           ));
                                       widget.bloc.add(PostYardingDataEvent(
-                                          postData: requestBodyData));
+                                          postData: requestBodyData,
+                                          fileData: uploadFileLists));
                                     }
                                   }
                                 }

@@ -14,7 +14,7 @@ class OtherFeedBackPostModel {
   late String callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double invalidNumber;
+  late String invalidNumber;
 
   OtherFeedBackPostModel({
     required this.eventId,
@@ -32,7 +32,7 @@ class OtherFeedBackPostModel {
     required this.callingID,
     required this.callerServiceID,
     required this.voiceCallEventCode,
-    this.invalidNumber = 0,
+    this.invalidNumber = '0',
   });
 
   OtherFeedBackPostModel.fromJson(Map<String, dynamic> json) {

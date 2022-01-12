@@ -15,7 +15,7 @@ class OtsPostModel {
   String? callingId;
   String callerServiceId;
   String voiceCallEventCode;
-  double? invalidNumber;
+  String? invalidNumber;
   String agrRef;
   String contractor;
   List<String> imageLocation;
@@ -33,7 +33,7 @@ class OtsPostModel {
     required this.callingId,
     required this.callerServiceId,
     required this.voiceCallEventCode,
-    this.invalidNumber,
+    this.invalidNumber = '0',
     required this.agrRef,
     required this.contractor,
     required this.imageLocation,

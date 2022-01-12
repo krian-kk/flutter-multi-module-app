@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,7 +62,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   final _formKey = GlobalKey<FormState>();
 
   bool isSubmit = true;
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
 
   @override
   void initState() {
@@ -69,14 +71,13 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+        .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
-        AppUtils.showToast('Please Select Minimum 5 MB File.',
+        AppUtils.showToast('Please Select Maximum 5 MB File.',
             gravity: ToastGravity.CENTER);
       } else {
-        uploadFileLists =
-            result.files.map((path) => path.path.toString()).toList();
+        uploadFileLists = result.paths.map((path) => File(path!)).toList();
       }
     } else {
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
@@ -374,9 +375,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         ? 'TC : OTS'
                                         : 'OTS',
                                     caseId: widget.caseId,
-                                    imageLocation: uploadFileLists.isNotEmpty
-                                        ? uploadFileLists as List<String>
-                                        : [''],
+                                    imageLocation: [''],
                                     eventAttr: OTSEventAttr(
                                       date: otsPaymentDateControlller.text,
                                       remarkOts: remarksControlller.text,
@@ -404,8 +403,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       health: ConstantEventValues.otsHealth,
                                       value: widget.postValue['value'],
                                     ),
-                                    callId: Singleton.instance.callID,
-                                    callingId: Singleton.instance.callingID,
+                                    callId: Singleton.instance.callID ?? '0',
+                                    callingId:
+                                        Singleton.instance.callingID ?? '0',
                                     callerServiceId:
                                         Singleton.instance.callerServiceID ??
                                             '',
@@ -416,12 +416,26 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         Singleton.instance.contractor ?? '',
                                   );
 
+                                  final Map<String, dynamic> postdata =
+                                      jsonDecode(jsonEncode(
+                                              requestBodyData.toJson()))
+                                          as Map<String, dynamic>;
+                                  List<dynamic> value = [];
+                                  for (var element in uploadFileLists) {
+                                    value.add(await MultipartFile.fromFile(
+                                        element.path.toString()));
+                                  }
+                                  postdata.addAll({
+                                    'files': value,
+                                  });
+
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
-                                          APIRequestType.POST,
-                                          HttpUrl.otsPostUrl,
-                                          requestBodydata:
-                                              jsonEncode(requestBodyData));
+                                    APIRequestType.UPLOAD,
+                                    HttpUrl.otsPostUrl,
+                                    formDatas: FormData.fromMap(postdata),
+                                  );
+
                                   if (postResult[Constants.success]) {
                                     AppUtils.topSnackBar(
                                         context, "Event updated successfully.");

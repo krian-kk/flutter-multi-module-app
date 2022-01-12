@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +37,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
 
   bool isSubmit = true;
 
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
 
   @override
   void initState() {
@@ -49,10 +51,9 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+        .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
-      uploadFileLists =
-          result.files.map((path) => path.path.toString()).toList();
+      uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
@@ -136,7 +137,9 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                                     as List<String>,
                                               ));
                                       widget.bloc.add(PostSelfreleaseDataEvent(
-                                          postData: requestBodyData));
+                                        postData: requestBodyData,
+                                        fileData: uploadFileLists,
+                                      ));
                                     }
                                   }
                                 }

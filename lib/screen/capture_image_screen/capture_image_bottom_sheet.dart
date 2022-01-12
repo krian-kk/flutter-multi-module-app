@@ -57,7 +57,6 @@ class _CustomCaptureImageBottomSheetState
         .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
-      // uploadFileLists = result.paths.map((path) => path!).toList();
     } else {
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
