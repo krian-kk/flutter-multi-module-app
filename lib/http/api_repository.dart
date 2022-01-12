@@ -39,6 +39,7 @@ class APIRepository {
       {dynamic requestBodydata,
       List<File>? file,
       File? imageFile,
+      FormData? formDatas,
       String? savePath,
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
@@ -57,11 +58,11 @@ class APIRepository {
           }
         case APIRequestType.UPLOAD:
           {
-            final FormData data = FormData.fromMap({
-              'file': DioClient.listOfMultiPart(file),
-            });
-            response =
-                await DioClient.dioFileConfig().post(urlString, data: data);
+            // final FormData data = FormData.fromMap({
+            //   'files': DioClient.listOfMultiPart(file),
+            // });
+            response = await DioClient.dioFileConfig()
+                .post(urlString, data: formDatas);
             break;
           }
         case APIRequestType.singleFileUpload:

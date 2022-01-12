@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class PostImageCapturedModel {
   late int eventId;
   late String eventType;
@@ -14,6 +16,7 @@ class PostImageCapturedModel {
   late String agentName;
   late String contractor;
   late String agrRef;
+  // List<dynamic>? files;
 
   PostImageCapturedModel({
     required this.eventId,
@@ -31,6 +34,7 @@ class PostImageCapturedModel {
     required this.agentName,
     required this.contractor,
     required this.agrRef,
+    // required this.files,
   });
 
   PostImageCapturedModel.fromJson(Map<String, dynamic> json) {
@@ -51,6 +55,7 @@ class PostImageCapturedModel {
     agentName = json['agentName'];
     contractor = json['contractor'];
     agrRef = json['agrRef'];
+    // files = json['files'];
   }
 
   Map<String, dynamic> toJson() {
@@ -70,6 +75,7 @@ class PostImageCapturedModel {
     data['agentName'] = agentName;
     data['contractor'] = contractor;
     data['agrRef'] = agrRef;
+    // data['files'] = files;
     return data;
   }
 }

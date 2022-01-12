@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
@@ -17,6 +20,7 @@ import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_m
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
+import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
@@ -342,9 +346,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is PostImageCapturedEvent) {
+      final Map<String, dynamic> postdata =
+          jsonDecode(jsonEncode(event.postData!.toJson()))
+              as Map<String, dynamic>;
+      postdata.addAll({'files': DioClient.listOfMultiPart(event.fileData!)});
+
+      // print(postdata);
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST, HttpUrl.imageCaptured + "userType=$userType",
-          requestBodydata: jsonEncode(event.postData));
+        APIRequestType.UPLOAD, HttpUrl.imageCaptured + "userType=$userType",
+        formDatas: FormData.fromMap(postdata),
+        // requestBodydata: jsonEncode(event.postData)
+      );
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }

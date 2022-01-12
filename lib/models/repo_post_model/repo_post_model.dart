@@ -13,7 +13,7 @@ class RepoPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late dynamic? invalidNumber;
   late String agrRef;
 
   RepoPostModel({
@@ -108,7 +108,7 @@ class EventAttr {
     required this.customerName,
     this.altitude,
     required this.accuracy,
-    this.altitudeAccuracy,
+    this.altitudeAccuracy = 0.0,
     this.heading,
     this.speed,
     required this.latitude,

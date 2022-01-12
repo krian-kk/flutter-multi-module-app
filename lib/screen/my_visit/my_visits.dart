@@ -87,15 +87,28 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             print(element.collSubStatus);
             if (element.collSubStatus == Constants.ptp ||
                 element.collSubStatus == Constants.denial ||
-                element.collSubStatus == 'Denial' ||
                 element.collSubStatus == Constants.dispute ||
+                element.collSubStatus == 'Denial' ||
                 element.collSubStatus == 'Dispute' ||
                 element.collSubStatus == 'Feedback' ||
+                element.collSubStatus == 'REPO' ||
                 element.collSubStatus == Constants.remainder ||
                 element.collSubStatus == Constants.remainder_1 ||
                 element.collSubStatus == Constants.collections ||
                 element.collSubStatus == Constants.receipt ||
-                element.collSubStatus == Constants.ots) {
+                element.collSubStatus == Constants.ots ||
+                element.telSubStatus == Constants.ptp ||
+                element.telSubStatus == Constants.denial ||
+                element.telSubStatus == Constants.dispute ||
+                element.telSubStatus == 'Denial' ||
+                element.telSubStatus == 'Dispute' ||
+                element.telSubStatus == 'Feedback' ||
+                element.telSubStatus == 'REPO' ||
+                element.telSubStatus == Constants.remainder ||
+                element.telSubStatus == Constants.remainder_1 ||
+                element.telSubStatus == Constants.collections ||
+                element.telSubStatus == Constants.receipt ||
+                element.telSubStatus == Constants.ots) {
               custMet!.add(element);
               custMetTotalAmt = (custMetTotalAmt + element.due);
             }

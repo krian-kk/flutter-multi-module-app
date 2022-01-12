@@ -69,8 +69,9 @@ class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {
-  final dynamic postData;
-  PostImageCapturedEvent({this.postData});
+  final PostImageCapturedModel? postData;
+  final List<File>? fileData;
+  PostImageCapturedEvent({this.postData, this.fileData});
 }
 
 class EnableUnreachableBtnEvent extends CaseDetailsEvent {}

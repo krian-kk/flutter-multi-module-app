@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
@@ -55,7 +59,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   bool isSubmit = true;
 
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
 
   FocusNode modelMakeFocusNode = FocusNode();
   FocusNode registraionNoFocusNode = FocusNode();
@@ -68,10 +72,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+        .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
-      uploadFileLists =
-          result.files.map((path) => path.path.toString()).toList();
+      uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
@@ -343,8 +346,10 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                         //         '',
                                       )
                                     ],
-                                    callID: Singleton.instance.callID,
-                                    callingID: Singleton.instance.callingID,
+                                    callID: Singleton.instance.callID ?? '0',
+                                    callingID:
+                                        Singleton.instance.callingID ?? '0',
+                                    invalidNumber: '0',
                                     eventAttr: EventAttr(
                                       modelMake: modelMakeControlller.text,
                                       registrationNo:
@@ -355,9 +360,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                         status: 'pending',
                                       ),
                                       date: dateControlller.text,
-                                      imageLocation: uploadFileLists.isNotEmpty
-                                          ? uploadFileLists as List<String>
-                                          : [],
+                                      imageLocation: [''],
                                       customerName:
                                           Singleton.instance.caseCustomerName ??
                                               '',
@@ -368,12 +371,39 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       heading: position.heading,
                                       speed: position.speed,
                                     ));
+
+                                final Map<String, dynamic> postdata =
+                                    jsonDecode(jsonEncode(
+                                            requestBodyData.toJson()))
+                                        as Map<String, dynamic>;
+                                // FormData sendingData =
+                                //     FormData.fromMap(postdata);
+                                // sendingData.files.addAll(DioClient.listOfMultiPart(uploadFileLists));
+                                List<dynamic> value = [];
+                                for (var element in uploadFileLists) {
+                                  // print(element.path);
+                                  value.add(await MultipartFile.fromFile(
+                                      element.path.toString()));
+                                  // postdata.addAll({
+                                  //   'files': await MultipartFile.fromFile(
+                                  //       element.path.toString()),
+                                  //   // DioClient.listOfMultiPart(uploadFileLists)
+                                  // });
+                                  print("image path vale ==>${value}");
+                                }
+                                postdata.addAll({
+                                  'files': value,
+                                  // DioClient.listOfMultiPart(uploadFileLists)
+                                });
+
+                                print(postdata);
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
-                                  APIRequestType.POST,
+                                  APIRequestType.UPLOAD,
                                   HttpUrl.repoPostUrl('repo', widget.userType),
-                                  requestBodydata:
-                                      jsonEncode(requestBodyData.toJson()),
+                                  formDatas: FormData.fromMap(postdata),
+                                  // requestBodydata:
+                                  //     jsonEncode(requestBodyData.toJson()),
                                 );
                                 if (postResult[Constants.success]) {
                                   AppUtils.topSnackBar(

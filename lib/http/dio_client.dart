@@ -86,12 +86,12 @@ class DioClient {
     }
   }
 
-  static List<dynamic>? listOfMultiPart(List<File>? file) {
+  static List<dynamic>? listOfMultiPart(List<File> file) {
     final List<dynamic> multiPartValues = [];
-    for (File element in file!) {
+    for (File element in file) {
       multiPartValues.add(MultipartFile.fromFile(
         element.path,
-        filename: element.path.split('/').last,
+        // filename: element.path.split('/').last,
       ));
     }
     return multiPartValues;

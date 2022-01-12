@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:origa/http/dio_client.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -40,7 +43,7 @@ class _CustomCaptureImageBottomSheetState
   TextEditingController remarksControlller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
 
   bool isSubmit = true;
 
@@ -53,8 +56,8 @@ class _CustomCaptureImageBottomSheetState
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
-      uploadFileLists =
-          result.files.map((path) => path.path.toString()).toList();
+      uploadFileLists = result.paths.map((path) => File(path!)).toList();
+      // uploadFileLists = result.paths.map((path) => path!).toList();
     } else {
       AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
     }
@@ -194,6 +197,9 @@ class _CustomCaptureImageBottomSheetState
                                 var requestBodyData = PostImageCapturedModel(
                                     eventId:
                                         ConstantEventValues.captureImageEventId,
+                                    // files: uploadFileLists.isNotEmpty
+                                    //     ? uploadFileLists
+                                    //     : [],
                                     eventCode: ConstantEventValues
                                         .captureImageEvenCode,
                                     caseId: widget.bloc.caseId.toString(),
@@ -209,8 +215,10 @@ class _CustomCaptureImageBottomSheetState
                                     callerServiceID:
                                         Singleton.instance.callerServiceID ??
                                             '',
-                                    callID: Singleton.instance.callID,
-                                    callingID: Singleton.instance.callingID,
+                                    callID: Singleton.instance.callID ?? '0',
+                                    callingID:
+                                        Singleton.instance.callingID ?? ' 0',
+                                    invalidNumber: 0,
                                     eventType: 'IMAGE CAPTURED',
                                     eventModule: (widget.bloc.userType ==
                                             Constants.telecaller)
@@ -218,8 +226,7 @@ class _CustomCaptureImageBottomSheetState
                                         : 'Field Allocation',
                                     eventAttr: EventAttr(
                                       remarks: remarksControlller.text,
-                                      imageLocation:
-                                          uploadFileLists as List<String>,
+                                      imageLocation: [''],
                                       longitude: position.longitude,
                                       latitude: position.latitude,
                                       accuracy: position.accuracy,
@@ -228,7 +235,8 @@ class _CustomCaptureImageBottomSheetState
                                       speed: position.speed,
                                     ));
                                 widget.bloc.add(PostImageCapturedEvent(
-                                    postData: requestBodyData));
+                                    postData: requestBodyData,
+                                    fileData: uploadFileLists));
                               } else {
                                 AppUtils.showToast(
                                   'Upload Image',
