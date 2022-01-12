@@ -349,7 +349,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     callID: Singleton.instance.callID ?? '0',
                                     callingID:
                                         Singleton.instance.callingID ?? '0',
-                                    invalidNumber: '0',
+                                    invalidNumber: false,
                                     eventAttr: EventAttr(
                                       modelMake: modelMakeControlller.text,
                                       registrationNo:

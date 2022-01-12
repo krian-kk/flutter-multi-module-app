@@ -118,30 +118,28 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           onTap: isSubmit
                               ? () async {
                                   if (_formKey.currentState!.validate()) {
-                                    if (uploadFileLists.isEmpty) {
-                                      AppUtils.showToast(
-                                        Constants.uploadDepositSlip,
-                                        gravity: ToastGravity.CENTER,
-                                      );
-                                    } else {
-                                      var requestBodyData =
-                                          SelfReleasePostModel(
-                                              caseId: widget.caseId.toString(),
-                                              contractor: Singleton
-                                                  .instance.contractor!,
-                                              repo: Repo(
-                                                date: dateController.text,
-                                                time: timeController.text,
-                                                remarks: remarksController.text,
-                                                imageLocation: uploadFileLists
-                                                    as List<String>,
-                                              ));
-                                      widget.bloc.add(PostSelfreleaseDataEvent(
-                                        postData: requestBodyData,
-                                        fileData: uploadFileLists,
-                                      ));
-                                    }
+                                    // if (uploadFileLists.isEmpty) {
+                                    //   AppUtils.showToast(
+                                    //     Constants.uploadDepositSlip,
+                                    //     gravity: ToastGravity.CENTER,
+                                    //   );
+                                    // } else {
+                                    var requestBodyData = SelfReleasePostModel(
+                                        caseId: widget.caseId.toString(),
+                                        contractor:
+                                            Singleton.instance.contractor!,
+                                        repo: Repo(
+                                          date: dateController.text,
+                                          time: timeController.text,
+                                          remarks: remarksController.text,
+                                          imageLocation: [''],
+                                        ));
+                                    widget.bloc.add(PostSelfreleaseDataEvent(
+                                      postData: requestBodyData,
+                                      fileData: uploadFileLists,
+                                    ));
                                   }
+                                  // }
                                 }
                               : () {},
                         ),

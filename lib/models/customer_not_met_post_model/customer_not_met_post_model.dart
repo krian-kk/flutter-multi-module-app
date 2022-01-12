@@ -13,7 +13,7 @@ class CustomerNotMetPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
   late String agrRef;
 
   CustomerNotMetPostModel(

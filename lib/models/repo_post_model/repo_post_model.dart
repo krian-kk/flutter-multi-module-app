@@ -13,7 +13,7 @@ class RepoPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late dynamic invalidNumber;
+  late bool? invalidNumber;
   late String agrRef;
 
   RepoPostModel({

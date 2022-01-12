@@ -60,7 +60,7 @@ class Constants {
   static const String eventUpdatedSuccess = 'Event updated successfully.';
   static const String successfullyUpdated = 'Successfully Updated !!';
   static const String resetPassword = 'Reset password via OTP';
-  static const String notSelectedCase = 'Should be select one loan';
+  static const String notSelectedCase = 'Should be select one case';
   static const String noCasesAvailable = 'No Case Available';
   static const String uploadDepositSlip = 'Please upload deposit slip';
   static const String pleaseSelectPaymentMode = 'Please Select Payment Mode!';

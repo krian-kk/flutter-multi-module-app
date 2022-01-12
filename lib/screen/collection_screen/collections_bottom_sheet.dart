@@ -344,34 +344,34 @@ class _CustomCollectionsBottomSheetState
                                 AppUtils.showToast(
                                     Constants.pleaseSelectOptions);
                               } else {
-                                if (uploadFileLists.isEmpty) {
-                                  AppUtils.showToast(
-                                    Constants.uploadDepositSlip,
-                                    gravity: ToastGravity.CENTER,
-                                  );
-                                } else {
-                                  setState(() => isSubmit = false);
-                                  Position position = Position(
-                                    longitude: 0,
-                                    latitude: 0,
-                                    timestamp: DateTime.now(),
-                                    accuracy: 0,
-                                    altitude: 0,
-                                    heading: 0,
-                                    speed: 0,
-                                    speedAccuracy: 0,
-                                  );
-                                  if (Geolocator.checkPermission().toString() !=
-                                      PermissionStatus.granted.toString()) {
-                                    Position res =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
-                                    setState(() {
-                                      position = res;
-                                    });
-                                  }
-                                  var requestBodyData = CollectionPostModel(
+                                // if (uploadFileLists.isEmpty) {
+                                //   AppUtils.showToast(
+                                //     Constants.uploadDepositSlip,
+                                //     gravity: ToastGravity.CENTER,
+                                //   );
+                                // } else {
+                                setState(() => isSubmit = false);
+                                Position position = Position(
+                                  longitude: 0,
+                                  latitude: 0,
+                                  timestamp: DateTime.now(),
+                                  accuracy: 0,
+                                  altitude: 0,
+                                  heading: 0,
+                                  speed: 0,
+                                  speedAccuracy: 0,
+                                );
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    position = res;
+                                  });
+                                }
+                                var requestBodyData = CollectionPostModel(
                                     eventId:
                                         ConstantEventValues.collectionEventId,
                                     eventCode:
@@ -407,6 +407,8 @@ class _CustomCollectionsBottomSheetState
                                       altitude: position.altitude,
                                       heading: position.heading,
                                       speed: position.speed,
+                                      deposition: CollectionsDeposition(
+                                          status: "pending"),
                                     ),
                                     callID: Singleton.instance.callID ?? '0',
                                     callingID:
@@ -426,37 +428,37 @@ class _CustomCollectionsBottomSheetState
                                     eventModule: widget.isCall!
                                         ? 'Telecalling'
                                         : 'Field Allocation',
-                                  );
+                                    invalidNumber: false);
 
-                                  final Map<String, dynamic> postdata =
-                                      jsonDecode(jsonEncode(
-                                              requestBodyData.toJson()))
-                                          as Map<String, dynamic>;
-                                  List<dynamic> value = [];
-                                  for (var element in uploadFileLists) {
-                                    value.add(await MultipartFile.fromFile(
-                                        element.path.toString()));
-                                  }
-                                  postdata.addAll({
-                                    'files': value,
-                                  });
-                                  print('Post Data => ${postdata}');
+                                final Map<String, dynamic> postdata =
+                                    jsonDecode(jsonEncode(
+                                            requestBodyData.toJson()))
+                                        as Map<String, dynamic>;
+                                List<dynamic> value = [];
+                                for (var element in uploadFileLists) {
+                                  value.add(await MultipartFile.fromFile(
+                                      element.path.toString()));
+                                }
+                                postdata.addAll({
+                                  'files': value,
+                                });
+                                print('Post Data => ${postdata}');
 
-                                  Map<String, dynamic> postResult =
-                                      await APIRepository.apiRequest(
-                                    APIRequestType.UPLOAD,
-                                    HttpUrl.collectionPostUrl(
-                                        'collection', widget.userType),
-                                    formDatas: FormData.fromMap(postdata),
-                                  );
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                  APIRequestType.UPLOAD,
+                                  HttpUrl.collectionPostUrl(
+                                      'collection', widget.userType),
+                                  formDatas: FormData.fromMap(postdata),
+                                );
 
-                                  if (postResult[Constants.success]) {
-                                    AppUtils.topSnackBar(
-                                        context, "Event updated successfully.");
-                                    Navigator.pop(context);
-                                  }
+                                if (postResult[Constants.success]) {
+                                  AppUtils.topSnackBar(
+                                      context, "Event updated successfully.");
+                                  Navigator.pop(context);
                                 }
                               }
+                              // }
                             }
                             setState(() => isSubmit = true);
                           }

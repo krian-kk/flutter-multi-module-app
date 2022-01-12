@@ -217,7 +217,7 @@ class _CustomCaptureImageBottomSheetState
                                     callID: Singleton.instance.callID ?? '0',
                                     callingID:
                                         Singleton.instance.callingID ?? ' 0',
-                                    invalidNumber: 0,
+                                    invalidNumber: false,
                                     eventType: 'IMAGE CAPTURED',
                                     eventModule: (widget.bloc.userType ==
                                             Constants.telecaller)

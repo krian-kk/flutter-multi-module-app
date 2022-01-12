@@ -174,7 +174,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 : Languages.of(context)!
                                                     .connected
                                                     .trim(),
-                                            count: '0',
+                                            count: bloc
+                                                .customerMetCountValue.length
+                                                .toString(),
                                             backgrountColor:
                                                 ColorResource.colorE0ECDF,
                                             leadingColor:
@@ -194,7 +196,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 : Languages.of(context)!
                                                     .unreachable
                                                     .trim(),
-                                            count: '0',
+                                            count: bloc
+                                                .customerNotMetCountValue.length
+                                                .toString(),
                                             backgrountColor:
                                                 ColorResource.colorF2EEDC,
                                             leadingColor:
@@ -210,7 +214,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             header: Languages.of(context)!
                                                 .invalid
                                                 .trim(),
-                                            count: '0',
+                                            count: bloc
+                                                .customerInvalidCountValue
+                                                .length
+                                                .toString(),
                                             backgrountColor:
                                                 ColorResource.colorF4ECEF,
                                             leadingColor:

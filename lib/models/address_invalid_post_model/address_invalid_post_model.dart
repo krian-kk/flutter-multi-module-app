@@ -14,7 +14,7 @@ class AddressInvalidPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int? invalidNumber;
+  late bool? invalidNumber;
   late String agrRef;
 
   AddressInvalidPostModel({

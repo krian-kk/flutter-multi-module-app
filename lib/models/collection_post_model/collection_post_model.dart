@@ -14,7 +14,7 @@ class CollectionPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double invalidNumber;
+  late bool? invalidNumber;
 
   CollectionPostModel({
     required this.eventId,
@@ -32,7 +32,7 @@ class CollectionPostModel {
     this.callingID,
     required this.callerServiceID,
     required this.voiceCallEventCode,
-    this.invalidNumber = 0,
+    this.invalidNumber,
   });
 
   CollectionPostModel.fromJson(Map<String, dynamic> json) {
@@ -92,6 +92,7 @@ class EventAttr {
   late double? speed;
   late double latitude;
   late double longitude;
+  late CollectionsDeposition deposition;
 
   EventAttr({
     required this.amountCollected,
@@ -109,6 +110,7 @@ class EventAttr {
     this.speed = 0,
     this.latitude = 0,
     this.longitude = 0,
+    required this.deposition,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -127,6 +129,7 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
+    deposition = json['deposition'];
   }
 
   Map<String, dynamic> toJson() {
@@ -146,6 +149,7 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
+    data['deposition'] = deposition;
     return data;
   }
 }

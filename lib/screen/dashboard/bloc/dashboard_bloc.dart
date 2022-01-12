@@ -61,9 +61,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   ];
 
   // Show the Options
-  int customerMetCountValue = 0;
-  int customerNotMetCountValue = 0;
-  int customerInvalidCountValue = 0;
+  List customerMetCountValue = [];
+  List customerNotMetCountValue = [];
+  List customerInvalidCountValue = [];
 
   int? mtdCaseCompleted = 0;
   int? mtdCaseTotal = 0;
@@ -86,7 +86,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is DashboardInitialEvent) {
       yield DashboardLoadingState();
-
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       Singleton.instance.buildContext = event.context;
@@ -173,31 +172,46 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                 APIRequestType.GET, HttpUrl.dashboardEventCountUrl);
 
         if (getDashboardEventCountValue['success']) {
+          print("Today Activities ==> ${getDashboardEventCountValue['data']}");
           Map<String, dynamic> jsonData = getDashboardEventCountValue['data'];
           dashboardEventCountValue =
               DashboardEventCountModel.fromJson(jsonData);
         }
 
-        dashboardEventCountValue.result?.forEach((element) {
-          if (element.eventType!.contains('PTP') ||
-              element.eventType!.contains('DENIAL') ||
-              element.eventType!.contains('DISPUTE') ||
-              element.eventType!.contains('REMINDER') ||
-              element.eventType!.contains('RECEIPT') ||
-              element.eventType!.contains('OTS')) {
-            customerMetCountValue++;
+        // dashboardEventCountValue.result?.forEach((element) {
+        for (DashboardEventCountResult element
+            in dashboardEventCountValue.result!) {
+          if (element.eventType! == "PTP" ||
+              element.eventType! == "DENIAL" ||
+              element.eventType! == "DISPUTE" ||
+              element.eventType! == "REMINDER" ||
+              element.eventType! == "RECEIPT" ||
+              element.eventType! == "REPO" ||
+              element.eventType! == "Feedback" ||
+              element.eventType! == "OTS") {
+            print("customerMetCountValue=========");
+            print(element.eventType!);
+            customerMetCountValue.add(element.eventType!);
           }
-          if (element.eventType!.contains('Left Message') ||
-              element.eventType!.contains('Door Locked') ||
-              element.eventType!.contains('Entry Restricted')) {
-            customerNotMetCountValue++;
+        }
+
+        for (DashboardEventCountResult element
+            in dashboardEventCountValue.result!) {
+          if (element.eventType! == "Left Message" ||
+              element.eventType! == "Door Locked" ||
+              element.eventType! == "Entry Restricted") {
+            customerNotMetCountValue.add(element.eventType!);
           }
-          if (element.eventType!.contains('Wrong Address') ||
-              element.eventType!.contains('Shifted') ||
-              element.eventType!.contains('Address Not Found')) {
-            customerInvalidCountValue++;
+        }
+
+        for (DashboardEventCountResult element
+            in dashboardEventCountValue.result!) {
+          if (element.eventType! == "Wrong Address" ||
+              element.eventType! == "Shifted" ||
+              element.eventType! == "Address Not Found") {
+            customerInvalidCountValue.add(element.eventType!);
           }
-        });
+        }
 
         Map<String, dynamic> getDashboardEventCountValue1 =
             await APIRepository.apiRequest(APIRequestType.GET,

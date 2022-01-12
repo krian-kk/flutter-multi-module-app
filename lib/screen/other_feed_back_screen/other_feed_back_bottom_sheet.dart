@@ -364,121 +364,119 @@ class _CustomOtherFeedBackBottomSheetState
                               // SharedPreferences _pref =
                               //     await SharedPreferences.getInstance();
                               if (_formKey.currentState!.validate()) {
-                                if (uploadFileLists.isEmpty) {
-                                  AppUtils.showToast(
-                                    'upload of audio file',
-                                    gravity: ToastGravity.CENTER,
-                                  );
-                                } else {
-                                  setState(() => isSubmit = false);
+                                // if (uploadFileLists.isEmpty) {
+                                //   AppUtils.showToast(
+                                //     'upload of audio file',
+                                //     gravity: ToastGravity.CENTER,
+                                //   );
+                                // } else {
+                                setState(() => isSubmit = false);
 
-                                  Position position = Position(
-                                    longitude: 0,
-                                    latitude: 0,
-                                    timestamp: DateTime.now(),
-                                    accuracy: 0,
-                                    altitude: 0,
-                                    heading: 0,
-                                    speed: 0,
-                                    speedAccuracy: 0,
-                                  );
-                                  if (Geolocator.checkPermission().toString() !=
-                                      PermissionStatus.granted.toString()) {
-                                    Position res =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
-                                    setState(() {
-                                      position = res;
-                                    });
-                                  }
-                                  var requestBodyData = OtherFeedBackPostModel(
-                                    eventId: ConstantEventValues
-                                        .otherFeedbackEventId,
-                                    eventType: (widget.userType ==
-                                                Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : FEEDBACK'
-                                        : 'FEEDBACK',
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                    callID: Singleton.instance.callID ?? '',
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    callingID:
-                                        Singleton.instance.callingID ?? '',
-                                    caseId: widget.caseId,
-                                    eventCode: ConstantEventValues
-                                        .otherFeedbackEvenCode,
-                                    eventModule: widget.isCall!
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    eventAttr: EventAttr(
-                                        remarks: remarksController.text,
-                                        vehicleavailable: isVehicleAvailable,
-                                        collectorfeedback:
-                                            collectorFeedBackValue ?? '',
-                                        actionproposed:
-                                            actionproposedValue ?? '',
-                                        actionDate: dateControlller.text,
-                                        imageLocation: [''],
-                                        longitude: position.longitude,
-                                        latitude: position.latitude,
-                                        accuracy: position.accuracy,
-                                        altitude: position.altitude,
-                                        heading: position.heading,
-                                        speed: position.speed,
-                                        altitudeAccuracy: 0,
-                                        // agentLocation: AgentLocation(),
-                                        contact: otherFeedbackContact),
-                                    contact: OtherFeedBackContact(
-                                      cType: widget.postValue['cType'],
-                                      health: widget.health,
-                                      value: widget.postValue['value'],
-                                      resAddressId0:
-                                          widget.postValue['resAddressId_0'] ??
-                                              '',
-                                      contactId0:
-                                          widget.postValue['contactId0'] ?? '',
-                                    ),
-                                  );
-
-                                  final Map<String, dynamic> postdata =
-                                      jsonDecode(jsonEncode(
-                                              requestBodyData.toJson()))
-                                          as Map<String, dynamic>;
-                                  List<dynamic> value = [];
-                                  for (var element in uploadFileLists) {
-                                    value.add(await MultipartFile.fromFile(
-                                        element.path.toString()));
-                                  }
-                                  postdata.addAll({
-                                    'files': value,
+                                Position position = Position(
+                                  longitude: 0,
+                                  latitude: 0,
+                                  timestamp: DateTime.now(),
+                                  accuracy: 0,
+                                  altitude: 0,
+                                  heading: 0,
+                                  speed: 0,
+                                  speedAccuracy: 0,
+                                );
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    position = res;
                                   });
-
-                                  Map<String, dynamic> postResult =
-                                      await APIRepository.apiRequest(
-                                    APIRequestType.UPLOAD,
-                                    HttpUrl.otherFeedBackPostUrl(
-                                        'feedback', widget.userType),
-                                    formDatas: FormData.fromMap(postdata),
-                                  );
-
-                                  if (postResult[Constants.success]) {
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    Navigator.pop(context);
-                                  } else {}
                                 }
+                                var requestBodyData = OtherFeedBackPostModel(
+                                  eventId:
+                                      ConstantEventValues.otherFeedbackEventId,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
+                                      ? 'TC : FEEDBACK'
+                                      : 'FEEDBACK',
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  callID: Singleton.instance.callID ?? '',
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? '',
+                                  callingID: Singleton.instance.callingID ?? '',
+                                  caseId: widget.caseId,
+                                  eventCode:
+                                      ConstantEventValues.otherFeedbackEvenCode,
+                                  eventModule: widget.isCall!
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                                  invalidNumber: false,
+                                  eventAttr: EventAttr(
+                                      remarks: remarksController.text,
+                                      vehicleavailable: isVehicleAvailable,
+                                      collectorfeedback:
+                                          collectorFeedBackValue ?? '',
+                                      actionproposed: actionproposedValue ?? '',
+                                      actionDate: dateControlller.text,
+                                      imageLocation: [''],
+                                      longitude: position.longitude,
+                                      latitude: position.latitude,
+                                      accuracy: position.accuracy,
+                                      altitude: position.altitude,
+                                      heading: position.heading,
+                                      speed: position.speed,
+                                      altitudeAccuracy: 0,
+                                      // agentLocation: AgentLocation(),
+                                      contact: otherFeedbackContact),
+                                  contact: OtherFeedBackContact(
+                                    cType: widget.postValue['cType'],
+                                    health: widget.health,
+                                    value: widget.postValue['value'],
+                                    resAddressId0:
+                                        widget.postValue['resAddressId_0'] ??
+                                            '',
+                                    contactId0:
+                                        widget.postValue['contactId0'] ?? '',
+                                  ),
+                                );
+
+                                final Map<String, dynamic> postdata =
+                                    jsonDecode(jsonEncode(
+                                            requestBodyData.toJson()))
+                                        as Map<String, dynamic>;
+                                List<dynamic> value = [];
+                                for (var element in uploadFileLists) {
+                                  value.add(await MultipartFile.fromFile(
+                                      element.path.toString()));
+                                }
+                                postdata.addAll({
+                                  'files': value,
+                                });
+
+                                print("post data --> ${postdata}");
+
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                  APIRequestType.UPLOAD,
+                                  HttpUrl.otherFeedBackPostUrl(
+                                      'feedback', widget.userType),
+                                  formDatas: FormData.fromMap(postdata),
+                                );
+
+                                if (postResult[Constants.success]) {
+                                  AppUtils.topSnackBar(
+                                      context, Constants.successfullySubmitted);
+                                  Navigator.pop(context);
+                                } else {}
                               }
+                              // }
                               setState(() => isSubmit = true);
                             }
                           : () {},

@@ -14,7 +14,7 @@ class ReminderPostAPI {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
 
   ReminderPostAPI({
     required this.eventId,

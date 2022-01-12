@@ -115,29 +115,29 @@ class _YardingTabState extends State<YardingTab> {
                           onTap: isSubmited
                               ? () async {
                                   if (_formKey.currentState!.validate()) {
-                                    if (uploadFileLists.isEmpty) {
-                                      AppUtils.showToast(
-                                        Constants.uploadDepositSlip,
-                                        gravity: ToastGravity.CENTER,
-                                      );
-                                    } else {
-                                      var requestBodyData = YardingPostModel(
-                                          // caseId: widget.caseId!,
-                                          caseId: widget.caseId.toString(),
-                                          contractor:
-                                              Singleton.instance.contractor!,
-                                          repo: Repo(
-                                            yard: yardNameController.text,
-                                            date: dateController.text,
-                                            time: timeController.text,
-                                            remarks: remarksController.text,
-                                            imageLocation: [''],
-                                          ));
-                                      widget.bloc.add(PostYardingDataEvent(
-                                          postData: requestBodyData,
-                                          fileData: uploadFileLists));
-                                    }
+                                    // if (uploadFileLists.isEmpty) {
+                                    //   AppUtils.showToast(
+                                    //     Constants.uploadDepositSlip,
+                                    //     gravity: ToastGravity.CENTER,
+                                    //   );
+                                    // } else {
+                                    var requestBodyData = YardingPostModel(
+                                        // caseId: widget.caseId!,
+                                        caseId: widget.caseId.toString(),
+                                        contractor:
+                                            Singleton.instance.contractor!,
+                                        repo: Repo(
+                                          yard: yardNameController.text,
+                                          date: dateController.text,
+                                          time: timeController.text,
+                                          remarks: remarksController.text,
+                                          imageLocation: [''],
+                                        ));
+                                    widget.bloc.add(PostYardingDataEvent(
+                                        postData: requestBodyData,
+                                        fileData: uploadFileLists));
                                   }
+                                  // }
                                 }
                               : () {},
                         ),
