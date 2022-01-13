@@ -297,7 +297,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   if (postResult[Constants.success]) {
                                     AppUtils.showToast(
                                         Constants.callConnectedPleaseWait);
-                                    // Navigator.pop(context);
                                   }
                                   // else {}
                                 } else {

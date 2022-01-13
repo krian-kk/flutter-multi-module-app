@@ -66,7 +66,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         listener: (context, state) {
           if (state is PostDataApiSuccessState) {
             AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
-            Navigator.pop(context);
+            // Navigator.pop(context);
           }
           if (state is ClickMainAddressBottomSheetState) {
             Navigator.pop(context);

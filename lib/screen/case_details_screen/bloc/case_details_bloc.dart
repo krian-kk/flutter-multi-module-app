@@ -650,8 +650,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
       phoneSelectedUnreadableClip = '';
-
-      // Navigator.pop(context);
     } else {}
     return postResult;
   }
@@ -716,8 +714,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
       addressSelectedCustomerNotMetClip = '';
-
-      // Navigator.pop(context);
     } else {}
     return postResult;
   }

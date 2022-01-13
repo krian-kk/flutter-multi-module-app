@@ -144,7 +144,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           context,
                         ),
                       ),
-                      const SizedBox(height: 120)
+                      // const SizedBox(height: 120)
                     ],
                   ),
                 ),

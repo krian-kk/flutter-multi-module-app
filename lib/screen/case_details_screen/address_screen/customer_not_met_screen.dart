@@ -63,9 +63,9 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           children: [
             Expanded(
               child: Scaffold(
-                resizeToAvoidBottomInset: false,
+                resizeToAvoidBottomInset: true,
                 body: SingleChildScrollView(
-                  reverse: MediaQuery.of(context).viewInsets.bottom != 0,
+                  // reverse: MediaQuery.of(context).viewInsets.bottom != 0,
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
@@ -175,7 +175,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             context,
                           ),
                         ),
-                        const SizedBox(height: 135),
                       ],
                     ),
                   ),
