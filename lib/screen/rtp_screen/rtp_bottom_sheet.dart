@@ -46,6 +46,7 @@ class CustomRtpBottomSheet extends StatefulWidget {
 
 class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
@@ -260,8 +261,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                         Singleton.instance.contractor ?? '',
                                     agrRef: Singleton.instance.agrRef ?? '',
                                     eventAttr: EventAttr(
-                                      actionDate:
-                                          nextActionDateControlller.text,
+                                      actionDate: selectedDate,
                                       remarks: remarksControlller.text,
                                       reasons: selectedDropdownValue,
                                       longitude: latLng.longitude,
@@ -290,6 +290,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                             '',
                                     callingID: Singleton.instance.callingID,
                                   );
+                                  print(
+                                      'Response Date => ${jsonEncode(requestBodyData)}');
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
                                           APIRequestType.POST,
@@ -354,6 +356,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 }

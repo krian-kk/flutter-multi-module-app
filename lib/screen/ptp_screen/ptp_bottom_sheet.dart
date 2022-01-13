@@ -47,6 +47,7 @@ class CustomPtpBottomSheet extends StatefulWidget {
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController ptpTimeControlller = TextEditingController();
   TextEditingController ptpAmountControlller = TextEditingController();
   TextEditingController referenceControlller = TextEditingController();
@@ -318,7 +319,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   caseId: widget.caseId,
                                   eventAttr: EventAttr(
                                     pTPType: ConstantEventValues.ptpType,
-                                    date: ptpDateControlller.text,
+                                    date: selectedDate,
                                     time: ptpTimeControlller.text,
                                     remarks: remarksControlller.text,
                                     ptpAmount:
@@ -358,6 +359,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                         Singleton.instance.contactId_0 ?? '',
                                   ),
                                 );
+                                print(
+                                    'Response Date => ${jsonEncode(requestBodyData)}');
 
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
@@ -479,6 +482,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

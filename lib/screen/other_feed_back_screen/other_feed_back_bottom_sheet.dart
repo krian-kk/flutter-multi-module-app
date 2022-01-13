@@ -66,6 +66,7 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
 class _CustomOtherFeedBackBottomSheetState
     extends State<CustomOtherFeedBackBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List<File> uploadFileLists = [];
@@ -111,6 +112,8 @@ class _CustomOtherFeedBackBottomSheetState
           false;
     }
     setState(() {
+      selectedDate = DateTime.now().toString();
+
       dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     });
     // for (var element in widget.bloc.contractorDetailsValue.result!
@@ -426,7 +429,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       collectorfeedback:
                                           collectorFeedBackValue ?? '',
                                       actionproposed: actionproposedValue ?? '',
-                                      actionDate: dateControlller.text,
+                                      actionDate: selectedDate,
                                       imageLocation: [''],
                                       longitude: position.longitude,
                                       latitude: position.latitude,
@@ -448,6 +451,8 @@ class _CustomOtherFeedBackBottomSheetState
                                         widget.postValue['contactId0'] ?? '',
                                   ),
                                 );
+                                print(
+                                    'Response Date => ${jsonEncode(requestBodyData)}');
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
@@ -461,8 +466,6 @@ class _CustomOtherFeedBackBottomSheetState
                                 postdata.addAll({
                                   'files': value,
                                 });
-
-                                print("post data --> ${postdata}");
 
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
@@ -528,6 +531,7 @@ class _CustomOtherFeedBackBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

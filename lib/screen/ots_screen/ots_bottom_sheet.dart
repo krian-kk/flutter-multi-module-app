@@ -53,6 +53,7 @@ class CustomOtsBottomSheet extends StatefulWidget {
 class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   TextEditingController otsProposedAmountControlller = TextEditingController();
   TextEditingController otsPaymentDateControlller = TextEditingController();
+  String selectedDate = '';
   // TextEditingController otsPaymentTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
   String selectedPaymentModeButton = '';
@@ -377,7 +378,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     caseId: widget.caseId,
                                     imageLocation: [''],
                                     eventAttr: OTSEventAttr(
-                                      date: otsPaymentDateControlller.text,
+                                      date: selectedDate,
                                       remarkOts: remarksControlller.text,
                                       amntOts:
                                           otsProposedAmountControlller.text,
@@ -428,8 +429,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   postdata.addAll({
                                     'files': value,
                                   });
-
-                                  print('Post Data => ${postdata}');
 
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
@@ -494,6 +493,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

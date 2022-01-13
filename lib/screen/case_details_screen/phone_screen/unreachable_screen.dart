@@ -232,6 +232,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      widget.bloc.phoneUnreachableSelectedDate = newDate.toString();
     });
   }
 

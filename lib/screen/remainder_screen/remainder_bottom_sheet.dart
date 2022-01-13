@@ -48,6 +48,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
 class _CustomRemainderBottomSheetState
     extends State<CustomRemainderBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController nextActionTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
@@ -256,7 +257,7 @@ class _CustomRemainderBottomSheetState
                                     ? 'Telecalling'
                                     : 'Field Allocation',
                                 eventAttr: EventAttr(
-                                  reminderDate: nextActionDateControlller.text,
+                                  reminderDate: selectedDate,
                                   time: nextActionTimeControlller.text,
                                   remarks: remarksControlller.text,
                                   longitude: latLng.longitude,
@@ -274,6 +275,8 @@ class _CustomRemainderBottomSheetState
                                 callID: Singleton.instance.callID,
                                 callingID: Singleton.instance.callingID,
                               );
+                              print(
+                                  'Response Date => ${jsonEncode(requestBodyData)}');
                               Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                 APIRequestType.POST,
@@ -334,6 +337,7 @@ class _CustomRemainderBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

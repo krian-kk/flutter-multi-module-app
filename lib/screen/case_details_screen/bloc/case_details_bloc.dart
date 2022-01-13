@@ -74,6 +74,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       TextEditingController();
   TextEditingController addressCustomerNotMetNextActionDateController =
       TextEditingController();
+  String addressCustomerNotMetSelectedDate = '';
   TextEditingController addressCustomerNotMetRemarksController =
       TextEditingController();
   FocusNode addressInvalidRemarksFocusNode = FocusNode();
@@ -95,6 +96,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   TextEditingController phoneUnreachableNextActionDateController =
       TextEditingController();
+  String phoneUnreachableSelectedDate = '';
   TextEditingController phoneUnreachableRemarksController =
       TextEditingController();
   TextEditingController phoneInvalidRemarksController = TextEditingController();
@@ -628,7 +630,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventAttr: PhoneUnreachableEventAttr(
           remarks: phoneUnreachableRemarksController.text,
           followUpPriority: 'REVIEW',
-          nextActionDate: phoneUnreachableNextActionDateController.text,
+          nextActionDate: phoneUnreachableSelectedDate,
         ),
         eventModule: 'Telecalling',
         createdBy: Singleton.instance.agentRef ?? '',
@@ -647,6 +649,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
       phoneSelectedUnreadableClip = '';
@@ -695,7 +698,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventAttr: CustomerNotMetEventAttr(
           remarks: addressCustomerNotMetRemarksController.text,
           followUpPriority: followUpPriority,
-          nextActionDate: addressCustomerNotMetNextActionDateController.text,
+          nextActionDate: addressCustomerNotMetSelectedDate,
           longitude: position.longitude,
           latitude: position.latitude,
           accuracy: position.accuracy,
@@ -711,6 +714,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      print('===================== > ${addressCustomerNotMetSelectedDate}');
+      addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
       addressSelectedCustomerNotMetClip = '';

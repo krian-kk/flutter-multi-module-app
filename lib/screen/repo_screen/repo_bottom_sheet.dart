@@ -49,6 +49,7 @@ class CustomRepoBottomSheet extends StatefulWidget {
 
 class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController timeControlller = TextEditingController();
   TextEditingController modelMakeControlller = TextEditingController();
   TextEditingController registrationNoControlller = TextEditingController();
@@ -359,7 +360,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       repo: Repo(
                                         status: 'pending',
                                       ),
-                                      date: dateControlller.text,
+                                      date: selectedDate,
                                       imageLocation: [''],
                                       customerName:
                                           Singleton.instance.caseCustomerName ??
@@ -371,6 +372,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       heading: position.heading,
                                       speed: position.speed,
                                     ));
+                                print(
+                                    'Response Date => ${jsonEncode(requestBodyData)}');
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
@@ -381,7 +384,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                 // sendingData.files.addAll(DioClient.listOfMultiPart(uploadFileLists));
                                 List<dynamic> value = [];
                                 for (var element in uploadFileLists) {
-                                  // print(element.path);
                                   value.add(await MultipartFile.fromFile(
                                       element.path.toString()));
                                   // postdata.addAll({
@@ -396,7 +398,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   // DioClient.listOfMultiPart(uploadFileLists)
                                 });
 
-                                print(postdata);
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
                                   APIRequestType.UPLOAD,
@@ -459,6 +460,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

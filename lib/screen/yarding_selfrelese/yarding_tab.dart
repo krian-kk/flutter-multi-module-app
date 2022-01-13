@@ -33,6 +33,7 @@ class YardingTab extends StatefulWidget {
 class _YardingTabState extends State<YardingTab> {
   late TextEditingController yardNameController = TextEditingController();
   late TextEditingController dateController = TextEditingController();
+  String selectedDate = '';
   late TextEditingController timeController = TextEditingController();
   late TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -128,7 +129,7 @@ class _YardingTabState extends State<YardingTab> {
                                             Singleton.instance.contractor!,
                                         repo: Repo(
                                           yard: yardNameController.text,
-                                          date: dateController.text,
+                                          date: selectedDate,
                                           time: timeController.text,
                                           remarks: remarksController.text,
                                           imageLocation: [''],
@@ -268,6 +269,7 @@ class _YardingTabState extends State<YardingTab> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
       // _formKey.currentState!.validate();
     });
   }

@@ -47,6 +47,7 @@ class CustomDisputeBottomSheet extends StatefulWidget {
 
 class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController remarksControlller = TextEditingController();
 
   String disputeDropDownValue = 'select';
@@ -246,7 +247,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       Singleton.instance.callerServiceID ?? '',
                                   callingID: Singleton.instance.callingID,
                                   eventAttr: EventAttr(
-                                    actionDate: nextActionDateControlller.text,
+                                    actionDate: selectedDate,
                                     remarks: remarksControlller.text,
                                     disputereasons: disputeDropDownValue,
                                     longitude: latLng.longitude,
@@ -262,6 +263,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                         Singleton.instance.contactId_0 ?? '',
                                   ),
                                 );
+                                print(
+                                    'Response Date => ${jsonEncode(requestBodyData)}');
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
                                         APIRequestType.POST,
@@ -329,6 +332,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 }

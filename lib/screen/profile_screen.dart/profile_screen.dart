@@ -19,8 +19,10 @@ import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
 import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -292,6 +294,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.w700,
                                     color: ColorResource.color101010,
                                   ),
+                                  // (Singleton.instance.usertype ==
+                                  //         Constants.telecaller)
+                                  //     ? const SizedBox()
+                                  //     :
                                   GestureDetector(
                                     onTap: () =>
                                         bloc.add(ClickMarkAsHomeEvent()),

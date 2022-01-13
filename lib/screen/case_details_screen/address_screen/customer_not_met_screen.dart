@@ -295,6 +295,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      widget.bloc.addressCustomerNotMetSelectedDate = newDate.toString();
     });
   }
 }

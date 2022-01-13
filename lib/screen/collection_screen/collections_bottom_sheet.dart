@@ -54,6 +54,7 @@ class _CustomCollectionsBottomSheetState
     extends State<CustomCollectionsBottomSheet> {
   TextEditingController amountCollectedControlller = TextEditingController();
   TextEditingController dateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController chequeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
   String selectedPaymentModeButton = '';
@@ -397,7 +398,7 @@ class _CustomCollectionsBottomSheetState
                                       amountCollected: int.parse(
                                           amountCollectedControlller.text),
                                       chequeRefNo: chequeControlller.text,
-                                      date: dateControlller.text,
+                                      date: selectedDate,
                                       remarks: remarksControlller.text,
                                       mode: selectedPaymentModeButton,
                                       imageLocation: [''],
@@ -442,7 +443,6 @@ class _CustomCollectionsBottomSheetState
                                 postdata.addAll({
                                   'files': value,
                                 });
-                                print('Post Data => ${postdata}');
 
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
@@ -508,6 +508,7 @@ class _CustomCollectionsBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 
