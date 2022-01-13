@@ -90,8 +90,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                 element.collSubStatus == Constants.dispute ||
                 element.collSubStatus == 'Denial' ||
                 element.collSubStatus == 'Dispute' ||
-                element.collSubStatus == 'Feedback' ||
-                element.collSubStatus == 'REPO' ||
+                // element.collSubStatus == 'Feedback' ||
+                // element.collSubStatus == 'REPO' ||
                 element.collSubStatus == Constants.remainder ||
                 element.collSubStatus == Constants.remainder_1 ||
                 element.collSubStatus == Constants.collections ||
@@ -102,8 +102,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                 element.telSubStatus == Constants.dispute ||
                 element.telSubStatus == 'Denial' ||
                 element.telSubStatus == 'Dispute' ||
-                element.telSubStatus == 'Feedback' ||
-                element.telSubStatus == 'REPO' ||
+                // element.telSubStatus == 'Feedback' ||
+                // element.telSubStatus == 'REPO' ||
                 element.telSubStatus == Constants.remainder ||
                 element.telSubStatus == Constants.remainder_1 ||
                 element.telSubStatus == Constants.collections ||

@@ -398,7 +398,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                         .yardingAndSelfReleaseData
                                                                         .result![
                                                                             index]
-                                                                        .caseId!;
+                                                                        .sId!;
                                                                     // print(
                                                                     //     caseID);
                                                                     custName = widget
