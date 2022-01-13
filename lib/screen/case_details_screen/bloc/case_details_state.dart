@@ -65,3 +65,7 @@ class DisableCustomerNotMetBtnState extends CaseDetailsState {}
 class EnableAddressInvalidBtnState extends CaseDetailsState {}
 
 class DisableAddressInvalidBtnState extends CaseDetailsState {}
+
+class EnableCaptureImageBtnState extends CaseDetailsState {}
+
+class DisableCaptureImageBtnState extends CaseDetailsState {}

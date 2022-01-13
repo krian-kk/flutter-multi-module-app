@@ -346,6 +346,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is PostImageCapturedEvent) {
+      yield DisableCaptureImageBtnState();
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
@@ -367,6 +368,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (postResult[Constants.success]) {
         yield PostDataApiSuccessState();
       }
+      yield EnableCaptureImageBtnState();
     }
 
     if (event is ClickCustomerNotMetButtonEvent) {
