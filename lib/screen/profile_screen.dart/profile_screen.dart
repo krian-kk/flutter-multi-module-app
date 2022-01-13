@@ -281,66 +281,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                               const SizedBox(height: 30),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!
-                                        .homeAddress
-                                        .toUpperCase(),
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                    color: ColorResource.color101010,
-                                  ),
-                                  // (Singleton.instance.usertype ==
-                                  //         Constants.telecaller)
-                                  //     ? const SizedBox()
-                                  //     :
-                                  GestureDetector(
-                                    onTap: () =>
-                                        bloc.add(ClickMarkAsHomeEvent()),
-                                    child: SizedBox(
-                                      child: CustomText(
-                                        Languages.of(context)!.markAsHome,
-                                        fontSize: FontSize.twelve,
-                                        isUnderLine: true,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorResource.color101010,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              Singleton.instance.usertype ==
+                                      Constants.fieldagent
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!
+                                              .homeAddress
+                                              .toUpperCase(),
+                                          fontSize: FontSize.fourteen,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color101010,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () =>
+                                              bloc.add(ClickMarkAsHomeEvent()),
+                                          child: SizedBox(
+                                            child: CustomText(
+                                              Languages.of(context)!.markAsHome,
+                                              fontSize: FontSize.twelve,
+                                              isUnderLine: true,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color101010,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox(),
                               const SizedBox(height: 5),
-                              Container(
-                                width: double.infinity,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: const BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 16.0,
-                                  ),
-                                  child: CustomText(
-                                    addressValue != ''
-                                        ? addressValue
-                                        : bloc.profileAPIValue.result?.first
-                                                .homeAddress ??
-                                            'Home address not available.',
-                                    fontSize: FontSize.fourteen,
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.normal,
-                                    color: ColorResource.color484848,
-                                  ),
-                                ),
-                              ),
+                              Singleton.instance.usertype ==
+                                      Constants.fieldagent
+                                  ? Container(
+                                      width: double.infinity,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5.0),
+                                      decoration: const BoxDecoration(
+                                          color: ColorResource.colorF8F9FB,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 20,
+                                          vertical: 16.0,
+                                        ),
+                                        child: CustomText(
+                                          addressValue != ''
+                                              ? addressValue
+                                              : bloc.profileAPIValue.result
+                                                      ?.first.homeAddress ??
+                                                  'Home address not available.',
+                                          fontSize: FontSize.fourteen,
+                                          fontWeight: FontWeight.w400,
+                                          fontStyle: FontStyle.normal,
+                                          color: ColorResource.color484848,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
                               ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,

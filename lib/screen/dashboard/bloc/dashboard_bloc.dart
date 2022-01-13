@@ -186,11 +186,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               element.eventType! == Constants.dispute ||
               element.eventType! == Constants.remainder.toUpperCase() ||
               element.eventType! == Constants.receipt ||
-              element.eventType! == "REPO" ||
-              element.eventType! == "Feedback" ||
+              // element.eventType! == "REPO" ||
+              // element.eventType! == "Feedback" ||
               element.eventType! == Constants.ots) {
-            print("customerMetCountValue=========");
-            print(element.eventType!);
+            // print("customerMetCountValue=========");
+            // print(element.eventType!);
             customerMetCountValue.add(element.eventType!);
           }
         }
