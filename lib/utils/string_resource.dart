@@ -66,6 +66,7 @@ class StringResource {
   static const String kannadam = 'ಕನ್ನಡ  / KANNADA';
   static const String change = 'Change';
   static const String all = 'All';
+  static const String reference = 'Reference';
 
   static const String under5km = 'Under 5Km';
   static const String more5km = '5Km-10Km';
@@ -89,7 +90,7 @@ class StringResource {
   // static const String resetPassword = 'Reset password via OTP';
   static const String loginViaDifferentUser = 'Login via diffrent user';
   static const String signIn = 'Sign In';
-  static const String profileImageChanged = 'Successfully image changed';
+  static const String profileImageChanged = 'Profile Image Updated!';
   static const String canceled = 'Canceled';
   static String remainingSeconds(int time) {
     return '$time seconds';

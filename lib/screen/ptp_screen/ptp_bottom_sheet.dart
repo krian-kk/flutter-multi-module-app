@@ -4,16 +4,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -28,18 +32,14 @@ class CustomPtpBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    required this.agentName,
-    required this.argRef,
-    required this.eventCode,
     this.postValue,
+    this.isCall,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
-  final String argRef;
-  final String agentName;
   final Widget customerLoanUserWidget;
   final String userType;
-  final String eventCode;
+  final bool? isCall;
   final dynamic postValue;
 
   @override
@@ -48,15 +48,18 @@ class CustomPtpBottomSheet extends StatefulWidget {
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController ptpTimeControlller = TextEditingController();
   TextEditingController ptpAmountControlller = TextEditingController();
   TextEditingController referenceControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
   TextEditingController loanDurationController = TextEditingController();
 
-  FocusNode ptpDataFocusNode = FocusNode();
+  FocusNode ptpAmountFocusNode = FocusNode();
   FocusNode ptpReferenceFocusNode = FocusNode();
   FocusNode ptpRemarksFocusNode = FocusNode();
+
+  bool isSubmit = true;
 
   String selectedPaymentModeButton = '';
 
@@ -73,23 +76,30 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetAppbar(
+              title: widget.cardTitle,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                  .copyWith(bottom: 5),
+            ),
+            Expanded(
+              child: KeyboardActions(
+                config: KeyboardActionsConfig(
+                  keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                  actions: [
+                    KeyboardActionsItem(
+                      focusNode: ptpAmountFocusNode,
+                      displayArrows: false,
+                    ),
+                  ],
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: SingleChildScrollView(
@@ -174,7 +184,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               child: CustomReadOnlyTextField(
                             Languages.of(context)!.ptpAmount,
                             ptpAmountControlller,
-                            focusNode: ptpDataFocusNode,
+                            focusNode: ptpAmountFocusNode,
                             validatorCallBack: () {},
                             keyBoardType: TextInputType.number,
                             validationRules: const ['required'],
@@ -200,10 +210,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                           ),
                           const SizedBox(height: 21),
                           CustomReadOnlyTextField(
-                            Languages.of(context)!.reference,
+                            StringResource.reference,
                             referenceControlller,
                             focusNode: ptpReferenceFocusNode,
-                            validationRules: const ['required'],
+                            // validationRules: const ['required'],
                             isLabel: true,
                             validatorCallBack: () {},
                             onEditing: () => ptpRemarksFocusNode.requestFocus(),
@@ -225,129 +235,160 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   ),
                 ),
               ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
             ],
           ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
+                      width: 95,
+                      child: Center(
+                          child: CustomText(
+                        Languages.of(context)!.cancel.toUpperCase(),
+                        color: ColorResource.colorEA6D48,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        fontSize: FontSize.sixteen,
+                      ))),
                 ),
-              ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: SizedBox(
-                        width: 95,
-                        child: Center(
-                            child: CustomText(
-                          Languages.of(context)!.cancel.toUpperCase(),
-                          color: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          fontSize: FontSize.sixteen,
-                        ))),
-                  ),
-                  const SizedBox(width: 25),
-                  SizedBox(
-                    width: 191,
-                    child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          if (selectedPaymentModeButton != '') {
-                            Position position = Position(
-                              longitude: 0,
-                              latitude: 0,
-                              timestamp: DateTime.now(),
-                              accuracy: 0,
-                              altitude: 0,
-                              heading: 0,
-                              speed: 0,
-                              speedAccuracy: 0,
-                            );
-                            if (Geolocator.checkPermission().toString() !=
-                                PermissionStatus.granted.toString()) {
-                              Position res =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.best);
-                              setState(() {
-                                position = res;
-                              });
-                            }
-                            var requestBodyData = PTPPostModel(
-                              eventType:
-                                  (widget.userType == Constants.telecaller)
+                const SizedBox(width: 25),
+                SizedBox(
+                  width: 191,
+                  child: CustomButton(
+                    isSubmit
+                        ? Languages.of(context)!.submit.toUpperCase()
+                        : null,
+                    isLeading: !isSubmit,
+                    trailingWidget: const Center(
+                      child: CircularProgressIndicator(
+                        color: ColorResource.colorFFFFFF,
+                      ),
+                    ),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    onTap: isSubmit
+                        ? () async {
+                            if (_formKey.currentState!.validate()) {
+                              if (selectedPaymentModeButton != '') {
+                                setState(() => isSubmit = false);
+                                Position position = Position(
+                                  longitude: 0,
+                                  latitude: 0,
+                                  timestamp: DateTime.now(),
+                                  accuracy: 0,
+                                  altitude: 0,
+                                  heading: 0,
+                                  speed: 0,
+                                  speedAccuracy: 0,
+                                );
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    position = res;
+                                  });
+                                }
+                                var requestBodyData = PTPPostModel(
+                                  eventId: ConstantEventValues.ptpEventId,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
                                       ? 'TC : PTP'
                                       : 'PTP',
-                              eventCode: widget.eventCode,
-                              caseId: widget.caseId,
-                              eventAttr: EventAttr(
-                                date: ptpDateControlller.text,
-                                time: ptpTimeControlller.text,
-                                remarks: remarksControlller.text,
-                                ptpAmount: int.parse(ptpAmountControlller.text),
-                                reference: referenceControlller.text,
-                                mode: selectedPaymentModeButton,
-                                followUpPriority: 'PTP',
-                                longitude: position.longitude,
-                                latitude: position.latitude,
-                                accuracy: position.accuracy,
-                                altitude: position.altitude,
-                                heading: position.heading,
-                                speed: position.speed,
-                              ),
-                              createdBy: widget.agentName,
-                              agentName: widget.agentName,
-                              eventModule:
-                                  (widget.userType == Constants.telecaller)
+                                  eventCode: ConstantEventValues.ptpEventCode,
+                                  caseId: widget.caseId,
+                                  eventAttr: EventAttr(
+                                    pTPType: ConstantEventValues.ptpType,
+                                    date: selectedDate,
+                                    time: ptpTimeControlller.text,
+                                    remarks: remarksControlller.text,
+                                    ptpAmount:
+                                        int.parse(ptpAmountControlller.text),
+                                    reference: referenceControlller.text,
+                                    mode: selectedPaymentModeButton,
+                                    followUpPriority: 'PTP',
+                                    longitude: position.longitude,
+                                    latitude: position.latitude,
+                                    accuracy: position.accuracy,
+                                    altitude: position.altitude,
+                                    heading: position.heading,
+                                    speed: position.speed,
+                                  ),
+                                  callID: Singleton.instance.callID ?? " ",
+                                  callingID:
+                                      Singleton.instance.callingID ?? " ",
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? " ",
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  eventModule: widget.isCall!
                                       ? 'Telecalling'
                                       : 'Field Allocation',
-                              agrRef: widget.argRef,
-                              contact: PTPContact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                              ),
-                            );
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  contact: PTPContact(
+                                    cType: widget.postValue['cType'],
+                                    value: widget.postValue['value'],
+                                    health: ConstantEventValues.ptpHealth,
+                                    resAddressId0:
+                                        Singleton.instance.resAddressId_0 ?? '',
+                                    contactId0:
+                                        Singleton.instance.contactId_0 ?? '',
+                                  ),
+                                );
+                                print(
+                                    'Response Date => ${jsonEncode(requestBodyData)}');
 
-                            Map<String, dynamic> postResult =
-                                await APIRepository.apiRequest(
-                              APIRequestType.POST,
-                              HttpUrl.ptpPostUrl(
-                                'ptp',
-                                widget.userType,
-                              ),
-                              requestBodydata: jsonEncode(requestBodyData),
-                            );
-                            if (postResult[Constants.success]) {
-                              AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
-                              Navigator.pop(context);
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.ptpPostUrl(
+                                    'ptp',
+                                    widget.userType,
+                                  ),
+                                  requestBodydata: jsonEncode(requestBodyData),
+                                );
+                                if (postResult[Constants.success]) {
+                                  AppUtils.topSnackBar(
+                                      context, Constants.successfullySubmitted);
+                                  Navigator.pop(context);
+                                }
+                              } else {
+                                AppUtils.showToast(
+                                    Constants.pleaseSelectPaymentMode);
+                              }
                             }
-                          } else {
-                            AppUtils.showToast(
-                                Constants.pleaseSelectPaymentMode);
+                            setState(() => isSubmit = true);
                           }
-                        }
-                      },
-                      cardShape: 5,
-                    ),
+                        : () {},
+                    cardShape: 5,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -442,6 +483,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

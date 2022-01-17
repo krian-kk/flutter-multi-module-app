@@ -91,6 +91,8 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                             setState(() {
                                               title = StringResource.dashboard
                                                   .toUpperCase();
+                                              print("Slected Tab");
+                                              print(index);
                                             });
                                             break;
                                           case 2:
@@ -220,7 +222,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                           ),
                           const Expanded(
                             child: TabBarView(
-                                physics: const NeverScrollableScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 children: <Widget>[
                                   AllocationScreen(), //1
                                   DashboardScreen(), //2

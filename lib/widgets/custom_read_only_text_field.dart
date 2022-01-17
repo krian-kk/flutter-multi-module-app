@@ -16,7 +16,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final TextInputType keyBoardType;
   final int? maximumWordCount;
   final Color titleColor;
-  final Color? borderColor;
+  final Color borderColor;
   final Color textColor;
   final bool isHighlighted;
   final Color highlightColor;
@@ -25,7 +25,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final bool isLabel;
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
-  List<String> validationRules = [];
+  final List<String> validationRules;
   final EdgeInsetsGeometry? contentPadding;
   final Function? onEditing;
   final bool isBorder;
@@ -33,36 +33,40 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final Color cursorColor;
   final Function? validatorCallBack;
   final double height;
+  final TextCapitalization? textCapitalization;
 
-  CustomReadOnlyTextField(this.hintText, this.controller,
-      {Key? key,
-      this.obscureText = false,
-      this.suffixWidget,
-      this.prefixWidget,
-      this.isEnable = true,
-      this.onTapped,
-      this.isReadOnly = false,
-      this.maximumWordCount,
-      this.titleColor = ColorResource.color666666,
-      this.textColor = ColorResource.color333333,
-      this.borderColor = ColorResource.colorDADADA,
-      this.isHighlighted = false,
-      this.highlightColor = ColorResource.colorDADADA,
-      this.focusNode,
-      this.focusTextColor,
-      this.height = 40,
-      this.keyBoardType = TextInputType.name,
-      this.descriptionText,
-      this.validatorCallBack,
-      this.onEditing,
-      this.inputformaters,
-      this.isLabel = false,
-      this.isBorder = true,
-      this.isFill = false,
-      this.contentPadding,
-      this.cursorColor = ColorResource.color666666,
-      this.validationRules = const []})
-      : super(key: key);
+  const CustomReadOnlyTextField(
+    this.hintText,
+    this.controller, {
+    Key? key,
+    this.obscureText = false,
+    this.suffixWidget,
+    this.prefixWidget,
+    this.isEnable = true,
+    this.onTapped,
+    this.isReadOnly = false,
+    this.maximumWordCount,
+    this.titleColor = ColorResource.color666666,
+    this.textColor = ColorResource.color333333,
+    this.borderColor = ColorResource.colorE5EAF6,
+    this.isHighlighted = false,
+    this.highlightColor = ColorResource.colorDADADA,
+    this.focusNode,
+    this.focusTextColor,
+    this.height = 40,
+    this.keyBoardType = TextInputType.name,
+    this.descriptionText,
+    this.validatorCallBack,
+    this.onEditing,
+    this.inputformaters,
+    this.isLabel = false,
+    this.isBorder = true,
+    this.isFill = false,
+    this.contentPadding,
+    this.cursorColor = ColorResource.color666666,
+    this.validationRules = const [],
+    this.textCapitalization,
+  }) : super(key: key);
 
   @override
   _CustomReadOnlyTextFieldState createState() =>
@@ -102,6 +106,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             }
             return null;
           },
+
           onEditingComplete: () {
             setState(() {});
             FocusScope.of(context).unfocus();
@@ -129,6 +134,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             setState(() {});
             // FocusScope.of(context).unfocus();
           },
+          textCapitalization:
+              widget.textCapitalization ?? TextCapitalization.none,
 
           // inputFormatters: [
           //   // if (widget.maximumWordCount != null)
@@ -189,20 +196,20 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               //         ? ColorResource.color333333
               //         : ColorResource.color666666),
               focusedBorder: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               border: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               enabledBorder: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               disabledBorder: widget.isBorder
-                  ? const UnderlineInputBorder(
-                      borderSide: BorderSide(color: ColorResource.colorE5EAF6))
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(color: widget.borderColor))
                   : null,
               errorBorder: widget.isBorder
                   ? const UnderlineInputBorder(

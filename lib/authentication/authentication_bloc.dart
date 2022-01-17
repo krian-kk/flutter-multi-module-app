@@ -31,17 +31,22 @@ class AuthenticationBloc
       Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        AppUtils.showErrorToast('No Internet Connection');
+        yield AuthenticationUnAuthenticated();
+        // AppUtils.showErrorToast('No Internet Connection');
       }
 
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       String? getToken = _prefs.getString(Constants.accessToken) ?? "";
       String? getUserName = _prefs.getString(Constants.userId);
       String? getUserType = _prefs.getString(Constants.userType) ?? "";
+      // print(_prefs.getString(Constants.accessToken));
 
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {
+        // var tokenIssue = getToken;
+        print('-----token issue---');
+        print(getToken);
         if (JwtDecoder.isExpired(getToken)) {
           yield AuthenticationUnAuthenticated();
         } else {
@@ -61,9 +66,15 @@ class AuthenticationBloc
                 APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
+              // print(agentDetail['data']);
+              yield AuthenticationUnAuthenticated();
+
+              if (agentDetail['data'] is String) {
+                AppUtils.showToast(agentDetail['data'],
+                    backgroundColor: Colors.red);
+              }
               AgentDetailErrorModel agentDetailError =
                   AgentDetailErrorModel.fromJson(agentDetail['data']);
-              yield AuthenticationUnAuthenticated();
               AppUtils.showToast(agentDetailError.msg!,
                   backgroundColor: Colors.red);
             } else {
@@ -85,12 +96,15 @@ class AuthenticationBloc
               if (agentDetails.data![0].agentType == 'COLLECTOR') {
                 await _prefs.setString(
                     Constants.userType, Constants.fieldagent);
+                Singleton.instance.usertype = Constants.fieldagent;
               } else {
                 await _prefs.setString(
                     Constants.userType, Constants.telecaller);
+                Singleton.instance.usertype = Constants.telecaller;
               }
 
               if (agentDetails.data![0].agentType != null) {
+                Singleton.instance.agentName = agentDetails.data![0].agentName!;
                 await _prefs.setString(
                     Constants.agentName, agentDetails.data![0].agentName!);
                 await _prefs.setString(
@@ -99,6 +113,8 @@ class AuthenticationBloc
                     Constants.email, agentDetails.data![0].email!);
                 await _prefs.setString(
                     Constants.contractor, agentDetails.data![0].contractor!);
+                Singleton.instance.contractor =
+                    agentDetails.data![0].contractor!;
                 await _prefs.setString(
                     Constants.status, agentDetails.data![0].status!);
                 await _prefs.setString(Constants.code, agentDetails.code!);
@@ -112,6 +128,10 @@ class AuthenticationBloc
         }
       }
       // yield AuthenticationAuthenticated();
+    }
+
+    if (event is UnAuthenticationEvent) {
+      yield AuthenticationUnAuthenticated();
     }
   }
 }

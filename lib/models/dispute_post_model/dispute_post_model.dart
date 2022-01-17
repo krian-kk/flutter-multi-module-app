@@ -1,5 +1,5 @@
 class DisputePostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -7,16 +7,17 @@ class DisputePostModel {
   late Contact contact;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late String agrRef;
   late String? callID;
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
 
   DisputePostModel({
-    this.eventId = 19,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -24,12 +25,13 @@ class DisputePostModel {
     required this.contact,
     required this.createdBy,
     required this.agentName,
+    required this.contractor,
     required this.eventModule,
     required this.agrRef,
-    this.callID,
-    this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callID,
+    required this.callingID,
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
   });
 
@@ -42,6 +44,7 @@ class DisputePostModel {
     contact = Contact.fromJson(json['contact']);
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     agrRef = json['agrRef'];
     callID = json['callID'];
@@ -61,6 +64,7 @@ class DisputePostModel {
     data['contact'] = contact.toJson();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['agrRef'] = agrRef;
     data['callID'] = callID;
@@ -76,13 +80,8 @@ class EventAttr {
   late String actionDate;
   late String? disputereasons;
   late String remarks;
-  late String amountDenied;
   late String followUpPriority;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
+
   late double latitude;
   late double longitude;
 
@@ -90,28 +89,16 @@ class EventAttr {
     required this.actionDate,
     this.disputereasons,
     required this.remarks,
-    this.amountDenied = '',
     this.followUpPriority = 'REVIEW',
-    this.altitude = 0,
-    this.accuracy = 0,
-    this.altitudeAccuracy = 0,
-    this.heading = 0,
-    this.speed = 0,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.latitude,
+    required this.longitude,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     actionDate = json['actionDate'];
     disputereasons = json['disputereasons'];
     remarks = json['remarks'];
-    amountDenied = json['amountDenied'];
     followUpPriority = json['followUpPriority'];
-    altitude = json['altitude'];
-    accuracy = json['accuracy'];
-    altitudeAccuracy = json['altitudeAccuracy'];
-    heading = json['heading'];
-    speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
   }
@@ -121,13 +108,7 @@ class EventAttr {
     data['actionDate'] = actionDate;
     data['disputereasons'] = disputereasons;
     data['remarks'] = remarks;
-    data['amountDenied'] = amountDenied;
     data['followUpPriority'] = followUpPriority;
-    data['altitude'] = altitude;
-    data['accuracy'] = accuracy;
-    data['altitudeAccuracy'] = altitudeAccuracy;
-    data['heading'] = heading;
-    data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     return data;
@@ -168,7 +149,7 @@ class Contact {
 
   Contact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});

@@ -36,6 +36,17 @@ class Constants {
   static const String notOpeartional = 'TC : Not Operational';
   static const String numberNotWorking = 'TC : Number Not Working';
 
+  // This is used for check telsubstatus
+  static const String telsubstatuslineBusy = 'Line Busy';
+  static const String telsubstatusswitchOff = 'Switch Off';
+  static const String telsubstatusrnr = 'RNR';
+  static const String telsubstatusoutOfNetwork = 'Out Of Network';
+  static const String telsubstatusdisconnecting = 'Disconnecting';
+  static const String telsubstatusdoesNotExist = 'Does Not Exist';
+  static const String telsubstatusincorrectNumber = 'Incorrect Number';
+  static const String telsubstatusnotOpeartional = 'Not Operational';
+  static const String telsubstatusnumberNotWorking = 'Number Not Working';
+
   static const String addressDetails = 'Address Details';
   static const String callDetails = 'Call Details';
   static const String captureImage = 'CAPTURE IMAGE';
@@ -46,8 +57,10 @@ class Constants {
   static const String eventDetails = 'EVENT DETAILS';
   static const String callCustomer = 'CALL CUSTOMER';
   static const String successfullySubmitted = 'Successfully submitted!!';
+  static const String eventUpdatedSuccess = 'Event updated successfully.';
+  static const String successfullyUpdated = 'Successfully Updated !!';
   static const String resetPassword = 'Reset password via OTP';
-  static const String notSelectedCase = 'Should be select one loan';
+  static const String notSelectedCase = 'Should be select one case';
   static const String noCasesAvailable = 'No Case Available';
   static const String uploadDepositSlip = 'Please upload deposit slip';
   static const String pleaseSelectPaymentMode = 'Please Select Payment Mode!';
@@ -57,6 +70,11 @@ class Constants {
       'Please Select Drop Down Value';
   static const String success = 'success';
   static const String receipt = 'RECEIPT';
+
+  // My Receipts Tab
+  static const String approved = 'Approved';
+  static const String pendingApproval = 'Pending Approval';
+  static const String rejected = 'Rejected';
   static const int otpWaitingTime = 60;
 
   static List<int> keyBoardNumberList() {
@@ -92,4 +110,11 @@ class Constants {
   static const String buildcontext = 'buildcontext';
   static const String callConnectedPleaseWait =
       'Call Connected Quickly Please Wait!';
+  static const String internalServerError = 'Internal Server Error !!';
+  static const String emailNotAvailable =
+      'Email ID not available, Mobile number available, send OTP via SMS';
+  static const String reciptsAlertMesg =
+      'Ensure the collected amount/cheque is deposited in the bank within 24 hours';
+  static const String bankReceiptAmountDoesntMatch =
+      'There is mismatch in the receipt amount. Do you wish to continue?';
 }

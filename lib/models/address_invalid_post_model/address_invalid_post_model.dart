@@ -1,5 +1,5 @@
 class AddressInvalidPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -8,16 +8,17 @@ class AddressInvalidPostModel {
   late String createdBy;
   late String eventModule;
   late String agentName;
+  late String contractor;
 
   late String? callID;
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int? invalidNumber;
+  late bool? invalidNumber;
   late String agrRef;
 
   AddressInvalidPostModel({
-    this.eventId = 24,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -26,10 +27,11 @@ class AddressInvalidPostModel {
     required this.createdBy,
     required this.eventModule,
     required this.agentName,
+    required this.contractor,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agrRef,
   });
@@ -46,6 +48,7 @@ class AddressInvalidPostModel {
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
 
     callID = json['callID'];
     callingID = json['callingID'];
@@ -66,6 +69,7 @@ class AddressInvalidPostModel {
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
 
     data['callID'] = callID;
     data['callingID'] = callingID;
@@ -91,13 +95,13 @@ class AddressInvalidEventAttr {
   AddressInvalidEventAttr({
     required this.remarks,
     required this.followUpPriority,
-    this.altitude = 0,
-    this.accuracy = 0,
+    required this.altitude,
+    required this.accuracy,
     this.altitudeAccuracy = 0,
-    this.heading = 0,
-    this.speed = 0,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.heading,
+    required this.speed,
+    required this.latitude,
+    required this.longitude,
   });
 
   AddressInvalidEventAttr.fromJson(Map<String, dynamic> json) {
@@ -131,14 +135,20 @@ class AddressInvalidContact {
   late String cType;
   late String value;
   late String health;
+  late String resAddressId_0;
 
-  AddressInvalidContact(
-      {required this.cType, required this.value, this.health = '1'});
+  AddressInvalidContact({
+    required this.cType,
+    required this.value,
+    required this.health,
+    required this.resAddressId_0,
+  });
 
   AddressInvalidContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
     health = json['health'];
+    resAddressId_0 = json['resAddressId_0'];
   }
 
   Map<String, dynamic> toJson() {
@@ -146,6 +156,7 @@ class AddressInvalidContact {
     data['cType'] = cType;
     data['value'] = value;
     data['health'] = health;
+    data['resAddressId_0'] = resAddressId_0;
     return data;
   }
 }

@@ -1,45 +1,52 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
-  const CustomCollectionsBottomSheet(this.cardTitle,
-      {Key? key,
-      required this.caseId,
-      required this.customerLoanUserWidget,
-      required this.userType,
-      required this.agentName,
-      required this.argRef,
-      this.postValue})
-      : super(key: key);
+  const CustomCollectionsBottomSheet(
+    this.cardTitle, {
+    Key? key,
+    required this.caseId,
+    required this.customerLoanUserWidget,
+    required this.userType,
+    this.postValue,
+    this.isCall,
+    this.custName,
+  }) : super(key: key);
   final String cardTitle;
   final String caseId;
-  final String argRef;
-  final String agentName;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String? custName;
+  final bool? isCall;
 
   @override
   State<CustomCollectionsBottomSheet> createState() =>
@@ -50,12 +57,15 @@ class _CustomCollectionsBottomSheetState
     extends State<CustomCollectionsBottomSheet> {
   TextEditingController amountCollectedControlller = TextEditingController();
   TextEditingController dateControlller = TextEditingController();
+  String selectedDate = '';
   TextEditingController chequeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
-  List uploadFileLists = [];
+  List<File> uploadFileLists = [];
+
+  bool isSubmit = true;
 
   FocusNode amountCollectedFocusNode = FocusNode();
   FocusNode chequeFocusNode = FocusNode();
@@ -63,10 +73,9 @@ class _CustomCollectionsBottomSheetState
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+        .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
-      uploadFileLists =
-          result.files.map((path) => path.path.toString()).toList();
+      uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
       AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
     }
@@ -75,6 +84,11 @@ class _CustomCollectionsBottomSheetState
   @override
   void initState() {
     super.initState();
+    setState(() {
+      selectedDate = DateTime.now().toString();
+
+      dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
   }
 
   @override
@@ -84,25 +98,33 @@ class _CustomCollectionsBottomSheetState
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
     ];
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
-          body: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BottomSheetAppbar(
-                  title: widget.cardTitle,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                          .copyWith(bottom: 5),
-                ),
-                Expanded(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetAppbar(
+                title: widget.cardTitle,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                        .copyWith(bottom: 5),
+              ),
+              Expanded(
+                child: KeyboardActions(
+                  config: KeyboardActionsConfig(
+                    keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                    actions: [
+                      KeyboardActionsItem(
+                        focusNode: amountCollectedFocusNode,
+                        displayArrows: false,
+                      ),
+                    ],
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: SingleChildScrollView(
@@ -238,7 +260,7 @@ class _CustomCollectionsBottomSheetState
                             Languages.of(context)!.refCheque,
                             chequeControlller,
                             focusNode: chequeFocusNode,
-                            validationRules: const ['required'],
+                            // validationRules: const ['required'],
                             isLabel: true,
                             onEditing: () => remarksFocusNode.requestFocus(),
                           )),
@@ -271,132 +293,205 @@ class _CustomCollectionsBottomSheetState
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
+              ),
+            ],
+          ),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    AppUtils.showToast('Unable to send SMS');
+                    Navigator.pop(context);
+                  },
+                  child: SizedBox(
+                      width: 95,
+                      child: Center(
+                          child: CustomText(
+                        Languages.of(context)!.cancel.toUpperCase(),
+                        color: ColorResource.colorEA6D48,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        fontSize: FontSize.sixteen,
+                      ))),
+                ),
+                const SizedBox(width: 25),
+                SizedBox(
+                  width: 191,
+                  child: CustomButton(
+                    isSubmit
+                        ? Languages.of(context)!.submit.toUpperCase()
+                        : null,
+                    isLeading: !isSubmit,
+                    trailingWidget: const Center(
+                      child: CircularProgressIndicator(
+                        color: ColorResource.colorFFFFFF,
+                      ),
+                    ),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w700,
+                    onTap: isSubmit
+                        ? () async {
+                            if (_formKey.currentState!.validate()) {
+                              if (selectedPaymentModeButton == '') {
+                                AppUtils.showToast(
+                                    Constants.pleaseSelectOptions);
+                              } else {
+                                DialogUtils.showDialog(
+                                  buildContext: context,
+                                  title: Constants.reciptsAlertMesg,
+                                  description: '',
+                                  okBtnText: Languages.of(context)!
+                                      .submit
+                                      .toUpperCase(),
+                                  cancelBtnText: Languages.of(context)!
+                                      .cancel
+                                      .toUpperCase(),
+                                  okBtnFunction: (val) async {
+                                    // pop or remove the AlertDialouge Box
+                                    Navigator.pop(context);
+
+                                    setState(() => isSubmit = false);
+                                    Position position = Position(
+                                      longitude: 0,
+                                      latitude: 0,
+                                      timestamp: DateTime.now(),
+                                      accuracy: 0,
+                                      altitude: 0,
+                                      heading: 0,
+                                      speed: 0,
+                                      speedAccuracy: 0,
+                                    );
+                                    if (Geolocator.checkPermission()
+                                            .toString() !=
+                                        PermissionStatus.granted.toString()) {
+                                      Position res =
+                                          await Geolocator.getCurrentPosition(
+                                              desiredAccuracy:
+                                                  LocationAccuracy.best);
+                                      setState(() {
+                                        position = res;
+                                      });
+                                    }
+                                    var requestBodyData = CollectionPostModel(
+                                        eventId: ConstantEventValues
+                                            .collectionEventId,
+                                        eventCode: ConstantEventValues
+                                            .collectionEvenCode,
+                                        eventType: (widget.userType ==
+                                                    Constants.telecaller ||
+                                                widget.isCall!)
+                                            ? 'TC : RECEIPT'
+                                            : 'RECEIPT',
+                                        caseId: widget.caseId,
+                                        contact: CollectionsContact(
+                                          cType: widget.postValue['cType'],
+                                          value: widget.postValue['value'],
+                                          health: ConstantEventValues
+                                              .collectionHealth,
+                                          resAddressId0: Singleton
+                                                  .instance.resAddressId_0 ??
+                                              '',
+                                          contactId0:
+                                              Singleton.instance.contactId_0 ??
+                                                  '',
+                                        ),
+                                        eventAttr: EventAttr(
+                                          amountCollected:
+                                              amountCollectedControlller.text,
+                                          chequeRefNo: chequeControlller.text,
+                                          date: selectedDate,
+                                          remarks: remarksControlller.text,
+                                          mode: selectedPaymentModeButton,
+                                          customerName: widget.custName!,
+                                          followUpPriority: 'REVIEW',
+                                          imageLocation: [''],
+                                          longitude: position.longitude,
+                                          latitude: position.latitude,
+                                          accuracy: position.accuracy,
+                                          altitude: position.altitude,
+                                          heading: position.heading,
+                                          speed: position.speed,
+                                          deposition: CollectionsDeposition(
+                                              status: "pending"),
+                                        ),
+                                        callID:
+                                            Singleton.instance.callID ?? '0',
+                                        callingID:
+                                            Singleton.instance.callingID ?? '0',
+                                        callerServiceID: Singleton
+                                                .instance.callerServiceID ??
+                                            '',
+                                        voiceCallEventCode: ConstantEventValues
+                                            .voiceCallEventCode,
+                                        createdBy:
+                                            Singleton.instance.agentRef ?? '',
+                                        agentName:
+                                            Singleton.instance.agentName ?? '',
+                                        agrRef: Singleton.instance.agrRef ?? '',
+                                        contractor:
+                                            Singleton.instance.contractor ?? '',
+                                        eventModule: widget.isCall!
+                                            ? 'Telecalling'
+                                            : 'Field Allocation',
+                                        invalidNumber: false);
+
+                                    print(jsonEncode(requestBodyData.toJson()));
+
+                                    final Map<String, dynamic> postdata =
+                                        jsonDecode(jsonEncode(
+                                                requestBodyData.toJson()))
+                                            as Map<String, dynamic>;
+                                    List<dynamic> value = [];
+                                    for (var element in uploadFileLists) {
+                                      value.add(await MultipartFile.fromFile(
+                                          element.path.toString()));
+                                    }
+                                    postdata.addAll({
+                                      'files': value,
+                                    });
+
+                                    Map<String, dynamic> postResult =
+                                        await APIRepository.apiRequest(
+                                      APIRequestType.UPLOAD,
+                                      HttpUrl.collectionPostUrl(
+                                          'collection', widget.userType),
+                                      formDatas: FormData.fromMap(postdata),
+                                    );
+
+                                    if (postResult[Constants.success]) {
+                                      AppUtils.topSnackBar(context,
+                                          "Event updated successfully.");
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                );
+                              }
+                              // }
+                            }
+                            setState(() => isSubmit = true);
+                          }
+                        : () {},
+                    cardShape: 5,
+                  ),
                 ),
               ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: SizedBox(
-                        width: 95,
-                        child: Center(
-                            child: CustomText(
-                          Languages.of(context)!.cancel.toUpperCase(),
-                          color: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          fontSize: FontSize.sixteen,
-                        ))),
-                  ),
-                  const SizedBox(width: 25),
-                  SizedBox(
-                    width: 191,
-                    child: CustomButton(
-                      Languages.of(context)!.submit.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w700,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate() &&
-                            selectedPaymentModeButton != '') {
-                          if (uploadFileLists.isEmpty) {
-                            AppUtils.showToast(
-                              Constants.uploadDepositSlip,
-                              gravity: ToastGravity.CENTER,
-                            );
-                          } else {
-                            Position position = Position(
-                              longitude: 0,
-                              latitude: 0,
-                              timestamp: DateTime.now(),
-                              accuracy: 0,
-                              altitude: 0,
-                              heading: 0,
-                              speed: 0,
-                              speedAccuracy: 0,
-                            );
-                            if (Geolocator.checkPermission().toString() !=
-                                PermissionStatus.granted.toString()) {
-                              Position res =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.best);
-                              setState(() {
-                                position = res;
-                              });
-                            }
-                            var requestBodyData = CollectionPostModel(
-                              eventType:
-                                  (widget.userType == Constants.telecaller)
-                                      ? 'TC : RECEIPT'
-                                      : 'RECEIPT',
-                              caseId: widget.caseId,
-                              contact: CollectionsContact(
-                                cType: widget.postValue['cType'],
-                                value: widget.postValue['value'],
-                              ),
-                              eventAttr: EventAttr(
-                                amountCollected:
-                                    int.parse(amountCollectedControlller.text),
-                                chequeRefNo: chequeControlller.text,
-                                date: dateControlller.text,
-                                remarks: remarksControlller.text,
-                                mode: selectedPaymentModeButton,
-                                imageLocation: uploadFileLists as List<String>,
-                                longitude: position.longitude,
-                                latitude: position.latitude,
-                                accuracy: position.accuracy,
-                                altitude: position.altitude,
-                                heading: position.heading,
-                                speed: position.speed,
-                              ),
-                              createdBy: widget.agentName,
-                              agentName: widget.agentName,
-                              eventModule:
-                                  (widget.userType == Constants.telecaller)
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                              agrRef: widget.argRef,
-                            );
-
-                            Map<String, dynamic> postResult =
-                                await APIRepository.apiRequest(
-                                    APIRequestType.POST,
-                                    HttpUrl.collectionPostUrl(
-                                      'collection',
-                                      widget.userType,
-                                    ),
-                                    requestBodydata:
-                                        jsonEncode(requestBodyData));
-                            if (postResult[Constants.success]) {
-                              AppUtils.topSnackBar(
-                                  context, Constants.successfullySubmitted);
-                              Navigator.pop(context);
-                            }
-                          }
-                        }
-                      },
-                      cardShape: 5,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),
@@ -438,6 +533,7 @@ class _CustomCollectionsBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      selectedDate = newDate.toString();
     });
   }
 

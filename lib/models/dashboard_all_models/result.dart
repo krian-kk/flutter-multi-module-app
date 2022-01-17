@@ -2,13 +2,14 @@ import 'case.dart';
 
 class Result {
   int? count;
-  dynamic? totalAmt;
+  dynamic totalAmt;
   List<Case>? cases;
 
   Result({this.count, this.totalAmt, this.cases});
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        count: json['count'] as int?,
+        count:
+            json['count'] != null ? json['count'] as int? : json['totalCount'],
         totalAmt: json['totalAmt'],
         cases: (json['cases'] as List<dynamic>?)
             ?.map((e) => Case.fromJson(e as Map<String, dynamic>))

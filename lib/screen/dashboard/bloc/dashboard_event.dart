@@ -1,7 +1,6 @@
 part of 'dashboard_bloc.dart';
 
-@immutable
-abstract class DashboardEvent extends BaseEquatable {}
+class DashboardEvent extends BaseEquatable {}
 
 class DashboardInitialEvent extends DashboardEvent {
   final BuildContext? context;
@@ -53,22 +52,28 @@ class SetTimeperiodValueEvent extends DashboardEvent {}
 
 class PostBankDepositDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostBankDepositDataEvent({this.postData});
+  final List<File>? fileData;
+  final BuildContext? context;
+  PostBankDepositDataEvent({this.postData, this.fileData, this.context});
 }
 
 class PostCompanyDepositDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostCompanyDepositDataEvent({this.postData});
+  final List<File>? fileData;
+  final BuildContext? context;
+  PostCompanyDepositDataEvent({this.postData, this.fileData, this.context});
 }
 
 class PostYardingDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostYardingDataEvent({this.postData});
+  final List<File>? fileData;
+  PostYardingDataEvent({this.postData, this.fileData});
 }
 
 class PostSelfreleaseDataEvent extends DashboardEvent {
   final dynamic postData;
-  PostSelfreleaseDataEvent({this.postData});
+  final List<File>? fileData;
+  PostSelfreleaseDataEvent({this.postData, this.fileData});
 }
 
 class HelpEvent extends DashboardEvent {}

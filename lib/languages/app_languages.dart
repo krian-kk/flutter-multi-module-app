@@ -11,6 +11,8 @@ abstract class Languages {
 
   String get userId;
 
+  String get userName;
+
   String get password;
 
   String get signin;
@@ -347,6 +349,8 @@ abstract class Languages {
 
   String get customerContactNo;
 
+  String get customerContactType;
+
   String get serviceProvidersList;
 
   String get callersId;
@@ -436,4 +440,6 @@ abstract class Languages {
   String get enterConfirmNewPassword;
 
   String get clear;
+
+  String get contact;
 }

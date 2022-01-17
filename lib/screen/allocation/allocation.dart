@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -17,9 +18,12 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -28,6 +32,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
@@ -43,7 +48,6 @@ class AllocationScreen extends StatefulWidget {
 }
 
 class _AllocationScreenState extends State<AllocationScreen> {
-  bool areyouatOffice = true;
   late AllocationBloc bloc;
   String? currentAddress;
   bool isCaseDetailLoading = false;
@@ -104,7 +108,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
         ),
         backgroundColor: ColorResource.colorFFFFFF,
         builder: (BuildContext context) {
-          return MapView(bloc);
+          return MapViewBottomSheetScreen(
+            title: Languages.of(context)!.viewMap,
+            listOfAgentLocation: bloc.priorityCaseAddressList,
+          );
         });
   }
 
@@ -124,7 +131,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 WillPopScope(
-                  onWillPop: () async => false,
+                  onWillPop: () async => true,
                   child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.86,
                       child: const MessageChatRoomScreen()),
@@ -173,14 +180,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     paramValues: BuildRouteDataModel(
                         lat: position.latitude.toString(),
                         long: position.longitude.toString(),
-                        maxDistMeters: "1000")));
+                        maxDistMeters: "10000")));
                 bloc.showFilterDistance = true;
               });
             } else {
               bloc.add(ShowAutoCallingEvent());
-              print('--------Auto calling-----------');
             }
-
             break;
           case 2:
             bloc.add(MapViewEvent());
@@ -303,7 +308,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
       onTap: () {
         switch (index) {
           case 0:
-            maxDistance = '5000';
+            maxDistance = '10000';
             break;
           case 1:
             maxDistance = '5000';
@@ -441,7 +446,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           }
         }
         if (state is TapAreYouAtOfficeOptionsState) {
-          Position position = Position(
+          Position positions = Position(
             longitude: 0,
             latitude: 0,
             timestamp: DateTime.now(),
@@ -456,35 +461,38 @@ class _AllocationScreenState extends State<AllocationScreen> {
             Position res = await Geolocator.getCurrentPosition(
                 desiredAccuracy: LocationAccuracy.best);
             setState(() {
-              position = res;
+              positions = res;
             });
           }
           var requestBodyData = AreYouAtOfficeModel(
-              eventType: 'Office Check In',
-              eventAttr: AreYouAtOfficeEventAttr(
-                altitude: position.altitude,
-                accuracy: position.accuracy,
-                heading: position.heading,
-                speed: position.speed,
-                latitude: position.latitude,
-                longitude: position.longitude,
-              ),
-              createdBy: bloc.agentName.toString(),
-              agentName: bloc.agentName.toString(),
-              eventModule: (bloc.userType == Constants.telecaller)
-                  ? 'Telecalling'
-                  : 'Field Allocation',
-              eventCode: 'TELEVT017');
+            eventId: ConstantEventValues.areYouAtOfficeEventId,
+            eventType: 'Office Check In',
+            eventAttr: AreYouAtOfficeEventAttr(
+              altitude: positions.altitude,
+              accuracy: positions.accuracy,
+              heading: positions.heading,
+              speed: positions.speed,
+              latitude: positions.latitude,
+              longitude: positions.longitude,
+            ),
+            createdBy: Singleton.instance.agentRef ?? '',
+            agentName: Singleton.instance.agentName ?? '',
+            contractor: Singleton.instance.contractor ?? '',
+            eventModule: 'Field Allocation',
+            eventCode: ConstantEventValues.areYouAtOfficeEvenCode,
+          );
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.POST,
             HttpUrl.areYouAtOfficeUrl(),
             requestBodydata: jsonEncode(requestBodyData),
           );
           if (postResult[Constants.success]) {
-            // AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            SharedPreferences _pref = await SharedPreferences.getInstance();
             setState(() {
-              areyouatOffice = false;
+              bloc.areyouatOffice = false;
+              _pref.setBool('areyouatOffice', false);
             });
+            AppUtils.showToast(Constants.successfullySubmitted);
           }
         }
       },
@@ -496,12 +504,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return bloc.isNoInternet
+          return bloc.isNoInternetAndServerError
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomText(Languages.of(context)!.noInternetConnection),
+                      CustomText(bloc.isNoInternetAndServerErrorMsg!),
                       const SizedBox(
                         height: 5,
                       ),
@@ -586,7 +594,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               height: 10,
                             ),
                             Visibility(
-                              visible: areyouatOffice,
+                              visible: bloc.areyouatOffice,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),

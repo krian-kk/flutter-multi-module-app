@@ -5,7 +5,7 @@ class CaseDetailsEvent extends BaseEquatable {}
 
 class CaseDetailsInitialEvent extends CaseDetailsEvent {
   final dynamic paramValues;
-  BuildContext? context;
+  final BuildContext? context;
   CaseDetailsInitialEvent({this.paramValues, this.context});
 }
 
@@ -63,10 +63,21 @@ class ClickPushAndPOPCaseDetailsEvent extends CaseDetailsEvent {
 class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String title;
   final List? list;
-  ClickOpenBottomSheetEvent(this.title, this.list);
+  final bool? isCall;
+  final String? health;
+  ClickOpenBottomSheetEvent(this.title, this.list, this.isCall, {this.health});
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {
-  final dynamic postData;
-  PostImageCapturedEvent({this.postData});
+  final PostImageCapturedModel? postData;
+  final List<File>? fileData;
+  PostImageCapturedEvent({this.postData, this.fileData});
 }
+
+class EnableUnreachableBtnEvent extends CaseDetailsEvent {}
+
+class DisableUnreachableBtnEvent extends CaseDetailsEvent {}
+
+class EnablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
+
+class DisablePhoneInvalidBtnEvent extends CaseDetailsEvent {}

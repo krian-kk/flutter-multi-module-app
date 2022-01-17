@@ -1,5 +1,5 @@
 class RepoPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -7,16 +7,17 @@ class RepoPostModel {
   late List<RepoContact> contact;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late String? callID;
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
   late String agrRef;
 
   RepoPostModel({
-    this.eventId = 0,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
@@ -24,11 +25,12 @@ class RepoPostModel {
     required this.contact,
     required this.createdBy,
     required this.agentName,
+    required this.contractor,
     required this.eventModule,
     this.callID,
     this.callingID,
     required this.callerServiceID,
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agrRef,
   });
@@ -44,6 +46,7 @@ class RepoPostModel {
     });
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -63,6 +66,7 @@ class RepoPostModel {
     data['contact'] = contact.map((v) => v.toJson()).toList();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['callID'] = callID;
     data['callingID'] = callingID;
@@ -103,12 +107,12 @@ class EventAttr {
     required this.imageLocation,
     required this.customerName,
     this.altitude,
-    this.accuracy = 0,
-    this.altitudeAccuracy,
+    required this.accuracy,
+    this.altitudeAccuracy = 0.0,
     this.heading,
     this.speed,
-    this.latitude = 0,
-    this.longitude = 0,
+    required this.latitude,
+    required this.longitude,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -155,7 +159,7 @@ class EventAttr {
 class Repo {
   late String status;
 
-  Repo({this.status = ''});
+  Repo({this.status = 'pending'});
 
   Repo.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -172,22 +176,23 @@ class RepoContact {
   late String cType;
   late String health;
   late String value;
-  late String resAddressId0;
-  late String contactId0;
+  // late String resAddressId0;
+  // late String contactId0;
 
-  RepoContact(
-      {required this.cType,
-      this.health = '1',
-      required this.value,
-      this.resAddressId0 = '',
-      this.contactId0 = ''});
+  RepoContact({
+    required this.cType,
+    required this.health,
+    required this.value,
+    // this.resAddressId0 = '',
+    // this.contactId0 = ''
+  });
 
   RepoContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     health = json['health'];
     value = json['value'];
-    resAddressId0 = json['resAddressId_0'];
-    contactId0 = json['contactId_0'];
+    // resAddressId0 = json['resAddressId_0'];
+    // contactId0 = json['contactId_0'];
   }
 
   Map<String, dynamic> toJson() {
@@ -195,8 +200,8 @@ class RepoContact {
     data['cType'] = cType;
     data['health'] = health;
     data['value'] = value;
-    data['resAddressId_0'] = resAddressId0;
-    data['contactId_0'] = contactId0;
+    // data['resAddressId_0'] = resAddressId0;
+    // data['contactId_0'] = contactId0;
     return data;
   }
 }

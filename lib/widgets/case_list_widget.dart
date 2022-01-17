@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -15,11 +17,13 @@ class CaseLists {
     DashboardBloc bloc,
     DashboardAllModels listData,
   ) {
+    print('----------nk---------');
+    print(listData.result);
     return bloc.selectedFilterDataLoading
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : listData.result!.cases!.isEmpty
+        : listData.result == null || listData.result!.cases!.isEmpty
             ? Column(
                 children: [
                   Padding(
@@ -94,8 +98,9 @@ class CaseLists {
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(paramValues: {
                               'caseID': listData.result!.cases![index].caseId,
-                              'isAddress': true
                             }));
+                            Singleton.instance.agrRef =
+                                listData.result!.cases![index].agrRef ?? '';
                           },
                           child: Container(
                             margin:
@@ -128,8 +133,11 @@ class CaseLists {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 2),
                                   child: CustomText(
-                                    listData.result!.cases![index].caseId!,
+                                    listData.result!.cases![index].bankName! +
+                                        ' / ' +
+                                        listData.result!.cases![index].agrRef!,
                                     fontSize: FontSize.twelve,
+                                    fontWeight: FontWeight.w500,
                                     color: ColorResource.color101010,
                                   ),
                                 ),
@@ -150,8 +158,10 @@ class CaseLists {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            listData.result!.cases![index].due
-                                                .toString(),
+                                            Constants.inr +
+                                                listData
+                                                    .result!.cases![index].due
+                                                    .toString(),
                                             fontSize: FontSize.eighteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,
@@ -169,48 +179,152 @@ class CaseLists {
                                         ],
                                       ),
                                       const Spacer(),
-                                      if (listData.result!.cases![index]
-                                              .collSubStatus ==
-                                          'new')
-                                        Container(
-                                          width: 55,
-                                          height: 19,
-                                          // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                          decoration: BoxDecoration(
-                                              color: ColorResource.colorD5344C,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          child: Center(
-                                            child: CustomText(
-                                              Languages.of(context)!.new_,
-                                              color: ColorResource.colorffffff,
-                                              fontSize: FontSize.ten,
-                                              lineHeight: 1,
-                                            ),
-                                          ),
-                                        ),
+                                      // if (listData.result!.cases![index]
+                                      //         .collSubStatus ==
+                                      //     'new')
+                                      listData.result!.cases![index]
+                                                      .collSubStatus ==
+                                                  "new" &&
+                                              Singleton.instance.usertype ==
+                                                  Constants.fieldagent
+                                          ? Container(
+                                              width: 55,
+                                              height: 19,
+                                              // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorD5344C,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              child: Center(
+                                                child: CustomText(
+                                                  Languages.of(context)!.new_,
+                                                  color:
+                                                      ColorResource.colorffffff,
+                                                  fontSize: FontSize.ten,
+                                                  lineHeight: 1,
+                                                ),
+                                              ),
+                                            )
+                                          : listData.result!.cases![index]
+                                                          .telSubStatus ==
+                                                      "new" &&
+                                                  Singleton.instance.usertype ==
+                                                      Constants.telecaller
+                                              ? Container(
+                                                  width: 55,
+                                                  height: 19,
+                                                  // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                                  decoration: BoxDecoration(
+                                                      color: ColorResource
+                                                          .colorD5344C,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30)),
+                                                  child: Center(
+                                                    child: CustomText(
+                                                      Languages.of(context)!
+                                                          .new_,
+                                                      color: ColorResource
+                                                          .colorffffff,
+                                                      fontSize: FontSize.ten,
+                                                      lineHeight: 1,
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
                                     ],
                                   ),
                                 ),
 
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //       horizontal: 15, vertical: 6),
+                                //   child: Container(
+                                //     width: double.infinity,
+                                //     padding: const EdgeInsets.fromLTRB(
+                                //         20, 12, 15, 12),
+                                //     decoration: BoxDecoration(
+                                //       color: ColorResource.colorF8F9FB,
+                                //       borderRadius: BorderRadius.circular(10),
+                                //     ),
+                                //     child: CustomText(
+                                //       listData.result!.cases![index].address![0]
+                                //           .value!,
+                                //       color: ColorResource.color484848,
+                                //       fontSize: FontSize.fourteen,
+                                //     ),
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 6),
-                                  child: Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 12, 15, 12),
-                                    decoration: BoxDecoration(
-                                      color: ColorResource.colorF8F9FB,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: CustomText(
-                                      listData.result!.cases![index].address![0]
-                                          .value!,
-                                      color: ColorResource.color484848,
-                                      fontSize: FontSize.fourteen,
-                                    ),
-                                  ),
+                                  child: bloc.userType == Constants.fieldagent
+                                      ? Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 12, 15, 12),
+                                          decoration: BoxDecoration(
+                                            color: ColorResource.colorF8F9FB,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                listData.result!.cases![index]
+                                                    .address![0].value!,
+                                                color:
+                                                    ColorResource.color484848,
+                                                fontSize: FontSize.fourteen,
+                                              ),
+                                              // CustomText(
+                                              //   resultData[index].address![1].value!,
+                                              //   color: ColorResource.color484848,
+                                              //   fontSize: FontSize.fourteen,
+                                              // ),
+                                            ],
+                                          ),
+                                        )
+                                      : Wrap(
+                                          children: [
+                                            for (var item in listData
+                                                .result!.cases![index].address!)
+                                              item.cType!.contains('mobile') ||
+                                                      item.cType!
+                                                          .contains('phone')
+                                                  ? Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 10,
+                                                              right: 20),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 17,
+                                                          vertical: 6),
+                                                      decoration: BoxDecoration(
+                                                        color: ColorResource
+                                                            .colorF8F9FB,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                      ),
+                                                      child: CustomText(
+                                                        item.value!,
+                                                        color: ColorResource
+                                                            .color484848,
+                                                        fontSize:
+                                                            FontSize.fourteen,
+                                                        lineHeight: 1.0,
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
+                                          ],
+                                        ),
                                 ),
                                 const SizedBox(
                                   height: 5,

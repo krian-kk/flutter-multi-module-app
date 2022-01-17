@@ -1,5 +1,5 @@
 class CustomerNotMetPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
@@ -8,15 +8,16 @@ class CustomerNotMetPostModel {
   late String createdBy;
   late String eventModule;
   late String agentName;
+  late String contractor;
   late String? callID;
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
   late String agrRef;
 
   CustomerNotMetPostModel(
-      {this.eventId = 24,
+      {required this.eventId,
       required this.eventType,
       required this.caseId,
       required this.eventCode,
@@ -25,10 +26,11 @@ class CustomerNotMetPostModel {
       required this.createdBy,
       required this.eventModule,
       required this.agentName,
+      required this.contractor,
       this.callID,
       this.callingID,
-      this.callerServiceID = 'e',
-      this.voiceCallEventCode = 'TELEVT011',
+      required this.callerServiceID,
+      required this.voiceCallEventCode,
       this.invalidNumber,
       required this.agrRef});
 
@@ -42,6 +44,7 @@ class CustomerNotMetPostModel {
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     callID = json['callID'];
     callingID = json['callingID'];
     callerServiceID = json['callerServiceID'];
@@ -63,6 +66,7 @@ class CustomerNotMetPostModel {
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['callID'] = callID;
     data['callingID'] = callingID;
     data['callerServiceID'] = callerServiceID;

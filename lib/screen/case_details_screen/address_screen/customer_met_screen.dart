@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -37,8 +38,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
   @override
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
@@ -133,10 +134,11 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                           isLeading: true,
                           onTap: () => widget.bloc.add(
                             ClickOpenBottomSheetEvent(
-                              Constants.captureImage,
-                              widget.bloc.caseDetailsAPIValue.result
-                                  ?.addressDetails,
-                            ),
+                                Constants.captureImage,
+                                widget.bloc.caseDetailsAPIValue.result
+                                    ?.addressDetails,
+                                false,
+                                health: ConstantEventValues.healthTwo),
                           ),
                           trailingWidget:
                               SvgPicture.asset(ImageResource.captureImage),
@@ -170,9 +172,11 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       widgets.add(InkWell(
         onTap: () {
           setState(() => selectedOptionBottomSheetButton = element.title);
+          print("customer met iscall ===> false");
           widget.bloc.add(ClickOpenBottomSheetEvent(
             element.stringResourceValue,
             widget.bloc.caseDetailsAPIValue.result?.addressDetails,
+            false,
           ));
         },
         child: Container(

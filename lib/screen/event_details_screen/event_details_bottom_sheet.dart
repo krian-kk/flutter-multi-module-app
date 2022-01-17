@@ -31,66 +31,66 @@ class _CustomEventDetailsBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.89,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetAppbar(
+              title: widget.cardTitle,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                  .copyWith(bottom: 5),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: widget.customeLoanUserWidget,
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+                child: ListView.builder(
+                    // reverse: true,
+                    itemCount:
+                        widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
+                    itemBuilder: (context, int index) {
+                      dynamic listVal = widget
+                          .bloc.eventDetailsAPIValue.result!.reversed
+                          .toList();
+                      return expandList(listVal, index);
+                    })),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          decoration: BoxDecoration(
+            color: ColorResource.colorFFFFFF,
+            boxShadow: [
+              BoxShadow(
+                color: ColorResource.color000000.withOpacity(.25),
+                blurRadius: 2.0,
+                offset: const Offset(1.0, 1.0),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: widget.customeLoanUserWidget,
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                  child: ListView.builder(
-                itemCount: widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
-                itemBuilder: (context, int index) =>
-                    expandList(widget.bloc.eventDetailsAPIValue.result!, index),
-              )),
             ],
           ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 190,
+                  child: CustomButton(
+                    Languages.of(context)!.okay.toUpperCase(),
+                    onTap: () => Navigator.pop(context),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w600,
+                    cardShape: 5,
+                  ),
                 ),
               ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 190,
-                    child: CustomButton(
-                      Languages.of(context)!.okay.toUpperCase(),
-                      onTap: () => Navigator.pop(context),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      cardShape: 5,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),
@@ -144,15 +144,23 @@ class _CustomEventDetailsBottomSheetState
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: [
-                  if (expandedList[index].date != null)
-                    CustomText(
-                      expandedList[index].caseId.toString().toUpperCase(),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  const SizedBox(height: 8),
-                  if (expandedList[index].date != null)
+                  // if (expandedList[index].caseId != null)
+                  //   CustomText(
+                  //     expandedList[index].caseId.toString().toUpperCase(),
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  // const SizedBox(height: 8),
+                  expandedList[index].eventType == 'OTS'
+                      ? CustomText(
+                          "OTS Amount: " + expandedList[index].otsAmt,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        )
+                      : const SizedBox(),
+                  if (expandedList[index].mode != null)
                     CustomText(
                       Languages.of(context)!.mode.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
@@ -167,7 +175,37 @@ class _CustomEventDetailsBottomSheetState
                       color: ColorResource.color000000,
                     ),
                   const SizedBox(height: 8),
-                  const SizedBox(height: 8),
+                  if (expandedList[index].eventType == 'REPO')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          expandedList[index].customerName,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Model Make: " + expandedList[index].modelMake,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Registration No: " +
+                              expandedList[index].registrationNo,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Chassis No: " + expandedList[index].chassisNo,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      ],
+                    ),
                   CustomText(
                     Languages.of(context)!
                         .remarks
@@ -178,7 +216,7 @@ class _CustomEventDetailsBottomSheetState
                     color: ColorResource.color000000,
                   ),
                   CustomText(
-                    expandedList[index].remarks ?? '-',
+                    expandedList[index].remarks.toString(),
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,

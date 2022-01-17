@@ -4,9 +4,10 @@ import 'repayment_info.dart';
 
 class CaseDetails {
   String? id;
-  int? pos;
+  dynamic? pos;
   dynamic due;
   String? cust;
+  dynamic odVal;
   String? accNo;
   String? collSubStatus;
   String? bankName;
@@ -15,7 +16,7 @@ class CaseDetails {
   String? emiStartDate;
   String? schemeCode;
   String? loanDuration;
-  int? loanAmt;
+  dynamic loanAmt;
   String? pincode;
   List<Contact>? contact;
   List<List<Attr>>? attr;
@@ -27,6 +28,7 @@ class CaseDetails {
     this.pos,
     this.due,
     this.cust,
+    this.odVal,
     this.accNo,
     this.collSubStatus,
     this.bankName,
@@ -45,9 +47,10 @@ class CaseDetails {
 
   factory CaseDetails.fromJson(Map<String, dynamic> json) => CaseDetails(
         id: json['_id'] as String?,
-        pos: json['pos'] as int?,
+        pos: json['pos'],
         due: json['due'],
         cust: json['cust'] as String?,
+        odVal: json['odVal'],
         accNo: json['accNo'] as String?,
         collSubStatus: json['collSubStatus'] as String?,
         bankName: json['bankName'] as String?,
@@ -56,7 +59,7 @@ class CaseDetails {
         emiStartDate: json['emiStartDate'] as String?,
         schemeCode: json['schemeCode'] as String?,
         loanDuration: json['loanDuration'] as String?,
-        loanAmt: json['loanAmt'] as int?,
+        loanAmt: json['loanAmt'],
         pincode: json['pincode'] as String?,
         contact: (json['contact'] as List<dynamic>?)
             ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
@@ -78,6 +81,7 @@ class CaseDetails {
         'pos': pos,
         'due': due,
         'cust': cust,
+        'odVal': odVal,
         'accNo': accNo,
         'collSubStatus': collSubStatus,
         'bankName': bankName,

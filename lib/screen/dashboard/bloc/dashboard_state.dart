@@ -1,7 +1,6 @@
 part of 'dashboard_bloc.dart';
 
-@immutable
-abstract class DashboardState extends BaseEquatable {}
+class DashboardState extends BaseEquatable {}
 
 class DashboardInitial extends DashboardState {}
 
@@ -58,3 +57,19 @@ class SelectedTimeperiodDataLoadedState extends DashboardState {}
 class PostDataApiSuccessState extends DashboardState {}
 
 class NoInternetConnectionState extends DashboardState {}
+
+class DisableMDBankSubmitBtnState extends DashboardState {}
+
+class EnableMDBankSubmitBtnState extends DashboardState {}
+
+class DisableMDCompanyBranchSubmitBtnState extends DashboardState {}
+
+class EnableMDCompanyBranchSubmitBtnState extends DashboardState {}
+
+class DisableRSYardingSubmitBtnState extends DashboardState {}
+
+class EnableRSYardingSubmitBtnState extends DashboardState {}
+
+class DisableRSSelfReleaseSubmitBtnState extends DashboardState {}
+
+class EnableRSSelfReleaseSubmitBtnState extends DashboardState {}

@@ -33,10 +33,13 @@ class Result {
   bool? starredCase;
   String? cust;
   String? collSubStatus;
+  String? telSubStatus;
   String? followUpPriority;
   String? customerId;
   String? pincode;
   String? caseId;
+  String? agrRef;
+  String? bankName;
   String? fieldfollowUpDate;
   int? sortId;
   String? followUpDate;
@@ -52,10 +55,13 @@ class Result {
       this.starredCase,
       this.cust,
       this.collSubStatus,
+      this.telSubStatus,
       this.followUpPriority,
       this.customerId,
       this.pincode,
       this.caseId,
+      this.agrRef,
+      this.bankName,
       this.fieldfollowUpDate,
       this.sortId,
       this.followUpDate,
@@ -71,10 +77,13 @@ class Result {
     starredCase = json['starredCase'];
     cust = json['cust'];
     collSubStatus = json['collSubStatus'];
+    telSubStatus = json['telSubStatus'];
     followUpPriority = json['followUpPriority'];
     customerId = json['customerId'];
     pincode = json['pincode'];
     caseId = json['caseId'];
+    agrRef = json['agrRef'] ?? '-';
+    bankName = json['bankName'] ?? '-';
     fieldfollowUpDate = json['fieldfollowUpDate'];
     sortId = json['sortId'];
     followUpDate = json['followUpDate'];
@@ -82,9 +91,9 @@ class Result {
     distanceMeters = json['distanceMeters'];
     repoStatus = json['repoStatus'];
     accNo = json['accNo'];
-    if (json['address'] != null) {
+    if (json['contact'] != null) {
       address = <Address>[];
-      json['address'].forEach((v) {
+      json['contact'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
     }
@@ -97,10 +106,13 @@ class Result {
     data['starredCase'] = starredCase;
     data['cust'] = cust;
     data['collSubStatus'] = collSubStatus;
+    data['telSubStatus'] = telSubStatus;
     data['followUpPriority'] = followUpPriority;
     data['customerId'] = customerId;
     data['pincode'] = pincode;
     data['caseId'] = caseId;
+    data['agrRef'] = agrRef;
+    data['bankName'] = bankName;
     data['fieldfollowUpDate'] = fieldfollowUpDate;
     data['sortId'] = sortId;
     if (address != null) {

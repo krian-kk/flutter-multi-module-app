@@ -16,6 +16,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/health_status_widget.dart';
 import 'dart:async';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -33,6 +34,9 @@ class AddressScreen extends StatefulWidget {
 class _AddressScreenState extends State<AddressScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
+
+  bool isSubmitFirst = true;
+  bool isSubmitSecond = true;
 
   @override
   void initState() {
@@ -57,9 +61,18 @@ class _AddressScreenState extends State<AddressScreen>
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
-        // if (state is ClickViewMapState) {
-        //   // openViewMapBottomSheet(context);
-        // }
+        if (state is DisableCustomerNotMetBtnState) {
+          setState(() => isSubmitFirst = false);
+        }
+        if (state is EnableCustomerNotMetBtnState) {
+          setState(() => isSubmitFirst = true);
+        }
+        if (state is DisableAddressInvalidBtnState) {
+          setState(() => isSubmitSecond = false);
+        }
+        if (state is EnableAddressInvalidBtnState) {
+          setState(() => isSubmitSecond = true);
+        }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
@@ -117,8 +130,14 @@ class _AddressScreenState extends State<AddressScreen>
                                 Wrap(
                                   spacing: 27,
                                   children: [
-                                    SvgPicture.asset(
-                                        ImageResource.activePerson),
+                                    // SvgPicture.asset(
+                                    //     ImageResource.activePerson),
+                                    ShowHealthStatus.healthStatus(widget
+                                            .bloc
+                                            .caseDetailsAPIValue
+                                            .result
+                                            ?.addressDetails![widget.index]
+                                        ['health']),
                                     InkWell(
                                         onTap: () => Navigator.pop(context),
                                         child: Container(
@@ -158,7 +177,8 @@ class _AddressScreenState extends State<AddressScreen>
                                       ClickOpenBottomSheetEvent(
                                           Constants.viewMap,
                                           widget.bloc.caseDetailsAPIValue.result
-                                              ?.callDetails)),
+                                              ?.callDetails,
+                                          false)),
                                   child: SizedBox(
                                       width: 10,
                                       child: Container(
@@ -187,10 +207,10 @@ class _AddressScreenState extends State<AddressScreen>
                                   Languages.of(context)!.eventDetails,
                                   onTap: () => widget.bloc.add(
                                     ClickOpenBottomSheetEvent(
-                                      Constants.eventDetails,
-                                      widget.bloc.caseDetailsAPIValue.result
-                                          ?.addressDetails,
-                                    ),
+                                        Constants.eventDetails,
+                                        widget.bloc.caseDetailsAPIValue.result
+                                            ?.addressDetails,
+                                        false),
                                   ),
                                   textColor: ColorResource.color23375A,
                                   borderColor: ColorResource.color23375A,
@@ -336,45 +356,65 @@ class _AddressScreenState extends State<AddressScreen>
                               width: 191,
                               child: _controller.index == 1
                                   ? CustomButton(
-                                      Languages.of(context)!
-                                          .submit
-                                          .toUpperCase(),
+                                      isSubmitFirst
+                                          ? Languages.of(context)!
+                                              .submit
+                                              .toUpperCase()
+                                          : null,
+                                      isLeading: !isSubmitFirst,
+                                      trailingWidget: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: ColorResource.colorFFFFFF,
+                                        ),
+                                      ),
                                       // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
 
-                                      onTap: () {
-                                        if (widget
-                                            .bloc
-                                            .addressCustomerNotMetFormKey
-                                            .currentState!
-                                            .validate()) {
-                                          if (widget.bloc
-                                                  .addressSelectedCustomerNotMetClip !=
-                                              '') {
-                                            widget.bloc.add(
-                                                ClickCustomerNotMetButtonEvent(
-                                                    context));
-                                          } else {
-                                            AppUtils.showToast(
-                                                Constants.pleaseSelectOptions);
-                                          }
-                                        } else {}
-                                      },
+                                      onTap: isSubmitFirst
+                                          ? () {
+                                              if (widget
+                                                  .bloc
+                                                  .addressCustomerNotMetFormKey
+                                                  .currentState!
+                                                  .validate()) {
+                                                if (widget.bloc
+                                                        .addressSelectedCustomerNotMetClip !=
+                                                    '') {
+                                                  widget.bloc.add(
+                                                      ClickCustomerNotMetButtonEvent(
+                                                          context));
+                                                } else {
+                                                  AppUtils.showToast(Constants
+                                                      .pleaseSelectOptions);
+                                                }
+                                              } else {}
+                                            }
+                                          : () {},
                                       cardShape: 5,
                                     )
                                   : CustomButton(
-                                      Languages.of(context)!
-                                          .submit
-                                          .toUpperCase(),
+                                      isSubmitSecond
+                                          ? Languages.of(context)!
+                                              .submit
+                                              .toUpperCase()
+                                          : null,
+                                      isLeading: !isSubmitSecond,
+                                      trailingWidget: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: ColorResource.colorFFFFFF,
+                                        ),
+                                      ),
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
-                                      onTap: () {
-                                        widget.bloc.add(
-                                            ClickAddressInvalidButtonEvent(
-                                                context));
-                                      },
+                                      onTap: isSubmitSecond
+                                          ? () {
+                                              widget.bloc.add(
+                                                  ClickAddressInvalidButtonEvent(
+                                                      context));
+                                            }
+                                          : () {},
                                       cardShape: 5,
                                     ),
                             ),
@@ -388,31 +428,6 @@ class _AddressScreenState extends State<AddressScreen>
       ),
     );
   }
-
-  // openViewMapBottomSheet(BuildContext buildContext) {
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-  //     enableDrag: false,
-  //     isDismissible: false,
-  //     context: buildContext,
-  //     backgroundColor: ColorResource.colorFFFFFF,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(20),
-  //       ),
-  //     ),
-  //     builder: (BuildContext context) {
-  //       return WillPopScope(
-  //         onWillPop: () async => false,
-  //         child: const CustomMapViewBottomSheet(),
-  //       );
-  //       // return CustomEventDetailsBottomSheet(
-  //       //   Languages.of(context)!.eventDetails.toUpperCase(),
-  //       //   widget.bloc,
-  //       // );
-  //     },
-  //   );
-  // }
 }
 
 class CustomMapViewBottomSheet extends StatefulWidget {
@@ -512,34 +527,32 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
         height: MediaQuery.of(context).size.height * 0.82,
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-          return WillPopScope(
-              onWillPop: () async => false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
-                    child: BottomSheetAppbar(
-                      title: Languages.of(context)!.mapView,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 16),
-                    ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
+                child: BottomSheetAppbar(
+                  title: Languages.of(context)!.mapView,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                ),
+              ),
+              Expanded(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: const CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
                   ),
-                  Expanded(
-                    child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: const CameraPosition(
-                        target: _center,
-                        zoom: 11.0,
-                      ),
-                      mapType: MapType.normal,
-                      markers: _markers,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                    ),
-                  ),
-                ],
-              ));
+                  mapType: MapType.normal,
+                  markers: _markers,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                ),
+              ),
+            ],
+          );
         }),
       ),
     );

@@ -1,10 +1,10 @@
 class OtherFeedBackPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
-  late List<OtherFeedBackContact> contact;
+  late OtherFeedBackContact contact;
   late String createdBy;
   late String eventModule;
   late String agentName;
@@ -14,25 +14,26 @@ class OtherFeedBackPostModel {
   late String callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double invalidNumber;
+  late bool? invalidNumber;
 
-  OtherFeedBackPostModel(
-      {this.eventId = 0,
-      required this.eventType,
-      required this.caseId,
-      required this.eventCode,
-      required this.eventAttr,
-      required this.contact,
-      this.createdBy = '',
-      this.eventModule = 'Field Allocation',
-      this.agentName = '',
-      this.contractor = '',
-      this.agrRef = '0',
-      this.callID = '0',
-      this.callingID = '0',
-      this.callerServiceID = '',
-      this.voiceCallEventCode = '',
-      this.invalidNumber = 0});
+  OtherFeedBackPostModel({
+    required this.eventId,
+    required this.eventType,
+    required this.caseId,
+    required this.eventCode,
+    required this.eventAttr,
+    required this.contact,
+    required this.createdBy,
+    required this.eventModule,
+    required this.agentName,
+    required this.contractor,
+    required this.agrRef,
+    required this.callID,
+    required this.callingID,
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
+    this.invalidNumber,
+  });
 
   OtherFeedBackPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -40,9 +41,7 @@ class OtherFeedBackPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((v) {
-      contact.add(v);
-    });
+    contact = OtherFeedBackContact.fromJson(json['contact']);
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
@@ -62,7 +61,7 @@ class OtherFeedBackPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] = contact.map((v) => v.toJson()).toList();
+    data['contact'] = contact.toJson();
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
@@ -78,6 +77,9 @@ class OtherFeedBackPostModel {
 }
 
 class EventAttr {
+  late bool vehicleavailable;
+  late String collectorfeedback;
+  late String actionproposed;
   late String actionDate;
   late String remarks;
   late List<String> imageLocation;
@@ -89,25 +91,34 @@ class EventAttr {
   late double speed;
   late double latitude;
   late double longitude;
-  late double distance;
-  late AgentLocation agentLocation;
+  // late double distance;
+  // late AgentLocation agentLocation;
+  late List? contact;
 
-  EventAttr(
-      {required this.actionDate,
-      this.remarks = '',
-      required this.imageLocation,
-      this.followUpPriority = 'RETRY',
-      this.altitude = 0,
-      this.accuracy = 0,
-      this.altitudeAccuracy = 0,
-      this.heading = 0,
-      this.speed = 0,
-      this.latitude = 0,
-      this.longitude = 0,
-      this.distance = 0,
-      required this.agentLocation});
+  EventAttr({
+    required this.vehicleavailable,
+    required this.actionDate,
+    required this.collectorfeedback,
+    required this.actionproposed,
+    required this.remarks,
+    required this.imageLocation,
+    this.followUpPriority = 'RETRY',
+    required this.altitude,
+    required this.accuracy,
+    required this.altitudeAccuracy,
+    required this.heading,
+    required this.speed,
+    required this.latitude,
+    required this.longitude,
+    // this.distance = 0,
+    // required this.agentLocation,
+    required this.contact,
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
+    vehicleavailable = json['vehicleavailable'];
+    collectorfeedback = json['collectorfeedback'];
+    actionproposed = json['actionproposed'];
     actionDate = json['actionDate'];
     remarks = json['remarks'];
     imageLocation = json['imageLocation'].cast<String>();
@@ -119,12 +130,18 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    distance = json['distance'];
-    agentLocation = AgentLocation.fromJson(json['agentLocation']);
+    // distance = json['distance'];
+    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
+    contact = json['contact'].forEach((v) {
+      contact?.add(v);
+    });
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['vehicleavailable'] = vehicleavailable;
+    data['collectorfeedback'] = collectorfeedback;
+    data['actionproposed'] = actionproposed;
     data['actionDate'] = actionDate;
     data['remarks'] = remarks;
     data['imageLocation'] = imageLocation;
@@ -136,8 +153,9 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['distance'] = distance;
-    data['agentLocation'] = agentLocation.toJson();
+    // data['distance'] = distance;
+    // data['agentLocation'] = agentLocation.toJson();
+    data['contact'] = contact?.map((v) => v.toJson()).toList();
     return data;
   }
 }
@@ -169,17 +187,18 @@ class AgentLocation {
 
 class OtherFeedBackContact {
   late String cType;
-  late String health;
+  late String? health;
   late String value;
   late String resAddressId0;
   late String contactId0;
 
-  OtherFeedBackContact(
-      {this.cType = 'residence address',
-      this.health = '1',
-      this.value = '0',
-      this.resAddressId0 = '',
-      this.contactId0 = ''});
+  OtherFeedBackContact({
+    required this.cType,
+    this.health,
+    required this.value,
+    required this.resAddressId0,
+    required this.contactId0,
+  });
 
   OtherFeedBackContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

@@ -17,6 +17,9 @@ class LanguageHi extends Languages {
   String get userId => 'उपयोगकर्ता नाम';
 
   @override
+  String get userName => 'उपयोगकर्ता नाम';
+
+  @override
   String get rememberMe => 'मुझे याद रखें';
 
   @override
@@ -460,13 +463,13 @@ class LanguageHi extends Languages {
   String get otsPaymentDate => 'ओटीएस भुगतान तिथि*';
 
   @override
-  String get otsPaymentTime => 'ओटीएस भुगतान समय*';
+  String get otsPaymentTime => 'ओटीएस भुगतान समय';
 
   @override
-  String get rtpDenialReason => 'आरटीपी/अस्वीकार कारण*';
+  String get rtpDenialReason => 'आरटीपी/अस्वीकार कारण';
 
   @override
-  String get disputeReason => 'विवाद का कारण*';
+  String get disputeReason => 'विवाद का कारण';
 
   @override
   String get modelMake => 'मॉडल बनाना*';
@@ -648,4 +651,10 @@ class LanguageHi extends Languages {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get customerContactType => 'Customer Contact Type*';
+
+  @override
+  String get contact => 'Contact';
 }

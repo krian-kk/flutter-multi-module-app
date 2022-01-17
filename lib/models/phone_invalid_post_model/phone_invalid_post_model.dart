@@ -11,25 +11,27 @@ class PhoneInvalidPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int? invalidNumber;
+  late bool? invalidNumber;
   late String agentName;
+  late String contractor;
   late String agrRef;
 
   PhoneInvalidPostModel({
-    this.eventId = 0,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventCode,
     required this.eventAttr,
     required this.eventModule,
     required this.contact,
-    this.createdBy = '',
+    required this.createdBy,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'Kaleyra_123',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
+    required this.contractor,
     required this.agrRef,
   });
 
@@ -48,6 +50,7 @@ class PhoneInvalidPostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     agrRef = json['agrRef'];
   }
 
@@ -67,6 +70,7 @@ class PhoneInvalidPostModel {
     data['voiceCallEventCode'] = voiceCallEventCode;
     data['invalidNumber'] = invalidNumber;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['agrRef'] = agrRef;
     return data;
   }
@@ -103,11 +107,12 @@ class PhoneInvalidContact {
   late String contactId0;
   late String health;
 
-  PhoneInvalidContact(
-      {required this.cType,
-      required this.value,
-      this.contactId0 = '',
-      this.health = ''});
+  PhoneInvalidContact({
+    required this.cType,
+    required this.value,
+    this.contactId0 = '',
+    required this.health,
+  });
 
   PhoneInvalidContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

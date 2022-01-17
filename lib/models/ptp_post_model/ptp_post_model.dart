@@ -1,35 +1,37 @@
 class PTPPostModel {
-  late double eventId;
+  late int eventId;
   late String eventType;
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late PTPContact contact;
   late String agrRef;
   late String? callID;
   late String? callingID;
-  late String? callerServiceID;
+  late String callerServiceID;
   late String? voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
 
   PTPPostModel(
-      {this.eventId = 16,
+      {required this.eventId,
       required this.eventType,
       required this.caseId,
       required this.eventCode,
       required this.eventAttr,
       required this.createdBy,
       required this.agentName,
+      required this.contractor,
       required this.eventModule,
       required this.contact,
       required this.agrRef,
       this.callID,
       this.callingID,
-      this.callerServiceID = '',
-      this.voiceCallEventCode = 'TELEVT011',
+      required this.callerServiceID,
+      required this.voiceCallEventCode,
       this.invalidNumber});
 
   PTPPostModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class PTPPostModel {
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     contact = PTPContact.fromJson(json['contact']);
     agrRef = json['agrRef'];
@@ -59,6 +62,7 @@ class PTPPostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
     data['agrRef'] = agrRef;
@@ -96,7 +100,7 @@ class EventAttr {
     required this.ptpAmount,
     required this.reference,
     required this.mode,
-    this.pTPType = 'Money',
+    required this.pTPType,
     required this.followUpPriority,
     this.altitude = 0,
     this.accuracy = 0,
@@ -181,10 +185,10 @@ class PTPContact {
 
   PTPContact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
-      this.resAddressId0 = '',
-      this.contactId0 = ''});
+      required this.resAddressId0,
+      required this.contactId0});
 
   PTPContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];

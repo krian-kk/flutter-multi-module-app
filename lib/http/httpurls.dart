@@ -1,6 +1,7 @@
 class HttpUrl {
   static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
   // static const String baseUrl = 'https://devapi.instalmint.com/';
+  // static const String baseUrl = 'https://origa-dev/';
   static const String version = 'v1/';
   static const String fieldAgent = 'agent/';
 
@@ -11,12 +12,22 @@ class HttpUrl {
       'https://uat-collect.origa.ai/node/api/user/loginWeb';
   static const String agentDetailUrl =
       'https://uat-collect.origa.ai/node/field-allocation/agents/';
+  // Get agent detail for Reset password screen
+  static String resetPasswordCheckUrl(String agentName) =>
+      'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+
+  // static String resetOTP =
+  //     'https://uat-collect.origa.ai/app_otc/public/requestOtp';
 
   //Get API
   static const String dashboardUrl =
       baseUrl + version + fieldAgent + 'profile/dashboard?';
+  static const String telDashboardUrl =
+      baseUrl + version + fieldAgent + 'profile/telDashboard?';
   static const String caseDetailsUrl =
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
+  static const String voiceAgencyDetailsUrl =
+      baseUrl + version + fieldAgent + 'profile/voiceAgencyDetails';
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl +
       version +
@@ -28,8 +39,14 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl =
       baseUrl + version + fieldAgent + 'profile/userDetails';
+  static const String dashboardEventCountUrl =
+      baseUrl + version + fieldAgent + 'profile/dashEventCount';
   static const String callCustomerUrl =
       baseUrl + version + fieldAgent + 'case-details-events/clickToCall';
+  static const String enableCloudTelephony = baseUrl +
+      version +
+      fieldAgent +
+      'case-details-events/enableCloudTelephony';
   static const String mobileInfoUrl =
       baseUrl + version + fieldAgent + 'profile/mobileInfo';
   // Post API ===================================================
@@ -39,6 +56,8 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+  static const String otsPostUrl =
+      baseUrl + version + fieldAgent + 'case-details-events/ots';
   // Other FeedBack Post API
   static String otherFeedBackPostUrl(
           String selectValue, String userTypeValue) =>
@@ -46,21 +65,20 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+  // Contractor detail api for FeedBack page
+  static String contractorDetail =
+      baseUrl + version + fieldAgent + 'case-details-events/contractorDetails';
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
-  // Are You At Office?
-  static String resetPasswordCheckUrl(String agentName) =>
-      'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+
   // baseUrl + version + fieldAgent + '';
-  static String requestOTPUrl() =>
-      baseUrl + version + fieldAgent + 'profile/requestOtp';
+  static String requestOTPUrl() => baseUrl + 'public/requestOtp';
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
-  static String resendOTPUrl() =>
-      baseUrl + version + fieldAgent + 'profile/requestOtp';
-  static String resendPasswordUrl() =>
-      baseUrl + version + fieldAgent + 'profile/resetPassword';
+  static String resendOTPUrl() => baseUrl + 'public/requestOtp';
+  static String resetPasswordUrl() => baseUrl + 'public/resetPassword';
+  static String verifyOTP() => baseUrl + 'public/verifyOtp';
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -152,6 +170,8 @@ class HttpUrl {
 
   static const String dashboardMyVisitsUrl =
       baseUrl + version + fieldAgent + 'case-details/visits?';
+  static const String dashboardMyCallsUrl =
+      baseUrl + version + fieldAgent + 'case-details/myCalls?';
   static const String dashboardMyReceiptsUrl =
       baseUrl + version + fieldAgent + 'case-details/receipts?';
   static const String dashboardMyDeposistsUrl =
@@ -161,7 +181,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/yardingData';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
-  static const String fileUpload = '';
+  // static const String fileUpload = '';
 
   //post API
 

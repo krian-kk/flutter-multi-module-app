@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -28,33 +27,36 @@ class CustomButton extends StatefulWidget {
   final bool isEnabled;
   final double padding;
 
-  CustomButton(this.text,
-      {this.fontWeight = FontWeight.w600,
-      this.leadingWidget = const Expanded(
-        child: SizedBox.shrink(),
-      ),
-      this.trailingWidget = const Expanded(
-        child: SizedBox.shrink(),
-      ),
-      this.font = Font.latoMedium,
-      this.buttonBackgroundColor = ColorResource.colorEA6D48,
-      this.borderColor = ColorResource.colorEA6D48,
-      this.textAlign = TextAlign.left,
-      this.onTap,
-      this.textColor = Colors.white,
-      this.fontSize = FontSize.eighteen,
-      this.isUnderLine = false,
-      this.isLeading = false,
-      this.isTrailing = false,
-      this.isSingleLine = false,
-      this.trailingIconData = Icons.settings,
-      this.cardElevation = 0.0,
-      this.cardShape = 8.0,
-      this.axis = Axis.horizontal,
-      this.alignment = MainAxisAlignment.center,
-      this.maxLines,
-      this.padding = 5.0,
-      this.isEnabled = true});
+  const CustomButton(
+    this.text, {
+    Key? key,
+    this.fontWeight = FontWeight.w600,
+    this.leadingWidget = const Expanded(
+      child: SizedBox.shrink(),
+    ),
+    this.trailingWidget = const Expanded(
+      child: SizedBox.shrink(),
+    ),
+    this.font = Font.latoMedium,
+    this.buttonBackgroundColor = ColorResource.colorEA6D48,
+    this.borderColor = ColorResource.colorEA6D48,
+    this.textAlign = TextAlign.left,
+    this.onTap,
+    this.textColor = Colors.white,
+    this.fontSize = FontSize.eighteen,
+    this.isUnderLine = false,
+    this.isLeading = false,
+    this.isTrailing = false,
+    this.isSingleLine = false,
+    this.trailingIconData = Icons.settings,
+    this.cardElevation = 0.0,
+    this.cardShape = 8.0,
+    this.axis = Axis.horizontal,
+    this.alignment = MainAxisAlignment.center,
+    this.maxLines,
+    this.padding = 5.0,
+    this.isEnabled = true,
+  }) : super(key: key);
 
   @override
   _CustomButtonState createState() => _CustomButtonState();

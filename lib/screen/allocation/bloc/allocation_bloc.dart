@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
-import 'package:origa/models/build_route_model/build_route_model.dart';
+import 'package:origa/models/contractor_detail_model.dart';
+// import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
+import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/string_resource.dart';
@@ -29,15 +33,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   String? agentName;
   String? agrRef;
 
-  BuildRouteModel buildRouteData = BuildRouteModel();
+  // BuildRouteModel buildRouteData = BuildRouteModel();
 
   String selectedDistance = StringResource.all;
 
   // SearchModel searchData = SearchModel();
+  bool areyouatOffice = true;
 
   bool showFilterDistance = false;
   bool isShowSearchPincode = false;
-  bool isNoInternet = false;
+
+  // it's manage the Refresh the page basaed on Internet connection
+  bool isNoInternetAndServerError = false;
+  String? isNoInternetAndServerErrorMsg = '';
 
   int? messageCount = 0;
   bool isMessageThere = false;
@@ -46,7 +54,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // There is next page or not
   bool hasNextPage = true;
-  // Show autocalling
+  // Show Telecaller Autocalling
   bool isAutoCalling = false;
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
@@ -68,7 +76,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // AllocationListModel searchResultData = AllocationListModel();
   List starCount = [];
+  List priorityCaseAddressList = [];
   List<Result> resultList = [];
+  ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
@@ -82,6 +92,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       agrRef = _pref.getString(Constants.agentRef);
       isShowSearchPincode = false;
 
+      // check in office location capture or not
+      areyouatOffice = _pref.getBool('areyouatOffice') ?? true;
+
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
@@ -92,10 +105,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         selectOptions = [
           StringResource.priority,
-          StringResource.autoCalling,
+          // StringResource.autoCalling,
         ];
+        areyouatOffice = false;
       }
 
+      // static Autocalling Values
       mobileNumberList.addAll([
         AutoCallingModel(
           mobileNumber: '9876321230',
@@ -110,10 +125,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        isNoInternet = true;
+        isNoInternetAndServerError = true;
+        isNoInternetAndServerErrorMsg =
+            Languages.of(event.context)!.noInternetConnection;
         yield NoInternetConnectionState();
       } else {
-        isNoInternet = false;
+        isNoInternetAndServerError = false;
 
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -126,15 +143,65 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         resultList.clear();
         starCount.clear();
 
-        for (var element in priorityListData['data']['result']) {
-          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-              true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+        if (priorityListData['success']) {
+          for (var element in priorityListData['data']['result']) {
+            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+                true) {
+              starCount.add(
+                  Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            }
+
+            // Here add the address its used for make view map show the mark for case location
+            if (userType == Constants.fieldagent) {
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .address![0]
+                      .cType ==
+                  "residence address") {
+                // And here checked for already addres added or not
+                if (priorityCaseAddressList.contains(
+                    Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .address![0]
+                        .value)) {
+                  print("already added");
+                } else {
+                  print("newly added");
+                  priorityCaseAddressList.add(
+                      Result.fromJson(jsonDecode(jsonEncode(element)))
+                          .address![0]
+                          .value
+                      // ?.splitMapJoin(' ')
+                      );
+                }
+              }
+            }
+            // print("priorityCaseAddressList--------------");
+            // print(priorityCaseAddressList);
           }
+        } else if (priorityListData['statusCode'] == 401 ||
+            priorityListData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          isNoInternetAndServerErrorMsg = priorityListData['data'];
+          print('------Api not working----------');
+          print(priorityListData['data']);
+        }
+
+        Map<String, dynamic> getContractorDetails =
+            await APIRepository.apiRequest(
+                APIRequestType.GET, HttpUrl.contractorDetail);
+        if (getContractorDetails[Constants.success] == true) {
+          Map<String, dynamic> jsonData = getContractorDetails['data'];
+          Singleton.instance.cloudTelephony =
+              jsonData['result']['cloudTelephony'] ?? false;
+          Singleton.instance.feedbackTemplate =
+              ContractorDetailsModel.fromJson(jsonData);
+          // contractorDetailsValue = ContractorDetailsModel.fromJson(jsonData);
+        } else {
+          AppUtils.showToast(getContractorDetails['data'] ?? '');
+          // AppUtils.showToast(getContractorDetails['data']);
         }
       }
+
       yield AllocationLoadedState(successResponse: resultList);
     }
 
@@ -166,8 +233,32 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             starCount.add(
                 Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
           }
+          //Tap again priority so, Here add the address its used for make view map show the mark for case location
+          if (userType == Constants.fieldagent) {
+            if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                    .address![0]
+                    .cType ==
+                "residence address") {
+              // And here checked for already addres added or not
+              if (priorityCaseAddressList.contains(
+                  Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .address![0]
+                      .value)) {
+                print("already added");
+              } else {
+                print("newly added");
+                priorityCaseAddressList.add(
+                    Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .address![0]
+                        .value);
+              }
+            }
+          }
+          // print("priorityCaseAddressList--------------");
+          // print(priorityCaseAddressList);
         }
       }
+
       yield TapPriorityState(successResponse: resultList);
     }
 
@@ -188,6 +279,29 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
                   .starredCase as List);
             }
+            //Load more priority list so, Here add the address its used for make view map show the mark for case location
+            if (userType == Constants.fieldagent) {
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .address![0]
+                      .cType ==
+                  "residence address") {
+                // And here checked for already addres added or not
+                if (priorityCaseAddressList.contains(
+                    Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .address![0]
+                        .value)) {
+                  print("already added");
+                } else {
+                  print("newly added");
+                  priorityCaseAddressList.add(
+                      Result.fromJson(jsonDecode(jsonEncode(element)))
+                          .address![0]
+                          .value);
+                }
+              }
+            }
+            // print("priorityCaseAddressList--------------");
+            // print(priorityCaseAddressList.length);
           }
           hasNextPage = false;
         }
@@ -256,18 +370,74 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getSearchResultData =
-            await APIRepository.apiRequest(
-                APIRequestType.GET,
-                HttpUrl.searchUrl +
-                    "starredOnly=${event.returnValue.isStarCases}&" +
-                    "recentActivity=${event.returnValue.isMyRecentActivity}&" +
-                    "accNo=${event.returnValue.accountNumber}&" +
-                    "cust=${event.returnValue.customerName}&" +
-                    "dpdStr=${event.returnValue.dpdBucket}&" +
-                    "customerId=${event.returnValue.customerID}&" +
-                    "pincode=${event.returnValue.pincode}&" +
-                    "collSubStatus=${event.returnValue.status}");
+        String? starVal;
+        String? recentVal;
+        var data = event.returnValue as SearchingDataModel;
+        if (data.isStarCases!) {
+          starVal = "starredOnly=${data.isStarCases}&";
+        }
+        if (data.isMyRecentActivity!) {
+          recentVal = "recentActivity=${data.isMyRecentActivity}&";
+        }
+        Map<String, dynamic> getSearchResultData;
+        if (data.isStarCases! && data.isMyRecentActivity!) {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.GET,
+              HttpUrl.searchUrl +
+                  "starredOnly=${data.isStarCases}&" +
+                  "recentActivity=${data.isMyRecentActivity}&" +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        } else if (data.isStarCases!) {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.GET,
+              HttpUrl.searchUrl +
+                  "starredOnly=${data.isStarCases}&" +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        } else if (data.isMyRecentActivity!) {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.GET,
+              HttpUrl.searchUrl +
+                  "recentActivity=${data.isMyRecentActivity}&" +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        } else {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.GET,
+              HttpUrl.searchUrl +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        }
+
+        // Map<String, dynamic> getSearchResultData =
+        //     await APIRepository.apiRequest(
+        //         APIRequestType.GET,
+        //         HttpUrl.searchUrl +
+        //             "starredOnly=${data.isStarCases}&" +
+        //             "recentActivity=${data.isMyRecentActivity}&" +
+        //             "accNo=${data.accountNumber}&" +
+        //             "cust=${data.customerName}&" +
+        //             "dpdStr=${data.dpdBucket}&" +
+        //             "customerId=${data.customerID}&" +
+        //             "pincode=${data.pincode}&" +
+        //             "collSubStatus=${data.status}");
 
         resultList.clear();
         starCount.clear();

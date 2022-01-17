@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   late FocusNode username;
-  late FocusNode passwords;
+  FocusNode passwords = FocusNode();
   bool _obscureText = true;
   bool _isChecked = false;
   // String? userType;
@@ -95,150 +96,168 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: ColorResource.colorF8F9FB,
-            body: SingleChildScrollView(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        SvgPicture.asset(ImageResource.origa),
-                        const SizedBox(
-                          height: 17,
-                        ),
-                        SvgPicture.asset(ImageResource.login),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomTextField(
-                          Languages.of(context)!.userId,
-                          userId,
-                          isFill: true,
-                          isBorder: true,
-                          isLabel: true,
-                          keyBoardType: TextInputType.emailAddress,
-                          errorborderColor: ColorResource.color23375A,
-                          borderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
-                          focusNode: username,
-                          onEditing: () {
-                            username.unfocus();
-                            _formKey.currentState!.validate();
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // onChange: (){
-                          //    _formKey.currentState!.validate();
-                          // },
-                          validatorCallBack: (bool values) {},
-                        ),
-                        const SizedBox(
-                          height: 23,
-                        ),
-                        CustomTextField(
-                          Languages.of(context)!.password,
-                          password,
-                          obscureText: _obscureText,
-                          isFill: true,
-                          isBorder: true,
-                          isLabel: true,
-                          borderColor: ColorResource.color23375A,
-                          errorborderColor: ColorResource.color23375A,
-                          validationRules: const ['required'],
-                          focusNode: passwords,
-                          onEditing: () {
-                            passwords.unfocus();
-                            _formKey.currentState!.validate();
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // onChange: (){
-                          //    _formKey.currentState!.validate();
-                          // },
-                          validatorCallBack: (bool values) {},
-                          suffixWidget: InkWell(
-                            onTap: _passwordVisibleOrNot,
-                            child: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+            body: KeyboardActions(
+              config: KeyboardActionsConfig(
+                keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                actions: [
+                  KeyboardActionsItem(
+                    focusNode: passwords,
+                    displayArrows: false,
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 35,
+                          ),
+                          SvgPicture.asset(ImageResource.origa),
+                          const SizedBox(
+                            height: 17,
+                          ),
+                          SvgPicture.asset(ImageResource.login),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomTextField(
+                            Languages.of(context)!.userId,
+                            userId,
+                            isFill: true,
+                            isBorder: true,
+                            isLabel: true,
+                            keyBoardType: TextInputType.emailAddress,
+                            errorborderColor: ColorResource.color23375A,
+                            borderColor: ColorResource.color23375A,
+                            validationRules: const ['required'],
+                            focusNode: username,
+                            onEditing: () {
+                              username.unfocus();
+                              _formKey.currentState!.validate();
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            // onChange: (){
+                            //    _formKey.currentState!.validate();
+                            // },
+                            validatorCallBack: (bool values) {},
+                          ),
+                          const SizedBox(
+                            height: 23,
+                          ),
+                          CustomTextField(
+                            Languages.of(context)!.password,
+                            password,
+                            obscureText: _obscureText,
+                            isFill: true,
+                            isBorder: true,
+                            isLabel: true,
+                            borderColor: ColorResource.color23375A,
+                            errorborderColor: ColorResource.color23375A,
+                            validationRules: const ['required'],
+                            focusNode: passwords,
+                            onEditing: () {
+                              passwords.unfocus();
+                              _formKey.currentState!.validate();
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            // onChange: (){
+                            //    _formKey.currentState!.validate();
+                            // },
+                            validatorCallBack: (bool values) {},
+                            suffixWidget: InkWell(
+                              onTap: _passwordVisibleOrNot,
+                              child: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: ColorResource.color23375A,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Checkbox(
+                                  value: _isChecked,
+                                  activeColor: ColorResource.color23375A,
+                                  onChanged: (bool? newValue) {
+                                    final bool isValid =
+                                        _formKey.currentState!.validate();
+                                    if (!isValid) {
+                                      return;
+                                    } else {
+                                      _handleRemeberme(newValue!);
+                                    }
+                                  }),
+                              CustomText(
+                                Languages.of(context)!.rememberMe,
+                                color: ColorResource.color23375A,
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              onEnd: () => setState(() {
+                                    bloc.isAnimating = !bloc.isAnimating;
+                                  }),
+                              width: bloc.isSubmit
+                                  ? MediaQuery.of(context).size.width
+                                  : 90,
+                              height: 55,
+                              child: bloc.isAnimating || bloc.isSubmit
+                                  ? loginButton()
+                                  : circularLoading(bloc.isLoaded)),
+                          const SizedBox(
+                            height: 17,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              bloc.add(ResendOTPEvent());
+                            },
+                            child: const CustomText(
+                              Constants.resetPassword,
+                              fontSize: FontSize.sixteen,
+                              fontWeight: FontWeight.w600,
                               color: ColorResource.color23375A,
                             ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Checkbox(
-                                value: _isChecked,
-                                activeColor: ColorResource.color23375A,
-                                onChanged: (bool? newValue) {
-                                  final bool isValid =
-                                      _formKey.currentState!.validate();
-                                  if (!isValid) {
-                                    return;
-                                  } else {
-                                    _handleRemeberme(newValue!);
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          CustomButton(
+                            StringResource.loginViaDifferentUser,
+                            onTap: bloc.isSubmit
+                                ? () {
+                                    setState(() {
+                                      userId.clear();
+                                      password.clear();
+                                      _isChecked = false;
+                                      // signin submit button activities
+                                    });
                                   }
-                                }),
-                            CustomText(
-                              Languages.of(context)!.rememberMe,
-                              color: ColorResource.color23375A,
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            onEnd: () => setState(() {
-                                  bloc.isAnimating = !bloc.isAnimating;
-                                }),
-                            width: bloc.isSubmit
-                                ? MediaQuery.of(context).size.width
-                                : 70,
-                            height: 55,
-                            child: bloc.isAnimating || bloc.isSubmit
-                                ? loginButton()
-                                : circularLoading(bloc.isLoaded)),
-                        const SizedBox(
-                          height: 17,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            bloc.add(ResendOTPEvent());
-                          },
-                          child: const CustomText(
-                            Constants.resetPassword,
+                                : () {
+                                    AppUtils.showToast("Please wait..");
+                                  },
+                            borderColor: ColorResource.color23375A,
+                            cardShape: 85,
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
-                            color: ColorResource.color23375A,
+                            textColor: ColorResource.color23375A,
+                            buttonBackgroundColor: ColorResource.colorffffff,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        CustomButton(
-                          StringResource.loginViaDifferentUser,
-                          onTap: () {
-                            setState(() {
-                              userId.clear();
-                              password.clear();
-                              _isChecked = false;
-                            });
-                          },
-                          borderColor: ColorResource.color23375A,
-                          cardShape: 85,
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
-                          textColor: ColorResource.color23375A,
-                          buttonBackgroundColor: ColorResource.colorffffff,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -281,6 +300,8 @@ class _LoginScreenState extends State<LoginScreen> {
           "agentRef": userId.text,
           "password": password.text
         };
+
+        print('Param Value =================== > ${params}');
 
         bloc.add(SignInEvent(paramValue: params, userId: userId.text));
       }

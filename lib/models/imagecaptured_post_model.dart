@@ -1,8 +1,10 @@
+import 'dart:io';
+
 class PostImageCapturedModel {
   late int eventId;
   late String eventType;
   late String caseId;
-  late String? eventCode;
+  late String eventCode;
   late EventAttr eventAttr;
   late String createdBy;
   late String eventModule;
@@ -10,25 +12,29 @@ class PostImageCapturedModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late int? invalidNumber;
+  late bool? invalidNumber;
   late String agentName;
+  late String contractor;
   late String agrRef;
+  // List<dynamic>? files;
 
   PostImageCapturedModel({
-    this.eventId = 22,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
-    this.eventCode = "TELEVT015",
+    required this.eventCode,
     required this.eventAttr,
     required this.createdBy,
     required this.eventModule,
     this.callID,
     this.callingID,
-    this.callerServiceID = "e",
-    this.voiceCallEventCode = "TELEVT011",
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agentName,
+    required this.contractor,
     required this.agrRef,
+    // required this.files,
   });
 
   PostImageCapturedModel.fromJson(Map<String, dynamic> json) {
@@ -47,7 +53,9 @@ class PostImageCapturedModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     agrRef = json['agrRef'];
+    // files = json['files'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,7 +73,9 @@ class PostImageCapturedModel {
     data['voiceCallEventCode'] = voiceCallEventCode;
     data['invalidNumber'] = invalidNumber;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['agrRef'] = agrRef;
+    // data['files'] = files;
     return data;
   }
 }

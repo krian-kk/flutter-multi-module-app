@@ -32,7 +32,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  String version = "";
   late DashboardBloc bloc;
 
   @override
@@ -49,626 +48,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //   });
   // }
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return BlocListener<DashboardBloc, DashboardState>(
-        bloc: bloc,
-        listener: (BuildContext context, DashboardState state) async {
-          if (state is SetTimeperiodValueState) {
-            bloc.selectedFilter = 'TODAY';
-          }
-
-          if (state is PostDataApiSuccessState) {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            Navigator.pop(context);
-          }
-
-          if (state is NoInternetConnectionState) {
-            AppUtils.noInternetSnackbar(context);
-          }
-
-          if (state is PriorityFollowState) {
-            priorityFollowUpSheet(context);
-          }
-
-          if (state is UntouchedCasesState) {
-            untouchedCasesSheet(context);
-          }
-
-          if (state is BrokenPTPState) {
-            brokenPTPSheet(context);
-          }
-
-          if (state is MyReceiptsState) {
-            myReceiptsSheet(context);
-          }
-
-          if (state is MyVisitsState) {
-            myVisitsSheet(context);
-          }
-
-          if (state is MyDeposistsState) {
-            myDeposistsSheet(context);
-          }
-
-          if (state is YardingAndSelfReleaseState) {
-            yardingSelfReleaseSheet(context);
-          }
-
-          if (state is NavigateCaseDetailState) {
-            Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                arguments: state.paramValues);
-          }
-
-          if (state is NavigateSearchState) {
-            final dynamic returnValue =
-                await Navigator.pushNamed(context, AppRoutes.searchScreen);
-            if (returnValue != null) {
-              bloc.add(SearchReturnDataEvent(returnValue: returnValue));
-            }
-          }
-        },
-        child: BlocBuilder<DashboardBloc, DashboardState>(
-            bloc: bloc,
-            builder: (BuildContext context, DashboardState state) {
-              if (state is DashboardLoadingState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Scaffold(
-                  backgroundColor: ColorResource.colorF7F8FA,
-                  body: SafeArea(
-                      bottom: false,
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 13),
-                                child: CustomText(
-                                  bloc.todayDate ?? '',
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorResource.color23375A,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(7.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 4,
-                                        child: Container(
-                                          child: userActivity(
-                                            header: bloc.userType ==
-                                                    Constants.fieldagent
-                                                ? Languages.of(context)!
-                                                    .customerMet
-                                                : Languages.of(context)!
-                                                    .connected
-                                                    .trim(),
-                                            count: '0',
-                                            backgrountColor:
-                                                ColorResource.colorE0ECDF,
-                                            leadingColor:
-                                                ColorResource.color73C170,
-                                          ),
-                                        )),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                        flex: 5,
-                                        child: Container(
-                                          child: userActivity(
-                                            header: bloc.userType ==
-                                                    Constants.fieldagent
-                                                ? Languages.of(context)!
-                                                    .customerNotMet
-                                                : Languages.of(context)!
-                                                    .unreachable
-                                                    .trim(),
-                                            count: '0',
-                                            backgrountColor:
-                                                ColorResource.colorF2EEDC,
-                                            leadingColor:
-                                                ColorResource.colorE5C55B,
-                                          ),
-                                        )),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                        flex: 3,
-                                        child: Container(
-                                          child: userActivity(
-                                            header: Languages.of(context)!
-                                                .invalid
-                                                .trim(),
-                                            count: '0',
-                                            backgrountColor:
-                                                ColorResource.colorF4ECEF,
-                                            leadingColor:
-                                                ColorResource.colorF1BCC4,
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              // userActivity(
-                              //   StringResource.customerMet,
-                              //   '20',
-                              //   ColorResource.colorBEC4CF,
-                              //   ColorResource.color73C170,
-                              // ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 7),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      Languages.of(context)!
-                                          .mtdResolutionProgress,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color23375A,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    CustomText(
-                                      Languages.of(context)!
-                                          .customer
-                                          .toUpperCase(),
-                                      color: ColorResource.color23375A,
-                                      fontSize: FontSize.ten,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    LinearPercentIndicator(
-                                      // width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.all(4),
-                                      animation: true,
-                                      lineHeight: 12.0,
-                                      animationDuration: 2500,
-                                      // Result must change
-                                      // percent: (bloc.mtdCaseCompleted!/bloc.mtdCaseTotal!),
-                                      percent: (3 / 5),
-                                      // center: Text("80.0%"),
-                                      linearStrokeCap: LinearStrokeCap.roundAll,
-                                      progressColor: ColorResource.colorEA6D48,
-                                      backgroundColor:
-                                          ColorResource.colorD3D7DE,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CustomText(
-                                          bloc.mtdCaseCompleted.toString(),
-                                          fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color23375A,
-                                        ),
-                                        CustomText(
-                                          bloc.mtdCaseTotal.toString(),
-                                          fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color23375A,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 7),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      Languages.of(context)!
-                                          .amount
-                                          .toUpperCase(),
-                                      color: ColorResource.color23375A,
-                                      fontSize: FontSize.ten,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    LinearPercentIndicator(
-                                      // width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.all(4),
-                                      animation: true,
-                                      lineHeight: 12.0,
-                                      animationDuration: 2500,
-                                      // percent: (bloc.mtdAmountCompleted! /
-                                      //     bloc.mtdAmountTotal!),
-                                      percent: (5 / 10),
-                                      // center: Text("80.0%"),
-                                      linearStrokeCap: LinearStrokeCap.roundAll,
-                                      progressColor: ColorResource.colorEA6D48,
-                                      backgroundColor:
-                                          ColorResource.colorD3D7DE,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CustomText(
-                                          Constants.inr +
-                                              bloc.mtdAmountCompleted
-                                                  .toString(),
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color23375A,
-                                        ),
-                                        CustomText(
-                                          Constants.inr +
-                                              bloc.mtdAmountTotal.toString(),
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color23375A,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              StaggeredGridView.countBuilder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisCount: 4,
-                                itemCount: bloc.dashboardList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(2.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        switch (index) {
-                                          case 0:
-                                            bloc.add(PriorityFollowEvent());
-                                            break;
-                                          case 1:
-                                            bloc.add(UntouchedCasesEvent());
-                                            break;
-                                          case 2:
-                                            bloc.add(BrokenPTPEvent());
-                                            break;
-                                          case 3:
-                                            bloc.add(MyReceiptsEvent());
-                                            break;
-                                          case 4:
-                                            bloc.add(MyVisitsEvent());
-                                            break;
-                                          case 5:
-                                            bloc.add(MyDeposistsEvent());
-                                            break;
-                                          case 6:
-                                            bloc.add(
-                                                YardingAndSelfReleaseEvent());
-                                            break;
-                                          default:
-                                          // AppUtils.showToast('');
-                                        }
-                                      },
-                                      child: index == 5
-                                          ? bloc.userType! ==
-                                                  Constants.fieldagent
-                                              ? Card(
-                                                  elevation: 0,
-                                                  color:
-                                                      ColorResource.colorD3D7DE,
-                                                  shape: RoundedRectangleBorder(
-                                                    side: const BorderSide(
-                                                        color: ColorResource
-                                                            .colorD3D7DE,
-                                                        width: 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            75),
-                                                  ),
-                                                  child: Center(
-                                                    child: CustomText(
-                                                      bloc.dashboardList[index]
-                                                          .title!,
-                                                      fontSize: FontSize.twelve,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: ColorResource
-                                                          .color23375A,
-                                                    ),
-                                                  ),
-                                                )
-                                              : const SizedBox()
-                                          : index == 6
-                                              ? bloc.userType! ==
-                                                      Constants.fieldagent
-                                                  ? Card(
-                                                      elevation: 0,
-                                                      color: ColorResource
-                                                          .colorffffff,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        side: const BorderSide(
-                                                            color: ColorResource
-                                                                .color23375A,
-                                                            width: 0.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(75),
-                                                      ),
-                                                      child: Center(
-                                                        child: CustomText(
-                                                          bloc
-                                                              .dashboardList[
-                                                                  index]
-                                                              .title!,
-                                                          fontSize:
-                                                              FontSize.twelve,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: ColorResource
-                                                              .color23375A,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : const SizedBox()
-                                              : index == 6
-                                                  ? bloc.userType ==
-                                                          Constants.fieldagent
-                                                      ? Card(
-                                                          elevation: 0,
-                                                          color: ColorResource
-                                                              .colorffffff,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side: const BorderSide(
-                                                                color: ColorResource
-                                                                    .color23375A,
-                                                                width: 0.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        75),
-                                                          ),
-                                                          child: Center(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      10),
-                                                              child: CustomText(
-                                                                bloc
-                                                                    .dashboardList[
-                                                                        index]
-                                                                    .title!,
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .twelve,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color: ColorResource
-                                                                    .color23375A,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : const SizedBox()
-                                                  : Card(
-                                                      elevation: 2,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        // ignore: prefer_const_constructors
-                                                        side: BorderSide(
-                                                            color: ColorResource
-                                                                .colorDADADA,
-                                                            width: 0.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                8, 5, 8, 5),
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                SizedBox(
-                                                                    // height: 40,
-                                                                    width: 105,
-                                                                    // color: ColorResource.color101010,
-                                                                    child:
-                                                                        CustomText(
-                                                                      bloc
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .title!,
-                                                                      fontSize:
-                                                                          FontSize
-                                                                              .twelve,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      color: ColorResource
-                                                                          .color23375A,
-                                                                    )),
-                                                                if (bloc
-                                                                        .dashboardList[
-                                                                            index]
-                                                                        .image! !=
-                                                                    '')
-                                                                  SvgPicture.asset(bloc
-                                                                      .dashboardList[
-                                                                          index]
-                                                                      .image!),
-                                                              ],
-                                                            ),
-                                                            // const SizedBox(height: 4,),
-                                                            const Spacer(),
-                                                            Row(
-                                                              children: [
-                                                                CustomText(
-                                                                  bloc
-                                                                      .dashboardList[
-                                                                          index]
-                                                                      .count!,
-                                                                  fontSize: FontSize
-                                                                      .fourteen,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  color: ColorResource
-                                                                      .color23375A,
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 6,
-                                                                ),
-                                                                CustomText(
-                                                                  Languages.of(
-                                                                          context)!
-                                                                      .customer,
-                                                                  fontSize: FontSize
-                                                                      .fourteen,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: ColorResource
-                                                                      .color23375A,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 3,
-                                                            ),
-                                                            CustomText(
-                                                              Constants.inr +
-                                                                  double.parse(bloc
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .amountRs!)
-                                                                      .toStringAsFixed(
-                                                                          2),
-                                                              fontSize: FontSize
-                                                                  .sixteen,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              color: ColorResource
-                                                                  .color23375A,
-                                                              isSingleLine:
-                                                                  true,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                    ),
-                                  );
-                                },
-                                staggeredTileBuilder: (int index) =>
-                                    StaggeredTile.count(
-                                        2,
-                                        index == 5
-                                            ? 0.6
-                                            : index == 6
-                                                ? 0.7
-                                                : 1.3),
-                                mainAxisSpacing: 4.0,
-                                crossAxisSpacing: 4.0,
-                              ),
-                              // const SizedBox(height: 5),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: CustomButton(
-                                  Languages.of(context)!.help.toUpperCase(),
-                                  fontSize: FontSize.sixteen,
-                                  fontWeight: FontWeight.bold,
-                                  textColor: ColorResource.color23375A,
-                                  buttonBackgroundColor:
-                                      ColorResource.colorBEC4CF,
-                                  borderColor: ColorResource.colorBEC4CF,
-                                  cardElevation: 0,
-                                  cardShape: 75,
-                                  isLeading: true,
-                                  onTap: () {
-                                    AppUtils.showToast(
-                                        Languages.of(context)!.help);
-                                  },
-                                  trailingWidget: Row(
-                                    children: [
-                                      SvgPicture.asset(ImageResource.help),
-                                      const SizedBox(
-                                        width: 7,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )));
-            }));
-  }
-
   Widget userActivity(
       {String? header,
       String? count,
       Color? backgrountColor,
       required Color leadingColor}) {
     return Container(
-      height: 55,
-      width: 125,
+      // width: 120,
+      height: 60,
       decoration: BoxDecoration(
           color: backgrountColor, borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
           Container(
-            width: 6,
+            width: 5,
             decoration: BoxDecoration(
               color: leadingColor,
               borderRadius: const BorderRadius.only(
@@ -679,19 +72,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Expanded(
               child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 7),
+            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
                   header!,
                   color: ColorResource.color23375A,
-                  fontSize: FontSize.twelve,
+                  fontSize: 10.5,
                   fontWeight: FontWeight.w700,
+                  lineHeight: 1.0,
                 ),
+                // const Spacer(),
                 CustomText(
-                  count!,
+                  count ?? '0',
                   color: ColorResource.color23375A,
                   fontSize: FontSize.sixteen,
                   fontWeight: FontWeight.w700,
@@ -779,5 +175,674 @@ class _DashboardScreenState extends State<DashboardScreen> {
               bottom: false,
               child: YardingAndSelfRelease(bloc));
         });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    return BlocListener<DashboardBloc, DashboardState>(
+        bloc: bloc,
+        listener: (BuildContext context, DashboardState state) async {
+          if (state is SetTimeperiodValueState) {
+            bloc.selectedFilter = 'TODAY';
+          }
+
+          if (state is PostDataApiSuccessState) {
+            Navigator.pop(context);
+            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+          }
+
+          if (state is NoInternetConnectionState) {
+            AppUtils.noInternetSnackbar(context);
+          }
+
+          if (state is PriorityFollowState) {
+            priorityFollowUpSheet(context);
+          }
+
+          if (state is UntouchedCasesState) {
+            untouchedCasesSheet(context);
+          }
+
+          if (state is BrokenPTPState) {
+            brokenPTPSheet(context);
+          }
+
+          if (state is MyReceiptsState) {
+            myReceiptsSheet(context);
+          }
+
+          if (state is MyVisitsState) {
+            myVisitsSheet(context);
+          }
+
+          if (state is MyDeposistsState) {
+            myDeposistsSheet(context);
+          }
+
+          if (state is YardingAndSelfReleaseState) {
+            yardingSelfReleaseSheet(context);
+          }
+
+          if (state is NavigateCaseDetailState) {
+            Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+                arguments: state.paramValues);
+          }
+
+          if (state is NavigateSearchState) {
+            final dynamic returnValue =
+                await Navigator.pushNamed(context, AppRoutes.searchScreen);
+            if (returnValue != null) {
+              bloc.add(SearchReturnDataEvent(returnValue: returnValue));
+            }
+          }
+        },
+        child: BlocBuilder<DashboardBloc, DashboardState>(
+            bloc: bloc,
+            builder: (BuildContext context, DashboardState state) {
+              print("refressehed ============>");
+              if (state is DashboardLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return bloc.isNoInternetAndServerError
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomText(bloc.noInternetAndServerErrorMsg!),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                bloc.add(DashboardInitialEvent(context));
+                              },
+                              icon: const Icon(Icons.refresh)),
+                        ],
+                      ),
+                    )
+                  : Scaffold(
+                      backgroundColor: ColorResource.colorF7F8FA,
+                      body: SafeArea(
+                          bottom: false,
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 13),
+                                    child: CustomText(
+                                      bloc.todayDate ?? '',
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w700,
+                                      color: ColorResource.color23375A,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 3,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(7.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: userActivity(
+                                            header: bloc.userType ==
+                                                    Constants.fieldagent
+                                                ? Languages.of(context)!
+                                                    .customerMet
+                                                : Languages.of(context)!
+                                                    .connected
+                                                    .trim(),
+                                            count: bloc.dashboardCardCounts
+                                                .result?.met!.count
+                                                .toString(),
+                                            backgrountColor:
+                                                ColorResource.colorE0ECDF,
+                                            leadingColor:
+                                                ColorResource.color73C170,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: userActivity(
+                                            header: bloc.userType ==
+                                                    Constants.fieldagent
+                                                ? Languages.of(context)!
+                                                    .customerNotMet
+                                                : Languages.of(context)!
+                                                    .unreachable
+                                                    .trim(),
+                                            count: bloc.dashboardCardCounts
+                                                .result?.notMet!.count
+                                                .toString(),
+                                            backgrountColor:
+                                                ColorResource.colorF2EEDC,
+                                            leadingColor:
+                                                ColorResource.colorE5C55B,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: userActivity(
+                                            header: Languages.of(context)!
+                                                .invalid
+                                                .trim(),
+                                            count: bloc.dashboardCardCounts
+                                                .result?.invalid!.count
+                                                .toString(),
+                                            backgrountColor:
+                                                ColorResource.colorF4ECEF,
+                                            leadingColor:
+                                                ColorResource.colorF1BCC4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // userActivity(
+                                  //   StringResource.customerMet,
+                                  //   '20',
+                                  //   ColorResource.colorBEC4CF,
+                                  //   ColorResource.color73C170,
+                                  // ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!
+                                              .mtdResolutionProgress,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color23375A,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        CustomText(
+                                          Languages.of(context)!
+                                              .customer
+                                              .toUpperCase(),
+                                          color: ColorResource.color23375A,
+                                          fontSize: FontSize.ten,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        LinearPercentIndicator(
+                                          // width: MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.all(4),
+                                          animation: true,
+                                          addAutomaticKeepAlive: false,
+                                          lineHeight: 12.0,
+                                          animationDuration: 2500,
+                                          // Result must change
+                                          // percent: (bloc.mtdCaseCompleted!/bloc.mtdCaseTotal!),
+                                          percent: (bloc.mtdCaseCompleted! ==
+                                                      0 &&
+                                                  bloc.mtdCaseTotal! == 0)
+                                              ? 0.0
+                                              : (bloc.mtdCaseCompleted! <=
+                                                      bloc.mtdCaseTotal!)
+                                                  ? (bloc.mtdCaseCompleted! /
+                                                      bloc.mtdCaseTotal!)
+                                                  : 0.0,
+                                          // center: Text("80.0%"),
+                                          linearStrokeCap:
+                                              LinearStrokeCap.roundAll,
+                                          progressColor:
+                                              ColorResource.colorEA6D48,
+                                          backgroundColor:
+                                              ColorResource.colorD3D7DE,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CustomText(
+                                              bloc.mtdCaseCompleted.toString(),
+                                              fontSize: FontSize.sixteen,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            ),
+                                            CustomText(
+                                              bloc.mtdCaseTotal.toString(),
+                                              fontSize: FontSize.sixteen,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!
+                                              .amount
+                                              .toUpperCase(),
+                                          color: ColorResource.color23375A,
+                                          fontSize: FontSize.ten,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        LinearPercentIndicator(
+                                          // width: MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.all(4),
+                                          addAutomaticKeepAlive: false,
+                                          animation: true,
+                                          lineHeight: 12.0,
+                                          animationDuration: 2500,
+                                          // percent: (bloc.mtdAmountCompleted! / bloc.mtdAmountTotal!),
+                                          percent: (bloc.mtdAmountCompleted! ==
+                                                      0 &&
+                                                  bloc.mtdAmountTotal! == 0)
+                                              ? 0.0
+                                              : (bloc.mtdAmountCompleted! <=
+                                                      bloc.mtdAmountTotal!)
+                                                  ? (bloc.mtdAmountCompleted! /
+                                                      bloc.mtdAmountTotal!)
+                                                  : 0.0,
+                                          // center: Text("80.0%"),
+                                          linearStrokeCap:
+                                              LinearStrokeCap.roundAll,
+                                          progressColor:
+                                              ColorResource.colorEA6D48,
+                                          backgroundColor:
+                                              ColorResource.colorD3D7DE,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CustomText(
+                                              Constants.inr +
+                                                  bloc.mtdAmountCompleted
+                                                      .toString(),
+                                              fontSize: FontSize.twelve,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            ),
+                                            CustomText(
+                                              Constants.inr +
+                                                  bloc.mtdAmountTotal
+                                                      .toString(),
+                                              fontSize: FontSize.twelve,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  StaggeredGridView.countBuilder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    crossAxisCount: 4,
+                                    itemCount: bloc.dashboardList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            switch (index) {
+                                              case 0:
+                                                bloc.add(PriorityFollowEvent());
+                                                break;
+                                              case 1:
+                                                bloc.add(UntouchedCasesEvent());
+                                                break;
+                                              case 2:
+                                                bloc.add(BrokenPTPEvent());
+                                                break;
+                                              case 3:
+                                                bloc.add(
+                                                    SetTimeperiodValueEvent());
+                                                bloc.add(MyReceiptsEvent());
+                                                break;
+                                              case 4:
+                                                bloc.add(
+                                                    SetTimeperiodValueEvent());
+                                                bloc.add(MyVisitsEvent());
+                                                break;
+                                              case 5:
+                                                bloc.add(
+                                                    SetTimeperiodValueEvent());
+                                                bloc.add(MyDeposistsEvent());
+                                                break;
+                                              case 6:
+                                                bloc.add(
+                                                    YardingAndSelfReleaseEvent());
+                                                break;
+                                              default:
+                                              // AppUtils.showToast('');
+                                            }
+                                          },
+                                          child: index == 5
+                                              ? bloc.userType! ==
+                                                      Constants.fieldagent
+                                                  ? Card(
+                                                      elevation: 0,
+                                                      color: ColorResource
+                                                          .colorD3D7DE,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        side: const BorderSide(
+                                                            color: ColorResource
+                                                                .colorD3D7DE,
+                                                            width: 1),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(75),
+                                                      ),
+                                                      child: Center(
+                                                        child: CustomText(
+                                                          bloc
+                                                              .dashboardList[
+                                                                  index]
+                                                              .title!,
+                                                          fontSize:
+                                                              FontSize.twelve,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: ColorResource
+                                                              .color23375A,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox()
+                                              : index == 6
+                                                  ? bloc.userType! ==
+                                                          Constants.fieldagent
+                                                      ? Card(
+                                                          elevation: 0,
+                                                          color: ColorResource
+                                                              .colorffffff,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            side: const BorderSide(
+                                                                color: ColorResource
+                                                                    .color23375A,
+                                                                width: 0.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        75),
+                                                          ),
+                                                          child: Center(
+                                                            child: CustomText(
+                                                              bloc
+                                                                  .dashboardList[
+                                                                      index]
+                                                                  .title!,
+                                                              fontSize: FontSize
+                                                                  .twelve,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: ColorResource
+                                                                  .color23375A,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : const SizedBox()
+                                                  : index == 6
+                                                      ? bloc.userType ==
+                                                              Constants
+                                                                  .fieldagent
+                                                          ? Card(
+                                                              elevation: 0,
+                                                              color: ColorResource
+                                                                  .colorffffff,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                side: const BorderSide(
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                    width: 0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            75),
+                                                              ),
+                                                              child: Center(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          10),
+                                                                  child:
+                                                                      CustomText(
+                                                                    bloc
+                                                                        .dashboardList[
+                                                                            index]
+                                                                        .title!,
+                                                                    fontSize:
+                                                                        FontSize
+                                                                            .twelve,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : const SizedBox()
+                                                      : Card(
+                                                          elevation: 2,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            // ignore: prefer_const_constructors
+                                                            side: BorderSide(
+                                                                color: ColorResource
+                                                                    .colorDADADA,
+                                                                width: 0.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    8, 5, 8, 5),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    SizedBox(
+                                                                        // height: 40,
+                                                                        width:
+                                                                            105,
+                                                                        // color: ColorResource.color101010,
+                                                                        child:
+                                                                            CustomText(
+                                                                          bloc.dashboardList[index]
+                                                                              .title!,
+                                                                          fontSize:
+                                                                              FontSize.twelve,
+                                                                          fontWeight:
+                                                                              FontWeight.w700,
+                                                                          color:
+                                                                              ColorResource.color23375A,
+                                                                        )),
+                                                                    if (bloc
+                                                                            .dashboardList[
+                                                                                index]
+                                                                            .image! !=
+                                                                        '')
+                                                                      SvgPicture.asset(bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .image!),
+                                                                  ],
+                                                                ),
+                                                                // const SizedBox(height: 4,),
+                                                                const Spacer(),
+                                                                Row(
+                                                                  children: [
+                                                                    CustomText(
+                                                                      bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .count!,
+                                                                      fontSize:
+                                                                          FontSize
+                                                                              .fourteen,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color: ColorResource
+                                                                          .color23375A,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 6,
+                                                                    ),
+                                                                    CustomText(
+                                                                      Languages.of(
+                                                                              context)!
+                                                                          .customer,
+                                                                      fontSize:
+                                                                          FontSize
+                                                                              .fourteen,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: ColorResource
+                                                                          .color23375A,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 3,
+                                                                ),
+                                                                CustomText(
+                                                                  Constants
+                                                                          .inr +
+                                                                      double.parse(bloc
+                                                                              .dashboardList[index]
+                                                                              .amountRs!)
+                                                                          .toStringAsFixed(2),
+                                                                  fontSize:
+                                                                      FontSize
+                                                                          .sixteen,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: ColorResource
+                                                                      .color23375A,
+                                                                  isSingleLine:
+                                                                      true,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                        ),
+                                      );
+                                    },
+                                    staggeredTileBuilder: (int index) =>
+                                        StaggeredTile.count(
+                                            2,
+                                            index == 5
+                                                ? 0.6
+                                                : index == 6
+                                                    ? 0.7
+                                                    : 1.3),
+                                    mainAxisSpacing: 4.0,
+                                    crossAxisSpacing: 4.0,
+                                  ),
+                                  // const SizedBox(height: 5),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    child: CustomButton(
+                                      Languages.of(context)!.help.toUpperCase(),
+                                      fontSize: FontSize.sixteen,
+                                      fontWeight: FontWeight.bold,
+                                      textColor: ColorResource.color23375A,
+                                      buttonBackgroundColor:
+                                          ColorResource.colorBEC4CF,
+                                      borderColor: ColorResource.colorBEC4CF,
+                                      cardElevation: 0,
+                                      cardShape: 75,
+                                      isLeading: true,
+                                      onTap: () {
+                                        AppUtils.showToast(
+                                            Languages.of(context)!.help);
+                                      },
+                                      trailingWidget: Row(
+                                        children: [
+                                          SvgPicture.asset(ImageResource.help),
+                                          const SizedBox(
+                                            width: 7,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )));
+            }));
   }
 }

@@ -442,7 +442,7 @@
 //                                                       ColorResource.color23375A,
 //                                                 ),
 //                                               ),
-//                                             ) : const SizedBox() 
+//                                             ) : const SizedBox()
 //                                           : index == 6
 //                                               ? widget.userType == 'FIELDAGENT' ?  Card(
 //                                                   elevation: 0,
@@ -478,7 +478,7 @@
 //                                                       ),
 //                                                     ),
 //                                                   ),
-//                                                 ) : const SizedBox() 
+//                                                 ) : const SizedBox()
 //                                               : Card(
 //                                                   elevation: 2,
 //                                                   shape: RoundedRectangleBorder(

@@ -5,6 +5,7 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -44,8 +45,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -143,7 +144,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           context,
                         ),
                       ),
-                      const SizedBox(height: 120)
+                      // const SizedBox(height: 120)
                     ],
                   ),
                 ),
@@ -164,8 +165,13 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails));
+          print("unreachable iscall ===> true");
+          widget.bloc.add(ClickOpenBottomSheetEvent(
+            element.stringResourceValue,
+            widget.bloc.caseDetailsAPIValue.result?.callDetails,
+            true,
+            health: ConstantEventValues.healthOne,
+          ));
         },
         child: Container(
           height: 45,
@@ -227,6 +233,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
+      widget.bloc.phoneUnreachableSelectedDate = newDate.toString();
     });
   }
 

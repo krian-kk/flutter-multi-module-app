@@ -46,10 +46,16 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
       child: StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         return WillPopScope(
-          onWillPop: () async => false,
+          onWillPop: () async => true,
           child: Container(
+            decoration: const BoxDecoration(
+              color: ColorResource.colorF7F8FA,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0)),
+            ),
             padding: const EdgeInsets.only(top: 16),
-            color: ColorResource.colorF7F8FA,
+            // color: ColorResource.colorF7F8FA,
             child: SafeArea(
               child: widget.bloc.yardingAndSelfReleaseData.result!.isEmpty
                   ? Scaffold(
@@ -182,10 +188,11 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                           vertical: 2),
                                                       child: CustomText(
                                                         widget
-                                                            .bloc
-                                                            .yardingAndSelfReleaseData
-                                                            .result![index]
-                                                            .caseId!,
+                                                                .bloc
+                                                                .yardingAndSelfReleaseData
+                                                                .result![index]
+                                                                .agrRef ??
+                                                            '',
                                                         fontSize:
                                                             FontSize.fourteen,
                                                         color: ColorResource
@@ -207,20 +214,39 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      CustomText(
-                                                        Constants.inr +
-                                                            widget
-                                                                .bloc
-                                                                .yardingAndSelfReleaseData
-                                                                .result![index]
-                                                                .due!
-                                                                .toString(),
-                                                        fontSize:
-                                                            FontSize.eighteen,
-                                                        color: ColorResource
-                                                            .color101010,
-                                                        fontWeight:
-                                                            FontWeight.w700,
+                                                      Row(
+                                                        children: [
+                                                          const CustomText(
+                                                            "Registration No. ",
+                                                            fontSize: FontSize
+                                                                .fourteen,
+                                                            color: ColorResource
+                                                                .color000000,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                          Flexible(
+                                                            child: CustomText(
+                                                              widget
+                                                                  .bloc
+                                                                  .yardingAndSelfReleaseData
+                                                                  .result![
+                                                                      index]
+                                                                  .eventAttr!
+                                                                  .registrationNo
+                                                                  .toString(),
+                                                              isSingleLine:
+                                                                  true,
+                                                              fontSize: FontSize
+                                                                  .seventeen,
+                                                              color: ColorResource
+                                                                  .color101010,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                       const SizedBox(
                                                         height: 3.0,
@@ -230,7 +256,8 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                             .bloc
                                                             .yardingAndSelfReleaseData
                                                             .result![index]
-                                                            .cust!,
+                                                            .eventAttr!
+                                                            .customerName!,
                                                         fontSize:
                                                             FontSize.sixteen,
                                                         color: ColorResource
@@ -242,37 +269,37 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                   ),
                                                 ),
 
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 15,
-                                                      vertical: 6),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        20, 12, 15, 12),
-                                                    decoration: BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorF8F9FB,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: CustomText(
-                                                      widget
-                                                          .bloc
-                                                          .yardingAndSelfReleaseData
-                                                          .result![index]
-                                                          .address![0]
-                                                          .value!,
-                                                      color: ColorResource
-                                                          .color484848,
-                                                      fontSize:
-                                                          FontSize.fourteen,
-                                                    ),
-                                                  ),
-                                                ),
+                                                // Padding(
+                                                //   padding: const EdgeInsets
+                                                //           .symmetric(
+                                                //       horizontal: 15,
+                                                //       vertical: 6),
+                                                //   child: Container(
+                                                //     width: double.infinity,
+                                                //     padding: const EdgeInsets
+                                                //             .fromLTRB(
+                                                //         20, 12, 15, 12),
+                                                //     decoration: BoxDecoration(
+                                                //       color: ColorResource
+                                                //           .colorF8F9FB,
+                                                //       borderRadius:
+                                                //           BorderRadius.circular(
+                                                //               10),
+                                                //     ),
+                                                //     child: CustomText(
+                                                //       widget
+                                                //           .bloc
+                                                //           .yardingAndSelfReleaseData
+                                                //           .result![index]
+                                                //           .address![0]
+                                                //           .value!,
+                                                //       color: ColorResource
+                                                //           .color484848,
+                                                //       fontSize:
+                                                //           FontSize.fourteen,
+                                                //     ),
+                                                //   ),
+                                                // ),
                                                 const SizedBox(
                                                   height: 5,
                                                 ),
@@ -309,8 +336,15 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                             fontWeight:
                                                                 FontWeight.w400,
                                                           ),
-                                                          const CustomText(
-                                                            'date field not added',
+                                                          CustomText(
+                                                            widget
+                                                                    .bloc
+                                                                    .yardingAndSelfReleaseData
+                                                                    .result![
+                                                                        index]
+                                                                    .eventAttr!
+                                                                    .date ??
+                                                                '',
                                                             fontSize: FontSize
                                                                 .fourteen,
                                                             color: ColorResource
@@ -364,13 +398,16 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                         .yardingAndSelfReleaseData
                                                                         .result![
                                                                             index]
-                                                                        .caseId!;
+                                                                        .sId!;
+                                                                    // print(
+                                                                    //     caseID);
                                                                     custName = widget
-                                                                        .bloc
-                                                                        .yardingAndSelfReleaseData
-                                                                        .result![
-                                                                            index]
-                                                                        .cust!;
+                                                                            .bloc
+                                                                            .yardingAndSelfReleaseData
+                                                                            .result![index]
+                                                                            .eventAttr!
+                                                                            .customerName ??
+                                                                        '';
                                                                   });
                                                                 },
                                                               ),

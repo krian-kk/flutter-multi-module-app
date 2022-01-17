@@ -6,6 +6,7 @@ class CollectionPostModel {
   late String eventCode;
   late String createdBy;
   late String agentName;
+  late String contractor;
   late String eventModule;
   late CollectionsContact contact;
   late String agrRef;
@@ -13,23 +14,24 @@ class CollectionPostModel {
   late String? callingID;
   late String callerServiceID;
   late String voiceCallEventCode;
-  late double? invalidNumber;
+  late bool? invalidNumber;
 
   CollectionPostModel({
-    this.eventId = 17,
+    required this.eventId,
     required this.eventType,
     required this.caseId,
     required this.eventAttr,
-    this.eventCode = 'TELEVT003',
+    required this.eventCode,
     required this.createdBy,
     required this.agentName,
+    required this.contractor,
     required this.eventModule,
     required this.contact,
     required this.agrRef,
     this.callID,
     this.callingID,
-    this.callerServiceID = 'e',
-    this.voiceCallEventCode = 'TELEVT011',
+    required this.callerServiceID,
+    required this.voiceCallEventCode,
     this.invalidNumber,
   });
 
@@ -41,6 +43,7 @@ class CollectionPostModel {
     eventCode = json['eventCode'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
+    contractor = json['contractor'];
     eventModule = json['eventModule'];
     contact = CollectionsContact.fromJson(json['contact']);
     agrRef = json['agrRef'];
@@ -60,6 +63,7 @@ class CollectionPostModel {
     data['eventCode'] = eventCode;
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
+    data['contractor'] = contractor;
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
     data['agrRef'] = agrRef;
@@ -73,7 +77,7 @@ class CollectionPostModel {
 }
 
 class EventAttr {
-  late int amountCollected;
+  late dynamic amountCollected;
   late String date;
   late String chequeRefNo;
   late String remarks;
@@ -83,11 +87,12 @@ class EventAttr {
   late List<String> imageLocation;
   late double? altitude;
   late double accuracy;
-  late double? altitudeAccuracy;
+  late double altitudeAccuracy;
   late double? heading;
   late double? speed;
   late double latitude;
   late double longitude;
+  late CollectionsDeposition deposition;
 
   EventAttr({
     required this.amountCollected,
@@ -95,16 +100,17 @@ class EventAttr {
     required this.chequeRefNo,
     required this.remarks,
     required this.mode,
-    this.followUpPriority = '',
-    this.customerName = '',
+    required this.followUpPriority,
+    required this.customerName,
     required this.imageLocation,
     this.altitude,
     this.accuracy = 0,
-    this.altitudeAccuracy,
-    this.heading,
-    this.speed,
+    this.altitudeAccuracy = 0,
+    this.heading = 0,
+    this.speed = 0,
     this.latitude = 0,
     this.longitude = 0,
+    required this.deposition,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -123,6 +129,7 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
+    deposition = json['deposition'];
   }
 
   Map<String, dynamic> toJson() {
@@ -142,6 +149,7 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
+    data['deposition'] = deposition;
     return data;
   }
 }
@@ -155,7 +163,7 @@ class CollectionsContact {
 
   CollectionsContact(
       {required this.cType,
-      this.health = '1',
+      required this.health,
       required this.value,
       this.resAddressId0 = '',
       this.contactId0 = ''});

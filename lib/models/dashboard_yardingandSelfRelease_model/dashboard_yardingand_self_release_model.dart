@@ -1,17 +1,17 @@
-class DashboardYardingandSelfReleaseModel {
+class YardingData {
   int? status;
   String? message;
-  List<Result>? result;
+  List<YardingResult>? result;
 
-  DashboardYardingandSelfReleaseModel({this.status, this.message, this.result});
+  YardingData({this.status, this.message, this.result});
 
-  DashboardYardingandSelfReleaseModel.fromJson(Map<String, dynamic> json) {
+  YardingData.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['result'] != null) {
-      result = [];
+      result = <YardingResult>[];
       json['result'].forEach((v) {
-        result?.add(Result.fromJson(v));
+        result!.add(YardingResult.fromJson(v));
       });
     }
   }
@@ -27,69 +27,53 @@ class DashboardYardingandSelfReleaseModel {
   }
 }
 
-class Result {
+class YardingResult {
   String? sId;
-  int? due;
-  String? cust;
-  String? collSubStatus;
-  String? customerId;
+  EventAttr? eventAttr;
+  String? agrRef;
   String? caseId;
-  List<Address>? address;
 
-  Result(
-      {this.sId,
-      this.due,
-      this.cust,
-      this.collSubStatus,
-      this.customerId,
-      this.caseId,
-      this.address});
+  YardingResult({this.sId, this.eventAttr, this.agrRef, this.caseId});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  YardingResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    due = json['due'];
-    cust = json['cust'];
-    collSubStatus = json['collSubStatus'];
-    customerId = json['customerId'];
+    eventAttr = json['eventAttr'] != null
+        ? EventAttr.fromJson(json['eventAttr'])
+        : null;
+    agrRef = json['agrRef'];
     caseId = json['caseId'];
-    if (json['address'] != null) {
-      address = [];
-      json['address'].forEach((v) {
-        address!.add(Address.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
-    data['due'] = due;
-    data['cust'] = cust;
-    data['collSubStatus'] = collSubStatus;
-    data['customerId'] = customerId;
-    data['caseId'] = caseId;
-    if (address != null) {
-      data['address'] = address!.map((v) => v.toJson()).toList();
+    if (eventAttr != null) {
+      data['eventAttr'] = eventAttr!.toJson();
     }
+    data['agrRef'] = agrRef;
+    data['caseId'] = caseId;
     return data;
   }
 }
 
-class Address {
-  String? cType;
-  String? value;
+class EventAttr {
+  String? registrationNo;
+  String? customerName;
+  String? date;
 
-  Address({this.cType, this.value});
+  EventAttr({this.registrationNo, this.customerName, this.date});
 
-  Address.fromJson(Map<String, dynamic> json) {
-    cType = json['cType'];
-    value = json['value'];
+  EventAttr.fromJson(Map<String, dynamic> json) {
+    registrationNo = json['registrationNo'];
+    customerName = json['customerName'];
+    date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['cType'] = cType;
-    data['value'] = value;
+    data['registrationNo'] = registrationNo;
+    data['customerName'] = customerName;
+    data['date'] = date;
     return data;
   }
 }

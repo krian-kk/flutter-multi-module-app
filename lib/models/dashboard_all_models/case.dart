@@ -2,10 +2,14 @@ import 'address.dart';
 
 class Case {
   String? id;
-  dynamic? due;
+  dynamic due;
   String? cust;
   String? collSubStatus;
+  String? telSubStatus;
+  String? agrRef;
+  String? bankName;
   String? followUpDate;
+  String? fieldfollowUpDate;
   String? customerId;
   String? caseId;
   List<Address>? address;
@@ -15,7 +19,11 @@ class Case {
     this.due,
     this.cust,
     this.collSubStatus,
+    this.telSubStatus,
+    this.agrRef,
+    this.bankName,
     this.followUpDate,
+    this.fieldfollowUpDate,
     this.customerId,
     this.caseId,
     this.address,
@@ -26,10 +34,14 @@ class Case {
         due: json['due'],
         cust: json['cust'] as String?,
         collSubStatus: json['collSubStatus'] as String?,
+        telSubStatus: json['telSubStatus'] ?? '-',
+        agrRef: json['agrRef'] ?? '-',
+        bankName: json['bankName'] ?? '-',
         followUpDate: json['followUpDate'] as String? ?? "-",
+        fieldfollowUpDate: json['fieldfollowUpDate'] as String? ?? "-",
         customerId: json['customerId'] as String?,
         caseId: json['caseId'] as String?,
-        address: (json['address'] as List<dynamic>?)
+        address: (json['contact'] as List<dynamic>?)
             ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
@@ -39,7 +51,11 @@ class Case {
         'due': due,
         'cust': cust,
         'collSubStatus': collSubStatus,
+        'telSubStatus': telSubStatus,
+        'agrRef': agrRef,
+        'bankName': bankName,
         'followUpDate': followUpDate,
+        'fieldfollowUpDate': fieldfollowUpDate,
         'customerId': customerId,
         'caseId': caseId,
         'address': address?.map((e) => e.toJson()).toList(),

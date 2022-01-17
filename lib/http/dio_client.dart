@@ -13,15 +13,15 @@ class DioClient {
     Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 1000,
-        receiveTimeout: 1000,
+        connectTimeout: 60000, //60s
+        receiveTimeout: 60000, //60s
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
                 '' != Singleton.instance.accessToken)
             ? {
                 'authorization': 'Bearer ${Singleton.instance.accessToken}',
                 'access-token': '${Singleton.instance.accessToken}',
-                'refresh-token': '${Singleton.instance.refreshToken}',
+                'RefreshToken': '${Singleton.instance.refreshToken}',
                 'session-id': '${Singleton.instance.sessionID}',
                 'aRef': '${Singleton.instance.agentRef}',
               }
@@ -29,6 +29,33 @@ class DioClient {
         contentType: 'application/json',
       ),
     )..interceptors.add(Logging());
+
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+    return dio;
+  }
+
+  static dynamic dioFileConfig() {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: HttpUrl.baseUrl,
+        connectTimeout: 60000, //60s
+        receiveTimeout: 60000, //60s
+        followRedirects: true,
+        headers: (Singleton.instance.accessToken != null ||
+                '' != Singleton.instance.accessToken)
+            ? {
+                'authorization': 'Bearer ${Singleton.instance.accessToken}',
+              }
+            : null,
+        contentType: 'multipart/form-data',
+      ),
+    )..interceptors.add(Logging());
+
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
@@ -59,12 +86,12 @@ class DioClient {
     }
   }
 
-  static List<dynamic>? listOfMultiPart(List<File>? file) {
+  static List<dynamic>? listOfMultiPart(List<File> file) {
     final List<dynamic> multiPartValues = [];
-    for (File element in file!) {
+    for (File element in file) {
       multiPartValues.add(MultipartFile.fromFile(
         element.path,
-        filename: element.path.split('/').last,
+        // filename: element.path.split('/').last,
       ));
     }
     return multiPartValues;

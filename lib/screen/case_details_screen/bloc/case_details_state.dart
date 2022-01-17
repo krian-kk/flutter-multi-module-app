@@ -43,7 +43,29 @@ class PushAndPOPNavigationCaseDetailsState extends CaseDetailsState {
 class ClickOpenBottomSheetState extends CaseDetailsState {
   final String title;
   final List list;
-  ClickOpenBottomSheetState(this.title, this.list);
+  final bool? isCall;
+  final String? health;
+  ClickOpenBottomSheetState(this.title, this.list, this.isCall, {this.health});
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}
+
+class EnableUnreachableBtnState extends CaseDetailsState {}
+
+class DisableUnreachableBtnState extends CaseDetailsState {}
+
+class EnablePhoneInvalidBtnState extends CaseDetailsState {}
+
+class DisablePhoneInvalidBtnState extends CaseDetailsState {}
+
+class EnableCustomerNotMetBtnState extends CaseDetailsState {}
+
+class DisableCustomerNotMetBtnState extends CaseDetailsState {}
+
+class EnableAddressInvalidBtnState extends CaseDetailsState {}
+
+class DisableAddressInvalidBtnState extends CaseDetailsState {}
+
+class EnableCaptureImageBtnState extends CaseDetailsState {}
+
+class DisableCaptureImageBtnState extends CaseDetailsState {}

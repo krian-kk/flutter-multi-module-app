@@ -10,8 +10,8 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 
 class DepositionMode {
-  static Widget buildDepositionMode(BuildContext context, List<String> caseIDs,
-      String mode, DashboardBloc bloc, String? custName) {
+  static Widget buildDepositionMode(BuildContext context, List<String> _ids,
+      DashboardBloc bloc, String? custName, double receiptAmount) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.83,
       child: Container(
@@ -65,10 +65,20 @@ class DepositionMode {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        BankTab(bloc,
-                            caseIds: caseIDs, mode: mode, custname: custName),
-                        CompanyBranch(bloc,
-                            caseIds: caseIDs, mode: mode, custname: custName),
+                        BankTab(
+                          bloc,
+                          selected_case_Ids: _ids,
+                          mode: "Bank",
+                          custname: custName,
+                          receiptAmt: receiptAmount,
+                        ),
+                        CompanyBranch(
+                          bloc,
+                          selected_case_Ids: _ids,
+                          mode: "Company Branch",
+                          custname: custName,
+                          receiptAmt: receiptAmount,
+                        ),
                       ],
                     ),
                   ),

@@ -31,8 +31,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -114,8 +114,10 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
+          print("call detail invalid iscall ===> true");
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails));
+              widget.bloc.caseDetailsAPIValue.result?.callDetails, true,
+              health: '0'));
         },
         child: Container(
           height: 45,

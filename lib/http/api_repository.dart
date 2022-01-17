@@ -3,13 +3,26 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-enum APIRequestType { GET, POST, PUT, DELETE, UPLOAD, DOWNLOAD }
+enum APIRequestType {
+  GET,
+  POST,
+  PUT,
+  DELETE,
+  UPLOAD,
+  DOWNLOAD,
+  singleFileUpload
+}
 
 class APIRepository {
   //Progress sample model
@@ -25,9 +38,12 @@ class APIRepository {
       APIRequestType requestType, String urlString,
       {dynamic requestBodydata,
       List<File>? file,
+      File? imageFile,
+      FormData? formDatas,
       String? savePath,
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
 
     try {
       Response? response;
@@ -42,11 +58,19 @@ class APIRepository {
           }
         case APIRequestType.UPLOAD:
           {
-            final FormData data = FormData.fromMap({
-              'file': DioClient.listOfMultiPart(file),
-            });
-            response = await DioClient.dioConfig()
-                .post(HttpUrl.fileUpload, data: data);
+            // final FormData data = FormData.fromMap({
+            //   'files': DioClient.listOfMultiPart(file),
+            // });
+            response = await DioClient.dioFileConfig()
+                .post(urlString, data: formDatas);
+            break;
+          }
+        case APIRequestType.singleFileUpload:
+          {
+            final FormData data = FormData.fromMap(
+                {'file': await MultipartFile.fromFile(imageFile!.path)});
+            response =
+                await DioClient.dioFileConfig().post(urlString, data: data);
             break;
           }
         case APIRequestType.DOWNLOAD:
@@ -72,45 +96,113 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
-      print('response data -------->');
-      print(isPop);
+      // print('response data -------->');
+      // print(response!.headers['access-token']);
+      // print('response Headers -------->');
+
+      if (response!.headers['access-token'] != null) {
+        print('Here get New Access Token for every API call then store');
+        print(response.headers['access-token']);
+        // Here get New Access Token for every API call then store
+        if (response.headers['access-token']![0].toString() != 'false') {
+          _prefs.setString(Constants.accessToken,
+              response.headers['access-token']![0].toString());
+          Singleton.instance.accessToken =
+              response.headers['access-token']![0].toString();
+        }
+      }
+
       returnValue = {
         'success': true,
-        'data': response!.data,
+        'data': response.data,
         'statusCode': response.data['status'],
       };
     } on DioError catch (e) {
+      // print("-------NK------");
+      // print(e.response!.statusCode);
       dynamic error;
+      String? invalidAccessServerError;
       if (e.response != null) {
         error = DioClient.errorHandling(e);
       } else {
-        error = 'Error sending request!';
+        // error =
+        //     'Error sending request!'; // connection timeout sometime will come
+        error = 'connection timeout'; // connection timeout sometime will come
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
       print('response dio error data -------->');
 
       if (error.toString() != "DioErrorType.response") {
-        // 1 way get any data on login and auth page to check remove pop
-        // otherwise remove this pop bcoz it affect dashboard and login
+        // isPop is used for if i load new api then get any error then pop the back screen
         if (isPop == true) {
           Navigator.pop(Singleton.instance.buildContext!);
         }
         apiErrorStatus(
-            ErrorValue: error.toString(), position: ToastGravity.CENTER);
+            ErrorString: error.toString(), position: ToastGravity.CENTER);
       }
 
+      // if (e.response != null) {
+      //   if (e.response!.statusCode == 502) {
+      //     //  server not response so api not working
+      //     invalidAccessServerError = Constants.internalServerError;
+      //     apiErrorStatus(
+      //         ErrorString: Constants.internalServerError,
+      //         position: ToastGravity.BOTTOM);
+      //   }
+      // }
+
       if (e.response != null) {
+        // print("---------------e.response!.data['message']");
+        // print(e.response!.data['message']);
+        // print(e.response!.statusCode);
         if (e.response!.statusCode == 401) {
-          // apiErrorStatus(
-          //     ErrorValue: e.response!.data['message'].toString(),
-          //     position: ToastGravity.BOTTOM);
           //  here check accestoken expire or not after go to login
+          invalidAccessServerError =
+              e.response!.data['message'] ?? "Session Expired!";
+          String? errVal;
+          if (e.response!.data['message'] ==
+                  'Error refreshing access token: Invalid refresh token' ||
+              e.response!.data['message'] == 'Error getting KeyCloak session' ||
+              e.response!.data['message'] == 'Daily token session expired' ||
+              e.response!.data['message'] ==
+                  'Access token invalid and no refresh token provided' ||
+              e.response!.data['message'] ==
+                  'Error refreshing access token: Session not active' ||
+              invalidAccessServerError == 'Session Expired!') {
+            errVal = "Logout triggered due to inactivity / another";
+            Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
+                AppRoutes.loginScreen, (route) => false);
+          }
+          //  else {
+          //   errVal = e.response!.data['message'];
+          // }
           apiErrorStatus(
-              ErrorValue: "Session Expired! please logout",
-              position: ToastGravity.CENTER);
-          // Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
-          //     AppRoutes.loginScreen, (route) => false);
+              ErrorString: errVal ?? e.response!.data['message'],
+              position: ToastGravity.BOTTOM);
+          // if (e.response!.data['message'] ==
+          //         'Error refreshing access token: Invalid refresh token' ||
+          //     e.response!.data['message'] == 'Error getting KeyCloak session' ||
+          //     e.response!.data['message'] == 'Daily token session expired' ||
+          //     e.response!.data['message'] ==
+          //         'Error refreshing access token: Session not active' ||
+          //     invalidAccessServerError == 'Session Expired!') {
+          //   // AuthenticationBloc bloc;
+          //   // bloc = AuthenticationBloc()..add(UnAuthenticationEvent());
+          //   Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
+          //       AppRoutes.loginScreen, (route) => false);
+          // }
+        } else if (e.response!.statusCode == 502) {
+          //  server not response --> api not working
+          invalidAccessServerError = Constants.internalServerError;
+          apiErrorStatus(
+              ErrorString: Constants.internalServerError,
+              position: ToastGravity.BOTTOM);
+        } else if (e.response!.statusCode == 400) {
+          //Event address not present
+          apiErrorStatus(
+              ErrorString: e.response!.data['message'] ?? '',
+              position: ToastGravity.BOTTOM);
         }
       }
 
@@ -122,7 +214,11 @@ class APIRepository {
 
       returnValue = {
         'success': false,
-        'data': e.response != null ? e.response!.data : error,
+        'data': invalidAccessServerError != null
+            ? invalidAccessServerError
+            : e.response != null
+                ? e.response!.data
+                : error,
         'statusCode': e.response != null ? e.response!.statusCode : '',
       };
     }
@@ -130,9 +226,9 @@ class APIRepository {
     return returnValue;
   }
 
-  static void apiErrorStatus({String? ErrorValue, ToastGravity? position}) {
+  static void apiErrorStatus({String? ErrorString, ToastGravity? position}) {
     Fluttertoast.showToast(
-        msg: ErrorValue!,
+        msg: ErrorString!,
         toastLength: Toast.LENGTH_LONG,
         gravity: position ?? ToastGravity.CENTER,
         timeInSecForIosWeb: 3,

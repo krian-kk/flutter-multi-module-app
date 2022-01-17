@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -28,8 +29,8 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   @override
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.addNewContact, Constants.addNewContact),
+      // OptionBottomSheetButtonModel(
+      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -137,8 +138,12 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails));
+          print("Connected iscall ===> true");
+          widget.bloc.add(
+            ClickOpenBottomSheetEvent(element.stringResourceValue,
+                widget.bloc.caseDetailsAPIValue.result?.callDetails, true,
+                health: ConstantEventValues.healthTwo),
+          );
         },
         child: Container(
           height: 45,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,9 +24,9 @@ import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
 import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -64,19 +65,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         bloc: bloc,
         listener: (context, state) {
           if (state is PostDataApiSuccessState) {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            Navigator.pop(context);
+            AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
+            // Navigator.pop(context);
           }
           if (state is ClickMainAddressBottomSheetState) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
           }
           if (state is ClickMainCallBottomSheetState) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
-            openBottomSheet(context, state.title, state.list);
+            print("ClickOpenBottomSheetState ===> ${state.isCall}");
+            openBottomSheet(context, state.title, state.list, state.isCall,
+                health: state.health);
           }
           if (state is NoInternetState) {
             AppUtils.noInternetSnackbar(context);
@@ -115,14 +118,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         },
                       ),
                     ),
-                    bloc.isNoInternet
+                    bloc.isNoInternetAndServerError
                         ? Expanded(
                             child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CustomText(Languages.of(context)!
-                                      .noInternetConnection),
+                                  CustomText(bloc.noInternetAndServerErrorMsg!),
                                   const SizedBox(
                                     height: 5,
                                   ),
@@ -202,6 +204,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     Languages.of(context)!.new_,
                                                     color: ColorResource
                                                         .colorFFFFFF,
+                                                    lineHeight: 1,
                                                     fontSize: FontSize.ten,
                                                     fontWeight: FontWeight.w700,
                                                   ),
@@ -783,7 +786,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           ),
                   ],
                 ),
-                bottomNavigationBar: bloc.isNoInternet
+                bottomNavigationBar: bloc.isNoInternetAndServerError
                     ? const SizedBox()
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -808,7 +811,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             onTap: () => bloc.add(
                                                 ClickOpenBottomSheetEvent(
                                                     Constants.addressDetails,
-                                                    const [])),
+                                                    const [],
+                                                    false)),
                                             child: Container(
                                               height: 50,
                                               width: (MediaQuery.of(context)
@@ -864,7 +868,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     GestureDetector(
                                       onTap: () => bloc.add(
                                           ClickOpenBottomSheetEvent(
-                                              Constants.callDetails, const [])),
+                                              Constants.callDetails,
+                                              const [],
+                                              true)),
                                       child: Container(
                                         height: 50,
                                         width:
@@ -936,16 +942,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return WillPopScope(
-            onWillPop: () async => false,
-            child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: AddressScreen(bloc: bloc, index: i)),
-          );
+          return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.89,
+              child: AddressScreen(bloc: bloc, index: i));
         });
   }
 
-  openBottomSheet(BuildContext buildContext, String cardTitle, List list) {
+  openBottomSheet(
+      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+      {String? health}) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -954,7 +959,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       backgroundColor: ColorResource.colorFFFFFF,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
+          top: Radius.circular(30),
         ),
       ),
       builder: (BuildContext context) {
@@ -972,11 +977,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               userType: bloc.userType.toString(),
-              eventCode: 'TELEVT001',
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -992,9 +995,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -1010,10 +1012,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
-              // eventCode: bloc.eventCode,
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -1030,11 +1030,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
+
+              isCall: isCall,
               // eventCode: bloc.eventCode,
             );
           case Constants.collections:
+            print(list[bloc.indexValue!]);
             return CustomCollectionsBottomSheet(
               Languages.of(context)!.collections,
               caseId: bloc.caseId.toString(),
@@ -1047,11 +1048,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
+              isCall: isCall,
               // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
+              custName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
             );
           case Constants.ots:
             return CustomOtsBottomSheet(
@@ -1065,9 +1067,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              // agentName: bloc.agentName.toString(),
-              // argRef: bloc.agrRef.toString(),
-              // eventCode: bloc.eventCode,
+              caseId: bloc.caseId.toString(),
+              userType: bloc.userType.toString(),
+              isCall: isCall,
+              postValue: list[bloc.indexValue!],
             );
           case Constants.repo:
             return CustomRepoBottomSheet(
@@ -1083,9 +1086,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               postValue: list[bloc.indexValue!],
+              health: health ?? ConstantEventValues.healthTwo,
             );
           case Constants.captureImage:
             return CustomCaptureImageBottomSheet(
@@ -1100,10 +1102,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               bloc: bloc,
-              // agentName: bloc.agentName.toString(),
-              // argRef: bloc.agrRef.toString(),
             );
           case Constants.otherFeedback:
+            print("other feedback sheet open ===> ${isCall}");
+            print(bloc.userType);
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,
               bloc,
@@ -1118,9 +1120,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               userType: bloc.userType.toString(),
-              // agentName: bloc.agentName.toString(),
-
               postValue: list[bloc.indexValue!],
+              isCall: isCall,
+              health: health ?? ConstantEventValues.healthTwo,
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
@@ -1141,6 +1143,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callCustomer:
+            List<String> s1 = [];
+            bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+              if (element['cType'].contains('mobile')) {
+                if (!(s1.contains(element['value']))) {
+                  s1.add(element['value']);
+                }
+              } else {}
+            });
+
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
@@ -1151,11 +1162,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         ?.toDouble() ??
                     0.0,
               ),
-              listOfMobileNo:
-                  bloc.caseDetailsAPIValue.result?.callDetails as List<dynamic>,
+              listOfMobileNo: s1,
               userType: bloc.userType.toString(),
-              agentName: bloc.agentName.toString(),
-              argRef: Singleton.instance.agentRef!,
               caseId: bloc.caseId.toString(),
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
@@ -1173,23 +1181,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             );
           case Constants.viewMap:
             return MapViewBottomSheetScreen(
-                title: Languages.of(context)!.viewMap);
+                title: Languages.of(context)!.viewMap,
+                agentLocation:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.pincode);
           default:
-            return WillPopScope(
-              onWillPop: () async => false,
-              child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.89,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      BottomSheetAppbar(
-                          title: '',
-                          padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                      Expanded(
-                          child: Center(child: CircularProgressIndicator())),
-                    ],
-                  )),
-            );
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    BottomSheetAppbar(
+                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    Expanded(child: Center(child: CircularProgressIndicator())),
+                  ],
+                ));
         }
       },
     );

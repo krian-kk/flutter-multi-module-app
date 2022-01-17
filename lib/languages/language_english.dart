@@ -17,6 +17,9 @@ class LanguageEn extends Languages {
   String get userId => 'User ID';
 
   @override
+  String get userName => 'User Name';
+
+  @override
   String get rememberMe => 'Remember Me';
 
   @override
@@ -461,13 +464,13 @@ class LanguageEn extends Languages {
   String get otsPaymentDate => 'OTS Payment Date*';
 
   @override
-  String get otsPaymentTime => 'OTS Payment Time*';
+  String get otsPaymentTime => 'OTS Payment Time';
 
   @override
-  String get rtpDenialReason => 'RTP/Denial Reason*';
+  String get rtpDenialReason => 'RTP/Denial Reason';
 
   @override
-  String get disputeReason => 'Dispute Reason*';
+  String get disputeReason => 'Dispute Reason';
 
   @override
   String get modelMake => 'MODEL MAKE*';
@@ -649,4 +652,10 @@ class LanguageEn extends Languages {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get customerContactType => 'Customer Contact Type*';
+
+  @override
+  String get contact => 'Contact';
 }

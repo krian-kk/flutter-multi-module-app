@@ -17,6 +17,9 @@ class LanguageTa extends Languages {
   String get userId => 'பயனர் பெயர்';
 
   @override
+  String get userName => 'பயனர் பெயர்';
+
+  @override
   String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
 
   @override
@@ -461,13 +464,13 @@ class LanguageTa extends Languages {
   String get otsPaymentDate => 'OTS செலுத்தும் தேதி*';
 
   @override
-  String get otsPaymentTime => 'OTS செலுத்தும் நேரம்*';
+  String get otsPaymentTime => 'OTS செலுத்தும் நேரம்';
 
   @override
-  String get rtpDenialReason => 'RTP/மறுப்பு காரணம்*';
+  String get rtpDenialReason => 'RTP/மறுப்பு காரணம்';
 
   @override
-  String get disputeReason => 'சர்ச்சை காரணம்*';
+  String get disputeReason => 'சர்ச்சை காரணம்';
 
   @override
   String get modelMake => 'மாதிரி தயாரிக்கவும்*';
@@ -649,4 +652,10 @@ class LanguageTa extends Languages {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get customerContactType => 'Customer Contact Type*';
+
+  @override
+  String get contact => 'Contact';
 }
