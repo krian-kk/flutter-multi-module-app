@@ -682,9 +682,25 @@ class _CustomOtherFeedBackBottomSheetState
                                         // print('object');
                                       },
                                       child: CustomReadOnlyTextField(
-                                        Languages.of(context)!.contact,
+                                        (listOfContact[index].formValue == '')
+                                            ? ''
+                                            : (listOfContact[index].formValue ==
+                                                        'Mobile' ||
+                                                    listOfContact[index]
+                                                            .formValue ==
+                                                        'Office Contact No.' ||
+                                                    listOfContact[index]
+                                                            .formValue ==
+                                                        'Residence Contact No.')
+                                                ? Languages.of(context)!.contact
+                                                : (listOfContact[index]
+                                                            .formValue ==
+                                                        'Email Id')
+                                                    ? Languages.of(context)!
+                                                        .email
+                                                    : Languages.of(context)!
+                                                        .address,
                                         listOfContact[index].controller,
-                                        // focusNode: focusNode,
                                         isLabel: true,
                                         isEnable:
                                             (listOfContact[index].formValue !=
