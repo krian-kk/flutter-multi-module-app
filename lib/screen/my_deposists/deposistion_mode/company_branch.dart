@@ -49,6 +49,12 @@ class _CompanyBranchState extends State<CompanyBranch> {
 
   List<File> uploadFileLists = [];
 
+  FocusNode branchNameFocusNode = FocusNode();
+  FocusNode branchLocationFocusNode = FocusNode();
+  FocusNode receiptAmountFocusNode = FocusNode();
+  FocusNode depositAmountFocusNode = FocusNode();
+  FocusNode referenceFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -209,7 +215,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
                 ),
               ),
               body: Column(
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   Expanded(
                     child: Padding(
@@ -227,7 +232,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                   branchNameController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  focusNode: branchNameFocusNode,
+                                  onEditing: () =>
+                                      branchLocationFocusNode.requestFocus(),
                                 ),
                               ),
                               Padding(
@@ -237,7 +244,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                   branchLocationController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  focusNode: branchLocationFocusNode,
+                                  onEditing: () =>
+                                      depositAmountFocusNode.requestFocus(),
                                 ),
                               ),
                               Padding(
@@ -251,7 +260,11 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         receiptController,
                                         validationRules: const ['required'],
                                         isLabel: true,
-                                        isEnable: true,
+                                        isReadOnly: true,
+                                        isEnable: false,
+                                        focusNode: receiptAmountFocusNode,
+                                        onEditing: () => depositAmountFocusNode
+                                            .requestFocus(),
                                       ),
                                     ),
                                     const SizedBox(
@@ -264,7 +277,10 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         depositController,
                                         validationRules: const ['required'],
                                         isLabel: true,
-                                        isEnable: true,
+                                        keyBoardType: TextInputType.number,
+                                        focusNode: depositAmountFocusNode,
+                                        onEditing: () =>
+                                            referenceFocusNode.requestFocus(),
                                       ),
                                     ),
                                   ],
@@ -277,7 +293,8 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                   referenceController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  focusNode: referenceFocusNode,
+                                  onEditing: () => referenceFocusNode.unfocus(),
                                 ),
                               ),
                               const SizedBox(

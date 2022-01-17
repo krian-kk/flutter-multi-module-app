@@ -170,7 +170,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                   dateController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  isReadOnly: true,
                                   onTapped: () =>
                                       pickDate(context, dateController),
                                 ),
