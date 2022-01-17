@@ -448,7 +448,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   ),
                                 );
                                 print(
-                                    'Response Date => ${jsonEncode(requestBodyData)}');
+                                    'Response Data => ${jsonEncode(requestBodyData)}');
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
@@ -476,8 +476,8 @@ class _CustomOtherFeedBackBottomSheetState
                                       context, Constants.successfullySubmitted);
                                   Navigator.pop(context);
                                 } else {}
+                                // }
                               }
-                              // }
                               setState(() => isSubmit = true);
                             }
                           : () {},
@@ -497,10 +497,10 @@ class _CustomOtherFeedBackBottomSheetState
       BuildContext context, TextEditingController controller) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.year,
+        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
+        lastDate: DateTime(DateTime.now().year + 3),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -685,16 +685,19 @@ class _CustomOtherFeedBackBottomSheetState
                                             (listOfContact[index].formValue !=
                                                 ''),
                                         borderColor: ColorResource.color000000,
-                                        keyBoardType:
-                                            (listOfContact[index].formValue ==
-                                                        'Mobile' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Office Contact No.' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Residence Contact No.')
-                                                ? TextInputType.number
+                                        keyBoardType: (listOfContact[index]
+                                                        .formValue ==
+                                                    'Mobile' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Office Contact No.' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Residence Contact No.')
+                                            ? TextInputType.number
+                                            : (listOfContact[index].formValue ==
+                                                    'Email Id')
+                                                ? TextInputType.emailAddress
                                                 : TextInputType.name,
                                         inputformaters:
                                             (listOfContact[index].formValue ==

@@ -35,6 +35,12 @@ class _YardingTabState extends State<YardingTab> {
   late TextEditingController dateController = TextEditingController();
   late TextEditingController timeController = TextEditingController();
   late TextEditingController remarksController = TextEditingController();
+
+  FocusNode yardNameFocusNode = FocusNode();
+  FocusNode dateFocusNode = FocusNode();
+  FocusNode timeFocusNode = FocusNode();
+  FocusNode remarksFocusNode = FocusNode();
+
   final _formKey = GlobalKey<FormState>();
 
   List<File> uploadFileLists = [];
@@ -168,7 +174,7 @@ class _YardingTabState extends State<YardingTab> {
                                   yardNameController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  focusNode: yardNameFocusNode,
                                 ),
                               ),
                               Padding(
@@ -178,7 +184,7 @@ class _YardingTabState extends State<YardingTab> {
                                   dateController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  isReadOnly: true,
                                   onTapped: () =>
                                       pickDate(context, dateController),
                                 ),
@@ -190,7 +196,7 @@ class _YardingTabState extends State<YardingTab> {
                                   timeController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
+                                  isReadOnly: true,
                                   onTapped: () =>
                                       pickTime(context, timeController),
                                 ),
@@ -200,9 +206,9 @@ class _YardingTabState extends State<YardingTab> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.remark,
                                   remarksController,
+                                  focusNode: remarksFocusNode,
                                   // validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
                                 ),
                               ),
                               const SizedBox(

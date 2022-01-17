@@ -48,7 +48,7 @@ class CustomPtpBottomSheet extends StatefulWidget {
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
-  String selectedDate = '';
+  // String selectedDate = '';
   TextEditingController ptpTimeControlller = TextEditingController();
   TextEditingController ptpAmountControlller = TextEditingController();
   TextEditingController referenceControlller = TextEditingController();
@@ -320,7 +320,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   caseId: widget.caseId,
                                   eventAttr: EventAttr(
                                     pTPType: ConstantEventValues.ptpType,
-                                    date: selectedDate,
+                                    date: ptpDateControlller.text,
                                     time: ptpTimeControlller.text,
                                     remarks: remarksControlller.text,
                                     ptpAmount:
@@ -453,10 +453,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       BuildContext context, TextEditingController controller) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.year,
+        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
+        lastDate: DateTime(DateTime.now().year + 3),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -483,16 +483,16 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
+      // selectedDate = newDate.toString();
     });
   }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    const initialTime = TimeOfDay(hour: 9, minute: 0);
+    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
-        initialTime: initialTime,
+        initialTime: TimeOfDay.now(),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -518,8 +518,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
     final hours = newTime.hour.toString().padLeft(2, '0');
     final minutes = newTime.minute.toString().padLeft(2, '0');
+    final time = newTime.format(context).toString();
     setState(() {
-      controller.text = '$hours:$minutes';
+      controller.text = time;
     });
   }
 }

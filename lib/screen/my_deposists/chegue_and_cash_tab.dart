@@ -75,7 +75,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                 if (selectedValue[0].isSelected) {
                   for (var element in selectedValue) {
                     if (element.isSelected) {
-                      depositionModeSheet(context);
+                      print(element.isSelected);
+                      // depositionModeSheet(context);
                     }
                     // else {
                     //   AppUtils.showToast(
@@ -84,6 +85,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                     //   );
                     // }
                   }
+                  depositionModeSheet(context);
                 } else {
                   AppUtils.showToast(
                     Constants.notSelectedCase,
@@ -344,6 +346,9 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                             onTap: () {
                                               _onSelected(index);
                                               setState(() {
+                                                // widget.result!.cases!
+                                                //     .removeAt(index);
+
                                                 selectedValue[index]
                                                         .isSelected =
                                                     !selectedValue[index]
@@ -363,6 +368,11 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                               .cases![index]
                                                               .eventAttr!
                                                               .amountCollected);
+
+                                                  // widget.bloc.listOfIndex
+                                                  //     .removeAt(index);
+                                                  // print(
+                                                  //     "Removed selected index ==> ${widget.bloc.listOfIndex}");
                                                 } else {
                                                   receiptAmount =
                                                       receiptAmount +
@@ -371,6 +381,11 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                               .cases![index]
                                                               .eventAttr!
                                                               .amountCollected);
+
+                                                  // widget.bloc.listOfIndex
+                                                  //     .add(index);
+                                                  // print(
+                                                  //     "Addded selected index ==> ${widget.bloc.listOfIndex}");
                                                 }
                                                 // print("----Selected Amount");
                                                 // print(receiptAmount);

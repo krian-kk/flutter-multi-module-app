@@ -53,6 +53,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
   // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
   MyDeposistModel myDeposistsData = MyDeposistModel();
+  // Deposists selected case index
+  // List listOfIndex = [];
+
   YardingData yardingAndSelfReleaseData = YardingData();
   DashboardCardCount dashboardCardCounts = DashboardCardCount();
 
