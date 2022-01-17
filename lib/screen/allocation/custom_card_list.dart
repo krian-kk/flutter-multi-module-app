@@ -164,29 +164,31 @@ class CustomCardList {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        Constants.inr +
-                                            resultData[index].due.toString(),
-                                        fontSize: FontSize.eighteen,
-                                        color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      const SizedBox(
-                                        height: 3.0,
-                                      ),
-                                      CustomText(
-                                        resultData[index].cust!,
-                                        fontSize: FontSize.sixteen,
-                                        color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          Constants.inr +
+                                              resultData[index].due.toString(),
+                                          fontSize: FontSize.eighteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        const SizedBox(
+                                          height: 3.0,
+                                        ),
+                                        CustomText(
+                                          resultData[index].cust!,
+                                          fontSize: FontSize.sixteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const Spacer(),
+                                  // const Spacer(),
                                   resultData[index].collSubStatus == "new" &&
                                           Singleton.instance.usertype ==
                                               Constants.fieldagent

@@ -108,8 +108,7 @@ class Constants {
   static const String userAdmin = 'userAdmin';
   static const String code = 'code';
   static const String buildcontext = 'buildcontext';
-  static const String callConnectedPleaseWait =
-      'Call Connected Quickly Please Wait!';
+  static const String callConnectedPleaseWait = 'Call gets connected';
   static const String internalServerError = 'Internal Server Error !!';
   static const String emailNotAvailable =
       'Email ID not available, Mobile number available, send OTP via SMS';

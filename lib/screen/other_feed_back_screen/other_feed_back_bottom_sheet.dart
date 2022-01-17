@@ -671,7 +671,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       onTap: () {
                                         if (listOfContact[index].formValue ==
                                             '') {
-                                          AppUtils.showErrorToast(
+                                          AppUtils.showToast(
                                               "Please select customer contact type");
                                         }
                                         // print('object');
