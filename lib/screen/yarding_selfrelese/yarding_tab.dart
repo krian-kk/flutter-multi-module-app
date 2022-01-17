@@ -33,7 +33,6 @@ class YardingTab extends StatefulWidget {
 class _YardingTabState extends State<YardingTab> {
   late TextEditingController yardNameController = TextEditingController();
   late TextEditingController dateController = TextEditingController();
-  String selectedDate = '';
   late TextEditingController timeController = TextEditingController();
   late TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -45,6 +44,9 @@ class _YardingTabState extends State<YardingTab> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
   }
 
   getFiles() async {
@@ -129,7 +131,7 @@ class _YardingTabState extends State<YardingTab> {
                                             Singleton.instance.contractor!,
                                         repo: Repo(
                                           yard: yardNameController.text,
-                                          date: selectedDate,
+                                          date: dateController.text,
                                           time: timeController.text,
                                           remarks: remarksController.text,
                                           imageLocation: [''],
@@ -198,7 +200,7 @@ class _YardingTabState extends State<YardingTab> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.remark,
                                   remarksController,
-                                  validationRules: const ['required'],
+                                  // validationRules: const ['required'],
                                   isLabel: true,
                                   isEnable: true,
                                 ),
@@ -269,7 +271,6 @@ class _YardingTabState extends State<YardingTab> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
       // _formKey.currentState!.validate();
     });
   }

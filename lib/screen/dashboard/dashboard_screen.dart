@@ -32,7 +32,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  String version = "";
   late DashboardBloc bloc;
 
   @override
@@ -48,6 +47,135 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //     version = info.version;
   //   });
   // }
+
+  Widget userActivity(
+      {String? header,
+      String? count,
+      Color? backgrountColor,
+      required Color leadingColor}) {
+    return Container(
+      // width: 120,
+      height: 60,
+      decoration: BoxDecoration(
+          color: backgrountColor, borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: BoxDecoration(
+              color: leadingColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                topLeft: Radius.circular(10),
+              ),
+            ),
+          ),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                  header!,
+                  color: ColorResource.color23375A,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  lineHeight: 1.0,
+                ),
+                // const Spacer(),
+                CustomText(
+                  count ?? '0',
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.sixteen,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
+  void priorityFollowUpSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: PriorityFollowUpBottomSheet(bloc));
+        });
+  }
+
+  void brokenPTPSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: BrokenPTPBottomSheet(bloc));
+        });
+  }
+
+  void untouchedCasesSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: UntouchedCasesBottomSheet(bloc));
+        });
+  }
+
+  void myVisitsSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: MyVisitsBottomSheet(bloc));
+        });
+  }
+
+  void myReceiptsSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: MyReceiptsBottomSheet(bloc));
+        });
+  }
+
+  void myDeposistsSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: MyDeposistsBottomSheet(bloc));
+        });
+  }
+
+  void yardingSelfReleaseSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              // top: false,
+              bottom: false,
+              child: YardingAndSelfRelease(bloc));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: BlocBuilder<DashboardBloc, DashboardState>(
             bloc: bloc,
             builder: (BuildContext context, DashboardState state) {
+              print("refressehed ============>");
               if (state is DashboardLoadingState) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -174,8 +303,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 : Languages.of(context)!
                                                     .connected
                                                     .trim(),
-                                            count: bloc
-                                                .customerMetCountValue.length
+                                            count: bloc.dashboardCardCounts
+                                                .result?.met!.count
                                                 .toString(),
                                             backgrountColor:
                                                 ColorResource.colorE0ECDF,
@@ -196,8 +325,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 : Languages.of(context)!
                                                     .unreachable
                                                     .trim(),
-                                            count: bloc
-                                                .customerNotMetCountValue.length
+                                            count: bloc.dashboardCardCounts
+                                                .result?.notMet!.count
                                                 .toString(),
                                             backgrountColor:
                                                 ColorResource.colorF2EEDC,
@@ -214,9 +343,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             header: Languages.of(context)!
                                                 .invalid
                                                 .trim(),
-                                            count: bloc
-                                                .customerInvalidCountValue
-                                                .length
+                                            count: bloc.dashboardCardCounts
+                                                .result?.invalid!.count
                                                 .toString(),
                                             backgrountColor:
                                                 ColorResource.colorF4ECEF,
@@ -268,15 +396,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           // width: MediaQuery.of(context).size.width,
                                           padding: const EdgeInsets.all(4),
                                           animation: true,
+                                          addAutomaticKeepAlive: false,
                                           lineHeight: 12.0,
                                           animationDuration: 2500,
                                           // Result must change
                                           // percent: (bloc.mtdCaseCompleted!/bloc.mtdCaseTotal!),
-                                          percent: (bloc.mtdCaseCompleted! <=
-                                                  bloc.mtdCaseTotal!)
-                                              ? (bloc.mtdCaseCompleted! /
-                                                  bloc.mtdCaseTotal!)
-                                              : 0.0,
+                                          percent: (bloc.mtdCaseCompleted! ==
+                                                      0 &&
+                                                  bloc.mtdCaseTotal! == 0)
+                                              ? 0.0
+                                              : (bloc.mtdCaseCompleted! <=
+                                                      bloc.mtdCaseTotal!)
+                                                  ? (bloc.mtdCaseCompleted! /
+                                                      bloc.mtdCaseTotal!)
+                                                  : 0.0,
                                           // center: Text("80.0%"),
                                           linearStrokeCap:
                                               LinearStrokeCap.roundAll,
@@ -330,15 +463,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         LinearPercentIndicator(
                                           // width: MediaQuery.of(context).size.width,
                                           padding: const EdgeInsets.all(4),
+                                          addAutomaticKeepAlive: false,
                                           animation: true,
                                           lineHeight: 12.0,
                                           animationDuration: 2500,
                                           // percent: (bloc.mtdAmountCompleted! / bloc.mtdAmountTotal!),
-                                          percent: (bloc.mtdAmountCompleted! <=
-                                                  bloc.mtdAmountTotal!)
-                                              ? (bloc.mtdAmountCompleted! /
-                                                  bloc.mtdAmountTotal!)
-                                              : 0.0,
+                                          percent: (bloc.mtdAmountCompleted! ==
+                                                      0 &&
+                                                  bloc.mtdAmountTotal! == 0)
+                                              ? 0.0
+                                              : (bloc.mtdAmountCompleted! <=
+                                                      bloc.mtdAmountTotal!)
+                                                  ? (bloc.mtdAmountCompleted! /
+                                                      bloc.mtdAmountTotal!)
+                                                  : 0.0,
                                           // center: Text("80.0%"),
                                           linearStrokeCap:
                                               LinearStrokeCap.roundAll,
@@ -706,134 +844,5 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           )));
             }));
-  }
-
-  Widget userActivity(
-      {String? header,
-      String? count,
-      Color? backgrountColor,
-      required Color leadingColor}) {
-    return Container(
-      // width: 120,
-      height: 60,
-      decoration: BoxDecoration(
-          color: backgrountColor, borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        children: [
-          Container(
-            width: 5,
-            decoration: BoxDecoration(
-              color: leadingColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topLeft: Radius.circular(10),
-              ),
-            ),
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomText(
-                  header!,
-                  color: ColorResource.color23375A,
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1.0,
-                ),
-                // const Spacer(),
-                CustomText(
-                  count!,
-                  color: ColorResource.color23375A,
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                ),
-              ],
-            ),
-          ))
-        ],
-      ),
-    );
-  }
-
-  void priorityFollowUpSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: PriorityFollowUpBottomSheet(bloc));
-        });
-  }
-
-  void brokenPTPSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: BrokenPTPBottomSheet(bloc));
-        });
-  }
-
-  void untouchedCasesSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: UntouchedCasesBottomSheet(bloc));
-        });
-  }
-
-  void myVisitsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: MyVisitsBottomSheet(bloc));
-        });
-  }
-
-  void myReceiptsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: MyReceiptsBottomSheet(bloc));
-        });
-  }
-
-  void myDeposistsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: MyDeposistsBottomSheet(bloc));
-        });
-  }
-
-  void yardingSelfReleaseSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: YardingAndSelfRelease(bloc));
-        });
   }
 }

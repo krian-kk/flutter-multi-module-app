@@ -113,4 +113,8 @@ class Constants {
   static const String internalServerError = 'Internal Server Error !!';
   static const String emailNotAvailable =
       'Email ID not available, Mobile number available, send OTP via SMS';
+  static const String reciptsAlertMesg =
+      'Ensure the collected amount/cheque is deposited in the bank within 24 hours';
+  static const String bankReceiptAmountDoesntMatch =
+      'There is mismatch in the receipt amount. Do you wish to continue?';
 }

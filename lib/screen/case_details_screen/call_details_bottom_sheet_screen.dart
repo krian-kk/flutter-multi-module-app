@@ -204,6 +204,8 @@ class _CallDetailsBottomSheetScreenState
                                                 const SizedBox(width: 5),
                                                 InkWell(
                                                   onTap: () {
+                                                    print(
+                                                        "call detail bottom sheet ===> ${i}");
                                                     widget.bloc.add(
                                                         ClickMainCallBottomSheetEvent(
                                                             i));

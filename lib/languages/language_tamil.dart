@@ -467,10 +467,10 @@ class LanguageTa extends Languages {
   String get otsPaymentTime => 'OTS செலுத்தும் நேரம்';
 
   @override
-  String get rtpDenialReason => 'RTP/மறுப்பு காரணம்*';
+  String get rtpDenialReason => 'RTP/மறுப்பு காரணம்';
 
   @override
-  String get disputeReason => 'சர்ச்சை காரணம்*';
+  String get disputeReason => 'சர்ச்சை காரணம்';
 
   @override
   String get modelMake => 'மாதிரி தயாரிக்கவும்*';

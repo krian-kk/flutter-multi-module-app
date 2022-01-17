@@ -33,6 +33,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final Color cursorColor;
   final Function? validatorCallBack;
   final double height;
+  final TextCapitalization? textCapitalization;
 
   const CustomReadOnlyTextField(
     this.hintText,
@@ -64,6 +65,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.contentPadding,
     this.cursorColor = ColorResource.color666666,
     this.validationRules = const [],
+    this.textCapitalization,
   }) : super(key: key);
 
   @override
@@ -132,6 +134,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             setState(() {});
             // FocusScope.of(context).unfocus();
           },
+          textCapitalization:
+              widget.textCapitalization ?? TextCapitalization.none,
 
           // inputFormatters: [
           //   // if (widget.maximumWordCount != null)

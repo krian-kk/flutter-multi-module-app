@@ -46,7 +46,6 @@ class CustomRtpBottomSheet extends StatefulWidget {
 
 class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
-  String selectedDate = '';
   TextEditingController nextActionDateControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
@@ -59,6 +58,10 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().add(const Duration(days: 7)));
+    });
   }
 
   @override
@@ -215,99 +218,94 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                       onTap: isSubmit
                           ? () async {
                               if (_formKey.currentState!.validate()) {
-                                if (selectedDropdownValue != 'select') {
-                                  setState(() => isSubmit = false);
-                                  // Position position = Position(
-                                  //   longitude: 0,
-                                  //   latitude: 0,
-                                  //   timestamp: DateTime.now(),
-                                  //   accuracy: 0,
-                                  //   altitude: 0,
-                                  //   heading: 0,
-                                  //   speed: 0,
-                                  //   speedAccuracy: 0,
-                                  // );
-                                  LatLng latLng = const LatLng(0, 0);
-                                  if (Geolocator.checkPermission().toString() !=
-                                      PermissionStatus.granted.toString()) {
-                                    Position res =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
-                                    setState(() {
-                                      // position = res;
-                                      latLng =
-                                          LatLng(res.latitude, res.longitude);
-                                    });
-                                  }
-                                  var requestBodyData = DenialPostModel(
-                                    eventId:
-                                        ConstantEventValues.rtpDenialEventId,
-                                    eventType: (widget.userType ==
-                                                Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : DENIAL'
-                                        : 'DENIAL',
-                                    caseId: widget.caseId,
-                                    eventCode:
-                                        ConstantEventValues.rtpDenialEventCode,
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    eventAttr: EventAttr(
-                                      actionDate: selectedDate,
-                                      remarks: remarksControlller.text,
-                                      reasons: selectedDropdownValue,
-                                      longitude: latLng.longitude,
-                                      latitude: latLng.latitude,
-                                      amountDenied:
-                                          Singleton.instance.overDueAmount ??
-                                              '',
-                                    ),
-                                    eventModule: widget.isCall!
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    contact: Contact(
-                                      cType: widget.postValue['cType'],
-                                      value: widget.postValue['value'],
-                                      health:
-                                          ConstantEventValues.rtpDenialHealth,
-                                      resAddressId0:
-                                          Singleton.instance.resAddressId_0 ??
-                                              '',
-                                      contactId0:
-                                          Singleton.instance.contactId_0 ?? '',
-                                    ),
-                                    callID: Singleton.instance.callID,
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    callingID: Singleton.instance.callingID,
-                                  );
-                                  print(
-                                      'Response Date => ${jsonEncode(requestBodyData)}');
-                                  Map<String, dynamic> postResult =
-                                      await APIRepository.apiRequest(
-                                          APIRequestType.POST,
-                                          HttpUrl.denialPostUrl(
-                                              'denial', widget.userType),
-                                          requestBodydata:
-                                              jsonEncode(requestBodyData));
-                                  if (postResult[Constants.success]) {
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    Navigator.pop(context);
-                                  }
-                                } else {
-                                  AppUtils.showToast(
-                                      Constants.pleaseSelectDropDownValue);
+                                // if (selectedDropdownValue != 'select') {
+                                setState(() => isSubmit = false);
+                                // Position position = Position(
+                                //   longitude: 0,
+                                //   latitude: 0,
+                                //   timestamp: DateTime.now(),
+                                //   accuracy: 0,
+                                //   altitude: 0,
+                                //   heading: 0,
+                                //   speed: 0,
+                                //   speedAccuracy: 0,
+                                // );
+                                LatLng latLng = const LatLng(0, 0);
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    // position = res;
+                                    latLng =
+                                        LatLng(res.latitude, res.longitude);
+                                  });
                                 }
+                                var requestBodyData = DenialPostModel(
+                                  eventId: ConstantEventValues.rtpDenialEventId,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
+                                      ? 'TC : DENIAL'
+                                      : 'DENIAL',
+                                  caseId: widget.caseId,
+                                  eventCode:
+                                      ConstantEventValues.rtpDenialEventCode,
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  eventAttr: EventAttr(
+                                    actionDate: nextActionDateControlller.text,
+                                    remarks: remarksControlller.text,
+                                    reasons: selectedDropdownValue != 'select'
+                                        ? selectedDropdownValue
+                                        : '',
+                                    longitude: latLng.longitude,
+                                    latitude: latLng.latitude,
+                                    amountDenied:
+                                        Singleton.instance.overDueAmount ?? '',
+                                  ),
+                                  eventModule: widget.isCall!
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                                  contact: Contact(
+                                    cType: widget.postValue['cType'],
+                                    value: widget.postValue['value'],
+                                    health: ConstantEventValues.rtpDenialHealth,
+                                    resAddressId0:
+                                        Singleton.instance.resAddressId_0 ?? '',
+                                    contactId0:
+                                        Singleton.instance.contactId_0 ?? '',
+                                  ),
+                                  callID: Singleton.instance.callID,
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? '',
+                                  callingID: Singleton.instance.callingID,
+                                );
+                                print(
+                                    'Response Date => ${jsonEncode(requestBodyData)}');
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                        APIRequestType.POST,
+                                        HttpUrl.denialPostUrl(
+                                            'denial', widget.userType),
+                                        requestBodydata:
+                                            jsonEncode(requestBodyData));
+                                if (postResult[Constants.success]) {
+                                  AppUtils.topSnackBar(
+                                      context, Constants.successfullySubmitted);
+                                  Navigator.pop(context);
+                                }
+                                // } else {
+                                //   AppUtils.showToast(
+                                //       Constants.pleaseSelectDropDownValue);
+                                // }
                               }
                               setState(() => isSubmit = true);
                             }
@@ -356,7 +354,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
     });
   }
 }

@@ -49,6 +49,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
   String? custName;
   List<SelectedValue> selectedValue = [];
 
+  double receiptAmount = 0.0;
+
   _onSelected(int index) {
     setState(() {
       _selectedIndex = index;
@@ -70,15 +72,23 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
               fontSize: FontSize.sixteen,
               fontWeight: FontWeight.w600,
               onTap: () {
-                for (var element in selectedValue) {
-                  if (element.isSelected) {
-                    depositionModeSheet(context);
-                  } else {
-                    AppUtils.showToast(
-                      Constants.notSelectedCase,
-                      gravity: ToastGravity.CENTER,
-                    );
+                if (selectedValue[0].isSelected) {
+                  for (var element in selectedValue) {
+                    if (element.isSelected) {
+                      depositionModeSheet(context);
+                    }
+                    // else {
+                    //   AppUtils.showToast(
+                    //     Constants.notSelectedCase,
+                    //     gravity: ToastGravity.CENTER,
+                    //   );
+                    // }
                   }
+                } else {
+                  AppUtils.showToast(
+                    Constants.notSelectedCase,
+                    gravity: ToastGravity.CENTER,
+                  );
                 }
 
                 // if (_selectedIndex == null || _selectedIndex == 0) {
@@ -344,6 +354,26 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                         .eventAttr!
                                                         .customerName ??
                                                     '';
+                                                if (!selectedValue[index]
+                                                    .isSelected) {
+                                                  receiptAmount =
+                                                      receiptAmount -
+                                                          double.parse(widget
+                                                              .result!
+                                                              .cases![index]
+                                                              .eventAttr!
+                                                              .amountCollected);
+                                                } else {
+                                                  receiptAmount =
+                                                      receiptAmount +
+                                                          double.parse(widget
+                                                              .result!
+                                                              .cases![index]
+                                                              .eventAttr!
+                                                              .amountCollected);
+                                                }
+                                                // print("----Selected Amount");
+                                                // print(receiptAmount);
                                               });
                                               ids.clear();
                                               selectedValue.forEach((element) {
@@ -388,6 +418,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 DepositionMode.buildDepositionMode(
-                    context, ids, widget.bloc, custName)));
+                    context, ids, widget.bloc, custName, receiptAmount)));
   }
 }

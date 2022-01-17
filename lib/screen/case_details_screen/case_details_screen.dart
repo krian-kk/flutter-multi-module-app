@@ -69,14 +69,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             // Navigator.pop(context);
           }
           if (state is ClickMainAddressBottomSheetState) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
           }
           if (state is ClickMainCallBottomSheetState) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
+            print("ClickOpenBottomSheetState ===> ${state.isCall}");
             openBottomSheet(context, state.title, state.list, state.isCall,
                 health: state.health);
           }
@@ -958,7 +959,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       backgroundColor: ColorResource.colorFFFFFF,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
+          top: Radius.circular(30),
         ),
       ),
       builder: (BuildContext context) {
@@ -1034,6 +1035,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               // eventCode: bloc.eventCode,
             );
           case Constants.collections:
+            print(list[bloc.indexValue!]);
             return CustomCollectionsBottomSheet(
               Languages.of(context)!.collections,
               caseId: bloc.caseId.toString(),
@@ -1050,6 +1052,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
+              custName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
             );
           case Constants.ots:
             return CustomOtsBottomSheet(
@@ -1100,7 +1104,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc: bloc,
             );
           case Constants.otherFeedback:
-            print(isCall);
+            print("other feedback sheet open ===> ${isCall}");
             print(bloc.userType);
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,

@@ -1,7 +1,6 @@
 part of 'dashboard_bloc.dart';
 
-@immutable
-abstract class DashboardState extends BaseEquatable {}
+class DashboardState extends BaseEquatable {}
 
 class DashboardInitial extends DashboardState {}
 

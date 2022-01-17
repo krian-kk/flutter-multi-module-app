@@ -172,6 +172,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       widgets.add(InkWell(
         onTap: () {
           setState(() => selectedOptionBottomSheetButton = element.title);
+          print("customer met iscall ===> false");
           widget.bloc.add(ClickOpenBottomSheetEvent(
             element.stringResourceValue,
             widget.bloc.caseDetailsAPIValue.result?.addressDetails,

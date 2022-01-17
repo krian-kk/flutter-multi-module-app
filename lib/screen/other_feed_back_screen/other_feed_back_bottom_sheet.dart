@@ -66,7 +66,6 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
 class _CustomOtherFeedBackBottomSheetState
     extends State<CustomOtherFeedBackBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
-  String selectedDate = '';
   TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List<File> uploadFileLists = [];
@@ -76,7 +75,7 @@ class _CustomOtherFeedBackBottomSheetState
     AddNewContactFieldModel(TextEditingController(), '', FocusNode()),
   ];
 
-  List<OtherFeedBackContact>? otherFeedbackContact;
+  List otherFeedbackContact = [];
 
   // check vehicle available or not
   bool isVehicleAvailable = false;
@@ -112,9 +111,8 @@ class _CustomOtherFeedBackBottomSheetState
           false;
     }
     setState(() {
-      selectedDate = DateTime.now().toString();
-
-      dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      dateControlller.text = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().add(const Duration(days: 1)));
     });
     // for (var element in widget.bloc.contractorDetailsValue.result!
     //             .feedbackTemplate![0].data![0].options![0].viewValue!) {}
@@ -164,13 +162,13 @@ class _CustomOtherFeedBackBottomSheetState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // CustomText(
-                                //   Languages.of(context)!.date,
-                                //   fontSize: FontSize.twelve,
-                                //   fontWeight: FontWeight.w400,
-                                //   color: ColorResource.color666666,
-                                //   fontStyle: FontStyle.normal,
-                                // ),
+                                CustomText(
+                                  Languages.of(context)!.nextActionDate,
+                                  fontSize: FontSize.twelve,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorResource.color666666,
+                                  fontStyle: FontStyle.normal,
+                                ),
                                 SizedBox(
                                   width:
                                       (MediaQuery.of(context).size.width - 44) /
@@ -349,9 +347,9 @@ class _CustomOtherFeedBackBottomSheetState
                       onTap: isSubmit
                           ? () async {
                               setState(() {});
-                              otherFeedbackContact?.clear();
+                              otherFeedbackContact.clear();
                               for (int i = 0; i < (listOfContact.length); i++) {
-                                otherFeedbackContact?.add(OtherFeedBackContact(
+                                otherFeedbackContact.add(OtherFeedBackContact(
                                     cType: listOfContact[i]
                                         .formValue
                                         .toLowerCase(),
@@ -417,9 +415,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   caseId: widget.caseId,
                                   eventCode:
                                       ConstantEventValues.otherFeedbackEvenCode,
-                                  eventModule: widget.isCall! ||
-                                          Constants.telecaller ==
-                                              widget.userType
+                                  eventModule: widget.isCall!
                                       ? 'Telecalling'
                                       : 'Field Allocation',
                                   invalidNumber: false,
@@ -429,7 +425,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       collectorfeedback:
                                           collectorFeedBackValue ?? '',
                                       actionproposed: actionproposedValue ?? '',
-                                      actionDate: selectedDate,
+                                      actionDate: dateControlller.text,
                                       imageLocation: [''],
                                       longitude: position.longitude,
                                       latitude: position.latitude,
@@ -531,7 +527,6 @@ class _CustomOtherFeedBackBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
     });
   }
 
@@ -643,16 +638,16 @@ class _CustomOtherFeedBackBottomSheetState
                                       selectedValue:
                                           listOfContact[index].formValue,
                                       onChanged: (newValue) {
-                                        setState(
-                                          () => listOfContact[index].formValue =
-                                              newValue.toString(),
-                                        );
-                                        otherFeedbackContact?.clear();
+                                        setState(() {
+                                          listOfContact[index].formValue =
+                                              newValue.toString();
+                                        });
+                                        otherFeedbackContact.clear();
                                         for (int i = 0;
                                             i < (listOfContact.length - 1);
                                             i++) {
                                           otherFeedbackContact
-                                              ?.add(OtherFeedBackContact(
+                                              .add(OtherFeedBackContact(
                                             cType: listOfContact[i]
                                                 .formValue
                                                 .toLowerCase(),

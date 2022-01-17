@@ -31,7 +31,6 @@ class SelfReleaseTab extends StatefulWidget {
 
 class _SelfReleaseTabState extends State<SelfReleaseTab> {
   late TextEditingController dateController = TextEditingController();
-  String selectedDate = '';
   late TextEditingController timeController = TextEditingController();
   late TextEditingController remarksController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -43,6 +42,9 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
     // var currentDateTime = DateTime.now();
     // String currentDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
     // setState(() {
@@ -130,7 +132,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                         contractor:
                                             Singleton.instance.contractor!,
                                         repo: Repo(
-                                          date: selectedDate,
+                                          date: dateController.text,
                                           time: timeController.text,
                                           remarks: remarksController.text,
                                           imageLocation: [''],
@@ -190,7 +192,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                 child: CustomReadOnlyTextField(
                                   Languages.of(context)!.remark,
                                   remarksController,
-                                  validationRules: const ['required'],
+                                  // validationRules: const ['required'],
                                   isLabel: true,
                                   isEnable: true,
                                 ),
@@ -259,7 +261,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate.toString();
       // _formKey.currentState!.validate();
     });
   }
@@ -297,7 +298,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
     final minutes = newTime.minute.toString().padLeft(2, '0');
     setState(() {
       controller.text = '$hours:$minutes';
-
       // _formKey.currentState!.validate();
     });
   }

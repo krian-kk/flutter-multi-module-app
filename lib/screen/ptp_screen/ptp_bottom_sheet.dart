@@ -17,6 +17,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -209,10 +210,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                           ),
                           const SizedBox(height: 21),
                           CustomReadOnlyTextField(
-                            Languages.of(context)!.reference,
+                            StringResource.reference,
                             referenceControlller,
                             focusNode: ptpReferenceFocusNode,
-                            validationRules: const ['required'],
+                            // validationRules: const ['required'],
                             isLabel: true,
                             validatorCallBack: () {},
                             onEditing: () => ptpRemarksFocusNode.requestFocus(),

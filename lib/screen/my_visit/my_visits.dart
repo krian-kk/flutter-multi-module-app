@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/case.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
+import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/singleton.dart';
@@ -33,9 +34,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
     super.initState();
   }
 
-  static List<Case>? custMet = [];
-  static List<Case>? custNotMet = [];
-  static List<Case>? custInvalid = [];
+  // static List<Case>? custMet = [];
+  // static List<Case>? custNotMet = [];
+  // static List<Case>? custInvalid = [];
 
   static dynamic custMetTotalAmt = 0.0;
   static dynamic custNotMetTotalAmt = 0.0;
@@ -57,7 +58,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         if (state is ReturnVisitsApiState) {
           setState(() {
             widget.bloc.myVisitsData =
-                DashboardAllModels.fromJson(state.returnData);
+                MyVisitsCaseModel.fromJson(state.returnData);
           });
         }
 
@@ -77,72 +78,72 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-          custMet!.clear();
-          custNotMet!.clear();
-          custInvalid!.clear();
-          custMetTotalAmt = 0.0;
-          custNotMetTotalAmt = 0.0;
-          invalidTotalAmt = 0.0;
-          for (Case element in widget.bloc.myVisitsData.result!.cases!) {
-            print(element.collSubStatus);
-            if (element.collSubStatus == Constants.ptp ||
-                element.collSubStatus == Constants.denial ||
-                element.collSubStatus == Constants.dispute ||
-                element.collSubStatus == 'Denial' ||
-                element.collSubStatus == 'Dispute' ||
-                // element.collSubStatus == 'Feedback' ||
-                // element.collSubStatus == 'REPO' ||
-                element.collSubStatus == Constants.remainder ||
-                element.collSubStatus == Constants.remainder_1 ||
-                element.collSubStatus == Constants.collections ||
-                element.collSubStatus == Constants.receipt ||
-                element.collSubStatus == Constants.ots ||
-                element.telSubStatus == Constants.ptp ||
-                element.telSubStatus == Constants.denial ||
-                element.telSubStatus == Constants.dispute ||
-                element.telSubStatus == 'Denial' ||
-                element.telSubStatus == 'Dispute' ||
-                // element.telSubStatus == 'Feedback' ||
-                // element.telSubStatus == 'REPO' ||
-                element.telSubStatus == Constants.remainder ||
-                element.telSubStatus == Constants.remainder_1 ||
-                element.telSubStatus == Constants.collections ||
-                element.telSubStatus == Constants.receipt ||
-                element.telSubStatus == Constants.ots) {
-              custMet!.add(element);
-              custMetTotalAmt = (custMetTotalAmt + element.due);
-            }
-          }
+          // custMet!.clear();
+          // custNotMet!.clear();
+          // custInvalid!.clear();
+          // custMetTotalAmt = 0.0;
+          // custNotMetTotalAmt = 0.0;
+          // invalidTotalAmt = 0.0;
+          // for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+          //   print(element.collSubStatus);
+          //   if (element.collSubStatus == Constants.ptp ||
+          //       element.collSubStatus == Constants.denial ||
+          //       element.collSubStatus == Constants.dispute ||
+          //       element.collSubStatus == 'Denial' ||
+          //       element.collSubStatus == 'Dispute' ||
+          //       // element.collSubStatus == 'Feedback' ||
+          //       // element.collSubStatus == 'REPO' ||
+          //       element.collSubStatus == Constants.remainder ||
+          //       element.collSubStatus == Constants.remainder_1 ||
+          //       element.collSubStatus == Constants.collections ||
+          //       element.collSubStatus == Constants.receipt ||
+          //       element.collSubStatus == Constants.ots ||
+          //       element.telSubStatus == Constants.ptp ||
+          //       element.telSubStatus == Constants.denial ||
+          //       element.telSubStatus == Constants.dispute ||
+          //       element.telSubStatus == 'Denial' ||
+          //       element.telSubStatus == 'Dispute' ||
+          //       // element.telSubStatus == 'Feedback' ||
+          //       // element.telSubStatus == 'REPO' ||
+          //       element.telSubStatus == Constants.remainder ||
+          //       element.telSubStatus == Constants.remainder_1 ||
+          //       element.telSubStatus == Constants.collections ||
+          //       element.telSubStatus == Constants.receipt ||
+          //       element.telSubStatus == Constants.ots) {
+          //     custMet!.add(element);
+          //     custMetTotalAmt = (custMetTotalAmt + element.due);
+          //   }
+          // }
 
-          for (Case element in widget.bloc.myVisitsData.result!.cases!) {
-            if (element.collSubStatus == Constants.leftMessage ||
-                element.collSubStatus == Constants.doorLocked ||
-                element.collSubStatus == Constants.entryRestricted ||
-                element.collSubStatus == 'new' ||
-                element.telSubStatus == Constants.telsubstatuslineBusy ||
-                element.telSubStatus == Constants.telsubstatusswitchOff ||
-                element.telSubStatus == Constants.telsubstatusrnr ||
-                element.telSubStatus == Constants.telsubstatusoutOfNetwork ||
-                element.telSubStatus == Constants.telsubstatusdisconnecting ||
-                element.telSubStatus == 'new') {
-              custNotMet!.add(element);
-              custNotMetTotalAmt = (custNotMetTotalAmt + element.due);
-            }
-          }
+          // for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+          //   if (element.collSubStatus == Constants.leftMessage ||
+          //       element.collSubStatus == Constants.doorLocked ||
+          //       element.collSubStatus == Constants.entryRestricted ||
+          //       element.collSubStatus == 'new' ||
+          //       element.telSubStatus == Constants.telsubstatuslineBusy ||
+          //       element.telSubStatus == Constants.telsubstatusswitchOff ||
+          //       element.telSubStatus == Constants.telsubstatusrnr ||
+          //       element.telSubStatus == Constants.telsubstatusoutOfNetwork ||
+          //       element.telSubStatus == Constants.telsubstatusdisconnecting ||
+          //       element.telSubStatus == 'new') {
+          //     custNotMet!.add(element);
+          //     custNotMetTotalAmt = (custNotMetTotalAmt + element.due);
+          //   }
+          // }
 
-          for (Case element in widget.bloc.myVisitsData.result!.cases!) {
-            if (element.collSubStatus == Constants.wrongAddress ||
-                element.collSubStatus == Constants.shifted ||
-                element.collSubStatus == Constants.addressNotFound ||
-                element.telSubStatus == Constants.telsubstatusdoesNotExist ||
-                element.telSubStatus == Constants.telsubstatusincorrectNumber ||
-                element.telSubStatus ==
-                    Constants.telsubstatusnumberNotWorking ||
-                element.telSubStatus == Constants.telsubstatusnotOpeartional) {
-              custInvalid!.add(element);
-              invalidTotalAmt = (invalidTotalAmt + element.due);
-            }
-          }
+          // for (Case element in widget.bloc.myVisitsData.result!.cases!) {
+          //   if (element.collSubStatus == Constants.wrongAddress ||
+          //       element.collSubStatus == Constants.shifted ||
+          //       element.collSubStatus == Constants.addressNotFound ||
+          //       element.telSubStatus == Constants.telsubstatusdoesNotExist ||
+          //       element.telSubStatus == Constants.telsubstatusincorrectNumber ||
+          //       element.telSubStatus ==
+          //           Constants.telsubstatusnumberNotWorking ||
+          //       element.telSubStatus == Constants.telsubstatusnotOpeartional) {
+          //     custInvalid!.add(element);
+          //     invalidTotalAmt = (invalidTotalAmt + element.due);
+          //   }
+          // }
           return WillPopScope(
             onWillPop: () async => true,
             child: Container(
@@ -306,11 +307,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
-                                    child: buildListView(
-                                        widget.bloc,
-                                        widget.bloc.myVisitsData,
-                                        custMet,
-                                        custMetTotalAmt),
+                                    child: buildListView(widget.bloc,
+                                        widget.bloc.myVisitsData.result?.met),
                                   ),
                                   // Customer Not Met
                                   Padding(
@@ -318,9 +316,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         horizontal: 20, vertical: 5),
                                     child: buildListView(
                                         widget.bloc,
-                                        widget.bloc.myVisitsData,
-                                        custNotMet,
-                                        custNotMetTotalAmt),
+                                        widget
+                                            .bloc.myVisitsData.result?.notMet),
                                   ),
                                   // Invalid
                                   Padding(
@@ -328,9 +325,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         horizontal: 20, vertical: 5),
                                     child: buildListView(
                                         widget.bloc,
-                                        widget.bloc.myVisitsData,
-                                        custInvalid,
-                                        invalidTotalAmt),
+                                        widget
+                                            .bloc.myVisitsData.result?.invalid),
                                   ),
                                 ],
                               ),
@@ -423,13 +419,12 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   //   Constants.addressNotFound,
   // ];
 
-  static Widget buildListView(DashboardBloc bloc, DashboardAllModels listData,
-      List<Case>? resultValue, dueTotalAmt) {
+  static Widget buildListView(DashboardBloc bloc, Met? caseLists) {
     return bloc.selectedFilterDataLoading
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : resultValue!.isEmpty
+        : caseLists!.cases!.isEmpty
             ? Column(
                 children: [
                   Padding(
@@ -440,7 +435,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
               )
             : ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: resultValue.length,
+                itemCount: caseLists.cases?.length ?? 0,
                 // itemCount: 1,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
@@ -465,7 +460,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      resultValue.length.toString(),
+                                      caseLists.count.toString(),
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
@@ -486,7 +481,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      dueTotalAmt.toString(),
+                                      caseLists.totalAmt.toString(),
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
@@ -502,13 +497,13 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                         child: InkWell(
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(paramValues: {
-                              'caseID': resultValue[index].caseId
+                              'caseID': caseLists.cases![index].caseId
                             }));
                             Singleton.instance.agrRef =
-                                resultValue[index].agrRef ?? '';
+                                caseLists.cases![index].agrRef ?? '';
                           },
                           child: Container(
-                            margin: (index == resultValue.length - 1)
+                            margin: (index == caseLists.cases!.length - 1)
                                 ? const EdgeInsets.only(bottom: 70)
                                 : EdgeInsets.zero,
                             width: MediaQuery.of(context).size.width,
@@ -535,9 +530,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 2),
                                   child: CustomText(
-                                    resultValue[index].bankName! +
+                                    caseLists.cases![index].bankName! +
                                         ' / ' +
-                                        resultValue[index].agrRef!,
+                                        caseLists.cases![index].agrRef!,
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w500,
                                     color: ColorResource.color101010,
@@ -560,7 +555,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            resultValue[index].due.toString(),
+                                            caseLists.cases![index].due
+                                                .toString(),
                                             fontSize: FontSize.eighteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,
@@ -569,7 +565,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                             height: 3.0,
                                           ),
                                           CustomText(
-                                            resultValue[index].cust!,
+                                            caseLists.cases![index].cust!,
                                             fontSize: FontSize.sixteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w400,
@@ -579,7 +575,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       const Spacer(),
                                       // if (resultValue[index].collSubStatus ==
                                       //     'new')
-                                      resultValue[index].collSubStatus ==
+                                      caseLists.cases![index].collSubStatus ==
                                                   "new" &&
                                               Singleton.instance.usertype ==
                                                   Constants.fieldagent
@@ -603,7 +599,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                 ),
                                               ),
                                             )
-                                          : resultValue[index].telSubStatus ==
+                                          : caseLists.cases![index]
+                                                          .telSubStatus ==
                                                       "new" &&
                                                   Singleton.instance.usertype ==
                                                       Constants.telecaller
@@ -647,8 +644,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                 BorderRadius.circular(10),
                                           ),
                                           child: CustomText(
-                                            resultValue[index]
-                                                .address![0]
+                                            caseLists.cases![index].contact![0]
                                                 .value!,
                                             color: ColorResource.color484848,
                                             fontSize: FontSize.fourteen,
@@ -656,8 +652,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         )
                                       : Wrap(
                                           children: [
-                                            for (var item in listData
-                                                .result!.cases![index].address!)
+                                            for (var item in caseLists
+                                                .cases![index].contact!)
                                               item.cType!.contains('mobile') ||
                                                       item.cType!
                                                           .contains('phone')
@@ -719,7 +715,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       Row(
                                         children: [
                                           CustomText(
-                                            resultValue[index].followUpDate!,
+                                            caseLists
+                                                .cases![index].followUpDate!,
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,

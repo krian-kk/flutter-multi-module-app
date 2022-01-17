@@ -23,6 +23,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
@@ -37,12 +38,14 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
     required this.userType,
     this.postValue,
     this.isCall,
+    this.custName,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
+  final String? custName;
   final bool? isCall;
 
   @override
@@ -81,6 +84,11 @@ class _CustomCollectionsBottomSheetState
   @override
   void initState() {
     super.initState();
+    setState(() {
+      selectedDate = DateTime.now().toString();
+
+      dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
   }
 
   @override
@@ -252,7 +260,7 @@ class _CustomCollectionsBottomSheetState
                             Languages.of(context)!.refCheque,
                             chequeControlller,
                             focusNode: chequeFocusNode,
-                            validationRules: const ['required'],
+                            // validationRules: const ['required'],
                             isLabel: true,
                             onEditing: () => remarksFocusNode.requestFocus(),
                           )),
@@ -345,118 +353,135 @@ class _CustomCollectionsBottomSheetState
                                 AppUtils.showToast(
                                     Constants.pleaseSelectOptions);
                               } else {
-                                // if (uploadFileLists.isEmpty) {
-                                //   AppUtils.showToast(
-                                //     Constants.uploadDepositSlip,
-                                //     gravity: ToastGravity.CENTER,
-                                //   );
-                                // } else {
-                                setState(() => isSubmit = false);
-                                Position position = Position(
-                                  longitude: 0,
-                                  latitude: 0,
-                                  timestamp: DateTime.now(),
-                                  accuracy: 0,
-                                  altitude: 0,
-                                  heading: 0,
-                                  speed: 0,
-                                  speedAccuracy: 0,
-                                );
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    position = res;
-                                  });
-                                }
-                                var requestBodyData = CollectionPostModel(
-                                    eventId:
-                                        ConstantEventValues.collectionEventId,
-                                    eventCode:
-                                        ConstantEventValues.collectionEvenCode,
-                                    eventType: (widget.userType ==
-                                                Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : RECEIPT'
-                                        : 'RECEIPT',
-                                    caseId: widget.caseId,
-                                    contact: CollectionsContact(
-                                      cType: widget.postValue['cType'],
-                                      value: widget.postValue['value'],
-                                      health:
-                                          ConstantEventValues.collectionHealth,
-                                      resAddressId0:
-                                          Singleton.instance.resAddressId_0 ??
+                                DialogUtils.showDialog(
+                                  buildContext: context,
+                                  title: Constants.reciptsAlertMesg,
+                                  description: '',
+                                  okBtnText: Languages.of(context)!
+                                      .submit
+                                      .toUpperCase(),
+                                  cancelBtnText: Languages.of(context)!
+                                      .cancel
+                                      .toUpperCase(),
+                                  okBtnFunction: (val) async {
+                                    // pop or remove the AlertDialouge Box
+                                    Navigator.pop(context);
+
+                                    setState(() => isSubmit = false);
+                                    Position position = Position(
+                                      longitude: 0,
+                                      latitude: 0,
+                                      timestamp: DateTime.now(),
+                                      accuracy: 0,
+                                      altitude: 0,
+                                      heading: 0,
+                                      speed: 0,
+                                      speedAccuracy: 0,
+                                    );
+                                    if (Geolocator.checkPermission()
+                                            .toString() !=
+                                        PermissionStatus.granted.toString()) {
+                                      Position res =
+                                          await Geolocator.getCurrentPosition(
+                                              desiredAccuracy:
+                                                  LocationAccuracy.best);
+                                      setState(() {
+                                        position = res;
+                                      });
+                                    }
+                                    var requestBodyData = CollectionPostModel(
+                                        eventId: ConstantEventValues
+                                            .collectionEventId,
+                                        eventCode: ConstantEventValues
+                                            .collectionEvenCode,
+                                        eventType: (widget.userType ==
+                                                    Constants.telecaller ||
+                                                widget.isCall!)
+                                            ? 'TC : RECEIPT'
+                                            : 'RECEIPT',
+                                        caseId: widget.caseId,
+                                        contact: CollectionsContact(
+                                          cType: widget.postValue['cType'],
+                                          value: widget.postValue['value'],
+                                          health: ConstantEventValues
+                                              .collectionHealth,
+                                          resAddressId0: Singleton
+                                                  .instance.resAddressId_0 ??
                                               '',
-                                      contactId0:
-                                          Singleton.instance.contactId_0 ?? '',
-                                    ),
-                                    eventAttr: EventAttr(
-                                      amountCollected: int.parse(
-                                          amountCollectedControlller.text),
-                                      chequeRefNo: chequeControlller.text,
-                                      date: selectedDate,
-                                      remarks: remarksControlller.text,
-                                      mode: selectedPaymentModeButton,
-                                      imageLocation: [''],
-                                      longitude: position.longitude,
-                                      latitude: position.latitude,
-                                      accuracy: position.accuracy,
-                                      altitude: position.altitude,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      deposition: CollectionsDeposition(
-                                          status: "pending"),
-                                    ),
-                                    callID: Singleton.instance.callID ?? '0',
-                                    callingID:
-                                        Singleton.instance.callingID ?? '0',
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
+                                          contactId0:
+                                              Singleton.instance.contactId_0 ??
+                                                  '',
+                                        ),
+                                        eventAttr: EventAttr(
+                                          amountCollected:
+                                              amountCollectedControlller.text,
+                                          chequeRefNo: chequeControlller.text,
+                                          date: selectedDate,
+                                          remarks: remarksControlller.text,
+                                          mode: selectedPaymentModeButton,
+                                          customerName: widget.custName!,
+                                          followUpPriority: 'REVIEW',
+                                          imageLocation: [''],
+                                          longitude: position.longitude,
+                                          latitude: position.latitude,
+                                          accuracy: position.accuracy,
+                                          altitude: position.altitude,
+                                          heading: position.heading,
+                                          speed: position.speed,
+                                          deposition: CollectionsDeposition(
+                                              status: "pending"),
+                                        ),
+                                        callID:
+                                            Singleton.instance.callID ?? '0',
+                                        callingID:
+                                            Singleton.instance.callingID ?? '0',
+                                        callerServiceID: Singleton
+                                                .instance.callerServiceID ??
                                             '',
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                    eventModule: widget.isCall!
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    invalidNumber: false);
+                                        voiceCallEventCode: ConstantEventValues
+                                            .voiceCallEventCode,
+                                        createdBy:
+                                            Singleton.instance.agentRef ?? '',
+                                        agentName:
+                                            Singleton.instance.agentName ?? '',
+                                        agrRef: Singleton.instance.agrRef ?? '',
+                                        contractor:
+                                            Singleton.instance.contractor ?? '',
+                                        eventModule: widget.isCall!
+                                            ? 'Telecalling'
+                                            : 'Field Allocation',
+                                        invalidNumber: false);
 
-                                final Map<String, dynamic> postdata =
-                                    jsonDecode(jsonEncode(
-                                            requestBodyData.toJson()))
-                                        as Map<String, dynamic>;
-                                List<dynamic> value = [];
-                                for (var element in uploadFileLists) {
-                                  value.add(await MultipartFile.fromFile(
-                                      element.path.toString()));
-                                }
-                                postdata.addAll({
-                                  'files': value,
-                                });
+                                    print(jsonEncode(requestBodyData.toJson()));
 
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                  APIRequestType.UPLOAD,
-                                  HttpUrl.collectionPostUrl(
-                                      'collection', widget.userType),
-                                  formDatas: FormData.fromMap(postdata),
+                                    final Map<String, dynamic> postdata =
+                                        jsonDecode(jsonEncode(
+                                                requestBodyData.toJson()))
+                                            as Map<String, dynamic>;
+                                    List<dynamic> value = [];
+                                    for (var element in uploadFileLists) {
+                                      value.add(await MultipartFile.fromFile(
+                                          element.path.toString()));
+                                    }
+                                    postdata.addAll({
+                                      'files': value,
+                                    });
+
+                                    Map<String, dynamic> postResult =
+                                        await APIRepository.apiRequest(
+                                      APIRequestType.UPLOAD,
+                                      HttpUrl.collectionPostUrl(
+                                          'collection', widget.userType),
+                                      formDatas: FormData.fromMap(postdata),
+                                    );
+
+                                    if (postResult[Constants.success]) {
+                                      AppUtils.topSnackBar(context,
+                                          "Event updated successfully.");
+                                      Navigator.pop(context);
+                                    }
+                                  },
                                 );
-
-                                if (postResult[Constants.success]) {
-                                  AppUtils.topSnackBar(
-                                      context, "Event updated successfully.");
-                                  Navigator.pop(context);
-                                }
                               }
                               // }
                             }

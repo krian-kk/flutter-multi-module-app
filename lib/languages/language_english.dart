@@ -467,10 +467,10 @@ class LanguageEn extends Languages {
   String get otsPaymentTime => 'OTS Payment Time';
 
   @override
-  String get rtpDenialReason => 'RTP/Denial Reason*';
+  String get rtpDenialReason => 'RTP/Denial Reason';
 
   @override
-  String get disputeReason => 'Dispute Reason*';
+  String get disputeReason => 'Dispute Reason';
 
   @override
   String get modelMake => 'MODEL MAKE*';

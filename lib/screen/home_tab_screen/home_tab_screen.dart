@@ -91,6 +91,8 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                             setState(() {
                                               title = StringResource.dashboard
                                                   .toUpperCase();
+                                              print("Slected Tab");
+                                              print(index);
                                             });
                                             break;
                                           case 2:

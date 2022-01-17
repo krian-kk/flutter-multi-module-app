@@ -114,8 +114,9 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
+          print("call detail invalid iscall ===> true");
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails, false,
+              widget.bloc.caseDetailsAPIValue.result?.callDetails, true,
               health: '0'));
         },
         child: Container(

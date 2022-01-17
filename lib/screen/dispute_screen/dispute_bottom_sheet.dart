@@ -47,7 +47,7 @@ class CustomDisputeBottomSheet extends StatefulWidget {
 
 class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
-  String selectedDate = '';
+  // String selectedDate = '';
   TextEditingController remarksControlller = TextEditingController();
 
   String disputeDropDownValue = 'select';
@@ -58,6 +58,10 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().add(const Duration(days: 7)));
+    });
   }
 
   @override
@@ -207,82 +211,81 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     onTap: isSubmit
                         ? () async {
                             if (_formKey.currentState!.validate()) {
-                              if (disputeDropDownValue != 'select') {
-                                setState(() => isSubmit = false);
+                              // if (disputeDropDownValue != 'select') {
+                              setState(() => isSubmit = false);
 
-                                LatLng latLng = const LatLng(0, 0);
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    latLng =
-                                        LatLng(res.latitude, res.longitude);
-                                  });
-                                }
-                                var requestBodyData = DisputePostModel(
-                                  eventId: ConstantEventValues.disputeEventId,
-                                  eventType: (widget.userType ==
-                                              Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : DISPUTE'
-                                      : 'DISPUTE',
-                                  caseId: widget.caseId,
-                                  eventCode:
-                                      ConstantEventValues.disputeEventCode,
-                                  voiceCallEventCode:
-                                      ConstantEventValues.voiceCallEventCode,
-                                  createdBy: Singleton.instance.agentRef ?? '',
-                                  agentName: Singleton.instance.agentName ?? '',
-                                  contractor:
-                                      Singleton.instance.contractor ?? '',
-                                  agrRef: Singleton.instance.agrRef ?? '',
-                                  eventModule: widget.isCall!
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                                  callID: Singleton.instance.callID,
-                                  callerServiceID:
-                                      Singleton.instance.callerServiceID ?? '',
-                                  callingID: Singleton.instance.callingID,
-                                  eventAttr: EventAttr(
-                                    actionDate: selectedDate,
-                                    remarks: remarksControlller.text,
-                                    disputereasons: disputeDropDownValue,
-                                    longitude: latLng.longitude,
-                                    latitude: latLng.latitude,
-                                  ),
-                                  contact: Contact(
-                                    cType: widget.postValue['cType'],
-                                    value: widget.postValue['value'],
-                                    health: ConstantEventValues.disputeHealth,
-                                    resAddressId0:
-                                        Singleton.instance.resAddressId_0 ?? '',
-                                    contactId0:
-                                        Singleton.instance.contactId_0 ?? '',
-                                  ),
-                                );
-                                print(
-                                    'Response Date => ${jsonEncode(requestBodyData)}');
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                        APIRequestType.POST,
-                                        HttpUrl.disputePostUrl(
-                                          'dispute',
-                                          widget.userType,
-                                        ),
-                                        requestBodydata:
-                                            jsonEncode(requestBodyData));
-                                if (postResult[Constants.success]) {
-                                  AppUtils.topSnackBar(
-                                      context, Constants.successfullySubmitted);
-                                  Navigator.pop(context);
-                                }
-                              } else {
-                                AppUtils.showToast(
-                                    Constants.pleaseSelectDropDownValue);
+                              LatLng latLng = const LatLng(0, 0);
+                              if (Geolocator.checkPermission().toString() !=
+                                  PermissionStatus.granted.toString()) {
+                                Position res =
+                                    await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.best);
+                                setState(() {
+                                  latLng = LatLng(res.latitude, res.longitude);
+                                });
                               }
+                              var requestBodyData = DisputePostModel(
+                                eventId: ConstantEventValues.disputeEventId,
+                                eventType:
+                                    (widget.userType == Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : DISPUTE'
+                                        : 'DISPUTE',
+                                caseId: widget.caseId,
+                                eventCode: ConstantEventValues.disputeEventCode,
+                                voiceCallEventCode:
+                                    ConstantEventValues.voiceCallEventCode,
+                                createdBy: Singleton.instance.agentRef ?? '',
+                                agentName: Singleton.instance.agentName ?? '',
+                                contractor: Singleton.instance.contractor ?? '',
+                                agrRef: Singleton.instance.agrRef ?? '',
+                                eventModule: widget.isCall!
+                                    ? 'Telecalling'
+                                    : 'Field Allocation',
+                                callID: Singleton.instance.callID,
+                                callerServiceID:
+                                    Singleton.instance.callerServiceID ?? '',
+                                callingID: Singleton.instance.callingID,
+                                eventAttr: EventAttr(
+                                  actionDate: nextActionDateControlller.text,
+                                  remarks: remarksControlller.text,
+                                  disputereasons:
+                                      disputeDropDownValue != 'select'
+                                          ? disputeDropDownValue
+                                          : '',
+                                  longitude: latLng.longitude,
+                                  latitude: latLng.latitude,
+                                ),
+                                contact: Contact(
+                                  cType: widget.postValue['cType'],
+                                  value: widget.postValue['value'],
+                                  health: ConstantEventValues.disputeHealth,
+                                  resAddressId0:
+                                      Singleton.instance.resAddressId_0 ?? '',
+                                  contactId0:
+                                      Singleton.instance.contactId_0 ?? '',
+                                ),
+                              );
+                              print(
+                                  'Response Date => ${jsonEncode(requestBodyData)}');
+                              Map<String, dynamic> postResult =
+                                  await APIRepository.apiRequest(
+                                      APIRequestType.POST,
+                                      HttpUrl.disputePostUrl(
+                                        'dispute',
+                                        widget.userType,
+                                      ),
+                                      requestBodydata:
+                                          jsonEncode(requestBodyData));
+                              if (postResult[Constants.success]) {
+                                AppUtils.topSnackBar(
+                                    context, Constants.successfullySubmitted);
+                                Navigator.pop(context);
+                              }
+                              // } else {
+                              //   AppUtils.showToast(
+                              //       Constants.pleaseSelectDropDownValue);
+                              // }
                               setState(() => isSubmit = true);
                             }
                           }
@@ -332,7 +335,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
     });
   }
 }

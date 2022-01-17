@@ -33,7 +33,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 part 'case_details_event.dart';
 part 'case_details_state.dart';
 
@@ -261,6 +261,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             isCall: true),
       ]);
 
+      // Customer Not met Next Action Date is = Current Date + 3 days
+      addressCustomerNotMetNextActionDateController.text =
+          DateFormat('yyyy-MM-dd')
+              .format(DateTime.now().add(const Duration(days: 3)));
+      // Unreachable Next Action Date is = Current Date + 1 days
+      phoneUnreachableNextActionDateController.text = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().add(const Duration(days: 1)));
+
       yield CaseDetailsLoadedState();
     }
     if (event is ClickMainAddressBottomSheetEvent) {
@@ -323,26 +331,27 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           //   })
           // });
           break;
-        case Constants.otherFeedback:
-          // if (ConnectivityResult.none ==
-          //     await Connectivity().checkConnectivity()) {
-          //   yield NoInternetState();
-          // } else {
-          //   Map<String, dynamic> getContractorDetails =
-          //       await APIRepository.apiRequest(
-          //           APIRequestType.GET, HttpUrl.contractorDetail);
-          //   if (getContractorDetails[Constants.success] == true) {
-          //     Map<String, dynamic> jsonData = getContractorDetails['data'];
-          //     contractorDetailsValue =
-          //         ContractorDetailsModel.fromJson(jsonData);
-          //   } else {
-          //     AppUtils.showToast(getContractorDetails['data'] ?? '');
-          //     // AppUtils.showToast(getContractorDetails['data']);
-          //   }
-          // }
-          break;
+        // case Constants.otherFeedback:
+        // if (ConnectivityResult.none ==
+        //     await Connectivity().checkConnectivity()) {
+        //   yield NoInternetState();
+        // } else {
+        //   Map<String, dynamic> getContractorDetails =
+        //       await APIRepository.apiRequest(
+        //           APIRequestType.GET, HttpUrl.contractorDetail);
+        //   if (getContractorDetails[Constants.success] == true) {
+        //     Map<String, dynamic> jsonData = getContractorDetails['data'];
+        //     contractorDetailsValue =
+        //         ContractorDetailsModel.fromJson(jsonData);
+        //   } else {
+        //     AppUtils.showToast(getContractorDetails['data'] ?? '');
+        //     // AppUtils.showToast(getContractorDetails['data']);
+        //   }
+        // }
+        // break;
         default:
       }
+      print("iscall value ==> ${event.isCall}");
       yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
           health: event.health);
     }
@@ -630,7 +639,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventAttr: PhoneUnreachableEventAttr(
           remarks: phoneUnreachableRemarksController.text,
           followUpPriority: 'REVIEW',
-          nextActionDate: phoneUnreachableSelectedDate,
+          nextActionDate: phoneUnreachableSelectedDate != ''
+              ? phoneUnreachableSelectedDate
+              : phoneUnreachableNextActionDateController.text,
         ),
         eventModule: 'Telecalling',
         createdBy: Singleton.instance.agentRef ?? '',
@@ -698,7 +709,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventAttr: CustomerNotMetEventAttr(
           remarks: addressCustomerNotMetRemarksController.text,
           followUpPriority: followUpPriority,
-          nextActionDate: addressCustomerNotMetSelectedDate,
+          nextActionDate: addressCustomerNotMetSelectedDate != ''
+              ? addressCustomerNotMetSelectedDate
+              : addressCustomerNotMetNextActionDateController.text,
           longitude: position.longitude,
           latitude: position.latitude,
           accuracy: position.accuracy,

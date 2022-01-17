@@ -125,8 +125,9 @@ class APIRepository {
       if (e.response != null) {
         error = DioClient.errorHandling(e);
       } else {
-        error =
-            'Error sending request!'; // connection timeout sometime will come
+        // error =
+        //     'Error sending request!'; // connection timeout sometime will come
+        error = 'connection timeout'; // connection timeout sometime will come
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
@@ -164,6 +165,8 @@ class APIRepository {
                   'Error refreshing access token: Invalid refresh token' ||
               e.response!.data['message'] == 'Error getting KeyCloak session' ||
               e.response!.data['message'] == 'Daily token session expired' ||
+              e.response!.data['message'] ==
+                  'Access token invalid and no refresh token provided' ||
               e.response!.data['message'] ==
                   'Error refreshing access token: Session not active' ||
               invalidAccessServerError == 'Session Expired!') {

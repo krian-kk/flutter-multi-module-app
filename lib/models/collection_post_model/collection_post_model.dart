@@ -77,7 +77,7 @@ class CollectionPostModel {
 }
 
 class EventAttr {
-  late int amountCollected;
+  late dynamic amountCollected;
   late String date;
   late String chequeRefNo;
   late String remarks;
@@ -100,8 +100,8 @@ class EventAttr {
     required this.chequeRefNo,
     required this.remarks,
     required this.mode,
-    this.followUpPriority = '',
-    this.customerName = '',
+    required this.followUpPriority,
+    required this.customerName,
     required this.imageLocation,
     this.altitude,
     this.accuracy = 0,

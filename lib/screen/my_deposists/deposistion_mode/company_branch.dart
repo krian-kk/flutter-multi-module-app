@@ -16,6 +16,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 
 class CompanyBranch extends StatefulWidget {
@@ -23,8 +24,13 @@ class CompanyBranch extends StatefulWidget {
   final List<String>? selected_case_Ids;
   final String? mode;
   final String? custname;
+  final double? receiptAmt;
   const CompanyBranch(this.bloc,
-      {Key? key, this.selected_case_Ids, this.mode, this.custname})
+      {Key? key,
+      this.selected_case_Ids,
+      this.mode,
+      this.custname,
+      this.receiptAmt})
       : super(key: key);
 
   @override
@@ -46,6 +52,9 @@ class _CompanyBranchState extends State<CompanyBranch> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      receiptController.text = widget.receiptAmt.toString();
+    });
   }
 
   getFiles() async {
@@ -149,11 +158,37 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         status: 'deposited',
                                       ),
                                     );
-                                    widget.bloc.add(PostCompanyDepositDataEvent(
-                                      postData: requestBodyData,
-                                      fileData: uploadFileLists,
-                                      context: context,
-                                    ));
+
+                                    if (receiptController.text ==
+                                        depositController.text) {
+                                      widget.bloc
+                                          .add(PostCompanyDepositDataEvent(
+                                        postData: requestBodyData,
+                                        fileData: uploadFileLists,
+                                        context: context,
+                                      ));
+                                    } else {
+                                      DialogUtils.showDialog(
+                                          buildContext: context,
+                                          title: Constants
+                                              .bankReceiptAmountDoesntMatch,
+                                          description: '',
+                                          okBtnText: Languages.of(context)!
+                                              .submit
+                                              .toUpperCase(),
+                                          cancelBtnText: Languages.of(context)!
+                                              .cancel
+                                              .toUpperCase(),
+                                          okBtnFunction: (val) async {
+                                            Navigator.pop(context);
+                                            widget.bloc.add(
+                                                PostCompanyDepositDataEvent(
+                                              postData: requestBodyData,
+                                              fileData: uploadFileLists,
+                                              context: context,
+                                            ));
+                                          });
+                                    }
 
                                     // Map<String, dynamic> postResult =
                                     //     await APIRepository.apiRequest(APIRequestType.POST,

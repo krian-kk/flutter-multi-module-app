@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,6 +17,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:objectid/objectid.dart';
 
@@ -24,8 +26,13 @@ class BankTab extends StatefulWidget {
   final List<String>? selected_case_Ids;
   final String? mode;
   final String? custname;
+  final double? receiptAmt;
   const BankTab(this.bloc,
-      {Key? key, this.selected_case_Ids, this.mode, this.custname})
+      {Key? key,
+      this.selected_case_Ids,
+      this.mode,
+      this.custname,
+      this.receiptAmt})
       : super(key: key);
 
   @override
@@ -51,6 +58,9 @@ class _BankTabState extends State<BankTab> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      receiptController.text = widget.receiptAmt.toString();
+    });
   }
 
   getFiles() async {
@@ -126,6 +136,7 @@ class _BankTabState extends State<BankTab> {
                                   //     gravity: ToastGravity.CENTER,
                                   //   );
                                   // } else {
+
                                   final id = ObjectId();
                                   var requestBodyData = BankDepositPostModel(
                                       caseIds:
@@ -151,11 +162,35 @@ class _BankTabState extends State<BankTab> {
                                         status: 'deposited',
                                       ));
 
-                                  widget.bloc.add(PostBankDepositDataEvent(
-                                    postData: requestBodyData,
-                                    fileData: uploadFileLists,
-                                    context: context,
-                                  ));
+                                  if (receiptController.text ==
+                                      depositController.text) {
+                                    widget.bloc.add(PostBankDepositDataEvent(
+                                      postData: requestBodyData,
+                                      fileData: uploadFileLists,
+                                      context: context,
+                                    ));
+                                  } else {
+                                    DialogUtils.showDialog(
+                                        buildContext: context,
+                                        title: Constants
+                                            .bankReceiptAmountDoesntMatch,
+                                        description: '',
+                                        okBtnText: Languages.of(context)!
+                                            .submit
+                                            .toUpperCase(),
+                                        cancelBtnText: Languages.of(context)!
+                                            .cancel
+                                            .toUpperCase(),
+                                        okBtnFunction: (val) async {
+                                          Navigator.pop(context);
+                                          widget.bloc
+                                              .add(PostBankDepositDataEvent(
+                                            postData: requestBodyData,
+                                            fileData: uploadFileLists,
+                                            context: context,
+                                          ));
+                                        });
+                                  }
 
                                   // Map<String, dynamic> postResult =
                                   //     await APIRepository.apiRequest(APIRequestType.POST,
@@ -212,9 +247,14 @@ class _BankTabState extends State<BankTab> {
                               child: CustomReadOnlyTextField(
                                 Languages.of(context)!.ifscCode,
                                 ifscCodeController,
+                                textCapitalization:
+                                    TextCapitalization.characters,
                                 validationRules: const ['required'],
                                 isLabel: true,
                                 isEnable: true,
+                                inputformaters: [
+                                  LengthLimitingTextInputFormatter(11),
+                                ],
                               ),
                             ),
                             Padding(
@@ -238,7 +278,7 @@ class _BankTabState extends State<BankTab> {
                                       receiptController,
                                       validationRules: const ['required'],
                                       isLabel: true,
-                                      isEnable: true,
+                                      isEnable: false,
                                     ),
                                   ),
                                   const SizedBox(

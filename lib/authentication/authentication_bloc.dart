@@ -66,10 +66,15 @@ class AuthenticationBloc
                 APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
-              print(agentDetail['data']);
+              // print(agentDetail['data']);
+              yield AuthenticationUnAuthenticated();
+
+              if (agentDetail['data'] is String) {
+                AppUtils.showToast(agentDetail['data'],
+                    backgroundColor: Colors.red);
+              }
               AgentDetailErrorModel agentDetailError =
                   AgentDetailErrorModel.fromJson(agentDetail['data']);
-              yield AuthenticationUnAuthenticated();
               AppUtils.showToast(agentDetailError.msg!,
                   backgroundColor: Colors.red);
             } else {

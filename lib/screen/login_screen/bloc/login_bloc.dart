@@ -167,10 +167,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 APIRequestType.GET, HttpUrl.agentDetailUrl + event.userId!);
 
             if (agentDetail['success'] == false) {
-              AgentDetailErrorModel agentDetailError =
-                  AgentDetailErrorModel.fromJson(agentDetail['data']);
               // Here facing error so close the loading
               yield SignInLoadedState();
+              if (agentDetail['data'] is String) {
+                AppUtils.showToast(agentDetail['data'],
+                    backgroundColor: Colors.red);
+              }
+              AgentDetailErrorModel agentDetailError =
+                  AgentDetailErrorModel.fromJson(agentDetail['data']);
+
               AppUtils.showToast(agentDetailError.msg!,
                   backgroundColor: Colors.red);
             } else {

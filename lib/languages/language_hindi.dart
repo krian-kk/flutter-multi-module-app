@@ -466,10 +466,10 @@ class LanguageHi extends Languages {
   String get otsPaymentTime => 'ओटीएस भुगतान समय';
 
   @override
-  String get rtpDenialReason => 'आरटीपी/अस्वीकार कारण*';
+  String get rtpDenialReason => 'आरटीपी/अस्वीकार कारण';
 
   @override
-  String get disputeReason => 'विवाद का कारण*';
+  String get disputeReason => 'विवाद का कारण';
 
   @override
   String get modelMake => 'मॉडल बनाना*';

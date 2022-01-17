@@ -93,7 +93,7 @@ class EventAttr {
   late double longitude;
   // late double distance;
   // late AgentLocation agentLocation;
-  late List<OtherFeedBackContact>? contact;
+  late List? contact;
 
   EventAttr({
     required this.vehicleavailable,

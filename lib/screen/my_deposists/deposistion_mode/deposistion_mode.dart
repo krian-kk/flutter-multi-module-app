@@ -11,7 +11,7 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 
 class DepositionMode {
   static Widget buildDepositionMode(BuildContext context, List<String> _ids,
-      DashboardBloc bloc, String? custName) {
+      DashboardBloc bloc, String? custName, double receiptAmount) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.83,
       child: Container(
@@ -65,14 +65,20 @@ class DepositionMode {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        BankTab(bloc,
-                            selected_case_Ids: _ids,
-                            mode: "Bank",
-                            custname: custName),
-                        CompanyBranch(bloc,
-                            selected_case_Ids: _ids,
-                            mode: "Company Branch",
-                            custname: custName),
+                        BankTab(
+                          bloc,
+                          selected_case_Ids: _ids,
+                          mode: "Bank",
+                          custname: custName,
+                          receiptAmt: receiptAmount,
+                        ),
+                        CompanyBranch(
+                          bloc,
+                          selected_case_Ids: _ids,
+                          mode: "Company Branch",
+                          custname: custName,
+                          receiptAmt: receiptAmount,
+                        ),
                       ],
                     ),
                   ),

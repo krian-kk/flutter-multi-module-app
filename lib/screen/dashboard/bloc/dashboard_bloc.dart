@@ -8,15 +8,16 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
+import 'package:origa/models/dashboard_card_count_model.dart';
 import 'package:origa/models/dashboard_event_count_model/dashboard_event_count_model.dart';
 import 'package:origa/models/dashboard_event_count_model/result.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
+import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/receipts_weekly_model/case.dart';
-import 'package:origa/models/receipts_weekly_model/receipts_weekly_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
@@ -44,7 +45,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
   DashboardAllModels brokenPTPData = DashboardAllModels();
   DashboardAllModels untouchedCasesData = DashboardAllModels();
-  DashboardAllModels myVisitsData = DashboardAllModels();
+  MyVisitsCaseModel myVisitsData = MyVisitsCaseModel();
   DashboardAllModels myReceiptsData = DashboardAllModels();
   // DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
   // DashboardUntouchedCasesModel untouchedCasesData =
@@ -53,6 +54,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
   MyDeposistModel myDeposistsData = MyDeposistModel();
   YardingData yardingAndSelfReleaseData = YardingData();
+  DashboardCardCount dashboardCardCounts = DashboardCardCount();
 
   List<String> filterOption = [
     'TODAY',
@@ -60,15 +62,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'MONTHLY',
   ];
 
-  // Show the Options
-  List customerMetCountValue = [];
-  List customerNotMetCountValue = [];
-  List customerInvalidCountValue = [];
+  // // Show the Options
+  // String? customerMetCountValue;
+  // String? customerNotMetCountValue;
+  // String? customerInvalidCountValue;
 
-  int? mtdCaseCompleted = 0;
-  int? mtdCaseTotal = 0;
-  int? mtdAmountCompleted = 0;
-  int? mtdAmountTotal = 0;
+  dynamic mtdCaseCompleted = 0;
+  dynamic mtdCaseTotal = 0;
+  dynamic mtdAmountCompleted = 0;
+  dynamic mtdAmountTotal = 0;
 
   String? todayDate;
   // this is search result cases
@@ -110,46 +112,55 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
 
         if (dashboardData!['success']) {
-          var jsonData = dashboardData['data']['result'];
+          // var jsonData = dashboardData['data']['result'];
 
-          mtdCaseCompleted = jsonData['mtdCases']['completed'];
-          mtdCaseTotal = jsonData['mtdCases']['total'];
-          mtdAmountCompleted = jsonData['mtdAmount']['completed'];
-          mtdAmountTotal = jsonData['mtdAmount']['total'];
-          // print(DashboardData['data']);
+          dashboardCardCounts =
+              DashboardCardCount.fromJson(dashboardData['data']);
+
+          print(dashboardCardCounts.result?.notMet?.count);
+
+          mtdCaseCompleted = dashboardCardCounts.result?.mtdCases!.completed;
+          mtdCaseTotal = dashboardCardCounts.result?.mtdCases!.total;
+          mtdAmountCompleted = dashboardCardCounts.result?.mtdAmount!.completed;
+          mtdAmountTotal = dashboardCardCounts.result?.mtdAmount!.total;
 
           dashboardList.addAll([
             DashboardListModel(
               title: Languages.of(event.context!)!.priorityFollowUp,
               image: ImageResource.vectorArrow,
-              count: jsonData['priorityFollowUp']['count'].toString(),
-              amountRs: jsonData['priorityFollowUp']['totalAmt'].toString(),
+              count: dashboardCardCounts.result?.priorityFollowUp!.count
+                  .toString(),
+              amountRs: dashboardCardCounts.result?.priorityFollowUp!.totalAmt
+                  .toString(),
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.untouchedCases,
               image: ImageResource.vectorArrow,
-              count: jsonData['untouched']['count'].toString(),
-              amountRs: jsonData['untouched']['totalAmt'].toString(),
+              count: dashboardCardCounts.result?.untouched!.count.toString(),
+              amountRs:
+                  dashboardCardCounts.result?.untouched!.totalAmt.toString(),
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.brokenPTP,
               image: ImageResource.vectorArrow,
-              count: jsonData['brokenPtp']['count'].toString(),
-              amountRs: jsonData['brokenPtp']['totalAmt'].toString(),
+              count: dashboardCardCounts.result?.brokenPtp!.count.toString(),
+              amountRs:
+                  dashboardCardCounts.result?.brokenPtp!.totalAmt.toString(),
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.myReceipts,
               image: ImageResource.vectorArrow,
-              count: jsonData['receipts']['count'].toString(),
-              amountRs: jsonData['receipts']['totalAmt'].toString(),
+              count: dashboardCardCounts.result?.receipts!.count.toString(),
+              amountRs:
+                  dashboardCardCounts.result?.receipts!.totalAmt.toString(),
             ),
             DashboardListModel(
               title: userType == Constants.fieldagent
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
               image: ImageResource.vectorArrow,
-              count: jsonData['visits']['count'].toString(),
-              amountRs: jsonData['visits']['totalAmt'].toString(),
+              count: dashboardCardCounts.result?.visits!.count.toString(),
+              amountRs: dashboardCardCounts.result?.visits!.totalAmt.toString(),
             ),
             DashboardListModel(
                 title: Languages.of(event.context!)!.myDeposists,
@@ -167,60 +178,60 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           isNoInternetAndServerError = true;
           noInternetAndServerErrorMsg = dashboardData['data'];
         }
-        Map<String, dynamic> getDashboardEventCountValue =
-            await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.dashboardEventCountUrl);
+        // Map<String, dynamic> getDashboardEventCountValue =
+        //     await APIRepository.apiRequest(
+        //         APIRequestType.GET, HttpUrl.dashboardEventCountUrl);
 
-        if (getDashboardEventCountValue['success']) {
-          print("Today Activities ==> ${getDashboardEventCountValue['data']}");
-          Map<String, dynamic> jsonData = getDashboardEventCountValue['data'];
-          dashboardEventCountValue =
-              DashboardEventCountModel.fromJson(jsonData);
-        }
+        // if (getDashboardEventCountValue['success']) {
+        //   print("Today Activities ==> ${getDashboardEventCountValue['data']}");
+        //   Map<String, dynamic> jsonData = getDashboardEventCountValue['data'];
+        //   dashboardEventCountValue =
+        //       DashboardEventCountModel.fromJson(jsonData);
+        // }
 
         // dashboardEventCountValue.result?.forEach((element) {
-        for (DashboardEventCountResult element
-            in dashboardEventCountValue.result!) {
-          if (element.eventType! == Constants.ptp ||
-              element.eventType! == Constants.denial ||
-              element.eventType! == Constants.dispute ||
-              element.eventType! == Constants.remainder.toUpperCase() ||
-              element.eventType! == Constants.receipt ||
-              // element.eventType! == "REPO" ||
-              // element.eventType! == "Feedback" ||
-              element.eventType! == Constants.ots) {
-            // print("customerMetCountValue=========");
-            // print(element.eventType!);
-            customerMetCountValue.add(element.eventType!);
-          }
-        }
+        // for (DashboardEventCountResult element
+        //     in dashboardEventCountValue.result!) {
+        //   if (element.eventType! == Constants.ptp ||
+        //       element.eventType! == Constants.denial ||
+        //       element.eventType! == Constants.dispute ||
+        //       element.eventType! == Constants.remainder.toUpperCase() ||
+        //       element.eventType! == Constants.receipt ||
+        //       // element.eventType! == "REPO" ||
+        //       // element.eventType! == "Feedback" ||
+        //       element.eventType! == Constants.ots) {
+        //     // print("customerMetCountValue=========");
+        //     // print(element.eventType!);
+        //     customerMetCountValue.add(element.eventType!);
+        //   }
+        // }
 
-        for (DashboardEventCountResult element
-            in dashboardEventCountValue.result!) {
-          if (element.eventType! == Constants.leftMessage ||
-              element.eventType! == Constants.doorLocked ||
-              element.eventType! == Constants.entryRestricted ||
-              element.eventType! == Constants.switchOff ||
-              element.eventType! == Constants.rnr ||
-              element.eventType! == Constants.outOfNetwork ||
-              element.eventType! == Constants.disconnecting ||
-              element.eventType! == Constants.lineBusy) {
-            customerNotMetCountValue.add(element.eventType!);
-          }
-        }
+        // for (DashboardEventCountResult element
+        //     in dashboardEventCountValue.result!) {
+        //   if (element.eventType! == Constants.leftMessage ||
+        //       element.eventType! == Constants.doorLocked ||
+        //       element.eventType! == Constants.entryRestricted ||
+        //       element.eventType! == Constants.switchOff ||
+        //       element.eventType! == Constants.rnr ||
+        //       element.eventType! == Constants.outOfNetwork ||
+        //       element.eventType! == Constants.disconnecting ||
+        //       element.eventType! == Constants.lineBusy) {
+        //     customerNotMetCountValue.add(element.eventType!);
+        //   }
+        // }
 
-        for (DashboardEventCountResult element
-            in dashboardEventCountValue.result!) {
-          if (element.eventType! == Constants.wrongAddress ||
-              element.eventType! == Constants.shifted ||
-              element.eventType! == Constants.addressNotFound ||
-              element.eventType! == Constants.doesNotExist ||
-              element.eventType! == Constants.incorrectNumber ||
-              element.eventType! == Constants.notOpeartional ||
-              element.eventType! == Constants.numberNotWorking) {
-            customerInvalidCountValue.add(element.eventType!);
-          }
-        }
+        // for (DashboardEventCountResult element
+        //     in dashboardEventCountValue.result!) {
+        //   if (element.eventType! == Constants.wrongAddress ||
+        //       element.eventType! == Constants.shifted ||
+        //       element.eventType! == Constants.addressNotFound ||
+        //       element.eventType! == Constants.doesNotExist ||
+        //       element.eventType! == Constants.incorrectNumber ||
+        //       element.eventType! == Constants.notOpeartional ||
+        //       element.eventType! == Constants.numberNotWorking) {
+        //     customerInvalidCountValue.add(element.eventType!);
+        //   }
+        // }
 
         // Map<String, dynamic> getDashboardEventCountValue1 =
         //     await APIRepository.apiRequest(APIRequestType.GET,
@@ -416,7 +427,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               HttpUrl.dashboardMyCallsUrl + 'timePeriod=' + selectedFilter!);
         }
 
-        myVisitsData = DashboardAllModels.fromJson(getMyVisitsData['data']);
+        myVisitsData = MyVisitsCaseModel.fromJson(getMyVisitsData['data']);
         // print(getMyVisitsData['data']);
         if (getMyVisitsData[Constants.success]) {
           yield MyVisitsState();

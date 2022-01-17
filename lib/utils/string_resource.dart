@@ -66,6 +66,7 @@ class StringResource {
   static const String kannadam = 'ಕನ್ನಡ  / KANNADA';
   static const String change = 'Change';
   static const String all = 'All';
+  static const String reference = 'Reference';
 
   static const String under5km = 'Under 5Km';
   static const String more5km = '5Km-10Km';
