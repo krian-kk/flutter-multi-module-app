@@ -516,8 +516,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         });
     if (newTime == null) return;
 
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minutes = newTime.minute.toString().padLeft(2, '0');
+    // final hours = newTime.hour.toString().padLeft(2, '0');
+    // final minutes = newTime.minute.toString().padLeft(2, '0');
     final time = newTime.format(context).toString();
     setState(() {
       controller.text = time;

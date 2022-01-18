@@ -113,6 +113,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   late TextEditingController schemeCodeController = TextEditingController();
   late TextEditingController productController = TextEditingController();
   late TextEditingController batchNoController = TextEditingController();
+//store list off Address
+  List<dynamic>? listOfAddressDetails = [];
+//store list off Mobile no
+  List<dynamic>? listOfCallDetails = [];
 
   CaseDetailsBloc() : super(CaseDetailsInitial());
   @override
@@ -204,6 +208,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               .replaceAll('null', '-') ??
           '_';
 
+      // Clear the lists
+      listOfAddressDetails?.clear();
+      listOfCallDetails?.clear();
+      //Stor list of address
+      listOfAddressDetails = caseDetailsAPIValue.result?.addressDetails!;
+      //Stor list of contacts (mobile Numbers)
+      listOfCallDetails = caseDetailsAPIValue.result?.callDetails!;
+
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.ptp,
@@ -271,6 +283,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       yield CaseDetailsLoadedState();
     }
+
+    if (event is AddedNewAddressListEvent) {
+      yield AddedNewAddressListState();
+    }
+
+    if (event is AddedNewCallContactListEvent) {
+      yield AddedNewCallContactListState();
+    }
+
     if (event is ClickMainAddressBottomSheetEvent) {
       indexValue = event.index;
       yield ClickMainAddressBottomSheetState(event.index);

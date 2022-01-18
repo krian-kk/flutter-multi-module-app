@@ -81,3 +81,7 @@ class DisableUnreachableBtnEvent extends CaseDetailsEvent {}
 class EnablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
 
 class DisablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
+
+class AddedNewAddressListEvent extends CaseDetailsEvent {}
+
+class AddedNewCallContactListEvent extends CaseDetailsEvent {}

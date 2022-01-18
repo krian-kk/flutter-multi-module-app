@@ -163,7 +163,9 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          widget.result!.totalAmt!.toString(),
+                                          Constants.inr +
+                                              widget.result!.totalAmt!
+                                                  .toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,

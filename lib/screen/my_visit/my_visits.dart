@@ -218,9 +218,10 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          widget.bloc.myVisitsData.result!
-                                              .totalAmt
-                                              .toString(),
+                                          Constants.inr +
+                                              widget.bloc.myVisitsData.result!
+                                                  .totalAmt
+                                                  .toString(),
                                           fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -481,7 +482,8 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      caseLists.totalAmt.toString(),
+                                      Constants.inr +
+                                          caseLists.totalAmt.toString(),
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
@@ -556,8 +558,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             CustomText(
-                                              caseLists.cases![index].due
-                                                  .toString(),
+                                              Constants.inr +
+                                                  caseLists.cases![index].due
+                                                      .toString(),
                                               fontSize: FontSize.eighteen,
                                               color: ColorResource.color101010,
                                               fontWeight: FontWeight.w700,
