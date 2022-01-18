@@ -32,10 +32,15 @@ class _AddressDetailsBottomSheetScreenState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AddedNewAddressListState) {
+          widget.bloc.listOfAddressDetails;
+        }
+      },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
         builder: (context, state) {
+          widget.bloc.listOfAddressDetails;
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Column(
@@ -72,15 +77,14 @@ class _AddressDetailsBottomSheetScreenState
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: widget.bloc.caseDetailsAPIValue.result
-                                    ?.addressDetails?.length ??
-                                0,
+                            itemCount:
+                                widget.bloc.listOfAddressDetails?.length ?? 0,
                             itemBuilder: (context, i) {
-                              return widget.bloc.caseDetailsAPIValue.result
-                                              ?.addressDetails![i]['cType'] ==
+                              return widget.bloc.listOfAddressDetails?[i]
+                                              ['cType'] ==
                                           "residence address" ||
-                                      widget.bloc.caseDetailsAPIValue.result
-                                              ?.addressDetails![i]['cType'] ==
+                                      widget.bloc.listOfAddressDetails?[i]
+                                              ['cType'] ==
                                           "office address"
                                   ? SizedBox(
                                       child: Column(
@@ -93,9 +97,7 @@ class _AddressDetailsBottomSheetScreenState
                                           CustomText(
                                             widget
                                                     .bloc
-                                                    .caseDetailsAPIValue
-                                                    .result
-                                                    ?.addressDetails![i]
+                                                    .listOfAddressDetails?[i]
                                                         ['cType']
                                                     .toString()
                                                     .toUpperCase() ??
@@ -129,9 +131,7 @@ class _AddressDetailsBottomSheetScreenState
                                                         child: CustomText(
                                                           widget
                                                                   .bloc
-                                                                  .caseDetailsAPIValue
-                                                                  .result
-                                                                  ?.addressDetails![
+                                                                  .listOfAddressDetails?[
                                                                       i]
                                                                       ['value']
                                                                   .toString()
@@ -155,12 +155,11 @@ class _AddressDetailsBottomSheetScreenState
                                                               const SizedBox(
                                                                   width: 10),
                                                               ShowHealthStatus
-                                                                  .healthStatus(widget
-                                                                          .bloc
-                                                                          .caseDetailsAPIValue
-                                                                          .result
-                                                                          ?.addressDetails![i]['health'] ??
-                                                                      ''),
+                                                                  .healthStatus(
+                                                                      widget.bloc.listOfAddressDetails?[i]
+                                                                              [
+                                                                              'health'] ??
+                                                                          ''),
                                                             ],
                                                           )),
                                                     ],
@@ -182,7 +181,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                     .bloc
                                                                     .caseDetailsAPIValue
                                                                     .result
-                                                                    ?.callDetails,
+                                                                    ?.addressDetails,
                                                                 false)),
                                                         child: Container(
                                                             decoration: const BoxDecoration(
@@ -228,7 +227,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                       .bloc
                                                                       .caseDetailsAPIValue
                                                                       .result
-                                                                      ?.callDetails![i]
+                                                                      ?.addressDetails![i]
                                                                   [
                                                                   'resAddressId_0'] ??
                                                               "";

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -140,9 +141,10 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                     ColorResource.color101010,
                                               ),
                                               CustomText(
-                                                widget.bloc.myDeposistsData
-                                                    .result!.totalAmt
-                                                    .toString(),
+                                                Constants.inr +
+                                                    widget.bloc.myDeposistsData
+                                                        .result!.totalAmt
+                                                        .toString(),
                                                 fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color101010,

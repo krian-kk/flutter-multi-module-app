@@ -55,9 +55,13 @@ class DashCountResult {
     brokenPtp = json['brokenPtp'] != null
         ? PriorityFollowUp.fromJson(json['brokenPtp'])
         : null;
+
+    // Here check my visit or my calls data
     visits = json['visits'] != null
         ? PriorityFollowUp.fromJson(json['visits'])
-        : null;
+        : json['calls'] != null
+            ? PriorityFollowUp.fromJson(json['calls'])
+            : null;
     receipts = json['receipts'] != null
         ? PriorityFollowUp.fromJson(json['receipts'])
         : null;

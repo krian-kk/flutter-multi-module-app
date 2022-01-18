@@ -16,6 +16,7 @@ import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_m
 import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
 // import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
+import 'package:origa/models/my_receipts_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/receipts_weekly_model/case.dart';
 import 'package:origa/singleton.dart';
@@ -46,13 +47,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardAllModels brokenPTPData = DashboardAllModels();
   DashboardAllModels untouchedCasesData = DashboardAllModels();
   MyVisitsCaseModel myVisitsData = MyVisitsCaseModel();
-  DashboardAllModels myReceiptsData = DashboardAllModels();
+  MyReceiptsCaseModel myReceiptsData = MyReceiptsCaseModel();
   // DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
   // DashboardUntouchedCasesModel untouchedCasesData =
   //     DashboardUntouchedCasesModel();
   // DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
   // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
   MyDeposistModel myDeposistsData = MyDeposistModel();
+  // Deposists selected case index
+  // List listOfIndex = [];
+
   YardingData yardingAndSelfReleaseData = YardingData();
   DashboardCardCount dashboardCardCounts = DashboardCardCount();
 
@@ -159,8 +163,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
               image: ImageResource.vectorArrow,
-              count: dashboardCardCounts.result?.visits!.count.toString(),
-              amountRs: dashboardCardCounts.result?.visits!.totalAmt.toString(),
+              count:
+                  dashboardCardCounts.result?.visits?.count.toString() ?? '0',
+              amountRs:
+                  dashboardCardCounts.result?.visits?.totalAmt.toString() ??
+                      '0',
             ),
             DashboardListModel(
                 title: Languages.of(event.context!)!.myDeposists,
@@ -384,7 +391,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
             APIRequestType.GET,
             HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=' + selectedFilter!);
-        myReceiptsData = DashboardAllModels.fromJson(getMyReceiptsData['data']);
+        myReceiptsData =
+            MyReceiptsCaseModel.fromJson(getMyReceiptsData['data']);
         // print(getMyReceiptsData['data']);
         if (getMyReceiptsData[Constants.success]) {
           yield MyReceiptsState();

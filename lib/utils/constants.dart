@@ -108,8 +108,7 @@ class Constants {
   static const String userAdmin = 'userAdmin';
   static const String code = 'code';
   static const String buildcontext = 'buildcontext';
-  static const String callConnectedPleaseWait =
-      'Call Connected Quickly Please Wait!';
+  static const String callConnectedPleaseWait = 'Call gets connected';
   static const String internalServerError = 'Internal Server Error !!';
   static const String emailNotAvailable =
       'Email ID not available, Mobile number available, send OTP via SMS';
@@ -117,4 +116,5 @@ class Constants {
       'Ensure the collected amount/cheque is deposited in the bank within 24 hours';
   static const String bankReceiptAmountDoesntMatch =
       'There is mismatch in the receipt amount. Do you wish to continue?';
+  static const String noOtherLoanAvailable = "No other loan's available.";
 }

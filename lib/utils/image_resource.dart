@@ -1,4 +1,6 @@
 class ImageResource {
+  static const String applogo = 'assets/app_logo/applogo.png';
+  // static const String origa = 'assets/svg/origa.svg';
   static const String close = 'assets/svg/close.svg';
   static const String checkOn = 'assets/svg/check_on.svg';
   static const String checkOff = 'assets/svg/check_off.svg';
@@ -22,7 +24,6 @@ class ImageResource {
   static const String captureImage = 'assets/svg/capture_image.svg';
   static const String location2 = 'assets/svg/location2.svg';
   static const String star = 'assets/svg/star.svg';
-  static const String origa = 'assets/svg/origa.svg';
   static const String login = 'assets/svg/login.svg';
   static const String phone = 'assets/phone.png';
   // static const String phone1 = 'assets/svg/phone.svg'; ================================

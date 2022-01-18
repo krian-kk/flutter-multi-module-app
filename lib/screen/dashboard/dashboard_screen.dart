@@ -811,34 +811,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     crossAxisSpacing: 4.0,
                                   ),
                                   // const SizedBox(height: 5),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 2),
-                                    child: CustomButton(
-                                      Languages.of(context)!.help.toUpperCase(),
-                                      fontSize: FontSize.sixteen,
-                                      fontWeight: FontWeight.bold,
-                                      textColor: ColorResource.color23375A,
-                                      buttonBackgroundColor:
-                                          ColorResource.colorBEC4CF,
-                                      borderColor: ColorResource.colorBEC4CF,
-                                      cardElevation: 0,
-                                      cardShape: 75,
-                                      isLeading: true,
-                                      onTap: () {
-                                        AppUtils.showToast(
-                                            Languages.of(context)!.help);
-                                      },
-                                      trailingWidget: Row(
-                                        children: [
-                                          SvgPicture.asset(ImageResource.help),
-                                          const SizedBox(
-                                            width: 7,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.symmetric(
+                                  //       horizontal: 2),
+                                  //   child: CustomButton(
+                                  //     Languages.of(context)!.help.toUpperCase(),
+                                  //     fontSize: FontSize.sixteen,
+                                  //     fontWeight: FontWeight.bold,
+                                  //     textColor: ColorResource.color23375A,
+                                  //     buttonBackgroundColor:
+                                  //         ColorResource.colorBEC4CF,
+                                  //     borderColor: ColorResource.colorBEC4CF,
+                                  //     cardElevation: 0,
+                                  //     cardShape: 75,
+                                  //     isLeading: true,
+                                  //     onTap: () {
+                                  //       AppUtils.showToast(
+                                  //           Languages.of(context)!.help);
+                                  //     },
+                                  //     trailingWidget: Row(
+                                  //       children: [
+                                  //         SvgPicture.asset(ImageResource.help),
+                                  //         const SizedBox(
+                                  //           width: 7,
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),

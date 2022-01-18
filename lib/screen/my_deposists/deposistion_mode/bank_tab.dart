@@ -48,6 +48,14 @@ class _BankTabState extends State<BankTab> {
   late TextEditingController referenceController = TextEditingController();
   late TextEditingController accNoController = TextEditingController();
 
+  FocusNode bankNameFocusNode = FocusNode();
+  FocusNode branchNameFocusNode = FocusNode();
+  FocusNode ifscCodeFocusNode = FocusNode();
+  FocusNode accNoFocusNode = FocusNode();
+  FocusNode receiptAmountFocusNode = FocusNode();
+  FocusNode depositAmountFocusNode = FocusNode();
+  FocusNode referenceFocusNode = FocusNode();
+
   final _formKey = GlobalKey<FormState>();
   List<File> uploadFileLists = [];
 
@@ -162,8 +170,8 @@ class _BankTabState extends State<BankTab> {
                                         status: 'deposited',
                                       ));
 
-                                  if (receiptController.text ==
-                                      depositController.text) {
+                                  if (double.parse(receiptController.text) ==
+                                      double.parse(depositController.text)) {
                                     widget.bloc.add(PostBankDepositDataEvent(
                                       postData: requestBodyData,
                                       fileData: uploadFileLists,
@@ -229,7 +237,9 @@ class _BankTabState extends State<BankTab> {
                                 bankNameController,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isEnable: true,
+                                focusNode: bankNameFocusNode,
+                                onEditing: () =>
+                                    branchNameFocusNode.requestFocus(),
                               ),
                             ),
                             Padding(
@@ -239,7 +249,9 @@ class _BankTabState extends State<BankTab> {
                                 branchController,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isEnable: true,
+                                focusNode: branchNameFocusNode,
+                                onEditing: () =>
+                                    ifscCodeFocusNode.requestFocus(),
                               ),
                             ),
                             Padding(
@@ -251,7 +263,8 @@ class _BankTabState extends State<BankTab> {
                                     TextCapitalization.characters,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isEnable: true,
+                                focusNode: ifscCodeFocusNode,
+                                onEditing: () => accNoFocusNode.requestFocus(),
                                 inputformaters: [
                                   LengthLimitingTextInputFormatter(11),
                                 ],
@@ -264,7 +277,10 @@ class _BankTabState extends State<BankTab> {
                                 accNoController,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isEnable: true,
+                                focusNode: accNoFocusNode,
+                                onEditing: () =>
+                                    depositAmountFocusNode.requestFocus(),
+                                keyBoardType: TextInputType.number,
                               ),
                             ),
                             Padding(
@@ -278,7 +294,10 @@ class _BankTabState extends State<BankTab> {
                                       receiptController,
                                       validationRules: const ['required'],
                                       isLabel: true,
+                                      isReadOnly: true,
                                       isEnable: false,
+                                      focusNode: receiptAmountFocusNode,
+                                      keyBoardType: TextInputType.number,
                                     ),
                                   ),
                                   const SizedBox(
@@ -291,7 +310,10 @@ class _BankTabState extends State<BankTab> {
                                       depositController,
                                       validationRules: const ['required'],
                                       isLabel: true,
-                                      isEnable: true,
+                                      focusNode: depositAmountFocusNode,
+                                      keyBoardType: TextInputType.number,
+                                      onEditing: () =>
+                                          referenceFocusNode.requestFocus(),
                                     ),
                                   ),
                                 ],
@@ -304,7 +326,8 @@ class _BankTabState extends State<BankTab> {
                                 referenceController,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isEnable: true,
+                                focusNode: referenceFocusNode,
+                                onEditing: () => referenceFocusNode.unfocus(),
                               ),
                             ),
                             const SizedBox(

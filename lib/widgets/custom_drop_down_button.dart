@@ -93,6 +93,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               //     selectedValue = newValue;
               //   });
               // },
+              onTap: () => FocusScope.of(context).unfocus(),
               onChanged: widget.onChanged,
               autofocus: widget.autoFocus,
               focusColor: widget.focusColor,

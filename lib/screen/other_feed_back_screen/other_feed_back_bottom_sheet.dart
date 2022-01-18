@@ -349,18 +349,20 @@ class _CustomOtherFeedBackBottomSheetState
                               setState(() {});
                               otherFeedbackContact.clear();
                               for (int i = 0; i < (listOfContact.length); i++) {
-                                otherFeedbackContact.add(OtherFeedBackContact(
-                                    cType: listOfContact[i]
-                                        .formValue
-                                        .toLowerCase(),
-                                    value: listOfContact[i].controller.text,
-                                    contactId0: '',
-                                    resAddressId0: ''
-                                    // contactId0:
-                                    //     Singleton.instance.contactId_0 ?? '',
-                                    // resAddressId0:
-                                    //     Singleton.instance.resAddressId_0 ?? '',
-                                    ));
+                                if (listOfContact[i]
+                                    .controller
+                                    .text
+                                    .isNotEmpty) {
+                                  otherFeedbackContact.add(OtherFeedBackContact(
+                                      cType: listOfContact[i]
+                                          .formValue
+                                          .toLowerCase(),
+                                      value: listOfContact[i].controller.text,
+                                      contactId0: '',
+                                      resAddressId0: ''));
+                                } else {
+                                  // otherFeedbackContact.clear();
+                                }
                               }
                               // SharedPreferences _pref =
                               //     await SharedPreferences.getInstance();
@@ -435,7 +437,9 @@ class _CustomOtherFeedBackBottomSheetState
                                       speed: position.speed,
                                       altitudeAccuracy: 0,
                                       // agentLocation: AgentLocation(),
-                                      contact: otherFeedbackContact),
+                                      contact: otherFeedbackContact.isNotEmpty
+                                          ? otherFeedbackContact
+                                          : null),
                                   contact: OtherFeedBackContact(
                                     cType: widget.postValue['cType'],
                                     health: widget.health,
@@ -448,7 +452,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   ),
                                 );
                                 print(
-                                    'Response Date => ${jsonEncode(requestBodyData)}');
+                                    'Response Data => ${jsonEncode(requestBodyData)}');
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
@@ -474,10 +478,40 @@ class _CustomOtherFeedBackBottomSheetState
                                 if (postResult[Constants.success]) {
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);
+                                  if (widget.isCall!) {
+                                    setState(() {
+                                      for (int i = 0;
+                                          i < (otherFeedbackContact.length);
+                                          i++) {
+                                        widget.bloc.listOfCallDetails?.add(
+                                            jsonDecode(jsonEncode(
+                                                otherFeedbackContact[i])));
+                                      }
+                                    });
+                                    widget.bloc
+                                        .add(AddedNewCallContactListEvent());
+                                    // print(widget.bloc.listOfCallDetails);
+                                  } else {
+                                    setState(() {
+                                      for (int i = 0;
+                                          i < (otherFeedbackContact.length);
+                                          i++) {
+                                        // if (widget.bloc.listOfAddressDetails!
+                                        //     .contains(otherFeedbackContact[i])) {
+                                        widget.bloc.listOfAddressDetails?.add(
+                                            jsonDecode(jsonEncode(
+                                                otherFeedbackContact[i])));
+                                      }
+                                      // }
+                                    });
+                                    widget.bloc.add(AddedNewAddressListEvent());
+                                    // print(widget.bloc.listOfAddressDetails);
+                                  }
+
                                   Navigator.pop(context);
                                 } else {}
+                                // }
                               }
-                              // }
                               setState(() => isSubmit = true);
                             }
                           : () {},
@@ -497,10 +531,10 @@ class _CustomOtherFeedBackBottomSheetState
       BuildContext context, TextEditingController controller) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.year,
+        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
+        lastDate: DateTime(DateTime.now().year + 3),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -646,21 +680,27 @@ class _CustomOtherFeedBackBottomSheetState
                                         for (int i = 0;
                                             i < (listOfContact.length - 1);
                                             i++) {
-                                          otherFeedbackContact
-                                              .add(OtherFeedBackContact(
-                                            cType: listOfContact[i]
-                                                .formValue
-                                                .toLowerCase(),
-                                            value: listOfContact[i]
-                                                .controller
-                                                .text,
-                                            contactId0: Singleton
-                                                    .instance.contactId_0 ??
-                                                '',
-                                            resAddressId0: Singleton
-                                                    .instance.resAddressId_0 ??
-                                                '',
-                                          ));
+                                          if (listOfContact[i]
+                                              .controller
+                                              .text
+                                              .isNotEmpty) {
+                                            otherFeedbackContact
+                                                .add(OtherFeedBackContact(
+                                              cType: listOfContact[i]
+                                                      .controller
+                                                      .text
+                                                      .isNotEmpty
+                                                  ? listOfContact[i]
+                                                      .formValue
+                                                      .toLowerCase()
+                                                  : "",
+                                              value: listOfContact[i]
+                                                  .controller
+                                                  .text,
+                                              contactId0: '',
+                                              resAddressId0: '',
+                                            ));
+                                          }
                                         }
                                         setState(() {});
                                       },
@@ -671,22 +711,15 @@ class _CustomOtherFeedBackBottomSheetState
                                       onTap: () {
                                         if (listOfContact[index].formValue ==
                                             '') {
-                                          AppUtils.showErrorToast(
+                                          AppUtils.showToast(
                                               "Please select customer contact type");
                                         }
                                         // print('object');
                                       },
                                       child: CustomReadOnlyTextField(
-                                        Languages.of(context)!.contact,
-                                        listOfContact[index].controller,
-                                        // focusNode: focusNode,
-                                        isLabel: true,
-                                        isEnable:
-                                            (listOfContact[index].formValue !=
-                                                ''),
-                                        borderColor: ColorResource.color000000,
-                                        keyBoardType:
-                                            (listOfContact[index].formValue ==
+                                        (listOfContact[index].formValue == '')
+                                            ? 'Contact'
+                                            : (listOfContact[index].formValue ==
                                                         'Mobile' ||
                                                     listOfContact[index]
                                                             .formValue ==
@@ -694,7 +727,32 @@ class _CustomOtherFeedBackBottomSheetState
                                                     listOfContact[index]
                                                             .formValue ==
                                                         'Residence Contact No.')
-                                                ? TextInputType.number
+                                                ? Languages.of(context)!.contact
+                                                : (listOfContact[index]
+                                                            .formValue ==
+                                                        'Email Id')
+                                                    ? Languages.of(context)!
+                                                        .email
+                                                    : "Address",
+                                        listOfContact[index].controller,
+                                        isLabel: true,
+                                        isEnable:
+                                            (listOfContact[index].formValue !=
+                                                ''),
+                                        borderColor: ColorResource.color000000,
+                                        keyBoardType: (listOfContact[index]
+                                                        .formValue ==
+                                                    'Mobile' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Office Contact No.' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Residence Contact No.')
+                                            ? TextInputType.number
+                                            : (listOfContact[index].formValue ==
+                                                    'Email Id')
+                                                ? TextInputType.emailAddress
                                                 : TextInputType.name,
                                         inputformaters:
                                             (listOfContact[index].formValue ==

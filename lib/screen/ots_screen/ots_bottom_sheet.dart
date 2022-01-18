@@ -53,7 +53,7 @@ class CustomOtsBottomSheet extends StatefulWidget {
 class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   TextEditingController otsProposedAmountControlller = TextEditingController();
   TextEditingController otsPaymentDateControlller = TextEditingController();
-  String selectedDate = '';
+  // String selectedDate = '';
   // TextEditingController otsPaymentTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
   String selectedPaymentModeButton = '';
@@ -378,7 +378,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     caseId: widget.caseId,
                                     imageLocation: [''],
                                     eventAttr: OTSEventAttr(
-                                      date: selectedDate,
+                                      date: otsPaymentDateControlller.text,
                                       remarkOts: remarksControlller.text,
                                       amntOts:
                                           otsProposedAmountControlller.text,
@@ -465,10 +465,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       BuildContext context, TextEditingController controller) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.year,
+        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
+        lastDate: DateTime(DateTime.now().year + 3),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -495,16 +495,15 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
     });
   }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    const initialTime = TimeOfDay(hour: 9, minute: 0);
+    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
-        initialTime: initialTime,
+        initialTime: TimeOfDay.now(),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -528,10 +527,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
         });
     if (newTime == null) return;
 
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minutes = newTime.minute.toString().padLeft(2, '0');
+    final time = newTime.format(context).toString();
     setState(() {
-      controller.text = '$hours:$minutes';
+      controller.text = time;
     });
   }
 

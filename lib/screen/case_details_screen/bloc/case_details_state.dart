@@ -69,3 +69,7 @@ class DisableAddressInvalidBtnState extends CaseDetailsState {}
 class EnableCaptureImageBtnState extends CaseDetailsState {}
 
 class DisableCaptureImageBtnState extends CaseDetailsState {}
+
+class AddedNewAddressListState extends CaseDetailsState {}
+
+class AddedNewCallContactListState extends CaseDetailsState {}
