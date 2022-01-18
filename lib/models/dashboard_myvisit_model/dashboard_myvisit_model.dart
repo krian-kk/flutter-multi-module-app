@@ -37,10 +37,18 @@ class MyvistResult {
   MyvistResult.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     totalAmt = json['totalAmt'];
-    met = json['met'] != null ? new Met.fromJson(json['met']) : null;
-    notMet = json['notMet'] != null ? new Met.fromJson(json['notMet']) : null;
-    invalid =
-        json['invalid'] != null ? new Met.fromJson(json['invalid']) : null;
+    //Here we load my visit api data and my calls api data
+    met = json['met'] != null
+        ? Met.fromJson(json['met'])
+        : json['connected'] != null
+            ? Met.fromJson(json['connected'])
+            : null;
+    notMet = json['notMet'] != null
+        ? Met.fromJson(json['notMet'])
+        : json['unreachable'] != null
+            ? Met.fromJson(json['unreachable'])
+            : null;
+    invalid = json['invalid'] != null ? Met.fromJson(json['invalid']) : null;
   }
 
   Map<String, dynamic> toJson() {

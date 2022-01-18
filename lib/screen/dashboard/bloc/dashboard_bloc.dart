@@ -163,8 +163,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
               image: ImageResource.vectorArrow,
-              count: dashboardCardCounts.result?.visits!.count.toString(),
-              amountRs: dashboardCardCounts.result?.visits!.totalAmt.toString(),
+              count:
+                  dashboardCardCounts.result?.visits?.count.toString() ?? '0',
+              amountRs:
+                  dashboardCardCounts.result?.visits?.totalAmt.toString() ??
+                      '0',
             ),
             DashboardListModel(
                 title: Languages.of(event.context!)!.myDeposists,

@@ -116,4 +116,5 @@ class Constants {
       'Ensure the collected amount/cheque is deposited in the bank within 24 hours';
   static const String bankReceiptAmountDoesntMatch =
       'There is mismatch in the receipt amount. Do you wish to continue?';
+  static const String noOtherLoanAvailable = "No other loan's available.";
 }

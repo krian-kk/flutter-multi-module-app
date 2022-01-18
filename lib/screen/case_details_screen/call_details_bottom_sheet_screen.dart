@@ -40,9 +40,7 @@ class _CallDetailsBottomSheetScreenState
         bloc: widget.bloc,
         builder: (context, state) {
           widget.bloc.listOfCallDetails;
-          // Contact Health from high to low
-          widget.bloc.listOfCallDetails
-              ?.sort((a, b) => b["health"].compareTo(a["health"]));
+
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Column(
@@ -82,6 +80,19 @@ class _CallDetailsBottomSheetScreenState
                             itemCount:
                                 widget.bloc.listOfCallDetails?.length ?? 0,
                             itemBuilder: (context, i) {
+                              // Contact Health from high to low
+                              // if (widget.bloc.listOfCallDetails?[i]['cType']
+                              //         .isNotEmpty &&
+                              //     widget.bloc.listOfCallDetails?[i]['value']
+                              //         .isNotEmpty &&
+                              //     widget.bloc.listOfCallDetails?[i]['health'] !=
+                              //         '') {
+                              //   print(
+                              //       "call detail health values---->${widget.bloc.listOfCallDetails?[i]['health'] ?? "0"}");
+                              //   widget.bloc.listOfCallDetails?.sort((a, b) =>
+                              //       b["health"].compareTo(a["health"]) ?? '');
+                              // }
+
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
                                           "mobile" ||
