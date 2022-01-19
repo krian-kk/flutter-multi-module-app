@@ -117,4 +117,5 @@ class Constants {
   static const String bankReceiptAmountDoesntMatch =
       'There is mismatch in the receipt amount. Do you wish to continue?';
   static const String noOtherLoanAvailable = "No other loan's available.";
+  static const String events = 'Events';
 }

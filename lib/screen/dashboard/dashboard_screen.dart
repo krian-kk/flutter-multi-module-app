@@ -757,9 +757,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                       width: 6,
                                                                     ),
                                                                     CustomText(
-                                                                      Languages.of(
-                                                                              context)!
-                                                                          .customer,
+                                                                      bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .subTitle!,
                                                                       fontSize:
                                                                           FontSize
                                                                               .fourteen,
