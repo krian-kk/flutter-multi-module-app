@@ -206,4 +206,5 @@ class HttpUrl {
   // chat token request
   static const String chatTokenRequest =
       baseUrl + version + 'chat/tokenRequest';
+  static const String chatHistory = baseUrl + version + 'chat/history';
 }

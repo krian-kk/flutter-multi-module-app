@@ -196,6 +196,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                 amountRs: ''),
           ]);
         } else if (dashboardData['statusCode'] == 401 ||
+            dashboardData['data'] == Constants.connectionTimeout ||
             dashboardData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           noInternetAndServerErrorMsg = dashboardData['data'];

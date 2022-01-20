@@ -19,12 +19,13 @@ class _ChatScreenState extends State<ChatScreen> {
   late ably.Realtime realtimeInstance;
   var newMsgFromAbly;
   late ably.RealtimeChannel chatChannel;
+  late ably.RealtimeChannel receiptChannel;
   var myInputController = TextEditingController();
   // var myRandomClientId = '';
 
-  List<Message> messages = [];
-  String? clientID = "HAR_fos1";
-  String? toARef = "HAR_fos3";
+  List<Messages> messages = [];
+  String? clientIDFromARef = "HAR_fos1";
+  String? toARef = "isi6Mw.OkTsUw";
 
   @override
   void initState() {
@@ -43,29 +44,32 @@ class _ChatScreenState extends State<ChatScreen> {
 // Note: you should implement `createTokenRequest`, which makes a request to your server that uses your Ably API key directly.
     final clientOptions = ably.ClientOptions()
       // If a clientId was set in ClientOptions, it will be available in the authCallback's first parameter (ably.TokenParams).
-      ..clientId = clientID
+      ..clientId = clientIDFromARef
       ..authCallback = (ably.TokenParams tokenParams) async {
         try {
-          // Send the tokenParamsMap (Map<String, dynamic>) to your server, using it to create a TokenRequest.
-          print("token params ===> ${tokenParams.toMap()}");
-
           final Map<String, dynamic> tokenRequestMap =
-              await createTokenRequest(tokenParams.toMap());
-          return ably.TokenRequest.fromMap(tokenRequestMap['data']);
+              await createTokenRequest();
+          print(
+              "Chat token request data ===> ${tokenRequestMap['data']['result']}");
+          setState(() {
+            clientIDFromARef = tokenRequestMap['data']['result']['clientId'];
+          });
+          return ably.TokenRequest.fromMap(tokenRequestMap['data']['result']);
         } catch (e) {
           print('Failed to createTokenRequest: $e');
           rethrow;
         }
       };
-    // final realtimeInstance = ably.Realtime(options: clientOptions);
 
-    // var clientOptions = ably.ClientOptions.fromKey(
-    //     "Bhx6Fw.aCUXHg:n2zxpPV1-KGRfII2lkZDzNOfTnhkVg8Aq9tVU17-X8Y");
-    // clientOptions.clientId = myRandomClientId;
     try {
       realtimeInstance = ably.Realtime(options: clientOptions);
       print('Ably instantiated');
-      chatChannel = realtimeInstance.channels.get('origa-demo');
+      //
+      chatChannel = realtimeInstance.channels
+          .get('chat:mobile:messages:$clientIDFromARef-$toARef');
+      receiptChannel = realtimeInstance.channels
+          .get('chat:mobile:receipt:$clientIDFromARef-$toARef');
+      //
       subscribeToChatChannel();
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
@@ -78,32 +82,32 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<Map<String, dynamic>> createTokenRequest(
-      Map<String, dynamic> tokenParamsMap) async {
+  Future<Map<String, dynamic>> createTokenRequest() async {
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.GET, HttpUrl.chatTokenRequest);
-    print("Chat token request Response data ===> ${postResult}");
+    // print("Chat token request Response data ===> ${postResult}");
     return postResult;
   }
 
+// 'chat:mobile:messages:$clientIDFromARef-$toARef',
+//       'chat:mobile:receipt:$clientIDFromARef-$toARef'
   void subscribeToChatChannel() {
-    var messageStream = chatChannel.subscribe(names: [
-      'chat:mobile:messages:$clientID-$toARef',
-      'chat:mobile:receipt:$clientID-$toARef'
-    ]);
+    var messageStream = chatChannel.subscribe();
+    var receiptStream = receiptChannel.subscribe();
+
     messageStream.listen((ably.Message message) {
-      Message newChatMsg;
+      Messages newChatMsg;
       newMsgFromAbly = message.data;
-      print("New message arrived ${message.data}");
+      print("New message arrived messageStream ${message.data}");
       print(message.clientId);
       print(message.name);
       print(message.id);
       print(message.connectionId);
 
-      newChatMsg = Message(
-        messageIds: '',
-        deliveredOn: '',
-        seenOn: '',
+      newChatMsg = Messages(
+        messageIds: message.id,
+        deliveredOn: newMsgFromAbly['messageIds'],
+        seenOn: message.timestamp.toString(),
         delivered: false,
         seen: false,
       );
@@ -112,18 +116,71 @@ class _ChatScreenState extends State<ChatScreen> {
         messages.insert(0, newChatMsg);
       });
     });
+
+    // receiptStream.listen((ably.Message message) {
+    //   Messages newChatMsg;
+    //   newMsgFromAbly = message.data;
+    //   print("New message arrived receiptStream ${message.data}");
+    //   print(message.clientId);
+    //   print(message.name);
+    //   print(message.id);
+    //   print(message.connectionId);
+
+    //   newChatMsg = Messages(
+    //     messageIds: '000',
+    //     deliveredOn: '000',
+    //     seenOn: '123',
+    //     delivered: false,
+    //     seen: false,
+    //   );
+
+    //   setState(() {
+    //     messages.insert(0, newChatMsg);
+    //   });
+    // });
+    enterPresence();
+  }
+
+  void enterPresence() async {
+    print("presence entered===>");
+    await chatChannel.presence.enter();
+    // with Client ID
+    // await chatChannel.presence.enterClient("$clientIDFromARef");
+  }
+
+  void leavePresence() async {
+    await chatChannel.presence.leave();
+    // with Client ID
+    await chatChannel.presence.leaveClient('$clientIDFromARef');
   }
 
   void publishMyMessage() async {
+    print("publish message here--->");
+    realtimeInstance.channels
+        .get('chat:mobile:receipt:$clientIDFromARef-$toARef');
+
     var myMessage = myInputController.text;
+
+    await chatChannel.publish(
+        // message: ably.Message(),
+        name: "${realtimeInstance.options.clientId}",
+        data:
+            // {
+            //   "sender": "${realtimeInstance.options.clientId}",
+            //   "text": myMessage,
+            // }
+            {
+          'messageIds': [myMessage],
+          'delivered': true,
+          'deliveredOn': '6:25 PM',
+          'seen': true,
+          'seenOn': '6:25 PM'
+        });
+    print("publish message sended--->");
     myInputController.clear();
-    chatChannel.publish(name: "chatMsg", data: {
-      "sender": "randomChatUser",
-      "text": myMessage,
-    });
   }
 
-  _buildMessage(Message message, bool isMe) {
+  _buildMessage(Messages message, bool isMe) {
     final Container msg = Container(
       margin: isMe
           ? const EdgeInsets.only(
@@ -153,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            message.messageIds!,
+            message.deliveredOn!,
             style: const TextStyle(
               color: Colors.blueGrey,
               fontSize: 16.0,
@@ -263,7 +320,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     padding: const EdgeInsets.only(top: 15.0),
                     itemCount: messages.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final Message message = messages[index];
+                      final Messages message = messages[index];
                       // final bool isMe = message.sender!.id == currentUser.id;
                       return _buildMessage(message, false);
                     },

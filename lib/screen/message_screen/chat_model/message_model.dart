@@ -1,11 +1,11 @@
-class Message {
+class Messages {
   final String? messageIds;
   final String? deliveredOn;
   final String? seenOn;
   final bool? delivered;
   final bool? seen;
 
-  Message({
+  Messages({
     this.messageIds,
     this.deliveredOn,
     this.seenOn,

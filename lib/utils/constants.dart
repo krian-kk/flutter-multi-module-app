@@ -118,4 +118,5 @@ class Constants {
       'There is mismatch in the receipt amount. Do you wish to continue?';
   static const String noOtherLoanAvailable = "No other loan's available.";
   static const String events = 'Events';
+  static const String connectionTimeout = 'connection timeout';
 }
