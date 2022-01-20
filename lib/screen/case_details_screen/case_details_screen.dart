@@ -585,16 +585,30 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        CustomText(
-                                          bloc.caseDetailsAPIValue.result
-                                                  ?.caseDetails?.cust
-                                                  ?.toUpperCase() ??
-                                              '', //--------------- doubt -----------
-                                          color: ColorResource.color333333,
-                                          fontSize: FontSize.fourteen,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w700,
-                                        ),
+                                        // CustomText(
+                                        //   bloc.caseDetailsAPIValue.result
+                                        //           ?.caseDetails?.cust
+                                        //           ?.toUpperCase() ??
+                                        //       '', //--------------- doubt -----------
+                                        //   color: ColorResource.color333333,
+                                        //   fontSize: FontSize.fourteen,
+                                        //   fontStyle: FontStyle.normal,
+                                        //   fontWeight: FontWeight.w700,
+                                        // ),
+
+                                        // if (bloc.caseDetailsAPIValue.result!
+                                        //     .otherLoanDetails!.isEmpty)
+                                        //   const Padding(
+                                        //     padding: EdgeInsets.symmetric(
+                                        //         vertical: 15),
+                                        //     child: Center(
+                                        //         child: CustomText(
+                                        //             Constants
+                                        //                 .noOtherLoanAvailable,
+                                        //             color: ColorResource
+                                        //                 .color000000)),
+                                        //   ),
+
                                         ListView.builder(
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
@@ -777,7 +791,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(height: 20),
+                                                  const SizedBox(height: 5),
                                                 ],
                                               );
                                             }),

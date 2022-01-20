@@ -179,11 +179,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             // print(priorityCaseAddressList);
           }
         } else if (priorityListData['statusCode'] == 401 ||
+            priorityListData['data'] == Constants.connectionTimeout ||
             priorityListData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           isNoInternetAndServerErrorMsg = priorityListData['data'];
-          print('------Api not working----------');
-          print(priorityListData['data']);
+          // print('------Api not working----------');
+          // print(priorityListData['data']);
         }
 
         Map<String, dynamic> getContractorDetails =

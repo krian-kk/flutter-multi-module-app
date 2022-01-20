@@ -127,7 +127,8 @@ class APIRepository {
       } else {
         // error =
         //     'Error sending request!'; // connection timeout sometime will come
-        error = 'connection timeout'; // connection timeout sometime will come
+        error = Constants
+            .connectionTimeout; // connection timeout sometime will come
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');

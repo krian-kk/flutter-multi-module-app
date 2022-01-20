@@ -170,8 +170,8 @@ class _BankTabState extends State<BankTab> {
                                         status: 'deposited',
                                       ));
 
-                                  if (receiptController.text ==
-                                      depositController.text) {
+                                  if (double.parse(receiptController.text) ==
+                                      double.parse(depositController.text)) {
                                     widget.bloc.add(PostBankDepositDataEvent(
                                       postData: requestBodyData,
                                       fileData: uploadFileLists,

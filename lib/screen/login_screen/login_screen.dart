@@ -119,7 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 35,
                           ),
-                          SvgPicture.asset(ImageResource.origa),
+                          // SvgPicture.asset(ImageResource.origa),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 35),
+                              child: Image.asset(ImageResource.applogo)),
                           const SizedBox(
                             height: 17,
                           ),

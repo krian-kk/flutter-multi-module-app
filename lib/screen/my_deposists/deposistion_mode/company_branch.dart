@@ -165,8 +165,8 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                       ),
                                     );
 
-                                    if (receiptController.text ==
-                                        depositController.text) {
+                                    if (double.parse(receiptController.text) ==
+                                        double.parse(depositController.text)) {
                                       widget.bloc
                                           .add(PostCompanyDepositDataEvent(
                                         postData: requestBodyData,
@@ -174,6 +174,10 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         context: context,
                                       ));
                                     } else {
+                                      print(
+                                          double.parse(receiptController.text));
+                                      print(
+                                          double.parse(depositController.text));
                                       DialogUtils.showDialog(
                                           buildContext: context,
                                           title: Constants

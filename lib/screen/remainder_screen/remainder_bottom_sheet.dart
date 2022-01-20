@@ -48,7 +48,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
 class _CustomRemainderBottomSheetState
     extends State<CustomRemainderBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
-  String selectedDate = '';
+  // String selectedDate = '';
   TextEditingController nextActionTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
@@ -257,7 +257,7 @@ class _CustomRemainderBottomSheetState
                                     ? 'Telecalling'
                                     : 'Field Allocation',
                                 eventAttr: EventAttr(
-                                  reminderDate: selectedDate,
+                                  reminderDate: nextActionDateControlller.text,
                                   time: nextActionTimeControlller.text,
                                   remarks: remarksControlller.text,
                                   longitude: latLng.longitude,
@@ -307,10 +307,10 @@ class _CustomRemainderBottomSheetState
       BuildContext context, TextEditingController controller) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.year,
+        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
+        lastDate: DateTime(DateTime.now().year + 3),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -337,16 +337,15 @@ class _CustomRemainderBottomSheetState
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
     });
   }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    const initialTime = TimeOfDay(hour: 9, minute: 0);
+    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
-        initialTime: initialTime,
+        initialTime: TimeOfDay.now(),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -370,10 +369,9 @@ class _CustomRemainderBottomSheetState
         });
     if (newTime == null) return;
 
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minutes = newTime.minute.toString().padLeft(2, '0');
+    final time = newTime.format(context).toString();
     setState(() {
-      controller.text = '$hours:$minutes';
+      controller.text = time;
     });
   }
 }

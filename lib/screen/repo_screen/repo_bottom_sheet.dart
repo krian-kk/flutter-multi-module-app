@@ -49,7 +49,7 @@ class CustomRepoBottomSheet extends StatefulWidget {
 
 class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
-  String selectedDate = '';
+  // String selectedDate = '';
   TextEditingController timeControlller = TextEditingController();
   TextEditingController modelMakeControlller = TextEditingController();
   TextEditingController registrationNoControlller = TextEditingController();
@@ -360,7 +360,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       repo: Repo(
                                         status: 'pending',
                                       ),
-                                      date: selectedDate,
+                                      date: dateControlller.text +
+                                          ", " +
+                                          timeControlller.text,
                                       imageLocation: [''],
                                       customerName:
                                           Singleton.instance.caseCustomerName ??
@@ -431,10 +433,10 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
       GlobalKey<FormState> formKey) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.year,
+        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
+        lastDate: DateTime(DateTime.now().year + 3),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -460,16 +462,15 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      selectedDate = newDate.toString();
     });
   }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    const initialTime = TimeOfDay(hour: 9, minute: 0);
+    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
-        initialTime: initialTime,
+        initialTime: TimeOfDay.now(),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -493,10 +494,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
         });
     if (newTime == null) return;
 
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minutes = newTime.minute.toString().padLeft(2, '0');
+    final time = newTime.format(context).toString();
     setState(() {
-      controller.text = '$hours:$minutes';
+      controller.text = time;
     });
   }
 }

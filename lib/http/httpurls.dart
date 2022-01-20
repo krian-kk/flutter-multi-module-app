@@ -202,4 +202,9 @@ class HttpUrl {
 
   static const String imageCaptured =
       baseUrl + version + fieldAgent + 'case-details-events/imageCaptured?';
+
+  // chat token request
+  static const String chatTokenRequest =
+      baseUrl + version + 'chat/tokenRequest';
+  static const String chatHistory = baseUrl + version + 'chat/history';
 }

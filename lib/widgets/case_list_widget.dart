@@ -153,32 +153,34 @@ class CaseLists {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CustomText(
-                                            Constants.inr +
-                                                listData
-                                                    .result!.cases![index].due
-                                                    .toString(),
-                                            fontSize: FontSize.eighteen,
-                                            color: ColorResource.color101010,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          const SizedBox(
-                                            height: 3.0,
-                                          ),
-                                          CustomText(
-                                            listData
-                                                .result!.cases![index].cust!,
-                                            fontSize: FontSize.sixteen,
-                                            color: ColorResource.color101010,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CustomText(
+                                              Constants.inr +
+                                                  listData
+                                                      .result!.cases![index].due
+                                                      .toString(),
+                                              fontSize: FontSize.eighteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            const SizedBox(
+                                              height: 3.0,
+                                            ),
+                                            CustomText(
+                                              listData
+                                                  .result!.cases![index].cust!,
+                                              fontSize: FontSize.sixteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const Spacer(),
+                                      // const Spacer(),
                                       // if (listData.result!.cases![index]
                                       //         .collSubStatus ==
                                       //     'new')
