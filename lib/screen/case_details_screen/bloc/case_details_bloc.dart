@@ -217,23 +217,30 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       listOfCallDetails = caseDetailsAPIValue.result?.callDetails!;
 
       addressCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
+        CustomerMetGridModel(
+            ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.ptp,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
+        CustomerMetGridModel(
+            ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.rtp,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
+        CustomerMetGridModel(ImageResource.dispute,
+            Languages.of(event.context!)!.dispute.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.remainder,
-            (Constants.remainder + '/CB').toUpperCase(),
+        CustomerMetGridModel(
+            ImageResource.remainder,
+            (Languages.of(event.context!)!.remainderCb.toUpperCase())
+                .toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.collections, Constants.collections,
+        CustomerMetGridModel(ImageResource.collections,
+            Languages.of(event.context!)!.collections.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.ots, Constants.ots,
+        CustomerMetGridModel(
+            ImageResource.ots, Languages.of(event.context!)!.ots.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.ots,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
       ]);

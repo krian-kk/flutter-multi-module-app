@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
@@ -152,10 +154,11 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       child: CustomButton(
                         Languages.of(context)!.okay.toUpperCase(),
                         onTap: () {
-                          // changeLanguage(context, setLanguageCode!);
-                          // PreferenceHelper.setPreference('mainLanguage', ratioIndex??0);
-                          // PreferenceHelper.setPreference('mainLanguageCode', setLanguageCode);
-                          // print(selectedLanguagesIndex);
+                          changeLanguage(context, setLanguageCode!);
+                          PreferenceHelper.setPreference(
+                              'mainLanguage', ratioIndex ?? 0);
+                          PreferenceHelper.setPreference(
+                              'mainLanguageCode', setLanguageCode);
                           Navigator.pop(context);
                         },
                         cardShape: 5,

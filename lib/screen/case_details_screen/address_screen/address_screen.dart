@@ -191,12 +191,22 @@ class _AddressScreenState extends State<AddressScreen>
                                               Image.asset(
                                                   ImageResource.direction),
                                               const SizedBox(width: 10),
-                                              const CustomText(
-                                                Constants.viewMap,
-                                                fontSize: FontSize.fourteen,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    ColorResource.color23375A,
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.21,
+                                                child: FittedBox(
+                                                  child: CustomText(
+                                                    Languages.of(context)!
+                                                        .viewMap
+                                                        .toUpperCase(),
+                                                    fontSize: FontSize.fourteen,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorResource
+                                                        .color23375A,
+                                                  ),
+                                                ),
                                               )
                                             ],
                                           ))),

@@ -108,131 +108,142 @@ class _AddressDetailsBottomSheetScreenState
                                             fontStyle: FontStyle.normal,
                                           ),
                                           const SizedBox(height: 7),
-                                          Container(
-                                            width: double.infinity,
-                                            decoration: const BoxDecoration(
-                                                color:
-                                                    ColorResource.colorF8F9FB,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 12, 12, 12),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Flexible(
-                                                        child: CustomText(
-                                                          widget
-                                                                  .bloc
-                                                                  .listOfAddressDetails?[
-                                                                      i]
-                                                                      ['value']
-                                                                  .toString()
-                                                                  .toUpperCase() ??
-                                                              '_',
-                                                          fontSize:
-                                                              FontSize.fourteen,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          color: ColorResource
-                                                              .color484848,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: Row(
-                                                            children: [
-                                                              const SizedBox(
-                                                                  width: 10),
-                                                              ShowHealthStatus
-                                                                  .healthStatus(
-                                                                      widget.bloc.listOfAddressDetails?[i]
-                                                                              [
-                                                                              'health'] ??
-                                                                          ''),
-                                                            ],
-                                                          )),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 15),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      GestureDetector(
-                                                        onTap: () => widget.bloc.add(
-                                                            ClickOpenBottomSheetEvent(
-                                                                Constants
-                                                                    .viewMap,
-                                                                widget
+                                          GestureDetector(
+                                            onTap: () {
+                                              widget.bloc.add(
+                                                  ClickMainAddressBottomSheetEvent(
+                                                      i));
+                                              Singleton.instance
+                                                  .resAddressId_0 = widget
+                                                          .bloc
+                                                          .caseDetailsAPIValue
+                                                          .result
+                                                          ?.addressDetails![i]
+                                                      ['resAddressId_0'] ??
+                                                  "";
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: const BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorF8F9FB,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              10.0))),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20, 12, 12, 12),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Flexible(
+                                                          child: CustomText(
+                                                            widget
                                                                     .bloc
-                                                                    .caseDetailsAPIValue
-                                                                    .result
-                                                                    ?.addressDetails,
-                                                                false)),
-                                                        child: Container(
-                                                            decoration: const BoxDecoration(
-                                                                color: ColorResource
-                                                                    .colorBEC4CF,
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            75.0))),
+                                                                    .listOfAddressDetails?[
+                                                                        i][
+                                                                        'value']
+                                                                    .toString()
+                                                                    .toUpperCase() ??
+                                                                '_',
+                                                            fontSize: FontSize
+                                                                .fourteen,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            color: ColorResource
+                                                                .color484848,
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                            alignment: Alignment
+                                                                .topRight,
                                                             child: Row(
                                                               children: [
-                                                                Image.asset(
-                                                                    ImageResource
-                                                                        .direction),
                                                                 const SizedBox(
-                                                                    width: 12),
-                                                                CustomText(
-                                                                  Languages.of(
-                                                                          context)!
-                                                                      .viewMap,
-                                                                  fontSize: FontSize
-                                                                      .fourteen,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  color: ColorResource
-                                                                      .color23375A,
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 12),
+                                                                    width: 10),
+                                                                ShowHealthStatus
+                                                                    .healthStatus(
+                                                                        widget.bloc.listOfAddressDetails?[i]['health'] ??
+                                                                            ''),
                                                               ],
                                                             )),
-                                                      ),
-                                                      const Spacer(),
-                                                      const SizedBox(width: 5),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          widget.bloc.add(
-                                                              ClickMainAddressBottomSheetEvent(
-                                                                  i));
-                                                          Singleton.instance
-                                                              .resAddressId_0 = widget
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: 15),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () => widget
+                                                              .bloc
+                                                              .add(ClickOpenBottomSheetEvent(
+                                                                  Constants
+                                                                      .viewMap,
+                                                                  widget
                                                                       .bloc
                                                                       .caseDetailsAPIValue
                                                                       .result
-                                                                      ?.addressDetails![i]
-                                                                  [
-                                                                  'resAddressId_0'] ??
-                                                              "";
-                                                        },
-                                                        child: Row(
+                                                                      ?.addressDetails,
+                                                                  false)),
+                                                          child: Container(
+                                                              decoration: const BoxDecoration(
+                                                                  color: ColorResource
+                                                                      .colorBEC4CF,
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              75.0))),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Image.asset(
+                                                                      ImageResource
+                                                                          .direction),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.fromLTRB(
+                                                                            10,
+                                                                            0,
+                                                                            17,
+                                                                            0),
+                                                                    child:
+                                                                        CustomText(
+                                                                      Languages.of(
+                                                                              context)!
+                                                                          .viewMap,
+                                                                      fontSize:
+                                                                          FontSize
+                                                                              .fourteen,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color: ColorResource
+                                                                          .color23375A,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )),
+                                                        ),
+                                                        const Spacer(),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
@@ -265,10 +276,10 @@ class _AddressDetailsBottomSheetScreenState
                                                                 width: 5)
                                                           ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),

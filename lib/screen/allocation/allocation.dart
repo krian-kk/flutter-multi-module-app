@@ -614,11 +614,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     const SizedBox(
                                       width: 13.0,
                                     ),
-                                    CustomText(
-                                      Languages.of(context)!.areYouAtOffice,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorResource.color000000,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      child: FittedBox(
+                                        child: CustomText(
+                                          Languages.of(context)!.areYouAtOffice,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color000000,
+                                        ),
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 10.0,
