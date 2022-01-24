@@ -37,32 +37,3 @@ class MapMarkerModel {
     return data;
   }
 }
-
-// class MapResultModel {
-//   String? caseId;
-//   String? address;
-//   String? due;
-//   double? latitude;
-//   double? longitude;
-
-//   MapResultModel(
-//       {this.caseId, this.address, this.due, this.latitude, this.longitude});
-
-//   MapResultModel.fromJson(Map<String, dynamic> json) {
-//     caseId = json['caseId'];
-//     address = json['address'];
-//     due = json['due'];
-//     latitude = json['latitude'];
-//     longitude = json['longitude'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = Map<String, dynamic>();
-//     data['caseId'] = this.caseId;
-//     data['address'] = this.address;
-//     data['due'] = this.due;
-//     data['latitude'] = this.latitude;
-//     data['longitude'] = this.longitude;
-//     return data;
-//   }
-// }
