@@ -44,7 +44,7 @@ class Result {
   int? sortId;
   String? followUpDate;
   String? locationType;
-  int? distanceMeters;
+  double? distanceMeters;
   String? repoStatus;
   String? accNo;
   List<Address>? address;
@@ -88,12 +88,21 @@ class Result {
     sortId = json['sortId'];
     followUpDate = json['followUpDate'];
     locationType = json['locationType'];
-    distanceMeters = json['distanceMeters'];
+    if (json['distanceMeters'] is int) {
+      distanceMeters = double.tryParse(json['distanceMeters'].toString());
+    } else if (json['distanceMeters'] is double) {
+      distanceMeters = json['distanceMeters'];
+    }
     repoStatus = json['repoStatus'];
     accNo = json['accNo'];
     if (json['contact'] != null) {
       address = <Address>[];
       json['contact'].forEach((v) {
+        address?.add(Address.fromJson(v));
+      });
+    } else if (json['address'] != null) {
+      address = <Address>[];
+      json['address'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
     }
