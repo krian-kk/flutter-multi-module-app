@@ -38,4 +38,9 @@ class SearchReturnDataEvent extends AllocationEvent {
 
 class PriorityLoadMoreEvent extends AllocationEvent {}
 
+class BuildRouteLoadMoreEvent extends AllocationEvent {
+  final dynamic paramValues;
+  BuildRouteLoadMoreEvent({this.paramValues});
+}
+
 class ShowAutoCallingEvent extends AllocationEvent {}

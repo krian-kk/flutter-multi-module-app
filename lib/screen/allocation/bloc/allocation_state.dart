@@ -47,6 +47,11 @@ class TapBuildRouteState extends AllocationState {
   TapBuildRouteState({this.successResponse});
 }
 
+class BuildRouteLoadMoreState extends AllocationState {
+  final dynamic successResponse;
+  BuildRouteLoadMoreState({this.successResponse});
+}
+
 class SearchScreenSuccessState extends AllocationState {
   final SearchModel data;
   SearchScreenSuccessState(this.data);

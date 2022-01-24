@@ -12,21 +12,30 @@ class DialogUtils {
       required String okBtnText,
       String? otherButton,
       String? cancelBtnText,
+      TextAlign? titleTextAlign,
+      TextStyle? titleTextStyle,
+      TextStyle? descriptionTextStyle,
+      TextAlign? descriptionTextAlign,
       required Function(String) okBtnFunction}) async {
     await showCupertinoDialog(
       context: buildContext,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: CustomText(
           title,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-              color: ColorResource.color000000, fontSize: FontSize.sixteen),
+          textAlign: titleTextAlign ?? TextAlign.center,
+          style: titleTextStyle ??
+              Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: ColorResource.color000000,
+                    fontSize: FontSize.sixteen,
+                  ),
         ),
         content: CustomText(
           description,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle2!.copyWith(
-              color: ColorResource.color23375A, fontSize: FontSize.fourteen),
+          textAlign: descriptionTextAlign ?? TextAlign.center,
+          style: descriptionTextStyle ??
+              Theme.of(context).textTheme.subtitle2!.copyWith(
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.fourteen),
         ),
         actions: <Widget>[
           CupertinoDialogAction(
