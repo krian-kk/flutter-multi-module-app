@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/location_converter.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -173,16 +177,52 @@ class _AddressDetailsBottomSheetScreenState
                                                             .spaceBetween,
                                                     children: [
                                                       GestureDetector(
-                                                        onTap: () => widget.bloc.add(
-                                                            ClickOpenBottomSheetEvent(
-                                                                Constants
-                                                                    .viewMap,
-                                                                widget
-                                                                    .bloc
-                                                                    .caseDetailsAPIValue
-                                                                    .result
-                                                                    ?.addressDetails,
-                                                                false)),
+                                                        onTap: () async {
+                                                          Position
+                                                              currentLocation =
+                                                              await Geolocator.getCurrentPosition(
+                                                                  desiredAccuracy:
+                                                                      LocationAccuracy
+                                                                          .best);
+                                                          Northeast?
+                                                              destinationLocation =
+                                                              await MapUtils.convertAddressToLarlng(
+                                                                  address: widget
+                                                                          .bloc
+                                                                          .caseDetailsAPIValue
+                                                                          .result!
+                                                                          .addressDetails![0]
+                                                                      [
+                                                                      'value']);
+                                                          if (destinationLocation !=
+                                                              null) {
+                                                            MapUtils.openMap(
+                                                                startLatitude:
+                                                                    currentLocation
+                                                                        .latitude,
+                                                                startLongitude:
+                                                                    currentLocation
+                                                                        .longitude,
+                                                                destinationLatitude:
+                                                                    destinationLocation
+                                                                            .lat ??
+                                                                        0.0,
+                                                                destinationLongitude:
+                                                                    destinationLocation
+                                                                            .lng ??
+                                                                        0.0);
+                                                          }
+                                                        },
+                                                        // onTap: () => widget.bloc.add(
+                                                        //     ClickOpenBottomSheetEvent(
+                                                        //         Constants
+                                                        //             .viewMap,
+                                                        //         widget
+                                                        //             .bloc
+                                                        //             .caseDetailsAPIValue
+                                                        //             .result
+                                                        //             ?.addressDetails,
+                                                        //         false)),
                                                         child: Container(
                                                             decoration: const BoxDecoration(
                                                                 color: ColorResource

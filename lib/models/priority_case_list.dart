@@ -41,13 +41,14 @@ class Result {
   String? agrRef;
   String? bankName;
   String? fieldfollowUpDate;
-  int? sortId;
+  dynamic sortId;
   String? followUpDate;
   String? locationType;
-  int? distanceMeters;
+  dynamic distanceMeters;
   String? repoStatus;
   String? accNo;
   List<Address>? address;
+  Location? location;
 
   Result(
       {this.sId,
@@ -69,7 +70,8 @@ class Result {
       this.distanceMeters,
       this.repoStatus,
       this.accNo,
-      this.address});
+      this.address,
+      this.location});
 
   Result.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -96,7 +98,14 @@ class Result {
       json['contact'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
+    } else {
+      address = <Address>[];
+      json['address'].forEach((v) {
+        address?.add(Address.fromJson(v));
+      });
     }
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +127,9 @@ class Result {
     if (address != null) {
       data['address'] = address?.map((v) => v.toJson()).toList();
     }
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
     return data;
   }
 }
@@ -137,6 +149,25 @@ class Address {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
     data['value'] = value;
+    return data;
+  }
+}
+
+class Location {
+  double? lat;
+  double? lng;
+
+  Location({this.lat, this.lng});
+
+  Location.fromJson(Map<String, dynamic> json) {
+    lat = json['lat'];
+    lng = json['lng'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lat'] = lat;
+    data['lng'] = lng;
     return data;
   }
 }
