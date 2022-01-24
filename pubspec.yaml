@@ -64,6 +64,7 @@ dependencies:
   webview_flutter: ^2.0.14
   objectid: ^2.0.0
   ably_flutter: ^1.2.9
+  flutter_polyline_points: ^1.0.0
 
 dev_dependencies:
   build_runner: ^2.1.4

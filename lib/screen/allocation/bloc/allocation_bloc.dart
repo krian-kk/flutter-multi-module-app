@@ -58,6 +58,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool isAutoCalling = false;
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
+  // Check which event to call for load more cases
+  bool isPriorityLoadMore = false;
 
   List<String> selectOptions = [];
   List<AutoCallingModel> mobileNumberList = [];
@@ -76,7 +78,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // AllocationListModel searchResultData = AllocationListModel();
   List starCount = [];
-  List priorityCaseAddressList = [];
+  // List priorityCaseAddressList = [];
   List<Result> resultList = [];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
@@ -92,7 +94,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       agrRef = _pref.getString(Constants.agentRef);
       isShowSearchPincode = false;
 
-      // check in office location capture or not
+      // check in office location captured or not
       areyouatOffice = _pref.getBool('areyouatOffice') ?? true;
 
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
@@ -131,6 +133,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         isNoInternetAndServerError = false;
+        // Now set priority case is a load more event
+        isPriorityLoadMore = true;
 
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.GET,
@@ -153,30 +157,43 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             }
 
             // Here add the address its used for make view map show the mark for case location
-            if (userType == Constants.fieldagent) {
-              if (Result.fromJson(jsonDecode(jsonEncode(element)))
-                      .address![0]
-                      .cType ==
-                  "residence address") {
-                // And here checked for already addres added or not
-                if (priorityCaseAddressList.contains(
-                    Result.fromJson(jsonDecode(jsonEncode(element)))
-                        .address![0]
-                        .value)) {
-                  print("already added");
-                } else {
-                  print("newly added");
-                  priorityCaseAddressList.add(
-                      Result.fromJson(jsonDecode(jsonEncode(element)))
-                          .address![0]
-                          .value
-                      // ?.splitMapJoin(' ')
-                      );
-                }
-              }
-            }
-            // print("priorityCaseAddressList--------------");
-            // print(priorityCaseAddressList);
+            // if (userType == Constants.fieldagent) {
+            //   if (Result.fromJson(jsonDecode(jsonEncode(element)))
+            //           .address![0]
+            //           .cType ==
+            //       "residence address") {
+            //     // And here checked for already addres added or not
+            //     if (priorityCaseAddressList.contains(
+            //         Result.fromJson(jsonDecode(jsonEncode(element)))
+            //             .address![0]
+            //             .value)) {
+            //       print("already added");
+            //     } else {
+            //       print("newly added");
+            //       priorityCaseAddressList.add(
+            //           Result.fromJson(jsonDecode(jsonEncode(element)))
+            //               .address![0]
+            //               .value
+            //           // ?.splitMapJoin(' ')
+            //           );
+            //     }
+            //   }
+            // }
+          }
+          // Get Contractor Details
+          Map<String, dynamic> getContractorDetails =
+              await APIRepository.apiRequest(
+                  APIRequestType.GET, HttpUrl.contractorDetail);
+          if (getContractorDetails[Constants.success] == true) {
+            Map<String, dynamic> jsonData = getContractorDetails['data'];
+            Singleton.instance.cloudTelephony =
+                jsonData['result']['cloudTelephony'] ?? false;
+            Singleton.instance.feedbackTemplate =
+                ContractorDetailsModel.fromJson(jsonData);
+            // contractorDetailsValue = ContractorDetailsModel.fromJson(jsonData);
+          } else {
+            AppUtils.showToast(getContractorDetails['data'] ?? '');
+            // AppUtils.showToast(getContractorDetails['data']);
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||
@@ -185,21 +202,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           isNoInternetAndServerErrorMsg = priorityListData['data'];
           // print('------Api not working----------');
           // print(priorityListData['data']);
-        }
-
-        Map<String, dynamic> getContractorDetails =
-            await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.contractorDetail);
-        if (getContractorDetails[Constants.success] == true) {
-          Map<String, dynamic> jsonData = getContractorDetails['data'];
-          Singleton.instance.cloudTelephony =
-              jsonData['result']['cloudTelephony'] ?? false;
-          Singleton.instance.feedbackTemplate =
-              ContractorDetailsModel.fromJson(jsonData);
-          // contractorDetailsValue = ContractorDetailsModel.fromJson(jsonData);
-        } else {
-          AppUtils.showToast(getContractorDetails['data'] ?? '');
-          // AppUtils.showToast(getContractorDetails['data']);
         }
       }
 
@@ -214,6 +216,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Enable the search and hide autocalling screen
       isAutoCalling = false;
       isShowSearchFloatingButton = true;
+      // Now set priority case is a load more event
+      isPriorityLoadMore = true;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -235,28 +239,26 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
           }
           //Tap again priority so, Here add the address its used for make view map show the mark for case location
-          if (userType == Constants.fieldagent) {
-            if (Result.fromJson(jsonDecode(jsonEncode(element)))
-                    .address![0]
-                    .cType ==
-                "residence address") {
-              // And here checked for already addres added or not
-              if (priorityCaseAddressList.contains(
-                  Result.fromJson(jsonDecode(jsonEncode(element)))
-                      .address![0]
-                      .value)) {
-                print("already added");
-              } else {
-                print("newly added");
-                priorityCaseAddressList.add(
-                    Result.fromJson(jsonDecode(jsonEncode(element)))
-                        .address![0]
-                        .value);
-              }
-            }
-          }
-          // print("priorityCaseAddressList--------------");
-          // print(priorityCaseAddressList);
+          // if (userType == Constants.fieldagent) {
+          //   if (Result.fromJson(jsonDecode(jsonEncode(element)))
+          //           .address![0]
+          //           .cType ==
+          //       "residence address") {
+          //     // And here checked for already addres added or not
+          //     if (priorityCaseAddressList.contains(
+          //         Result.fromJson(jsonDecode(jsonEncode(element)))
+          //             .address![0]
+          //             .value)) {
+          //       print("already added");
+          //     } else {
+          //       print("newly added");
+          //       priorityCaseAddressList.add(
+          //           Result.fromJson(jsonDecode(jsonEncode(element)))
+          //               .address![0]
+          //               .value);
+          //     }
+          //   }
+          // }
         }
       }
 
@@ -281,30 +283,29 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   .starredCase as List);
             }
             //Load more priority list so, Here add the address its used for make view map show the mark for case location
-            if (userType == Constants.fieldagent) {
-              if (Result.fromJson(jsonDecode(jsonEncode(element)))
-                      .address![0]
-                      .cType ==
-                  "residence address") {
-                // And here checked for already addres added or not
-                if (priorityCaseAddressList.contains(
-                    Result.fromJson(jsonDecode(jsonEncode(element)))
-                        .address![0]
-                        .value)) {
-                  print("already added");
-                } else {
-                  print("newly added");
-                  priorityCaseAddressList.add(
-                      Result.fromJson(jsonDecode(jsonEncode(element)))
-                          .address![0]
-                          .value);
-                }
-              }
-            }
-            // print("priorityCaseAddressList--------------");
-            // print(priorityCaseAddressList.length);
+            // if (userType == Constants.fieldagent) {
+            //   if (Result.fromJson(jsonDecode(jsonEncode(element)))
+            //           .address![0]
+            //           .cType ==
+            //       "residence address") {
+            //     // And here checked for already addres added or not
+            //     if (priorityCaseAddressList.contains(
+            //         Result.fromJson(jsonDecode(jsonEncode(element)))
+            //             .address![0]
+            //             .value)) {
+            //       print("already added");
+            //     } else {
+            //       print("newly added");
+            //       priorityCaseAddressList.add(
+            //           Result.fromJson(jsonDecode(jsonEncode(element)))
+            //               .address![0]
+            //               .value);
+            //     }
+            //   }
+            // }
           }
-          hasNextPage = false;
+        } else {
+          // hasNextPage = false;
         }
       }
       yield PriorityLoadMoreState(successResponse: resultList);
@@ -315,6 +316,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       page = 1;
       hasNextPage = true;
+      // Now set Build Route case is a load more event
+      isPriorityLoadMore = false;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -325,7 +328,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 HttpUrl.buildRouteCaseList +
                     "lat=${event.paramValues.lat}&" +
                     "lng=${event.paramValues.long}&" +
-                    "maxDistMeters=${event.paramValues.maxDistMeters}");
+                    "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    'page=${Constants.pageNo}&' +
+                    'limit=${Constants.limit}');
 
         resultList.clear();
         starCount.clear();
@@ -340,6 +345,35 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         }
       }
       yield TapBuildRouteState(successResponse: resultList);
+    }
+
+    if (event is BuildRouteLoadMoreEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> buildRouteListData =
+            await APIRepository.apiRequest(
+                APIRequestType.GET,
+                HttpUrl.buildRouteCaseList +
+                    "lat=${event.paramValues.lat}&" +
+                    "lng=${event.paramValues.long}&" +
+                    "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    'page=$page&' +
+                    'limit=${Constants.limit}');
+
+        resultList.clear();
+        starCount.clear();
+
+        for (var element in buildRouteListData['data']['result']['cases']) {
+          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+              true) {
+            starCount.add(
+                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+          }
+        }
+      }
+      yield BuildRouteLoadMoreState(successResponse: resultList);
     }
 
     if (event is MapViewEvent) {

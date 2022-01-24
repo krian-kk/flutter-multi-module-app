@@ -1,5 +1,8 @@
+import 'package:origa/http/env.dart';
+
 class HttpUrl {
   static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
+  // static const String baseUrl = Env.instalmintUrl;
   // static const String baseUrl = 'https://devapi.instalmint.com/';
   // static const String baseUrl = 'https://origa-dev/';
   static const String version = 'v1/';
@@ -16,8 +19,13 @@ class HttpUrl {
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
 
-  // static String resetOTP =
-  //     'https://uat-collect.origa.ai/app_otc/public/requestOtp';
+  //      static const String loginUrl =
+  //     'https://collect.instalmint.com/node/api/user/loginWeb';
+  // static const String agentDetailUrl =
+  //     'https://collect.instalmint.com/node/field-allocation/agents/';
+  // // Get agent detail for Reset password screen
+  // static String resetPasswordCheckUrl(String agentName) =>
+  //     'https://collect.instalmint.com/node/field-allocation/agents/info/$agentName';
 
   //Get API
   static const String dashboardUrl =
