@@ -33,6 +33,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -699,13 +700,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 height: 5),
                                                             CustomText(
                                                               bloc
+                                                                          .caseDetailsAPIValue
+                                                                          .result
+                                                                          ?.otherLoanDetails![
+                                                                              index]
+                                                                          .cust !=
+                                                                      null
+                                                                  ? bloc
                                                                       .caseDetailsAPIValue
-                                                                      .result
-                                                                      ?.otherLoanDetails![
+                                                                      .result!
+                                                                      .otherLoanDetails![
                                                                           index]
                                                                       .cust!
-                                                                      .toUpperCase() ??
-                                                                  '_', // ----------- doubt ---------------
+                                                                      .toUpperCase()
+                                                                  : '_', // ----------- doubt ---------------
                                                               color: ColorResource
                                                                   .color333333,
                                                               fontSize: FontSize
@@ -1196,11 +1204,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
             );
-          case Constants.viewMap:
-            return MapViewBottomSheetScreen(
-                title: Languages.of(context)!.viewMap,
-                agentLocation:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.pincode);
+          // case Constants.viewMap:
+          //   return MapViewBottomSheetScreen(
+          //       title: Languages.of(context)!.viewMap,
+          //       agentLocation:
+          //           bloc.caseDetailsAPIValue.result?.caseDetails?.pincode);
           default:
             return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,

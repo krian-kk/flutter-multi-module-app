@@ -2,8 +2,10 @@ class Constants {
   static const String inr = '₹ ';
   static const String home = 'home';
   static const String pageNo = '1';
-  static const String limit = '5';
+  static const String limit = '10';
   static const String help = 'Help';
+  static const String maxDisMeters = '10000';
+  static const String minDisMeters = '5000';
   // Type of userType
   static const String fieldagent = 'FIELDAGENT';
   static const String telecaller = 'TELECALLER';

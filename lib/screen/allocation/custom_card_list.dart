@@ -59,7 +59,14 @@ class CustomCardList {
                               width: 7,
                             ),
                             CustomText(
-                              resultData[index].distanceMeters.toString(),
+                              resultData[index].distanceMeters != null
+                                  ? double.parse(resultData[index]
+                                              .distanceMeters
+                                              .toStringAsFixed(2))
+                                          .toString() +
+                                      " Meters"
+                                  : '-',
+                              // resultData[index].distanceMeters.toString(),
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
                               color: ColorResource.color101010,
@@ -255,9 +262,12 @@ class CustomCardList {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            resultData[index]
-                                                .address![0]
-                                                .value!,
+                                            resultData[index].address != null
+                                                ? resultData[index]
+                                                    .address!
+                                                    .first
+                                                    .value!
+                                                : '-',
                                             color: ColorResource.color484848,
                                             fontSize: FontSize.fourteen,
                                           ),
