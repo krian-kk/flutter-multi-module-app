@@ -111,64 +111,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         backgroundColor: ColorResource.colorFFFFFF,
         builder: (BuildContext context) {
           return MapNavigation(
-            multipleLatLong: [
-              MapMarkerModel(
-                caseId: "0000000000000",
-                address: "Address 00",
-                due: "12,000",
-                name: "Nandha",
-                latitude: 12.2985516,
-                longitude: 78.0737511,
-              ),
-              MapMarkerModel(
-                caseId: "1111111111111",
-                address: "Address 001",
-                due: "34,000",
-                name: "Chinnadurai",
-                latitude: 12.314088,
-                longitude: 78.074635,
-              ),
-              MapMarkerModel(
-                caseId: "222222222222",
-                address: "Address 002",
-                due: "56,000",
-                name: "Jones",
-                latitude: 12.307329,
-                longitude: 78.046713,
-              ),
-              MapMarkerModel(
-                caseId: "333333333333",
-                address: "Address 003",
-                due: "78,000",
-                name: "NKS",
-                latitude: 12.297474,
-                longitude: 78.033670,
-              ),
-              MapMarkerModel(
-                caseId: "44444444444",
-                address: "Address 004",
-                due: "90,000",
-                name: "Krish",
-                latitude: 12.284895,
-                longitude: 78.080050,
-              ),
-              MapMarkerModel(
-                caseId: "55555555555",
-                address: "Address 005",
-                due: "100,000",
-                name: "Nandhu",
-                latitude: 12.277347,
-                longitude: 78.064418,
-              ),
-              MapMarkerModel(
-                caseId: "666666666666",
-                address: "Address 006",
-                due: "32,000",
-                name: "King",
-                latitude: 12.278689,
-                longitude: 78.034185,
-              ),
-            ],
+            multipleLatLong: bloc.multipleLatLong,
           );
           // MapViewBottomSheetScreen(
           //   title: Languages.of(context)!.viewMap,
@@ -248,7 +191,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     paramValues: BuildRouteDataModel(
                         lat: position.latitude.toString(),
                         long: position.longitude.toString(),
-                        maxDistMeters: "10000")));
+                        maxDistMeters: Constants.maxDisMeters)));
                 bloc.showFilterDistance = true;
               });
             } else {
@@ -256,7 +199,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
             }
             break;
           case 2:
-            bloc.add(MapViewEvent());
+            bloc.add(MapViewEvent(
+                paramValues: BuildRouteDataModel(
+                    lat: position.latitude.toString(),
+                    long: position.longitude.toString(),
+                    maxDistMeters: Constants.maxDisMeters)));
             setState(() {
               bloc.showFilterDistance = false;
             });
@@ -376,13 +323,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
       onTap: () {
         switch (index) {
           case 0:
-            maxDistance = '10000';
+            maxDistance = Constants.maxDisMeters;
             break;
           case 1:
-            maxDistance = '5000';
+            maxDistance = Constants.minDisMeters;
             break;
           case 2:
-            maxDistance = '10000';
+            maxDistance = Constants.maxDisMeters;
             break;
           default:
         }
