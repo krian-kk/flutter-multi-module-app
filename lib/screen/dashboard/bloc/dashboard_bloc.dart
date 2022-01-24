@@ -131,37 +131,50 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           dashboardList.addAll([
             DashboardListModel(
               title: Languages.of(event.context!)!.priorityFollowUp,
+              subTitle: Languages.of(event.context!)!.customer,
               image: ImageResource.vectorArrow,
               count: dashboardCardCounts.result?.priorityFollowUp!.count
-                  .toString(),
+                      .toString() ??
+                  '0',
               amountRs: dashboardCardCounts.result?.priorityFollowUp!.totalAmt
-                  .toString(),
+                      .toString() ??
+                  '0',
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.untouchedCases,
+              subTitle: Languages.of(event.context!)!.customer,
               image: ImageResource.vectorArrow,
-              count: dashboardCardCounts.result?.untouched!.count.toString(),
+              count: dashboardCardCounts.result?.untouched!.count.toString() ??
+                  '0',
               amountRs:
-                  dashboardCardCounts.result?.untouched!.totalAmt.toString(),
+                  dashboardCardCounts.result?.untouched!.totalAmt.toString() ??
+                      '0',
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.brokenPTP,
+              subTitle: Languages.of(event.context!)!.customer,
               image: ImageResource.vectorArrow,
-              count: dashboardCardCounts.result?.brokenPtp!.count.toString(),
+              count: dashboardCardCounts.result?.brokenPtp!.count.toString() ??
+                  '0',
               amountRs:
-                  dashboardCardCounts.result?.brokenPtp!.totalAmt.toString(),
+                  dashboardCardCounts.result?.brokenPtp!.totalAmt.toString() ??
+                      '0',
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.myReceipts,
+              subTitle: Constants.events,
               image: ImageResource.vectorArrow,
-              count: dashboardCardCounts.result?.receipts!.count.toString(),
+              count:
+                  dashboardCardCounts.result?.receipts!.count.toString() ?? '0',
               amountRs:
-                  dashboardCardCounts.result?.receipts!.totalAmt.toString(),
+                  dashboardCardCounts.result?.receipts!.totalAmt.toString() ??
+                      '0',
             ),
             DashboardListModel(
               title: userType == Constants.fieldagent
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
+              subTitle: Constants.events,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.visits?.count.toString() ?? '0',
@@ -171,16 +184,19 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             ),
             DashboardListModel(
                 title: Languages.of(event.context!)!.myDeposists,
+                subTitle: '',
                 image: '',
                 count: '',
                 amountRs: ''),
             DashboardListModel(
                 title: Languages.of(event.context!)!.yardingSelfRelease,
+                subTitle: '',
                 image: '',
                 count: '',
                 amountRs: ''),
           ]);
         } else if (dashboardData['statusCode'] == 401 ||
+            dashboardData['data'] == Constants.connectionTimeout ||
             dashboardData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           noInternetAndServerErrorMsg = dashboardData['data'];

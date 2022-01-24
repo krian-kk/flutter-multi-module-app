@@ -18,6 +18,8 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/singleton.dart';
@@ -108,10 +110,70 @@ class _AllocationScreenState extends State<AllocationScreen> {
         ),
         backgroundColor: ColorResource.colorFFFFFF,
         builder: (BuildContext context) {
-          return MapViewBottomSheetScreen(
-            title: Languages.of(context)!.viewMap,
-            listOfAgentLocation: bloc.priorityCaseAddressList,
+          return MapNavigation(
+            multipleLatLong: [
+              MapMarkerModel(
+                caseId: "0000000000000",
+                address: "Address 00",
+                due: "12,000",
+                name: "Nandha",
+                latitude: 12.2985516,
+                longitude: 78.0737511,
+              ),
+              MapMarkerModel(
+                caseId: "1111111111111",
+                address: "Address 001",
+                due: "34,000",
+                name: "Chinnadurai",
+                latitude: 12.314088,
+                longitude: 78.074635,
+              ),
+              MapMarkerModel(
+                caseId: "222222222222",
+                address: "Address 002",
+                due: "56,000",
+                name: "Jones",
+                latitude: 12.307329,
+                longitude: 78.046713,
+              ),
+              MapMarkerModel(
+                caseId: "333333333333",
+                address: "Address 003",
+                due: "78,000",
+                name: "NKS",
+                latitude: 12.297474,
+                longitude: 78.033670,
+              ),
+              MapMarkerModel(
+                caseId: "44444444444",
+                address: "Address 004",
+                due: "90,000",
+                name: "Krish",
+                latitude: 12.284895,
+                longitude: 78.080050,
+              ),
+              MapMarkerModel(
+                caseId: "55555555555",
+                address: "Address 005",
+                due: "100,000",
+                name: "Nandhu",
+                latitude: 12.277347,
+                longitude: 78.064418,
+              ),
+              MapMarkerModel(
+                caseId: "666666666666",
+                address: "Address 006",
+                due: "32,000",
+                name: "King",
+                latitude: 12.278689,
+                longitude: 78.034185,
+              ),
+            ],
           );
+          // MapViewBottomSheetScreen(
+          //   title: Languages.of(context)!.viewMap,
+          //   listOfAgentLocation: bloc.priorityCaseAddressList,
+          // );
         });
   }
 
@@ -133,8 +195,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 WillPopScope(
                   onWillPop: () async => true,
                   child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.86,
-                      child: const MessageChatRoomScreen()),
+                    height: MediaQuery.of(context).size.height * 0.86,
+                    child: SizedBox(),
+                    // child: const MessageChatRoomScreen(),
+                  ),
                 )));
   }
 
@@ -143,10 +207,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
   void _loadMore() async {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
       if (bloc.hasNextPage) {
+        print("---------Nnadha---------");
         if (bloc.isShowSearchPincode) {
-        } else {
+        } else if (bloc.isPriorityLoadMore) {
           bloc.page += 1;
           bloc.add(PriorityLoadMoreEvent());
+        } else {
+          bloc.page += 1;
+          bloc.add(BuildRouteLoadMoreEvent());
         }
       }
     }
@@ -445,6 +513,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
             }
           }
         }
+
+        if (state is BuildRouteLoadMoreState) {
+          if (state.successResponse is List<Result>) {
+            if (bloc.hasNextPage) {
+              resultList.addAll(state.successResponse);
+            }
+          }
+        }
+
         if (state is TapAreYouAtOfficeOptionsState) {
           Position positions = Position(
             longitude: 0,

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
@@ -17,6 +18,8 @@ import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart'
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
 import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';

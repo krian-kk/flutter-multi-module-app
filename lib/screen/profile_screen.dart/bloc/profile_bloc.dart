@@ -73,6 +73,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           //       result: jsonData['result'][0],
           //     )));
         } else if (getProfileData['statusCode'] == 401 ||
+            getProfileData['data'] == Constants.connectionTimeout ||
             getProfileData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           noInternetAndServerErrorMsg = getProfileData['data'];

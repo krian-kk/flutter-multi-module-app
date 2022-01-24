@@ -189,7 +189,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is PostDataApiSuccessState) {
-            Navigator.pop(context);
+            while (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);
           }
 
@@ -757,9 +759,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                       width: 6,
                                                                     ),
                                                                     CustomText(
-                                                                      Languages.of(
-                                                                              context)!
-                                                                          .customer,
+                                                                      bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .subTitle!,
                                                                       fontSize:
                                                                           FontSize
                                                                               .fourteen,

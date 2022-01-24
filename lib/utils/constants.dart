@@ -2,7 +2,7 @@ class Constants {
   static const String inr = '₹ ';
   static const String home = 'home';
   static const String pageNo = '1';
-  static const String limit = '10';
+  static const String limit = '5';
   static const String help = 'Help';
   // Type of userType
   static const String fieldagent = 'FIELDAGENT';
@@ -117,4 +117,6 @@ class Constants {
   static const String bankReceiptAmountDoesntMatch =
       'There is mismatch in the receipt amount. Do you wish to continue?';
   static const String noOtherLoanAvailable = "No other loan's available.";
+  static const String events = 'Events';
+  static const String connectionTimeout = 'connection timeout';
 }
