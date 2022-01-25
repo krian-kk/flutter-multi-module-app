@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
-INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
-INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
-INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
-MERGED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
+INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
+INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
+INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
+MERGED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
 MERGED from [:geolocator_android] /Users/jones/Desktop/origa/build/geolocator_android/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:google_maps_flutter] /Users/jones/Desktop/origa/build/google_maps_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:image_picker] /Users/jones/Desktop/origa/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-19:12
@@ -74,11 +74,11 @@ INJECTED from /Users/jones/Desktop/origa/android/app/src/debug/AndroidManifest.x
 		INJECTED from /Users/jones/Desktop/origa/android/app/src/debug/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
 		INJECTED from /Users/jones/Desktop/origa/android/app/src/debug/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-50:12
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:1-71:12
 		INJECTED from /Users/jones/Desktop/origa/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:1:11-69
@@ -226,6 +226,38 @@ MERGED from [com.google.android.gms:play-services-maps:17.0.0] /Users/jones/.gra
 		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:48:65-89
 	android:name
 		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:48:27-64
+queries
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:51:5-70:15
+MERGED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-15:15
+MERGED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-15:15
+intent#action:name:android.intent.action.VIEW+data:scheme:https
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:52:7-55:16
+action#android.intent.action.VIEW
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:53:9-61
+	android:name
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:53:17-58
+data
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:54:9-40
+	android:scheme
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:54:15-37
+intent#action:name:android.intent.action.DIAL+data:scheme:tel
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:56:7-59:16
+action#android.intent.action.DIAL
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:57:9-61
+	android:name
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:57:17-58
+intent#action:name:android.intent.action.SENDTO+data:scheme:smsto
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:60:7-63:16
+action#android.intent.action.SENDTO
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:61:9-63
+	android:name
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:61:17-60
+intent#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+data:scheme:https
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:65:7-69:16
+category#android.intent.category.BROWSABLE
+ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:67:9-70
+	android:name
+		ADDED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml:67:19-67
 uses-sdk
 INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/jones/Desktop/origa/android/app/src/main/AndroidManifest.xml
@@ -374,18 +406,12 @@ ADDED from [:image_picker] /Users/jones/Desktop/origa/build/image_picker/interme
 		ADDED from [:image_picker] /Users/jones/Desktop/origa/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
 	android:name
 		ADDED from [:image_picker] /Users/jones/Desktop/origa/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
-queries
-ADDED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-15:15
 intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
 ADDED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:9-14:18
 action#android.intent.action.GET_CONTENT
 ADDED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-72
 	android:name
 		ADDED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:21-69
-data
-ADDED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-44
-	android:mimeType
-		ADDED from [:file_picker] /Users/jones/Desktop/origa/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:19-41
 service#io.ably.flutter.plugin.push.PushMessagingService
 ADDED from [:ably_flutter] /Users/jones/Desktop/origa/build/ably_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-14:19
 	android:exported

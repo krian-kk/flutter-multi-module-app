@@ -284,7 +284,7 @@ class LanguageEn extends Languages {
   String get sendWhatsapp => 'SEND WHATSAPP';
 
   @override
-  String get otherLoanOf => 'OTHER LOAN OF';
+  String get otherLoanOf => 'OTHER LOAN';
 
   @override
   String get view => 'VIEW';

@@ -14,6 +14,7 @@ import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -74,6 +75,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   List<AllocationListModel> allocationList = [];
   late Position currentLocation;
+  List<dynamic> multipleLatLong = [];
 
   // Future<Box<OrigoDynamicTable>> offlineDatabaseBox =
   //     Hive.openBox<OrigoDynamicTable>('testBox4');
@@ -380,15 +382,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         resultList.clear();
         starCount.clear();
+        multipleLatLong.clear();
 
-        for (var element in buildRouteListData['data']['result']['cases']) {
+        buildRouteListData['data']['result']['cases'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-              true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
-          }
-        }
+          Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
+          multipleLatLong.add(
+            MapMarkerModel(
+              caseId: listOfCases.caseId,
+              address: listOfCases.address?.first.value,
+              due: listOfCases.due.toString(),
+              name: listOfCases.cust,
+              latitude: listOfCases.location?.lat,
+              longitude: listOfCases.location?.lng,
+            ),
+          );
+        });
       }
       yield TapBuildRouteState(successResponse: resultList);
     }
@@ -407,22 +416,55 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'page=$page&' +
                     'limit=${Constants.limit}');
 
-        resultList.clear();
-        starCount.clear();
-
-        for (var element in buildRouteListData['data']['result']['cases']) {
+        buildRouteListData['data']['result']['cases'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-              true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
-          }
-        }
+          Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
+          multipleLatLong.add(
+            MapMarkerModel(
+              caseId: listOfCases.caseId,
+              address: listOfCases.address?.first.value,
+              due: listOfCases.due.toString(),
+              name: listOfCases.cust,
+              latitude: listOfCases.location?.lat,
+              longitude: listOfCases.location?.lng,
+            ),
+          );
+        });
       }
       yield BuildRouteLoadMoreState(successResponse: resultList);
     }
 
     if (event is MapViewEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        Map<String, dynamic> buildRouteListData =
+            await APIRepository.apiRequest(
+                APIRequestType.GET,
+                HttpUrl.buildRouteCaseList +
+                    "lat=${event.paramValues.lat}&" +
+                    "lng=${event.paramValues.long}&" +
+                    "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    'page=${Constants.pageNo}&' +
+                    'limit=${Constants.limit}');
+
+        // multipleLatLong.clear();
+
+        buildRouteListData['data']['result']['cases'].forEach((element) {
+          Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
+          // if (multipleLatLong.contains(element)) {}
+          multipleLatLong.add(
+            MapMarkerModel(
+              caseId: listOfCases.caseId,
+              address: listOfCases.address?.first.value,
+              due: listOfCases.due.toString(),
+              name: listOfCases.cust,
+              latitude: listOfCases.location?.lat,
+              longitude: listOfCases.location?.lng,
+            ),
+          );
+        });
+      }
       yield MapViewState();
     }
     if (event is TapAreYouAtOfficeOptionsEvent) {

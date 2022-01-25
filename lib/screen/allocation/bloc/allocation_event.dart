@@ -7,7 +7,10 @@ class AllocationInitialEvent extends AllocationEvent {
   AllocationInitialEvent(this.context);
 }
 
-class MapViewEvent extends AllocationEvent {}
+class MapViewEvent extends AllocationEvent {
+  final dynamic paramValues;
+  MapViewEvent({this.paramValues});
+}
 
 class MessageEvent extends AllocationEvent {}
 
