@@ -349,18 +349,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     onTap: () {
                                       Navigator.pop(context);
                                       if (widget.bloc.isAutoCalling) {
-                                        widget.bloc.allocationBloc
-                                            .add(StartCallingEvent(
-                                          customerIndex: widget.bloc
-                                                  .paramValue['customerIndex'] +
-                                              1,
-                                          phoneIndex: 0,
-                                          customerList: widget.bloc
-                                              .allocationBloc.resultList[widget
-                                                  .bloc
-                                                  .paramValue['customerIndex'] +
-                                              1],
-                                        ));
                                         // Navigator.pop(context);
                                       }
                                     },

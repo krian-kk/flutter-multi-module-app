@@ -13,6 +13,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -39,6 +40,9 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
     this.postValue,
     this.isCall,
     this.custName,
+    this.isAutoCalling = false,
+    this.allocationBloc,
+    this.paramValue,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -47,6 +51,9 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
   final dynamic postValue;
   final String? custName;
   final bool? isCall;
+  final bool isAutoCalling;
+  final AllocationBloc? allocationBloc;
+  final dynamic paramValue;
 
   @override
   State<CustomCollectionsBottomSheet> createState() =>
@@ -461,9 +468,23 @@ class _CustomCollectionsBottomSheetState
                                   );
 
                                   if (postResult[Constants.success]) {
-                                    AppUtils.topSnackBar(
-                                        context, Constants.eventUpdatedSuccess);
-                                    Navigator.pop(context);
+                                    if (widget.isAutoCalling) {
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      widget.allocationBloc!
+                                          .add(StartCallingEvent(
+                                        customerIndex:
+                                            widget.paramValue['customerIndex'] +
+                                                1,
+                                        phoneIndex: 0,
+                                      ));
+                                    } else {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                      Navigator.pop(context);
+                                    }
                                   }
                                 } else {
                                   DialogUtils.showDialog(

@@ -65,7 +65,9 @@ class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final List? list;
   final bool? isCall;
   final String? health;
-  ClickOpenBottomSheetEvent(this.title, this.list, this.isCall, {this.health});
+  final BuildContext? context;
+  ClickOpenBottomSheetEvent(this.title, this.list, this.isCall,
+      {this.health, this.context});
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {

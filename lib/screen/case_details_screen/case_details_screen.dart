@@ -76,25 +76,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             // Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
           }
-          if (state is SubmitSuccessState) {
-            if (bloc.isAutoCalling) {
-              bloc.allocationBloc.add(StartCallingEvent(
-                customerIndex: bloc.paramValue['customerIndex'],
-                phoneIndex: bloc.paramValue['phoneIndex'] + 1,
-                // customerList: widget.bloc.allocationBloc
-                //     .resultList[(widget.bloc
-                //         .paramValue['customerIndex']) +
-                //     1],
-              ));
-              Navigator.pop(context);
-            }
-          }
+          // if (state is SubmitSuccessState) {
+          //   print('djdjjdkdkdj');
+
+          // }
           if (state is ClickMainCallBottomSheetState) {
             // Navigator.pop(context);
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
-            print("ClickOpenBottomSheetState ===> ${state.isCall}");
             openBottomSheet(context, state.title, state.list, state.isCall,
                 health: state.health);
           }

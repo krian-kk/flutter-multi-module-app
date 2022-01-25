@@ -26,13 +26,30 @@ import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.d
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
+import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
+import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
+import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
+import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_screen.dart';
+import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
+import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
+import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
+import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
+import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
+import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
+import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +62,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
   String? agentName;
   bool isAutoCalling = false;
+
+  BuildContext? caseDetailsContext;
 
   // allocationBloc.
   // String? agrRef;
@@ -131,6 +150,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
+      caseDetailsContext = event.context;
       Singleton.instance.buildContext = event.context;
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
@@ -307,15 +327,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         yield PhoneBottomSheetSuccessState();
       }
     }
-
     if (event is AddedNewAddressListEvent) {
       yield AddedNewAddressListState();
     }
-
     if (event is AddedNewCallContactListEvent) {
       yield AddedNewCallContactListState();
     }
-
     if (event is ClickMainAddressBottomSheetEvent) {
       indexValue = event.index;
       yield ClickMainAddressBottomSheetState(event.index);
@@ -327,18 +344,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickViewMapEvent) {
       yield ClickViewMapState();
     }
-    // if (event is ClickCallCustomerEvent) {
-    //   // yield ClickCallCustomerState();
-    // }
     if (event is ClickCaseDetailsEvent) {
       yield CallCaseDetailsState(paramValues: event.paramValues);
     }
-
     if (event is ClickPushAndPOPCaseDetailsEvent) {
       yield PushAndPOPNavigationCaseDetailsState(
           paramValues: event.paramValues);
     }
-
     if (event is ClickOpenBottomSheetEvent) {
       switch (event.title) {
         case Constants.eventDetails:
@@ -396,11 +408,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         // break;
         default:
       }
-      print("iscall value ==> ${event.isCall}");
-      yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
-          health: event.health);
+      print('kdlkdlk');
+      if (isAutoCalling) {
+        openBottomSheet(
+            caseDetailsContext!, event.title, event.list ?? [], event.isCall);
+      } else {
+        yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
+            health: event.health);
+      }
     }
-
     if (event is PostImageCapturedEvent) {
       yield DisableCaptureImageBtnState();
       final Map<String, dynamic> postdata =
@@ -426,7 +442,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       yield EnableCaptureImageBtnState();
     }
-
     if (event is ClickCustomerNotMetButtonEvent) {
       yield DisableCustomerNotMetBtnState();
       Map<String, dynamic> resultValue = {'success': false};
@@ -499,7 +514,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       yield EnableCustomerNotMetBtnState();
     }
-
     if (event is ClickAddressInvalidButtonEvent) {
       yield DisableAddressInvalidBtnState();
       late Map<String, dynamic> resultValue = {Constants.success: false};
@@ -554,7 +568,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       yield EnableAddressInvalidBtnState();
     }
-
     if (event is ClickPhoneInvalidButtonEvent) {
       yield DisablePhoneInvalidBtnState();
       late Map<String, dynamic> resultValue = {Constants.success: false};
@@ -596,11 +609,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
-        yield SubmitSuccessState();
       }
       yield EnablePhoneInvalidBtnState();
     }
-
     if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
       yield DisableUnreachableBtnState();
       late Map<String, dynamic> resultValue;
@@ -661,11 +672,223 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
       }
       if (resultValue[Constants.success]) {
+        if (isAutoCalling) {
+          allocationBloc.add(StartCallingEvent(
+            customerIndex: paramValue['customerIndex'],
+            phoneIndex: paramValue['phoneIndex'] + 1,
+            // customerList: widget.bloc.allocationBloc
+            //     .resultList[(widget.bloc
+            //         .paramValue['customerIndex']) +
+            //     1],
+          ));
+          Navigator.pop(paramValue['context']);
+        }
         yield PostDataApiSuccessState();
-        yield SubmitSuccessState();
       }
       yield EnableUnreachableBtnState();
     }
+  }
+
+  openBottomSheet(
+      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+      {String? health}) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
+      ),
+      builder: (BuildContext context) {
+        switch (cardTitle) {
+          case Constants.ptp:
+            return CustomPtpBottomSheet(
+              Languages.of(context)!.ptp,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: list[indexValue!],
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+            );
+          case Constants.rtp:
+            return CustomRtpBottomSheet(
+              Languages.of(context)!.rtp,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: list[indexValue!],
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+            );
+          case Constants.dispute:
+            return CustomDisputeBottomSheet(
+              Languages.of(context)!.dispute,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: list[indexValue!],
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+            );
+          case Constants.remainder:
+            return CustomRemainderBottomSheet(
+              Languages.of(context)!.remainderCb,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: list[indexValue!],
+
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+              // eventCode: bloc.eventCode,
+            );
+          case Constants.collections:
+            return CustomCollectionsBottomSheet(
+              Languages.of(context)!.collections,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              isCall: isCall,
+              // eventCode: bloc.eventCode,
+              userType: userType.toString(),
+              postValue: list[indexValue!],
+              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+            );
+          case Constants.ots:
+            return CustomOtsBottomSheet(
+              Languages.of(context)!.ots,
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              caseId: caseId.toString(),
+              userType: userType.toString(),
+              isCall: isCall,
+              postValue: list[indexValue!],
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+            );
+
+          case Constants.otherFeedback:
+            return CustomOtherFeedBackBottomSheet(
+              Languages.of(context)!.otherFeedBack,
+              CaseDetailsBloc(AllocationBloc()),
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: list[indexValue!],
+              isCall: isCall,
+              health: health ?? ConstantEventValues.healthTwo,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+            );
+          case Constants.eventDetails:
+            return CustomEventDetailsBottomSheet(
+              Languages.of(context)!.eventDetails,
+              CaseDetailsBloc(AllocationBloc()),
+              customeLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+            );
+
+          case Constants.callCustomer:
+            List<String> s1 = [];
+            caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+              if (element['cType'].contains('mobile')) {
+                if (!(s1.contains(element['value']))) {
+                  s1.add(element['value']);
+                }
+              } else {}
+            });
+
+            return CallCustomerBottomSheet(
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              listOfMobileNo: s1,
+              userType: userType.toString(),
+              caseId: caseId.toString(),
+              sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
+            );
+
+          default:
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    BottomSheetAppbar(
+                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    Expanded(child: Center(child: CircularProgressIndicator())),
+                  ],
+                ));
+        }
+      },
+    );
   }
 
   Future<Map<String, dynamic>> unreachableButtonClick(

@@ -74,6 +74,4 @@ class AddedNewAddressListState extends CaseDetailsState {}
 
 class AddedNewCallContactListState extends CaseDetailsState {}
 
-class SubmitSuccessState extends CaseDetailsState {}
-
 class PhoneBottomSheetSuccessState extends CaseDetailsState {}

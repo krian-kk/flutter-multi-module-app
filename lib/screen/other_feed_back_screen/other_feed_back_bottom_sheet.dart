@@ -17,6 +17,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -47,6 +48,9 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     this.postValue,
     this.isCall,
     required this.health,
+    this.isAutoCalling = false,
+    this.allocationBloc,
+    this.paramValue,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -57,6 +61,9 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   // final String resAddressId_0;
   final bool? isCall;
   final String health;
+  final bool isAutoCalling;
+  final AllocationBloc? allocationBloc;
+  final dynamic paramValue;
 
   @override
   State<CustomOtherFeedBackBottomSheet> createState() =>
@@ -476,39 +483,52 @@ class _CustomOtherFeedBackBottomSheetState
                                 );
 
                                 if (postResult[Constants.success]) {
-                                  AppUtils.topSnackBar(
-                                      context, Constants.successfullySubmitted);
-                                  if (widget.isCall!) {
-                                    setState(() {
-                                      for (int i = 0;
-                                          i < (otherFeedbackContact.length);
-                                          i++) {
-                                        widget.bloc.listOfCallDetails?.add(
-                                            jsonDecode(jsonEncode(
-                                                otherFeedbackContact[i])));
-                                      }
-                                    });
-                                    widget.bloc
-                                        .add(AddedNewCallContactListEvent());
-                                    // print(widget.bloc.listOfCallDetails);
+                                  if (widget.isAutoCalling) {
+                                    Navigator.pop(widget.paramValue['context']);
+                                    Navigator.pop(widget.paramValue['context']);
+                                    widget.allocationBloc!
+                                        .add(StartCallingEvent(
+                                      customerIndex:
+                                          widget.paramValue['customerIndex'] +
+                                              1,
+                                      phoneIndex: 0,
+                                    ));
                                   } else {
-                                    setState(() {
-                                      for (int i = 0;
-                                          i < (otherFeedbackContact.length);
-                                          i++) {
-                                        // if (widget.bloc.listOfAddressDetails!
-                                        //     .contains(otherFeedbackContact[i])) {
-                                        widget.bloc.listOfAddressDetails?.add(
-                                            jsonDecode(jsonEncode(
-                                                otherFeedbackContact[i])));
-                                      }
-                                      // }
-                                    });
-                                    widget.bloc.add(AddedNewAddressListEvent());
-                                    // print(widget.bloc.listOfAddressDetails);
-                                  }
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    if (widget.isCall!) {
+                                      setState(() {
+                                        for (int i = 0;
+                                            i < (otherFeedbackContact.length);
+                                            i++) {
+                                          widget.bloc.listOfCallDetails?.add(
+                                              jsonDecode(jsonEncode(
+                                                  otherFeedbackContact[i])));
+                                        }
+                                      });
+                                      widget.bloc
+                                          .add(AddedNewCallContactListEvent());
+                                      // print(widget.bloc.listOfCallDetails);
+                                    } else {
+                                      setState(() {
+                                        for (int i = 0;
+                                            i < (otherFeedbackContact.length);
+                                            i++) {
+                                          // if (widget.bloc.listOfAddressDetails!
+                                          //     .contains(otherFeedbackContact[i])) {
+                                          widget.bloc.listOfAddressDetails?.add(
+                                              jsonDecode(jsonEncode(
+                                                  otherFeedbackContact[i])));
+                                        }
+                                        // }
+                                      });
+                                      widget.bloc
+                                          .add(AddedNewAddressListEvent());
+                                      // print(widget.bloc.listOfAddressDetails);
+                                    }
 
-                                  Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }
                                 } else {}
                                 // }
                               }

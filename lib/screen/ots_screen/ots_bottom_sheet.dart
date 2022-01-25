@@ -15,6 +15,7 @@ import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -38,6 +39,9 @@ class CustomOtsBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.userType,
     required this.postValue,
+    this.isAutoCalling = false,
+    this.allocationBloc,
+    this.paramValue,
   }) : super(key: key);
   final String cardTitle;
   final Widget customerLoanUserWidget;
@@ -45,6 +49,9 @@ class CustomOtsBottomSheet extends StatefulWidget {
   final String caseId;
   final String userType;
   final dynamic postValue;
+  final bool isAutoCalling;
+  final AllocationBloc? allocationBloc;
+  final dynamic paramValue;
 
   @override
   State<CustomOtsBottomSheet> createState() => _CustomOtsBottomSheetState();
@@ -440,9 +447,23 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   );
 
                                   if (postResult[Constants.success]) {
-                                    AppUtils.topSnackBar(
-                                        context, "Event updated successfully.");
-                                    Navigator.pop(context);
+                                    if (widget.isAutoCalling) {
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      widget.allocationBloc!
+                                          .add(StartCallingEvent(
+                                        customerIndex:
+                                            widget.paramValue['customerIndex'] +
+                                                1,
+                                        phoneIndex: 0,
+                                      ));
+                                    } else {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                      Navigator.pop(context);
+                                    }
                                   }
                                 }
                               }

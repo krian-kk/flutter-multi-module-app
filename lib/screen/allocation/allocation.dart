@@ -538,7 +538,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               'Temp ================ > ${tempMobileList.length}');
                           if (state.phoneIndex! < tempMobileList.length) {
                             CaseDetailsBloc caseDetailsloc =
-                                await CaseDetailsBloc(bloc)
+                                CaseDetailsBloc(bloc)
                                   ..add(CaseDetailsInitialEvent(
                                     paramValues: {
                                       'caseID': bloc
@@ -548,6 +548,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       'customerIndex': state.customerIndex,
                                       'phoneIndex': state.phoneIndex,
                                       'mobileList': tempMobileList,
+                                      'context': context,
                                     },
                                     context: context,
                                   ));
