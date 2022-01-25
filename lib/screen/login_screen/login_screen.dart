@@ -165,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             isLabel: true,
                             borderColor: ColorResource.color23375A,
                             errorborderColor: ColorResource.color23375A,
+                            keyBoardType: TextInputType.text,
                             validationRules: const ['required'],
                             focusNode: passwords,
                             onEditing: () {

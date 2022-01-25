@@ -486,40 +486,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    bottomNavigationBar: Container(
-                      width: double.infinity,
-                      color: ColorResource.colorFFFFFF,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 11.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 200,
-                              child: CustomButton(
-                                Languages.of(context)!.message,
-                                onTap: () => bloc.add(ClickMessageEvent()),
-                                fontSize: FontSize.sixteen,
-                                cardShape: 5,
-                                isTrailing: true,
-                                leadingWidget: const CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: ColorResource.colorFFFFFF,
-                                  child: CustomText(
-                                    '2',
-                                    fontSize: FontSize.twelve,
-                                    lineHeight: 1,
-                                    color: ColorResource.colorEA6D48,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // bottomNavigationBar: Container(
+                    //   width: double.infinity,
+                    //   color: ColorResource.colorFFFFFF,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.symmetric(vertical: 11.0),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         SizedBox(
+                    //           width: 200,
+                    //           child: CustomButton(
+                    //             Languages.of(context)!.message,
+                    //             onTap: () => bloc.add(ClickMessageEvent()),
+                    //             fontSize: FontSize.sixteen,
+                    //             cardShape: 5,
+                    //             isTrailing: true,
+                    //             leadingWidget: const CircleAvatar(
+                    //               radius: 13,
+                    //               backgroundColor: ColorResource.colorFFFFFF,
+                    //               child: CustomText(
+                    //                 '2',
+                    //                 fontSize: FontSize.twelve,
+                    //                 lineHeight: 1,
+                    //                 color: ColorResource.colorEA6D48,
+                    //                 fontWeight: FontWeight.w700,
+                    //                 fontStyle: FontStyle.normal,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   );
           }
         },

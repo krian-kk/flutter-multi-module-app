@@ -16,6 +16,7 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddressDetailsBottomSheetScreen extends StatefulWidget {
   const AddressDetailsBottomSheetScreen({
@@ -178,12 +179,16 @@ class _AddressDetailsBottomSheetScreenState
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () async {
-                                                          Position
+                                                          Position?
+                                                              currentLocation;
+                                                          await MapUtils
+                                                                  .getCurrentLocation()
+                                                              .then((value) {
+                                                            setState(() {
                                                               currentLocation =
-                                                              await Geolocator.getCurrentPosition(
-                                                                  desiredAccuracy:
-                                                                      LocationAccuracy
-                                                                          .best);
+                                                                  value;
+                                                            });
+                                                          });
                                                           Northeast?
                                                               destinationLocation =
                                                               await MapUtils.convertAddressToLarlng(
@@ -198,10 +203,10 @@ class _AddressDetailsBottomSheetScreenState
                                                               null) {
                                                             MapUtils.openMap(
                                                                 startLatitude:
-                                                                    currentLocation
+                                                                    currentLocation!
                                                                         .latitude,
                                                                 startLongitude:
-                                                                    currentLocation
+                                                                    currentLocation!
                                                                         .longitude,
                                                                 destinationLatitude:
                                                                     destinationLocation

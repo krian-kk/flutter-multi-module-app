@@ -176,10 +176,13 @@ class _AddressScreenState extends State<AddressScreen>
                                 Expanded(
                                     child: GestureDetector(
                                   onTap: () async {
-                                    Position currentLocation =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
+                                    Position? currentLocation;
+                                    await MapUtils.getCurrentLocation()
+                                        .then((value) {
+                                      setState(() {
+                                        currentLocation = value;
+                                      });
+                                    });
                                     Northeast? destinationLocation =
                                         await MapUtils.convertAddressToLarlng(
                                             address: widget
@@ -190,9 +193,9 @@ class _AddressScreenState extends State<AddressScreen>
                                     if (destinationLocation != null) {
                                       MapUtils.openMap(
                                           startLatitude:
-                                              currentLocation.latitude,
+                                              currentLocation!.latitude,
                                           startLongitude:
-                                              currentLocation.longitude,
+                                              currentLocation!.longitude,
                                           destinationLatitude:
                                               destinationLocation.lat ?? 0.0,
                                           destinationLongitude:
