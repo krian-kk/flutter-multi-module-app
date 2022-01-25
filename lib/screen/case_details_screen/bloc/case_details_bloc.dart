@@ -608,6 +608,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
       }
       if (resultValue[Constants.success]) {
+        if (isAutoCalling) {
+          allocationBloc.add(StartCallingEvent(
+            customerIndex: paramValue['customerIndex'],
+            phoneIndex: paramValue['phoneIndex'] + 1,
+            // customerList: widget.bloc.allocationBloc
+            //     .resultList[(widget.bloc
+            //         .paramValue['customerIndex']) +
+            //     1],
+          ));
+          Navigator.pop(paramValue['context']);
+        }
         yield PostDataApiSuccessState();
       }
       yield EnablePhoneInvalidBtnState();

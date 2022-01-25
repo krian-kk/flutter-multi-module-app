@@ -429,24 +429,25 @@ class _CustomOtherFeedBackBottomSheetState
                                       : 'Field Allocation',
                                   invalidNumber: false,
                                   eventAttr: EventAttr(
-                                      remarks: remarksController.text,
-                                      vehicleavailable: isVehicleAvailable,
-                                      collectorfeedback:
-                                          collectorFeedBackValue ?? '',
-                                      actionproposed: actionproposedValue ?? '',
-                                      actionDate: dateControlller.text,
-                                      imageLocation: [''],
-                                      longitude: position.longitude,
-                                      latitude: position.latitude,
-                                      accuracy: position.accuracy,
-                                      altitude: position.altitude,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      altitudeAccuracy: 0,
-                                      // agentLocation: AgentLocation(),
-                                      contact: otherFeedbackContact.isNotEmpty
-                                          ? otherFeedbackContact
-                                          : null),
+                                    remarks: remarksController.text,
+                                    vehicleavailable: isVehicleAvailable,
+                                    collectorfeedback:
+                                        collectorFeedBackValue ?? '',
+                                    actionproposed: actionproposedValue ?? '',
+                                    actionDate: dateControlller.text,
+                                    imageLocation: [''],
+                                    longitude: position.longitude,
+                                    latitude: position.latitude,
+                                    accuracy: position.accuracy,
+                                    altitude: position.altitude,
+                                    heading: position.heading,
+                                    speed: position.speed,
+                                    altitudeAccuracy: 0,
+                                    // agentLocation: AgentLocation(),
+                                    contact: otherFeedbackContact.isNotEmpty
+                                        ? otherFeedbackContact
+                                        : null,
+                                  ),
                                   contact: OtherFeedBackContact(
                                     cType: widget.postValue['cType'],
                                     health: widget.health,
@@ -458,9 +459,6 @@ class _CustomOtherFeedBackBottomSheetState
                                         widget.postValue['contactId0'] ?? '',
                                   ),
                                 );
-                                print(
-                                    'Response Data => ${jsonEncode(requestBodyData)}');
-
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
                                             requestBodyData.toJson()))
