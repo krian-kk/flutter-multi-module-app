@@ -299,6 +299,7 @@ class _CustomRemainderBottomSheetState
                                     customerIndex:
                                         widget.paramValue['customerIndex'] + 1,
                                     phoneIndex: 0,
+                                    isIncreaseCount: true,
                                   ));
                                 } else {
                                   AppUtils.topSnackBar(

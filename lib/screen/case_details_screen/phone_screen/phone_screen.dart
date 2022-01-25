@@ -356,6 +356,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         'customerIndex'] +
                                                     1,
                                             phoneIndex: 0,
+                                            isIncreaseCount: true,
                                           ));
                                         }
                                         Navigator.pop(context);

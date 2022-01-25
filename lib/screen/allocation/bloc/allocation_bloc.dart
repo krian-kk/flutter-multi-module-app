@@ -30,6 +30,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int selectedOption = 0;
 
+  int customerCount = 0;
+  int totalCount = 0;
+
   String? userType;
   String? agentName;
   String? agrRef;
@@ -208,10 +211,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // print(priorityListData['data']);
         }
       }
-
+      totalCount = resultList.length;
       yield AllocationLoadedState(successResponse: resultList);
     }
-
+    // if (event is IncreaseCountEvent) {
+    //   customerCount++;
+    // }
     if (event is TapPriorityEvent) {
       yield CaseListViewLoadingState();
 
@@ -269,9 +274,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield TapPriorityState(successResponse: resultList);
     }
     if (event is StartCallingEvent) {
-      print(event.customerIndex);
-      print(event.phoneIndex);
-      print(event.customerList);
+      if (event.isIncreaseCount) {
+        customerCount++;
+      }
       Singleton.instance.startCalling = true;
       // yield* Stream.periodic(
       //     const Duration(seconds: 45),

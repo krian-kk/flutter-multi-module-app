@@ -461,7 +461,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       tempMobileList.add(element);
                     }
                   });
-
                   if (state.phoneIndex! < tempMobileList.length) {
                     print(tempMobileList[state.phoneIndex!].value);
                     var requestBodyData = CallCustomerModel(
@@ -509,7 +508,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     tempMobileList.add(element);
                                   }
                                 });
-
                                 if (state.phoneIndex! < tempMobileList.length) {
                                   CaseDetailsBloc caseDetailsloc =
                                       CaseDetailsBloc(bloc)

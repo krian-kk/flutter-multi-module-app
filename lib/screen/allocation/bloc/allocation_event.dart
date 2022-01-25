@@ -56,5 +56,11 @@ class StartCallingEvent extends AllocationEvent {
   final int? customerIndex;
   final int? phoneIndex;
   final Result? customerList;
-  StartCallingEvent({this.customerIndex, this.phoneIndex, this.customerList});
+  final bool isIncreaseCount;
+  StartCallingEvent({
+    this.customerIndex,
+    this.phoneIndex,
+    this.customerList,
+    this.isIncreaseCount = false,
+  });
 }

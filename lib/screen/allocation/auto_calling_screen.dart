@@ -110,7 +110,7 @@ class AutoCalling {
               animation: true,
               lineHeight: 12.0,
               animationDuration: 2500,
-              percent: 0.25,
+              percent: (bloc.customerCount / bloc.totalCount),
               // center: Text("80.0%"),
               linearStrokeCap: LinearStrokeCap.roundAll,
               progressColor: ColorResource.colorEA6D48,
@@ -118,15 +118,15 @@ class AutoCalling {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 CustomText(
-                  '40',
+                  bloc.customerCount.toString(),
                   fontSize: FontSize.sixteen,
                   fontWeight: FontWeight.w700,
                   color: ColorResource.color23375A,
                 ),
                 CustomText(
-                  '400',
+                  bloc.totalCount.toString(),
                   fontSize: FontSize.sixteen,
                   fontWeight: FontWeight.w700,
                   color: ColorResource.color23375A,

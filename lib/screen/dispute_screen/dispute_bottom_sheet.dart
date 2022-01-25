@@ -292,6 +292,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                     customerIndex:
                                         widget.paramValue['customerIndex'] + 1,
                                     phoneIndex: 0,
+                                    isIncreaseCount: true,
                                   ));
                                 } else {
                                   AppUtils.topSnackBar(
