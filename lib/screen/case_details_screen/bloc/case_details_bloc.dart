@@ -24,7 +24,9 @@ import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
+import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -38,13 +40,19 @@ part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
+  AllocationBloc allocationBloc;
+  CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? agentName;
+  bool isAutoCalling = false;
+
+  // allocationBloc.
   // String? agrRef;
   // String eventCode = ;
 
   int? indexValue;
   String? userType;
+  dynamic paramValue;
 
   // Online Purpose
   // bool isNoInternet = false;
@@ -117,14 +125,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   List<dynamic>? listOfAddressDetails = [];
 //store list off Mobile no
   List<dynamic>? listOfCallDetails = [];
+  List<Address>? listOfAddress;
 
-  CaseDetailsBloc() : super(CaseDetailsInitial());
   @override
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
       Singleton.instance.buildContext = event.context;
       caseId = event.paramValues['caseID'];
+      paramValue = event.paramValues;
+      listOfAddress = event.paramValues['mobileList'];
+      print(listOfAddress?.first.cType);
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
@@ -136,7 +147,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         isNoInternetAndServerError = true;
         noInternetAndServerErrorMsg =
             Languages.of(event.context!)!.noInternetConnection;
-        yield NoInternetState();
+        yield CDNoInternetState();
       } else {
         isNoInternetAndServerError = false;
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
@@ -289,6 +300,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           .format(DateTime.now().add(const Duration(days: 1)));
 
       yield CaseDetailsLoadedState();
+      if (event.paramValues['isAutoCalling'] != null) {
+        isAutoCalling = true;
+        indexValue = allocationBloc.indexValue;
+        yield ClickMainCallBottomSheetState(0);
+        yield PhoneBottomSheetSuccessState();
+      }
     }
 
     if (event is AddedNewAddressListEvent) {
@@ -327,7 +344,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         case Constants.eventDetails:
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            yield NoInternetState();
+            yield CDNoInternetState();
           } else {
             Map<String, dynamic> getEventDetailsData =
                 await APIRepository.apiRequest(
@@ -579,6 +596,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
+        yield SubmitSuccessState();
       }
       yield EnablePhoneInvalidBtnState();
     }
@@ -644,6 +662,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (resultValue[Constants.success]) {
         yield PostDataApiSuccessState();
+        yield SubmitSuccessState();
       }
       yield EnableUnreachableBtnState();
     }

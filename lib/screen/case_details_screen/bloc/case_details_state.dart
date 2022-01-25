@@ -12,7 +12,7 @@ class CaseDetailsLoadingState extends CaseDetailsState {}
 
 class CaseDetailsLoadedState extends CaseDetailsState {}
 
-class NoInternetState extends CaseDetailsState {}
+class CDNoInternetState extends CaseDetailsState {}
 
 class ClickMainAddressBottomSheetState extends CaseDetailsState {
   final int i;
@@ -28,7 +28,7 @@ class ClickAddAddressState extends CaseDetailsState {}
 
 class ClickViewMapState extends CaseDetailsState {}
 
-class NoInternetConnectionState extends CaseDetailsState {}
+// class CDNoInternetConnectionState extends CaseDetailsState {}
 
 class CallCaseDetailsState extends CaseDetailsState {
   final dynamic paramValues;
@@ -73,3 +73,7 @@ class DisableCaptureImageBtnState extends CaseDetailsState {}
 class AddedNewAddressListState extends CaseDetailsState {}
 
 class AddedNewCallContactListState extends CaseDetailsState {}
+
+class SubmitSuccessState extends CaseDetailsState {}
+
+class PhoneBottomSheetSuccessState extends CaseDetailsState {}

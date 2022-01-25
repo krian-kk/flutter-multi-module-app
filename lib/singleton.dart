@@ -21,6 +21,7 @@ class Singleton {
   String? callerServiceID;
   String? resAddressId_0;
   String? contactId_0;
+  bool? startCalling;
 
   String? overDueAmount;
   static final Singleton instance = Singleton.internal();

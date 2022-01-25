@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,11 +14,14 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_model.dart';
 import 'package:origa/models/buildroute_data.dart';
+import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/allocation/map_view.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
@@ -54,10 +59,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
   String? currentAddress;
   bool isCaseDetailLoading = false;
   late MapBloc mapBloc;
-  late Position position;
+  Position position = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+  );
   List<Result> resultList = [];
   String? searchBasedOnValue;
   String version = "";
+  late Timer _timer;
 
   // The controller for the ListView
   late ScrollController _controller;
@@ -196,7 +211,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   onWillPop: () async => true,
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.86,
-                    child: SizedBox(),
+                    child: const SizedBox(),
                     // child: const MessageChatRoomScreen(),
                   ),
                 )));
@@ -420,6 +435,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
     );
   }
 
+  Future<void> phoneBottomSheet(
+      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+    return showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return PhoneScreen(bloc: bloc, index: i);
+          // return SizedBox(
+          //     height: MediaQuery.of(context).size.height * 0.89,
+          //     child: PhoneScreen(bloc: bloc));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -440,6 +467,137 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
         if (state is MessageState) {
           messageShowBottomSheet();
+        }
+        if (state is StartCallingState) {
+          print('dkdl');
+          if (Singleton.instance.startCalling ?? false) {
+            // SharedPreferences _prefs = await SharedPreferences.getInstance();
+            // int autoCallingIndexValue;
+            // int autoCallingSubIndexValue;
+            // autoCallingIndexValue = _prefs.getInt('autoCallingIndexValue') ?? 0;
+            // autoCallingSubIndexValue =
+            //     _prefs.getInt('autoCallingSubIndexValue') ?? 0;
+            // print('AutoCalling Index Value => ${autoCallingIndexValue}');
+            // print('AutoCalling Sub Index Value => ${autoCallingSubIndexValue}');
+
+            // bloc.resultList
+            //     .asMap()
+            //     .forEach((index, element) {
+            //   element.address
+            //       ?.asMap()
+            //       .forEach((subIndex, value) {
+            //     // if (value.cType == 'mobile') {
+            //     _prefs.setInt(
+            //         'autoCallingIndexValue', index);
+            //     _prefs.setInt(
+            //         'autoCallingSubIndexValue', subIndex);
+            //     // }
+            //   });
+            // });
+
+            if (Singleton.instance.cloudTelephony!) {
+              var requestBodyData = CallCustomerModel(
+                from: "9361441983",
+                to: bloc.mobileNumberList[0].mobileNumber!,
+                callerId: Singleton.instance.callingID ?? '0',
+                aRef: Singleton.instance.agentRef ?? '',
+                customerName: Singleton.instance.agentName ?? '',
+                service: 'Kaleyra_123',
+                callerServiceID: Singleton.instance.callerServiceID ?? '0',
+                caseId: bloc.resultList[state.customerIndex!].caseId!,
+                sId: bloc.resultList[state.customerIndex!].sId!,
+                agrRef: Singleton.instance.agentRef ?? '',
+                agentName: Singleton.instance.agentName ?? '',
+                agentType: (Singleton.instance.usertype == Constants.telecaller)
+                    ? 'TELECALLER'
+                    : 'COLLECTOR',
+              );
+              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+                APIRequestType.POST,
+                HttpUrl.callCustomerUrl,
+                requestBodydata: jsonEncode(requestBodyData),
+              );
+              if (postResult[Constants.success]) {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext builderContext) {
+                      _timer = Timer(const Duration(seconds: 5), () async {
+                        Navigator.of(context).pop();
+                        _timer.cancel();
+                        if (state.customerIndex! < bloc.resultList.length) {
+                          List<Address> tempMobileList = [];
+                          bloc.resultList[state.customerIndex!].address
+                              ?.asMap()
+                              .forEach((i, element) {
+                            if (element.cType == 'mobile') {
+                              tempMobileList.add(element);
+                            }
+                          });
+                          print(
+                              'Temp ================ > ${tempMobileList.length}');
+                          if (state.phoneIndex! < tempMobileList.length) {
+                            CaseDetailsBloc caseDetailsloc =
+                                await CaseDetailsBloc(bloc)
+                                  ..add(CaseDetailsInitialEvent(
+                                    paramValues: {
+                                      'caseID': bloc
+                                          .resultList[state.customerIndex!]
+                                          .caseId,
+                                      'isAutoCalling': true,
+                                      'customerIndex': state.customerIndex,
+                                      'phoneIndex': state.phoneIndex,
+                                      'mobileList': tempMobileList,
+                                    },
+                                    context: context,
+                                  ));
+                            await phoneBottomSheet(context, caseDetailsloc, 0);
+                            // Navigator.pushNamed(
+                            //     context, AppRoutes.caseDetailsScreen,
+                            //     arguments: {
+                            //       'caseID': bloc
+                            //           .resultList[state.customerIndex!].caseId,
+                            //       'isAutoCalling': true,
+                            //       'customerIndex': state.customerIndex,
+                            //       'phoneIndex': state.phoneIndex,
+                            //       'mobileList': tempMobileList,
+                            //     });
+                          } else {
+                            bloc.add(StartCallingEvent(
+                              customerIndex: state.customerIndex! + 1,
+                              phoneIndex: 0,
+                              // customerList: widget.bloc.allocationBloc
+                              //     .resultList[(widget.bloc
+                              //         .paramValue['customerIndex']) +
+                              //     1],
+                            ));
+                          }
+                          // else {
+                          // }
+                          // if(bloc.resultList[state.customerIndex].address. )
+                        } else {
+                          Singleton.instance.startCalling = false;
+                        }
+                      });
+
+                      return const AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: Center(child: CircularProgressIndicator()),
+                      );
+                    }).then((val) {
+                  if (_timer.isActive) {
+                    _timer.cancel();
+                  }
+                });
+              }
+              // else {}
+            } else {
+              print('dkdk');
+              // AppUtils.makePhoneCall(
+              //   'tel:' + '6374578994',
+              // );
+            }
+          }
         }
 
         if (state is NavigateCaseDetailState) {
@@ -856,8 +1014,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 buttonBackgroundColor:
                                     ColorResource.colorffffff,
                                 borderColor: ColorResource.colorffffff,
-                                onTap: () {
-                                  // Navigator.pop(context);
+                                onTap: () async {
+                                  SharedPreferences _pref =
+                                      await SharedPreferences.getInstance();
+                                  _pref.setInt('autoCallingIndexValue', 0);
+                                  _pref.setInt('autoCallingSubIndexValue', 0);
                                 },
                               ),
                             ),
@@ -873,6 +1034,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 trailingWidget:
                                     SvgPicture.asset(ImageResource.vector),
                                 isLeading: true,
+                                onTap: () async {
+                                  bloc.add(StartCallingEvent(
+                                    customerIndex: 0,
+                                    phoneIndex: 0,
+                                    customerList: bloc.resultList.first,
+                                  ));
+                                },
                               ),
                             ),
                           ],

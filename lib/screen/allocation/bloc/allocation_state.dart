@@ -67,3 +67,10 @@ class CaseListViewLoadingState extends AllocationState {}
 class NoInternetConnectionState extends AllocationState {}
 
 class SearchReturnDataState extends AllocationState {}
+
+class StartCallingState extends AllocationState {
+  final int? customerIndex;
+  final int? phoneIndex;
+  // final Result? customerList;
+  StartCallingState({this.customerIndex, this.phoneIndex});
+}

@@ -33,6 +33,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   String? agentName;
   String? agrRef;
 
+  int indexValue = 0;
+
   // BuildRouteModel buildRouteData = BuildRouteModel();
 
   String selectedDistance = StringResource.all;
@@ -107,7 +109,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         selectOptions = [
           StringResource.priority,
-          // StringResource.autoCalling,
+          StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
@@ -115,14 +117,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // static Autocalling Values
       mobileNumberList.addAll([
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '6374578994',
           callResponse: 'Declined Call',
         ),
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '9342536805',
         ),
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '6374578994',
         ),
       ]);
 
@@ -264,6 +266,24 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+    if (event is StartCallingEvent) {
+      print(event.customerIndex);
+      print(event.phoneIndex);
+      print(event.customerList);
+      Singleton.instance.startCalling = true;
+      // yield* Stream.periodic(
+      //     const Duration(seconds: 45),
+      //     (index) => StartCallingState(
+      //           customerIndex: event.customerIndex,
+      //           // customerList: event.customerList,
+      //           phoneIndex: event.phoneIndex,
+      //         ));
+      yield StartCallingState(
+        customerIndex: event.customerIndex,
+        // customerList: event.customerList,
+        phoneIndex: event.phoneIndex,
+      );
+    }
 
     if (event is PriorityLoadMoreEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -309,6 +329,32 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         }
       }
       yield PriorityLoadMoreState(successResponse: resultList);
+    }
+
+    if (event is CallSuccessfullyConnectedEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      int index;
+      index = _pref.getInt('autoCallingIndexValue') ?? 0;
+      indexValue = index;
+      _pref.setInt('autoCallingIndexValue', index + 1);
+      print(Singleton.instance.startCalling);
+      if (Singleton.instance.startCalling ?? false) {
+        print(Singleton.instance.startCalling.toString() + 'jdlj');
+        yield StartCallingState();
+        print('ddldk');
+      }
+    }
+    if (event is CallUnSuccessfullyConnectedEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      int index, subIndex;
+      index = _pref.getInt('autoCallingIndexValue') ?? 0;
+      subIndex = _pref.getInt('autoCallingSubIndexValue') ?? 0;
+      _pref.setInt('autoCallingIndexValue', index + 1);
+      _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
+      if (Singleton.instance.startCalling ?? false) {
+        print('tdjdjkdjd');
+        yield StartCallingState();
+      }
     }
 
     if (event is TapBuildRouteEvent) {

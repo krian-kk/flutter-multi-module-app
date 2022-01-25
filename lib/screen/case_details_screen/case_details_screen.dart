@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
@@ -54,8 +55,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-
-    bloc = CaseDetailsBloc()
+    AllocationBloc allocationBloc = AllocationBloc();
+    bloc = CaseDetailsBloc(allocationBloc)
       ..add(CaseDetailsInitialEvent(
           paramValues: widget.paramValues, context: context));
   }
@@ -75,6 +76,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             // Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
           }
+          if (state is SubmitSuccessState) {
+            if (bloc.isAutoCalling) {
+              bloc.allocationBloc.add(StartCallingEvent(
+                customerIndex: bloc.paramValue['customerIndex'],
+                phoneIndex: bloc.paramValue['phoneIndex'] + 1,
+                // customerList: widget.bloc.allocationBloc
+                //     .resultList[(widget.bloc
+                //         .paramValue['customerIndex']) +
+                //     1],
+              ));
+              Navigator.pop(context);
+            }
+          }
           if (state is ClickMainCallBottomSheetState) {
             // Navigator.pop(context);
             phoneBottomSheet(context, bloc, state.i);
@@ -84,7 +98,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             openBottomSheet(context, state.title, state.list, state.isCall,
                 health: state.health);
           }
-          if (state is NoInternetState) {
+          if (state is CDNoInternetState) {
             AppUtils.noInternetSnackbar(context);
           }
           if (state is CallCaseDetailsState) {

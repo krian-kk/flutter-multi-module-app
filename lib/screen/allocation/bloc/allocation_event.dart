@@ -44,3 +44,14 @@ class BuildRouteLoadMoreEvent extends AllocationEvent {
 }
 
 class ShowAutoCallingEvent extends AllocationEvent {}
+
+class CallSuccessfullyConnectedEvent extends AllocationEvent {}
+
+class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
+
+class StartCallingEvent extends AllocationEvent {
+  final int? customerIndex;
+  final int? phoneIndex;
+  final Result? customerList;
+  StartCallingEvent({this.customerIndex, this.phoneIndex, this.customerList});
+}
