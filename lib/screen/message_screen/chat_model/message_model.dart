@@ -14,6 +14,16 @@ class Messages {
   });
 }
 
+class ChatHistory {
+  String name;
+  String data;
+  ChatHistory({
+    required this.name,
+    required this.data,
+  });
+}
+
+
 // // CURRENT USER
 // final User currentUser = User(
 //   id: 0,

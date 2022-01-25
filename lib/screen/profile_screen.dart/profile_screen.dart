@@ -14,7 +14,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
-import 'package:origa/screen/message_screen/ably_demo_chat.dart';
+import 'package:origa/screen/message_screen/chat_screen.dart';
 import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
@@ -112,9 +112,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           languageBottomSheet();
         }
         if (state is ClickMessageState) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChatScreen()));
-          // messageShowBottomSheet();
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => ChatScreen()));
+          messageShowBottomSheet();
         }
         if (state is ChangeProfileImageState) {
           profileImageShowBottomSheet();
@@ -501,7 +501,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //             onTap: () => bloc.add(ClickMessageEvent()),
                     //             fontSize: FontSize.sixteen,
                     //             cardShape: 5,
-                    //             isTrailing: true,
+                    //             isTrailing: false,
                     //             leadingWidget: const CircleAvatar(
                     //               radius: 13,
                     //               backgroundColor: ColorResource.colorFFFFFF,
@@ -658,7 +658,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext buildContext, StateSetter setState) =>
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.86,
-                    child: MessageChatRoomScreen(bloc))));
+                    child: ChatScreen())));
+    // MessageChatRoomScreen(bloc)
   }
 
   notificationShowBottomSheet(BuildContext context) {
