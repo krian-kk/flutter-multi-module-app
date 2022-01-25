@@ -347,9 +347,18 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     fontSize: FontSize.sixteen,
                                     fontWeight: FontWeight.w600,
                                     onTap: () {
-                                      Navigator.pop(context);
                                       if (widget.bloc.isAutoCalling) {
-                                        // Navigator.pop(context);
+                                        if (widget.bloc.isAutoCalling) {
+                                          widget.bloc.allocationBloc
+                                              .add(StartCallingEvent(
+                                            customerIndex:
+                                                widget.bloc.paramValue[
+                                                        'customerIndex'] +
+                                                    1,
+                                            phoneIndex: 0,
+                                          ));
+                                        }
+                                        Navigator.pop(context);
                                       }
                                     },
                                     cardShape: 5,
