@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/message_model.dart';
 import 'package:origa/screen/message_screen/chat_screen_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -212,7 +211,6 @@ class _ChatScreenState extends State<ChatScreen> {
       presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
       await presenceChannel!.presence.enterClient(clientIDFromARef!, 'enter');
       debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
-
       //When click the submit button
       //Who are all in online
       presenceChannel!.presence
@@ -234,22 +232,10 @@ class _ChatScreenState extends State<ChatScreen> {
         }
       });
 
-      await chatChannel.publish(messages: [
-        ably.Message(name: clientIDFromARef, data: 'How are u?'),
-      ]).then((value) {
-        debugPrint('Success state-->');
-      }).catchError((error) {
-        debugPrint('Error state--> ${error.toString()}');
-      });
+      chatChannel.subscribe(name: clientIDFromARef).listen((event) {
+        debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
+      }).onData((data) {});
 
-      //subscribe - For receiving the message from ably
-      // var messageStream = chatChannel.subscribe();
-      // messageStream.listen((ably.Message message) {
-      //   debugPrint('New message arrived ${message.data}');
-      // });
-      chatChannel.subscribe(name: 'message').listen((event) {
-        debugPrint('New message arrived ${event.data}');
-      });
       //to getting the history of data
       var result = await chatChannel.history(
           ably.RealtimeHistoryParams(direction: 'forwards', limit: 10));
@@ -378,11 +364,19 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: GestureDetector(
                   onTap: () {
                     // createAblyRealtimeInstance();
-                    setState(() {
-                      messageHistory.add(
-                          ChatHistory(data: "Hello, Dude", name: "HAR_tl3"));
+                    // setState(() {
+                    //   messageHistory.add(
+                    //       ChatHistory(data: "Hello, Dude", name: "HAR_tl3"));
+                    // });
+                    // myInputController.clear();
+                    chatChannel.publish(messages: [
+                      ably.Message(
+                          name: toARef, data: 'Is there any thing wrong?'),
+                    ]).then((value) {
+                      debugPrint('Success state-->111');
+                    }).catchError((error) {
+                      debugPrint('Error state-->111 ${error.toString()}');
                     });
-                    myInputController.clear();
                   },
                   child: Container(
                       height: double.infinity,
