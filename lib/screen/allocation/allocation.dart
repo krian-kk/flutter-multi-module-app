@@ -418,7 +418,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
         if (state is StartCallingState) {
           print('dkdl');
-          if (Singleton.instance.startCalling ?? false) {
+          if (bloc.customerCount <= bloc.totalCount) {
             // SharedPreferences _prefs = await SharedPreferences.getInstance();
             // int autoCallingIndexValue;
             // int autoCallingSubIndexValue;
