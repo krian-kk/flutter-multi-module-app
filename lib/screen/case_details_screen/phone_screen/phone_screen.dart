@@ -348,19 +348,16 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     fontWeight: FontWeight.w600,
                                     onTap: () {
                                       if (widget.bloc.isAutoCalling) {
-                                        if (widget.bloc.isAutoCalling) {
-                                          widget.bloc.allocationBloc
-                                              .add(StartCallingEvent(
-                                            customerIndex:
-                                                widget.bloc.paramValue[
-                                                        'customerIndex'] +
-                                                    1,
-                                            phoneIndex: 0,
-                                            isIncreaseCount: true,
-                                          ));
-                                        }
-                                        Navigator.pop(context);
+                                        widget.bloc.allocationBloc
+                                            .add(StartCallingEvent(
+                                          customerIndex: widget.bloc
+                                                  .paramValue['customerIndex'] +
+                                              1,
+                                          phoneIndex: 0,
+                                          isIncreaseCount: true,
+                                        ));
                                       }
+                                      Navigator.pop(context);
                                     },
                                     cardShape: 5,
                                   ),

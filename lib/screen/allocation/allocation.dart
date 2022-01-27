@@ -389,9 +389,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
         context: buildContext,
         builder: (BuildContext context) {
           return PhoneScreen(bloc: bloc, index: i);
-          // return SizedBox(
-          //     height: MediaQuery.of(context).size.height * 0.89,
-          //     child: PhoneScreen(bloc: bloc));
         });
   }
 
@@ -405,7 +402,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is NoInternetConnectionState) {
           AppUtils.noInternetSnackbar(context);
         }
-
         if (state is CaseListViewLoadingState) {
           isCaseDetailLoading = true;
         }
@@ -453,6 +449,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 print(
                     'voiceAgent => ${jsonEncode(voiceAgencyDetails.result?.agentAgencyContact)}');
                 if (state.customerIndex! < bloc.resultList.length) {
+                  print(
+                      '----------------------------------------> ${state.customerIndex!}');
                   List<Address> tempMobileList = [];
                   bloc.resultList[state.customerIndex!].address
                       ?.asMap()
@@ -462,7 +460,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     }
                   });
                   if (state.phoneIndex! < tempMobileList.length) {
-                    print(tempMobileList[state.phoneIndex!].value);
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
                       to: voiceAgencyDetails.result?.agentAgencyContact ?? '',
@@ -566,6 +563,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                         }
                       });
                     }
+                  } else {
+                    bloc.add(StartCallingEvent(
+                      customerIndex: state.customerIndex! + 1,
+                      phoneIndex: 0,
+                    ));
                   }
                 }
 
