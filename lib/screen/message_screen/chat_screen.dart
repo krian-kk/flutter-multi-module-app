@@ -34,8 +34,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // var myRandomClientId = '';
   List<Messages> messages = [];
-  String? clientIDFromARef = "HAR_fos3";
-  String? toARef = "HAR_tl3";
+  String? clientIDFromARef = "HAR_fos1";
+  String? toARef = "har_superadmin";
   ably.RealtimeChannel? presenceChannel;
   ably.RealtimeChannel? leaveChannel;
 
@@ -209,52 +209,57 @@ class _ChatScreenState extends State<ChatScreen> {
       chatChannel = realtimeInstance.channels
           .get('chat:mobile:messages:$clientIDFromARef-$toARef');
 
-      realtimeInstance.connection
-          .on(ably.ConnectionEvent.connected)
-          .listen((ably.ConnectionStateChange stateChange) async {
-        presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
-        await presenceChannel!.presence.enterClient(clientIDFromARef!, 'enter');
-        debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
+      presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
+      await presenceChannel!.presence.enterClient(clientIDFromARef!, 'enter');
+      debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
 
-        //When click the submit button
-        //Who are all in online
-        presenceChannel!.presence
-            .subscribe(action: PresenceAction.enter)
-            .listen((ably.PresenceMessage event) async {
-          debugPrint('Who are all in online--> ${event.clientId}');
-
-          if (toARef == event.clientId) {
-            //Post messages
-            await chatChannel.publish(messages: [
-              ably.Message(name: clientIDFromARef, data: 'Sai'),
-            ]).then((value) {
-              debugPrint('Success state-->');
-            }).catchError((error) {
-              debugPrint('Error state--> ${error.toString()}');
-            });
-          } else {
-            // Have to integrate with FCM after that message
-          }
-        });
-
-        await chatChannel.publish(messages: [
-          ably.Message(name: clientIDFromARef, data: 'Sai'),
-        ]).then((value) {
-          debugPrint('Success state-->');
-        }).catchError((error) {
-          debugPrint('Error state--> ${error.toString()}');
-        });
-
-        //subscribe - For receiving the message from ably
-        var messageStream = chatChannel.subscribe();
-        messageStream.listen((ably.Message message) {
-          debugPrint('New message arrived ${message.data}');
-        });
-        //to getting the history of data
-        var result = await chatChannel.history(
-            ably.RealtimeHistoryParams(direction: 'forwards', limit: 10));
-        debugPrint('The data of history--> ${result.items}');
+      //When click the submit button
+      //Who are all in online
+      presenceChannel!.presence
+          .subscribe(action: PresenceAction.enter)
+          .listen((ably.PresenceMessage event) async {
+        debugPrint('Who are all in online--> ${event.clientId}');
+        debugPrint('New message arrived ${event.data}');
+        if (toARef == event.clientId) {
+          //Post messages
+          // await chatChannel.publish(messages: [
+          //   ably.Message(name: clientIDFromARef, data: 'Sai'),
+          // ]).then((value) {
+          //   debugPrint('Success state-->');
+          // }).catchError((error) {
+          //   debugPrint('Error state--> ${error.toString()}');
+          // });
+        } else {
+          // Have to integrate with FCM after that message
+        }
       });
+
+      await chatChannel.publish(messages: [
+        ably.Message(name: clientIDFromARef, data: 'How are u?'),
+      ]).then((value) {
+        debugPrint('Success state-->');
+      }).catchError((error) {
+        debugPrint('Error state--> ${error.toString()}');
+      });
+
+      //subscribe - For receiving the message from ably
+      // var messageStream = chatChannel.subscribe();
+      // messageStream.listen((ably.Message message) {
+      //   debugPrint('New message arrived ${message.data}');
+      // });
+      chatChannel.subscribe(name: 'message').listen((event) {
+        debugPrint('New message arrived ${event.data}');
+      });
+      //to getting the history of data
+      var result = await chatChannel.history(
+          ably.RealtimeHistoryParams(direction: 'forwards', limit: 10));
+      debugPrint('The data of history--> ${result.items}');
+
+      // realtimeInstance.connection
+      //     .on(ably.ConnectionEvent.connected)
+      //     .listen((ably.ConnectionStateChange stateChange) async {
+
+      // });
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
