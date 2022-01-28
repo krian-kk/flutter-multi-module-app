@@ -236,7 +236,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   const SizedBox(width: 40),
                                   Expanded(
                                       child: SizedBox(
-                                    height: 50,
+                                    height: 45,
                                     child: CustomButton(
                                       Languages.of(context)!.eventDetails,
                                       onTap: () => widget.bloc.add(

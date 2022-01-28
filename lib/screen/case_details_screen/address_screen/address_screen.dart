@@ -242,19 +242,22 @@ class _AddressScreenState extends State<AddressScreen>
                                 )),
                                 const SizedBox(width: 40),
                                 Expanded(
-                                    child: CustomButton(
-                                  Languages.of(context)!.eventDetails,
-                                  onTap: () => widget.bloc.add(
-                                    ClickOpenBottomSheetEvent(
-                                        Constants.eventDetails,
-                                        widget.bloc.caseDetailsAPIValue.result
-                                            ?.addressDetails,
-                                        false),
+                                    child: SizedBox(
+                                  height: 47,
+                                  child: CustomButton(
+                                    Languages.of(context)!.eventDetails,
+                                    onTap: () => widget.bloc.add(
+                                      ClickOpenBottomSheetEvent(
+                                          Constants.eventDetails,
+                                          widget.bloc.caseDetailsAPIValue.result
+                                              ?.addressDetails,
+                                          false),
+                                    ),
+                                    textColor: ColorResource.color23375A,
+                                    borderColor: ColorResource.color23375A,
+                                    buttonBackgroundColor:
+                                        ColorResource.colorFFFFFF,
                                   ),
-                                  textColor: ColorResource.color23375A,
-                                  borderColor: ColorResource.color23375A,
-                                  buttonBackgroundColor:
-                                      ColorResource.colorFFFFFF,
                                 ))
                               ],
                             )
