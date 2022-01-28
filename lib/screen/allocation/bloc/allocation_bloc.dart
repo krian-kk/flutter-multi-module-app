@@ -274,7 +274,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield TapPriorityState(successResponse: resultList);
     }
     if (event is StartCallingEvent) {
-      if (event.isIncreaseCount) {
+      if (event.isIncreaseCount && customerCount < totalCount) {
         customerCount++;
       }
       Singleton.instance.startCalling = true;

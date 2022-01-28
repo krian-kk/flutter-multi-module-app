@@ -414,7 +414,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
         if (state is StartCallingState) {
           print('dkdl');
-          if (bloc.customerCount <= bloc.totalCount) {
+          if (bloc.customerCount < bloc.totalCount) {
             // SharedPreferences _prefs = await SharedPreferences.getInstance();
             // int autoCallingIndexValue;
             // int autoCallingSubIndexValue;
@@ -461,7 +461,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   });
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
-                      from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
+                      // from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
+                      from: '9361441983',
                       to: voiceAgencyDetails.result?.agentAgencyContact ?? '',
                       callerId: Singleton.instance.callingID ?? '0',
                       aRef: Singleton.instance.agentRef ?? '',
@@ -579,6 +580,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 // );
               }
             }
+          } else {
+            AppUtils.showToast('Auto Calling is Complete');
           }
         }
 
