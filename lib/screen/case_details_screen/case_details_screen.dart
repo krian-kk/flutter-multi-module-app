@@ -865,8 +865,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         vertical: 5.0),
                                                 child: Row(
                                                   children: [
-                                                    Image.asset(ImageResource
-                                                        .direction),
+                                                    CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
+                                                      radius: 20,
+                                                      child: Center(
+                                                        child: SvgPicture.asset(
+                                                          ImageResource
+                                                              .direction,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // Image.asset(ImageResource
+                                                    //     .direction),
                                                     const SizedBox(width: 8),
                                                     Expanded(
                                                         child: CustomText(
@@ -919,7 +931,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               horizontal: 10.0, vertical: 5.0),
                                           child: Row(
                                             children: [
-                                              Image.asset(ImageResource.phone),
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    ColorResource.color23375A,
+                                                radius: 20,
+                                                child: Center(
+                                                  child: SvgPicture.asset(
+                                                    ImageResource.phone,
+                                                  ),
+                                                ),
+                                              ),
                                               const SizedBox(width: 8),
                                               Expanded(
                                                   child: CustomText(

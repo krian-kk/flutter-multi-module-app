@@ -217,8 +217,17 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                                 75.0))),
                                                 child: Row(
                                                   children: [
-                                                    Image.asset(
-                                                        ImageResource.phone),
+                                                    CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
+                                                      radius: 20,
+                                                      child: Center(
+                                                        child: SvgPicture.asset(
+                                                          ImageResource.phone,
+                                                        ),
+                                                      ),
+                                                    ),
                                                     const SizedBox(width: 12),
                                                     CustomText(
                                                       Constants.call

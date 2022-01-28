@@ -251,9 +251,20 @@ class _AddressDetailsBottomSheetScreenState
                                                                               75.0))),
                                                               child: Row(
                                                                 children: [
-                                                                  Image.asset(
-                                                                      ImageResource
-                                                                          .direction),
+                                                                  CircleAvatar(
+                                                                    backgroundColor:
+                                                                        ColorResource
+                                                                            .color23375A,
+                                                                    radius: 20,
+                                                                    child:
+                                                                        Center(
+                                                                      child: SvgPicture
+                                                                          .asset(
+                                                                        ImageResource
+                                                                            .direction,
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                                   const SizedBox(
                                                                       width:
                                                                           10),

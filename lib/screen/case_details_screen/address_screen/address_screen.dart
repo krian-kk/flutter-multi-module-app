@@ -217,8 +217,18 @@ class _AddressScreenState extends State<AddressScreen>
                                                   Radius.circular(75.0))),
                                           child: Row(
                                             children: [
-                                              Image.asset(
-                                                  ImageResource.direction),
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    ColorResource.color23375A,
+                                                radius: 20,
+                                                child: Center(
+                                                  child: SvgPicture.asset(
+                                                    ImageResource.direction,
+                                                  ),
+                                                ),
+                                              ),
+                                              // Image.asset(
+                                              //     ImageResource.direction),
                                               const SizedBox(width: 10),
                                               SizedBox(
                                                 width: MediaQuery.of(context)
