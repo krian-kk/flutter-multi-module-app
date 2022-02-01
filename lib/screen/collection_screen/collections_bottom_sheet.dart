@@ -615,7 +615,7 @@ class _CustomCollectionsBottomSheetState
                                             receiptDate: selectedDate,
                                             paymentMode:
                                                 selectedPaymentModeButton,
-                                            messageBody: 'abc',
+                                            messageBody: 'message',
                                           );
                                           Map<String, dynamic> postResult =
                                               await APIRepository.apiRequest(
