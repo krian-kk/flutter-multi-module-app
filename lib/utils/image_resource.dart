@@ -49,4 +49,5 @@ class ImageResource {
       'assets/svg/drop_down_decrease_arrow.svg';
   static const String clock = 'assets/svg/clock.svg';
   static const String noCaseAvailable = 'assets/svg/noCaseAvailable.svg';
+  static const String sms = 'assets/svg/SMS.svg';
 }

@@ -158,14 +158,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(
-                                      Icons.message_rounded,
-                                      color: ColorResource.colorffffff,
-                                      size: 22,
-                                    ),
-                                    // SvgPicture.asset(
-                                    //     ImageResource
-                                    //         .whatsApp),
+                                    SvgPicture.asset(ImageResource.sms),
                                     const SizedBox(width: 5),
                                     CustomText(Constants.sendSMS.toUpperCase(),
                                         lineHeight: 1.0,
