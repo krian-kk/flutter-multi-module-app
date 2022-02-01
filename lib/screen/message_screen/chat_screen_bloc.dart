@@ -1,14 +1,32 @@
 import 'package:bloc/bloc.dart';
-import 'package:origa/base/base_state.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/screen/message_screen/chat_screen_event.dart';
+import 'package:origa/utils/constants.dart';
 
-class ChatScreenBloc extends Bloc<ChatScreenEvent, BaseState> {
-  ChatScreenBloc() : super(InitialState());
+import 'chat_screen_state.dart';
+
+class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
+  ChatScreenBloc() : super(ChatScreenInitial());
 
   @override
-  Stream<BaseState> mapEventToState(ChatScreenEvent event) async* {
+  Stream<ChatScreenState> mapEventToState(ChatScreenEvent event) async* {
     if (event is ChatInitialEvent) {
-      yield InitialState();
+      yield ChatScreenInitial();
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      } else {
+        Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
+            APIRequestType.GET, HttpUrl.chatHistory);
+
+        if (chatHistory[Constants.success]) {
+          print("Chat History  from instalmint API");
+          print(chatHistory['data']);
+        } else {}
+      }
+
+      yield ChatScreenLoadedState();
     }
   }
 }

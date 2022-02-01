@@ -16,7 +16,7 @@ import FirebaseMessaging
     GMSServices.provideAPIKey("AIzaSyCZI9K_T5crucTDPuNMvolMqRBL_srEMOU")
     GeneratedPluginRegistrant.register(with: self)
     Messaging.messaging().isAutoInitEnabled = true;
-      
+
     if #available(iOS 10.0, *) {
                 // For iOS 10 display notification (sent via APNS)
                 UNUserNotificationCenter.current().delegate = self
@@ -49,7 +49,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate{
     override func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
        print("APPDELEGATE: didReceiveResponseWithCompletionHandler \(response.notification.request.content.userInfo)")
         completionHandler()
-        
+
     }
     // Called when a notification is delivered to a foreground app.
     override func userNotificationCenter(_: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

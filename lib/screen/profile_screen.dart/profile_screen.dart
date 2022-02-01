@@ -15,7 +15,6 @@ import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
-import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
 import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
@@ -114,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (state is ClickMessageState) {
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => ChatScreen()));
-          messageShowBottomSheet();
+          messageShowBottomSheet(fromID: state.fromId, toID: state.toId);
         }
         if (state is ChangeProfileImageState) {
           profileImageShowBottomSheet();
@@ -498,7 +497,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: 200,
                               child: CustomButton(
                                 Languages.of(context)!.message,
-                                onTap: () => bloc.add(ClickMessageEvent()),
+                                onTap: () => bloc.add(ClickMessageEvent(
+                                  fromId: bloc.profileAPIValue.result![0].aRef,
+                                  toId: bloc.profileAPIValue.result![0].parent,
+                                )),
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
                                 isTrailing: false,
@@ -641,7 +643,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 LanguageBottomSheetScreen(bloc: bloc)));
   }
 
-  messageShowBottomSheet() {
+  messageShowBottomSheet({String? fromID, String? toID}) {
     showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -658,7 +660,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext buildContext, StateSetter setState) =>
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.86,
-                    child: ChatScreen())));
+                    child: ChatScreen(
+                        fromARefId: fromID,
+                        toARefId: toID,
+                        agentImage: Image.memory(profileImage!).image))));
     // MessageChatRoomScreen(bloc)
   }
 

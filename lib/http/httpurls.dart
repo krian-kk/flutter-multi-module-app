@@ -18,6 +18,8 @@ class HttpUrl {
   // Get agent detail for Reset password screen
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+  static const String sendSMSurl =
+      'https://uat-collect.origa.ai/node/api/v2/notification/sendNotification';
 
   // static const String loginUrl =
   //     'https://collect.instalmint.com/node/api/user/loginWeb';

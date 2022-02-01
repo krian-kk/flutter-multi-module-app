@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/map_screen/map_screen.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -218,6 +220,33 @@ class _AddressDetailsBottomSheetScreenState
                                                                         0.0);
                                                           }
                                                         },
+
+                                                        // Navigator.push(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder:
+                                                        //             (context) =>
+                                                        //                 MapScreen(
+                                                        //                   multipleLatLong: [
+                                                        //                     MapMarkerModel(
+                                                        //                       caseId: "1234444",
+                                                        //                       address: "gollahalli",
+                                                        //                       due: "90000",
+                                                        //                       name: "Nandha",
+                                                        //                       latitude: 11.639163,
+                                                        //                       longitude: 78.143815,
+                                                        //                     ),
+                                                        //                     MapMarkerModel(
+                                                        //                       caseId: "1234444",
+                                                        //                       address: "gollahalli",
+                                                        //                       due: "90000",
+                                                        //                       name: "Nandha",
+                                                        //                       latitude: 12.509128,
+                                                        //                       longitude: 78.216494,
+                                                        //                     ),
+                                                        //                   ],
+                                                        //                 )));
+                                                        // },
                                                         // onTap: () => widget.bloc.add(
                                                         //     ClickOpenBottomSheetEvent(
                                                         //         Constants
@@ -276,6 +305,30 @@ class _AddressDetailsBottomSheetScreenState
                                                                   [
                                                                   'resAddressId_0'] ??
                                                               "";
+                                                          // print(widget
+                                                          //     .bloc
+                                                          //     .caseDetailsAPIValue
+                                                          //     .result
+                                                          //     ?.callDetails!
+                                                          //     .toString());
+
+                                                          for (var element in widget
+                                                              .bloc
+                                                              .caseDetailsAPIValue
+                                                              .result!
+                                                              .callDetails!) {
+                                                            if (element[
+                                                                    'cType'] ==
+                                                                "mobile") {
+                                                              Singleton.instance
+                                                                      .customerContactNo =
+                                                                  element[
+                                                                      'value'];
+                                                              print(element[
+                                                                  'value']);
+                                                              break;
+                                                            }
+                                                          }
                                                         },
                                                         child: Row(
                                                           mainAxisAlignment:

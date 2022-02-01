@@ -36,6 +36,7 @@ class CustomTextField extends StatefulWidget {
   final Color cursorColor;
   final Function(bool)? validatorCallBack;
   final AutovalidateMode? autovalidateMode;
+  final EdgeInsetsGeometry? contentPadding;
 
   CustomTextField(this.hintText, this.controller,
       {Key? key,
@@ -66,6 +67,7 @@ class CustomTextField extends StatefulWidget {
       this.isFill = false,
       this.autovalidateMode,
       this.cursorColor = ColorResource.color666666,
+      this.contentPadding = const EdgeInsets.fromLTRB(25, 15, 20, 15),
       this.validationRules = const []})
       : super(key: key);
 
@@ -155,7 +157,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : widget.textColor),
 
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(25, 15, 20, 15),
+        contentPadding: widget.contentPadding,
         fillColor: ColorResource.colorFFFFFF,
         filled: widget.isFill,
         hintText: widget.hintText,
