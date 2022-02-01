@@ -658,4 +658,37 @@ class LanguageEn extends Languages {
 
   @override
   String get contact => 'Contact';
+
+  @override
+  String get pleaseSelectDropDownValue => 'Please Select Drop Down Value';
+
+  @override
+  String get pleaseEnterCurrectUserId => 'Please Enter Currect User ID';
+
+  @override
+  String get pleaseSelectOptions => 'Please Select Options';
+
+  @override
+  String get pleaseSelectPaymentMode => 'Please Select Payment Mode!';
+
+  @override
+  String get pleaseUploadDepositSlip => 'Please upload deposit slip';
+
+  @override
+  String get noCaseAvailble => 'No Case Available';
+
+  @override
+  String get shouldBeSelectOneCase => 'Should be select one case';
+
+  @override
+  String get resetPasswordModelViaOTP => 'Reset password via OTP';
+
+  @override
+  String get successfullyUpdated => 'Successfully Updated !!';
+
+  @override
+  String get eventUpdatedSuccessfully => 'Event updated successfully.';
+
+  @override
+  String get successfullySubmitted => 'Successfully submitted!!';
 }

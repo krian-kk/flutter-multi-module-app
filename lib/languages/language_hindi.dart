@@ -402,6 +402,7 @@ class LanguageHi extends Languages {
 
   @override
   String get leftMessage => 'बायां संदेश';
+
   @override
   String get doorLocked => 'दरवाजा बंद कर दिया';
 
@@ -593,68 +594,102 @@ class LanguageHi extends Languages {
   String get searchErrorMessage => 'आपको कम से कम एक फ़ील्ड भरना चाहिए';
 
   @override
-  String get mobileNumber => 'Mobile Number';
+  String get mobileNumber => 'मोबाइल नंबर';
 
   @override
-  String get email => 'Email';
+  String get email => 'ईमेल';
 
   @override
   String get check => 'जाँच';
 
   @override
-  String get resendOTP => 'Resend OTP?';
+  String get resendOTP => 'ओटीपी पुनः भेजें?';
 
   @override
-  String get sendOTP => 'SEND OTP';
+  String get sendOTP => 'OTP भेजें';
 
   @override
-  String get businessLoss => 'Business Loss';
+  String get businessLoss => 'व्यापार हानि';
 
   @override
-  String get covidImpacted => 'Covid Impacted';
+  String get covidImpacted => 'कोविड प्रभावित';
 
   @override
-  String get financialReason => 'Financial Reason';
+  String get financialReason => 'वित्तीय कारण';
 
   @override
-  String get incomeLossInTheFamily => 'Income Loss In The Family';
+  String get incomeLossInTheFamily => 'परिवार में आय की हानि';
 
   @override
-  String get intention => 'Intention ';
+  String get intention => 'का इरादा';
 
   @override
-  String get jobLoss => 'Job Loss';
+  String get jobLoss => 'नौकरी खोना';
 
   @override
-  String get jobUncertaintly => 'Job Uncertaintly';
+  String get jobUncertaintly => 'नौकरी अनिश्चित';
 
   @override
-  String get medicalIssue => 'Medical Issue';
+  String get medicalIssue => 'चिकित्सा मुद्दा';
 
   @override
-  String get salaryIssue => 'Salary Issue';
+  String get salaryIssue => 'वेतन मुद्दा';
 
   @override
   String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं';
 
   @override
-  String get mode => 'Mode';
+  String get mode => 'तरीका';
 
   @override
-  String get saveNewPassword => 'SAVE NEW PASSWORD';
+  String get saveNewPassword => 'नया पासवर्ड सेव करें';
 
   @override
-  String get enterNewPassword => 'Enter new password';
+  String get enterNewPassword => 'नया पासवर्ड दर्ज करें';
 
   @override
-  String get enterConfirmNewPassword => 'Confirm new password';
+  String get enterConfirmNewPassword => 'नए पासवर्ड की पुष्टि करें';
 
   @override
-  String get clear => 'Clear';
+  String get clear => 'स्पष्ट';
 
   @override
-  String get customerContactType => 'Customer Contact Type*';
+  String get customerContactType => 'ग्राहक संपर्क प्रकार*';
 
   @override
-  String get contact => 'Contact';
+  String get contact => 'संपर्क';
+
+  @override
+  String get pleaseSelectDropDownValue => 'कृपया ड्रॉप डाउन वैल्यू चुनें';
+
+  @override
+  String get pleaseEnterCurrectUserId => 'कृपया सही यूजर आईडी दर्ज करें';
+
+  @override
+  String get pleaseSelectOptions => 'कृपया विकल्प चुनें';
+
+  @override
+  String get pleaseSelectPaymentMode => 'कृपया भुगतान मोड चुनें!';
+
+  @override
+  String get pleaseUploadDepositSlip => 'कृपया जमा पर्ची अपलोड करें';
+
+  @override
+  String get noCaseAvailble => 'कोई मामला उपलब्ध नहीं';
+
+  @override
+  String get shouldBeSelectOneCase => 'एक मामले का चयन किया जाना चाहिए';
+
+  @override
+  String get resetPasswordModelViaOTP =>
+      'ओटीपी के माध्यम से पासवर्ड रीसेट करें';
+
+  @override
+  String get successfullyUpdated => 'सफलतापूर्वक उत्परिवर्तित !!';
+
+  @override
+  String get eventUpdatedSuccessfully => 'ईवेंट सफलतापूर्वक अपडेट किया गया.';
+
+  @override
+  String get successfullySubmitted => 'सफलतापूर्वक प्रस्तुत किया गया!!';
 }
