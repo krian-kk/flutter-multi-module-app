@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 
 class Singleton {
@@ -14,6 +15,7 @@ class Singleton {
   BuildContext? buildContext;
   ContractorDetailsModel? feedbackTemplate;
   bool? cloudTelephony;
+  String? overDueAmount;
 
   // Localstorage for call details
   String? callID;
@@ -22,7 +24,11 @@ class Singleton {
   String? resAddressId_0;
   String? contactId_0;
 
-  String? overDueAmount;
+// Contractor All Informations
+  ContractorAllInformationModel? contractorInformations;
+
+  String? customerContactNo;
+
   static final Singleton instance = Singleton.internal();
 
   factory Singleton() {

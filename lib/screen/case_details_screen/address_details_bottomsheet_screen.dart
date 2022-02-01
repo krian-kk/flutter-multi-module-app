@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/map_screen/map_screen.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -16,6 +18,7 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddressDetailsBottomSheetScreen extends StatefulWidget {
   const AddressDetailsBottomSheetScreen({
@@ -178,12 +181,16 @@ class _AddressDetailsBottomSheetScreenState
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () async {
-                                                          Position
+                                                          Position?
+                                                              currentLocation;
+                                                          await MapUtils
+                                                                  .getCurrentLocation()
+                                                              .then((value) {
+                                                            setState(() {
                                                               currentLocation =
-                                                              await Geolocator.getCurrentPosition(
-                                                                  desiredAccuracy:
-                                                                      LocationAccuracy
-                                                                          .best);
+                                                                  value;
+                                                            });
+                                                          });
                                                           Northeast?
                                                               destinationLocation =
                                                               await MapUtils.convertAddressToLarlng(
@@ -198,10 +205,10 @@ class _AddressDetailsBottomSheetScreenState
                                                               null) {
                                                             MapUtils.openMap(
                                                                 startLatitude:
-                                                                    currentLocation
+                                                                    currentLocation!
                                                                         .latitude,
                                                                 startLongitude:
-                                                                    currentLocation
+                                                                    currentLocation!
                                                                         .longitude,
                                                                 destinationLatitude:
                                                                     destinationLocation
@@ -213,6 +220,33 @@ class _AddressDetailsBottomSheetScreenState
                                                                         0.0);
                                                           }
                                                         },
+
+                                                        // Navigator.push(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder:
+                                                        //             (context) =>
+                                                        //                 MapScreen(
+                                                        //                   multipleLatLong: [
+                                                        //                     MapMarkerModel(
+                                                        //                       caseId: "1234444",
+                                                        //                       address: "gollahalli",
+                                                        //                       due: "90000",
+                                                        //                       name: "Nandha",
+                                                        //                       latitude: 11.639163,
+                                                        //                       longitude: 78.143815,
+                                                        //                     ),
+                                                        //                     MapMarkerModel(
+                                                        //                       caseId: "1234444",
+                                                        //                       address: "gollahalli",
+                                                        //                       due: "90000",
+                                                        //                       name: "Nandha",
+                                                        //                       latitude: 12.509128,
+                                                        //                       longitude: 78.216494,
+                                                        //                     ),
+                                                        //                   ],
+                                                        //                 )));
+                                                        // },
                                                         // onTap: () => widget.bloc.add(
                                                         //     ClickOpenBottomSheetEvent(
                                                         //         Constants
@@ -271,6 +305,30 @@ class _AddressDetailsBottomSheetScreenState
                                                                   [
                                                                   'resAddressId_0'] ??
                                                               "";
+                                                          // print(widget
+                                                          //     .bloc
+                                                          //     .caseDetailsAPIValue
+                                                          //     .result
+                                                          //     ?.callDetails!
+                                                          //     .toString());
+
+                                                          for (var element in widget
+                                                              .bloc
+                                                              .caseDetailsAPIValue
+                                                              .result!
+                                                              .callDetails!) {
+                                                            if (element[
+                                                                    'cType'] ==
+                                                                "mobile") {
+                                                              Singleton.instance
+                                                                      .customerContactNo =
+                                                                  element[
+                                                                      'value'];
+                                                              print(element[
+                                                                  'value']);
+                                                              break;
+                                                            }
+                                                          }
                                                         },
                                                         child: Row(
                                                           mainAxisAlignment:

@@ -7,10 +7,10 @@ class HttpUrl {
   // static const String baseUrl = 'https://origa-dev/';
   static const String version = 'v1/';
   static const String fieldAgent = 'agent/';
-
-  //login
-  // static const String login_keycloak =
-  //     'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
+//new
+  // //login
+  // // static const String login_keycloak =
+  // //     'http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token';
   static const String loginUrl =
       'https://uat-collect.origa.ai/node/api/user/loginWeb';
   static const String agentDetailUrl =
@@ -18,8 +18,10 @@ class HttpUrl {
   // Get agent detail for Reset password screen
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-collect.origa.ai/node/field-allocation/agents/info/$agentName';
+  static const String sendSMSurl =
+      'https://uat-collect.origa.ai/node/api/v2/notification/sendNotification';
 
-  //      static const String loginUrl =
+  // static const String loginUrl =
   //     'https://collect.instalmint.com/node/api/user/loginWeb';
   // static const String agentDetailUrl =
   //     'https://collect.instalmint.com/node/field-allocation/agents/';

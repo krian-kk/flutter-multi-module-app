@@ -16,6 +16,7 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 
@@ -69,8 +70,7 @@ class _MapNavigationState extends State<MapNavigation> {
   // Method for retrieving the current location
   _getCurrentLocation() async {
     final GoogleMapController controller = await mapController.future;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) async {
+    await MapUtils.getCurrentLocation().then((Position position) async {
       setState(() {
         _currentPosition = position;
         controller.animateCamera(
@@ -102,6 +102,7 @@ class _MapNavigationState extends State<MapNavigation> {
       // Start Location Marker
       Marker startMarker = Marker(
         markerId: MarkerId(startCoordinatesString),
+        anchor: const Offset(0.5, 1.0),
         position: LatLng(startLatitude, startLongitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         infoWindow: const InfoWindow(

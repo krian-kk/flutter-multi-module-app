@@ -4,6 +4,7 @@ class Constants {
   static const String pageNo = '1';
   static const String limit = '10';
   static const String help = 'Help';
+  static const String allDisMeters = '100000';
   static const String maxDisMeters = '10000';
   static const String minDisMeters = '5000';
   // Type of userType
@@ -59,6 +60,7 @@ class Constants {
   static const String eventDetails = 'EVENT DETAILS';
   static const String callCustomer = 'CALL CUSTOMER';
   static const String successfullySubmitted = 'Successfully submitted!!';
+  static const String successfullySMSsend = 'SMS sent successfully';
   static const String eventUpdatedSuccess = 'Event updated successfully.';
   static const String successfullyUpdated = 'Successfully Updated !!';
   static const String resetPassword = 'Reset password via OTP';
@@ -121,4 +123,10 @@ class Constants {
   static const String noOtherLoanAvailable = "No other loan's available.";
   static const String events = 'Events';
   static const String connectionTimeout = 'connection timeout';
+  static const String statrtConverstation = 'Start Converstation..';
+  static const String sendSMS = 'send sms';
+  static const String sendWhatsapp = 'send whatsapp';
+  static const String repaymentInfoType = 'repaymentInfo';
+  static const String callTriedType = 'callTried';
+  static const String receiptAcknowledgementType = 'receiptAcknowledgement';
 }
