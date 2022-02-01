@@ -1,41 +1,35 @@
 {
   "project_info": {
-    "project_number": "269383074254",
-    "project_id": "origa-4e133",
-    "storage_bucket": "origa-4e133.appspot.com"
+    "project_number": "9444734201",
+    "firebase_url": "https://fir-project-4d27b-default-rtdb.firebaseio.com",
+    "project_id": "fir-project-4d27b",
+    "storage_bucket": "fir-project-4d27b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:269383074254:android:f3873a0312b09f095f6b9f",
+        "mobilesdk_app_id": "1:9444734201:android:765182422cb60354d45e28",
         "android_client_info": {
           "package_name": "com.mcollect.origa.ai"
         }
       },
       "oauth_client": [
         {
-          "client_id": "269383074254-jbs4gs4nt0krai3rondaanjr362k5686.apps.googleusercontent.com",
+          "client_id": "9444734201-ehqjrv80ogtsjuvjvbji65jhbr5i7gk3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCw10OEIZ2GRZhC7dzx-j8dy1Lq7hWwe1g"
+          "current_key": "AIzaSyCFTW-G2I88LSJvkhxy44NOLSucXrbFFhY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "269383074254-jbs4gs4nt0krai3rondaanjr362k5686.apps.googleusercontent.com",
+              "client_id": "9444734201-ehqjrv80ogtsjuvjvbji65jhbr5i7gk3.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "269383074254-vcvv18arudqdddbtmtg0i26t59ijghd1.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.mcollect.origa.ai"
-              }
             }
           ]
         }
