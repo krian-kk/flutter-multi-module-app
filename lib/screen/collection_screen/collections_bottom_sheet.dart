@@ -470,24 +470,9 @@ class _CustomCollectionsBottomSheetState
                                   );
 
                                   if (postResult[Constants.success]) {
-                                    if (widget.isAutoCalling) {
-                                      Navigator.pop(
-                                          widget.paramValue['context']);
-                                      Navigator.pop(
-                                          widget.paramValue['context']);
-                                      widget.allocationBloc!
-                                          .add(StartCallingEvent(
-                                        customerIndex:
-                                            widget.paramValue['customerIndex'] +
-                                                1,
-                                        phoneIndex: 0,
-                                        isIncreaseCount: true,
-                                      ));
-                                    } else {
-                                      AppUtils.topSnackBar(context,
-                                          Constants.successfullySubmitted);
-                                      Navigator.pop(context);
-                                    }
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    Navigator.pop(context);
                                   }
                                 } else {
                                   Position position = Position(
@@ -611,9 +596,24 @@ class _CustomCollectionsBottomSheetState
                                       );
 
                                       if (postResult[Constants.success]) {
-                                        AppUtils.topSnackBar(context,
-                                            "Event updated successfully.");
-                                        Navigator.pop(context);
+                                        if (widget.isAutoCalling) {
+                                          Navigator.pop(
+                                              widget.paramValue['context']);
+                                          Navigator.pop(
+                                              widget.paramValue['context']);
+                                          widget.allocationBloc!
+                                              .add(StartCallingEvent(
+                                            customerIndex: widget.paramValue[
+                                                    'customerIndex'] +
+                                                1,
+                                            phoneIndex: 0,
+                                            isIncreaseCount: true,
+                                          ));
+                                        } else {
+                                          AppUtils.topSnackBar(context,
+                                              "Event updated successfully.");
+                                          Navigator.pop(context);
+                                        }
 
                                         if (Singleton
                                                 .instance

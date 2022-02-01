@@ -120,7 +120,27 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           fontSize: FontSize.twelve,
                           fontStyle: FontStyle.normal,
                         ),
-
+                        SizedBox(
+                          width: double.infinity,
+                          child: TextFormField(
+                            focusNode:
+                                widget.bloc.phoneUnreachableRemarksFocusNode,
+                            controller:
+                                widget.bloc.phoneUnreachableRemarksController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                hintText:
+                                    Languages.of(context)!.writeYourRemarksHere,
+                                focusColor: ColorResource.colorE5EAF6,
+                                labelStyle:
+                                    const TextStyle(color: Color(0xFF424242))),
+                          ),
+                        ),
                         const SizedBox(height: 20),
                         Singleton.instance.contractorInformations!.result!
                                 .hideCallTriedSmsButton!
