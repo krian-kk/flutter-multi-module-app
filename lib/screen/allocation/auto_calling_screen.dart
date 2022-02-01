@@ -89,66 +89,67 @@ class AutoCalling {
       resizeToAvoidBottomInset: true,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            CustomText(
-              Languages.of(context)!.customer.toUpperCase(),
-              color: ColorResource.color23375A,
-              fontSize: FontSize.ten,
-              fontWeight: FontWeight.w700,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            LinearPercentIndicator(
-              // width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(4),
-              animation: true,
-              lineHeight: 12.0,
-              animationDuration: 2500,
-              percent: (bloc.customerCount / bloc.totalCount),
-              // center: Text("80.0%"),
-              linearStrokeCap: LinearStrokeCap.roundAll,
-              progressColor: ColorResource.colorEA6D48,
-              backgroundColor: ColorResource.colorD3D7DE,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  bloc.customerCount.toString(),
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                  color: ColorResource.color23375A,
-                ),
-                CustomText(
-                  bloc.totalCount.toString(),
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                  color: ColorResource.color23375A,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            CustomText(
-              Languages.of(context)!.customer.toUpperCase(),
-              color: ColorResource.color23375A,
-              fontSize: FontSize.fourteen,
-              fontWeight: FontWeight.w700,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            //
-            // for (var item in bloc.mobileNumberList)
-            Expanded(
-              child: ListView.builder(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                Languages.of(context)!.customer.toUpperCase(),
+                color: ColorResource.color23375A,
+                fontSize: FontSize.ten,
+                fontWeight: FontWeight.w700,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              LinearPercentIndicator(
+                // width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(4),
+                animation: true,
+                lineHeight: 12.0,
+                animationDuration: 2500,
+                percent: (bloc.customerCount / bloc.totalCount),
+                // center: Text("80.0%"),
+                linearStrokeCap: LinearStrokeCap.roundAll,
+                progressColor: ColorResource.colorEA6D48,
+                backgroundColor: ColorResource.colorD3D7DE,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    bloc.customerCount.toString(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color23375A,
+                  ),
+                  CustomText(
+                    bloc.totalCount.toString(),
+                    fontSize: FontSize.sixteen,
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color23375A,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              CustomText(
+                Languages.of(context)!.customer.toUpperCase(),
+                color: ColorResource.color23375A,
+                fontSize: FontSize.fourteen,
+                fontWeight: FontWeight.w700,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              //
+              // for (var item in bloc.mobileNumberList)
+              ListView.builder(
+                  shrinkWrap: true,
                   itemCount: bloc.resultList.length,
                   itemBuilder: (context, indexs) {
                     // print(bloc.resultList.length);
@@ -469,9 +470,9 @@ class AutoCalling {
                         ),
                       ),
                     );
-                  }),
-            )
-          ],
+                  })
+            ],
+          ),
         ),
       ),
     );
