@@ -53,13 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
     passwords = FocusNode();
     _loadUserNamePassword();
     Firebase.initializeApp();
-    FirebaseMessaging.instance.requestPermission();
     super.initState();
   }
-
-  /*Name:instalmint APNs
-Key ID:CSRK2AG8JN
-Services:Apple Push Notifications service (APNs)*/
 
   // _passwordVisibleOrNot the password show status
   void _passwordVisibleOrNot() {
