@@ -87,3 +87,9 @@ class DisablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
 class AddedNewAddressListEvent extends CaseDetailsEvent {}
 
 class AddedNewCallContactListEvent extends CaseDetailsEvent {}
+
+class SendSMSEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  final String? type;
+  SendSMSEvent(this.context, {this.type});
+}

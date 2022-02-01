@@ -10,6 +10,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
+import 'package:origa/models/contractor_information_model.dart';
 // import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
@@ -187,16 +188,20 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             //   }
             // }
           }
-          // Get Contractor Details
+          // Get Contractor Details and stored in Singleton
           Map<String, dynamic> getContractorDetails =
               await APIRepository.apiRequest(
                   APIRequestType.GET, HttpUrl.contractorDetail);
           if (getContractorDetails[Constants.success] == true) {
             Map<String, dynamic> jsonData = getContractorDetails['data'];
+            // check and store cloudTelephony true or false
             Singleton.instance.cloudTelephony =
                 jsonData['result']['cloudTelephony'] ?? false;
+
             Singleton.instance.feedbackTemplate =
                 ContractorDetailsModel.fromJson(jsonData);
+            Singleton.instance.contractorInformations =
+                ContractorAllInformationModel.fromJson(jsonData);
             // contractorDetailsValue = ContractorDetailsModel.fromJson(jsonData);
           } else {
             AppUtils.showToast(getContractorDetails['data'] ?? '');
@@ -382,6 +387,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     "lat=${event.paramValues.lat}&" +
                     "lng=${event.paramValues.long}&" +
                     "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    // "lat=12.30697186816673&" +
+                    // "lng=78.0716507484453&" +
                     'page=${Constants.pageNo}&' +
                     'limit=${Constants.limit}');
 

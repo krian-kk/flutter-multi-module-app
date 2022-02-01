@@ -85,6 +85,7 @@ class MapUtils {
       currentLocation = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
     }
+    print("current location ----> ${currentLocation}");
     return currentLocation!;
   }
 

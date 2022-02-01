@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/map_screen/map_screen.dart';
+import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -113,184 +115,222 @@ class _AddressDetailsBottomSheetScreenState
                                             fontStyle: FontStyle.normal,
                                           ),
                                           const SizedBox(height: 7),
-                                          GestureDetector(
-                                            onTap: () {
-                                              widget.bloc.add(
-                                                  ClickMainAddressBottomSheetEvent(
-                                                      i));
-                                              Singleton.instance
-                                                  .resAddressId_0 = widget
-                                                          .bloc
-                                                          .caseDetailsAPIValue
-                                                          .result
-                                                          ?.addressDetails![i]
-                                                      ['resAddressId_0'] ??
-                                                  "";
-                                            },
-                                            child: Container(
-                                              width: double.infinity,
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 12, 12, 12),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Flexible(
-                                                          child: CustomText(
-                                                            widget
-                                                                    .bloc
-                                                                    .listOfAddressDetails?[
-                                                                        i][
-                                                                        'value']
-                                                                    .toString()
-                                                                    .toUpperCase() ??
-                                                                '_',
-                                                            fontSize: FontSize
-                                                                .fourteen,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            color: ColorResource
-                                                                .color484848,
-                                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: const BoxDecoration(
+                                                color:
+                                                    ColorResource.colorF8F9FB,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10.0))),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 12, 12, 12),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Flexible(
+                                                        child: CustomText(
+                                                          widget
+                                                                  .bloc
+                                                                  .listOfAddressDetails?[
+                                                                      i]
+                                                                      ['value']
+                                                                  .toString()
+                                                                  .toUpperCase() ??
+                                                              '_',
+                                                          fontSize:
+                                                              FontSize.fourteen,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          color: ColorResource
+                                                              .color484848,
                                                         ),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .topRight,
+                                                      ),
+                                                      Align(
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          child: Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                  width: 10),
+                                                              ShowHealthStatus
+                                                                  .healthStatus(
+                                                                      widget.bloc.listOfAddressDetails?[i]
+                                                                              [
+                                                                              'health'] ??
+                                                                          ''),
+                                                            ],
+                                                          )),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 15),
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () async {
+                                                          Position?
+                                                              currentLocation;
+                                                          await MapUtils
+                                                                  .getCurrentLocation()
+                                                              .then((value) {
+                                                            setState(() {
+                                                              currentLocation =
+                                                                  value;
+                                                            });
+                                                          });
+                                                          Northeast?
+                                                              destinationLocation =
+                                                              await MapUtils.convertAddressToLarlng(
+                                                                  address: widget
+                                                                          .bloc
+                                                                          .caseDetailsAPIValue
+                                                                          .result!
+                                                                          .addressDetails![0]
+                                                                      [
+                                                                      'value']);
+                                                          if (destinationLocation !=
+                                                              null) {
+                                                            MapUtils.openMap(
+                                                                startLatitude:
+                                                                    currentLocation!
+                                                                        .latitude,
+                                                                startLongitude:
+                                                                    currentLocation!
+                                                                        .longitude,
+                                                                destinationLatitude:
+                                                                    destinationLocation
+                                                                            .lat ??
+                                                                        0.0,
+                                                                destinationLongitude:
+                                                                    destinationLocation
+                                                                            .lng ??
+                                                                        0.0);
+                                                          }
+                                                        },
+
+                                                        // Navigator.push(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder:
+                                                        //             (context) =>
+                                                        //                 MapScreen(
+                                                        //                   multipleLatLong: [
+                                                        //                     MapMarkerModel(
+                                                        //                       caseId: "1234444",
+                                                        //                       address: "gollahalli",
+                                                        //                       due: "90000",
+                                                        //                       name: "Nandha",
+                                                        //                       latitude: 11.639163,
+                                                        //                       longitude: 78.143815,
+                                                        //                     ),
+                                                        //                     MapMarkerModel(
+                                                        //                       caseId: "1234444",
+                                                        //                       address: "gollahalli",
+                                                        //                       due: "90000",
+                                                        //                       name: "Nandha",
+                                                        //                       latitude: 12.509128,
+                                                        //                       longitude: 78.216494,
+                                                        //                     ),
+                                                        //                   ],
+                                                        //                 )));
+                                                        // },
+                                                        // onTap: () => widget.bloc.add(
+                                                        //     ClickOpenBottomSheetEvent(
+                                                        //         Constants
+                                                        //             .viewMap,
+                                                        //         widget
+                                                        //             .bloc
+                                                        //             .caseDetailsAPIValue
+                                                        //             .result
+                                                        //             ?.addressDetails,
+                                                        //         false)),
+                                                        child: Container(
+                                                            decoration: const BoxDecoration(
+                                                                color: ColorResource
+                                                                    .colorBEC4CF,
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            75.0))),
                                                             child: Row(
                                                               children: [
+                                                                Image.asset(
+                                                                    ImageResource
+                                                                        .direction),
                                                                 const SizedBox(
-                                                                    width: 10),
-                                                                ShowHealthStatus
-                                                                    .healthStatus(
-                                                                        widget.bloc.listOfAddressDetails?[i]['health'] ??
-                                                                            ''),
+                                                                    width: 12),
+                                                                CustomText(
+                                                                  Languages.of(
+                                                                          context)!
+                                                                      .viewMap,
+                                                                  fontSize: FontSize
+                                                                      .fourteen,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: ColorResource
+                                                                      .color23375A,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 12),
                                                               ],
                                                             )),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 15),
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () async {
-                                                            Position?
-                                                                currentLocation;
-                                                            await MapUtils
-                                                                    .getCurrentLocation()
-                                                                .then((value) {
-                                                              setState(() {
-                                                                currentLocation =
-                                                                    value;
-                                                              });
-                                                            });
-                                                            Northeast?
-                                                                destinationLocation =
-                                                                await MapUtils.convertAddressToLarlng(
-                                                                    address: widget
-                                                                        .bloc
-                                                                        .caseDetailsAPIValue
-                                                                        .result!
-                                                                        .addressDetails![0]['value']);
-                                                            if (destinationLocation !=
-                                                                null) {
-                                                              MapUtils.openMap(
-                                                                  startLatitude:
-                                                                      currentLocation!
-                                                                          .latitude,
-                                                                  startLongitude:
-                                                                      currentLocation!
-                                                                          .longitude,
-                                                                  destinationLatitude:
-                                                                      destinationLocation
-                                                                              .lat ??
-                                                                          0.0,
-                                                                  destinationLongitude:
-                                                                      destinationLocation
-                                                                              .lng ??
-                                                                          0.0);
+                                                      ),
+                                                      const Spacer(),
+                                                      const SizedBox(width: 5),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          widget.bloc.add(
+                                                              ClickMainAddressBottomSheetEvent(
+                                                                  i));
+                                                          Singleton.instance
+                                                              .resAddressId_0 = widget
+                                                                      .bloc
+                                                                      .caseDetailsAPIValue
+                                                                      .result
+                                                                      ?.addressDetails![i]
+                                                                  [
+                                                                  'resAddressId_0'] ??
+                                                              "";
+                                                          // print(widget
+                                                          //     .bloc
+                                                          //     .caseDetailsAPIValue
+                                                          //     .result
+                                                          //     ?.callDetails!
+                                                          //     .toString());
+
+                                                          for (var element in widget
+                                                              .bloc
+                                                              .caseDetailsAPIValue
+                                                              .result!
+                                                              .callDetails!) {
+                                                            if (element[
+                                                                    'cType'] ==
+                                                                "mobile") {
+                                                              Singleton.instance
+                                                                      .customerContactNo =
+                                                                  element[
+                                                                      'value'];
+                                                              print(element[
+                                                                  'value']);
+                                                              break;
                                                             }
-                                                          },
-                                                          // onTap: () => widget.bloc.add(
-                                                          //     ClickOpenBottomSheetEvent(
-                                                          //         Constants
-                                                          //             .viewMap,
-                                                          //         widget
-                                                          //             .bloc
-                                                          //             .caseDetailsAPIValue
-                                                          //             .result
-                                                          //             ?.addressDetails,
-                                                          //         false)),
-                                                          child: Container(
-                                                              decoration: const BoxDecoration(
-                                                                  color: ColorResource
-                                                                      .colorBEC4CF,
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              75.0))),
-                                                              child: Row(
-                                                                children: [
-                                                                  CircleAvatar(
-                                                                    backgroundColor:
-                                                                        ColorResource
-                                                                            .color23375A,
-                                                                    radius: 20,
-                                                                    child:
-                                                                        Center(
-                                                                      child: SvgPicture
-                                                                          .asset(
-                                                                        ImageResource
-                                                                            .direction,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width:
-                                                                          10),
-                                                                  CustomText(
-                                                                    Languages.of(
-                                                                            context)!
-                                                                        .viewMap,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    color: ColorResource
-                                                                        .color23375A,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width:
-                                                                          17),
-                                                                ],
-                                                              )),
-                                                        ),
-                                                        const Spacer(),
-                                                        const SizedBox(
-                                                            width: 5),
-                                                        Row(
+                                                          }
+                                                        },
+                                                        child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
@@ -323,10 +363,10 @@ class _AddressDetailsBottomSheetScreenState
                                                                 width: 5)
                                                           ],
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),

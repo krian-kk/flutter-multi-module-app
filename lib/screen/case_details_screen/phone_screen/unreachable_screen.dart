@@ -4,6 +4,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -119,25 +120,53 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           fontSize: FontSize.twelve,
                           fontStyle: FontStyle.normal,
                         ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            focusNode:
-                                widget.bloc.phoneUnreachableRemarksFocusNode,
-                            controller:
-                                widget.bloc.phoneUnreachableRemarksController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                hintText:
-                                    Languages.of(context)!.writeYourRemarksHere,
-                                focusColor: ColorResource.colorE5EAF6,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF424242))),
+
+                        const SizedBox(height: 20),
+                        Singleton.instance.contractorInformations!.result!
+                                .hideCallTriedSmsButton!
+                            ? const SizedBox()
+                            : GestureDetector(
+                                onTap: () {
+                                  widget.bloc.add(SendSMSEvent(context,
+                                      type: Constants.callTriedType));
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: ColorResource.colorECECEC,
+                                        width: 1.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.message_rounded,
+                                        color: ColorResource.colorffffff,
+                                        size: 22,
+                                      ),
+                                      // SvgPicture.asset(
+                                      //     ImageResource
+                                      //         .whatsApp),
+                                      const SizedBox(width: 5),
+                                      CustomText(
+                                          Constants.sendSMS.toUpperCase(),
+                                          lineHeight: 1.0,
+                                          color: ColorResource.colorffffff),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                        const SizedBox(height: 19),
+                        Wrap(
+                          spacing: 15,
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
                           ),
                         ),
                         const SizedBox(height: 19),
@@ -171,7 +200,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("unreachable iscall ===> true");
           widget.bloc.add(ClickOpenBottomSheetEvent(
             element.stringResourceValue,
             widget.bloc.caseDetailsAPIValue.result?.callDetails,

@@ -25,6 +25,7 @@ import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/send_sms_model.dart';
 import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -693,6 +694,26 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         yield PostDataApiSuccessState();
       }
       yield EnableUnreachableBtnState();
+    }
+
+    if (event is SendSMSEvent) {
+      if (Singleton.instance.contractorInformations!.result!.sendSms!) {
+        var requestBodyData = SendSMS(
+          agentRef: Singleton.instance.agentRef,
+          agrRef: Singleton.instance.agrRef,
+          type: event.type,
+        );
+        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.POST,
+          HttpUrl.sendSMSurl,
+          requestBodydata: jsonEncode(requestBodyData),
+        );
+        if (postResult[Constants.success]) {
+          AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
+        }
+      } else {
+        AppUtils.showErrorToast("SMS is not activated");
+      }
     }
   }
 

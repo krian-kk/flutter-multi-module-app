@@ -269,6 +269,17 @@ class _CallDetailsBottomSheetScreenState
                                                                   [
                                                                   'contactId_0'] ??
                                                               "";
+                                                          Singleton.instance
+                                                                  .customerContactNo =
+                                                              widget
+                                                                  .bloc
+                                                                  .caseDetailsAPIValue
+                                                                  .result
+                                                                  ?.callDetails![
+                                                                      i]
+                                                                      ['value']
+                                                                  .toString()
+                                                                  .toUpperCase();
                                                         },
                                                         child: Row(
                                                           mainAxisAlignment:

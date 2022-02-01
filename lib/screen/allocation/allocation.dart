@@ -207,7 +207,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     paramValues: BuildRouteDataModel(
                         lat: position.latitude.toString(),
                         long: position.longitude.toString(),
-                        maxDistMeters: Constants.maxDisMeters)));
+                        maxDistMeters: Constants.allDisMeters)));
                 bloc.showFilterDistance = true;
               });
             } else {
@@ -339,7 +339,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
       onTap: () {
         switch (index) {
           case 0:
-            maxDistance = Constants.maxDisMeters;
+            maxDistance = Constants.allDisMeters;
             break;
           case 1:
             maxDistance = Constants.minDisMeters;

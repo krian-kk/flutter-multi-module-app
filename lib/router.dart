@@ -7,6 +7,9 @@ import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/screen/login_screen/bloc/login_bloc.dart';
 import 'package:origa/screen/login_screen/login_screen.dart';
+import 'package:origa/screen/message_screen/chat_screen.dart';
+import 'package:origa/screen/message_screen/chat_screen_bloc.dart';
+import 'package:origa/screen/message_screen/chat_screen_event.dart';
 import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
@@ -27,6 +30,7 @@ class AppRoutes {
   static const String caseDetailsTelecallerScreen =
       'case_details_telecaller_screen';
   static const String phoneTelecallerScreen = 'phone_telecaller_screen';
+  static const String chatScreen = 'chat_screen';
 }
 
 Route<dynamic> getRoute(RouteSettings settings) {
@@ -41,6 +45,8 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildCaseDetailsScreen(settings);
     case AppRoutes.loginScreen:
       return _buildLoginScreen(settings);
+    case AppRoutes.chatScreen:
+      return _buildChatScreen(settings);
     // case AppRoutes.caseDetailsTelecallerScreen:
     //   return _buildCaseDetailsTelecallerScreen();
   }
@@ -60,6 +66,12 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
     // final AuthenticationBloc authBloc =
     //     BlocProvider.of<AuthenticationBloc>(context);
     return addAuthBloc(context, PageBuilder.buildHomeTabScreen());
+  });
+}
+
+Route<dynamic> _buildChatScreen(RouteSettings settings) {
+  return MaterialPageRoute(builder: (context) {
+    return addAuthBloc(context, PageBuilder.buildChatScreenPage());
   });
 }
 
@@ -127,6 +139,14 @@ class PageBuilder {
     );
   }
 
+  static Widget buildChatScreenPage() {
+    return BlocProvider(
+      create: (BuildContext context) =>
+          BlocProvider.of<ChatScreenBloc>(context)..add(ChatInitialEvent()),
+      child: ChatScreen(),
+    );
+  }
+
   static Widget buildCaseDetailsPage(RouteSettings settings) {
     // // String? loginType;
     // if (settings.arguments != null) {
@@ -144,14 +164,14 @@ class PageBuilder {
     );
   }
 
-  // static Widget buildCaseDetailsTelecallerPage() {
-  //   return BlocProvider(
-  //     create: (BuildContext context) =>
-  //         BlocProvider.of<CasedetailsTelecallerBloc>(context)
-  //           ..add(CaseDetailsTelecallerInitialEvent()),
-  //     child: const CaseDetailsTelecallerScreen(),
-  //   );
-  // }
+// static Widget buildCaseDetailsTelecallerPage() {
+//   return BlocProvider(
+//     create: (BuildContext context) =>
+//         BlocProvider.of<CasedetailsTelecallerBloc>(context)
+//           ..add(CaseDetailsTelecallerInitialEvent()),
+//     child: const CaseDetailsTelecallerScreen(),
+//   );
+// }
 
 }
 
