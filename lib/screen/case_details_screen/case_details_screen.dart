@@ -27,6 +27,7 @@ import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
 import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
 import 'package:origa/screen/repo_screen/repo_bottom_sheet.dart';
 import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -495,86 +496,129 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       color: ColorResource
                                                           .color333333,
                                                     ),
-                                                    // const SizedBox(height: 12),
-                                                    // Row(
-                                                    //   mainAxisAlignment:
-                                                    //       MainAxisAlignment
-                                                    //           .spaceBetween,
-                                                    //   children: [
-                                                    //     Container(
-                                                    //       padding: const EdgeInsets
-                                                    //               .symmetric(
-                                                    //           horizontal: 10,
-                                                    //           vertical: 10),
-                                                    //       decoration: BoxDecoration(
-                                                    //         color: ColorResource
-                                                    //             .color23375A,
-                                                    //         borderRadius:
-                                                    //             BorderRadius.circular(
-                                                    //                 10),
-                                                    //         border: Border.all(
-                                                    //             color: ColorResource
-                                                    //                 .colorECECEC,
-                                                    //             width: 1.0),
-                                                    //       ),
-                                                    //       child: Row(
-                                                    //         mainAxisSize:
-                                                    //             MainAxisSize.min,
-                                                    //         children: [
-                                                    //           SvgPicture.asset(
-                                                    //               ImageResource
-                                                    //                   .whatsApp),
-                                                    //           const SizedBox(
-                                                    //               width: 5),
-                                                    //           CustomText(
-                                                    //               StringResource
-                                                    //                   .sendSms
-                                                    //                   .toUpperCase(),
-                                                    //               lineHeight: 1.0,
-                                                    //               color: ColorResource
-                                                    //                   .colorffffff),
-                                                    //         ],
-                                                    //       ),
-                                                    //     ),
-                                                    //     const SizedBox(width: 10),
-                                                    //     Container(
-                                                    //       padding: const EdgeInsets
-                                                    //               .symmetric(
-                                                    //           horizontal: 10,
-                                                    //           vertical: 10),
-                                                    //       decoration: BoxDecoration(
-                                                    //         color: ColorResource
-                                                    //             .color23375A,
-                                                    //         borderRadius:
-                                                    //             BorderRadius.circular(
-                                                    //                 10),
-                                                    //         border: Border.all(
-                                                    //             color: ColorResource
-                                                    //                 .colorECECEC,
-                                                    //             width: 1.0),
-                                                    //       ),
-                                                    //       child: Row(
-                                                    //         mainAxisSize:
-                                                    //             MainAxisSize.min,
-                                                    //         children: [
-                                                    //           SvgPicture.asset(
-                                                    //               ImageResource
-                                                    //                   .whatsApp),
-                                                    //           const SizedBox(
-                                                    //               width: 5),
-                                                    //           CustomText(
-                                                    //             StringResource
-                                                    //                 .sendWhatsapp
-                                                    //                 .toUpperCase(),
-                                                    //             lineHeight: 1.0,
-                                                    //             color: ColorResource
-                                                    //                 .colorffffff,
-                                                    //           ),
-                                                    //         ],
-                                                    //       ),
-                                                    //     )
-                                                    //   ],
-                                                    // )
+                                                    const SizedBox(height: 15),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Singleton
+                                                                .instance
+                                                                .contractorInformations!
+                                                                .result!
+                                                                .hideSendRepaymentInfo!
+                                                            ? const SizedBox()
+                                                            : GestureDetector(
+                                                                onTap: () {
+                                                                  bloc.add(SendSMSEvent(
+                                                                      context,
+                                                                      type: Constants
+                                                                          .repaymentInfoType));
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          15,
+                                                                      vertical:
+                                                                          10),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(5),
+                                                                    border: Border.all(
+                                                                        color: ColorResource
+                                                                            .colorECECEC,
+                                                                        width:
+                                                                            1.0),
+                                                                  ),
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      const Icon(
+                                                                        Icons
+                                                                            .message_rounded,
+                                                                        color: ColorResource
+                                                                            .colorffffff,
+                                                                        size:
+                                                                            22,
+                                                                      ),
+                                                                      // SvgPicture.asset(
+                                                                      //     ImageResource
+                                                                      //         .whatsApp),
+                                                                      const SizedBox(
+                                                                          width:
+                                                                              5),
+                                                                      CustomText(
+                                                                          Constants
+                                                                              .sendSMS
+                                                                              .toUpperCase(),
+                                                                          lineHeight:
+                                                                              1.0,
+                                                                          color:
+                                                                              ColorResource.colorffffff),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                        const SizedBox(
+                                                            width: 10),
+                                                        // GestureDetector(
+                                                        //   onTap: () {
+                                                        //     print("objewwwct");
+                                                        //   },
+                                                        //   child: Container(
+                                                        //     padding:
+                                                        //         const EdgeInsets
+                                                        //                 .symmetric(
+                                                        //             horizontal:
+                                                        //                 15,
+                                                        //             vertical:
+                                                        //                 10),
+                                                        //     decoration:
+                                                        //         BoxDecoration(
+                                                        //       color: ColorResource
+                                                        //           .color23375A,
+                                                        //       borderRadius:
+                                                        //           BorderRadius
+                                                        //               .circular(
+                                                        //                   5),
+                                                        //       border: Border.all(
+                                                        //           color: ColorResource
+                                                        //               .colorECECEC,
+                                                        //           width: 1.0),
+                                                        //     ),
+                                                        //     child: Row(
+                                                        //       mainAxisSize:
+                                                        //           MainAxisSize
+                                                        //               .min,
+                                                        //       children: [
+                                                        //         SvgPicture.asset(
+                                                        //             ImageResource
+                                                        //                 .whatsApp),
+                                                        //         const SizedBox(
+                                                        //             width: 5),
+                                                        //         CustomText(
+                                                        //           Constants
+                                                        //               .sendWhatsapp
+                                                        //               .toUpperCase(),
+                                                        //           lineHeight:
+                                                        //               1.0,
+                                                        //           color: ColorResource
+                                                        //               .colorffffff,
+                                                        //         ),
+                                                        //       ],
+                                                        //     ),
+                                                        //   ),
+                                                        // )
+                                                      ],
+                                                    )
                                                   ],
                                                 ),
                                               )
