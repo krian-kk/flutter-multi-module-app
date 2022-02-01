@@ -88,7 +88,7 @@ class StringResource {
   // static const String uploadDepositSlip = 'Please upload deposit slip';
   // static const String successfullySubmitted = 'Successfully submitted!!';
   // static const String resetPassword = 'Reset password via OTP';
-  static const String loginViaDifferentUser = 'Login via diffrent user';
+  static const String loginViaDifferentUser = 'Login via different user';
   static const String signIn = 'Sign In';
   static const String profileImageChanged = 'Profile Image Updated!';
   static const String canceled = 'Canceled';

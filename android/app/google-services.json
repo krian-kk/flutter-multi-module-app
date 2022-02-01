@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "9444734201",
+    "firebase_url": "https://fir-project-4d27b-default-rtdb.firebaseio.com",
+    "project_id": "fir-project-4d27b",
+    "storage_bucket": "fir-project-4d27b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9444734201:android:765182422cb60354d45e28",
+        "android_client_info": {
+          "package_name": "com.mcollect.origa.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9444734201-ehqjrv80ogtsjuvjvbji65jhbr5i7gk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFTW-G2I88LSJvkhxy44NOLSucXrbFFhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9444734201-ehqjrv80ogtsjuvjvbji65jhbr5i7gk3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
