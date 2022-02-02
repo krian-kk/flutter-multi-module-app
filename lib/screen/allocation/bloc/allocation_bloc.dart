@@ -579,7 +579,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           );
           starCount--;
         }
-
+// dddddddddddddd
 
         print("----NK-----");
         print(resultList[event.selectedStarIndex].starredCase);
