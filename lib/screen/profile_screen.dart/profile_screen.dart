@@ -27,6 +27,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -136,9 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         bloc: bloc,
         builder: (context, state) {
           if (state is ProfileLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const CustomLoadingWidget();
           } else {
             if (bloc.profileAPIValue.result?.first.profileImgUrl != null) {
               profileImage = base64
@@ -236,11 +235,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ColorResource.color23375A,
                                                 child: Padding(
                                                   padding: EdgeInsets.all(8.0),
-                                                  child:
-                                                      CircularProgressIndicator(
+                                                  child: CustomLoadingWidget(
                                                     strokeWidth: 3.0,
-                                                    color: ColorResource
-                                                        .colorffffff,
                                                   ),
                                                 ),
                                               )

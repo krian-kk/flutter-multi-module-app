@@ -50,6 +50,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -911,7 +912,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   children: const [
                     BottomSheetAppbar(
                         title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
+                    Expanded(child: CustomLoadingWidget()),
                   ],
                 ));
         }

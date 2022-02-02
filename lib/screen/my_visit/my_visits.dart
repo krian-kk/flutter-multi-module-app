@@ -10,6 +10,7 @@ import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -422,9 +423,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
 
   static Widget buildListView(DashboardBloc bloc, Met? caseLists) {
     return bloc.selectedFilterDataLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const CustomLoadingWidget()
         : caseLists!.cases!.isEmpty
             ? Column(
                 children: [

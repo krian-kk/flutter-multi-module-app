@@ -6,6 +6,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
@@ -196,9 +197,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                 children: [
                                   // Cheque Tab
                                   widget.bloc.selectedFilterDataLoading
-                                      ? const Center(
-                                          child: CircularProgressIndicator(),
-                                        )
+                                      ? const CustomLoadingWidget()
                                       : widget.bloc.myDeposistsData.result!
                                                   .cheque!.count ==
                                               0
@@ -217,9 +216,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                   .cheque),
                                   // Cash Tab
                                   widget.bloc.selectedFilterDataLoading
-                                      ? const Center(
-                                          child: CircularProgressIndicator(),
-                                        )
+                                      ? const CustomLoadingWidget()
                                       : widget.bloc.myDeposistsData.result!
                                                   .cash!.count ==
                                               0

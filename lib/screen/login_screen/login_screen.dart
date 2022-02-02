@@ -16,6 +16,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -305,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return Container(
                     color: Colors.white,
                     alignment: Alignment.center,
-                    child: const CircularProgressIndicator(),
+                    child: const CustomLoadingWidget(),
                   );
                 }
               });

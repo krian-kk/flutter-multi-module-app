@@ -107,18 +107,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           bloc: bloc,
           builder: (context, state) {
             if (state is CaseDetailsLoadingState) {
-              return const CustomCircularProgressIndicator();
-              // return Center(
-              //   child: CircularProgressIndicator(
-              //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-              //   ),
-              // );
-              // return Center(
-              //   child: GradientCircularProgressIndicator(
-              //     radius: 10,
-              //     gradientColors: [Colors.green, Colors.greenAccent],
-              //   ),
-              // );
+              return const CustomLoadingWidget();
             } else {
               return Scaffold(
                 backgroundColor: ColorResource.colorF7F8FA,
@@ -1296,7 +1285,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   children: const [
                     BottomSheetAppbar(
                         title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
+                    Expanded(child: CustomLoadingWidget()),
                   ],
                 ));
         }

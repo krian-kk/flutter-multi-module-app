@@ -17,6 +17,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:intl/intl.dart';
@@ -88,9 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
           bloc: BlocProvider.of<ChatScreenBloc>(context),
           builder: (context, state) {
             if (state is InitialState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomLoadingWidget();
             }
 
           }),
@@ -102,9 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
         bloc: bloc,
         builder: (context, state) {
           if (state is ChatScreenInitial) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const CustomLoadingWidget();
           }
           return SafeArea(
             child: Scaffold(

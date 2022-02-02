@@ -14,6 +14,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
@@ -85,7 +86,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                         borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(30))),
                     width: double.infinity,
-                    child: const Center(child: CircularProgressIndicator()),
+                    child: const CustomLoadingWidget(),
                   )),
             );
           } else {
@@ -419,11 +420,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .toUpperCase()
                                               : null,
                                           isLeading: !isSubmitFirst,
-                                          trailingWidget: const Center(
-                                            child: CircularProgressIndicator(
-                                              color: ColorResource.colorFFFFFF,
-                                            ),
-                                          ),
+                                          trailingWidget:
+                                              const CustomLoadingWidget(),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
                                           onTap: isSubmitFirst
@@ -455,11 +453,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .toUpperCase()
                                               : null,
                                           isLeading: !isSubmitSecond,
-                                          trailingWidget: const Center(
-                                            child: CircularProgressIndicator(
-                                              color: ColorResource.colorFFFFFF,
-                                            ),
-                                          ),
+                                          trailingWidget:
+                                              const CustomLoadingWidget(),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
                                           onTap: isSubmitSecond

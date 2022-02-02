@@ -36,6 +36,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -555,7 +556,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
                             return const AlertDialog(
                               backgroundColor: Colors.white,
-                              title: Center(child: CircularProgressIndicator()),
+                              title: CustomLoadingWidget(),
                             );
                           }).then((val) {
                         if (_timer.isActive) {
@@ -719,9 +720,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
           if (state is AllocationLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const CustomLoadingWidget();
           }
           return bloc.isNoInternetAndServerError
               ? Center(
@@ -951,8 +950,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   AutoCalling.buildAutoCalling(context, bloc))
                           : Expanded(
                               child: isCaseDetailLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
+                                  ? const CustomLoadingWidget()
                                   : resultList.isEmpty
                                       ? Column(
                                           children: [

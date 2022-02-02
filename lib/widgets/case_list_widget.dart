@@ -9,6 +9,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
@@ -20,9 +21,7 @@ class CaseLists {
     print('----------nk---------');
     print(listData.result);
     return bloc.selectedFilterDataLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const CustomLoadingWidget()
         : listData.result == null || listData.result!.cases!.isEmpty
             ? Column(
                 children: [

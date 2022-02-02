@@ -3,16 +3,25 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 
-class CustomCircularProgressIndicator extends StatefulWidget {
-  const CustomCircularProgressIndicator({Key? key}) : super(key: key);
+class CustomLoadingWidget extends StatefulWidget {
+  final double radius;
+  final List<Color> gradientColors;
+  final double strokeWidth;
+  const CustomLoadingWidget({
+    Key? key,
+    this.radius = 20,
+    this.gradientColors = const [
+      ColorResource.colorFFC23B,
+      ColorResource.colorEA8A38,
+    ],
+    this.strokeWidth = 5.0,
+  }) : super(key: key);
 
   @override
-  State<CustomCircularProgressIndicator> createState() =>
-      _CustomCircularProgressIndicatorState();
+  State<CustomLoadingWidget> createState() => _CustomLoadingWidgetState();
 }
 
-class _CustomCircularProgressIndicatorState
-    extends State<CustomCircularProgressIndicator>
+class _CustomLoadingWidgetState extends State<CustomLoadingWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
@@ -36,39 +45,14 @@ class _CustomCircularProgressIndicatorState
     return Center(
       child: RotationTransition(
         turns: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-        child: const GradientCircularProgressIndicator(
-          radius: 20,
-          gradientColors: [
-            ColorResource.colorFFC23B,
-            ColorResource.colorEA8A38,
-          ],
-          strokeWidth: 5.0,
+        child: CustomPaint(
+          size: Size.fromRadius(widget.radius),
+          painter: GradientCircularProgressPainter(
+            radius: widget.radius,
+            gradientColors: widget.gradientColors,
+            strokeWidth: widget.strokeWidth,
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class GradientCircularProgressIndicator extends StatelessWidget {
-  final double radius;
-  final List<Color> gradientColors;
-  final double strokeWidth;
-
-  const GradientCircularProgressIndicator({
-    Key? key,
-    required this.radius,
-    required this.gradientColors,
-    this.strokeWidth = 5.0,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size.fromRadius(radius),
-      painter: GradientCircularProgressPainter(
-        radius: radius,
-        gradientColors: gradientColors,
-        strokeWidth: strokeWidth,
       ),
     );
   }

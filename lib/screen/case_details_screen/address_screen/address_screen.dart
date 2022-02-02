@@ -17,6 +17,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 import 'dart:async';
@@ -414,11 +415,8 @@ class _AddressScreenState extends State<AddressScreen>
                                               .toUpperCase()
                                           : null,
                                       isLeading: !isSubmitFirst,
-                                      trailingWidget: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: ColorResource.colorFFFFFF,
-                                        ),
-                                      ),
+                                      trailingWidget:
+                                          const CustomLoadingWidget(),
                                       // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
@@ -452,11 +450,8 @@ class _AddressScreenState extends State<AddressScreen>
                                               .toUpperCase()
                                           : null,
                                       isLeading: !isSubmitSecond,
-                                      trailingWidget: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: ColorResource.colorFFFFFF,
-                                        ),
-                                      ),
+                                      trailingWidget:
+                                          const CustomLoadingWidget(),
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,

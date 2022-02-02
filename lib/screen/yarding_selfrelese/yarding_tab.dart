@@ -16,6 +16,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:intl/intl.dart';
 
@@ -113,11 +114,7 @@ class _YardingTabState extends State<YardingTab> {
                               ? Languages.of(context)!.submit.toUpperCase()
                               : null,
                           isLeading: !isSubmited,
-                          trailingWidget: const Center(
-                            child: CircularProgressIndicator(
-                              color: ColorResource.colorFFFFFF,
-                            ),
-                          ),
+                          trailingWidget: const CustomLoadingWidget(),
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w600,
                           cardShape: 5,
