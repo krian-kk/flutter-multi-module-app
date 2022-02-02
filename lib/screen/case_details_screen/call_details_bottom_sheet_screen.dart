@@ -126,162 +126,166 @@ class _CallDetailsBottomSheetScreenState
                                             color: ColorResource.color23375A,
                                           ),
                                           const SizedBox(height: 7),
-                                          Container(
-                                            width: double.infinity,
-                                            decoration: const BoxDecoration(
-                                                color:
-                                                    ColorResource.colorF8F9FB,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 12, 12, 12),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Flexible(
-                                                        child: Row(
-                                                          children: [
-                                                            CustomText(
-                                                              widget.bloc
-                                                                      .listOfCallDetails?[
-                                                                  i]['value'],
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                              color: ColorResource
-                                                                  .color484848,
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 10),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        child: ShowHealthStatus
-                                                            .healthStatus(widget
-                                                                        .bloc
-                                                                        .listOfCallDetails?[i]
-                                                                    [
-                                                                    'health'] ??
-                                                                ''),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 15),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      SizedBox(
-                                                          child: InkWell(
-                                                        onTap: () {
-                                                          widget.bloc.add(ClickOpenBottomSheetEvent(
-                                                              Constants
-                                                                  .callCustomer,
-                                                              widget
-                                                                  .bloc
-                                                                  .caseDetailsAPIValue
-                                                                  .result
-                                                                  ?.callDetails,
-                                                              false));
-                                                        },
-                                                        child: Container(
-                                                            decoration: const BoxDecoration(
+                                          GestureDetector(
+                                            onTap: () {
+                                              widget.bloc.add(
+                                                  ClickMainCallBottomSheetEvent(
+                                                      i));
+                                              Singleton
+                                                  .instance.contactId_0 = widget
+                                                          .bloc
+                                                          .caseDetailsAPIValue
+                                                          .result
+                                                          ?.callDetails![i]
+                                                      ['contactId_0'] ??
+                                                  "";
+                                              Singleton.instance
+                                                      .customerContactNo =
+                                                  widget
+                                                      .bloc
+                                                      .caseDetailsAPIValue
+                                                      .result
+                                                      ?.callDetails![i]['value']
+                                                      .toString()
+                                                      .toUpperCase();
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: const BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorF8F9FB,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              10.0))),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20, 12, 12, 12),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Flexible(
+                                                          child: Row(
+                                                            children: [
+                                                              CustomText(
+                                                                widget.bloc
+                                                                        .listOfCallDetails?[
+                                                                    i]['value'],
+                                                                fontSize: FontSize
+                                                                    .fourteen,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
                                                                 color: ColorResource
-                                                                    .colorBEC4CF,
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            75.0))),
-                                                            child: Row(
-                                                              children: [
-                                                                CircleAvatar(
-                                                                  backgroundColor:
-                                                                      ColorResource
-                                                                          .color23375A,
-                                                                  radius: 20,
-                                                                  child: Center(
-                                                                    child: SvgPicture
-                                                                        .asset(
-                                                                      ImageResource
-                                                                          .phone,
+                                                                    .color484848,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 10),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          child: ShowHealthStatus
+                                                              .healthStatus(widget
+                                                                          .bloc
+                                                                          .listOfCallDetails?[i]
+                                                                      [
+                                                                      'health'] ??
+                                                                  ''),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: 15),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        SizedBox(
+                                                            child: InkWell(
+                                                          onTap: () {
+                                                            widget.bloc.add(ClickOpenBottomSheetEvent(
+                                                                Constants
+                                                                    .callCustomer,
+                                                                widget
+                                                                    .bloc
+                                                                    .caseDetailsAPIValue
+                                                                    .result
+                                                                    ?.callDetails,
+                                                                false));
+                                                          },
+                                                          child: Container(
+                                                              decoration: const BoxDecoration(
+                                                                  color: ColorResource
+                                                                      .colorBEC4CF,
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              75.0))),
+                                                              child: Row(
+                                                                children: [
+                                                                  CircleAvatar(
+                                                                    backgroundColor:
+                                                                        ColorResource
+                                                                            .color23375A,
+                                                                    radius: 20,
+                                                                    child:
+                                                                        Center(
+                                                                      child: SvgPicture
+                                                                          .asset(
+                                                                        ImageResource
+                                                                            .phone,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 12),
-                                                                CustomText(
-                                                                  Languages.of(
-                                                                          context)!
-                                                                      .call,
-                                                                  color: ColorResource
-                                                                      .color23375A,
-                                                                  lineHeight: 1,
-                                                                  fontSize: FontSize
-                                                                      .fourteen,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 40),
-                                                              ],
-                                                            )),
-                                                      )),
-                                                      const Spacer(),
-                                                      const SizedBox(width: 5),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          print(
-                                                              "call detail bottom sheet ===> ${i}");
-                                                          widget.bloc.add(
-                                                              ClickMainCallBottomSheetEvent(
-                                                                  i));
-                                                          Singleton.instance
-                                                              .contactId_0 = widget
-                                                                      .bloc
-                                                                      .caseDetailsAPIValue
-                                                                      .result
-                                                                      ?.callDetails![i]
-                                                                  [
-                                                                  'contactId_0'] ??
-                                                              "";
-                                                          Singleton.instance
-                                                                  .customerContactNo =
-                                                              widget
-                                                                  .bloc
-                                                                  .caseDetailsAPIValue
-                                                                  .result
-                                                                  ?.callDetails![
-                                                                      i]
-                                                                      ['value']
-                                                                  .toString()
-                                                                  .toUpperCase();
-                                                        },
-                                                        child: Row(
+                                                                  const SizedBox(
+                                                                      width:
+                                                                          12),
+                                                                  CustomText(
+                                                                    Languages.of(
+                                                                            context)!
+                                                                        .call,
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                    lineHeight:
+                                                                        1,
+                                                                    fontSize:
+                                                                        FontSize
+                                                                            .fourteen,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      width:
+                                                                          40),
+                                                                ],
+                                                              )),
+                                                        )),
+                                                        const Spacer(),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
@@ -314,10 +318,10 @@ class _CallDetailsBottomSheetScreenState
                                                                 width: 5)
                                                           ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),

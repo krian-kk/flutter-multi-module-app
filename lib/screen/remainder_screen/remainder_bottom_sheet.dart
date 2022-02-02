@@ -220,7 +220,12 @@ class _CustomRemainderBottomSheetState
                         ? Languages.of(context)!.submit.toUpperCase()
                         : null,
                     isLeading: !isSubmit,
-                    trailingWidget: const CustomLoadingWidget(),
+                    trailingWidget: CustomLoadingWidget(
+                      gradientColors: [
+                        ColorResource.colorFFFFFF,
+                        ColorResource.colorFFFFFF.withOpacity(0.7),
+                      ],
+                    ),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
                     cardShape: 5,

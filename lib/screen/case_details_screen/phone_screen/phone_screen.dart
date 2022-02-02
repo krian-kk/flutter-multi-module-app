@@ -420,8 +420,13 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .toUpperCase()
                                               : null,
                                           isLeading: !isSubmitFirst,
-                                          trailingWidget:
-                                              const CustomLoadingWidget(),
+                                          trailingWidget: CustomLoadingWidget(
+                                            gradientColors: [
+                                              ColorResource.colorFFFFFF,
+                                              ColorResource.colorFFFFFF
+                                                  .withOpacity(0.7),
+                                            ],
+                                          ),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
                                           onTap: isSubmitFirst
@@ -453,8 +458,13 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .toUpperCase()
                                               : null,
                                           isLeading: !isSubmitSecond,
-                                          trailingWidget:
-                                              const CustomLoadingWidget(),
+                                          trailingWidget: CustomLoadingWidget(
+                                            gradientColors: [
+                                              ColorResource.colorFFFFFF,
+                                              ColorResource.colorFFFFFF
+                                                  .withOpacity(0.7),
+                                            ],
+                                          ),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
                                           onTap: isSubmitSecond

@@ -612,7 +612,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             .toUpperCase()
                                         : null,
                                     isLeading: !isSaveNewPasswordLoad,
-                                    trailingWidget: const CustomLoadingWidget(),
+                                    trailingWidget: CustomLoadingWidget(
+                                      gradientColors: [
+                                        ColorResource.colorFFFFFF,
+                                        ColorResource.colorFFFFFF
+                                            .withOpacity(0.7),
+                                      ],
+                                    ),
                                     textColor: ColorResource.colorFFFFFF,
                                     fontSize: FontSize.sixteen,
                                     fontWeight: FontWeight.w700,

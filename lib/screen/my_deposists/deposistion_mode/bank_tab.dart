@@ -128,7 +128,12 @@ class _BankTabState extends State<BankTab> {
                             ? Languages.of(context)!.submit.toUpperCase()
                             : null,
                         isLeading: !isSubmited,
-                        trailingWidget: const CustomLoadingWidget(),
+                        trailingWidget: CustomLoadingWidget(
+                          gradientColors: [
+                            ColorResource.colorFFFFFF,
+                            ColorResource.colorFFFFFF.withOpacity(0.7),
+                          ],
+                        ),
                         fontSize: FontSize.sixteen,
                         fontWeight: FontWeight.w600,
                         cardShape: 5,

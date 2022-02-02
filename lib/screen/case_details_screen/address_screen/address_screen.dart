@@ -415,8 +415,13 @@ class _AddressScreenState extends State<AddressScreen>
                                               .toUpperCase()
                                           : null,
                                       isLeading: !isSubmitFirst,
-                                      trailingWidget:
-                                          const CustomLoadingWidget(),
+                                      trailingWidget: CustomLoadingWidget(
+                                        gradientColors: [
+                                          ColorResource.colorFFFFFF,
+                                          ColorResource.colorFFFFFF
+                                              .withOpacity(0.7),
+                                        ],
+                                      ),
                                       // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
@@ -450,8 +455,13 @@ class _AddressScreenState extends State<AddressScreen>
                                               .toUpperCase()
                                           : null,
                                       isLeading: !isSubmitSecond,
-                                      trailingWidget:
-                                          const CustomLoadingWidget(),
+                                      trailingWidget: CustomLoadingWidget(
+                                        gradientColors: [
+                                          ColorResource.colorFFFFFF,
+                                          ColorResource.colorFFFFFF
+                                              .withOpacity(0.7),
+                                        ],
+                                      ),
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
