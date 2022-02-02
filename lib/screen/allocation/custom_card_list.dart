@@ -21,7 +21,6 @@ class CustomCardList {
         itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
           int listCount = index + 1;
-          // bloc.isStarSelected = resultData[index].starredCase ?? false;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -87,7 +87,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   int? selectedStar;
-  bool? isStarSelected;
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
