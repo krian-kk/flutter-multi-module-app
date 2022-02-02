@@ -1,0 +1,14 @@
+android {
+    signingConfigs {
+        debug{
+
+        }
+        release {
+            storeFile file("./MCollectK")
+            keyAlias "key0"
+            keyPassword "0Rig@123"
+            storePassword "0Rig@123"
+
+        }
+    }
+}

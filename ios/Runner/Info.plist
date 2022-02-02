@@ -36,17 +36,17 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>To take user profile image</string>
+	<string>To capture deposit cheque and update user profile image</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Using location to display your location in map</string>
+	<string>Using location to provide location details to users to perform collections</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Using location to display your location in map</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Using location to display your location in map</string>
+	<string>Using location to capture user&apos;s current location</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to capture audio for image picker plugin</string>
+	<string>Used to capture audio for recording collection feedback</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Explain why your app uses photo library</string>
+	<string>Used to upload deposit images</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -72,6 +72,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-    <false/>
+	<false/>
 </dict>
 </plist>
