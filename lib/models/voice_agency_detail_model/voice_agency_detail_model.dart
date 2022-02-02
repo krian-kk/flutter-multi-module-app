@@ -1,34 +1,35 @@
 class AgencyDetailsModel {
   int? status;
   String? message;
-  Result? result;
+  AgencyResult? result;
 
   AgencyDetailsModel({this.status, this.message, this.result});
 
   AgencyDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    result = json['result'] != null ? Result.fromJson(json['result']) : null;
+    result =
+        json['result'] != null ? AgencyResult.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
 }
 
-class Result {
+class AgencyResult {
   List<VoiceAgencyData>? voiceAgencyData;
   String? agentAgencyContact;
 
-  Result({this.voiceAgencyData, this.agentAgencyContact});
+  AgencyResult({this.voiceAgencyData, this.agentAgencyContact});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  AgencyResult.fromJson(Map<String, dynamic> json) {
     if (json['voiceAgencyData'] != null) {
       voiceAgencyData = <VoiceAgencyData>[];
       json['voiceAgencyData'].forEach((v) {
@@ -39,12 +40,12 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.voiceAgencyData != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (voiceAgencyData != null) {
       data['voiceAgencyData'] =
-          this.voiceAgencyData!.map((v) => v.toJson()).toList();
+          voiceAgencyData!.map((v) => v.toJson()).toList();
     }
-    data['agentAgencyContact'] = this.agentAgencyContact;
+    data['agentAgencyContact'] = agentAgencyContact;
     return data;
   }
 }
@@ -96,20 +97,20 @@ class VoiceAgencyData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['callerIds'] = this.callerIds;
-    data['currentlyUsed'] = this.currentlyUsed;
-    data['agencyId'] = this.agencyId;
-    data['agencyName'] = this.agencyName;
-    data['url'] = this.url;
-    data['contractor'] = this.contractor;
-    data['smsApiKey'] = this.smsApiKey;
-    data['voiceApiKey'] = this.voiceApiKey;
-    data['__v'] = this.iV;
-    data['roleLevel'] = this.roleLevel;
-    data['tokenVerified'] = this.tokenVerified;
-    data['version'] = this.version;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['callerIds'] = callerIds;
+    data['currentlyUsed'] = currentlyUsed;
+    data['agencyId'] = agencyId;
+    data['agencyName'] = agencyName;
+    data['url'] = url;
+    data['contractor'] = contractor;
+    data['smsApiKey'] = smsApiKey;
+    data['voiceApiKey'] = voiceApiKey;
+    data['__v'] = iV;
+    data['roleLevel'] = roleLevel;
+    data['tokenVerified'] = tokenVerified;
+    data['version'] = version;
     return data;
   }
 }

@@ -13,6 +13,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/models/receipt_sendsms_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -25,6 +26,7 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_dialog.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
@@ -40,6 +42,9 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
     this.postValue,
     this.isCall,
     this.custName,
+    this.isAutoCalling = false,
+    this.allocationBloc,
+    this.paramValue,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -48,6 +53,9 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
   final dynamic postValue;
   final String? custName;
   final bool? isCall;
+  final bool isAutoCalling;
+  final AllocationBloc? allocationBloc;
+  final dynamic paramValue;
 
   @override
   State<CustomCollectionsBottomSheet> createState() =>
@@ -340,10 +348,11 @@ class _CustomCollectionsBottomSheetState
                         ? Languages.of(context)!.submit.toUpperCase()
                         : null,
                     isLeading: !isSubmit,
-                    trailingWidget: const Center(
-                      child: CircularProgressIndicator(
-                        color: ColorResource.colorFFFFFF,
-                      ),
+                    trailingWidget: CustomLoadingWidget(
+                      gradientColors: [
+                        ColorResource.colorFFFFFF,
+                        ColorResource.colorFFFFFF.withOpacity(0.7),
+                      ],
                     ),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w700,
@@ -463,8 +472,8 @@ class _CustomCollectionsBottomSheetState
                                   );
 
                                   if (postResult[Constants.success]) {
-                                    AppUtils.topSnackBar(
-                                        context, Constants.eventUpdatedSuccess);
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
                                     Navigator.pop(context);
                                   }
                                 } else {
@@ -589,9 +598,24 @@ class _CustomCollectionsBottomSheetState
                                       );
 
                                       if (postResult[Constants.success]) {
-                                        AppUtils.topSnackBar(context,
-                                            "Event updated successfully.");
-                                        Navigator.pop(context);
+                                        if (widget.isAutoCalling) {
+                                          Navigator.pop(
+                                              widget.paramValue['context']);
+                                          Navigator.pop(
+                                              widget.paramValue['context']);
+                                          widget.allocationBloc!
+                                              .add(StartCallingEvent(
+                                            customerIndex: widget.paramValue[
+                                                    'customerIndex'] +
+                                                1,
+                                            phoneIndex: 0,
+                                            isIncreaseCount: true,
+                                          ));
+                                        } else {
+                                          AppUtils.topSnackBar(context,
+                                              "Event updated successfully.");
+                                          Navigator.pop(context);
+                                        }
 
                                         if (Singleton
                                                 .instance

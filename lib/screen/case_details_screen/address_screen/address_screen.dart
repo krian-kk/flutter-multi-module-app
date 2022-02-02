@@ -17,6 +17,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 import 'dart:async';
@@ -217,34 +218,57 @@ class _AddressScreenState extends State<AddressScreen>
                                                   Radius.circular(75.0))),
                                           child: Row(
                                             children: [
-                                              Image.asset(
-                                                  ImageResource.direction),
-                                              const SizedBox(width: 10),
-                                              const CustomText(
-                                                Constants.viewMap,
-                                                fontSize: FontSize.fourteen,
-                                                fontWeight: FontWeight.w700,
-                                                color:
+                                              CircleAvatar(
+                                                backgroundColor:
                                                     ColorResource.color23375A,
+                                                radius: 20,
+                                                child: Center(
+                                                  child: SvgPicture.asset(
+                                                    ImageResource.direction,
+                                                  ),
+                                                ),
+                                              ),
+                                              // Image.asset(
+                                              //     ImageResource.direction),
+                                              const SizedBox(width: 10),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.21,
+                                                child: FittedBox(
+                                                  child: CustomText(
+                                                    Languages.of(context)!
+                                                        .viewMap
+                                                        .toUpperCase(),
+                                                    fontSize: FontSize.fourteen,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorResource
+                                                        .color23375A,
+                                                  ),
+                                                ),
                                               )
                                             ],
                                           ))),
                                 )),
                                 const SizedBox(width: 40),
                                 Expanded(
-                                    child: CustomButton(
-                                  Languages.of(context)!.eventDetails,
-                                  onTap: () => widget.bloc.add(
-                                    ClickOpenBottomSheetEvent(
-                                        Constants.eventDetails,
-                                        widget.bloc.caseDetailsAPIValue.result
-                                            ?.addressDetails,
-                                        false),
+                                    child: SizedBox(
+                                  height: 47,
+                                  child: CustomButton(
+                                    Languages.of(context)!.eventDetails,
+                                    onTap: () => widget.bloc.add(
+                                      ClickOpenBottomSheetEvent(
+                                          Constants.eventDetails,
+                                          widget.bloc.caseDetailsAPIValue.result
+                                              ?.addressDetails,
+                                          false),
+                                    ),
+                                    textColor: ColorResource.color23375A,
+                                    borderColor: ColorResource.color23375A,
+                                    buttonBackgroundColor:
+                                        ColorResource.colorFFFFFF,
                                   ),
-                                  textColor: ColorResource.color23375A,
-                                  borderColor: ColorResource.color23375A,
-                                  buttonBackgroundColor:
-                                      ColorResource.colorFFFFFF,
                                 ))
                               ],
                             )
@@ -391,10 +415,12 @@ class _AddressScreenState extends State<AddressScreen>
                                               .toUpperCase()
                                           : null,
                                       isLeading: !isSubmitFirst,
-                                      trailingWidget: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: ColorResource.colorFFFFFF,
-                                        ),
+                                      trailingWidget: CustomLoadingWidget(
+                                        gradientColors: [
+                                          ColorResource.colorFFFFFF,
+                                          ColorResource.colorFFFFFF
+                                              .withOpacity(0.7),
+                                        ],
                                       ),
                                       // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
@@ -429,10 +455,12 @@ class _AddressScreenState extends State<AddressScreen>
                                               .toUpperCase()
                                           : null,
                                       isLeading: !isSubmitSecond,
-                                      trailingWidget: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: ColorResource.colorFFFFFF,
-                                        ),
+                                      trailingWidget: CustomLoadingWidget(
+                                        gradientColors: [
+                                          ColorResource.colorFFFFFF,
+                                          ColorResource.colorFFFFFF
+                                              .withOpacity(0.7),
+                                        ],
                                       ),
                                       // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,

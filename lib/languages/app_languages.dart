@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:origa/models/reset_password_model/reset_password_model.dart';
+import 'package:origa/widgets/no_case_available.dart';
 
 abstract class Languages {
   static Languages? of(BuildContext context) {
@@ -442,4 +444,26 @@ abstract class Languages {
   String get clear;
 
   String get contact;
+
+  String get pleaseSelectDropDownValue;
+
+  String get pleaseEnterCurrectUserId;
+
+  String get pleaseSelectOptions;
+
+  String get pleaseSelectPaymentMode;
+
+  String get pleaseUploadDepositSlip;
+
+  String get noCaseAvailble;
+
+  String get shouldBeSelectOneCase;
+
+  String get resetPasswordModelViaOTP;
+
+  String get successfullyUpdated;
+
+  String get eventUpdatedSuccessfully;
+
+  String get successfullySubmitted;
 }

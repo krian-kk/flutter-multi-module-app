@@ -51,5 +51,23 @@ class ShowAutoCallingEvent extends AllocationEvent {}
 class UpdateStaredCaseEvent extends AllocationEvent {
   final int selectedStarIndex;
   final String caseID;
-  UpdateStaredCaseEvent({required this.selectedStarIndex, required this.caseID});
+  UpdateStaredCaseEvent(
+      {required this.selectedStarIndex, required this.caseID});
+}
+
+class CallSuccessfullyConnectedEvent extends AllocationEvent {}
+
+class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
+
+class StartCallingEvent extends AllocationEvent {
+  final int? customerIndex;
+  final int? phoneIndex;
+  final Result? customerList;
+  final bool isIncreaseCount;
+  StartCallingEvent({
+    this.customerIndex,
+    this.phoneIndex,
+    this.customerList,
+    this.isIncreaseCount = false,
+  });
 }

@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
@@ -37,6 +38,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -56,8 +58,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-
-    bloc = CaseDetailsBloc()
+    AllocationBloc allocationBloc = AllocationBloc();
+    bloc = CaseDetailsBloc(allocationBloc)
       ..add(CaseDetailsInitialEvent(
           paramValues: widget.paramValues, context: context));
   }
@@ -77,16 +79,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             // Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);
           }
+          // if (state is SubmitSuccessState) {
+          //   print('djdjjdkdkdj');
+
+          // }
           if (state is ClickMainCallBottomSheetState) {
             // Navigator.pop(context);
             phoneBottomSheet(context, bloc, state.i);
           }
           if (state is ClickOpenBottomSheetState) {
-            print("ClickOpenBottomSheetState ===> ${state.isCall}");
             openBottomSheet(context, state.title, state.list, state.isCall,
                 health: state.health);
           }
-          if (state is NoInternetState) {
+          if (state is CDNoInternetState) {
             AppUtils.noInternetSnackbar(context);
           }
           if (state is CallCaseDetailsState) {
@@ -102,9 +107,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           bloc: bloc,
           builder: (context, state) {
             if (state is CaseDetailsLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomLoadingWidget();
             } else {
               return Scaffold(
                 backgroundColor: ColorResource.colorF7F8FA,
@@ -913,8 +916,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         vertical: 5.0),
                                                 child: Row(
                                                   children: [
-                                                    Image.asset(ImageResource
-                                                        .direction),
+                                                    CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
+                                                      radius: 20,
+                                                      child: Center(
+                                                        child: SvgPicture.asset(
+                                                          ImageResource
+                                                              .direction,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // Image.asset(ImageResource
+                                                    //     .direction),
                                                     const SizedBox(width: 8),
                                                     Expanded(
                                                         child: CustomText(
@@ -967,7 +982,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               horizontal: 10.0, vertical: 5.0),
                                           child: Row(
                                             children: [
-                                              Image.asset(ImageResource.phone),
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    ColorResource.color23375A,
+                                                radius: 20,
+                                                child: Center(
+                                                  child: SvgPicture.asset(
+                                                    ImageResource.phone,
+                                                  ),
+                                                ),
+                                              ),
                                               const SizedBox(width: 8),
                                               Expanded(
                                                   child: CustomText(
@@ -1269,7 +1293,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   children: const [
                     BottomSheetAppbar(
                         title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: Center(child: CircularProgressIndicator())),
+                    Expanded(child: CustomLoadingWidget()),
                   ],
                 ));
         }

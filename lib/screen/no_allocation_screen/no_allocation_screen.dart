@@ -8,6 +8,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class NoAllocationScreen extends StatefulWidget {
@@ -39,9 +40,7 @@ class _NoAllocationScreenState extends State<NoAllocationScreen> {
           bloc: bloc,
           builder: (context, state) {
             if (state is NoAllocationLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomLoadingWidget();
             }
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,

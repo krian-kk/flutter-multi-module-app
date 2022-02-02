@@ -14,6 +14,7 @@ import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -316,9 +317,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
   static Widget buildListView(DashboardBloc bloc, ReceiptCases? caseLists) {
     // print("my receipt case list count ---> ${caseLists!.count}");
     return bloc.selectedFilterDataLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const CustomLoadingWidget()
         : caseLists!.cases!.isEmpty
             ? Column(
                 children: [

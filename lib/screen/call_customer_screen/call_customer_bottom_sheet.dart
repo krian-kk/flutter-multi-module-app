@@ -17,6 +17,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -86,13 +87,9 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
           bloc: bloc,
           builder: (context, state) {
             if (state is CallCustomerLoadedState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomLoadingWidget();
             } else if (state is CallCustomerSuccessState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomLoadingWidget();
             } else {
               return Scaffold(
                 resizeToAvoidBottomInset: true,

@@ -8,6 +8,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -18,6 +19,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
@@ -32,6 +34,9 @@ class CustomDisputeBottomSheet extends StatefulWidget {
     required this.userType,
     this.postValue,
     this.isCall,
+    this.isAutoCalling = false,
+    this.allocationBloc,
+    this.paramValue,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -39,6 +44,9 @@ class CustomDisputeBottomSheet extends StatefulWidget {
   final String userType;
   final dynamic postValue;
   final bool? isCall;
+  final bool isAutoCalling;
+  final AllocationBloc? allocationBloc;
+  final dynamic paramValue;
 
   @override
   State<CustomDisputeBottomSheet> createState() =>
@@ -201,10 +209,11 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         ? Languages.of(context)!.submit.toUpperCase()
                         : null,
                     isLeading: !isSubmit,
-                    trailingWidget: const Center(
-                      child: CircularProgressIndicator(
-                        color: ColorResource.colorFFFFFF,
-                      ),
+                    trailingWidget: CustomLoadingWidget(
+                      gradientColors: [
+                        ColorResource.colorFFFFFF,
+                        ColorResource.colorFFFFFF.withOpacity(0.7),
+                      ],
                     ),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
@@ -278,9 +287,20 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       requestBodydata:
                                           jsonEncode(requestBodyData));
                               if (postResult[Constants.success]) {
-                                AppUtils.topSnackBar(
-                                    context, Constants.successfullySubmitted);
-                                Navigator.pop(context);
+                                if (widget.isAutoCalling) {
+                                  Navigator.pop(widget.paramValue['context']);
+                                  Navigator.pop(widget.paramValue['context']);
+                                  widget.allocationBloc!.add(StartCallingEvent(
+                                    customerIndex:
+                                        widget.paramValue['customerIndex'] + 1,
+                                    phoneIndex: 0,
+                                    isIncreaseCount: true,
+                                  ));
+                                } else {
+                                  AppUtils.topSnackBar(
+                                      context, Constants.successfullySubmitted);
+                                  Navigator.pop(context);
+                                }
                               }
                               // } else {
                               //   AppUtils.showToast(

@@ -23,10 +23,10 @@ class LanguageTa extends Languages {
   String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
 
   @override
-  String get passwordNotMatch => "கடவுச்சொல் பொருந்தவில்லை";
+  String get passwordNotMatch => 'கடவுச்சொல் பொருந்தவில்லை';
 
   @override
-  String get resetPassword => 'OTP வழியாக கடவுச்சொல்லை மீட்டமைக்கவும்';
+  String get resetPassword => 'கடவுச்சொல்லை மீட்டமைக்க';
 
   @override
   String get loginViaDiffrentUser => 'வெவ்வேறு பயனர் வழியாக உள்நுழைக';
@@ -594,68 +594,104 @@ class LanguageTa extends Languages {
   String get searchErrorMessage => 'குறைந்தபட்சம் ஒரு புலத்தை நிரப்ப வேண்டும்';
 
   @override
-  String get mobileNumber => 'Mobile Number';
+  String get mobileNumber => 'கைபேசி எண்';
 
   @override
-  String get email => 'Email';
+  String get email => 'மின்னஞ்சல்';
 
   @override
-  String get check => 'Check';
+  String get check => 'காசோலை';
 
   @override
-  String get resendOTP => 'Resend OTP?';
+  String get resendOTP => 'OTP ஐ மீண்டும் அனுப்பவா?';
 
   @override
-  String get sendOTP => 'SEND OTP';
+  String get sendOTP => 'OTP அனுப்பவும்';
 
   @override
-  String get businessLoss => 'Business Loss';
+  String get businessLoss => 'தொழில் நஷ்டம்';
 
   @override
-  String get covidImpacted => 'Covid Impacted';
+  String get covidImpacted => 'கோவிட் பாதிப்பு';
 
   @override
-  String get financialReason => 'Financial Reason';
+  String get financialReason => 'நிதி காரணம்';
 
   @override
-  String get incomeLossInTheFamily => 'Income Loss In The Family';
+  String get incomeLossInTheFamily => 'குடும்பத்தில் வருமான இழப்பு';
 
   @override
-  String get intention => 'Intention ';
+  String get intention => 'எண்ணம்';
 
   @override
-  String get jobLoss => 'Job Loss';
+  String get jobLoss => 'வேலை இழப்பு';
 
   @override
-  String get jobUncertaintly => 'Job Uncertaintly';
+  String get jobUncertaintly => 'நிச்சயமற்ற வேலை';
 
   @override
-  String get medicalIssue => 'Medical Issue';
+  String get medicalIssue => 'மருத்துவப் பிரச்சினை';
 
   @override
-  String get salaryIssue => 'Salary Issue';
+  String get salaryIssue => 'சம்பளப் பிரச்சினை';
 
   @override
   String get noInternetConnection => 'இணைய இணைப்பு இல்லை';
 
   @override
-  String get mode => 'Mode';
+  String get mode => 'பயன்முறை';
 
   @override
-  String get saveNewPassword => 'SAVE NEW PASSWORD';
+  String get saveNewPassword => 'புதிய கடவுச்சொல்லை சேமிக்கவும்';
 
   @override
-  String get enterNewPassword => 'Enter new password';
+  String get enterNewPassword => 'புதிய கடவுச்சொல்லை உள்ளிடவும்';
 
   @override
-  String get enterConfirmNewPassword => 'Confirm new password';
+  String get enterConfirmNewPassword => 'புதிய கடவு சொல்லை உறுதி செய்';
 
   @override
-  String get clear => 'Clear';
+  String get clear => 'தெளிவு';
 
   @override
-  String get customerContactType => 'Customer Contact Type*';
+  String get customerContactType => 'வாடிக்கையாளர் தொடர்பு வகை*';
 
   @override
-  String get contact => 'Contact';
+  String get contact => 'தொடர்பு கொள்ளவும்';
+
+  @override
+  String get pleaseSelectDropDownValue =>
+      'கீழ்தோன்றும் மதிப்பைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get pleaseEnterCurrectUserId => 'சரியான பயனர் ஐடியை உள்ளிடவும்';
+
+  @override
+  String get pleaseSelectOptions => 'விருப்பங்களைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get pleaseSelectPaymentMode => 'கட்டண முறையைத் தேர்ந்தெடுக்கவும்!';
+
+  @override
+  String get pleaseUploadDepositSlip => 'வைப்புச் சீட்டைப் பதிவேற்றவும்';
+
+  @override
+  String get noCaseAvailble => 'எந்த வழக்கும் கிடைக்கவில்லை';
+
+  @override
+  String get shouldBeSelectOneCase => 'ஒரு வழக்கைத் தேர்ந்தெடுக்க வேண்டும்';
+
+  @override
+  String get resetPasswordModelViaOTP =>
+      'OTP வழியாக கடவுச்சொல்லை மீட்டமைக்கவும்';
+
+  @override
+  String get successfullyUpdated => 'வெற்றிகரமாக புதுப்பிக்கப்பட்டது !!';
+
+  @override
+  String get eventUpdatedSuccessfully =>
+      'நிகழ்வு வெற்றிகரமாக புதுப்பிக்கப்பட்டது.';
+
+  @override
+  String get successfullySubmitted => 'வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!!';
 }

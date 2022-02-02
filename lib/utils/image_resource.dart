@@ -25,10 +25,8 @@ class ImageResource {
   static const String location2 = 'assets/svg/location2.svg';
   static const String star = 'assets/svg/star.svg';
   static const String login = 'assets/svg/login.svg';
-  static const String phone = 'assets/phone.png';
-  // static const String phone1 = 'assets/svg/phone.svg'; ================================
-  static const String direction = 'assets/direction.png';
-  // static const String direction1 = 'assets/svg/direction.svg'; ========================
+  static const String phone = 'assets/svg/phoneSvg.svg';
+  static const String direction = 'assets/svg/directionSvg.svg';
   static const String activePerson = 'assets/svg/active_person.svg';
   static const String money = 'assets/svg/money.svg';
   static const String vectorArrow = 'assets/svg/navigate_vector.svg';

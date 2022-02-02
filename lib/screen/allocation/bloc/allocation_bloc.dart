@@ -32,9 +32,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int selectedOption = 0;
 
+  int customerCount = 0;
+  int totalCount = 0;
+
   String? userType;
   String? agentName;
   String? agrRef;
+
+  int indexValue = 0;
 
   // BuildRouteModel buildRouteData = BuildRouteModel();
 
@@ -113,7 +118,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         selectOptions = [
           StringResource.priority,
-          // StringResource.autoCalling,
+          StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
@@ -121,14 +126,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // static Autocalling Values
       mobileNumberList.addAll([
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '6374578994',
           callResponse: 'Declined Call',
         ),
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '9342536805',
         ),
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '6374578994',
         ),
       ]);
 
@@ -213,10 +218,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // print(priorityListData['data']);
         }
       }
-
+      totalCount = resultList.length;
       yield AllocationLoadedState(successResponse: resultList);
     }
-
+    // if (event is IncreaseCountEvent) {
+    //   customerCount++;
+    // }
     if (event is TapPriorityEvent) {
       yield CaseListViewLoadingState();
 
@@ -272,6 +279,24 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+    if (event is StartCallingEvent) {
+      if (event.isIncreaseCount && customerCount < totalCount) {
+        customerCount++;
+      }
+      Singleton.instance.startCalling = true;
+      // yield* Stream.periodic(
+      //     const Duration(seconds: 45),
+      //     (index) => StartCallingState(
+      //           customerIndex: event.customerIndex,
+      //           // customerList: event.customerList,
+      //           phoneIndex: event.phoneIndex,
+      //         ));
+      yield StartCallingState(
+        customerIndex: event.customerIndex,
+        // customerList: event.customerList,
+        phoneIndex: event.phoneIndex,
+      );
+    }
 
     if (event is PriorityLoadMoreEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -316,6 +341,32 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         }
       }
       yield PriorityLoadMoreState(successResponse: resultList);
+    }
+
+    if (event is CallSuccessfullyConnectedEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      int index;
+      index = _pref.getInt('autoCallingIndexValue') ?? 0;
+      indexValue = index;
+      _pref.setInt('autoCallingIndexValue', index + 1);
+      print(Singleton.instance.startCalling);
+      if (Singleton.instance.startCalling ?? false) {
+        print(Singleton.instance.startCalling.toString() + 'jdlj');
+        yield StartCallingState();
+        print('ddldk');
+      }
+    }
+    if (event is CallUnSuccessfullyConnectedEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      int index, subIndex;
+      index = _pref.getInt('autoCallingIndexValue') ?? 0;
+      subIndex = _pref.getInt('autoCallingSubIndexValue') ?? 0;
+      _pref.setInt('autoCallingIndexValue', index + 1);
+      _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
+      if (Singleton.instance.startCalling ?? false) {
+        print('tdjdjkdjd');
+        yield StartCallingState();
+      }
     }
 
     if (event is TapBuildRouteEvent) {
@@ -553,37 +604,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         // updateStaredCase
         resultList[event.selectedStarIndex].starredCase = !resultList[event.selectedStarIndex].starredCase;
 
-        if(resultList[event.selectedStarIndex].starredCase) {
-          var postData = UpdateStaredCase(
-              caseId: event.caseID,
-              starredCase: true
-          );
-          Map<String, dynamic> response =
-          await APIRepository.apiRequest(
-            APIRequestType.POST,
-            HttpUrl.updateStaredCase,
-            requestBodydata: jsonEncode(postData),
-          );
-          starCount++;
-        } else {
-          var postData = UpdateStaredCase(
-              caseId: event.caseID,
-              starredCase: false
-          );
-          Map<String, dynamic> response =
-          await APIRepository.apiRequest(
-            APIRequestType.POST,
-            HttpUrl.updateStaredCase,
-            requestBodydata: jsonEncode(postData),
-          );
-          starCount--;
-        }
+
 // dddddddddddddd
 
         print("----NK-----");
         print(resultList[event.selectedStarIndex].starredCase);
       }
-      yield UpdateStaredCaseState(selectedStarIndex: event.selectedStarIndex);
+      yield UpdateStaredCaseState(caseId: event.caseID, isStared: resultList[event.selectedStarIndex].starredCase);
     }
   }
 }

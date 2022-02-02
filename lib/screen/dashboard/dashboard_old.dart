@@ -162,9 +162,7 @@
 //             bloc: bloc,
 //             builder: (BuildContext context, DashboardState state) {
 //               if (state is DashboardLoadingState) {
-//                 return const Center(
-//                   child: CircularProgressIndicator(),
-//                 );
+//                 return const CustomLoadingWidget();
 //               }
 //               return Scaffold(
 //                   backgroundColor: ColorResource.colorF7F8FA,

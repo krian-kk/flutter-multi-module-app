@@ -14,6 +14,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -611,10 +612,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             .toUpperCase()
                                         : null,
                                     isLeading: !isSaveNewPasswordLoad,
-                                    trailingWidget: const Center(
-                                      child: CircularProgressIndicator(
-                                        color: ColorResource.colorFFFFFF,
-                                      ),
+                                    trailingWidget: CustomLoadingWidget(
+                                      gradientColors: [
+                                        ColorResource.colorFFFFFF,
+                                        ColorResource.colorFFFFFF
+                                            .withOpacity(0.7),
+                                      ],
                                     ),
                                     textColor: ColorResource.colorFFFFFF,
                                     fontSize: FontSize.sixteen,

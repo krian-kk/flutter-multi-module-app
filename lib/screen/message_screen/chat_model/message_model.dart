@@ -48,12 +48,12 @@ class ReceivingData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['dateSent'] = this.dateSent;
-    data['message'] = this.message;
-    data['toId'] = this.toId;
-    data['type'] = this.type;
-    data['fromId'] = this.fromId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['dateSent'] = dateSent;
+    data['message'] = message;
+    data['toId'] = toId;
+    data['type'] = type;
+    data['fromId'] = fromId;
     return data;
   }
 }

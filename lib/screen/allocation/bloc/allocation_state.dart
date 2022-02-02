@@ -69,6 +69,14 @@ class NoInternetConnectionState extends AllocationState {}
 class SearchReturnDataState extends AllocationState {}
 
 class UpdateStaredCaseState extends AllocationState {
-  final int selectedStarIndex;
-  UpdateStaredCaseState({required this.selectedStarIndex});
+  final String caseId;
+  final bool isStared;
+  UpdateStaredCaseState({required this.caseId, required this.isStared});
+}
+
+class StartCallingState extends AllocationState {
+  final int? customerIndex;
+  final int? phoneIndex;
+  // final Result? customerList;
+  StartCallingState({this.customerIndex, this.phoneIndex});
 }
