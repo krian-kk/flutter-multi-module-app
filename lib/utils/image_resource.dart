@@ -50,4 +50,5 @@ class ImageResource {
   static const String clock = 'assets/svg/clock.svg';
   static const String noCaseAvailable = 'assets/svg/noCaseAvailable.svg';
   static const String sms = 'assets/svg/SMS.svg';
+  static const String unStar = 'assets/svg/unStar.svg';
 }

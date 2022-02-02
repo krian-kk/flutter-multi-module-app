@@ -67,3 +67,8 @@ class CaseListViewLoadingState extends AllocationState {}
 class NoInternetConnectionState extends AllocationState {}
 
 class SearchReturnDataState extends AllocationState {}
+
+class UpdateStaredCaseState extends AllocationState {
+  final int selectedStarIndex;
+  UpdateStaredCaseState({required this.selectedStarIndex});
+}

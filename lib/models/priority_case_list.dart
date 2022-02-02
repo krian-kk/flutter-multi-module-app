@@ -30,7 +30,7 @@ class PriorityCaseListModel {
 class Result {
   String? sId;
   dynamic due;
-  bool? starredCase;
+ late bool starredCase;
   String? cust;
   String? collSubStatus;
   String? telSubStatus;
@@ -53,7 +53,7 @@ class Result {
   Result(
       {this.sId,
       this.due,
-      this.starredCase,
+      this.starredCase = false,
       this.cust,
       this.collSubStatus,
       this.telSubStatus,
@@ -76,7 +76,7 @@ class Result {
   Result.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     due = json['due'];
-    starredCase = json['starredCase'];
+    starredCase = json['starredCase'] ?? false;
     cust = json['cust'];
     collSubStatus = json['collSubStatus'];
     telSubStatus = json['telSubStatus'];

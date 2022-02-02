@@ -15,6 +15,7 @@ import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -80,10 +81,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   //     Hive.openBox<OrigoDynamicTable>('testBox4');
 
   // AllocationListModel searchResultData = AllocationListModel();
-  List starCount = [];
+  int starCount= 0;
   // List priorityCaseAddressList = [];
   List<Result> resultList = [];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
+
+  int? selectedStar;
+  bool? isStarSelected;
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
@@ -148,15 +152,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             );
 
         resultList.clear();
-        starCount.clear();
+        starCount = 0;
 
         if (priorityListData['success']) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
-              starCount.add(
-                  Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+              starCount++;
             }
 
             // Here add the address its used for make view map show the mark for case location
@@ -236,14 +239,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '&limit=${Constants.limit}');
 
         resultList.clear();
-        starCount.clear();
+        starCount = 0;
 
         for (var element in priorityListData['data']['result']) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            starCount++;
           }
           //Tap again priority so, Here add the address its used for make view map show the mark for case location
           // if (userType == Constants.fieldagent) {
@@ -286,8 +288,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
-              starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
-                  .starredCase as List);
+              starCount++;
             }
             //Load more priority list so, Here add the address its used for make view map show the mark for case location
             // if (userType == Constants.fieldagent) {
@@ -342,7 +343,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'limit=${Constants.limit}');
 
         resultList.clear();
-        starCount.clear();
+        // starCount.clear();
         multipleLatLong.clear();
 
         buildRouteListData['data']['result']['cases'].forEach((element) {
@@ -524,14 +525,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         //             "collSubStatus=${data.status}");
 
         resultList.clear();
-        starCount.clear();
+        starCount = 0;
 
         for (var element in getSearchResultData['data']['result']) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            starCount++;
           }
         }
 
@@ -545,6 +545,46 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is ShowAutoCallingEvent) {
       isAutoCalling = true;
       isShowSearchFloatingButton = false;
+    }
+
+    if (event is UpdateStaredCaseEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        // updateStaredCase
+        resultList[event.selectedStarIndex].starredCase = !resultList[event.selectedStarIndex].starredCase;
+
+        if(resultList[event.selectedStarIndex].starredCase) {
+          var postData = UpdateStaredCase(
+              caseId: event.caseID,
+              starredCase: true
+          );
+          Map<String, dynamic> response =
+          await APIRepository.apiRequest(
+            APIRequestType.POST,
+            HttpUrl.updateStaredCase,
+            requestBodydata: jsonEncode(postData),
+          );
+          starCount++;
+        } else {
+          var postData = UpdateStaredCase(
+              caseId: event.caseID,
+              starredCase: false
+          );
+          Map<String, dynamic> response =
+          await APIRepository.apiRequest(
+            APIRequestType.POST,
+            HttpUrl.updateStaredCase,
+            requestBodydata: jsonEncode(postData),
+          );
+          starCount--;
+        }
+
+
+        print("----NK-----");
+        print(resultList[event.selectedStarIndex].starredCase);
+      }
+      yield UpdateStaredCaseState(selectedStarIndex: event.selectedStarIndex);
     }
   }
 }

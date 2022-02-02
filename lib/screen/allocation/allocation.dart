@@ -256,44 +256,46 @@ class _AllocationScreenState extends State<AllocationScreen> {
         const SizedBox(
           height: 7,
         ),
-        Row(
-          children: [
-            const SizedBox(
-              width: 5,
-            ),
-            SvgPicture.asset(ImageResource.location2),
-            const SizedBox(
-              width: 8,
-            ),
-            SizedBox(
-              width: 213,
-              child: CustomText(
-                currentAddress!,
-                style: const TextStyle(overflow: TextOverflow.ellipsis),
-                fontSize: FontSize.twelve,
-                fontWeight: FontWeight.w700,
-                color: ColorResource.color101010,
-                isSingleLine: true,
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 13),
-              child: GestureDetector(
-                child: CustomText(
-                  Languages.of(context)!.change,
-                  fontSize: FontSize.twelve,
-                  fontWeight: FontWeight.w700,
-                  color: ColorResource.color23375A,
-                ),
-                onTap: () {
-                  getCurrentLocation();
-                  // AppUtils.showToast('Change address');
-                },
-              ),
-            ),
-          ],
-        ),
+        currentAddress != null
+            ? Row(
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  SvgPicture.asset(ImageResource.location2),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  SizedBox(
+                    width: 213,
+                    child: CustomText(
+                      currentAddress!,
+                      style: const TextStyle(overflow: TextOverflow.ellipsis),
+                      fontSize: FontSize.twelve,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color101010,
+                      isSingleLine: true,
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 13),
+                    child: GestureDetector(
+                      child: CustomText(
+                        Languages.of(context)!.change,
+                        fontSize: FontSize.twelve,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color23375A,
+                      ),
+                      onTap: () {
+                        getCurrentLocation();
+                        // AppUtils.showToast('Change address');
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : const SizedBox(),
         const SizedBox(
           height: 12,
         ),
@@ -468,6 +470,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
             }
           }
         }
+
+        // if (state is UpdateStaredCaseState) {
+        //   bloc.selectedStar = state.selectedStarIndex;
+        //   bloc.isStarSelected = !bloc.isStarSelected!;
+        // }
 
         if (state is TapAreYouAtOfficeOptionsState) {
           Position positions = Position(
@@ -767,9 +774,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20.0, vertical: 0.0),
                                           child: CustomCardList.buildListView(
-                                              bloc,
-                                              resultData: resultList,
-                                              listViewController: _controller),
+                                            bloc,
+                                            resultData: resultList,
+                                            listViewController: _controller,
+                                          ),
                                         )),
                     ],
                   ),

@@ -47,6 +47,8 @@ class HttpUrl {
       'case-details-events/eventDetails?caseId=$caseId';
   static const String priorityCaseList =
       baseUrl + version + fieldAgent + 'case-details/priority?';
+  static const String updateStaredCase =
+      baseUrl + version + fieldAgent + 'case-details/update_starredCase';
   static const String buildRouteCaseList =
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl =

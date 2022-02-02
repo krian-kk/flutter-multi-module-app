@@ -44,18 +44,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // var myRandomClientId = '';
   List<Messages> messages = [];
-  String? clientIDFromARef;
-  String? toARef;
-  // String? clientIDFromARef = "HAR_fos1";
-  // String? toARef = "har_superadmin";
+  // String? clientIDFromARef;
+  // String? toARef;
+  String? clientIDFromARef = "HAR_fos1";
+  String? toARef = "har_superadmin";
   ably.RealtimeChannel? presenceChannel;
   ably.RealtimeChannel? leaveChannel;
 
   @override
   void initState() {
     bloc = ChatScreenBloc()..add(ChatInitialEvent());
-    clientIDFromARef = widget.fromARefId;
-    toARef = widget.toARefId;
+    // clientIDFromARef = widget.fromARefId;
+    // toARef = widget.toARefId;
     createAblyRealtimeInstance();
     super.initState();
     // bloc = ChatScreenBloc()..add(ChatInitialEvent());
