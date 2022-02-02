@@ -26,6 +26,30 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+
+if (project.hasProperty("local.signing")) {
+    apply from: getSigningFile()
+}
+
+def getSigningFile() {
+    return project.property("local.signing");
+}
+
+def apkNamePrefix = "instalmint"
+def majorNumber = "1"
+if (flutterVersionName != null) {
+    majorNumber = flutterVersionName
+}
+def minorNumber = "0"
+def sprintNumber = "0"
+
 android {
     compileSdkVersion 31
 
@@ -43,20 +67,44 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.mcollect.origa.ai"
         minSdkVersion 20
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionName getVersionName(majorNumber, minorNumber)
         multiDexEnabled true
+        ndk {
+            abiFilters "armeabi", "x86", "armeabi-v7a","x86_64", "mips",
+                "mips64", "arm64-v8a"
+        }
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                def displayVersionName = versionName + "." + sprintNumber + "." + flutterVersionCode != null ? flutterVersionCode : 1
+                def date = getDate()
+                def modifiedApkName = apkNamePrefix + "-" + displayVersionName + "-" + variant.flavorName + "-" + variant.buildType.name + "-" + date + ".apk"
+                outputFileName = modifiedApkName
+                def fullVersionName = versionName + "." + sprintNumber
+                buildConfigField("String", "displayVersionName", "\"" + displayVersionName + "\"")
+                buildConfigField("String", "fullVersionName", "\"" + fullVersionName + "\"")
+            }
+        }
     }
-
     buildTypes {
+        def CHARACTER = "Character"
+        def XPOSELEVEL = "exposeLevel"
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            buildConfigField(CHARACTER, XPOSELEVEL, "null")
+            signingConfig signingConfigs.release
+            shrinkResources true
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
             signingConfig signingConfigs.debug
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -65,7 +113,20 @@ flutter {
     source '../..'
 }
 
+
+def getVersionName(majorNumber, minorNumber) {
+    def computedVersionName = majorNumber + "." + minorNumber
+    println "Version name is set to $computedVersionName"
+    return computedVersionName
+}
+
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
+}
 dependencies {
+    //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-analytics'
