@@ -38,6 +38,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -106,9 +107,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           bloc: bloc,
           builder: (context, state) {
             if (state is CaseDetailsLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomCircularProgressIndicator();
+              // return Center(
+              //   child: CircularProgressIndicator(
+              //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              //   ),
+              // );
+              // return Center(
+              //   child: GradientCircularProgressIndicator(
+              //     radius: 10,
+              //     gradientColors: [Colors.green, Colors.greenAccent],
+              //   ),
+              // );
             } else {
               return Scaffold(
                 backgroundColor: ColorResource.colorF7F8FA,
