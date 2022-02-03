@@ -284,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 },
                                           borderColor:
                                               ColorResource.color23375A,
-                                          cardShape: 85,
+                                          cardShape: 90,
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
                                           textColor: ColorResource.color23375A,
@@ -439,25 +439,62 @@ class _LoginScreenState extends State<LoginScreen> {
   // }
 
   // If isSubmit = true : show Normal submit button
-  Widget loginButton({String? fcmToken}) => CustomButton(
-        StringResource.signIn.toUpperCase(),
-        buttonBackgroundColor: ColorResource.color23375A,
-        borderColor: ColorResource.color23375A,
-        onTap: () {
-          _signIn(fcmToken: fcmToken);
-        },
-        cardShape: 85,
-        fontSize: FontSize.sixteen,
-        fontWeight: FontWeight.w600,
-      );
+  Widget loginButton({String? fcmToken}) => 
+  GestureDetector(
+    onTap: (){
+      _signIn(fcmToken: fcmToken);
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(90.0),
+        // boxShadow: const [
+        //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.12), spreadRadius: 2),
+        //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.24), spreadRadius: 2),
+        // ],
+        gradient:   const LinearGradient(
+            colors: [
+              ColorResource.colorFFC23B,
+              ColorResource.colorEA8A38,
+            ],
+            begin: Alignment.topCenter,
+            end:  Alignment.bottomCenter,),
+      ),
+      child: Center(
+        child: CustomText(StringResource.signIn.toUpperCase(),color: ColorResource.color23375A, fontSize: FontSize.sixteen, fontWeight: FontWeight.w600,lineHeight: 1,),
+      ),
+    ),
+  );
+  //     CustomButton(
+  //       StringResource.signIn.toUpperCase(),
+  //       buttonBackgroundColor: ColorResource.colorEA8A38,
+  //       borderColor: ColorResource.colorEA8A38,
+  //       onTap: () {
+  //         _signIn(fcmToken: fcmToken);
+  //       },
+  //       cardShape: 85,
+  //       fontSize: FontSize.sixteen,
+  //       fontWeight: FontWeight.w600,
+  //   textColor: ColorResource.color23375A,
+  //     );
 
   // this is custom Widget to show rounded container
   // here is state is submitting, we are showing loading indicator on container then.
   // if it completed then showing a Icon.
   Widget circularLoading(bool done) {
-    final color = done ? ColorResource.color23375A : ColorResource.color23375A;
+    final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
     return Container(
-      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      decoration: const BoxDecoration(shape: BoxShape.circle,
+        // color: color,
+        gradient:    LinearGradient(
+          colors: [
+            ColorResource.colorFFC23B,
+            ColorResource.colorEA8A38,
+          ],
+          begin: Alignment.topCenter,
+          end:  Alignment.bottomCenter,),
+      ),
       height: 50,
       child: Center(
         child: done

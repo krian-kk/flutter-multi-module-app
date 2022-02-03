@@ -525,8 +525,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                     color: ColorResource
                                                                         .color23375A,
                                                                     borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(5),
+                                                                        BorderRadius.circular(
+                                                                            10),
                                                                     border: Border.all(
                                                                         color: ColorResource
                                                                             .colorECECEC,
@@ -538,24 +538,28 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                         MainAxisSize
                                                                             .min,
                                                                     children: [
-                                                                      const Icon(
-                                                                        Icons
-                                                                            .message_rounded,
-                                                                        color: ColorResource
-                                                                            .colorffffff,
-                                                                        size:
-                                                                            22,
-                                                                      ),
-                                                                      // SvgPicture.asset(
-                                                                      //     ImageResource
-                                                                      //         .whatsApp),
+                                                                      // const Icon(
+                                                                      //   Icons
+                                                                      //       .message_rounded,
+                                                                      //   color: ColorResource
+                                                                      //       .colorffffff,
+                                                                      //   size:
+                                                                      //       22,
+                                                                      // ),
+                                                                      SvgPicture.asset(
+                                                                          ImageResource
+                                                                              .sms),
                                                                       const SizedBox(
                                                                           width:
-                                                                              5),
+                                                                              7),
                                                                       CustomText(
                                                                           Constants
                                                                               .sendSMS
                                                                               .toUpperCase(),
+                                                                          fontSize: FontSize
+                                                                              .twelve,
+                                                                          fontWeight: FontWeight
+                                                                              .w700,
                                                                           lineHeight:
                                                                               1.0,
                                                                           color:
@@ -585,7 +589,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         //       borderRadius:
                                                         //           BorderRadius
                                                         //               .circular(
-                                                        //                   5),
+                                                        //                   10),
                                                         //       border: Border.all(
                                                         //           color: ColorResource
                                                         //               .colorECECEC,
@@ -600,11 +604,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         //             ImageResource
                                                         //                 .whatsApp),
                                                         //         const SizedBox(
-                                                        //             width: 5),
+                                                        //             width: 7),
                                                         //         CustomText(
                                                         //           Constants
                                                         //               .sendWhatsapp
                                                         //               .toUpperCase(),
+                                                        //  fontSize: FontSize
+                                                        //                       .twelve,
+                                                        //                   fontWeight: FontWeight
+                                                        //                       .w700,
                                                         //           lineHeight:
                                                         //               1.0,
                                                         //           color: ColorResource

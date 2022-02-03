@@ -102,7 +102,7 @@ class CustomCardList {
                         width: 5.0,
                       ),
                       CustomText(
-                        bloc.starCount.length.toString() +
+                        bloc.starCount.toString() +
                             " " +
                             Languages.of(context)!.hignPriority,
                         fontSize: FontSize.ten,
@@ -368,13 +368,18 @@ class CustomCardList {
                       ),
                     ),
                   ),
-                  if (resultData[index].starredCase == true &&
+                  if (
                       bloc.showFilterDistance == false)
                     Container(
                       alignment: Alignment.topRight,
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: SvgPicture.asset(ImageResource.star),
+                      child:  GestureDetector(
+                        onTap: (){
+                          bloc.add(UpdateStaredCaseEvent(selectedStarIndex: index, caseID: resultData[index].caseId!));
+                        },
+                          child: resultData[index].starredCase ?
+                            SvgPicture.asset(ImageResource.star) : SvgPicture.asset(ImageResource.unStar),),
                     ),
                   // : const SizedBox(),
                 ],

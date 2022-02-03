@@ -48,6 +48,13 @@ class BuildRouteLoadMoreEvent extends AllocationEvent {
 
 class ShowAutoCallingEvent extends AllocationEvent {}
 
+class UpdateStaredCaseEvent extends AllocationEvent {
+  final int selectedStarIndex;
+  final String caseID;
+  UpdateStaredCaseEvent(
+      {required this.selectedStarIndex, required this.caseID});
+}
+
 class CallSuccessfullyConnectedEvent extends AllocationEvent {}
 
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}

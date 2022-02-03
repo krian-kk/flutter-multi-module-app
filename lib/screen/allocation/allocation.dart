@@ -16,6 +16,7 @@ import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
@@ -267,44 +268,46 @@ class _AllocationScreenState extends State<AllocationScreen> {
         const SizedBox(
           height: 7,
         ),
-        Row(
-          children: [
-            const SizedBox(
-              width: 5,
-            ),
-            SvgPicture.asset(ImageResource.location2),
-            const SizedBox(
-              width: 8,
-            ),
-            SizedBox(
-              width: 213,
-              child: CustomText(
-                currentAddress!,
-                style: const TextStyle(overflow: TextOverflow.ellipsis),
-                fontSize: FontSize.twelve,
-                fontWeight: FontWeight.w700,
-                color: ColorResource.color101010,
-                isSingleLine: true,
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 13),
-              child: GestureDetector(
-                child: CustomText(
-                  Languages.of(context)!.change,
-                  fontSize: FontSize.twelve,
-                  fontWeight: FontWeight.w700,
-                  color: ColorResource.color23375A,
-                ),
-                onTap: () {
-                  getCurrentLocation();
-                  // AppUtils.showToast('Change address');
-                },
-              ),
-            ),
-          ],
-        ),
+        currentAddress != null
+            ? Row(
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  SvgPicture.asset(ImageResource.location2),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  SizedBox(
+                    width: 213,
+                    child: CustomText(
+                      currentAddress!,
+                      style: const TextStyle(overflow: TextOverflow.ellipsis),
+                      fontSize: FontSize.twelve,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color101010,
+                      isSingleLine: true,
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 13),
+                    child: GestureDetector(
+                      child: CustomText(
+                        Languages.of(context)!.change,
+                        fontSize: FontSize.twelve,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color23375A,
+                      ),
+                      onTap: () {
+                        getCurrentLocation();
+                        // AppUtils.showToast('Change address');
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : const SizedBox(),
         const SizedBox(
           height: 12,
         ),
@@ -630,6 +633,34 @@ class _AllocationScreenState extends State<AllocationScreen> {
           }
         }
 
+        if (state is UpdateStaredCaseState) {
+          if(state.isStared) {
+            var postData = UpdateStaredCase(
+                caseId: state.caseId,
+                starredCase: true
+            );
+            Map<String, dynamic> response =
+            await APIRepository.apiRequest(
+              APIRequestType.POST,
+              HttpUrl.updateStaredCase,
+              requestBodydata: jsonEncode(postData),
+            );
+            bloc.starCount++;
+          } else {
+            var postData = UpdateStaredCase(
+                caseId: state.caseId,
+                starredCase: false
+            );
+            Map<String, dynamic> response =
+            await APIRepository.apiRequest(
+              APIRequestType.POST,
+              HttpUrl.updateStaredCase,
+              requestBodydata: jsonEncode(postData),
+            );
+            bloc.starCount--;
+          }
+        }
+
         if (state is TapAreYouAtOfficeOptionsState) {
           Position positions = Position(
             longitude: 0,
@@ -930,9 +961,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20.0, vertical: 0.0),
                                           child: CustomCardList.buildListView(
-                                              bloc,
-                                              resultData: resultList,
-                                              listViewController: _controller),
+                                            bloc,
+                                            resultData: resultList,
+                                            listViewController: _controller,
+                                          ),
                                         )),
                     ],
                   ),
