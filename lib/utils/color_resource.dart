@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class ColorResource {
-  static const Color color23375A = Color(0xff23375A);
+  // static const Color color23375A = Color(0xff23375A);
+  static const Color color23375A = Color(0xff203052);
   static const Color color000000 = Color(0xff000000);
   static const Color colorffffff = Color(0xffffffff);
   static const Color colorF7F8FA = Color(0xffF7F8FA);
@@ -54,6 +55,9 @@ class ColorResource {
   static const Color colorD8D8D8 = Color(0xffD8D8D8);
   static const Color color7F8EA2 = Color(0xff7F8EA2);
   static const Color colorE72C30 = Color(0xffE72C30);
+  static const Color colorFFC23B = Color(0xffFFC23B);
+  static const Color colorEA8A38 = Color(0xffEA8A38);
+  static const Color color203052 = Color(0xff203052);
 
   //static const Color colorFFB = Color(0xffFFB800);
 }

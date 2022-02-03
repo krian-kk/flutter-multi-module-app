@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "9444734201",
-    "firebase_url": "https://fir-project-4d27b-default-rtdb.firebaseio.com",
-    "project_id": "fir-project-4d27b",
-    "storage_bucket": "fir-project-4d27b.appspot.com"
+    "project_number": "927842067224",
+    "firebase_url": "https://instalmint-prod-default-rtdb.firebaseio.com",
+    "project_id": "instalmint-prod",
+    "storage_bucket": "instalmint-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:9444734201:android:765182422cb60354d45e28",
+        "mobilesdk_app_id": "1:927842067224:android:46baba9893cddc0938746d",
         "android_client_info": {
           "package_name": "com.mcollect.origa.ai"
         }
       },
       "oauth_client": [
         {
-          "client_id": "9444734201-ehqjrv80ogtsjuvjvbji65jhbr5i7gk3.apps.googleusercontent.com",
+          "client_id": "927842067224-ovmnqe0t93d7gjobf0uaeb69v6i3r4mn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFTW-G2I88LSJvkhxy44NOLSucXrbFFhY"
+          "current_key": "AIzaSyAILjLc9SRaolhytYHsy46Q418E4igeER0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "9444734201-ehqjrv80ogtsjuvjvbji65jhbr5i7gk3.apps.googleusercontent.com",
+              "client_id": "927842067224-ovmnqe0t93d7gjobf0uaeb69v6i3r4mn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

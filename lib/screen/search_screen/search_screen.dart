@@ -11,6 +11,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
@@ -66,9 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
           bloc: bloc,
           builder: (context, state) {
             if (state is SearchScreenLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CustomLoadingWidget();
             }
             return Stack(
               children: [
@@ -193,9 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ],
                 ),
-                isLoaded
-                    ? const Center(child: CircularProgressIndicator())
-                    : Stack()
+                isLoaded ? const CustomLoadingWidget() : Stack()
               ],
             );
           },

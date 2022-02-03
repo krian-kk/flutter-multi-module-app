@@ -76,10 +76,7 @@
 //             : const SizedBox(
 //                 height: 30,
 //                 width: 30,
-//                 child: CircularProgressIndicator(
-//                   color: ColorResource.colorffffff,
-//                   strokeWidth: 3,
-//                 ),
+//                 child: const CustomLoadingWidget(),
 //               ),
 //       ),
 //     );

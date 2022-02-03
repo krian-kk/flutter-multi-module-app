@@ -17,6 +17,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
+import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -28,6 +29,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
@@ -47,6 +49,9 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     this.postValue,
     this.isCall,
     required this.health,
+    this.isAutoCalling = false,
+    this.allocationBloc,
+    this.paramValue,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -57,6 +62,9 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   // final String resAddressId_0;
   final bool? isCall;
   final String health;
+  final bool isAutoCalling;
+  final AllocationBloc? allocationBloc;
+  final dynamic paramValue;
 
   @override
   State<CustomOtherFeedBackBottomSheet> createState() =>
@@ -337,10 +345,11 @@ class _CustomOtherFeedBackBottomSheetState
                           ? Languages.of(context)!.submit.toUpperCase()
                           : null,
                       isLeading: !isSubmit,
-                      trailingWidget: const Center(
-                        child: CircularProgressIndicator(
-                          color: ColorResource.colorFFFFFF,
-                        ),
+                      trailingWidget: CustomLoadingWidget(
+                        gradientColors: [
+                          ColorResource.colorFFFFFF,
+                          ColorResource.colorFFFFFF.withOpacity(0.7),
+                        ],
                       ),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
@@ -422,24 +431,25 @@ class _CustomOtherFeedBackBottomSheetState
                                       : 'Field Allocation',
                                   invalidNumber: false,
                                   eventAttr: EventAttr(
-                                      remarks: remarksController.text,
-                                      vehicleavailable: isVehicleAvailable,
-                                      collectorfeedback:
-                                          collectorFeedBackValue ?? '',
-                                      actionproposed: actionproposedValue ?? '',
-                                      actionDate: dateControlller.text,
-                                      imageLocation: [''],
-                                      longitude: position.longitude,
-                                      latitude: position.latitude,
-                                      accuracy: position.accuracy,
-                                      altitude: position.altitude,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      altitudeAccuracy: 0,
-                                      // agentLocation: AgentLocation(),
-                                      contact: otherFeedbackContact.isNotEmpty
-                                          ? otherFeedbackContact
-                                          : null),
+                                    remarks: remarksController.text,
+                                    vehicleavailable: isVehicleAvailable,
+                                    collectorfeedback:
+                                        collectorFeedBackValue ?? '',
+                                    actionproposed: actionproposedValue ?? '',
+                                    actionDate: dateControlller.text,
+                                    imageLocation: [''],
+                                    longitude: position.longitude,
+                                    latitude: position.latitude,
+                                    accuracy: position.accuracy,
+                                    altitude: position.altitude,
+                                    heading: position.heading,
+                                    speed: position.speed,
+                                    altitudeAccuracy: 0,
+                                    // agentLocation: AgentLocation(),
+                                    contact: otherFeedbackContact.isNotEmpty
+                                        ? otherFeedbackContact
+                                        : null,
+                                  ),
                                   contact: OtherFeedBackContact(
                                     cType: widget.postValue['cType'],
                                     health: widget.health,
@@ -451,9 +461,6 @@ class _CustomOtherFeedBackBottomSheetState
                                         widget.postValue['contactId0'] ?? '',
                                   ),
                                 );
-                                print(
-                                    'Response Data => ${jsonEncode(requestBodyData)}');
-
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
                                             requestBodyData.toJson()))
@@ -476,39 +483,53 @@ class _CustomOtherFeedBackBottomSheetState
                                 );
 
                                 if (postResult[Constants.success]) {
-                                  AppUtils.topSnackBar(
-                                      context, Constants.successfullySubmitted);
-                                  if (widget.isCall!) {
-                                    setState(() {
-                                      for (int i = 0;
-                                          i < (otherFeedbackContact.length);
-                                          i++) {
-                                        widget.bloc.listOfCallDetails?.add(
-                                            jsonDecode(jsonEncode(
-                                                otherFeedbackContact[i])));
-                                      }
-                                    });
-                                    widget.bloc
-                                        .add(AddedNewCallContactListEvent());
-                                    // print(widget.bloc.listOfCallDetails);
+                                  if (widget.isAutoCalling) {
+                                    Navigator.pop(widget.paramValue['context']);
+                                    Navigator.pop(widget.paramValue['context']);
+                                    widget.allocationBloc!
+                                        .add(StartCallingEvent(
+                                      customerIndex:
+                                          widget.paramValue['customerIndex'] +
+                                              1,
+                                      phoneIndex: 0,
+                                      isIncreaseCount: true,
+                                    ));
                                   } else {
-                                    setState(() {
-                                      for (int i = 0;
-                                          i < (otherFeedbackContact.length);
-                                          i++) {
-                                        // if (widget.bloc.listOfAddressDetails!
-                                        //     .contains(otherFeedbackContact[i])) {
-                                        widget.bloc.listOfAddressDetails?.add(
-                                            jsonDecode(jsonEncode(
-                                                otherFeedbackContact[i])));
-                                      }
-                                      // }
-                                    });
-                                    widget.bloc.add(AddedNewAddressListEvent());
-                                    // print(widget.bloc.listOfAddressDetails);
-                                  }
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    if (widget.isCall!) {
+                                      setState(() {
+                                        for (int i = 0;
+                                            i < (otherFeedbackContact.length);
+                                            i++) {
+                                          widget.bloc.listOfCallDetails?.add(
+                                              jsonDecode(jsonEncode(
+                                                  otherFeedbackContact[i])));
+                                        }
+                                      });
+                                      widget.bloc
+                                          .add(AddedNewCallContactListEvent());
+                                      // print(widget.bloc.listOfCallDetails);
+                                    } else {
+                                      setState(() {
+                                        for (int i = 0;
+                                            i < (otherFeedbackContact.length);
+                                            i++) {
+                                          // if (widget.bloc.listOfAddressDetails!
+                                          //     .contains(otherFeedbackContact[i])) {
+                                          widget.bloc.listOfAddressDetails?.add(
+                                              jsonDecode(jsonEncode(
+                                                  otherFeedbackContact[i])));
+                                        }
+                                        // }
+                                      });
+                                      widget.bloc
+                                          .add(AddedNewAddressListEvent());
+                                      // print(widget.bloc.listOfAddressDetails);
+                                    }
 
-                                  Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }
                                 } else {}
                                 // }
                               }

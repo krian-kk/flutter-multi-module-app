@@ -11,6 +11,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'bloc/home_tab_event.dart';
 
@@ -47,9 +48,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
         bloc: bloc,
         builder: (context, state) {
           if (state is HomeTabLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const CustomLoadingWidget();
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,

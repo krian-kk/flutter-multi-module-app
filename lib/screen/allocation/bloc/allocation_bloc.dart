@@ -15,6 +15,7 @@ import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -31,9 +32,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int selectedOption = 0;
 
+  int customerCount = 0;
+  int totalCount = 0;
+
   String? userType;
   String? agentName;
   String? agrRef;
+
+  int indexValue = 0;
 
   // BuildRouteModel buildRouteData = BuildRouteModel();
 
@@ -80,10 +86,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   //     Hive.openBox<OrigoDynamicTable>('testBox4');
 
   // AllocationListModel searchResultData = AllocationListModel();
-  List starCount = [];
+  int starCount= 0;
   // List priorityCaseAddressList = [];
   List<Result> resultList = [];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
+
+  int? selectedStar;
 
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
@@ -110,7 +118,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         selectOptions = [
           StringResource.priority,
-          // StringResource.autoCalling,
+          StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
@@ -118,14 +126,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // static Autocalling Values
       mobileNumberList.addAll([
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '6374578994',
           callResponse: 'Declined Call',
         ),
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '9342536805',
         ),
         AutoCallingModel(
-          mobileNumber: '9876321230',
+          mobileNumber: '6374578994',
         ),
       ]);
 
@@ -148,15 +156,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             );
 
         resultList.clear();
-        starCount.clear();
+        starCount = 0;
 
         if (priorityListData['success']) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
-              starCount.add(
-                  Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+              starCount++;
             }
 
             // Here add the address its used for make view map show the mark for case location
@@ -211,10 +218,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // print(priorityListData['data']);
         }
       }
-
+      totalCount = resultList.length;
       yield AllocationLoadedState(successResponse: resultList);
     }
-
+    // if (event is IncreaseCountEvent) {
+    //   customerCount++;
+    // }
     if (event is TapPriorityEvent) {
       yield CaseListViewLoadingState();
 
@@ -236,14 +245,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '&limit=${Constants.limit}');
 
         resultList.clear();
-        starCount.clear();
+        starCount = 0;
 
         for (var element in priorityListData['data']['result']) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            starCount++;
           }
           //Tap again priority so, Here add the address its used for make view map show the mark for case location
           // if (userType == Constants.fieldagent) {
@@ -271,6 +279,24 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+    if (event is StartCallingEvent) {
+      if (event.isIncreaseCount && customerCount < totalCount) {
+        customerCount++;
+      }
+      Singleton.instance.startCalling = true;
+      // yield* Stream.periodic(
+      //     const Duration(seconds: 45),
+      //     (index) => StartCallingState(
+      //           customerIndex: event.customerIndex,
+      //           // customerList: event.customerList,
+      //           phoneIndex: event.phoneIndex,
+      //         ));
+      yield StartCallingState(
+        customerIndex: event.customerIndex,
+        // customerList: event.customerList,
+        phoneIndex: event.phoneIndex,
+      );
+    }
 
     if (event is PriorityLoadMoreEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -286,8 +312,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
-              starCount.addAll(Result.fromJson(jsonDecode(jsonEncode(element)))
-                  .starredCase as List);
+              starCount++;
             }
             //Load more priority list so, Here add the address its used for make view map show the mark for case location
             // if (userType == Constants.fieldagent) {
@@ -318,6 +343,32 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield PriorityLoadMoreState(successResponse: resultList);
     }
 
+    if (event is CallSuccessfullyConnectedEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      int index;
+      index = _pref.getInt('autoCallingIndexValue') ?? 0;
+      indexValue = index;
+      _pref.setInt('autoCallingIndexValue', index + 1);
+      print(Singleton.instance.startCalling);
+      if (Singleton.instance.startCalling ?? false) {
+        print(Singleton.instance.startCalling.toString() + 'jdlj');
+        yield StartCallingState();
+        print('ddldk');
+      }
+    }
+    if (event is CallUnSuccessfullyConnectedEvent) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      int index, subIndex;
+      index = _pref.getInt('autoCallingIndexValue') ?? 0;
+      subIndex = _pref.getInt('autoCallingSubIndexValue') ?? 0;
+      _pref.setInt('autoCallingIndexValue', index + 1);
+      _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
+      if (Singleton.instance.startCalling ?? false) {
+        print('tdjdjkdjd');
+        yield StartCallingState();
+      }
+    }
+
     if (event is TapBuildRouteEvent) {
       yield CaseListViewLoadingState();
 
@@ -342,7 +393,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'limit=${Constants.limit}');
 
         resultList.clear();
-        starCount.clear();
+        // starCount.clear();
         multipleLatLong.clear();
 
         buildRouteListData['data']['result']['cases'].forEach((element) {
@@ -524,14 +575,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         //             "collSubStatus=${data.status}");
 
         resultList.clear();
-        starCount.clear();
+        starCount = 0;
 
         for (var element in getSearchResultData['data']['result']) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
-            starCount.add(
-                Result.fromJson(jsonDecode(jsonEncode(element))).starredCase);
+            starCount++;
           }
         }
 
@@ -545,6 +595,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is ShowAutoCallingEvent) {
       isAutoCalling = true;
       isShowSearchFloatingButton = false;
+    }
+
+    if (event is UpdateStaredCaseEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetConnectionState();
+      } else {
+        // updateStaredCase
+        resultList[event.selectedStarIndex].starredCase = !resultList[event.selectedStarIndex].starredCase;
+
+
+// dddddddddddddd
+
+        print("----NK-----");
+        print(resultList[event.selectedStarIndex].starredCase);
+      }
+      yield UpdateStaredCaseState(caseId: event.caseID, isStared: resultList[event.selectedStarIndex].starredCase);
     }
   }
 }

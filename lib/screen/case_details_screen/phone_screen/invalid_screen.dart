@@ -38,68 +38,73 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Form(
-        key: widget.bloc.phoneInvalidFormKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Wrap(
-                        runSpacing: 10,
-                        spacing: 10,
-                        children: _buildSelectedClip(selectedClipList),
-                      ),
-                      const SizedBox(height: 27),
-                      CustomText(
-                        Languages.of(context)!.remarks,
-                        color: ColorResource.color666666,
-                        fontWeight: FontWeight.w400,
-                        fontSize: FontSize.twelve,
-                        fontStyle: FontStyle.normal,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: TextFormField(
-                          focusNode: widget.bloc.phoneInvalidRemarksFocusNode,
-                          controller: widget.bloc.phoneInvalidRemarksController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              hintText:
-                                  Languages.of(context)!.writeYourRemarksHere,
-                              focusColor: ColorResource.colorE5EAF6,
-                              labelStyle:
-                                  const TextStyle(color: Color(0xFF424242))),
+      child: Container(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Form(
+          key: widget.bloc.phoneInvalidFormKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Wrap(
+                          runSpacing: 10,
+                          spacing: 10,
+                          children: _buildSelectedClip(selectedClipList),
                         ),
-                      ),
-                      const SizedBox(height: 19),
-                      Wrap(
-                        spacing: 15,
-                        runSpacing: 8,
-                        children: _buildOptionBottomSheetOpenButton(
-                          optionBottomSheetButtonList,
-                          context,
+                        const SizedBox(height: 27),
+                        CustomText(
+                          Languages.of(context)!.remarks,
+                          color: ColorResource.color666666,
+                          fontWeight: FontWeight.w400,
+                          fontSize: FontSize.twelve,
+                          fontStyle: FontStyle.normal,
                         ),
-                      ),
-                      const SizedBox(height: 120)
-                    ],
+                        SizedBox(
+                          width: double.infinity,
+                          child: TextFormField(
+                            focusNode: widget.bloc.phoneInvalidRemarksFocusNode,
+                            controller:
+                                widget.bloc.phoneInvalidRemarksController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                hintText:
+                                    Languages.of(context)!.writeYourRemarksHere,
+                                focusColor: ColorResource.colorE5EAF6,
+                                labelStyle:
+                                    const TextStyle(color: Color(0xFF424242))),
+                          ),
+                        ),
+                        const SizedBox(height: 19),
+                        Wrap(
+                          spacing: 15,
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                          ),
+                        ),
+                        const SizedBox(height: 120)
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

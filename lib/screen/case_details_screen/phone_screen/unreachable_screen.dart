@@ -53,143 +53,159 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Form(
-        key: widget.bloc.phoneUnreachableFormKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Wrap(
-                        runSpacing: 10,
-                        spacing: 10,
-                        children: _buildSelectedClip(selectedClipList),
-                      ),
-                      const SizedBox(height: 25),
-                      CustomText(
-                        Languages.of(context)!.nextActionDate.toUpperCase(),
-                        color: ColorResource.color666666,
-                        fontSize: FontSize.twelve,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      ),
-                      SizedBox(
-                        width: (MediaQuery.of(context).size.width - 62) / 2,
-                        child: CustomReadOnlyTextField(
-                          '',
-                          widget.bloc.phoneUnreachableNextActionDateController,
-                          focusNode: widget
-                              .bloc.phoneUnreachableNextActionDateFocusNode,
-                          isReadOnly: true,
-                          validationRules: const ['required'],
-                          onTapped: () => pickDate(
-                              context,
-                              widget.bloc
-                                  .phoneUnreachableNextActionDateController),
-                          suffixWidget: SvgPicture.asset(
-                            ImageResource.calendar,
-                            fit: BoxFit.scaleDown,
+      child: Container(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Form(
+          key: widget.bloc.phoneUnreachableFormKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Wrap(
+                          runSpacing: 10,
+                          spacing: 10,
+                          children: _buildSelectedClip(selectedClipList),
+                        ),
+                        const SizedBox(height: 25),
+                        CustomText(
+                          Languages.of(context)!.nextActionDate.toUpperCase(),
+                          color: ColorResource.color666666,
+                          fontSize: FontSize.twelve,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                        ),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 62) / 2,
+                          child: CustomReadOnlyTextField(
+                            '',
+                            widget
+                                .bloc.phoneUnreachableNextActionDateController,
+                            focusNode: widget
+                                .bloc.phoneUnreachableNextActionDateFocusNode,
+                            isReadOnly: true,
+                            validationRules: const ['required'],
+                            onTapped: () => pickDate(
+                                context,
+                                widget.bloc
+                                    .phoneUnreachableNextActionDateController),
+                            suffixWidget: SvgPicture.asset(
+                              ImageResource.calendar,
+                              fit: BoxFit.scaleDown,
+                            ),
+                            onEditing: () {
+                              widget
+                                  .bloc.phoneUnreachableNextActionDateFocusNode
+                                  .unfocus();
+                              widget.bloc.phoneUnreachableRemarksFocusNode
+                                  .requestFocus();
+                              widget.bloc.phoneInvalidFormKey.currentState!
+                                  .validate();
+                            },
                           ),
-                          onEditing: () {
-                            widget.bloc.phoneUnreachableNextActionDateFocusNode
-                                .unfocus();
-                            widget.bloc.phoneUnreachableRemarksFocusNode
-                                .requestFocus();
-                            widget.bloc.phoneInvalidFormKey.currentState!
-                                .validate();
-                          },
                         ),
-                      ),
-                      const SizedBox(height: 27),
-                      CustomText(
-                        Languages.of(context)!.remarks,
-                        color: ColorResource.color666666,
-                        fontWeight: FontWeight.w400,
-                        fontSize: FontSize.twelve,
-                        fontStyle: FontStyle.normal,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: TextFormField(
-                          focusNode:
-                              widget.bloc.phoneUnreachableRemarksFocusNode,
-                          controller:
-                              widget.bloc.phoneUnreachableRemarksController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              hintText:
-                                  Languages.of(context)!.writeYourRemarksHere,
-                              focusColor: ColorResource.colorE5EAF6,
-                              labelStyle:
-                                  const TextStyle(color: Color(0xFF424242))),
+                        const SizedBox(height: 27),
+                        CustomText(
+                          Languages.of(context)!.remarks,
+                          color: ColorResource.color666666,
+                          fontWeight: FontWeight.w400,
+                          fontSize: FontSize.twelve,
+                          fontStyle: FontStyle.normal,
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Singleton.instance.contractorInformations!.result!
-                              .hideCallTriedSmsButton!
-                          ? const SizedBox()
-                          : GestureDetector(
-                              onTap: () {
-                                widget.bloc.add(SendSMSEvent(context,
-                                    type: Constants.callTriedType));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: ColorResource.color23375A,
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                      color: ColorResource.colorECECEC,
-                                      width: 1.0),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.message_rounded,
-                                      color: ColorResource.colorffffff,
-                                      size: 22,
-                                    ),
-                                    // SvgPicture.asset(
-                                    //     ImageResource
-                                    //         .whatsApp),
-                                    const SizedBox(width: 5),
-                                    CustomText(Constants.sendSMS.toUpperCase(),
-                                        lineHeight: 1.0,
-                                        color: ColorResource.colorffffff),
-                                  ],
+                        SizedBox(
+                          width: double.infinity,
+                          child: TextFormField(
+                            focusNode:
+                                widget.bloc.phoneUnreachableRemarksFocusNode,
+                            controller:
+                                widget.bloc.phoneUnreachableRemarksController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                hintText:
+                                    Languages.of(context)!.writeYourRemarksHere,
+                                focusColor: ColorResource.colorE5EAF6,
+                                labelStyle:
+                                    const TextStyle(color: Color(0xFF424242))),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Singleton.instance.contractorInformations!.result!
+                                .hideCallTriedSmsButton!
+                            ? const SizedBox()
+                            : GestureDetector(
+                                onTap: () {
+                                  widget.bloc.add(SendSMSEvent(context,
+                                      type: Constants.callTriedType));
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: ColorResource.colorECECEC,
+                                        width: 1.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.message_rounded,
+                                        color: ColorResource.colorffffff,
+                                        size: 22,
+                                      ),
+                                      // SvgPicture.asset(
+                                      //     ImageResource
+                                      //         .whatsApp),
+                                      const SizedBox(width: 5),
+                                      CustomText(
+                                          Constants.sendSMS.toUpperCase(),
+                                          lineHeight: 1.0,
+                                          color: ColorResource.colorffffff),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                      const SizedBox(height: 19),
-                      Wrap(
-                        spacing: 15,
-                        runSpacing: 8,
-                        children: _buildOptionBottomSheetOpenButton(
-                          optionBottomSheetButtonList,
-                          context,
+                        const SizedBox(height: 19),
+                        Wrap(
+                          spacing: 15,
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                          ),
                         ),
-                      ),
-                      // const SizedBox(height: 120)
-                    ],
+                        const SizedBox(height: 19),
+                        Wrap(
+                          spacing: 15,
+                          runSpacing: 8,
+                          children: _buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                          ),
+                        ),
+                        // const SizedBox(height: 120)
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -204,7 +220,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("unreachable iscall ===> true");
           widget.bloc.add(ClickOpenBottomSheetEvent(
             element.stringResourceValue,
             widget.bloc.caseDetailsAPIValue.result?.callDetails,

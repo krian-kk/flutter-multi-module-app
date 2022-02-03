@@ -23,6 +23,7 @@ class Singleton {
   String? callerServiceID;
   String? resAddressId_0;
   String? contactId_0;
+  bool? startCalling;
 
 // Contractor All Informations
   ContractorAllInformationModel? contractorInformations;

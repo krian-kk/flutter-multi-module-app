@@ -28,6 +28,8 @@ class HttpUrl {
   // // Get agent detail for Reset password screen
   // static String resetPasswordCheckUrl(String agentName) =>
   //     'https://collect.instalmint.com/node/field-allocation/agents/info/$agentName';
+  // static const String sendSMSurl =
+  //   'https://collect.instalmint.com/node/api/v2/notification/sendNotification';
 
   //Get API
   static const String dashboardUrl =
@@ -45,6 +47,8 @@ class HttpUrl {
       'case-details-events/eventDetails?caseId=$caseId';
   static const String priorityCaseList =
       baseUrl + version + fieldAgent + 'case-details/priority?';
+  static const String updateStaredCase =
+      baseUrl + version + fieldAgent + 'case-details/update_starredCase';
   static const String buildRouteCaseList =
       baseUrl + version + fieldAgent + 'case-details/buildRoute?';
   static const String profileUrl =

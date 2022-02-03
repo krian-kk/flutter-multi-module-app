@@ -19,6 +19,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -245,9 +246,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             builder: (BuildContext context, DashboardState state) {
               print("refressehed ============>");
               if (state is DashboardLoadingState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const CustomLoadingWidget();
               }
               return bloc.isNoInternetAndServerError
                   ? Center(
