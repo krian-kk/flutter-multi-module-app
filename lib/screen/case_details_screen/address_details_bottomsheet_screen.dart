@@ -228,7 +228,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                         .bloc
                                                                         .caseDetailsAPIValue
                                                                         .result!
-                                                                        .addressDetails![0]['value']);
+                                                                        .addressDetails![i]['value']);
                                                             if (destinationLocation !=
                                                                 null) {
                                                               MapUtils.openMap(
@@ -311,7 +311,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                   ),
                                                                   const SizedBox(
                                                                       width:
-                                                                          12),
+                                                                          10),
                                                                   CustomText(
                                                                     Languages.of(
                                                                             context)!
@@ -326,14 +326,15 @@ class _AddressDetailsBottomSheetScreenState
                                                                         .color23375A,
                                                                   ),
                                                                   const SizedBox(
-                                                                      width:
-                                                                          12),
+                                                                    width: 17,
+                                                                  ),
                                                                 ],
                                                               )),
                                                         ),
                                                         const Spacer(),
                                                         const SizedBox(
-                                                            width: 5),
+                                                          width: 5,
+                                                        ),
                                                         Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment

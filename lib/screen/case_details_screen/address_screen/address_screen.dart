@@ -187,10 +187,11 @@ class _AddressScreenState extends State<AddressScreen>
                                     Northeast? destinationLocation =
                                         await MapUtils.convertAddressToLarlng(
                                             address: widget
-                                                .bloc
-                                                .caseDetailsAPIValue
-                                                .result!
-                                                .addressDetails![0]['value']);
+                                                    .bloc
+                                                    .caseDetailsAPIValue
+                                                    .result!
+                                                    .addressDetails![
+                                                widget.index]['value']);
                                     if (destinationLocation != null) {
                                       MapUtils.openMap(
                                           startLatitude:
