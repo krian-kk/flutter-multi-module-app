@@ -483,6 +483,7 @@ class _CustomOtherFeedBackBottomSheetState
                                 );
 
                                 if (postResult[Constants.success]) {
+                                  widget.bloc.add(ChangeIsSubmitEvent());
                                   if (widget.isAutoCalling) {
                                     Navigator.pop(widget.paramValue['context']);
                                     Navigator.pop(widget.paramValue['context']);

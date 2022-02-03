@@ -32,11 +32,9 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
         if (state is SelectedTimeperiodDataLoadingState) {
           widget.bloc.selectedFilterDataLoading = true;
         }
-
         if (state is SelectedTimeperiodDataLoadedState) {
           widget.bloc.selectedFilterDataLoading = false;
         }
-
         if (state is GetSearchDataState) {
           setState(() {
             widget.bloc.isShowSearchResult = true;

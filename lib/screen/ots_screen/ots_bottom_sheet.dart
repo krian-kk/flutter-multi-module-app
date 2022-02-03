@@ -11,11 +11,13 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/case_details_api_model/case_details.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -36,6 +38,7 @@ class CustomOtsBottomSheet extends StatefulWidget {
     this.cardTitle, {
     Key? key,
     required this.customerLoanUserWidget,
+    required this.bloc,
     this.isCall,
     required this.caseId,
     required this.userType,
@@ -53,6 +56,7 @@ class CustomOtsBottomSheet extends StatefulWidget {
   final bool isAutoCalling;
   final AllocationBloc? allocationBloc;
   final dynamic paramValue;
+  final CaseDetailsBloc bloc;
 
   @override
   State<CustomOtsBottomSheet> createState() => _CustomOtsBottomSheetState();
@@ -447,6 +451,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   );
 
                                   if (postResult[Constants.success]) {
+                                    widget.bloc.add(ChangeIsSubmitEvent());
                                     if (widget.isAutoCalling) {
                                       Navigator.pop(
                                           widget.paramValue['context']);

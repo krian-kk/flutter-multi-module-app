@@ -52,6 +52,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? agentName;
+  bool isEventSubmited = false;
   bool isAutoCalling = false;
 
   BuildContext? caseDetailsContext;
@@ -340,6 +341,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickPushAndPOPCaseDetailsEvent) {
       yield PushAndPOPNavigationCaseDetailsState(
           paramValues: event.paramValues);
+    }
+    if (event is ChangeIsSubmitEvent) {
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      isEventSubmited = true;
     }
     if (event is ClickOpenBottomSheetEvent) {
       switch (event.title) {
@@ -670,6 +675,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
       }
       if (resultValue[Constants.success]) {
+        isEventSubmited = true;
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
         if (isAutoCalling) {
           allocationBloc.add(StartCallingEvent(
             customerIndex: paramValue['customerIndex'],
@@ -736,6 +743,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -754,6 +762,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -772,6 +781,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -786,12 +796,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               ),
               userType: userType.toString(),
               postValue: list[indexValue!],
-
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              // eventCode: bloc.eventCode,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.collections:
             return CustomCollectionsBottomSheet(
@@ -805,13 +814,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                         0.0,
               ),
               isCall: isCall,
-              // eventCode: bloc.eventCode,
               userType: userType.toString(),
               postValue: list[indexValue!],
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.ots:
             return CustomOtsBottomSheet(
@@ -830,6 +839,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
 
           case Constants.otherFeedback:
@@ -851,6 +861,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              // bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
@@ -944,6 +955,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      isEventSubmited = true;
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
@@ -1011,6 +1024,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      isEventSubmited = true;
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1086,6 +1101,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      isEventSubmited = true;
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }
@@ -1127,6 +1144,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      isEventSubmited = true;
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
     }

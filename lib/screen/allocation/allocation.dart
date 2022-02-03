@@ -15,6 +15,7 @@ import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_mode
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/return_value_model.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
@@ -552,10 +553,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
             AppUtils.showToast('Auto Calling is Complete');
           }
         }
+        if (state is UpdateNewValueState) {
+          setState(() {});
+        }
 
         if (state is NavigateCaseDetailState) {
-          Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+          dynamic returnValue = await Navigator.pushNamed(
+              context, AppRoutes.caseDetailsScreen,
               arguments: state.paramValues);
+          RetrunValueModel retrunModelValue =
+              RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
+
+          if (retrunModelValue.isSubmit) {
+            bloc.add(UpdateNewValuesEvent(retrunModelValue.caseId));
+          }
         }
         if (state is NavigateSearchPageState) {
           final dynamic returnValue =
@@ -634,25 +645,19 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is UpdateStaredCaseState) {
-          if(state.isStared) {
-            var postData = UpdateStaredCase(
-                caseId: state.caseId,
-                starredCase: true
-            );
-            Map<String, dynamic> response =
-            await APIRepository.apiRequest(
+          if (state.isStared) {
+            var postData =
+                UpdateStaredCase(caseId: state.caseId, starredCase: true);
+            Map<String, dynamic> response = await APIRepository.apiRequest(
               APIRequestType.POST,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
             bloc.starCount++;
           } else {
-            var postData = UpdateStaredCase(
-                caseId: state.caseId,
-                starredCase: false
-            );
-            Map<String, dynamic> response =
-            await APIRepository.apiRequest(
+            var postData =
+                UpdateStaredCase(caseId: state.caseId, starredCase: false);
+            Map<String, dynamic> response = await APIRepository.apiRequest(
               APIRequestType.POST,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),

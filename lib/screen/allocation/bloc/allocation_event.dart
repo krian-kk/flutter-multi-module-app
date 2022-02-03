@@ -57,6 +57,11 @@ class UpdateStaredCaseEvent extends AllocationEvent {
 
 class CallSuccessfullyConnectedEvent extends AllocationEvent {}
 
+class UpdateNewValuesEvent extends AllocationEvent {
+  final String paramValue;
+  UpdateNewValuesEvent(this.paramValue);
+}
+
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
 
 class StartCallingEvent extends AllocationEvent {

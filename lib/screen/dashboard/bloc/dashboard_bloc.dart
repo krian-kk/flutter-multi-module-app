@@ -642,6 +642,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield NavigateCaseDetailState(paramValues: event.paramValues);
     }
 
+    if (event is UpdateUnTouchedCasesEvent) {
+      // untouchedCasesData.result!.count! + 1;
+    }
+
     if (event is NavigateSearchEvent) {
       yield NavigateSearchState();
     }

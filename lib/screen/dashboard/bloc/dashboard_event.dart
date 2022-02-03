@@ -79,3 +79,8 @@ class PostSelfreleaseDataEvent extends DashboardEvent {
 class HelpEvent extends DashboardEvent {}
 
 class NoInternetConnectionEvent extends DashboardEvent {}
+
+class UpdateUnTouchedCasesEvent extends DashboardEvent {
+  final String caseId;
+  UpdateUnTouchedCasesEvent(this.caseId);
+}

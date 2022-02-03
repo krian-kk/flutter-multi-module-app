@@ -10,6 +10,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -31,6 +32,7 @@ class CustomRepoBottomSheet extends StatefulWidget {
     Key? key,
     required this.caseId,
     required this.customerLoanUserWidget,
+    required this.bloc,
     this.postValue,
     required this.userType,
     required this.health,
@@ -41,6 +43,7 @@ class CustomRepoBottomSheet extends StatefulWidget {
   final String userType;
   final dynamic postValue;
   final String health;
+  final CaseDetailsBloc bloc;
 
   @override
   State<CustomRepoBottomSheet> createState() => _CustomRepoBottomSheetState();
@@ -398,6 +401,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   formDatas: FormData.fromMap(postdata),
                                 );
                                 if (postResult[Constants.success]) {
+                                  widget.bloc.add(ChangeIsSubmitEvent());
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);
                                   Navigator.pop(context);

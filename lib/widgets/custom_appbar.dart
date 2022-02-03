@@ -99,7 +99,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                           fontSize: FontSize.sixteen),
                     )
                   : Container(
-                      margin: EdgeInsets.only(left: 10),
+                      margin: const EdgeInsets.only(left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -419,13 +419,11 @@ class _CustomAppbarState extends State<CustomAppbar> {
   Widget? leadingIcon(BuildContext context) {
     Widget? leadingView;
     if (widget.iconEnumValues!.iconsString != IconEnum.empty.toString()) {
-      leadingView = Container(
-        child: GestureDetector(
-          child: widget.iconEnumValues!.icons,
-          onTap: () {
-            widget.onItemSelected!(widget.iconEnumValues!.iconsString);
-          },
-        ),
+      leadingView = GestureDetector(
+        child: widget.iconEnumValues!.icons,
+        onTap: () {
+          widget.onItemSelected!(widget.iconEnumValues!.iconsString);
+        },
       );
     }
     return leadingView;
