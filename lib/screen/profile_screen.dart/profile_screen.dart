@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -641,25 +640,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   messageShowBottomSheet({String? fromID, String? toID}) {
     showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
         ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.86,
-                    child: ChatScreen(
-                        fromARefId: fromID,
-                        toARefId: toID,
-                        agentImage: Image.memory(profileImage!).image))));
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (BuildContext buildContext, StateSetter setState) => SizedBox(
+          height: MediaQuery.of(context).size.height * 0.86,
+          child: ChatScreen(
+              fromARefId: fromID,
+              toARefId: toID,
+              agentImage: profileImage != null
+                  ? Image.memory(profileImage!).image
+                  : null),
+        ),
+      ),
+    );
     // MessageChatRoomScreen(bloc)
   }
 
