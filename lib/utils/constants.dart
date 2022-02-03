@@ -4,9 +4,11 @@ class Constants {
   static const String pageNo = '1';
   static const String limit = '10';
   static const String help = 'Help';
+  //Distance Filter
   static const String allDisMeters = '100000';
   static const String maxDisMeters = '10000';
   static const String minDisMeters = '5000';
+  static const String approx = 'Approx';
   // Type of userType
   static const String fieldagent = 'FIELDAGENT';
   static const String telecaller = 'TELECALLER';
