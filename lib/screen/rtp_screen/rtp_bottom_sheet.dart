@@ -297,8 +297,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                       Singleton.instance.callerServiceID ?? '',
                                   callingID: Singleton.instance.callingID,
                                 );
-                                print(
-                                    'Response Date => ${jsonEncode(requestBodyData)}');
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
                                         APIRequestType.POST,

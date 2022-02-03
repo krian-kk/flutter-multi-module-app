@@ -148,7 +148,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("address invalid iscall ===> false");
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
               widget.bloc.caseDetailsAPIValue.result?.addressDetails, false,
               health: '0'));

@@ -17,8 +17,6 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -244,7 +242,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: BlocBuilder<DashboardBloc, DashboardState>(
             bloc: bloc,
             builder: (BuildContext context, DashboardState state) {
-              print("refressehed ============>");
               if (state is DashboardLoadingState) {
                 return const CustomLoadingWidget();
               }
@@ -678,8 +675,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           elevation: 2,
                                                           shape:
                                                               RoundedRectangleBorder(
-                                                            // ignore: prefer_const_constructors
-                                                            side: BorderSide(
+                                                            side: const BorderSide(
                                                                 color: ColorResource
                                                                     .colorDADADA,
                                                                 width: 0.5),

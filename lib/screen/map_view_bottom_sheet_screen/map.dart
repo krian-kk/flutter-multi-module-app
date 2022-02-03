@@ -24,7 +24,7 @@ enum TravelModes { driving, bicycling, transit, walking }
 
 class MapNavigation extends StatefulWidget {
   final List<dynamic>? multipleLatLong;
-  MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
+  const MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
   @override
   _MapNavigationState createState() => _MapNavigationState();
 }

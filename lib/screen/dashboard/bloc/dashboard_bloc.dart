@@ -10,7 +10,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/models/dashboard_card_count_model.dart';
 import 'package:origa/models/dashboard_event_count_model/dashboard_event_count_model.dart';
-import 'package:origa/models/dashboard_event_count_model/result.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';

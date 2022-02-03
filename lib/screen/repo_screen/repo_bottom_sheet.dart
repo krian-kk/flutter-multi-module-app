@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
@@ -376,8 +374,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       heading: position.heading,
                                       speed: position.speed,
                                     ));
-                                print(
-                                    'Response Date => ${jsonEncode(requestBodyData)}');
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
@@ -390,16 +386,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                 for (var element in uploadFileLists) {
                                   value.add(await MultipartFile.fromFile(
                                       element.path.toString()));
-                                  // postdata.addAll({
-                                  //   'files': await MultipartFile.fromFile(
-                                  //       element.path.toString()),
-                                  //   // DioClient.listOfMultiPart(uploadFileLists)
-                                  // });
-                                  print("image path vale ==>${value}");
                                 }
                                 postdata.addAll({
                                   'files': value,
-                                  // DioClient.listOfMultiPart(uploadFileLists)
                                 });
 
                                 Map<String, dynamic> postResult =
@@ -407,8 +396,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   APIRequestType.UPLOAD,
                                   HttpUrl.repoPostUrl('repo', widget.userType),
                                   formDatas: FormData.fromMap(postdata),
-                                  // requestBodydata:
-                                  //     jsonEncode(requestBodyData.toJson()),
                                 );
                                 if (postResult[Constants.success]) {
                                   AppUtils.topSnackBar(

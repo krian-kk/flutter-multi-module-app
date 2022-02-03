@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/widgets/case_list_widget.dart';
@@ -65,11 +64,9 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
                   },
                 ),
                 body: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     BottomSheetAppbar(
-                      title: Languages.of(context)!.untouchedCases,
-                    ),
+                        title: Languages.of(context)!.untouchedCases),
                     widget.bloc.isShowSearchResult
                         ? widget.bloc.searchResultList.isNotEmpty
                             ? Expanded(

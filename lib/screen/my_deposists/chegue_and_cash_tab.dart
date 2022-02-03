@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -14,7 +12,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'deposistion_mode/deposistion_mode.dart';
 
 class SelectedValue {
-  String _id;
+  final String _id;
   bool isSelected;
   SelectedValue(this._id, this.isSelected);
 }
@@ -106,7 +104,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
           ),
         ),
         body: Column(
-          // ignore: prefer_const_literals_to_create_immutables
           children: [
             Expanded(
               child: Padding(

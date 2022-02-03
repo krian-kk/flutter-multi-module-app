@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:origa/utils/base_equatable.dart';
 
 class ChatScreenEvent extends BaseEquatable {}

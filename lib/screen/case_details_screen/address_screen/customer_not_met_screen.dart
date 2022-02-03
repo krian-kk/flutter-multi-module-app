@@ -196,7 +196,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("customer not met iscall ===> false");
           widget.bloc.add(
             ClickOpenBottomSheetEvent(
               element.stringResourceValue,

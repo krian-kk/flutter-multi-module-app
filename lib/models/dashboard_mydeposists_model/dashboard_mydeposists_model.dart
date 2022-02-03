@@ -111,7 +111,7 @@ class Cases {
 }
 
 class EventAttr {
-  dynamic? amountCollected;
+  dynamic amountCollected;
   String? date;
   String? mode;
   String? customerName;

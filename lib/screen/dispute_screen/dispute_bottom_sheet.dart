@@ -275,8 +275,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       Singleton.instance.contactId_0 ?? '',
                                 ),
                               );
-                              print(
-                                  'Response Date => ${jsonEncode(requestBodyData)}');
                               Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                       APIRequestType.POST,

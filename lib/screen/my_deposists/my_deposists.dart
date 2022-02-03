@@ -84,7 +84,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                         // ),
                         body: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             BottomSheetAppbar(
                               title: Languages.of(context)!.myDeposists,

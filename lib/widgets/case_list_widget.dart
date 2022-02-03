@@ -18,8 +18,6 @@ class CaseLists {
     DashboardBloc bloc,
     DashboardAllModels listData,
   ) {
-    print('----------nk---------');
-    print(listData.result);
     return bloc.selectedFilterDataLoading
         ? const CustomLoadingWidget()
         : listData.result == null || listData.result!.cases!.isEmpty

@@ -108,14 +108,11 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                       ),
                       body: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        // ignore: prefer_const_literals_to_create_immutables
                         children: [
                           BottomSheetAppbar(
                             title: Languages.of(context)!.yardingSelfRelease,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(

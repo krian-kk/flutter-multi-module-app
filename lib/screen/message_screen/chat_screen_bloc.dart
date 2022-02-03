@@ -21,8 +21,8 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
             APIRequestType.GET, HttpUrl.chatHistory);
 
         if (chatHistory[Constants.success]) {
-          print("Chat History  from instalmint API");
-          print(chatHistory['data']);
+          print(
+              "Chat History  from instalmint API == > ${chatHistory['data']}");
         } else {}
       }
 

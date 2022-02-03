@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -53,8 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void getAddress() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     addressValue = (_pref.getString('addressValue') ?? '').toString();
-    print("-----------addressValue");
-    print(addressValue);
+    print("Address Value Is => $addressValue");
   }
 
   Future pickImage(

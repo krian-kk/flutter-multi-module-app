@@ -90,7 +90,6 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                   ),
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       BottomSheetAppbar(
                         title: Languages.of(context)!.myReceipts,

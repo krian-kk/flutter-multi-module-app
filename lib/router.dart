@@ -143,7 +143,7 @@ class PageBuilder {
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<ChatScreenBloc>(context)..add(ChatInitialEvent()),
-      child: ChatScreen(),
+      child: const ChatScreen(),
     );
   }
 

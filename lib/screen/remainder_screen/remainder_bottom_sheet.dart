@@ -284,8 +284,6 @@ class _CustomRemainderBottomSheetState
                                 callID: Singleton.instance.callID,
                                 callingID: Singleton.instance.callingID,
                               );
-                              print(
-                                  'Response Date => ${jsonEncode(requestBodyData)}');
                               Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                 APIRequestType.POST,

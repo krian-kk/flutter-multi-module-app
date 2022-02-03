@@ -4,7 +4,7 @@ import 'repayment_info.dart';
 
 class CaseDetails {
   String? id;
-  dynamic? pos;
+  dynamic pos;
   dynamic due;
   String? cust;
   dynamic odVal;
