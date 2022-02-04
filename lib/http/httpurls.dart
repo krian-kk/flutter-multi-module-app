@@ -29,7 +29,7 @@ class HttpUrl {
   static String resetPasswordCheckUrl(String agentName) =>
       'https://collect.instalmint.com/node/field-allocation/agents/info/$agentName';
   static const String sendSMSurl =
-    'https://collect.instalmint.com/node/api/v2/notification/sendNotification';
+      'https://collect.instalmint.com/node/api/v2/notification/sendNotification';
 
   //Get API
   static const String dashboardUrl =
@@ -40,6 +40,8 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
   static const String voiceAgencyDetailsUrl =
       baseUrl + version + fieldAgent + 'profile/voiceAgencyDetails';
+  static const String agentInformation =
+      baseUrl + version + fieldAgent + 'profile/agentDetails?';
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl +
       version +
