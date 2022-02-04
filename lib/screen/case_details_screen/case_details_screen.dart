@@ -70,6 +70,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             // Navigator.pop(context);
           }
+          if (state is UpdateSuccessfullState) {
+            setState(() {});
+          }
           if (state is ClickMainAddressBottomSheetState) {
             // Navigator.pop(context);
             addressBottomSheet(context, bloc, state.i);

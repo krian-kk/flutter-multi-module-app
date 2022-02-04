@@ -90,28 +90,23 @@ class AutoCalling {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               CustomText(
                 Languages.of(context)!.customer.toUpperCase(),
                 color: ColorResource.color23375A,
                 fontSize: FontSize.ten,
                 fontWeight: FontWeight.w700,
               ),
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5),
               LinearPercentIndicator(
-                // width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                 animation: true,
                 lineHeight: 12.0,
                 animationDuration: 2500,
                 percent: (bloc.customerCount / bloc.totalCount),
-                // center: Text("80.0%"),
                 linearStrokeCap: LinearStrokeCap.roundAll,
                 progressColor: ColorResource.colorEA6D48,
                 backgroundColor: ColorResource.colorD3D7DE,
@@ -133,35 +128,20 @@ class AutoCalling {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               CustomText(
                 Languages.of(context)!.customer.toUpperCase(),
                 color: ColorResource.color23375A,
                 fontSize: FontSize.fourteen,
                 fontWeight: FontWeight.w700,
               ),
-              const SizedBox(
-                height: 5,
-              ),
-              //
-              // for (var item in bloc.mobileNumberList)
+              const SizedBox(height: 5),
               ListView.builder(
                   shrinkWrap: true,
+                  primary: false,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: bloc.resultList.length,
                   itemBuilder: (context, indexs) {
-                    // print(bloc.resultList.length);
-                    // List<Address> listOfValue = [];
-                    // bloc.resultList[index].address?.forEach((element) {
-                    //   print(index);
-                    //   if (element.cType == 'mobile') {
-                    //     listOfValue.add(element);
-                    //   }
-                    // });
-                    // print('List Of Value => ${listOfValue}');
-                    // print(
-                    //     'allocaiton Valeu => ${bloc.resultList.first.address?[1].value}');
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 20.0),
                       child: Container(
@@ -174,10 +154,8 @@ class AutoCalling {
                           boxShadow: const [
                             BoxShadow(
                               color: Color.fromRGBO(0, 0, 0, 0.25),
-                              // spreadRadius: 1,
                               blurRadius: 2,
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),

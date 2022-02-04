@@ -345,6 +345,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ChangeIsSubmitEvent) {
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       isEventSubmited = true;
+      yield UpdateSuccessfullState();
     }
     if (event is ClickOpenBottomSheetEvent) {
       switch (event.title) {
@@ -675,8 +676,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
       }
       if (resultValue[Constants.success]) {
-        isEventSubmited = true;
-        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+        if (userType == Constants.telecaller) {
+          isEventSubmited = true;
+          caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+        }
         if (isAutoCalling) {
           allocationBloc.add(StartCallingEvent(
             customerIndex: paramValue['customerIndex'],
@@ -955,8 +958,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
-      isEventSubmited = true;
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      if (userType == Constants.telecaller) {
+        isEventSubmited = true;
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      }
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
@@ -1026,6 +1031,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (await postResult[Constants.success]) {
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1103,6 +1109,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (await postResult[Constants.success]) {
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }
@@ -1144,8 +1151,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
-      isEventSubmited = true;
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      if (userType == Constants.telecaller) {
+        isEventSubmited = true;
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      }
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
     }

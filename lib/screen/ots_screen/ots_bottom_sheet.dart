@@ -451,7 +451,11 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   );
 
                                   if (postResult[Constants.success]) {
-                                    widget.bloc.add(ChangeIsSubmitEvent());
+                                    if (!(widget.userType ==
+                                            Constants.fieldagent &&
+                                        widget.isCall!)) {
+                                      widget.bloc.add(ChangeIsSubmitEvent());
+                                    }
                                     if (widget.isAutoCalling) {
                                       Navigator.pop(
                                           widget.paramValue['context']);
