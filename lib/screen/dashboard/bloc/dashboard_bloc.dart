@@ -647,6 +647,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       untouchedCasesData.result!.count = untouchedCasesData.result!.count! - 1;
       dashboardList[1].count =
           (int.parse(dashboardList[1].count!) - 1).toString();
+      dashboardList[4].count =
+          (int.parse(dashboardList[4].count!) + 1).toString();
       untouchedCasesData.result?.cases?.forEach((element) {
         if (element.caseId == event.caseId) {
           dashboardList[1].amountRs =
