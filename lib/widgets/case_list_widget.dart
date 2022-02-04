@@ -14,10 +14,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
 class CaseLists {
-  static Widget buildListView(
-    DashboardBloc bloc,
-    DashboardAllModels listData,
-  ) {
+  static Widget buildListView(DashboardBloc bloc, DashboardAllModels listData,
+      {bool untouchedCases = false}) {
     return bloc.selectedFilterDataLoading
         ? const CustomLoadingWidget()
         : listData.result == null || listData.result!.cases!.isEmpty
@@ -93,9 +91,12 @@ class CaseLists {
                         padding: const EdgeInsets.only(top: 20),
                         child: InkWell(
                           onTap: () {
-                            bloc.add(NavigateCaseDetailEvent(paramValues: {
-                              'caseID': listData.result!.cases![index].caseId,
-                            }));
+                            bloc.add(NavigateCaseDetailEvent(
+                              paramValues: {
+                                'caseID': listData.result!.cases![index].caseId,
+                              },
+                              isUnTouched: untouchedCases,
+                            ));
                             Singleton.instance.agrRef =
                                 listData.result!.cases![index].agrRef ?? '';
                           },

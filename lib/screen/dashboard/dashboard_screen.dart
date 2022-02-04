@@ -187,30 +187,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (state is SetTimeperiodValueState) {
             bloc.selectedFilter = 'TODAY';
           }
-
           if (state is PostDataApiSuccessState) {
             while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);
           }
-
           if (state is NoInternetConnectionState) {
             AppUtils.noInternetSnackbar(context);
           }
-
           if (state is PriorityFollowState) {
             priorityFollowUpSheet(context);
           }
-
           if (state is UntouchedCasesState) {
             untouchedCasesSheet(context);
           }
-
+          if (state is UpdateSuccessfulState) {
+            setState(() {});
+          }
           if (state is BrokenPTPState) {
             brokenPTPSheet(context);
           }
-
           if (state is MyReceiptsState) {
             myReceiptsSheet(context);
           }
@@ -235,8 +232,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             );
             RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
+
             if (retrunModelValue.isSubmit) {
-              bloc.add(UpdateUnTouchedCasesEvent(retrunModelValue.caseId));
+              if (state.unTouched) {
+                bloc.add(UpdateUnTouchedCasesEvent(retrunModelValue.caseId));
+              }
             }
           }
 

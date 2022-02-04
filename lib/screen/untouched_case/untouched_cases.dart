@@ -40,6 +40,9 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
             widget.bloc.isShowSearchResult = true;
           });
         }
+        if (state is UpdateSuccessfulState) {
+          setState(() {});
+        }
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -94,7 +97,10 @@ class _UntouchedCasesBottomSheetState extends State<UntouchedCasesBottomSheet> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: CaseLists.buildListView(
-                                  widget.bloc, widget.bloc.untouchedCasesData),
+                                widget.bloc,
+                                widget.bloc.untouchedCasesData,
+                                untouchedCases: true,
+                              ),
                             ),
                           )
                   ],

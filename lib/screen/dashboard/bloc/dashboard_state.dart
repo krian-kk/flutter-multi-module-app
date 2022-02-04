@@ -25,6 +25,7 @@ class MyVisitsState extends DashboardState {}
 
 class ReturnVisitsApiState extends DashboardState {
   final dynamic returnData;
+
   ReturnVisitsApiState({this.returnData});
 }
 
@@ -34,7 +35,8 @@ class YardingAndSelfReleaseState extends DashboardState {}
 
 class NavigateCaseDetailState extends DashboardState {
   final dynamic paramValues;
-  NavigateCaseDetailState({this.paramValues});
+  final bool unTouched;
+  NavigateCaseDetailState({this.paramValues, this.unTouched = false});
 }
 
 class NavigateSearchState extends DashboardState {}
@@ -73,3 +75,5 @@ class EnableRSYardingSubmitBtnState extends DashboardState {}
 class DisableRSSelfReleaseSubmitBtnState extends DashboardState {}
 
 class EnableRSSelfReleaseSubmitBtnState extends DashboardState {}
+
+class UpdateSuccessfulState extends DashboardState {}

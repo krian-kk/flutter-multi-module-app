@@ -38,7 +38,8 @@ class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
 class NavigateCaseDetailEvent extends DashboardEvent {
   final dynamic paramValues;
-  NavigateCaseDetailEvent({this.paramValues});
+  final bool isUnTouched;
+  NavigateCaseDetailEvent({this.paramValues, this.isUnTouched = false});
 }
 
 class NavigateSearchEvent extends DashboardEvent {}

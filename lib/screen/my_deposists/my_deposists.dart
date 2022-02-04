@@ -278,7 +278,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
         //   default:
         // }
         widget.bloc.add(DeposistsApiEvent(timePeiod: option));
-        print(option);
       },
       child: Card(
         shape: RoundedRectangleBorder(

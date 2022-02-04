@@ -120,8 +120,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           dashboardCardCounts =
               DashboardCardCount.fromJson(dashboardData['data']);
 
-          print(dashboardCardCounts.result?.notMet?.count);
-
           mtdCaseCompleted = dashboardCardCounts.result?.mtdCases!.completed;
           mtdCaseTotal = dashboardCardCounts.result?.mtdCases!.total;
           mtdAmountCompleted = dashboardCardCounts.result?.mtdAmount!.completed;
@@ -550,7 +548,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.UPLOAD,
         HttpUrl.bankDeposit + "userType=$userType",
@@ -575,7 +572,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.UPLOAD,
         HttpUrl.companyBranchDeposit + "userType=$userType",
@@ -600,7 +596,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.UPLOAD,
         HttpUrl.yarding + "userType=$userType",
@@ -625,7 +620,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.UPLOAD,
         HttpUrl.selfRelease + "userType=$userType",
@@ -639,11 +633,32 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is NavigateCaseDetailEvent) {
-      yield NavigateCaseDetailState(paramValues: event.paramValues);
+      yield NavigateCaseDetailState(
+        paramValues: event.paramValues,
+        unTouched: event.isUnTouched,
+      );
     }
 
     if (event is UpdateUnTouchedCasesEvent) {
-      // untouchedCasesData.result!.count! + 1;
+      // List l1 = [1, 2, 3, 4, 5, 6, 67, 7, 4, 5, 6];
+      // l1.removeWhere((element) => element == 4);
+      // print(l1);
+
+      untouchedCasesData.result!.count = untouchedCasesData.result!.count! - 1;
+      dashboardList[1].count =
+          (int.parse(dashboardList[1].count!) - 1).toString();
+      untouchedCasesData.result?.cases?.forEach((element) {
+        if (element.caseId == event.caseId) {
+          dashboardList[1].amountRs =
+              (int.parse(dashboardList[1].amountRs!) - element.due).toString();
+          untouchedCasesData.result!.totalAmt =
+              untouchedCasesData.result!.totalAmt! - element.due;
+        }
+      });
+      untouchedCasesData.result!.cases!
+          .removeWhere((element) => element.caseId == event.caseId);
+
+      yield UpdateSuccessfulState();
     }
 
     if (event is NavigateSearchEvent) {
