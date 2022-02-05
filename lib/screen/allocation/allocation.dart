@@ -669,30 +669,28 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is UpdateStaredCaseState) {
-          if(state.isStared) {
-            var postData = UpdateStaredCase(
-                caseId: state.caseId,
-                starredCase: true
-            );
-            Map<String, dynamic> response =
+          if (state.isStared) {
+            setState(() {
+              bloc.starCount++;
+            });
+            var postData =
+                UpdateStaredCase(caseId: state.caseId, starredCase: true);
             await APIRepository.apiRequest(
               APIRequestType.POST,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
-            bloc.starCount++;
           } else {
-            var postData = UpdateStaredCase(
-                caseId: state.caseId,
-                starredCase: false
-            );
-            Map<String, dynamic> response =
+            setState(() {
+              bloc.starCount--;
+            });
+            var postData =
+                UpdateStaredCase(caseId: state.caseId, starredCase: false);
             await APIRepository.apiRequest(
               APIRequestType.POST,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
-            bloc.starCount--;
           }
         }
 
