@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:origa/http/dio_client.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';

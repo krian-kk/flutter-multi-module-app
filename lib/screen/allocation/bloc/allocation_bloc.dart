@@ -11,11 +11,9 @@ import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
-// import 'package:origa/models/build_route_model/build_route_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
-import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -444,6 +442,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         });
       }
       yield BuildRouteLoadMoreState(successResponse: resultList);
+    }
+
+    if (event is UpdateNewValuesEvent) {
+      resultList.asMap().forEach((index, value) {
+        print(event.paramValue);
+        if (value.caseId == event.paramValue) {
+          value.collSubStatus = 'used';
+        }
+      });
+      yield UpdateNewValueState();
     }
 
     if (event is MapViewEvent) {

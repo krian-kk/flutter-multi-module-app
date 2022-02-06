@@ -1,5 +1,3 @@
-// ignore: avoid_classes_with_only_static_members
-
 class Validator {
   static final RegExp _emailRegExp = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
@@ -28,12 +26,10 @@ class Validator {
           final int? letterCount = int.tryParse(rule.replaceAll('min:', ''));
           if (input.length < letterCount!) {
             return ValidationState(
-                // ignore: avoid_redundant_argument_values
                 status: false,
                 error: 'Value should be min $letterCount character long');
           }
         } catch (_) {
-          // ignore: avoid_redundant_argument_values
           return ValidationState(status: false, error: ' - $rule is incorrect');
         }
       }
@@ -41,7 +37,6 @@ class Validator {
       if (rule == 'number_only') {
         final RegExp regex = RegExp(r'(\d+)');
         if (!regex.hasMatch(input)) {
-          // ignore: avoid_redundant_argument_values
           return ValidationState(status: false, error: 'Value is not a number');
         }
       }

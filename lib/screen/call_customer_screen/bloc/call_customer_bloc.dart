@@ -47,7 +47,6 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
                     '';
             if (voiceAgencyDetails
                 .result!.voiceAgencyData!.first.callerIds!.isNotEmpty) {
-              print("0987654321-------");
               callersIDDropdownList = voiceAgencyDetails
                   .result!.voiceAgencyData!.first.callerIds!
                   .cast<String>();
@@ -57,7 +56,6 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
               Singleton.instance.callingID = voiceAgencyDetails
                   .result!.voiceAgencyData!.first.callerIds!.first;
             } else {
-              print("----------0987654321-------");
               Singleton.instance.callingID = null;
             }
 

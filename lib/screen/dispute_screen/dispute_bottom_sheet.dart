@@ -9,6 +9,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -32,6 +33,7 @@ class CustomDisputeBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
+    required this.bloc,
     this.postValue,
     this.isCall,
     this.isAutoCalling = false,
@@ -47,6 +49,7 @@ class CustomDisputeBottomSheet extends StatefulWidget {
   final bool isAutoCalling;
   final AllocationBloc? allocationBloc;
   final dynamic paramValue;
+  final CaseDetailsBloc bloc;
 
   @override
   State<CustomDisputeBottomSheet> createState() =>
@@ -275,8 +278,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       Singleton.instance.contactId_0 ?? '',
                                 ),
                               );
-                              print(
-                                  'Response Date => ${jsonEncode(requestBodyData)}');
                               Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                       APIRequestType.POST,
@@ -287,6 +288,10 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       requestBodydata:
                                           jsonEncode(requestBodyData));
                               if (postResult[Constants.success]) {
+                                if (!(widget.userType == Constants.fieldagent &&
+                                    widget.isCall!)) {
+                                  widget.bloc.add(ChangeIsSubmitEvent());
+                                }
                                 if (widget.isAutoCalling) {
                                   Navigator.pop(widget.paramValue['context']);
                                   Navigator.pop(widget.paramValue['context']);

@@ -3,13 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/authentication/authentication_bloc.dart';
-import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/http/dio_client.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
-import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -140,7 +136,7 @@ class APIRepository {
           Navigator.pop(Singleton.instance.buildContext!);
         }
         apiErrorStatus(
-            ErrorString: error.toString(), position: ToastGravity.CENTER);
+            errorString: error.toString(), position: ToastGravity.CENTER);
       }
 
       if (e.response != null) {
@@ -166,18 +162,18 @@ class APIRepository {
                 AppRoutes.loginScreen, (route) => false);
           }
           apiErrorStatus(
-              ErrorString: errVal ?? e.response!.data['message'],
+              errorString: errVal ?? e.response!.data['message'],
               position: ToastGravity.BOTTOM);
         } else if (e.response!.statusCode == 502) {
           //  server not response --> api not working
           invalidAccessServerError = Constants.internalServerError;
           apiErrorStatus(
-              ErrorString: Constants.internalServerError,
+              errorString: Constants.internalServerError,
               position: ToastGravity.BOTTOM);
         } else if (e.response!.statusCode == 400) {
           //Event address not present
           apiErrorStatus(
-              ErrorString: e.response!.data['message'] ?? '',
+              errorString: e.response!.data['message'] ?? '',
               position: ToastGravity.BOTTOM);
         }
       }
@@ -190,7 +186,7 @@ class APIRepository {
 
       returnValue = {
         'success': false,
-        'data': invalidAccessServerError != null
+        'data': (invalidAccessServerError != null)
             ? invalidAccessServerError
             : e.response != null
                 ? e.response!.data
@@ -202,9 +198,9 @@ class APIRepository {
     return returnValue;
   }
 
-  static void apiErrorStatus({String? ErrorString, ToastGravity? position}) {
+  static void apiErrorStatus({String? errorString, ToastGravity? position}) {
     Fluttertoast.showToast(
-        msg: ErrorString!,
+        msg: errorString!,
         toastLength: Toast.LENGTH_LONG,
         gravity: position ?? ToastGravity.CENTER,
         timeInSecForIosWeb: 3,

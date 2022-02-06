@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -16,19 +15,16 @@ import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_mode
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/return_value_model.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
-import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
-import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -168,7 +164,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
   void _loadMore() async {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
       if (bloc.hasNextPage) {
-        print("---------Nnadha---------");
         if (bloc.isShowSearchPincode) {
         } else if (bloc.isPriorityLoadMore) {
           bloc.page += 1;
@@ -417,31 +412,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           messageShowBottomSheet();
         }
         if (state is StartCallingState) {
-          print('dkdl');
           if (bloc.customerCount < bloc.totalCount) {
-            // SharedPreferences _prefs = await SharedPreferences.getInstance();
-            // int autoCallingIndexValue;
-            // int autoCallingSubIndexValue;
-            // autoCallingIndexValue = _prefs.getInt('autoCallingIndexValue') ?? 0;
-            // autoCallingSubIndexValue =
-            //     _prefs.getInt('autoCallingSubIndexValue') ?? 0;
-            // print('AutoCalling Index Value => ${autoCallingIndexValue}');
-            // print('AutoCalling Sub Index Value => ${autoCallingSubIndexValue}');
-
-            // bloc.resultList
-            //     .asMap()
-            //     .forEach((index, element) {
-            //   element.address
-            //       ?.asMap()
-            //       .forEach((subIndex, value) {
-            //     // if (value.cType == 'mobile') {
-            //     _prefs.setInt(
-            //         'autoCallingIndexValue', index);
-            //     _prefs.setInt(
-            //         'autoCallingSubIndexValue', subIndex);
-            //     // }
-            //   });
-            // });
             Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
                     APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
@@ -450,11 +421,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
                 AgencyDetailsModel voiceAgencyDetails =
                     AgencyDetailsModel.fromJson(jsonData);
-                print(
-                    'voiceAgent => ${jsonEncode(voiceAgencyDetails.result?.agentAgencyContact)}');
                 if (state.customerIndex! < bloc.resultList.length) {
-                  print(
-                      '----------------------------------------> ${state.customerIndex!}');
                   List<Address> tempMobileList = [];
                   bloc.resultList[state.customerIndex!].address
                       ?.asMap()
@@ -577,7 +544,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
                 // else {}
               } else {
-                print('dkdk');
                 // AppUtils.makePhoneCall(
                 //   'tel:' + '6374578994',
                 // );
@@ -587,10 +553,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
             AppUtils.showToast('Auto Calling is Complete');
           }
         }
+        if (state is UpdateNewValueState) {
+          setState(() {});
+        }
 
         if (state is NavigateCaseDetailState) {
-          Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+          dynamic returnValue = await Navigator.pushNamed(
+              context, AppRoutes.caseDetailsScreen,
               arguments: state.paramValues);
+          RetrunValueModel retrunModelValue =
+              RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
+
+          if (retrunModelValue.isSubmit) {
+            bloc.add(UpdateNewValuesEvent(retrunModelValue.caseId));
+          }
         }
         if (state is NavigateSearchPageState) {
           final dynamic returnValue =
@@ -795,8 +771,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       child: Container(
                                         height: 26,
                                         width: 26,
-                                        // ignore: prefer_const_constructors
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: ColorResource.colorFFFFFF,
                                           shape: BoxShape.circle,
                                         ),

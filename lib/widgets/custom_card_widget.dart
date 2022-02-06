@@ -19,8 +19,6 @@ class CustomCard extends StatefulWidget {
   dynamic price;
   dynamic count;
 
-  GlobalKey<_CustomCardState> _myKey = GlobalKey();
-
   CustomCard({
     Key? key,
     this.semanticContainer = true,
@@ -39,7 +37,7 @@ class CustomCard extends StatefulWidget {
     this.price,
     this.elevation,
     this.child,
-  });
+  }) : super(key: key);
 
   @override
   _CustomCardState createState() => _CustomCardState();

@@ -14,11 +14,12 @@ import 'app_utils.dart';
 class MapUtils {
   MapUtils._();
 
-  static Future<void> openMap(
-      {required double startLatitude,
-      required double startLongitude,
-      required double destinationLatitude,
-      required double destinationLongitude}) async {
+  static Future<void> openMap({
+    required double startLatitude,
+    required double startLongitude,
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
     if (Platform.isAndroid) {
       String googleUrl =
           'https://www.google.com/maps/dir/?api=1&origin=$startLatitude,$startLongitude&destination=$destinationLatitude,$destinationLongitude&travelmode=driving&dir_action=navigate';
@@ -54,9 +55,11 @@ class MapUtils {
 
       Map<String, dynamic> getAddressToLatlng =
           await APIRepository.apiRequest(APIRequestType.GET, geocodeURL);
+
       getLocationLatLng =
           LocationConverterModel.fromJson(getAddressToLatlng['data']);
-      addressToLatlngValue = getLocationLatLng.results![0].geometry!.location;
+      addressToLatlngValue =
+          getLocationLatLng.results!.first.geometry!.location;
     } catch (e) {
       // print(e);
       AppUtils.showToast("Invalid Address");
@@ -68,7 +71,6 @@ class MapUtils {
   static Future<Position> getCurrentLocation() async {
     Position? currentLocation;
     LocationPermission permission = await Geolocator.checkPermission();
-    print(" checking permission ===> ${permission.toString()}");
 
     AppUtils.showToast("Loading...");
 

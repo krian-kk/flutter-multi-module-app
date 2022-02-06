@@ -10,7 +10,6 @@ import 'package:origa/models/self_release_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -154,7 +153,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                 ),
               ),
               body: Column(
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   Expanded(
                     child: Padding(
@@ -199,9 +197,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                   isEnable: true,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 7,
-                              ),
+                              const SizedBox(height: 7),
                               CustomButton(
                                 Languages.of(context)!.uploadDepositSlip,
                                 fontWeight: FontWeight.w700,

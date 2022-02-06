@@ -483,6 +483,11 @@ class _CustomOtherFeedBackBottomSheetState
                                 );
 
                                 if (postResult[Constants.success]) {
+                                  if (!(widget.userType ==
+                                          Constants.fieldagent &&
+                                      widget.isCall!)) {
+                                    widget.bloc.add(ChangeIsSubmitEvent());
+                                  }
                                   if (widget.isAutoCalling) {
                                     Navigator.pop(widget.paramValue['context']);
                                     Navigator.pop(widget.paramValue['context']);

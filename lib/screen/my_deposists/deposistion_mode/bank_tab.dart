@@ -15,7 +15,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -221,7 +220,6 @@ class _BankTabState extends State<BankTab> {
               ),
             ),
             body: Column(
-              // ignore: prefer_const_literals_to_create_immutables
               children: [
                 Expanded(
                   child: Padding(

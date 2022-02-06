@@ -11,10 +11,8 @@ import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -158,7 +156,6 @@ class _YardingTabState extends State<YardingTab> {
                 ),
               ),
               body: Column(
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   Expanded(
                     child: Padding(

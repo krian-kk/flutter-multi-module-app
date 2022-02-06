@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/return_value_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -19,9 +18,6 @@ import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart'
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
 import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -35,7 +31,6 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -74,6 +69,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           if (state is PostDataApiSuccessState) {
             AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             // Navigator.pop(context);
+          }
+          if (state is UpdateSuccessfullState) {
+            setState(() {});
           }
           if (state is ClickMainAddressBottomSheetState) {
             // Navigator.pop(context);
@@ -121,7 +119,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         iconEnumValues: IconEnum.back,
                         onItemSelected: (value) {
                           if (value == 'IconEnum.back') {
-                            Navigator.pop(context);
+                            Navigator.pop(
+                              context,
+                              {
+                                'isSubmit': bloc.isEventSubmited,
+                                'caseId': bloc.caseId!,
+                              },
+                            );
                           }
                         },
                       ),
@@ -1081,6 +1085,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,
+              bloc: bloc,
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -1098,6 +1103,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,
+              bloc: bloc,
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -1115,6 +1121,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               isCall: isCall,
+              bloc: bloc,
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -1133,10 +1140,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
 
               isCall: isCall,
+              bloc: bloc,
               // eventCode: bloc.eventCode,
             );
           case Constants.collections:
-            print(list[bloc.indexValue!]);
             return CustomCollectionsBottomSheet(
               Languages.of(context)!.collections,
               caseId: bloc.caseId.toString(),
@@ -1150,9 +1157,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
               isCall: isCall,
-              // eventCode: bloc.eventCode,
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
+              bloc: bloc,
               custName:
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
             );
@@ -1172,6 +1179,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               isCall: isCall,
               postValue: list[bloc.indexValue!],
+              bloc: bloc,
             );
           case Constants.repo:
             return CustomRepoBottomSheet(
@@ -1189,6 +1197,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
               health: health ?? ConstantEventValues.healthTwo,
+              bloc: bloc,
             );
           case Constants.captureImage:
             return CustomCaptureImageBottomSheet(
@@ -1205,8 +1214,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc: bloc,
             );
           case Constants.otherFeedback:
-            print("other feedback sheet open ===> ${isCall}");
-            print(bloc.userType);
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,
               bloc,

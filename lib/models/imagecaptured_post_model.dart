@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class PostImageCapturedModel {
   late int eventId;
   late String eventType;
