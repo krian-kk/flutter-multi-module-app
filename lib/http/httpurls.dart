@@ -40,6 +40,8 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/caseDetails?';
   static const String voiceAgencyDetailsUrl =
       baseUrl + version + fieldAgent + 'profile/voiceAgencyDetails';
+  static const String agentInformation =
+      baseUrl + version + fieldAgent + 'profile/agentDetails?';
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl +
       version +

@@ -606,17 +606,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is UpdateStaredCaseEvent) {
+      Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
         // updateStaredCase
         resultList[event.selectedStarIndex].starredCase =
             !resultList[event.selectedStarIndex].starredCase;
-
-// dddddddddddddd
-
-        print("----NK-----");
-        print(resultList[event.selectedStarIndex].starredCase);
       }
       yield UpdateStaredCaseState(
           caseId: event.caseID,

@@ -368,18 +368,22 @@ class CustomCardList {
                       ),
                     ),
                   ),
-                  if (
-                      bloc.showFilterDistance == false)
+                  if (bloc.showFilterDistance == false)
                     Container(
                       alignment: Alignment.topRight,
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child:  GestureDetector(
-                        onTap: (){
-                          bloc.add(UpdateStaredCaseEvent(selectedStarIndex: index, caseID: resultData[index].caseId!));
+                      child: GestureDetector(
+                        onTap: () {
+                          bloc.add(UpdateStaredCaseEvent(
+                              selectedStarIndex: index,
+                              caseID: resultData[index].caseId!,
+                              context: context));
                         },
-                          child: resultData[index].starredCase ?
-                            SvgPicture.asset(ImageResource.star) : SvgPicture.asset(ImageResource.unStar),),
+                        child: resultData[index].starredCase
+                            ? SvgPicture.asset(ImageResource.star)
+                            : SvgPicture.asset(ImageResource.unStar),
+                      ),
                     ),
                   // : const SizedBox(),
                 ],

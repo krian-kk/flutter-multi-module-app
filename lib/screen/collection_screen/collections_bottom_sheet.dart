@@ -481,6 +481,7 @@ class _CustomCollectionsBottomSheetState
                                     Navigator.pop(context);
                                   }
                                 } else {
+                                  setState(() => isSubmit = false);
                                   Position position = Position(
                                     longitude: 0,
                                     latitude: 0,
@@ -577,6 +578,7 @@ class _CustomCollectionsBottomSheetState
                                   postdata.addAll({
                                     'files': value,
                                   });
+                                  setState(() => isSubmit = true);
                                   DialogUtils.showDialog(
                                     buildContext: context,
                                     title: Constants.reciptsAlertMesg,

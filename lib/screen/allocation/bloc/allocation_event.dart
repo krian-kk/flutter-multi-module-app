@@ -51,8 +51,11 @@ class ShowAutoCallingEvent extends AllocationEvent {}
 class UpdateStaredCaseEvent extends AllocationEvent {
   final int selectedStarIndex;
   final String caseID;
+  final BuildContext context;
   UpdateStaredCaseEvent(
-      {required this.selectedStarIndex, required this.caseID});
+      {required this.selectedStarIndex,
+      required this.caseID,
+      required this.context});
 }
 
 class CallSuccessfullyConnectedEvent extends AllocationEvent {}
