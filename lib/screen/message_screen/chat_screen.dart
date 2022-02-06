@@ -54,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    bloc = ChatScreenBloc()..add(ChatInitialEvent());
+    bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId!));
     clientIDFromARef = widget.fromARefId;
     toARef = widget.toARefId;
     createAblyRealtimeInstance();
@@ -153,16 +153,18 @@ class _ChatScreenState extends State<ChatScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
-                                    children: const [
+                                    children: [
                                       CustomText(
-                                        'Mr. Debashish',
+                                        bloc.agentDetails.result?[0].name ??
+                                            '-',
                                         fontWeight: FontWeight.w400,
                                         fontSize: FontSize.sixteen,
                                         fontStyle: FontStyle.normal,
                                         color: ColorResource.color101010,
                                       ),
                                       CustomText(
-                                        'Sr. Manager',
+                                        bloc.agentDetails.result?[0].type ??
+                                            '-',
                                         fontWeight: FontWeight.w700,
                                         fontSize: FontSize.fourteen,
                                         fontStyle: FontStyle.normal,
@@ -250,24 +252,24 @@ class _ChatScreenState extends State<ChatScreen> {
       debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
       //When click the submit button
       //Who are all in online
-      presenceChannel!.presence
-          .subscribe(action: PresenceAction.enter)
-          .listen((ably.PresenceMessage event) async {
-        debugPrint('Who are all in online--> ${event.clientId}');
-        debugPrint('New message arrived ${event.data}');
-        if (toARef == event.clientId) {
-          //Post messages
-          // await chatChannel.publish(messages: [
-          //   ably.Message(name: clientIDFromARef, data: 'Sai'),
-          // ]).then((value) {
-          //   debugPrint('Success state-->');
-          // }).catchError((error) {
-          //   debugPrint('Error state--> ${error.toString()}');
-          // });
-        } else {
-          // Have to integrate with FCM after that message
-        }
-      });
+      // presenceChannel!.presence
+      //     .subscribe(action: PresenceAction.enter)
+      //     .listen((ably.PresenceMessage event) async {
+      //   debugPrint('Who are all in online--> ${event.clientId}');
+      //   debugPrint('New message arrived ${event.data}');
+      //   if (toARef == event.clientId) {
+      //     //Post messages
+      //     // await chatChannel.publish(messages: [
+      //     //   ably.Message(name: clientIDFromARef, data: 'Sai'),
+      //     // ]).then((value) {
+      //     //   debugPrint('Success state-->');
+      //     // }).catchError((error) {
+      //     //   debugPrint('Error state--> ${error.toString()}');
+      //     // });
+      //   } else {
+      //     // Have to integrate with FCM after that message
+      //   }
+      // });
 
       chatChannel.subscribe(name: clientIDFromARef).listen((event) {
         debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
@@ -484,24 +486,41 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: GestureDetector(
                     onTap: () {
                       if (messageController.text.trim().isNotEmpty) {
-                        chatChannel.publish(messages: [
-                          ably.Message(
-                              name: toARef, data: messageController.text),
-                        ]).then((value) {
-                          debugPrint('Success state-->111');
-                          setState(() {
-                            messageHistory.insert(
-                              0,
-                              ChatHistory(
-                                  data: messageController.text,
-                                  name: toARef,
-                                  dateTime: DateTime.now()),
-                            );
-                          });
-                          messageController.clear();
-                        }).catchError((error) {
-                          debugPrint('Error state-->111 ${error.toString()}');
-                          messageController.clear();
+                        presenceChannel!.presence
+                            .subscribe(action: PresenceAction.enter)
+                            .listen((ably.PresenceMessage event) async {
+                          debugPrint(
+                              'Who are all in online--> ${event.clientId}');
+                          debugPrint('New message arrived ${event.data}');
+                          if (toARef == event.clientId) {
+                            print("message sending progress---->");
+                            chatChannel.publish(messages: [
+                              ably.Message(
+                                  name: toARef, data: messageController.text),
+                            ]).then((value) {
+                              debugPrint('Success state-->111');
+                              if (mounted) {
+                                setState(() {
+                                  messageHistory.insert(
+                                    0,
+                                    ChatHistory(
+                                        data: messageController.text,
+                                        name: toARef,
+                                        dateTime: DateTime.now()),
+                                  );
+                                });
+                                messageController.clear();
+                              }
+                            }).catchError((error) {
+                              debugPrint('Error state--> ${error.toString()}');
+                              messageController.clear();
+                            });
+                          } else {
+                            print(
+                                "Message publish with notification ---->${event.data}");
+                            messageController.clear();
+                            // Have to integrate with FCM after that message
+                          }
                         });
                       } else {
                         debugPrint("space removed");
