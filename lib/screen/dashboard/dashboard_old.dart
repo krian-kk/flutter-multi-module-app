@@ -480,7 +480,6 @@
 //                                               : Card(
 //                                                   elevation: 2,
 //                                                   shape: RoundedRectangleBorder(
-//                                                     // ignore: prefer_const_constructors
 //                                                     side: BorderSide(
 //                                                         color: ColorResource
 //                                                             .colorDADADA,

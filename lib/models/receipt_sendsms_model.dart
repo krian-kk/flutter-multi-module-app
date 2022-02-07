@@ -30,15 +30,15 @@ class ReceiptSendSMS {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['borrowerMobile'] = this.borrowerMobile;
-    data['agrRef'] = this.agrRef;
-    data['agentRef'] = this.agentRef;
-    data['messageBody'] = this.messageBody;
-    data['type'] = this.type;
-    data['receiptAmount'] = this.receiptAmount;
-    data['receiptDate'] = this.receiptDate;
-    data['paymentMode'] = this.paymentMode;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['borrowerMobile'] = borrowerMobile;
+    data['agrRef'] = agrRef;
+    data['agentRef'] = agentRef;
+    data['messageBody'] = messageBody;
+    data['type'] = type;
+    data['receiptAmount'] = receiptAmount;
+    data['receiptDate'] = receiptDate;
+    data['paymentMode'] = paymentMode;
     return data;
   }
 }

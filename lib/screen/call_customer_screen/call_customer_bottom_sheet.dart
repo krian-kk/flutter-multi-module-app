@@ -20,7 +20,6 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;

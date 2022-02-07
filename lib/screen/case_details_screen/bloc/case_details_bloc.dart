@@ -6,37 +6,26 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hive/hive.dart';
 import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
-import 'package:origa/models/case_details_api_model/result.dart';
-import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
-import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/send_sms_model.dart';
-import 'package:origa/offline_helper/dynamic_table.dart';
-import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
-import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
-import 'package:origa/screen/case_details_screen/address_details_bottomsheet_screen.dart';
-import 'package:origa/screen/case_details_screen/call_details_bottom_sheet_screen.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
 import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -63,6 +52,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? agentName;
+  bool isEventSubmited = false;
   bool isAutoCalling = false;
 
   BuildContext? caseDetailsContext;
@@ -157,7 +147,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
       listOfAddress = event.paramValues['mobileList'];
-      print(listOfAddress?.first.cType);
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
@@ -353,6 +342,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield PushAndPOPNavigationCaseDetailsState(
           paramValues: event.paramValues);
     }
+    if (event is ChangeIsSubmitEvent) {
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      isEventSubmited = true;
+      yield UpdateSuccessfullState();
+    }
     if (event is ClickOpenBottomSheetEvent) {
       switch (event.title) {
         case Constants.eventDetails:
@@ -410,7 +404,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         // break;
         default:
       }
-      print('kdlkdlk');
       if (isAutoCalling) {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
@@ -431,9 +424,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
 
-      // print(postdata);
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.UPLOAD,
         HttpUrl.imageCaptured + "userType=$userType",
@@ -685,6 +676,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
       }
       if (resultValue[Constants.success]) {
+        if (userType == Constants.telecaller) {
+          isEventSubmited = true;
+          caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+        }
         if (isAutoCalling) {
           allocationBloc.add(StartCallingEvent(
             customerIndex: paramValue['customerIndex'],
@@ -751,6 +746,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -769,6 +765,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -787,6 +784,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -801,12 +799,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               ),
               userType: userType.toString(),
               postValue: list[indexValue!],
-
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              // eventCode: bloc.eventCode,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.collections:
             return CustomCollectionsBottomSheet(
@@ -820,13 +817,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                         0.0,
               ),
               isCall: isCall,
-              // eventCode: bloc.eventCode,
               userType: userType.toString(),
               postValue: list[indexValue!],
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.ots:
             return CustomOtsBottomSheet(
@@ -845,6 +842,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              bloc: CaseDetailsBloc(AllocationBloc()),
             );
 
           case Constants.otherFeedback:
@@ -866,6 +864,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
+              // bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
@@ -959,6 +958,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      if (userType == Constants.telecaller) {
+        isEventSubmited = true;
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      }
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
@@ -1026,7 +1029,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
-      print('===================== > ${addressCustomerNotMetSelectedDate}');
+      isEventSubmited = true;
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1102,6 +1107,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      isEventSubmited = true;
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }
@@ -1143,6 +1151,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      if (userType == Constants.telecaller) {
+        isEventSubmited = true;
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      }
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
     }

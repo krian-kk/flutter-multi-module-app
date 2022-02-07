@@ -14,7 +14,7 @@ class DashboardCardCount {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
     if (result != null) {
@@ -82,7 +82,7 @@ class DashCountResult {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (priorityFollowUp != null) {
       data['priorityFollowUp'] = priorityFollowUp!.toJson();
     }
@@ -119,7 +119,7 @@ class DashCountResult {
 
 class PriorityFollowUp {
   int? count;
-  dynamic? totalAmt;
+  dynamic totalAmt;
 
   PriorityFollowUp({this.count, this.totalAmt});
 
@@ -129,7 +129,7 @@ class PriorityFollowUp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['count'] = count;
     data['totalAmt'] = totalAmt;
     return data;
@@ -156,8 +156,8 @@ class PriorityFollowUp {
 // }
 
 class MtdCases {
-  dynamic? completed;
-  dynamic? total;
+  dynamic completed;
+  dynamic total;
 
   MtdCases({this.completed, this.total});
 
@@ -167,7 +167,7 @@ class MtdCases {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['completed'] = completed;
     data['total'] = total;
     return data;

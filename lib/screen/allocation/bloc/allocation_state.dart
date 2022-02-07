@@ -32,6 +32,8 @@ class SearchScreenNormalState extends AllocationState {}
 
 class TapAreYouAtOfficeOptionsState extends AllocationState {}
 
+class UpdateNewValueState extends AllocationState {}
+
 class TapPriorityState extends AllocationState {
   final dynamic successResponse;
   TapPriorityState({this.successResponse});

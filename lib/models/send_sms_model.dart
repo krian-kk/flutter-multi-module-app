@@ -12,10 +12,10 @@ class SendSMS {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['agrRef'] = this.agrRef;
-    data['agentRef'] = this.agentRef;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['agrRef'] = agrRef;
+    data['agentRef'] = agentRef;
+    data['type'] = type;
     return data;
   }
 }

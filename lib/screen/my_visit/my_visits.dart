@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/dashboard_all_models/case.dart';
-import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
@@ -39,9 +37,9 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   // static List<Case>? custNotMet = [];
   // static List<Case>? custInvalid = [];
 
-  static dynamic custMetTotalAmt = 0.0;
-  static dynamic custNotMetTotalAmt = 0.0;
-  static dynamic invalidTotalAmt = 0.0;
+  // static dynamic custMetTotalAmt = 0.0;
+  // static dynamic custNotMetTotalAmt = 0.0;
+  // static dynamic invalidTotalAmt = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +158,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                   ),
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       BottomSheetAppbar(
                         title: widget.bloc.userType == Constants.fieldagent

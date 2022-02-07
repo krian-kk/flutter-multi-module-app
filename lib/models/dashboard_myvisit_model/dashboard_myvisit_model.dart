@@ -8,17 +8,16 @@ class MyVisitsCaseModel {
   MyVisitsCaseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    result = json['result'] != null
-        ? new MyvistResult.fromJson(json['result'])
-        : null;
+    result =
+        json['result'] != null ? MyvistResult.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -26,7 +25,7 @@ class MyVisitsCaseModel {
 
 class MyvistResult {
   int? count;
-  dynamic? totalAmt;
+  dynamic totalAmt;
   Met? met;
   Met? notMet;
   Met? invalid;
@@ -52,17 +51,17 @@ class MyvistResult {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
-    data['totalAmt'] = this.totalAmt;
-    if (this.met != null) {
-      data['met'] = this.met!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['totalAmt'] = totalAmt;
+    if (met != null) {
+      data['met'] = met!.toJson();
     }
-    if (this.notMet != null) {
-      data['notMet'] = this.notMet!.toJson();
+    if (notMet != null) {
+      data['notMet'] = notMet!.toJson();
     }
-    if (this.invalid != null) {
-      data['invalid'] = this.invalid!.toJson();
+    if (invalid != null) {
+      data['invalid'] = invalid!.toJson();
     }
     return data;
   }
@@ -70,7 +69,7 @@ class MyvistResult {
 
 class Met {
   int? count;
-  dynamic? totalAmt;
+  dynamic totalAmt;
   List<Cases>? cases;
 
   Met({this.count, this.totalAmt, this.cases});
@@ -81,17 +80,17 @@ class Met {
     if (json['cases'] != null) {
       cases = <Cases>[];
       json['cases'].forEach((v) {
-        cases!.add(new Cases.fromJson(v));
+        cases!.add(Cases.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
-    data['totalAmt'] = this.totalAmt;
-    if (this.cases != null) {
-      data['cases'] = this.cases!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['totalAmt'] = totalAmt;
+    if (cases != null) {
+      data['cases'] = cases!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -99,10 +98,10 @@ class Met {
 
 class Cases {
   String? sId;
-  dynamic? pos;
-  dynamic? due;
-  dynamic? originalDue;
-  dynamic? odVal;
+  dynamic pos;
+  dynamic due;
+  dynamic originalDue;
+  dynamic odVal;
   String? cust;
   String? agrRef;
   String? collSubStatus;
@@ -113,7 +112,7 @@ class Cases {
   String? bankName;
   String? aRef;
   List<Contact>? contact;
-  dynamic? totalReceiptAmount;
+  dynamic totalReceiptAmount;
   String? caseId;
   String? customerId;
 
@@ -164,7 +163,7 @@ class Cases {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['pos'] = pos;
     data['due'] = due;
@@ -212,12 +211,12 @@ class Contact {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cType'] = this.cType;
-    data['health'] = this.health;
-    data['value'] = this.value;
-    data['resAddressId_0'] = this.resAddressId0;
-    data['contactId_0'] = this.contactId0;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['health'] = health;
+    data['value'] = value;
+    data['resAddressId_0'] = resAddressId0;
+    data['contactId_0'] = contactId0;
     return data;
   }
 }

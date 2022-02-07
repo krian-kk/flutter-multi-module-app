@@ -88,6 +88,8 @@ class AddedNewAddressListEvent extends CaseDetailsEvent {}
 
 class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 
+class ChangeIsSubmitEvent extends CaseDetailsEvent {}
+
 class SendSMSEvent extends CaseDetailsEvent {
   final BuildContext context;
   final String? type;

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 

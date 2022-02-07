@@ -1,18 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_api_result_model/profile_api_result_model.dart';
-import 'package:origa/models/profile_api_result_model/result.dart';
-import 'package:origa/offline_helper/dynamic_table.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -45,7 +41,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
-      print('Authorized Token => ${Singleton.instance.accessToken}');
 
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);

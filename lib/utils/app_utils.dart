@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -113,7 +111,7 @@ class AppUtils {
         message: value,
         backgroundColor: ColorResource.color3BCD25,
       ),
-      displayDuration: Duration(milliseconds: 1500),
+      displayDuration: const Duration(milliseconds: 1500),
     );
   }
 
@@ -131,7 +129,7 @@ class AppUtils {
   }
 
   static showDivider() {
-    return Divider(
+    return const Divider(
       color: ColorResource.colorDADADA,
       thickness: 0.5,
     );

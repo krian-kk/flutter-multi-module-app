@@ -44,9 +44,7 @@ class AuthenticationBloc
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {
-        // var tokenIssue = getToken;
-        print('-----token issue---');
-        print(getToken);
+        print('Token Issue is === > $getToken');
         if (JwtDecoder.isExpired(getToken)) {
           yield AuthenticationUnAuthenticated();
         } else {

@@ -9,6 +9,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/reminder_post_model/reminder_post_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -31,6 +32,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
+    required this.bloc,
     this.postValue,
     this.isCall,
     this.isAutoCalling = false,
@@ -45,6 +47,7 @@ class CustomRemainderBottomSheet extends StatefulWidget {
   final bool isAutoCalling;
   final AllocationBloc? allocationBloc;
   final dynamic paramValue;
+  final CaseDetailsBloc bloc;
 
   final bool? isCall;
 
@@ -284,8 +287,6 @@ class _CustomRemainderBottomSheetState
                                 callID: Singleton.instance.callID,
                                 callingID: Singleton.instance.callingID,
                               );
-                              print(
-                                  'Response Date => ${jsonEncode(requestBodyData)}');
                               Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                 APIRequestType.POST,
@@ -294,6 +295,10 @@ class _CustomRemainderBottomSheetState
                                 requestBodydata: jsonEncode(requestBodyData),
                               );
                               if (postResult[Constants.success]) {
+                                if (!(widget.userType == Constants.fieldagent &&
+                                    widget.isCall!)) {
+                                  widget.bloc.add(ChangeIsSubmitEvent());
+                                }
                                 if (widget.isAutoCalling) {
                                   Navigator.pop(widget.paramValue['context']);
                                   Navigator.pop(widget.paramValue['context']);

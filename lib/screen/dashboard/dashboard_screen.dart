@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/return_value_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
 import 'package:origa/screen/my_deposists/my_deposists.dart';
@@ -17,8 +18,6 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -188,30 +187,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (state is SetTimeperiodValueState) {
             bloc.selectedFilter = 'TODAY';
           }
-
           if (state is PostDataApiSuccessState) {
             while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);
           }
-
           if (state is NoInternetConnectionState) {
             AppUtils.noInternetSnackbar(context);
           }
-
           if (state is PriorityFollowState) {
             priorityFollowUpSheet(context);
           }
-
           if (state is UntouchedCasesState) {
             untouchedCasesSheet(context);
           }
-
+          if (state is UpdateSuccessfulState) {
+            setState(() {});
+          }
           if (state is BrokenPTPState) {
             brokenPTPSheet(context);
           }
-
           if (state is MyReceiptsState) {
             myReceiptsSheet(context);
           }
@@ -229,8 +225,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is NavigateCaseDetailState) {
-            Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                arguments: state.paramValues);
+            dynamic returnValue = await Navigator.pushNamed(
+              context,
+              AppRoutes.caseDetailsScreen,
+              arguments: state.paramValues,
+            );
+            RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
+                Map<String, dynamic>.from(returnValue));
+
+            if (retrunModelValue.isSubmit) {
+              if (state.unTouched) {
+                bloc.add(UpdateUnTouchedCasesEvent(retrunModelValue.caseId));
+              }
+            }
           }
 
           if (state is NavigateSearchState) {
@@ -244,7 +251,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: BlocBuilder<DashboardBloc, DashboardState>(
             bloc: bloc,
             builder: (BuildContext context, DashboardState state) {
-              print("refressehed ============>");
               if (state is DashboardLoadingState) {
                 return const CustomLoadingWidget();
               }
@@ -678,8 +684,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           elevation: 2,
                                                           shape:
                                                               RoundedRectangleBorder(
-                                                            // ignore: prefer_const_constructors
-                                                            side: BorderSide(
+                                                            side: const BorderSide(
                                                                 color: ColorResource
                                                                     .colorDADADA,
                                                                 width: 0.5),
