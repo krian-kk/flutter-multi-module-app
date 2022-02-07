@@ -54,6 +54,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? agentName;
   bool isEventSubmited = false;
   bool isSubmitedForMyVisits = false;
+  String submitedEventType = '';
+  dynamic collectionAmount;
   bool isAutoCalling = false;
 
   BuildContext? caseDetailsContext;
@@ -349,7 +351,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield UpdateSuccessfullState();
     }
     if (event is ChangeIsSubmitForMyVisitEvent) {
+      submitedEventType = event.eventType;
       isSubmitedForMyVisits = true;
+      if (event.eventType == Constants.collections) {
+        collectionAmount = event.collectionAmount;
+      }
       yield UpdateSuccessfullState();
     }
     if (event is ClickOpenBottomSheetEvent) {
@@ -682,6 +688,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (resultValue[Constants.success]) {
         isSubmitedForMyVisits = true;
+        submitedEventType = 'Phone Unreachable';
         if (userType == Constants.telecaller) {
           isEventSubmited = true;
           caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
@@ -965,6 +972,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
     if (await postResult[Constants.success]) {
       isSubmitedForMyVisits = true;
+      submitedEventType = 'Unreachable';
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
@@ -1036,6 +1044,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      submitedEventType = 'Customer Not Met';
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
@@ -1115,6 +1124,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      submitedEventType = 'Address Invalid';
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
@@ -1161,6 +1171,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
     if (await postResult[Constants.success]) {
       isSubmitedForMyVisits = true;
+      submitedEventType = 'Phone Invalid';
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';

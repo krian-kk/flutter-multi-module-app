@@ -288,11 +288,16 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       requestBodydata:
                                           jsonEncode(requestBodyData));
                               if (postResult[Constants.success]) {
-                                widget.bloc
-                                    .add(ChangeIsSubmitForMyVisitEvent());
+                                widget.bloc.add(
+                                  ChangeIsSubmitForMyVisitEvent(
+                                    Constants.dispute,
+                                  ),
+                                );
                                 if (!(widget.userType == Constants.fieldagent &&
                                     widget.isCall!)) {
-                                  widget.bloc.add(ChangeIsSubmitEvent());
+                                  widget.bloc.add(
+                                    ChangeIsSubmitEvent(),
+                                  );
                                 }
                                 if (widget.isAutoCalling) {
                                   Navigator.pop(widget.paramValue['context']);

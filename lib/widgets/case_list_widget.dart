@@ -14,8 +14,13 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
 class CaseLists {
-  static Widget buildListView(DashboardBloc bloc, DashboardAllModels listData,
-      {bool untouchedCases = false}) {
+  static Widget buildListView(
+    DashboardBloc bloc,
+    DashboardAllModels listData, {
+    bool untouchedCases = false,
+    bool isPriorityFollowUp = false,
+    bool brokenPTP = false,
+  }) {
     return bloc.selectedFilterDataLoading
         ? const CustomLoadingWidget()
         : listData.result == null || listData.result!.cases!.isEmpty
@@ -96,6 +101,7 @@ class CaseLists {
                                 'caseID': listData.result!.cases![index].caseId,
                               },
                               isUnTouched: untouchedCases,
+                              isPriorityFollowUp: isPriorityFollowUp,
                             ));
                             Singleton.instance.agrRef =
                                 listData.result!.cases![index].agrRef ?? '';

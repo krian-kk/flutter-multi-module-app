@@ -90,7 +90,11 @@ class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 
 class ChangeIsSubmitEvent extends CaseDetailsEvent {}
 
-class ChangeIsSubmitForMyVisitEvent extends CaseDetailsEvent {}
+class ChangeIsSubmitForMyVisitEvent extends CaseDetailsEvent {
+  final String eventType;
+  final dynamic collectionAmount;
+  ChangeIsSubmitForMyVisitEvent(this.eventType, {this.collectionAmount});
+}
 
 class SendSMSEvent extends CaseDetailsEvent {
   final BuildContext context;

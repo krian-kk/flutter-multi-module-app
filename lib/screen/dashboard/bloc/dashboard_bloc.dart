@@ -636,34 +636,72 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield NavigateCaseDetailState(
         paramValues: event.paramValues,
         unTouched: event.isUnTouched,
+        isPriorityFollowUp: event.isPriorityFollowUp,
+        isBrokenPTP: event.isBrokenPTP,
+        isMyReceipts: event.isMyReceipts,
       );
     }
 
     if (event is UpdateUnTouchedCasesEvent) {
-      // List l1 = [1, 2, 3, 4, 5, 6, 67, 7, 4, 5, 6];
-      // l1.removeWhere((element) => element == 4);
-      // print(l1);
-
       untouchedCasesData.result!.count = untouchedCasesData.result!.count! - 1;
       dashboardList[1].count =
           (int.parse(dashboardList[1].count!) - 1).toString();
-      untouchedCasesData.result?.cases?.forEach((element) {
-        if (element.caseId == event.caseId) {
-          dashboardList[1].amountRs =
-              (int.parse(dashboardList[1].amountRs!) - element.due).toString();
-          untouchedCasesData.result!.totalAmt =
-              untouchedCasesData.result!.totalAmt! - element.due;
-        }
-      });
+
+      dashboardList[1].amountRs =
+          (int.parse(dashboardList[1].amountRs!) - event.caseAmount).toString();
+      untouchedCasesData.result!.totalAmt =
+          untouchedCasesData.result!.totalAmt! - event.caseAmount;
+
       untouchedCasesData.result!.cases!
           .removeWhere((element) => element.caseId == event.caseId);
 
+      yield UpdateSuccessfulState();
+    }
+    if (event is UpdateBrokenCasesEvent) {
+      brokenPTPData.result!.count = brokenPTPData.result!.count! - 1;
+      dashboardList[2].count =
+          (int.parse(dashboardList[2].count!) - 1).toString();
+
+      dashboardList[2].amountRs =
+          (int.parse(dashboardList[2].amountRs!) - event.caseAmount).toString();
+      brokenPTPData.result!.totalAmt =
+          brokenPTPData.result!.totalAmt! - event.caseAmount;
+      brokenPTPData.result!.cases!
+          .removeWhere((element) => element.caseId == event.caseId);
+
+      yield UpdateSuccessfulState();
+    }
+    if (event is UpdatePriorityFollowUpCasesEvent) {
+      priortyFollowUpData.result!.count =
+          priortyFollowUpData.result!.count! - 1;
+      dashboardList[0].count =
+          (int.parse(dashboardList[0].count!) - 1).toString();
+
+      dashboardList[0].amountRs =
+          (int.parse(dashboardList[0].amountRs!) - event.caseAmount).toString();
+      priortyFollowUpData.result!.totalAmt =
+          priortyFollowUpData.result!.totalAmt! - event.caseAmount;
+
+      priortyFollowUpData.result!.cases!
+          .removeWhere((element) => element.caseId == event.caseId);
       yield UpdateSuccessfulState();
     }
 
     if (event is UpdateMyVisitCasesEvent) {
       dashboardList[4].count =
           (int.parse(dashboardList[4].count!) + 1).toString();
+      if (event.isNotMyReceipts) {
+        dashboardList[4].amountRs =
+            (int.parse(dashboardList[4].amountRs!) + event.caseAmount)
+                .toString();
+      }
+      yield UpdateSuccessfulState();
+    }
+    if (event is UpdateMyReceiptsCasesEvent) {
+      dashboardList[3].count =
+          (int.parse(dashboardList[3].count!) + 1).toString();
+      dashboardList[3].amountRs =
+          (int.parse(dashboardList[3].amountRs!) + event.caseAmount).toString();
       yield UpdateSuccessfulState();
     }
 

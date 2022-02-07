@@ -36,7 +36,16 @@ class YardingAndSelfReleaseState extends DashboardState {}
 class NavigateCaseDetailState extends DashboardState {
   final dynamic paramValues;
   final bool unTouched;
-  NavigateCaseDetailState({this.paramValues, this.unTouched = false});
+  final bool isPriorityFollowUp;
+  final bool isBrokenPTP;
+  final bool isMyReceipts;
+  NavigateCaseDetailState({
+    this.paramValues,
+    this.unTouched = false,
+    this.isPriorityFollowUp = false,
+    this.isBrokenPTP = false,
+    this.isMyReceipts = false,
+  });
 }
 
 class NavigateSearchState extends DashboardState {}
