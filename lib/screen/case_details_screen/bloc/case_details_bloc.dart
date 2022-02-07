@@ -346,10 +346,19 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           paramValues: event.paramValues);
     }
     if (event is ChangeIsSubmitEvent) {
+      // print("------Nandha NK-------");
+      // yield UpdateHealthStatusState();
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       isEventSubmited = true;
+
       yield UpdateSuccessfullState();
     }
+
+    if (event is ChangeHealthStatusEvent) {
+      print("------Nandha NK123-------");
+      yield UpdateHealthStatusState();
+    }
+
     if (event is ChangeIsSubmitForMyVisitEvent) {
       submitedEventType = event.eventType;
       isSubmitedForMyVisits = true;
@@ -514,6 +523,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
       }
       if (resultValue[Constants.success]) {
+        yield UpdateHealthStatusState();
         yield PostDataApiSuccessState();
       }
       yield EnableCustomerNotMetBtnState();
@@ -568,6 +578,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
       }
       if (resultValue[Constants.success]) {
+        yield UpdateHealthStatusState();
         yield PostDataApiSuccessState();
       }
       yield EnableAddressInvalidBtnState();
@@ -623,6 +634,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           ));
           Navigator.pop(paramValue['context']);
         }
+        yield UpdateHealthStatusState();
         yield PostDataApiSuccessState();
       }
       yield EnablePhoneInvalidBtnState();
@@ -700,6 +712,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           ));
           Navigator.pop(paramValue['context']);
         }
+        print("00====---000");
+        yield UpdateHealthStatusState();
         yield PostDataApiSuccessState();
       }
       yield EnableUnreachableBtnState();
@@ -723,6 +737,22 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else {
         AppUtils.showErrorToast("SMS is not activated");
       }
+    }
+
+    if (event is UpdateHealthStatusEvent) {
+      Singleton.instance.updateHealthStatus = {
+        'selectedHealthIndex': event.selectedHealthIndex!,
+        'tabIndex': event.tabIndex,
+        'currentHealth': event.currentHealth,
+      };
+      print(Singleton.instance.updateHealthStatus);
+
+      // yield UpdateHealthStatusState(
+      //   event.context,
+      //   selectedHealthIndex: event.selectedHealthIndex!,
+      //   tabIndex: event.tabIndex,
+      //   currentHealth: event.currentHealth,
+      // );
     }
   }
 

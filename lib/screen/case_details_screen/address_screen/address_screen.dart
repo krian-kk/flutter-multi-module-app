@@ -5,10 +5,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_not_met_screen.dart';
 import 'package:origa/screen/case_details_screen/address_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -46,11 +48,20 @@ class _AddressScreenState extends State<AddressScreen>
     super.initState();
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
+    print("selected tab.....r index");
+    // Get Initial address health status based on selected tab customer met / customer not met / invalid
+    widget.bloc.add(UpdateHealthStatusEvent(context,
+        selectedHealthIndex: widget.index,
+        tabIndex: _controller.index,
+        currentHealth: widget.bloc.caseDetailsAPIValue.result
+            ?.addressDetails![widget.index]['health']));
   }
 
   _handleTabSelection() {
     if (_controller.indexIsChanging) {
-      setState(() {});
+      setState(() {
+        print("selected tab index");
+      });
     }
   }
 
@@ -75,6 +86,35 @@ class _AddressScreenState extends State<AddressScreen>
         }
         if (state is EnableAddressInvalidBtnState) {
           setState(() => isSubmitSecond = true);
+        }
+        if (state is UpdateHealthStatusState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '2';
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -294,6 +334,16 @@ class _AddressScreenState extends State<AddressScreen>
                           labelColor: ColorResource.color23375A,
                           unselectedLabelColor: ColorResource.colorC4C4C4,
                           onTap: (index) {
+                            // change address health status based on selected tab customer met / customer not met / invalid
+                            widget.bloc.add(UpdateHealthStatusEvent(context,
+                                selectedHealthIndex: widget.index,
+                                tabIndex: index,
+                                currentHealth: widget
+                                    .bloc
+                                    .caseDetailsAPIValue
+                                    .result
+                                    ?.addressDetails![widget.index]['health']));
+
                             widget.bloc
                                 .addressCustomerNotMetNextActionDateFocusNode
                                 .unfocus();

@@ -189,15 +189,15 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             context,
                           ),
                         ),
-                        const SizedBox(height: 19),
-                        Wrap(
-                          spacing: 15,
-                          runSpacing: 8,
-                          children: _buildOptionBottomSheetOpenButton(
-                            optionBottomSheetButtonList,
-                            context,
-                          ),
-                        ),
+                        // const SizedBox(height: 19),
+                        // Wrap(
+                        //   spacing: 15,
+                        //   runSpacing: 8,
+                        //   children: _buildOptionBottomSheetOpenButton(
+                        //     optionBottomSheetButtonList,
+                        //     context,
+                        //   ),
+                        // ),
                         // const SizedBox(height: 120)
                       ],
                     ),

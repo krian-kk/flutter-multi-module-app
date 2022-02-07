@@ -77,3 +77,14 @@ class AddedNewCallContactListState extends CaseDetailsState {}
 class PhoneBottomSheetSuccessState extends CaseDetailsState {}
 
 class UpdateSuccessfullState extends CaseDetailsState {}
+
+class UpdateHealthStatusState extends CaseDetailsState {
+  // final BuildContext context;
+  // final int? selectedHealthIndex;
+  // final int? tabIndex;
+  // final dynamic currentHealth;
+  UpdateHealthStatusState(
+      // this.context,
+      //   {this.selectedHealthIndex, this.tabIndex, this.currentHealth}
+      );
+}

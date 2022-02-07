@@ -495,6 +495,11 @@ class _CustomOtherFeedBackBottomSheetState
                                       ChangeIsSubmitEvent(),
                                     );
                                   }
+
+                                  widget.bloc.add(
+                                    ChangeHealthStatusEvent(),
+                                  );
+
                                   if (widget.isAutoCalling) {
                                     Navigator.pop(widget.paramValue['context']);
                                     Navigator.pop(widget.paramValue['context']);

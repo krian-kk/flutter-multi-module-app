@@ -461,6 +461,11 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         widget.isCall!)) {
                                       widget.bloc.add(ChangeIsSubmitEvent());
                                     }
+
+                                    widget.bloc.add(
+                                      ChangeHealthStatusEvent(),
+                                    );
+
                                     if (widget.isAutoCalling) {
                                       Navigator.pop(
                                           widget.paramValue['context']);
