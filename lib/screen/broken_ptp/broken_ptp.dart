@@ -99,7 +99,10 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: CaseLists.buildListView(
-                                  widget.bloc, widget.bloc.brokenPTPData),
+                                widget.bloc,
+                                widget.bloc.brokenPTPData,
+                                brokenPTP: true,
+                              ),
                             ),
                           )
                   ],

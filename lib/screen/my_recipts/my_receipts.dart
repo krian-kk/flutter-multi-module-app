@@ -390,7 +390,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(paramValues: {
                               'caseID': caseLists.cases![index].caseId
-                            }));
+                            }, isMyReceipts: true));
                             Singleton.instance.agrRef =
                                 caseLists.cases![index].agrRef ?? '';
                           },
