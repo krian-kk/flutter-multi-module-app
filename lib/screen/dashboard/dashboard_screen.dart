@@ -233,11 +233,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
             RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
 
-            if (retrunModelValue.isSubmit) {
+            if (retrunModelValue.isSubmitForMyVisit) {
+              bloc.add(UpdateMyVisitCasesEvent(
+                  retrunModelValue.caseId, retrunModelValue.returnCaseAmount,
+                  isNotMyReceipts: !(state.isMyReceipts)));
               if (state.unTouched) {
-                bloc.add(UpdateUnTouchedCasesEvent(retrunModelValue.caseId));
+                bloc.add(UpdateUnTouchedCasesEvent(retrunModelValue.caseId,
+                    retrunModelValue.returnCaseAmount));
+              }
+              if (state.isPriorityFollowUp) {
+                bloc.add(UpdatePriorityFollowUpCasesEvent(
+                    retrunModelValue.caseId,
+                    retrunModelValue.returnCaseAmount));
+              }
+              if (state.isBrokenPTP) {
+                bloc.add(UpdateBrokenCasesEvent(
+                  retrunModelValue.caseId,
+                  retrunModelValue.returnCaseAmount,
+                ));
+              }
+              if (retrunModelValue.eventType == Constants.collections) {
+                bloc.add(UpdateMyReceiptsCasesEvent(retrunModelValue.caseId,
+                    retrunModelValue.returnCollectionAmount));
               }
             }
+            // if (retrunModelValue.isSubmit) {
+            // }
           }
 
           if (state is NavigateSearchState) {

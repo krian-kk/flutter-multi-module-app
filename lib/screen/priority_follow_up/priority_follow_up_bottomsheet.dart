@@ -98,7 +98,10 @@ class _PriorityFollowUpBottomSheetState
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: CaseLists.buildListView(
-                                  widget.bloc, widget.bloc.priortyFollowUpData),
+                                widget.bloc,
+                                widget.bloc.priortyFollowUpData,
+                                isPriorityFollowUp: true,
+                              ),
                             ),
                           )
                   ],

@@ -124,6 +124,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               {
                                 'isSubmit': bloc.isEventSubmited,
                                 'caseId': bloc.caseId!,
+                                'isSubmitForMyVisit':
+                                    bloc.isSubmitedForMyVisits,
+                                'eventType': bloc.submitedEventType,
+                                'returnCaseAmount': bloc.caseDetailsAPIValue
+                                    .result?.caseDetails?.due,
+                                'returnCollectionAmount': bloc.collectionAmount,
                               },
                             );
                           }

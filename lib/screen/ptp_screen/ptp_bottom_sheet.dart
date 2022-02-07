@@ -385,10 +385,17 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   requestBodydata: jsonEncode(requestBodyData),
                                 );
                                 if (postResult[Constants.success]) {
+                                  widget.bloc.add(
+                                    ChangeIsSubmitForMyVisitEvent(
+                                      Constants.ptp,
+                                    ),
+                                  );
                                   if (!(widget.userType ==
                                           Constants.fieldagent &&
                                       widget.isCall!)) {
-                                    widget.bloc.add(ChangeIsSubmitEvent());
+                                    widget.bloc.add(
+                                      ChangeIsSubmitEvent(),
+                                    );
                                   }
                                   if (widget.isAutoCalling) {
                                     Navigator.pop(widget.paramValue['context']);
