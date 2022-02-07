@@ -295,6 +295,8 @@ class _CustomRemainderBottomSheetState
                                 requestBodydata: jsonEncode(requestBodyData),
                               );
                               if (postResult[Constants.success]) {
+                                widget.bloc
+                                    .add(ChangeIsSubmitForMyVisitEvent());
                                 if (!(widget.userType == Constants.fieldagent &&
                                     widget.isCall!)) {
                                   widget.bloc.add(ChangeIsSubmitEvent());

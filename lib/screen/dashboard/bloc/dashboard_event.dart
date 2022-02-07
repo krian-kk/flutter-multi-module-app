@@ -85,3 +85,8 @@ class UpdateUnTouchedCasesEvent extends DashboardEvent {
   final String caseId;
   UpdateUnTouchedCasesEvent(this.caseId);
 }
+
+class UpdateMyVisitCasesEvent extends DashboardEvent {
+  final String caseId;
+  UpdateMyVisitCasesEvent(this.caseId);
+}

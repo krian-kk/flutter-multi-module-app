@@ -308,6 +308,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                         requestBodydata:
                                             jsonEncode(requestBodyData));
                                 if (postResult[Constants.success]) {
+                                  widget.bloc
+                                      .add(ChangeIsSubmitForMyVisitEvent());
                                   if (!(widget.userType ==
                                           Constants.fieldagent &&
                                       widget.isCall!)) {

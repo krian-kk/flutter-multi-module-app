@@ -232,7 +232,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             );
             RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
-
+            if (retrunModelValue.isSubmitForMyVisit) {
+              bloc.add(UpdateMyVisitCasesEvent(retrunModelValue.caseId));
+            }
             if (retrunModelValue.isSubmit) {
               if (state.unTouched) {
                 bloc.add(UpdateUnTouchedCasesEvent(retrunModelValue.caseId));

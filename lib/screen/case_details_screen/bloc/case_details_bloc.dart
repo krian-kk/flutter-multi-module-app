@@ -53,6 +53,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? caseId;
   String? agentName;
   bool isEventSubmited = false;
+  bool isSubmitedForMyVisits = false;
   bool isAutoCalling = false;
 
   BuildContext? caseDetailsContext;
@@ -345,6 +346,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ChangeIsSubmitEvent) {
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       isEventSubmited = true;
+      yield UpdateSuccessfullState();
+    }
+    if (event is ChangeIsSubmitForMyVisitEvent) {
+      isSubmitedForMyVisits = true;
       yield UpdateSuccessfullState();
     }
     if (event is ClickOpenBottomSheetEvent) {
@@ -676,6 +681,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
       }
       if (resultValue[Constants.success]) {
+        isSubmitedForMyVisits = true;
         if (userType == Constants.telecaller) {
           isEventSubmited = true;
           caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
@@ -958,6 +964,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      isSubmitedForMyVisits = true;
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
@@ -1029,6 +1036,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
 
@@ -1107,6 +1115,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
 
     if (await postResult[Constants.success]) {
+      isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
 
@@ -1151,6 +1160,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       requestBodydata: jsonEncode(requestBodyData),
     );
     if (await postResult[Constants.success]) {
+      isSubmitedForMyVisits = true;
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';

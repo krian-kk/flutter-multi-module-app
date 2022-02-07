@@ -401,6 +401,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   formDatas: FormData.fromMap(postdata),
                                 );
                                 if (postResult[Constants.success]) {
+                                  widget.bloc
+                                      .add(ChangeIsSubmitForMyVisitEvent());
                                   widget.bloc.add(ChangeIsSubmitEvent());
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);
