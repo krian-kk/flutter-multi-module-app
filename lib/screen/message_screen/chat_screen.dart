@@ -5,6 +5,7 @@ import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -18,7 +19,7 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
-import 'package:intl/intl.dart';
+
 import 'chat_model/message_model.dart';
 import 'chat_screen_state.dart';
 
@@ -26,6 +27,7 @@ class ChatScreen extends StatefulWidget {
   final String? fromARefId;
   final String? toARefId;
   final ImageProvider<Object>? agentImage;
+
   const ChatScreen({Key? key, this.fromARefId, this.toARefId, this.agentImage})
       : super(key: key);
 
@@ -45,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Messages> messages = [];
   String? clientIDFromARef;
   String? toARef;
+
   // String? clientIDFromARef = "HAR_fos1";
   // String? toARef = "har_superadmin";
   ably.RealtimeChannel? presenceChannel;
@@ -55,6 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId!));
+    messageController.text = 'Welcome';
     clientIDFromARef = widget.fromARefId;
     toARef = widget.toARefId;
     createAblyRealtimeInstance();
