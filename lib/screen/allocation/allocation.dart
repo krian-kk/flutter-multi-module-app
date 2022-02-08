@@ -1011,15 +1011,34 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             Expanded(
                               flex: 5,
                               child: CustomButton(
-                                Languages.of(context)!
-                                    .startCalling
-                                    .toUpperCase(),
-                                fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
+                                // Languages.of(context)!
+                                //     .startCalling
+                                //     .toUpperCase(),
+                                null,
+
                                 cardShape: 5,
-                                trailingWidget:
-                                    SvgPicture.asset(ImageResource.vector),
+                                trailingWidget: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: SvgPicture.asset(ImageResource.vector),
+                                ),
                                 isLeading: true,
+                                isTrailing: true,
+                                leadingWidget: Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: CustomText(
+                                      Languages.of(context)!
+                                          .startCalling
+                                          .toUpperCase(),
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorResource.colorFFFFFF,
+                                    ),
+                                  ),
+                                ),
                                 onTap: () async {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: 0,

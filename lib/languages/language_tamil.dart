@@ -293,7 +293,7 @@ class LanguageTa extends Languages {
   String get customerMet => 'வாடிக்கையாளர் சந்திப்பு';
 
   @override
-  String get customerNotMet => 'வாடிக்கையாளர் சந்திக்கவில்லை';
+  String get customerNotMet => 'சந்திக்கவில்லை';
 
   @override
   String get logout => 'வெளியேறு';
@@ -383,7 +383,7 @@ class LanguageTa extends Languages {
   String get call => 'அழைப்பு';
 
   @override
-  String get viewMap => 'வரைபடத்தைப் பார்க்கவும்';
+  String get viewMap => 'வரைபடம்';
 
   @override
   String get captureImage => 'படத்தைப் பிடிக்கவும்';

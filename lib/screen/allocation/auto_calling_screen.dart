@@ -211,11 +211,14 @@ class AutoCalling {
                                       const SizedBox(
                                         height: 3.0,
                                       ),
-                                      CustomText(
-                                        bloc.resultList[indexs].cust!,
-                                        fontSize: FontSize.sixteen,
-                                        color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(
+                                        width: 260,
+                                        child: CustomText(
+                                          bloc.resultList[indexs].cust!,
+                                          fontSize: FontSize.sixteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 8.0,
