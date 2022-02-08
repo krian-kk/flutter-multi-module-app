@@ -549,282 +549,276 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     itemCount: bloc.dashboardList.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            switch (index) {
-                                              case 0:
-                                                bloc.add(PriorityFollowEvent());
-                                                break;
-                                              case 1:
-                                                bloc.add(UntouchedCasesEvent());
-                                                break;
-                                              case 2:
-                                                bloc.add(BrokenPTPEvent());
-                                                break;
-                                              case 3:
-                                                bloc.add(
-                                                    SetTimeperiodValueEvent());
-                                                bloc.add(MyReceiptsEvent());
-                                                break;
-                                              case 4:
-                                                bloc.add(
-                                                    SetTimeperiodValueEvent());
-                                                bloc.add(MyVisitsEvent());
-                                                break;
-                                              case 5:
-                                                bloc.add(
-                                                    SetTimeperiodValueEvent());
-                                                bloc.add(MyDeposistsEvent());
-                                                break;
-                                              case 6:
-                                                bloc.add(
-                                                    YardingAndSelfReleaseEvent());
-                                                break;
-                                              default:
-                                              // AppUtils.showToast('');
-                                            }
-                                          },
-                                          child: index == 5
-                                              ? bloc.userType! ==
-                                                      Constants.fieldagent
-                                                  ? Card(
-                                                      elevation: 0,
-                                                      color: ColorResource
-                                                          .colorD3D7DE,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        side: const BorderSide(
-                                                            color: ColorResource
-                                                                .colorD3D7DE,
-                                                            width: 1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(75),
-                                                      ),
-                                                      child: Center(
-                                                        child: CustomText(
-                                                          bloc
-                                                              .dashboardList[
-                                                                  index]
-                                                              .title!,
-                                                          fontSize:
-                                                              FontSize.twelve,
-                                                          fontWeight:
-                                                              FontWeight.w700,
+                                      return GestureDetector(
+                                        onTap: () {
+                                          switch (index) {
+                                            case 0:
+                                              bloc.add(PriorityFollowEvent());
+                                              break;
+                                            case 1:
+                                              bloc.add(UntouchedCasesEvent());
+                                              break;
+                                            case 2:
+                                              bloc.add(BrokenPTPEvent());
+                                              break;
+                                            case 3:
+                                              bloc.add(
+                                                  SetTimeperiodValueEvent());
+                                              bloc.add(MyReceiptsEvent());
+                                              break;
+                                            case 4:
+                                              bloc.add(
+                                                  SetTimeperiodValueEvent());
+                                              bloc.add(MyVisitsEvent());
+                                              break;
+                                            case 5:
+                                              bloc.add(
+                                                  SetTimeperiodValueEvent());
+                                              bloc.add(MyDeposistsEvent());
+                                              break;
+                                            case 6:
+                                              bloc.add(
+                                                  YardingAndSelfReleaseEvent());
+                                              break;
+                                            default:
+                                            // AppUtils.showToast('');
+                                          }
+                                        },
+                                        child: index == 5
+                                            ? bloc.userType! ==
+                                                    Constants.fieldagent
+                                                ? Card(
+                                                    elevation: 0,
+                                                    color: ColorResource
+                                                        .colorD3D7DE,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      side: const BorderSide(
                                                           color: ColorResource
-                                                              .color23375A,
-                                                        ),
+                                                              .colorD3D7DE,
+                                                          width: 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              75),
+                                                    ),
+                                                    child: Center(
+                                                      child: CustomText(
+                                                        bloc
+                                                            .dashboardList[
+                                                                index]
+                                                            .title!,
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: ColorResource
+                                                            .color23375A,
                                                       ),
-                                                    )
-                                                  : const SizedBox()
-                                              : index == 6
-                                                  ? bloc.userType! ==
-                                                          Constants.fieldagent
-                                                      ? Card(
-                                                          elevation: 0,
-                                                          color: ColorResource
-                                                              .colorffffff,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side: const BorderSide(
-                                                                color: ColorResource
-                                                                    .color23375A,
-                                                                width: 0.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        75),
-                                                          ),
-                                                          child: Center(
-                                                            child: CustomText(
-                                                              bloc
-                                                                  .dashboardList[
-                                                                      index]
-                                                                  .title!,
-                                                              fontSize: FontSize
-                                                                  .twelve,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
+                                                    ),
+                                                  )
+                                                : const SizedBox()
+                                            : index == 6
+                                                ? bloc.userType! ==
+                                                        Constants.fieldagent
+                                                    ? Card(
+                                                        elevation: 0,
+                                                        color: ColorResource
+                                                            .colorffffff,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          side: const BorderSide(
                                                               color: ColorResource
                                                                   .color23375A,
+                                                              width: 0.5),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(75),
+                                                        ),
+                                                        child: Center(
+                                                          child: CustomText(
+                                                            bloc
+                                                                .dashboardList[
+                                                                    index]
+                                                                .title!,
+                                                            fontSize:
+                                                                FontSize.twelve,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: ColorResource
+                                                                .color23375A,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const SizedBox()
+                                                : index == 6
+                                                    ? bloc.userType ==
+                                                            Constants.fieldagent
+                                                        ? Card(
+                                                            elevation: 0,
+                                                            color: ColorResource
+                                                                .colorffffff,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  color: ColorResource
+                                                                      .color23375A,
+                                                                  width: 0.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          75),
                                                             ),
-                                                          ),
-                                                        )
-                                                      : const SizedBox()
-                                                  : index == 6
-                                                      ? bloc.userType ==
-                                                              Constants
-                                                                  .fieldagent
-                                                          ? Card(
-                                                              elevation: 0,
-                                                              color: ColorResource
-                                                                  .colorffffff,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    color: ColorResource
-                                                                        .color23375A,
-                                                                    width: 0.5),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            75),
-                                                              ),
-                                                              child: Center(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          10),
-                                                                  child:
-                                                                      CustomText(
-                                                                    bloc
-                                                                        .dashboardList[
-                                                                            index]
-                                                                        .title!,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .twelve,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    color: ColorResource
-                                                                        .color23375A,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : const SizedBox()
-                                                      : Card(
-                                                          elevation: 2,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side: const BorderSide(
-                                                                color: ColorResource
-                                                                    .colorDADADA,
-                                                                width: 0.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
+                                                            child: Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
                                                                         10),
-                                                          ),
-                                                          child: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    8, 5, 8, 5),
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    SizedBox(
-                                                                        // height: 40,
-                                                                        width:
-                                                                            105,
-                                                                        // color: ColorResource.color101010,
-                                                                        child:
-                                                                            CustomText(
-                                                                          bloc.dashboardList[index]
-                                                                              .title!,
-                                                                          fontSize:
-                                                                              FontSize.twelve,
-                                                                          fontWeight:
-                                                                              FontWeight.w700,
-                                                                          color:
-                                                                              ColorResource.color23375A,
-                                                                        )),
-                                                                    if (bloc
-                                                                            .dashboardList[
-                                                                                index]
-                                                                            .image! !=
-                                                                        '')
-                                                                      SvgPicture.asset(bloc
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .image!),
-                                                                  ],
-                                                                ),
-                                                                // const SizedBox(height: 4,),
-                                                                const Spacer(),
-                                                                Row(
-                                                                  children: [
+                                                                child:
                                                                     CustomText(
-                                                                      bloc
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .count!,
-                                                                      fontSize:
-                                                                          FontSize
-                                                                              .fourteen,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      color: ColorResource
-                                                                          .color23375A,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 6,
-                                                                    ),
-                                                                    CustomText(
-                                                                      bloc
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .subTitle!,
-                                                                      fontSize:
-                                                                          FontSize
-                                                                              .fourteen,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: ColorResource
-                                                                          .color23375A,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 3,
-                                                                ),
-                                                                CustomText(
-                                                                  Constants
-                                                                          .inr +
-                                                                      double.parse(bloc
-                                                                              .dashboardList[index]
-                                                                              .amountRs!)
-                                                                          .toStringAsFixed(2),
+                                                                  bloc
+                                                                      .dashboardList[
+                                                                          index]
+                                                                      .title!,
                                                                   fontSize:
                                                                       FontSize
-                                                                          .sixteen,
+                                                                          .twelve,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w700,
                                                                   color: ColorResource
                                                                       .color23375A,
-                                                                  isSingleLine:
-                                                                      true,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
                                                                 ),
-                                                              ],
+                                                              ),
                                                             ),
+                                                          )
+                                                        : const SizedBox()
+                                                    : Card(
+                                                        elevation: 2,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          side: const BorderSide(
+                                                              color: ColorResource
+                                                                  .colorDADADA,
+                                                              width: 0.5),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  8, 5, 8, 5),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  SizedBox(
+                                                                      // height: 40,
+                                                                      width:
+                                                                          105,
+                                                                      // color: ColorResource.color101010,
+                                                                      child:
+                                                                          CustomText(
+                                                                        bloc.dashboardList[index]
+                                                                            .title!,
+                                                                        fontSize:
+                                                                            FontSize.twelve,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        color: ColorResource
+                                                                            .color23375A,
+                                                                      )),
+                                                                  if (bloc
+                                                                          .dashboardList[
+                                                                              index]
+                                                                          .image! !=
+                                                                      '')
+                                                                    SvgPicture.asset(bloc
+                                                                        .dashboardList[
+                                                                            index]
+                                                                        .image!),
+                                                                ],
+                                                              ),
+                                                              // const SizedBox(height: 4,),
+                                                              const Spacer(),
+                                                              Row(
+                                                                children: [
+                                                                  CustomText(
+                                                                    bloc
+                                                                        .dashboardList[
+                                                                            index]
+                                                                        .count!,
+                                                                    fontSize:
+                                                                        FontSize
+                                                                            .fourteen,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 6,
+                                                                  ),
+                                                                  CustomText(
+                                                                    bloc
+                                                                        .dashboardList[
+                                                                            index]
+                                                                        .subTitle!,
+                                                                    fontSize:
+                                                                        FontSize
+                                                                            .fourteen,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: ColorResource
+                                                                        .color23375A,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 3,
+                                                              ),
+                                                              CustomText(
+                                                                Constants.inr +
+                                                                    double.parse(bloc
+                                                                            .dashboardList[
+                                                                                index]
+                                                                            .amountRs!)
+                                                                        .toStringAsFixed(
+                                                                            2),
+                                                                fontSize:
+                                                                    FontSize
+                                                                        .sixteen,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: ColorResource
+                                                                    .color23375A,
+                                                                isSingleLine:
+                                                                    true,
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                        ),
+                                                      ),
                                       );
                                     },
                                     staggeredTileBuilder: (int index) =>

@@ -278,30 +278,39 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
       // ]);
       phoneCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
+        CustomerMetGridModel(
+            ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.ptp, caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
+        CustomerMetGridModel(
+            ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.rtp, caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
+        CustomerMetGridModel(ImageResource.dispute,
+            Languages.of(event.context!)!.dispute.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.remainder,
-            (Constants.remainder + '/CB').toUpperCase(),
+        CustomerMetGridModel(
+            ImageResource.remainder,
+            (Languages.of(event.context!)!.remainderCb.toUpperCase())
+                .toUpperCase()
+                .toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.collections, Constants.collections,
+        CustomerMetGridModel(ImageResource.collections,
+            Languages.of(event.context!)!.collections.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, caseDetailsAPIValue.result?.callDetails!, true)),
+                Languages.of(event.context!)!.ots.toUpperCase(),
+                caseDetailsAPIValue.result?.callDetails!,
+                true)),
             isCall: true),
       ]);
 

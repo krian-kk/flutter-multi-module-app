@@ -270,7 +270,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     ),
                                                     const SizedBox(width: 12),
                                                     CustomText(
-                                                      Constants.call
+                                                      Languages.of(context)!
+                                                          .call
                                                           .toUpperCase(),
                                                       fontSize:
                                                           FontSize.fourteen,
@@ -287,15 +288,24 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       child: SizedBox(
                                     height: 45,
                                     child: CustomButton(
-                                      Languages.of(context)!.eventDetails,
+                                      // Languages.of(context)!.eventDetails,
+                                      null,
+                                      isTrailing: true,
+                                      leadingWidget: CustomText(
+                                        Languages.of(context)!.eventDetails,
+                                        fontSize: FontSize.twelve,
+                                        color: ColorResource.color23375A,
+                                        lineHeight: 1,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      ),
                                       onTap: () => widget.bloc.add(
                                           ClickOpenBottomSheetEvent(
                                               Constants.eventDetails,
                                               widget.bloc.caseDetailsAPIValue
                                                   .result?.callDetails,
                                               false)),
-                                      fontSize: FontSize.twelve,
-                                      textColor: ColorResource.color23375A,
+
                                       borderColor: ColorResource.color23375A,
                                       buttonBackgroundColor:
                                           ColorResource.colorFFFFFF,

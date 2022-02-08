@@ -818,6 +818,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             Visibility(
                               visible: bloc.areyouatOffice,
                               child: Container(
+                                width: double.infinity,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),
                                 decoration: BoxDecoration(
@@ -827,23 +828,21 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       color: ColorResource.colorECECEC,
                                       width: 1.0),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                child: Wrap(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SvgPicture.asset(ImageResource.location),
                                     const SizedBox(
                                       width: 13.0,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      child: FittedBox(
-                                        child: CustomText(
-                                          Languages.of(context)!.areYouAtOffice,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color000000,
-                                        ),
+                                      // width: MediaQuery.of(context).size.width *
+                                      //     0.3,
+                                      child: CustomText(
+                                        Languages.of(context)!.areYouAtOffice,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResource.color000000,
                                       ),
                                     ),
                                     const SizedBox(
@@ -869,7 +868,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       width: 5.0,
                                     ),
                                     SizedBox(
-                                        width: 76,
+                                        width: 85,
                                         height: 40,
                                         child: CustomButton(
                                           Languages.of(context)!.no,
