@@ -315,6 +315,11 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                       widget.isCall!)) {
                                     widget.bloc.add(ChangeIsSubmitEvent());
                                   }
+
+                                  widget.bloc.add(
+                                    ChangeHealthStatusEvent(),
+                                  );
+
                                   if (widget.isAutoCalling) {
                                     Navigator.pop(widget.paramValue['context']);
                                     Navigator.pop(widget.paramValue['context']);

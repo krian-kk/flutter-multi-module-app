@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -45,6 +47,15 @@ class _PhoneScreenState extends State<PhoneScreen>
     super.initState();
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
+
+    widget.bloc.add(UpdateHealthStatusEvent(context,
+        selectedHealthIndex: widget.index,
+        tabIndex: _controller.index,
+        currentHealth: widget.bloc.caseDetailsAPIValue.result
+            ?.callDetails![widget.index]['health']));
+
+    print(widget.index);
+    print(widget.bloc.caseDetailsAPIValue.result?.callDetails![widget.index]);
   }
 
   @override
@@ -63,6 +74,35 @@ class _PhoneScreenState extends State<PhoneScreen>
         }
         if (state is EnablePhoneInvalidBtnState) {
           setState(() => isSubmitSecond = true);
+        }
+
+        if (state is UpdateHealthStatusState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -277,6 +317,16 @@ class _PhoneScreenState extends State<PhoneScreen>
                             isScrollable: true,
                             indicatorColor: ColorResource.colorD5344C,
                             onTap: (index) {
+                              // change address health status based on selected tab customer met / customer not met / invalid
+                              widget.bloc.add(UpdateHealthStatusEvent(context,
+                                  selectedHealthIndex: widget.index,
+                                  tabIndex: index,
+                                  currentHealth: widget
+                                      .bloc
+                                      .caseDetailsAPIValue
+                                      .result
+                                      ?.callDetails![widget.index]['health']));
+
                               widget
                                   .bloc.phoneUnreachableNextActionDateFocusNode
                                   .unfocus();

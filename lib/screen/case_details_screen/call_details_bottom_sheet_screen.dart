@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -34,6 +35,33 @@ class _CallDetailsBottomSheetScreenState
       listener: (context, state) {
         if (state is AddedNewCallContactListState) {
           widget.bloc.listOfCallDetails;
+        }
+
+        if (state is UpdateHealthStatusState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(

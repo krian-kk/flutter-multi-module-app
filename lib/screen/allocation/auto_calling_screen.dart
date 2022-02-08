@@ -7,6 +7,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/health_status_widget.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AutoCalling {
@@ -165,13 +166,15 @@ class AutoCalling {
                             const SizedBox(
                               height: 2.0,
                             ),
-                            const Align(
+                            Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 24, vertical: 2),
                                 child: CustomText(
-                                  'TVS / TVSF_BFRT6524869550',
+                                  bloc.resultList[indexs].bankName! +
+                                      " / " +
+                                      bloc.resultList[indexs].agrRef!,
                                   fontSize: FontSize.twelve,
                                   color: ColorResource.color101010,
                                 ),
@@ -186,23 +189,23 @@ class AutoCalling {
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       CustomText(
-                                        '₹ 3,97,553.67',
+                                        bloc.resultList[indexs].due.toString(),
                                         fontSize: FontSize.eighteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w700,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 3.0,
                                       ),
                                       CustomText(
-                                        'customerName',
+                                        bloc.resultList[indexs].cust!,
                                         fontSize: FontSize.sixteen,
                                         color: ColorResource.color101010,
                                         fontWeight: FontWeight.w400,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 8.0,
                                       ),
                                     ],
@@ -210,23 +213,25 @@ class AutoCalling {
                                   const Spacer(),
                                   // bloc.allocationList[index].newlyAdded!
                                   // ?
-                                  Container(
-                                    width: 55,
-                                    height: 19,
-                                    // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                    decoration: BoxDecoration(
-                                        color: ColorResource.colorD5344C,
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                    child: Center(
-                                      child: CustomText(
-                                        Languages.of(context)!.new_,
-                                        color: ColorResource.colorffffff,
-                                        fontSize: FontSize.ten,
-                                        lineHeight: 1,
-                                      ),
-                                    ),
-                                  ),
+                                  bloc.resultList[indexs].telSubStatus == "new"
+                                      ? Container(
+                                          width: 55,
+                                          height: 19,
+                                          // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                          decoration: BoxDecoration(
+                                              color: ColorResource.colorD5344C,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Center(
+                                            child: CustomText(
+                                              Languages.of(context)!.new_,
+                                              color: ColorResource.colorffffff,
+                                              fontSize: FontSize.ten,
+                                              lineHeight: 1,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox(),
                                   // : const SizedBox(),
                                 ],
                               ),
@@ -274,15 +279,20 @@ class AutoCalling {
                                               const SizedBox(
                                                 width: 15,
                                               ),
-                                              bloc.mobileNumberList[1]
-                                                          .callResponse !=
-                                                      null
-                                                  ? SvgPicture.asset(
-                                                      ImageResource
-                                                          .declinedCall)
-                                                  : SvgPicture.asset(
-                                                      ImageResource
-                                                          .activePerson),
+                                              ShowHealthStatus.healthStatus(bloc
+                                                      .resultList[indexs]
+                                                      .address?[i]
+                                                      .health ??
+                                                  ''),
+                                              // bloc.mobileNumberList[1]
+                                              //             .callResponse !=
+                                              //         null
+                                              //     ? SvgPicture.asset(
+                                              //         ImageResource
+                                              //             .declinedCall)
+                                              //     : SvgPicture.asset(
+                                              //         ImageResource
+                                              //             .activePerson),
                                               const Spacer(),
                                               InkWell(
                                                 onTap: () {
@@ -412,7 +422,7 @@ class AutoCalling {
                             InkWell(
                               onTap: () {
                                 bloc.add(NavigateCaseDetailEvent(paramValues: {
-                                  'caseID': '608a9aceaf87392758582ec7',
+                                  'caseID': bloc.resultList[indexs].caseId,
                                 }));
                               },
                               child: SizedBox(

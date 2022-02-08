@@ -407,8 +407,12 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     ),
                                   );
                                   widget.bloc.add(ChangeIsSubmitEvent());
+
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);
+                                  widget.bloc.add(
+                                    ChangeHealthStatusEvent(),
+                                  );
                                   Navigator.pop(context);
                                 }
                               }
