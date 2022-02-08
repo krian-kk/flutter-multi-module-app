@@ -5,6 +5,7 @@ import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -18,7 +19,7 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
-import 'package:intl/intl.dart';
+
 import 'chat_model/message_model.dart';
 import 'chat_screen_state.dart';
 
@@ -26,6 +27,7 @@ class ChatScreen extends StatefulWidget {
   final String? fromARefId;
   final String? toARefId;
   final ImageProvider<Object>? agentImage;
+
   const ChatScreen({Key? key, this.fromARefId, this.toARefId, this.agentImage})
       : super(key: key);
 
@@ -45,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Messages> messages = [];
   String? clientIDFromARef;
   String? toARef;
+
   // String? clientIDFromARef = "HAR_fos1";
   // String? toARef = "har_superadmin";
   ably.RealtimeChannel? presenceChannel;
@@ -53,6 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId!));
+    messageController.text = 'Welcome';
     clientIDFromARef = widget.fromARefId;
     toARef = widget.toARefId;
     createAblyRealtimeInstance();
@@ -250,24 +254,31 @@ class _ChatScreenState extends State<ChatScreen> {
       debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
       //When click the submit button
       //Who are all in online
-      // presenceChannel!.presence
-      //     .subscribe(action: PresenceAction.enter)
-      //     .listen((ably.PresenceMessage event) async {
-      //   debugPrint('Who are all in online--> ${event.clientId}');
-      //   debugPrint('New message arrived ${event.data}');
-      //   if (toARef == event.clientId) {
-      //     //Post messages
-      //     // await chatChannel.publish(messages: [
-      //     //   ably.Message(name: clientIDFromARef, data: 'Sai'),
-      //     // ]).then((value) {
-      //     //   debugPrint('Success state-->');
-      //     // }).catchError((error) {
-      //     //   debugPrint('Error state--> ${error.toString()}');
-      //     // });
-      //   } else {
-      //     // Have to integrate with FCM after that message
-      //   }
-      // });
+      presenceChannel!.presence
+          .subscribe(action: PresenceAction.enter)
+          .listen((ably.PresenceMessage event) async {
+        debugPrint('Who are all in online--> ${event.clientId}');
+        debugPrint('New message arrived ${event.data}');
+        // if (toARef == event.clientId) {
+        //   //Post messages
+        //   await chatChannel.publish(messages: [
+        //     ably.Message(name: clientIDFromARef, data: 'Sai'),
+        //   ]).then((value) {
+        //     debugPrint('Success state-->');
+        //   }).catchError((error) {
+        //     debugPrint('Error state--> ${error.toString()}');
+        //   });
+        // } else {
+        //   // Have to integrate with FCM after that message
+        // }
+        await chatChannel.publish(messages: [
+          ably.Message(name: clientIDFromARef, data: 'Sai'),
+        ]).then((value) {
+          debugPrint('Success state-->');
+        }).catchError((error) {
+          debugPrint('Error state--> ${error.toString()}');
+        });
+      });
 
       chatChannel.subscribe(name: clientIDFromARef).listen((event) {
         debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
@@ -347,6 +358,112 @@ class _ChatScreenState extends State<ChatScreen> {
       //     .listen((ably.ConnectionStateChange stateChange) async {
 
       // });
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  void sendAblyRealtimeMessage({String? messageContent}) async {
+    //isi6Mw.OkTsUw:L1PnG2F-SEVG0Jc7bNnlj4Z_y8pX9IaIIeRTF0fPD1Q
+    final clientOptions = ably.ClientOptions()
+      ..clientId = clientIDFromARef
+      ..authCallback = (ably.TokenParams tokenParams) async {
+        try {
+          final Map<String, dynamic> tokenRequestMap =
+              await APIRepository.apiRequest(
+                  APIRequestType.GET, HttpUrl.chatTokenRequest);
+          debugPrint(
+              'Chat token request data ===> ${tokenRequestMap['data']['result']}');
+          setState(() {
+            // clientIDFromARef = tokenRequestMap['data']['result']['clientId'];
+          });
+          return ably.TokenRequest.fromMap(tokenRequestMap['data']['result']);
+        } catch (e) {
+          debugPrint('Failed to createTokenRequest: $e');
+          rethrow;
+        }
+      };
+    try {
+      realtimeInstance = ably.Realtime(options: clientOptions);
+      chatChannel = realtimeInstance.channels
+          .get('chat:mobile:messages:$clientIDFromARef-$toARef');
+      presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
+      await presenceChannel!.presence.enterClient(clientIDFromARef!, 'enter');
+      debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
+      //When click the submit button
+      //Who are all in online
+      presenceChannel!.presence
+          .subscribe(action: PresenceAction.enter)
+          .listen((ably.PresenceMessage event) async {
+        debugPrint('Who are all in online--> ${event.clientId}');
+        debugPrint('New message arrived ${event.data}');
+        if (toARef == event.clientId) {
+          await chatChannel.publish(messages: [
+            ably.Message(name: clientIDFromARef, data: messageContent),
+          ]).then((value) {
+            debugPrint('Success state-->');
+            setState(() {
+              messageHistory.insert(
+                0,
+                ChatHistory(
+                    data: messageContent,
+                    name: clientIDFromARef,
+                    dateTime: DateTime.now()),
+              );
+            });
+          }).catchError((error) {
+            debugPrint('Error state--> ${error.toString()}');
+          });
+        } else {
+          //Have to change Ably notification type message
+          await chatChannel.publish(messages: [
+            ably.Message(name: clientIDFromARef, data: messageContent),
+          ]).then((value) {
+            debugPrint('Success state-->');
+            setState(() {
+              messageHistory.insert(
+                0,
+                ChatHistory(
+                    data: messageContent,
+                    name: clientIDFromARef,
+                    dateTime: DateTime.now()),
+              );
+            });
+          }).catchError((error) {
+            debugPrint('Error state--> ${error.toString()}');
+          });
+        }
+      });
+      chatChannel.subscribe(name: clientIDFromARef).listen((event) {
+        debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
+        setState(() {
+          ReceivingData receivedData =
+              ReceivingData.fromJson(jsonDecode(jsonEncode(event.data)));
+          messageHistory.insert(
+            0,
+            ChatHistory(
+                data: receivedData.message,
+                name: event.name,
+                dateTime: event.timestamp),
+          );
+        });
+      }).onData((data) {
+        debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
+        setState(() {
+          ReceivingData receivedData =
+              ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
+          debugPrint(receivedData.dateSent);
+          debugPrint("received data2 value ==> ${receivedData.message}");
+          messageHistory.insert(
+            0,
+            ChatHistory(
+                data: receivedData.message,
+                name: data.name,
+                dateTime: data.timestamp),
+          );
+        });
+      });
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
@@ -482,8 +599,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: GestureDetector(
-                    onTap: () {
-                      print("ontap triggerd");
+                    onTap: () async {
+                      /* print("ontap triggerd");
+                      //Mobile user will be notify to the server he's presence or not
+                      await presenceChannel!.presence.enterClient(clientIDFromARef!, 'enter');
+                      chatChannel = realtimeInstance.channels
+                          .get('chat:mobile:messages:$clientIDFromARef-$toARef');
+                      presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
                       if (messageController.text.trim().isNotEmpty) {
                         print(messageController.text);
                         presenceChannel!.presence
@@ -523,7 +645,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         });
                       } else {
                         debugPrint("space removed");
-                      }
+                      }*/
+                      sendAblyRealtimeMessage(
+                          messageContent: messageController.text.trim());
                     },
                     child: Container(
                         height: double.infinity,
