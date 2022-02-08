@@ -90,6 +90,8 @@ class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 
 class ChangeIsSubmitEvent extends CaseDetailsEvent {}
 
+class ChangeHealthStatusEvent extends CaseDetailsEvent {}
+
 class ChangeIsSubmitForMyVisitEvent extends CaseDetailsEvent {
   final String eventType;
   final dynamic collectionAmount;
@@ -100,4 +102,13 @@ class SendSMSEvent extends CaseDetailsEvent {
   final BuildContext context;
   final String? type;
   SendSMSEvent(this.context, {this.type});
+}
+
+class UpdateHealthStatusEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  final int? selectedHealthIndex;
+  final int? tabIndex;
+  final dynamic currentHealth;
+  UpdateHealthStatusEvent(this.context,
+      {this.selectedHealthIndex, this.tabIndex, this.currentHealth});
 }

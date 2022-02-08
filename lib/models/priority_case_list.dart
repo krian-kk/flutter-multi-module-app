@@ -30,7 +30,7 @@ class PriorityCaseListModel {
 class Result {
   String? sId;
   dynamic due;
- late bool starredCase;
+  late bool starredCase;
   String? cust;
   String? collSubStatus;
   String? telSubStatus;
@@ -137,18 +137,21 @@ class Result {
 class Address {
   String? cType;
   String? value;
+  String? health;
 
-  Address({this.cType, this.value});
+  Address({this.cType, this.value, this.health});
 
   Address.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
+    health = json['health'] ?? " ";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
     data['value'] = value;
+    data['health'] = health;
     return data;
   }
 }

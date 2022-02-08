@@ -619,6 +619,7 @@ class _CustomCollectionsBottomSheetState
                                             ChangeIsSubmitEvent(),
                                           );
                                         }
+
                                         if (widget.isAutoCalling) {
                                           Navigator.pop(
                                               widget.paramValue['context']);
@@ -637,6 +638,10 @@ class _CustomCollectionsBottomSheetState
                                               "Event updated successfully.");
                                           Navigator.pop(context);
                                         }
+
+                                        widget.bloc.add(
+                                          ChangeHealthStatusEvent(),
+                                        );
 
                                         if (Singleton
                                                 .instance

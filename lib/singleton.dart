@@ -28,6 +28,9 @@ class Singleton {
 // Contractor All Informations
   ContractorAllInformationModel? contractorInformations;
 
+  //store update health value
+  dynamic updateHealthStatus;
+
   String? customerContactNo;
 
   static final Singleton instance = Singleton.internal();

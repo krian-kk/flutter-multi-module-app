@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -37,6 +38,36 @@ class _AddressDetailsBottomSheetScreenState
       listener: (context, state) {
         if (state is AddedNewAddressListState) {
           widget.bloc.listOfAddressDetails;
+        }
+
+        if (state is UpdateHealthStatusState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '2';
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
