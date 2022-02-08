@@ -355,7 +355,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ChangeHealthStatusEvent) {
-      print("------Nandha NK123-------");
       yield UpdateHealthStatusState();
     }
 
