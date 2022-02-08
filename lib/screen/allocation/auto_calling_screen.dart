@@ -58,12 +58,12 @@ class AutoCalling {
     //                 const Spacer(),
     //                 InkWell(
     //                   onTap: () {
-    //                     // bloc.add(NavigateCaseDetailTEvent(
-    //                     //   const {
-    //                     //     'caseID': '618e382004d8d040ac18841b',
-    //                     //     'isAddress': true,
-    //                     //   },
-    //                     // ));
+    // bloc.add(NavigateCaseDetailTEvent(
+    //   const {
+    //     'caseID': '618e382004d8d040ac18841b',
+    //     'isAddress': true,
+    //   },
+    // ));
     //                   },
     //                   child: Row(
     //                     children: [
