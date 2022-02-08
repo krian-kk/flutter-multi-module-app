@@ -199,11 +199,14 @@ class AutoCalling {
                                       const SizedBox(
                                         height: 3.0,
                                       ),
-                                      CustomText(
-                                        bloc.resultList[indexs].cust!,
-                                        fontSize: FontSize.sixteen,
-                                        color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(
+                                        width: 260,
+                                        child: CustomText(
+                                          bloc.resultList[indexs].cust!,
+                                          fontSize: FontSize.sixteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 8.0,
@@ -253,11 +256,14 @@ class AutoCalling {
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 15, vertical: 5),
                                       decoration: BoxDecoration(
-                                        color: bloc.mobileNumberList[1]
-                                                    .callResponse !=
-                                                null
-                                            ? ColorResource.colorF6ECEF
-                                            : ColorResource.colorF8F9FB,
+                                        color:
+                                            // bloc.mobileNumberList[1]
+                                            //             .callResponse !=
+                                            //         null
+                                            //     ?
+                                            ColorResource.colorF6ECEF,
+                                        //     :
+                                        // ColorResource.colorF8F9FB,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
@@ -326,15 +332,15 @@ class AutoCalling {
                                               )
                                             ],
                                           ),
-                                          if (bloc.mobileNumberList[1]
-                                                  .callResponse !=
-                                              null)
-                                            CustomText(
-                                              bloc.mobileNumberList[i]
-                                                  .callResponse!,
-                                              color: ColorResource.colorD5344C,
-                                              fontSize: FontSize.fourteen,
-                                            ),
+                                          // if (bloc.mobileNumberList[1]
+                                          //         .callResponse !=
+                                          //     null)
+                                          //   CustomText(
+                                          //     bloc.mobileNumberList[i]
+                                          //         .callResponse!,
+                                          //     color: ColorResource.colorD5344C,
+                                          //     fontSize: FontSize.fourteen,
+                                          //   ),
                                         ],
                                       ),
                                     );

@@ -483,32 +483,33 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: GestureDetector(
                     onTap: () {
+                      print("ontap triggerd");
                       if (messageController.text.trim().isNotEmpty) {
+                        print(messageController.text);
                         presenceChannel!.presence
                             .subscribe(action: PresenceAction.enter)
                             .listen((ably.PresenceMessage event) async {
-                          debugPrint(
-                              'Who are all in online--> ${event.clientId}');
-                          debugPrint('New message arrived ${event.data}');
+                          print('Who are all in online--> ${event.clientId}');
+                          print('New message arrived ${event.data}');
                           if (toARef == event.clientId) {
                             print("message sending progress---->");
                             chatChannel.publish(messages: [
                               ably.Message(
                                   name: toARef, data: messageController.text),
                             ]).then((value) {
-                              debugPrint('Success state-->111');
-                              if (mounted) {
-                                setState(() {
-                                  messageHistory.insert(
-                                    0,
-                                    ChatHistory(
-                                        data: messageController.text,
-                                        name: toARef,
-                                        dateTime: DateTime.now()),
-                                  );
-                                });
-                                messageController.clear();
-                              }
+                              debugPrint('Success state-->111 ');
+                              // if (mounted) {
+                              setState(() {
+                                messageHistory.insert(
+                                  0,
+                                  ChatHistory(
+                                      data: messageController.text,
+                                      name: toARef,
+                                      dateTime: DateTime.now()),
+                                );
+                              });
+                              messageController.clear();
+                              // }
                             }).catchError((error) {
                               debugPrint('Error state--> ${error.toString()}');
                               messageController.clear();

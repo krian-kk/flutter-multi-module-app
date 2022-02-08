@@ -68,7 +68,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool isPriorityLoadMore = false;
 
   List<String> selectOptions = [];
-  List<AutoCallingModel> mobileNumberList = [];
+  // List<AutoCallingModel> mobileNumberList = [];
 
   List<String> filterBuildRoute = [
     StringResource.all,
@@ -121,19 +121,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         areyouatOffice = false;
       }
 
-      // static Autocalling Values
-      mobileNumberList.addAll([
-        AutoCallingModel(
-          mobileNumber: '6374578994',
-          callResponse: 'Declined Call',
-        ),
-        AutoCallingModel(
-          mobileNumber: '9342536805',
-        ),
-        AutoCallingModel(
-          mobileNumber: '6374578994',
-        ),
-      ]);
+      // // static Autocalling Values
+      // mobileNumberList.addAll([
+      //   AutoCallingModel(
+      //     mobileNumber: '6374578994',
+      //     callResponse: 'Declined Call',
+      //   ),
+      //   AutoCallingModel(
+      //     mobileNumber: '9342536805',
+      //   ),
+      //   AutoCallingModel(
+      //     mobileNumber: '6374578994',
+      //   ),
+      // ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
