@@ -369,12 +369,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield UpdateSuccessfullState();
     }
 
-    if (event is ChangeHealthStatusEvent) {
-      print("Event submitted ==> ");
-
-      yield UpdateHealthStatusState();
-    }
-
     if (event is ChangeIsSubmitForMyVisitEvent) {
       submitedEventType = event.eventType;
       isSubmitedForMyVisits = true;
@@ -651,6 +645,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Navigator.pop(paramValue['context']);
         }
         yield UpdateHealthStatusState();
+
+        // update autocalling screen case list of contact health
+        if (paramValue['contactIndex'] != null) {
+          print("update autocalling screen case list of contact health");
+          allocationBloc.add(AutoCallContactHealthUpdateEvent(
+            contactIndex: paramValue['contactIndex'],
+            caseIndex: paramValue['caseIndex'],
+          ));
+        }
+
         yield PostDataApiSuccessState();
       }
       yield EnablePhoneInvalidBtnState();
@@ -730,6 +734,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
         print("00====---000");
         yield UpdateHealthStatusState();
+
+        // update autocalling screen case list of contact health
+        if (paramValue['contactIndex'] != null) {
+          print("update autocalling screen case list of contact health");
+          allocationBloc.add(AutoCallContactHealthUpdateEvent(
+            contactIndex: paramValue['contactIndex'],
+            caseIndex: paramValue['caseIndex'],
+          ));
+        }
         yield PostDataApiSuccessState();
       }
       yield EnableUnreachableBtnState();
@@ -762,13 +775,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         'currentHealth': event.currentHealth,
       };
       print(Singleton.instance.updateHealthStatus);
+    }
 
-      // yield UpdateHealthStatusState(
-      //   event.context,
-      //   selectedHealthIndex: event.selectedHealthIndex!,
-      //   tabIndex: event.tabIndex,
-      //   currentHealth: event.currentHealth,
-      // );
+    if (event is ChangeHealthStatusEvent) {
+      print("Event submitted ==> ");
+
+      yield UpdateHealthStatusState();
     }
   }
 
