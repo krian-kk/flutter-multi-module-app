@@ -371,7 +371,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
     if (event is ChangeHealthStatusEvent) {
       print("Event submitted ==> ");
-      print(caseDetailsAPIValue.result?.callDetails![1]['health']);
 
       yield UpdateHealthStatusState();
     }
@@ -1030,8 +1029,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         contact: PhoneUnreachbleContact(
-          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
-          value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
+          cType: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['cType']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['cType'],
+          value: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['value']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['value'],
           health: ConstantEventValues.phoneUnreachableHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
@@ -1231,12 +1236,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         ),
         eventModule: 'Telecalling',
         contact: PhoneInvalidContact(
-          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]
-                  ['cType'] ??
-              allocationBloc.resultList[0].address?[indexValue!].cType,
-          value: caseDetailsAPIValue.result?.callDetails![indexValue!]
-                  ['value'] ??
-              allocationBloc.resultList[0].address?[indexValue!].value,
+          cType: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['cType']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['cType'],
+          value: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['value']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['value'],
           health: ConstantEventValues.phoneInvalidHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
