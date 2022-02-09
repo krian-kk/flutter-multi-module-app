@@ -14,6 +14,7 @@ import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -68,7 +69,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool isPriorityLoadMore = false;
 
   List<String> selectOptions = [];
-  // List<AutoCallingModel> mobileNumberList = [];
+  List<AutoCallingModel> mobileNumberList = [];
 
   List<String> filterBuildRoute = [
     StringResource.all,
@@ -121,19 +122,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         areyouatOffice = false;
       }
 
-      // // static Autocalling Values
-      // mobileNumberList.addAll([
-      //   AutoCallingModel(
-      //     mobileNumber: '6374578994',
-      //     callResponse: 'Declined Call',
-      //   ),
-      //   AutoCallingModel(
-      //     mobileNumber: '9342536805',
-      //   ),
-      //   AutoCallingModel(
-      //     mobileNumber: '6374578994',
-      //   ),
-      // ]);
+      // static Autocalling Values
+      mobileNumberList.addAll([
+        AutoCallingModel(
+          mobileNumber: '6374578994',
+          callResponse: 'Declined Call',
+        ),
+        AutoCallingModel(
+          mobileNumber: '9342536805',
+        ),
+        AutoCallingModel(
+          mobileNumber: '6374578994',
+        ),
+      ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;

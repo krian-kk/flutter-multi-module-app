@@ -85,11 +85,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //     onTap: () {
       //       bloc.add(ClickNotificationEvent());
       //     }),
-      // ProfileNavigation(
-      //     title: Languages.of(context)!.selectLanguage,
-      //     onTap: () {
-      //       bloc.add(ClickChangeLaunguageEvent());
-      //     }),
+      ProfileNavigation(
+          title: Languages.of(context)!.selectLanguage,
+          onTap: () {
+            bloc.add(ClickChangeLaunguageEvent());
+          }),
       ProfileNavigation(
           title: Languages.of(context)!.changePassword,
           onTap: () {

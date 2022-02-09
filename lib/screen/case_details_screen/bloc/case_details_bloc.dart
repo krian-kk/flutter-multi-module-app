@@ -21,6 +21,7 @@ import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.d
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/send_sms_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
@@ -173,6 +174,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+
           // caseDetailsHiveBox.then((value) => value.put(
           //     'case' + caseId.toString(),
           //     OrigoMapDynamicTable(
@@ -192,8 +194,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       value.get('case' + caseId.toString())!.result),
       // );
 
+      print(
+          "case agref --> ${caseDetailsAPIValue.result?.caseDetails?.agrRef}");
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
+      Singleton.instance.agrRef =
+          caseDetailsAPIValue.result?.caseDetails?.agrRef ?? '';
 
       loanAmountController.text = caseDetailsAPIValue
               .result?.caseDetails!.loanAmt
@@ -278,30 +284,39 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
       // ]);
       phoneCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
+        CustomerMetGridModel(
+            ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.ptp, caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
+        CustomerMetGridModel(
+            ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.rtp, caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
+        CustomerMetGridModel(ImageResource.dispute,
+            Languages.of(event.context!)!.dispute.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.remainder,
-            (Constants.remainder + '/CB').toUpperCase(),
+        CustomerMetGridModel(
+            ImageResource.remainder,
+            (Languages.of(event.context!)!.remainderCb.toUpperCase())
+                .toUpperCase()
+                .toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.collections, Constants.collections,
+        CustomerMetGridModel(ImageResource.collections,
+            Languages.of(event.context!)!.collections.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, caseDetailsAPIValue.result?.callDetails!, true)),
+                Languages.of(event.context!)!.ots.toUpperCase(),
+                caseDetailsAPIValue.result?.callDetails!,
+                true)),
             isCall: true),
       ]);
 
@@ -355,7 +370,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (event is ChangeHealthStatusEvent) {
-      print("------Nandha NK123-------");
+      print("Event submitted ==> ");
+      print(caseDetailsAPIValue.result?.callDetails![1]['health']);
+
       yield UpdateHealthStatusState();
     }
 
@@ -424,7 +441,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         // break;
         default:
       }
-      if (isAutoCalling) {
+      if (isAutoCalling || paramValue['contactIndex'] != null) {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
@@ -778,13 +795,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -797,13 +817,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -816,13 +839,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -835,13 +861,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -854,14 +883,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               isCall: isCall,
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -873,7 +905,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               Languages.of(context)!.ots,
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -881,7 +914,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               userType: userType.toString(),
               isCall: isCall,
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
@@ -895,13 +930,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               health: health ?? ConstantEventValues.healthTwo,
               isAutoCalling: isAutoCalling,
@@ -915,7 +953,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               CaseDetailsBloc(AllocationBloc()),
               customeLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -935,7 +974,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1170,6 +1210,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String caseId,
     String urlString,
   ) async {
+    print("selecedted case index ==> ${paramValue['contactIndex']}");
+    // indexValue = allocationBloc.indexValue;
     var requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
@@ -1189,8 +1231,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         ),
         eventModule: 'Telecalling',
         contact: PhoneInvalidContact(
-          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
-          value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
+          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]
+                  ['cType'] ??
+              allocationBloc.resultList[0].address?[indexValue!].cType,
+          value: caseDetailsAPIValue.result?.callDetails![indexValue!]
+                  ['value'] ??
+              allocationBloc.resultList[0].address?[indexValue!].value,
           health: ConstantEventValues.phoneInvalidHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));

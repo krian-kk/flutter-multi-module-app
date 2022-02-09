@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -11,6 +15,15 @@ import 'package:origa/widgets/health_status_widget.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AutoCalling {
+  static Future<void> phoneBottomSheet(
+      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+    return showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return PhoneScreen(bloc: bloc, index: i);
+        });
+  }
+
   static Widget buildAutoCalling(BuildContext context, AllocationBloc bloc) {
     // List<Widget> _buildRouteFilterOptions() {
     //   List<Widget> widgets = [];
@@ -46,12 +59,12 @@ class AutoCalling {
     //                 const Spacer(),
     //                 InkWell(
     //                   onTap: () {
-    //                     // bloc.add(NavigateCaseDetailTEvent(
-    //                     //   const {
-    //                     //     'caseID': '618e382004d8d040ac18841b',
-    //                     //     'isAddress': true,
-    //                     //   },
-    //                     // ));
+    // bloc.add(NavigateCaseDetailTEvent(
+    //   const {
+    //     'caseID': '618e382004d8d040ac18841b',
+    //     'isAddress': true,
+    //   },
+    // ));
     //                   },
     //                   child: Row(
     //                     children: [
@@ -249,67 +262,91 @@ class AutoCalling {
                                   if (bloc.resultList[indexs].address?[i]
                                           .cType ==
                                       'mobile') {
-                                    return Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 17, 12, 17),
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5),
-                                      decoration: BoxDecoration(
-                                        color:
-                                            // bloc.mobileNumberList[1]
-                                            //             .callResponse !=
-                                            //         null
-                                            //     ?
-                                            ColorResource.colorF6ECEF,
-                                        //     :
-                                        // ColorResource.colorF8F9FB,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                bloc.resultList[indexs]
-                                                        .address?[i].value ??
-                                                    '_',
-                                                color:
-                                                    ColorResource.color484848,
-                                                fontSize: FontSize.fourteen,
-                                              ),
-                                              const SizedBox(
-                                                width: 15,
-                                              ),
-                                              ShowHealthStatus.healthStatus(bloc
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        print(
+                                            "getting agref value error ---> ${bloc.resultList[indexs].agrRef}}");
+                                        Singleton.instance.agrRef =
+                                            bloc.resultList[indexs].agrRef;
+
+                                        print(bloc.resultList[indexs].agrRef);
+                                        CaseDetailsBloc caseDetailsloc =
+                                            CaseDetailsBloc(bloc)
+                                              ..add(CaseDetailsInitialEvent(
+                                                paramValues: {
+                                                  'caseID': bloc
                                                       .resultList[indexs]
-                                                      .address?[i]
-                                                      .health ??
-                                                  ''),
-                                              // bloc.mobileNumberList[1]
-                                              //             .callResponse !=
-                                              //         null
-                                              //     ? SvgPicture.asset(
-                                              //         ImageResource
-                                              //             .declinedCall)
-                                              //     : SvgPicture.asset(
-                                              //         ImageResource
-                                              //             .activePerson),
-                                              const Spacer(),
-                                              InkWell(
-                                                onTap: () {
-                                                  // bloc.add(NavigateCaseDetailTEvent(
-                                                  //   const {
-                                                  //     'caseID': '618e382004d8d040ac18841b',
-                                                  //     'isAddress': true,
-                                                  //   },
-                                                  // ));
+                                                      .caseId,
+
+                                                  'customerIndex': i,
+                                                  'phoneIndex': i,
+                                                  // 'mobileList': tempMobileList,
+                                                  'context': context,
+                                                  'contactIndex': i,
+                                                  'caseIndex': indexs,
                                                 },
-                                                child: Row(
+                                                context: context,
+                                              ));
+                                        await phoneBottomSheet(
+                                          context,
+                                          caseDetailsloc,
+                                          i,
+                                        ).then((value) {
+                                          print("object nk 123");
+                                        });
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 17, 12, 17),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: bloc.mobileNumberList[1]
+                                                      .callResponse !=
+                                                  null
+                                              ? ColorResource.colorF6ECEF
+                                              : ColorResource.colorF8F9FB,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                CustomText(
+                                                  bloc.resultList[indexs]
+                                                          .address?[i].value ??
+                                                      '_',
+                                                  color:
+                                                      ColorResource.color484848,
+                                                  fontSize: FontSize.fourteen,
+                                                ),
+                                                const SizedBox(
+                                                  width: 15,
+                                                ),
+                                                ShowHealthStatus.healthStatus(
+                                                    bloc
+                                                            .resultList[indexs]
+                                                            .address?[i]
+                                                            .health ??
+                                                        ''),
+                                                // bloc.mobileNumberList[1]
+                                                //             .callResponse !=
+                                                //         null
+                                                //     ? SvgPicture.asset(
+                                                //         ImageResource
+                                                //             .declinedCall)
+                                                //     : SvgPicture.asset(
+                                                //         ImageResource
+                                                //             .activePerson),
+                                                const Spacer(),
+                                                Row(
                                                   children: [
                                                     CustomText(
                                                       Languages.of(context)!
@@ -328,20 +365,21 @@ class AutoCalling {
                                                         ImageResource
                                                             .forwardArrow),
                                                   ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          // if (bloc.mobileNumberList[1]
-                                          //         .callResponse !=
-                                          //     null)
-                                          //   CustomText(
-                                          //     bloc.mobileNumberList[i]
-                                          //         .callResponse!,
-                                          //     color: ColorResource.colorD5344C,
-                                          //     fontSize: FontSize.fourteen,
-                                          //   ),
-                                        ],
+                                                )
+                                              ],
+                                            ),
+                                            if (bloc.mobileNumberList[1]
+                                                    .callResponse !=
+                                                null)
+                                              CustomText(
+                                                bloc.mobileNumberList[i]
+                                                    .callResponse!,
+                                                color:
+                                                    ColorResource.colorD5344C,
+                                                fontSize: FontSize.fourteen,
+                                              ),
+                                          ],
+                                        ),
                                       ),
                                     );
                                   } else {
