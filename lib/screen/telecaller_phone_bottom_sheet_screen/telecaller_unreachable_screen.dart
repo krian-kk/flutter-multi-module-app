@@ -7,7 +7,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/bloc/telecaller_phone_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
