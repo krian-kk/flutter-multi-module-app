@@ -464,4 +464,8 @@ abstract class Languages {
   String get eventUpdatedSuccessfully;
 
   String get successfullySubmitted;
+
+  String get loginViaDifferentUser;
+
+  String get event;
 }

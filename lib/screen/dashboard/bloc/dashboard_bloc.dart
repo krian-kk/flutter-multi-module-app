@@ -159,7 +159,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.myReceipts,
-              subTitle: Constants.events,
+              subTitle: Languages.of(event.context!)!.event,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.receipts!.count.toString() ?? '0',
@@ -171,7 +171,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               title: userType == Constants.fieldagent
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
-              subTitle: Constants.events,
+              subTitle: Languages.of(event.context!)!.event,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.visits?.count.toString() ?? '0',

@@ -691,4 +691,10 @@ class LanguageEn extends Languages {
 
   @override
   String get successfullySubmitted => 'Successfully submitted!!';
+
+  @override
+  String get loginViaDifferentUser => 'Login via different user';
+
+  @override
+  String get event => 'Events';
 }

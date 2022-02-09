@@ -257,8 +257,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           onTap: () {
                                             bloc.add(ResendOTPEvent());
                                           },
-                                          child: const CustomText(
-                                            Constants.resetPassword,
+                                          child: CustomText(
+                                            Languages.of(context)!
+                                                .resetPassword,
                                             fontSize: FontSize.sixteen,
                                             fontWeight: FontWeight.w600,
                                             color: ColorResource.color23375A,
@@ -268,7 +269,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           height: 30,
                                         ),
                                         CustomButton(
-                                          StringResource.loginViaDifferentUser,
+                                          Languages.of(context)!
+                                              .loginViaDifferentUser,
                                           onTap: bloc.isSubmit
                                               ? () {
                                                   setState(() {
@@ -439,33 +441,39 @@ class _LoginScreenState extends State<LoginScreen> {
   // }
 
   // If isSubmit = true : show Normal submit button
-  Widget loginButton({String? fcmToken}) => 
-  GestureDetector(
-    onTap: (){
-      _signIn(fcmToken: fcmToken);
-    },
-    child: Container(
-      width: MediaQuery.of(context).size.width,
-      height: 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(90.0),
-        // boxShadow: const [
-        //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.12), spreadRadius: 2),
-        //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.24), spreadRadius: 2),
-        // ],
-        gradient:   const LinearGradient(
-            colors: [
-              ColorResource.colorFFC23B,
-              ColorResource.colorEA8A38,
-            ],
-            begin: Alignment.topCenter,
-            end:  Alignment.bottomCenter,),
-      ),
-      child: Center(
-        child: CustomText(StringResource.signIn.toUpperCase(),color: ColorResource.color23375A, fontSize: FontSize.sixteen, fontWeight: FontWeight.w600,lineHeight: 1,),
-      ),
-    ),
-  );
+  Widget loginButton({String? fcmToken}) => GestureDetector(
+        onTap: () {
+          _signIn(fcmToken: fcmToken);
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(90.0),
+            // boxShadow: const [
+            //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.12), spreadRadius: 2),
+            //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.24), spreadRadius: 2),
+            // ],
+            gradient: const LinearGradient(
+              colors: [
+                ColorResource.colorFFC23B,
+                ColorResource.colorEA8A38,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Center(
+            child: CustomText(
+              StringResource.signIn.toUpperCase(),
+              color: ColorResource.color23375A,
+              fontSize: FontSize.sixteen,
+              fontWeight: FontWeight.w600,
+              lineHeight: 1,
+            ),
+          ),
+        ),
+      );
   //     CustomButton(
   //       StringResource.signIn.toUpperCase(),
   //       buttonBackgroundColor: ColorResource.colorEA8A38,
@@ -485,15 +493,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget circularLoading(bool done) {
     final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
     return Container(
-      decoration: const BoxDecoration(shape: BoxShape.circle,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
         // color: color,
-        gradient:    LinearGradient(
+        gradient: LinearGradient(
           colors: [
             ColorResource.colorFFC23B,
             ColorResource.colorEA8A38,
           ],
           begin: Alignment.topCenter,
-          end:  Alignment.bottomCenter,),
+          end: Alignment.bottomCenter,
+        ),
       ),
       height: 50,
       child: Center(

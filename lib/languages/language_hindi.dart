@@ -692,4 +692,11 @@ class LanguageHi extends Languages {
 
   @override
   String get successfullySubmitted => 'सफलतापूर्वक प्रस्तुत किया गया!!';
+
+  @override
+  String get loginViaDifferentUser =>
+      'विभिन्न उपयोगकर्ता के माध्यम से लॉगिन करें';
+
+  @override
+  String get event => 'आयोजन';
 }

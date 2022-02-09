@@ -694,4 +694,10 @@ class LanguageTa extends Languages {
 
   @override
   String get successfullySubmitted => 'வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!!';
+
+  @override
+  String get loginViaDifferentUser => 'வெவ்வேறு பயனர் மூலம் உள்நுழைக';
+
+  @override
+  String get event => 'நிகழ்வுகள்';
 }

@@ -270,7 +270,6 @@ class AutoCalling {
                                                   'caseID': bloc
                                                       .resultList[indexs]
                                                       .caseId,
-
                                                   'customerIndex': i,
                                                   'phoneIndex': i,
                                                   // 'mobileList': tempMobileList,
