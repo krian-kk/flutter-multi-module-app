@@ -8,6 +8,10 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/bloc/telecaller_phone_bloc.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/telecaller_phone_connected_screen.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/telecaller_phone_invalid_screen.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/telecaller_unreachable_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -19,19 +23,17 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
-class PhoneScreen extends StatefulWidget {
-  final CaseDetailsBloc bloc;
-  final int index;
-  const PhoneScreen({Key? key, required this.bloc, required this.index})
-      : super(key: key);
+class TelecallerPhoneScreen extends StatefulWidget {
+  const TelecallerPhoneScreen({Key? key}) : super(key: key);
 
   @override
-  _PhoneScreenState createState() => _PhoneScreenState();
+  _TelecallerPhoneScreenState createState() => _TelecallerPhoneScreenState();
 }
 
-class _PhoneScreenState extends State<PhoneScreen>
+class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
+  late TelecallerPhoneBloc bloc;
 
   bool isSubmitFirst = true;
   bool isSubmitSecond = true;
@@ -45,70 +47,68 @@ class _PhoneScreenState extends State<PhoneScreen>
   @override
   void initState() {
     super.initState();
+    bloc = TelecallerPhoneBloc()..add(TelecallerInitialPhoneEvent(context));
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
 
-    widget.bloc.add(UpdateHealthStatusEvent(context,
-        selectedHealthIndex: widget.index,
-        tabIndex: _controller.index,
-        currentHealth: widget.bloc.caseDetailsAPIValue.result
-            ?.callDetails![widget.index]['health']));
-
-    print(widget.index);
-    print(widget.bloc.caseDetailsAPIValue.result?.callDetails![widget.index]);
+    // widget.bloc.add(UpdateHealthStatusEvent(context,
+    //     selectedHealthIndex: widget.index,
+    //     tabIndex: _controller.index,
+    //     currentHealth: widget.bloc.caseDetailsAPIValue.result
+    //         ?.callDetails![widget.index]['health']));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
-      bloc: widget.bloc,
+    return BlocListener<TelecallerPhoneBloc, TelecallerPhoneState>(
+      bloc: bloc,
       listener: (context, state) {
-        if (state is DisableUnreachableBtnState) {
-          setState(() => isSubmitFirst = false);
-        }
-        if (state is EnableUnreachableBtnState) {
-          setState(() => isSubmitFirst = true);
-        }
-        if (state is DisablePhoneInvalidBtnState) {
-          setState(() => isSubmitSecond = false);
-        }
-        if (state is EnablePhoneInvalidBtnState) {
-          setState(() => isSubmitSecond = true);
-        }
+        // if (state is DisableUnreachableBtnState) {
+        //   setState(() => isSubmitFirst = false);
+        // }
+        // if (state is EnableUnreachableBtnState) {
+        //   setState(() => isSubmitFirst = true);
+        // }
+        // if (state is DisablePhoneInvalidBtnState) {
+        //   setState(() => isSubmitSecond = false);
+        // }
+        // if (state is EnablePhoneInvalidBtnState) {
+        //   setState(() => isSubmitSecond = true);
+        // }
 
-        if (state is UpdateHealthStatusState) {
-          print(
-              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
-              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+        // if (state is UpdateHealthStatusState) {
+        //   print(
+        //       "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+        //   UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+        //       Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
-          setState(() {
-            switch (data.tabIndex) {
-              case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
-                break;
-              case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
-                break;
-              case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
-                break;
-              default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
-                    data.currentHealth;
-                break;
-            }
-          });
-        }
+        //   setState(() {
+        //     switch (data.tabIndex) {
+        //       case 0:
+        //         widget.bloc.caseDetailsAPIValue.result
+        //             ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+        //         break;
+        //       case 1:
+        //         widget.bloc.caseDetailsAPIValue.result
+        //             ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+        //         break;
+        //       case 2:
+        //         widget.bloc.caseDetailsAPIValue.result
+        //             ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+        //         break;
+        //       default:
+        //         widget.bloc.caseDetailsAPIValue.result
+        //                 ?.callDetails![data.selectedHealthIndex!]['health'] =
+        //             data.currentHealth;
+        //         break;
+        //     }
+        //   });
+        // }
       },
-      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
-        bloc: widget.bloc,
+      child: BlocBuilder<TelecallerPhoneBloc, TelecallerPhoneState>(
+        bloc: bloc,
         builder: (context, state) {
-          if (state is CaseDetailsLoadingState) {
+          if (state is TelecallerPhoneLoadingState) {
             return SizedBox(
               height: MediaQuery.of(context).size.height * 0.89,
               child: Scaffold(
@@ -164,17 +164,17 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   CustomText(
-                                    widget.bloc.isAutoCalling
-                                        ? 'mobile'.toUpperCase()
-                                        : widget
-                                                .bloc
-                                                .caseDetailsAPIValue
-                                                .result
-                                                ?.callDetails![widget.index]
-                                                    ['cType']
-                                                .toString()
-                                                .toUpperCase() ??
-                                            '_',
+                                    // widget.bloc.isAutoCalling
+                                    //     ? 'mobile'.toUpperCase()
+                                    //     : widget
+                                    //             .bloc
+                                    //             .caseDetailsAPIValue
+                                    //             .result
+                                    //             ?.callDetails![widget.index]
+                                    //                 ['cType']
+                                    //             .toString()
+                                    //             .toUpperCase() ??
+                                    '_',
                                     fontWeight: FontWeight.w700,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -184,15 +184,18 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     spacing: 27,
                                     children: [
                                       // SvgPicture.asset(ImageResource.activePerson),
-                                      ShowHealthStatus.healthStatus(widget
-                                              .bloc.isAutoCalling
-                                          ? '0'
-                                          : widget
-                                                  .bloc
-                                                  .caseDetailsAPIValue
-                                                  .result
-                                                  ?.callDetails![widget.index]
-                                              ['health']),
+                                      ShowHealthStatus.healthStatus(
+                                          // widget
+                                          //     .bloc.isAutoCalling
+                                          // ?
+                                          '0'
+                                          // : widget
+                                          //         .bloc
+                                          //         .caseDetailsAPIValue
+                                          //         .result
+                                          //         ?.callDetails![widget.index]
+                                          //     ['health']
+                                          ),
                                       GestureDetector(
                                         onTap: () => Navigator.pop(context),
                                         child: Container(
@@ -209,22 +212,22 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 child: SizedBox(
                                   width: 255,
                                   child: CustomText(
-                                    widget.bloc.isAutoCalling
-                                        ? widget
-                                            .bloc
-                                            .listOfAddress![widget
-                                                .bloc.paramValue['phoneIndex']]
-                                            .value
-                                            .toString()
-                                        : widget
-                                                .bloc
-                                                .caseDetailsAPIValue
-                                                .result
-                                                ?.callDetails![widget.index]
-                                                    ['value']
-                                                .toString()
-                                                .toUpperCase() ??
-                                            '_',
+                                    // widget.bloc.isAutoCalling
+                                    //     ? widget
+                                    //         .bloc
+                                    //         .listOfAddress![widget
+                                    //             .bloc.paramValue['phoneIndex']]
+                                    //         .value
+                                    //         .toString()
+                                    //     : widget
+                                    //             .bloc
+                                    //             .caseDetailsAPIValue
+                                    //             .result
+                                    //             ?.callDetails![widget.index]
+                                    //                 ['value']
+                                    //             .toString()
+                                    //             .toUpperCase() ??
+                                    '_',
                                     fontWeight: FontWeight.w400,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -238,15 +241,15 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       child: SizedBox(
                                           width: 10,
                                           child: InkWell(
-                                            onTap: () => widget.bloc.add(
-                                                ClickOpenBottomSheetEvent(
-                                                    Constants.callCustomer,
-                                                    widget
-                                                        .bloc
-                                                        .caseDetailsAPIValue
-                                                        .result
-                                                        ?.callDetails,
-                                                    false)),
+                                            // onTap: () => widget.bloc.add(
+                                            //     ClickOpenBottomSheetEvent(
+                                            //         Constants.callCustomer,
+                                            //         widget
+                                            //             .bloc
+                                            //             .caseDetailsAPIValue
+                                            //             .result
+                                            //             ?.callDetails,
+                                            //         false)),
                                             child: Container(
                                                 decoration: const BoxDecoration(
                                                     color: ColorResource
@@ -299,13 +302,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                         fontWeight: FontWeight.w700,
                                         fontStyle: FontStyle.normal,
                                       ),
-                                      onTap: () => widget.bloc.add(
-                                          ClickOpenBottomSheetEvent(
-                                              Constants.eventDetails,
-                                              widget.bloc.caseDetailsAPIValue
-                                                  .result?.callDetails,
-                                              false)),
-
+                                      // onTap: () => widget.bloc.add(
+                                      //     ClickOpenBottomSheetEvent(
+                                      //         Constants.eventDetails,
+                                      //         widget.bloc.caseDetailsAPIValue
+                                      //             .result?.callDetails,
+                                      //         false)),
                                       borderColor: ColorResource.color23375A,
                                       buttonBackgroundColor:
                                           ColorResource.colorFFFFFF,
@@ -326,25 +328,25 @@ class _PhoneScreenState extends State<PhoneScreen>
                             physics: const NeverScrollableScrollPhysics(),
                             isScrollable: true,
                             indicatorColor: ColorResource.colorD5344C,
-                            onTap: (index) {
-                              // change address health status based on selected tab customer met / customer not met / invalid
-                              widget.bloc.add(UpdateHealthStatusEvent(context,
-                                  selectedHealthIndex: widget.index,
-                                  tabIndex: index,
-                                  currentHealth: widget
-                                      .bloc
-                                      .caseDetailsAPIValue
-                                      .result
-                                      ?.callDetails![widget.index]['health']));
+                            // onTap: (index) {
+                            //   // change address health status based on selected tab customer met / customer not met / invalid
+                            //   widget.bloc.add(UpdateHealthStatusEvent(context,
+                            //       selectedHealthIndex: widget.index,
+                            //       tabIndex: index,
+                            //       currentHealth: widget
+                            //           .bloc
+                            //           .caseDetailsAPIValue
+                            //           .result
+                            //           ?.callDetails![widget.index]['health']));
 
-                              widget
-                                  .bloc.phoneUnreachableNextActionDateFocusNode
-                                  .unfocus();
-                              widget.bloc.phoneUnreachableRemarksFocusNode
-                                  .unfocus();
-                              widget.bloc.phoneInvalidRemarksFocusNode
-                                  .unfocus();
-                            },
+                            //   widget
+                            //       .bloc.phoneUnreachableNextActionDateFocusNode
+                            //       .unfocus();
+                            //   widget.bloc.phoneUnreachableRemarksFocusNode
+                            //       .unfocus();
+                            //   widget.bloc.phoneInvalidRemarksFocusNode
+                            //       .unfocus();
+                            // },
                             labelStyle: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: ColorResource.color23375A,
@@ -373,12 +375,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                         const NeverScrollableScrollPhysics(),
                                     controller: _controller,
                                     children: [
-                                      PhoneConnectedScreen(
-                                          bloc: widget.bloc, context: context),
-                                      PhoneUnreachableScreen(
-                                          bloc: widget.bloc, context: context),
-                                      PhonenInvalidScreen(
-                                          bloc: widget.bloc, context: context),
+                                      TelecallerPhoneConnectedScreen(
+                                          bloc: bloc, context: context),
+                                      TelecallerPhoneUnreachableScreen(
+                                          bloc: bloc, context: context),
+                                      TelecallerPhonenInvalidScreen(
+                                          bloc: bloc, context: context),
                                     ],
                                   ),
                                 ),
@@ -415,19 +417,19 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     Languages.of(context)!.done.toUpperCase(),
                                     fontSize: FontSize.sixteen,
                                     fontWeight: FontWeight.w600,
-                                    onTap: () {
-                                      if (widget.bloc.isAutoCalling) {
-                                        widget.bloc.allocationBloc
-                                            .add(StartCallingEvent(
-                                          customerIndex: widget.bloc
-                                                  .paramValue['customerIndex'] +
-                                              1,
-                                          phoneIndex: 0,
-                                          isIncreaseCount: true,
-                                        ));
-                                      }
-                                      Navigator.pop(context);
-                                    },
+                                    // onTap: () {
+                                    //   if (widget.bloc.isAutoCalling) {
+                                    //     widget.bloc.allocationBloc
+                                    //         .add(StartCallingEvent(
+                                    //       customerIndex: widget.bloc
+                                    //               .paramValue['customerIndex'] +
+                                    //           1,
+                                    //       phoneIndex: 0,
+                                    //       isIncreaseCount: true,
+                                    //     ));
+                                    //   }
+                                    //   Navigator.pop(context);
+                                    // },
                                     cardShape: 5,
                                   ),
                                 ),
@@ -488,26 +490,26 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           ),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
-                                          onTap: isSubmitFirst
-                                              ? () {
-                                                  if (widget
-                                                      .bloc
-                                                      .phoneUnreachableFormKey
-                                                      .currentState!
-                                                      .validate()) {
-                                                    if (widget.bloc
-                                                            .phoneSelectedUnreadableClip !=
-                                                        '') {
-                                                      widget.bloc.add(
-                                                          ClickPhoneUnreachableSubmitedButtonEvent(
-                                                              context));
-                                                    } else {
-                                                      AppUtils.showToast(Constants
-                                                          .pleaseSelectOptions);
-                                                    }
-                                                  }
-                                                }
-                                              : () {},
+                                          // onTap: isSubmitFirst
+                                          //     ? () {
+                                          //         if (widget
+                                          //             .bloc
+                                          //             .phoneUnreachableFormKey
+                                          //             .currentState!
+                                          //             .validate()) {
+                                          //           if (widget.bloc
+                                          //                   .phoneSelectedUnreadableClip !=
+                                          //               '') {
+                                          //             widget.bloc.add(
+                                          //                 ClickPhoneUnreachableSubmitedButtonEvent(
+                                          //                     context));
+                                          //           } else {
+                                          //             AppUtils.showToast(Constants
+                                          //                 .pleaseSelectOptions);
+                                          //           }
+                                          //         }
+                                          //       }
+                                          //     : () {},
                                           cardShape: 5,
                                         )
                                       : CustomButton(
@@ -526,13 +528,13 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           ),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
-                                          onTap: isSubmitSecond
-                                              ? () {
-                                                  widget.bloc.add(
-                                                      ClickPhoneInvalidButtonEvent(
-                                                          context));
-                                                }
-                                              : () {},
+                                          // onTap: isSubmitSecond
+                                          //     ? () {
+                                          //         widget.bloc.add(
+                                          //             ClickPhoneInvalidButtonEvent(
+                                          //                 context));
+                                          //       }
+                                          //     : () {},
                                           cardShape: 5,
                                         ),
                                 ),

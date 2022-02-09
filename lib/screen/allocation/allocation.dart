@@ -17,6 +17,7 @@ import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
 import 'package:origa/router.dart';
@@ -719,6 +720,34 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             AppUtils.showToast(Constants.successfullySubmitted);
           }
+        }
+
+        if (state is AutoCallContactHealthUpdateState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = '2';
+                break;
+              case 1:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = '1';
+                break;
+              case 2:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = '0';
+                break;
+              default:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(

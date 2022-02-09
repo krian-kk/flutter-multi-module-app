@@ -79,3 +79,9 @@ class StartCallingEvent extends AllocationEvent {
     this.isIncreaseCount = false,
   });
 }
+
+class AutoCallContactHealthUpdateEvent extends AllocationEvent {
+  final int? contactIndex;
+  final int? caseIndex;
+  AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
+}

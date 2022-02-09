@@ -14,6 +14,7 @@ import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -617,6 +618,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield UpdateStaredCaseState(
           caseId: event.caseID,
           isStared: resultList[event.selectedStarIndex].starredCase);
+    }
+
+    if (event is AutoCallContactHealthUpdateEvent) {
+      yield AutoCallContactHealthUpdateState(
+          contactIndex: event.contactIndex, caseIndex: event.caseIndex);
     }
   }
 }

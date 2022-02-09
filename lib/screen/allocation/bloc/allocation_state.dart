@@ -82,3 +82,9 @@ class StartCallingState extends AllocationState {
   // final Result? customerList;
   StartCallingState({this.customerIndex, this.phoneIndex});
 }
+
+class AutoCallContactHealthUpdateState extends AllocationState {
+  final int? contactIndex;
+  final int? caseIndex;
+  AutoCallContactHealthUpdateState({this.contactIndex, this.caseIndex});
+}

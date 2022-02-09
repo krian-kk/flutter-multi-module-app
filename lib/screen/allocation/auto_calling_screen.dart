@@ -5,6 +5,8 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/phone_bottom_sheet_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -19,7 +21,7 @@ class AutoCalling {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return PhoneScreen(bloc: bloc, index: i);
+          return TelecallerPhoneScreen();
         });
   }
 
@@ -263,6 +265,12 @@ class AutoCalling {
                                       'mobile') {
                                     return GestureDetector(
                                       onTap: () async {
+                                        print(
+                                            "getting agref value error ---> ${bloc.resultList[indexs].agrRef}}");
+                                        Singleton.instance.agrRef =
+                                            bloc.resultList[indexs].agrRef;
+
+                                        print(bloc.resultList[indexs].agrRef);
                                         CaseDetailsBloc caseDetailsloc =
                                             CaseDetailsBloc(bloc)
                                               ..add(CaseDetailsInitialEvent(
@@ -274,6 +282,8 @@ class AutoCalling {
                                                   'phoneIndex': i,
                                                   // 'mobileList': tempMobileList,
                                                   'context': context,
+                                                  'contactIndex': i,
+                                                  'caseIndex': indexs,
                                                 },
                                                 context: context,
                                               ));
@@ -281,7 +291,9 @@ class AutoCalling {
                                           context,
                                           caseDetailsloc,
                                           i,
-                                        );
+                                        ).then((value) {
+                                          print("object nk 123");
+                                        });
                                       },
                                       child: Container(
                                         width:
