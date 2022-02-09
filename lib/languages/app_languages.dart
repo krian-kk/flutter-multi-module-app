@@ -468,4 +468,14 @@ abstract class Languages {
   String get loginViaDifferentUser;
 
   String get event;
+
+  String get changeSecurePIN;
+
+  String get changeYourSecureDigitPIN;
+
+  String get newPin;
+
+  String get save;
+
+  String get secureYourAccountByCreatingAFourDigitPin;
 }

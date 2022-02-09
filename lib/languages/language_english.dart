@@ -697,4 +697,20 @@ class LanguageEn extends Languages {
 
   @override
   String get event => 'Events';
+
+  @override
+  String get changeSecurePIN => 'CHANGE Secure PIN';
+
+  @override
+  String get changeYourSecureDigitPIN => 'Change your secure 4-digit PIN';
+
+  @override
+  String get newPin => 'New Pin';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      'Secure your account by creating a 4 digit PIN';
 }

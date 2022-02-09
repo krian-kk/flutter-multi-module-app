@@ -180,17 +180,19 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                       '0',
             ),
             DashboardListModel(
-                title: Languages.of(event.context!)!.myDeposists,
-                subTitle: '',
-                image: '',
-                count: '',
-                amountRs: ''),
+              title: Languages.of(event.context!)!.myDeposists,
+              subTitle: '',
+              image: '',
+              count: '',
+              amountRs: '',
+            ),
             DashboardListModel(
-                title: Languages.of(event.context!)!.yardingSelfRelease,
-                subTitle: '',
-                image: '',
-                count: '',
-                amountRs: ''),
+              title: Languages.of(event.context!)!.yardingSelfRelease,
+              subTitle: '',
+              image: '',
+              count: '',
+              amountRs: '',
+            ),
           ]);
         } else if (dashboardData['statusCode'] == 401 ||
             dashboardData['data'] == Constants.connectionTimeout ||

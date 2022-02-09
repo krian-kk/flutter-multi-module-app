@@ -19,6 +19,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/login_bloc.dart';
@@ -64,6 +65,168 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  Future<void> showSecurePinDialogBox() async {
+    TextEditingController securePinCodeContoller = TextEditingController();
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        child: CustomText(
+                          Languages.of(context)!
+                              .secureYourAccountByCreatingAFourDigitPin,
+                          fontSize: FontSize.eighteen,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            child: SvgPicture.asset(ImageResource.close),
+                          ))
+                    ]),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: PinCodeTextField(
+                    appContext: context,
+                    controller: securePinCodeContoller,
+                    length: 4,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    obscureText: false,
+                    animationType: AnimationType.scale,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    textStyle: const TextStyle(
+                      fontSize: FontSize.fourteen,
+                      color: ColorResource.color23375A,
+                    ),
+                    keyboardType: TextInputType.number,
+                    pinTheme: PinTheme(
+                      fieldOuterPadding: const EdgeInsets.all(8),
+                      activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                      selectedColor: ColorResource.color23375A.withOpacity(0.3),
+                      inactiveColor: ColorResource.color232222.withOpacity(0.3),
+                      fieldHeight: 46,
+                      fieldWidth: 40,
+                      borderWidth: 1,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                CustomButton(
+                  Languages.of(context)!.save,
+                  fontSize: FontSize.sixteen,
+                  onTap: () {
+                    showComformSecurePinDialogBox(securePinCodeContoller.text);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  Future<void> showComformSecurePinDialogBox(String newPin) async {
+    TextEditingController securePinCodeContoller = TextEditingController();
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        child: CustomText(
+                          Languages.of(context)!.changeYourSecureDigitPIN,
+                          fontSize: FontSize.sixteen,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            child: SvgPicture.asset(ImageResource.close),
+                          ))
+                    ]),
+                const SizedBox(height: 10),
+                CustomText(
+                  Languages.of(context)!.newPin,
+                  fontSize: FontSize.sixteen,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w700,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: PinCodeTextField(
+                    appContext: context,
+                    controller: securePinCodeContoller,
+                    length: 4,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    obscureText: false,
+                    animationType: AnimationType.scale,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    textStyle: const TextStyle(
+                      fontSize: FontSize.fourteen,
+                      color: ColorResource.color23375A,
+                    ),
+                    keyboardType: TextInputType.number,
+                    pinTheme: PinTheme(
+                      fieldOuterPadding: const EdgeInsets.all(8),
+                      activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                      selectedColor: ColorResource.color23375A.withOpacity(0.3),
+                      inactiveColor: ColorResource.color232222.withOpacity(0.3),
+                      fieldHeight: 46,
+                      fieldWidth: 40,
+                      borderWidth: 1,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                CustomButton(
+                  Languages.of(context)!.save,
+                  fontSize: FontSize.sixteen,
+                  onTap: () {
+                    // Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -80,6 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppUtils.noInternetSnackbar(context);
                       }
                       if (state is HomeTabState) {
+                        // showSecurePinDialogBox();
                         Navigator.pushReplacementNamed(
                             context, AppRoutes.homeTabScreen);
                       }

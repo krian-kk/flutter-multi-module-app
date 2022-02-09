@@ -102,6 +102,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ClickChangePassswordEvent) {
       yield ClickChangePasswordState();
     }
+    if (event is ClickChangeSecurityPinEvent) {
+      yield ClickChangeSecurityPinState();
+    }
     if (event is ClickMessageEvent) {
       yield ClickMessageState(
         fromId: event.fromId,

@@ -699,4 +699,20 @@ class LanguageHi extends Languages {
 
   @override
   String get event => 'आयोजन';
+
+  @override
+  String get changeSecurePIN => 'सुरक्षित पिन बदलें';
+
+  @override
+  String get changeYourSecureDigitPIN => 'अपना सुरक्षित 4-अंकीय पिन बदलें';
+
+  @override
+  String get newPin => 'नया पिन';
+
+  @override
+  String get save => 'सहेजें';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      '4 अंकों का पिन बनाकर अपना खाता सुरक्षित करें';
 }

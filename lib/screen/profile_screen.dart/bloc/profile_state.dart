@@ -14,6 +14,8 @@ class ClickChangeLaunguageState extends ProfileState {}
 
 class ClickChangePasswordState extends ProfileState {}
 
+class ClickChangeSecurityPinState extends ProfileState {}
+
 class ClickMessageState extends ProfileState {
   final String? fromId;
   final String? toId;

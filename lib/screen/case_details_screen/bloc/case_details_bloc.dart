@@ -362,7 +362,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       yield UpdateSuccessfullState();
     }
-
     if (event is ChangeHealthStatusEvent) {
       yield UpdateHealthStatusState();
     }

@@ -700,4 +700,20 @@ class LanguageTa extends Languages {
 
   @override
   String get event => 'நிகழ்வுகள்';
+
+  @override
+  String get changeSecurePIN => 'பாதுகாப்பான பின்னை மாற்றவும்';
+
+  @override
+  String get changeYourSecureDigitPIN => 'உங்கள் பாதுகாப்பான பின்னை மாற்றவும்';
+
+  @override
+  String get newPin => 'புதிய பின்';
+
+  @override
+  String get save => 'சேமிக்க';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      '4 இலக்க பின்னை உருவாக்கி உங்கள் கணக்கைப் பாதுகாக்கவும்';
 }

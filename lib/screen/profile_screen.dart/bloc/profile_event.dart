@@ -13,6 +13,8 @@ class ClickChangeLaunguageEvent extends ProfileEvent {}
 
 class ClickChangePassswordEvent extends ProfileEvent {}
 
+class ClickChangeSecurityPinEvent extends ProfileEvent {}
+
 class ClickMessageEvent extends ProfileEvent {
   final String? fromId;
   final String? toId;
