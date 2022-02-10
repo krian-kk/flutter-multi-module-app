@@ -413,6 +413,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           messageShowBottomSheet();
         }
         if (state is StartCallingState) {
+          setState(() {});
           if (bloc.customerCount < bloc.totalCount) {
             Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
@@ -422,6 +423,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
                 AgencyDetailsModel voiceAgencyDetails =
                     AgencyDetailsModel.fromJson(jsonData);
+
                 if (state.customerIndex! < bloc.resultList.length) {
                   List<Address> tempMobileList = [];
                   bloc.resultList[state.customerIndex!].address
@@ -435,14 +437,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
                       to: tempMobileList[state.phoneIndex!].value ?? '',
-                      callerId: Singleton.instance.callingID ?? '0',
+                      callerId: voiceAgencyDetails.result?.voiceAgencyData
+                              ?.first.callerIds?.first ??
+                          '0',
                       aRef: Singleton.instance.agentRef ?? '',
                       customerName: Singleton.instance.agentName ?? '',
                       service: voiceAgencyDetails
                               .result?.voiceAgencyData?.first.agencyId ??
                           '0',
-                      callerServiceID:
-                          Singleton.instance.callerServiceID ?? '0',
+                      callerServiceID: voiceAgencyDetails
+                              .result?.voiceAgencyData?.first.agencyId ??
+                          '0',
                       caseId: bloc.resultList[state.customerIndex!].caseId!,
                       sId: bloc.resultList[state.customerIndex!].sId!,
                       agrRef: Singleton.instance.agentRef ?? '',

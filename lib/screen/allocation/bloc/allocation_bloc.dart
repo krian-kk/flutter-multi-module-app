@@ -14,7 +14,6 @@ import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -278,21 +277,23 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+
     if (event is StartCallingEvent) {
-      if (event.isIncreaseCount && customerCount < totalCount) {
+      if (event.isIncreaseCount && event.customerIndex! < totalCount) {
+        Result val = resultList[event.customerIndex! - 1];
+        resultList.remove(val);
+        resultList.add(val);
+        // print('============== > ${val.cust}');
+        // print('============== > ${resultList[event.customerIndex! - 1].cust}');
+        // print(
+        //     '===================================================================');
+        // print('================ > ${resultList.length}');
         customerCount++;
       }
       Singleton.instance.startCalling = true;
-      // yield* Stream.periodic(
-      //     const Duration(seconds: 45),
-      //     (index) => StartCallingState(
-      //           customerIndex: event.customerIndex,
-      //           // customerList: event.customerList,
-      //           phoneIndex: event.phoneIndex,
-      //         ));
+
       yield StartCallingState(
         customerIndex: event.customerIndex,
-        // customerList: event.customerList,
         phoneIndex: event.phoneIndex,
       );
     }

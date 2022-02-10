@@ -122,7 +122,7 @@ class _TelecallerPhonenInvalidScreenState
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(ClickOpenBottomSheetEvent(
-              element.stringResourceValue, [], true,
+              element.stringResourceValue, const [], true,
               health: '0'));
         },
         child: Container(

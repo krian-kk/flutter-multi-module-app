@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/phone_bottom_sheet_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';

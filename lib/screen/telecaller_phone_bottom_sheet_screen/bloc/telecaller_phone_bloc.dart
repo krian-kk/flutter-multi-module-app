@@ -11,7 +11,6 @@ import 'package:origa/models/event_details_api_model/event_details_api_model.dar
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -61,56 +60,58 @@ class TelecallerPhoneBloc
                   ClickOpenBottomSheetEvent(Constants.rtp, const [], false))),
           CustomerMetGridModel(ImageResource.dispute,
               Languages.of(event.context!)!.dispute.toUpperCase(),
-              onTap: () =>
-                  add(ClickOpenBottomSheetEvent(Constants.dispute, [], false))),
+              onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.dispute, const [], false))),
           CustomerMetGridModel(
               ImageResource.remainder,
               (Languages.of(event.context!)!.remainderCb.toUpperCase())
                   .toUpperCase(),
-              onTap: () => add(
-                  ClickOpenBottomSheetEvent(Constants.remainder, [], false))),
+              onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.remainder, const [], false))),
           CustomerMetGridModel(ImageResource.collections,
               Languages.of(event.context!)!.collections.toUpperCase(),
-              onTap: () => add(
-                  ClickOpenBottomSheetEvent(Constants.collections, [], false))),
+              onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.collections, const [], false))),
           CustomerMetGridModel(ImageResource.ots,
               Languages.of(event.context!)!.ots.toUpperCase(),
-              onTap: () =>
-                  add(ClickOpenBottomSheetEvent(Constants.ots, [], false))),
+              onTap: () => add(
+                  ClickOpenBottomSheetEvent(Constants.ots, const [], false))),
         ]);
 
         phoneCustomerMetGridList.addAll([
           CustomerMetGridModel(ImageResource.ptp,
               Languages.of(event.context!)!.ptp.toUpperCase(),
               onTap: () =>
-                  add(ClickOpenBottomSheetEvent(Constants.ptp, [], true)),
+                  add(ClickOpenBottomSheetEvent(Constants.ptp, const [], true)),
               isCall: true),
           CustomerMetGridModel(ImageResource.rtp,
               Languages.of(event.context!)!.rtp.toUpperCase(),
               onTap: () =>
-                  add(ClickOpenBottomSheetEvent(Constants.rtp, [], true)),
+                  add(ClickOpenBottomSheetEvent(Constants.rtp, const [], true)),
               isCall: true),
           CustomerMetGridModel(ImageResource.dispute,
               Languages.of(event.context!)!.dispute.toUpperCase(),
-              onTap: () =>
-                  add(ClickOpenBottomSheetEvent(Constants.dispute, [], true)),
+              onTap: () => add(
+                  ClickOpenBottomSheetEvent(Constants.dispute, const [], true)),
               isCall: true),
           CustomerMetGridModel(
               ImageResource.remainder,
               (Languages.of(event.context!)!.remainderCb.toUpperCase())
                   .toUpperCase()
                   .toUpperCase(),
-              onTap: () =>
-                  add(ClickOpenBottomSheetEvent(Constants.remainder, [], true)),
+              onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.remainder, const [], true)),
               isCall: true),
           CustomerMetGridModel(ImageResource.collections,
               Languages.of(event.context!)!.collections.toUpperCase(),
-              onTap: () => add(
-                  ClickOpenBottomSheetEvent(Constants.collections, [], true)),
+              onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.collections, const [], true)),
               isCall: true),
           CustomerMetGridModel(ImageResource.ots, Constants.ots,
               onTap: () => add(ClickOpenBottomSheetEvent(
-                  Languages.of(event.context!)!.ots.toUpperCase(), [], true)),
+                  Languages.of(event.context!)!.ots.toUpperCase(),
+                  const [],
+                  true)),
               isCall: true),
         ]);
         emit.call(TelecallerPhoneLoadedState());

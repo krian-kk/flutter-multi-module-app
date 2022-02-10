@@ -142,8 +142,12 @@ class _TelecallerPhoneConnectedScreenState
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(
-            ClickOpenBottomSheetEvent(element.stringResourceValue, [], true,
-                health: ConstantEventValues.healthTwo),
+            ClickOpenBottomSheetEvent(
+              element.stringResourceValue,
+              const [],
+              true,
+              health: ConstantEventValues.healthTwo,
+            ),
           );
         },
         child: Container(

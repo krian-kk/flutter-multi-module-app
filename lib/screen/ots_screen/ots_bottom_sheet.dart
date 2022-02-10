@@ -11,7 +11,6 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/case_details_api_model/case_details.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';

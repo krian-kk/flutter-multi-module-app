@@ -67,6 +67,8 @@ class UpdateNewValuesEvent extends AllocationEvent {
 
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
 
+class ClickStartCallingEvent extends AllocationEvent {}
+
 class StartCallingEvent extends AllocationEvent {
   final int? customerIndex;
   final int? phoneIndex;
