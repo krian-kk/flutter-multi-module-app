@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
@@ -34,6 +36,7 @@ class TelecallerPhoneBloc
   String phoneUnreachableSelectedDate = '';
   String phoneSelectedUnreadableClip = '';
   String phoneSelectedInvalidClip = '';
+  EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
   TextEditingController phoneUnreachableRemarksController =
       TextEditingController();
   TextEditingController phoneInvalidRemarksController = TextEditingController();
@@ -113,62 +116,41 @@ class TelecallerPhoneBloc
         emit.call(TelecallerPhoneLoadedState());
       }
       if (event is ClickOpenBottomSheetEvent) {
-        // switch (event.title) {
-        // case Constants.eventDetails:
-        // if (ConnectivityResult.none ==
-        //     await Connectivity().checkConnectivity()) {
-        //   yield CDNoInternetState();
-        // } else {
-        // Map<String, dynamic> getEventDetailsData =
-        //     await APIRepository.apiRequest(
-        //         APIRequestType.GET,
-        //         HttpUrl.eventDetailsUrl(
-        //             caseId: caseId, userType: userType));
+        switch (event.title) {
+          case Constants.eventDetails:
+            if (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity()) {
+              emit.call(TcNoInternetState());
+            } else {
+              Map<String, dynamic> getEventDetailsData =
+                  await APIRepository.apiRequest(
+                      APIRequestType.GET,
+                      HttpUrl.eventDetailsUrl(
+                        caseId: caseId,
+                        userType: Singleton.instance.usertype!,
+                      ));
 
-        // if (getEventDetailsData[Constants.success] == true) {
-        //   Map<String, dynamic> jsonData = getEventDetailsData['data'];
+              if (getEventDetailsData[Constants.success] == true) {
+                Map<String, dynamic> jsonData = getEventDetailsData['data'];
+                eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
+                print(getEventDetailsData['data']['result'][3]['eventAttr']);
 
-        //   eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
-        // print(getEventDetailsData['data']['result'][3]['eventAttr']);
+                // eventDetailsHiveBox.then((value) => value.put(
+                //     'EventDetails1',
+                //     OrigoDynamicTable(
+                //       status: jsonData['status'],
+                //       message: jsonData['message'],
+                //       result: jsonData['result'],
+                //     )));
+              } else {
+                AppUtils.showToast(getEventDetailsData['data']['message']);
+              }
+            }
 
-        // eventDetailsHiveBox.then((value) => value.put(
-        //     'EventDetails1',
-        //     OrigoDynamicTable(
-        //       status: jsonData['status'],
-        //       message: jsonData['message'],
-        //       result: jsonData['result'],
-        //     )));
-        //   } else {
-        //     AppUtils.showToast(getEventDetailsData['data']['message']);
-        //   }
-        // }
-        // await eventDetailsHiveBox.then((value) {
-        //   value.get('EventDetails1')?.result.forEach((element) {
-        //     offlineEventDetailsListValue.add(EventDetailsResultModel.fromJson(
-        //         Map<String, dynamic>.from(element)));
-        //   })
-        // });
-        // break;
-        // case Constants.otherFeedback:
-        // if (ConnectivityResult.none ==
-        //     await Connectivity().checkConnectivity()) {
-        //   yield NoInternetState();
-        // } else {
-        //   Map<String, dynamic> getContractorDetails =
-        //       await APIRepository.apiRequest(
-        //           APIRequestType.GET, HttpUrl.contractorDetail);
-        //   if (getContractorDetails[Constants.success] == true) {
-        //     Map<String, dynamic> jsonData = getContractorDetails['data'];
-        //     contractorDetailsValue =
-        //         ContractorDetailsModel.fromJson(jsonData);
-        //   } else {
-        //     AppUtils.showToast(getContractorDetails['data'] ?? '');
-        //     // AppUtils.showToast(getContractorDetails['data']);
-        //   }
-        // }
-        // break;
-        // default:
-        // }
+            break;
+
+          default:
+        }
 
         emit.call(TcClickOpenBottomSheetState(
             event.title, event.list!, event.isCall,

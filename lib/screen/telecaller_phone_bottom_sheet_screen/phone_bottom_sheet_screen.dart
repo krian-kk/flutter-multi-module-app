@@ -35,9 +35,17 @@ import 'package:origa/widgets/health_status_widget.dart';
 class TelecallerPhoneScreen extends StatefulWidget {
   final String caseId;
   final dynamic contactValue;
-  const TelecallerPhoneScreen(
-      {Key? key, required this.caseId, this.contactValue})
-      : super(key: key);
+  final String? userName;
+  final String? userId;
+  final dynamic userAmount;
+  const TelecallerPhoneScreen({
+    Key? key,
+    required this.caseId,
+    this.contactValue,
+    required this.userId,
+    required this.userName,
+    required this.userAmount,
+  }) : super(key: key);
 
   @override
   _TelecallerPhoneScreenState createState() => _TelecallerPhoneScreenState();
@@ -571,16 +579,10 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
             return CustomPtpBottomSheet(
               Languages.of(context)!.ptp,
               caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: const CustomLoanUserDetails(
-                userName:
-                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
-                    '',
-                userId: 'jdkjd',
-                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    //         ?.toDouble() ??
-                    0.0,
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: widget.userName ?? '',
+                userId: widget.userId ?? '',
+                userAmount: widget.userAmount?.toDouble() ?? 0.0,
               ),
               userType: Singleton.instance.usertype!,
               postValue: paramValues,

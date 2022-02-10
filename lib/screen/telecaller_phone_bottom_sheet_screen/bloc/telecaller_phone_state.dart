@@ -9,7 +9,7 @@ class TelecallerPhoneLoadingState extends TelecallerPhoneState {}
 
 class TelecallerPhoneLoadedState extends TelecallerPhoneState {}
 
-class CDNoInternetState extends TelecallerPhoneState {}
+class TcNoInternetState extends TelecallerPhoneState {}
 
 // class ClickMainAddressBottomSheetState extends CaseDetailsState {
 //   final int i;

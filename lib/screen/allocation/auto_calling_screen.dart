@@ -16,14 +16,25 @@ import 'package:origa/widgets/health_status_widget.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AutoCalling {
-  static Future<void> phoneBottomSheet(BuildContext buildContext,
-      CaseDetailsBloc bloc, int i, String caseId, dynamic contactValue) {
+  static Future<void> phoneBottomSheet(
+    BuildContext buildContext,
+    CaseDetailsBloc bloc,
+    int i,
+    String caseId,
+    dynamic contactValue,
+    String userName,
+    String userId,
+    dynamic userAmount,
+  ) {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return TelecallerPhoneScreen(
             caseId: caseId,
             contactValue: contactValue,
+            userName: userName,
+            userId: userId,
+            userAmount: userAmount,
           );
         });
   }
@@ -291,13 +302,17 @@ class AutoCalling {
                                                 context: context,
                                               ));
                                         await phoneBottomSheet(
-                                                context,
-                                                caseDetailsloc,
-                                                i,
-                                                bloc.resultList[indexs].caseId!,
-                                                bloc.resultList[indexs]
-                                                    .address![i])
-                                            .then((value) {});
+                                          context,
+                                          caseDetailsloc,
+                                          i,
+                                          bloc.resultList[indexs].caseId!,
+                                          bloc.resultList[indexs].address![i],
+                                          bloc.resultList[indexs].cust!,
+                                          (bloc.resultList[indexs].bankName! +
+                                              " / " +
+                                              bloc.resultList[indexs].agrRef!),
+                                          bloc.resultList[indexs].due,
+                                        );
                                       },
                                       child: Container(
                                         width:
