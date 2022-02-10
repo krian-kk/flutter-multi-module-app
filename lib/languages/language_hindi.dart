@@ -715,4 +715,11 @@ class LanguageHi extends Languages {
   @override
   String get secureYourAccountByCreatingAFourDigitPin =>
       '4 अंकों का पिन बनाकर अपना खाता सुरक्षित करें';
+
+  @override
+  String get enterYourSecureFourdDigitPin =>
+      'अपना सुरक्षित 4 अंकों का पिन दर्ज करें';
+
+  @override
+  String get forgotPin => 'पिन भूल गए?';
 }

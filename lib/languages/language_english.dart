@@ -713,4 +713,10 @@ class LanguageEn extends Languages {
   @override
   String get secureYourAccountByCreatingAFourDigitPin =>
       'Secure your account by creating a 4 digit PIN';
+
+  @override
+  String get enterYourSecureFourdDigitPin => 'Enter your secure 4-digit PIN';
+
+  @override
+  String get forgotPin => 'Forgot PIN?';
 }

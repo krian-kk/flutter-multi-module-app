@@ -434,7 +434,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      to: voiceAgencyDetails.result?.agentAgencyContact ?? '',
+                      to: tempMobileList[state.phoneIndex!].value ?? '',
                       callerId: Singleton.instance.callingID ?? '0',
                       aRef: Singleton.instance.agentRef ?? '',
                       customerName: Singleton.instance.agentName ?? '',

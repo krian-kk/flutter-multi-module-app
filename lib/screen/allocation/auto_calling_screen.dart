@@ -16,12 +16,15 @@ import 'package:origa/widgets/health_status_widget.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AutoCalling {
-  static Future<void> phoneBottomSheet(
-      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+  static Future<void> phoneBottomSheet(BuildContext buildContext,
+      CaseDetailsBloc bloc, int i, String caseId, dynamic contactValue) {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return TelecallerPhoneScreen();
+          return TelecallerPhoneScreen(
+            caseId: caseId,
+            contactValue: contactValue,
+          );
         });
   }
 
@@ -288,12 +291,13 @@ class AutoCalling {
                                                 context: context,
                                               ));
                                         await phoneBottomSheet(
-                                          context,
-                                          caseDetailsloc,
-                                          i,
-                                        ).then((value) {
-                                          print("object nk 123");
-                                        });
+                                                context,
+                                                caseDetailsloc,
+                                                i,
+                                                bloc.resultList[indexs].caseId!,
+                                                bloc.resultList[indexs]
+                                                    .address![i])
+                                            .then((value) {});
                                       },
                                       child: Container(
                                         width:

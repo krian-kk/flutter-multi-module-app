@@ -716,4 +716,11 @@ class LanguageTa extends Languages {
   @override
   String get secureYourAccountByCreatingAFourDigitPin =>
       '4 இலக்க பின்னை உருவாக்கி உங்கள் கணக்கைப் பாதுகாக்கவும்';
+
+  @override
+  String get enterYourSecureFourdDigitPin =>
+      'உங்கள் பாதுகாப்பான 4 இலக்க பின்னை உள்ளிடவும்';
+
+  @override
+  String get forgotPin => 'பின்னை மறந்துவிட்டீர்களா?';
 }

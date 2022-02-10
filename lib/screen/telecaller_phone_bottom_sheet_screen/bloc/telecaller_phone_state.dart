@@ -37,23 +37,24 @@ class CDNoInternetState extends TelecallerPhoneState {}
 //   PushAndPOPNavigationCaseDetailsState({this.paramValues});
 // }
 
-// class ClickOpenBottomSheetState extends CaseDetailsState {
-//   final String title;
-//   final List list;
-//   final bool? isCall;
-//   final String? health;
-//   ClickOpenBottomSheetState(this.title, this.list, this.isCall, {this.health});
-// }
+class TcClickOpenBottomSheetState extends TelecallerPhoneState {
+  final String title;
+  final List list;
+  final bool? isCall;
+  final String? health;
+  TcClickOpenBottomSheetState(this.title, this.list, this.isCall,
+      {this.health});
+}
 
-// class PostDataApiSuccessState extends CaseDetailsState {}
+class TcPostDataApiSuccessState extends TelecallerPhoneState {}
 
-// class EnableUnreachableBtnState extends CaseDetailsState {}
+class TcEnableUnreachableBtnState extends TelecallerPhoneState {}
 
-// class DisableUnreachableBtnState extends CaseDetailsState {}
+class TcDisableUnreachableBtnState extends TelecallerPhoneState {}
 
-// class EnablePhoneInvalidBtnState extends CaseDetailsState {}
+class TcEnablePhoneInvalidBtnState extends TelecallerPhoneState {}
 
-// class DisablePhoneInvalidBtnState extends CaseDetailsState {}
+class TcDisablePhoneInvalidBtnState extends TelecallerPhoneState {}
 
 // class EnableCustomerNotMetBtnState extends CaseDetailsState {}
 

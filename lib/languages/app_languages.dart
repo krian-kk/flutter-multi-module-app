@@ -473,9 +473,13 @@ abstract class Languages {
 
   String get changeYourSecureDigitPIN;
 
+  String get enterYourSecureFourdDigitPin;
+
   String get newPin;
 
   String get save;
 
   String get secureYourAccountByCreatingAFourDigitPin;
+
+  String get forgotPin;
 }

@@ -1,13 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/update_health_model.dart';
+import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
+import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
+import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
+import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
+import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
+import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
+import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
+import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/bloc/telecaller_phone_bloc.dart';
 import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/telecaller_phone_connected_screen.dart';
 import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/telecaller_phone_invalid_screen.dart';
@@ -15,16 +21,23 @@ import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/telecaller_unr
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
 class TelecallerPhoneScreen extends StatefulWidget {
-  const TelecallerPhoneScreen({Key? key}) : super(key: key);
+  final String caseId;
+  final dynamic contactValue;
+  const TelecallerPhoneScreen(
+      {Key? key, required this.caseId, this.contactValue})
+      : super(key: key);
 
   @override
   _TelecallerPhoneScreenState createState() => _TelecallerPhoneScreenState();
@@ -47,7 +60,10 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
   @override
   void initState() {
     super.initState();
-    bloc = TelecallerPhoneBloc()..add(TelecallerInitialPhoneEvent(context));
+
+    bloc = TelecallerPhoneBloc()
+      ..add(TelecallerInitialPhoneEvent(
+          context, widget.caseId, widget.contactValue));
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
 
@@ -63,18 +79,27 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
     return BlocListener<TelecallerPhoneBloc, TelecallerPhoneState>(
       bloc: bloc,
       listener: (context, state) {
-        // if (state is DisableUnreachableBtnState) {
-        //   setState(() => isSubmitFirst = false);
-        // }
-        // if (state is EnableUnreachableBtnState) {
-        //   setState(() => isSubmitFirst = true);
-        // }
-        // if (state is DisablePhoneInvalidBtnState) {
-        //   setState(() => isSubmitSecond = false);
-        // }
-        // if (state is EnablePhoneInvalidBtnState) {
-        //   setState(() => isSubmitSecond = true);
-        // }
+        if (state is TcDisableUnreachableBtnState) {
+          setState(() => isSubmitFirst = false);
+        }
+        if (state is TcEnableUnreachableBtnState) {
+          setState(() => isSubmitFirst = true);
+        }
+        if (state is DisablePhoneInvalidBtnState) {
+          setState(() => isSubmitSecond = false);
+        }
+        if (state is EnablePhoneInvalidBtnState) {
+          setState(() => isSubmitSecond = true);
+        }
+        if (state is PostDataApiSuccessState) {
+          AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
+          // Navigator.pop(context);
+        }
+        if (state is TcClickOpenBottomSheetState) {
+          print('djd');
+          openBottomSheet(context, state.title, state.list, state.isCall,
+              health: state.health);
+        }
 
         // if (state is UpdateHealthStatusState) {
         //   print(
@@ -164,17 +189,7 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   CustomText(
-                                    // widget.bloc.isAutoCalling
-                                    //     ? 'mobile'.toUpperCase()
-                                    //     : widget
-                                    //             .bloc
-                                    //             .caseDetailsAPIValue
-                                    //             .result
-                                    //             ?.callDetails![widget.index]
-                                    //                 ['cType']
-                                    //             .toString()
-                                    //             .toUpperCase() ??
-                                    '_',
+                                    'mobile'.toUpperCase(),
                                     fontWeight: FontWeight.w700,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -212,22 +227,7 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
                                 child: SizedBox(
                                   width: 255,
                                   child: CustomText(
-                                    // widget.bloc.isAutoCalling
-                                    //     ? widget
-                                    //         .bloc
-                                    //         .listOfAddress![widget
-                                    //             .bloc.paramValue['phoneIndex']]
-                                    //         .value
-                                    //         .toString()
-                                    //     : widget
-                                    //             .bloc
-                                    //             .caseDetailsAPIValue
-                                    //             .result
-                                    //             ?.callDetails![widget.index]
-                                    //                 ['value']
-                                    //             .toString()
-                                    //             .toUpperCase() ??
-                                    '_',
+                                    bloc.contactValue?.value ?? '_',
                                     fontWeight: FontWeight.w400,
                                     fontSize: FontSize.fourteen,
                                     fontStyle: FontStyle.normal,
@@ -490,26 +490,24 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
                                           ),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
-                                          // onTap: isSubmitFirst
-                                          //     ? () {
-                                          //         if (widget
-                                          //             .bloc
-                                          //             .phoneUnreachableFormKey
-                                          //             .currentState!
-                                          //             .validate()) {
-                                          //           if (widget.bloc
-                                          //                   .phoneSelectedUnreadableClip !=
-                                          //               '') {
-                                          //             widget.bloc.add(
-                                          //                 ClickPhoneUnreachableSubmitedButtonEvent(
-                                          //                     context));
-                                          //           } else {
-                                          //             AppUtils.showToast(Constants
-                                          //                 .pleaseSelectOptions);
-                                          //           }
-                                          //         }
-                                          //       }
-                                          //     : () {},
+                                          onTap: isSubmitFirst
+                                              ? () {
+                                                  if (bloc
+                                                      .phoneUnreachableFormKey
+                                                      .currentState!
+                                                      .validate()) {
+                                                    if (bloc.phoneSelectedUnreadableClip !=
+                                                        '') {
+                                                      bloc.add(
+                                                          ClickTcPhoneUnreachableSubmitedButtonEvent(
+                                                              context));
+                                                    } else {
+                                                      AppUtils.showToast(Constants
+                                                          .pleaseSelectOptions);
+                                                    }
+                                                  }
+                                                }
+                                              : () {},
                                           cardShape: 5,
                                         )
                                       : CustomButton(
@@ -528,13 +526,13 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
                                           ),
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w600,
-                                          // onTap: isSubmitSecond
-                                          //     ? () {
-                                          //         widget.bloc.add(
-                                          //             ClickPhoneInvalidButtonEvent(
-                                          //                 context));
-                                          //       }
-                                          //     : () {},
+                                          onTap: isSubmitSecond
+                                              ? () {
+                                                  bloc.add(
+                                                      ClickTcPhoneInvalidButtonEvent(
+                                                          context));
+                                                }
+                                              : () {},
                                           cardShape: 5,
                                         ),
                                 ),
@@ -548,6 +546,231 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
           }
         },
       ),
+    );
+  }
+
+  openBottomSheet(
+      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+      {String? health}) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      context: buildContext,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
+      ),
+      builder: (BuildContext context) {
+        Map<String, dynamic> paramValues = Map<String, dynamic>.from(
+            jsonDecode(jsonEncode(bloc.contactValue)) as Map<String, dynamic>);
+        switch (cardTitle) {
+          case Constants.ptp:
+            return CustomPtpBottomSheet(
+              Languages.of(context)!.ptp,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              userType: Singleton.instance.usertype!,
+              postValue: paramValues,
+              isCall: isCall,
+              bloc: CaseDetailsBloc(AllocationBloc()),
+            );
+          case Constants.rtp:
+            return CustomRtpBottomSheet(
+              Languages.of(context)!.rtp,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              userType: Singleton.instance.usertype!,
+              postValue: paramValues,
+              isCall: isCall,
+              bloc: CaseDetailsBloc(AllocationBloc()),
+            );
+          case Constants.dispute:
+            return CustomDisputeBottomSheet(
+              Languages.of(context)!.dispute,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              userType: Singleton.instance.usertype!,
+              postValue: paramValues,
+              isCall: isCall,
+              bloc: CaseDetailsBloc(AllocationBloc()),
+            );
+          case Constants.remainder:
+            return CustomRemainderBottomSheet(
+              Languages.of(context)!.remainderCb,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              userType: Singleton.instance.usertype!,
+              postValue: paramValues,
+
+              isCall: isCall,
+              bloc: CaseDetailsBloc(AllocationBloc()),
+              // eventCode: bloc.eventCode,
+            );
+          case Constants.collections:
+            return CustomCollectionsBottomSheet(
+              Languages.of(context)!.collections,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              isCall: isCall,
+              userType: Singleton.instance.usertype!,
+              postValue: paramValues,
+              bloc: CaseDetailsBloc(AllocationBloc()),
+              custName:
+                  // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                  '',
+            );
+          case Constants.ots:
+            return CustomOtsBottomSheet(
+              Languages.of(context)!.ots,
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              caseId: bloc.caseId.toString(),
+              userType: Singleton.instance.usertype!,
+              isCall: isCall,
+              postValue: paramValues,
+              bloc: CaseDetailsBloc(AllocationBloc()),
+            );
+
+          case Constants.otherFeedback:
+            return CustomOtherFeedBackBottomSheet(
+              Languages.of(context)!.otherFeedBack,
+              CaseDetailsBloc(AllocationBloc()),
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: const CustomLoanUserDetails(
+                userName:
+                    // bloc.caseDetailsAPIValue.result?.caseDetails?.cust ??
+                    '',
+                userId: 'jdkjd',
+                // '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    //  bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                    //         ?.toDouble() ??
+                    0.0,
+              ),
+              userType: Singleton.instance.usertype!,
+              postValue: paramValues,
+              isCall: isCall,
+              health: health ?? ConstantEventValues.healthTwo,
+            );
+          case Constants.eventDetails:
+          // return CustomEventDetailsBottomSheet(
+          //   Languages.of(context)!.eventDetails,
+          //   bloc,
+          //   customeLoanUserWidget: CustomLoanUserDetails(
+          //     userName:
+          //         bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //     userId:
+          //         '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //     userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+          //             ?.toDouble() ??
+          //         0.0,
+          //   ),
+          // );
+          case Constants.addressDetails:
+          // return AddressDetailsBottomSheetScreen(bloc: bloc);
+          case Constants.callDetails:
+          // return CallDetailsBottomSheetScreen(bloc: bloc);
+          case Constants.callCustomer:
+          // List<String> s1 = [];
+          // bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+          //   if (element['cType'].contains('mobile')) {
+          //     if (!(s1.contains(element['value']))) {
+          //       s1.add(element['value']);
+          //     }
+          //   } else {}
+          // });
+
+          // return CallCustomerBottomSheet(
+          //   customerLoanUserWidget: CustomLoanUserDetails(
+          //     userName:
+          //         bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //     userId:
+          //         '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //     userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+          //             ?.toDouble() ??
+          //         0.0,
+          //   ),
+          //   listOfMobileNo: s1,
+          //   userType: bloc.userType.toString(),
+          //   caseId: bloc.caseId.toString(),
+          //   sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
+          // );
+
+          default:
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.89,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    BottomSheetAppbar(
+                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+                    Expanded(child: CustomLoadingWidget()),
+                  ],
+                ));
+        }
+      },
     );
   }
 }

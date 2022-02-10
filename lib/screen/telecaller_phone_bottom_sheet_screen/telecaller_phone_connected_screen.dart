@@ -18,6 +18,7 @@ class TelecallerPhoneConnectedScreen extends StatefulWidget {
   }) : super(key: key);
 
   final TelecallerPhoneBloc bloc;
+
   final BuildContext context;
 
   @override

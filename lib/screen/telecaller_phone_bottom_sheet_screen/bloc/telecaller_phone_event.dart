@@ -5,7 +5,9 @@ class TelecallerPhoneEvent extends BaseEquatable {}
 
 class TelecallerInitialPhoneEvent extends TelecallerPhoneEvent {
   final BuildContext? context;
-  TelecallerInitialPhoneEvent(this.context);
+  final String caseId;
+  final dynamic contactValue;
+  TelecallerInitialPhoneEvent(this.context, this.caseId, this.contactValue);
 }
 
 class ClickOpenBottomSheetEvent extends TelecallerPhoneEvent {
@@ -17,3 +19,21 @@ class ClickOpenBottomSheetEvent extends TelecallerPhoneEvent {
   ClickOpenBottomSheetEvent(this.title, this.list, this.isCall,
       {this.health, this.context});
 }
+
+class ClickTcPhoneInvalidButtonEvent extends TelecallerPhoneEvent {
+  final BuildContext context;
+  ClickTcPhoneInvalidButtonEvent(this.context);
+}
+
+class ClickTcPhoneUnreachableSubmitedButtonEvent extends TelecallerPhoneEvent {
+  final BuildContext context;
+  ClickTcPhoneUnreachableSubmitedButtonEvent(this.context);
+}
+
+class TcEnableUnreachableBtnEvent extends TelecallerPhoneEvent {}
+
+class TcDisableUnreachableBtnEvent extends TelecallerPhoneEvent {}
+
+class TcEnablePhoneInvalidBtnEvent extends TelecallerPhoneEvent {}
+
+class TcDisablePhoneInvalidBtnEvent extends TelecallerPhoneEvent {}

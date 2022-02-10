@@ -87,6 +87,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.89,
       child: Scaffold(
