@@ -450,7 +450,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           '0',
                       caseId: bloc.resultList[state.customerIndex!].caseId!,
                       sId: bloc.resultList[state.customerIndex!].sId!,
-                      agrRef: Singleton.instance.agrRef ?? '',
+                      // agrRef: Singleton.instance.agentRef ?? '',
+                      agrRef:
+                          bloc.resultList[state.customerIndex!].agrRef ?? '',
                       agentName: Singleton.instance.agentName ?? '',
                       agentType:
                           (Singleton.instance.usertype == Constants.telecaller)
