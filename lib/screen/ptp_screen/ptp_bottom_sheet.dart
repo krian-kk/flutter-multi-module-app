@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -25,7 +26,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
@@ -59,6 +59,7 @@ class CustomPtpBottomSheet extends StatefulWidget {
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
+
   // String selectedDate = '';
   TextEditingController ptpTimeControlller = TextEditingController();
   TextEditingController ptpAmountControlller = TextEditingController();
@@ -362,7 +363,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   eventModule: widget.isCall!
                                       ? 'Telecalling'
                                       : 'Field Allocation',
-                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  // agrRef: Singleton.instance.agrRef ?? '',
+                                  agrRef: widget.bloc.caseDetailsAPIValue
+                                          .result!.caseDetails!.agrRef ??
+                                      '',
                                   contact: PTPContact(
                                     cType: widget.postValue['cType'],
                                     value: widget.postValue['value'],

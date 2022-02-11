@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,7 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   final dynamic paramValues;
+
   const CaseDetailsScreen({Key? key, this.paramValues}) : super(key: key);
 
   @override
@@ -777,7 +779,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                           index]
                                                                       .cust!
                                                                       .toUpperCase()
-                                                                  : '_', // ----------- doubt ---------------
+                                                                  : '_',
+                                                              // ----------- doubt ---------------
                                                               color: ColorResource
                                                                   .color333333,
                                                               fontSize: FontSize
@@ -1266,6 +1269,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             });
 
             return CallCustomerBottomSheet(
+              caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
