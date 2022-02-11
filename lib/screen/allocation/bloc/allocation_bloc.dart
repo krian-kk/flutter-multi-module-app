@@ -610,8 +610,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is ShowAutoCallingEvent) {
+      yield AutoCallingLoadingState();
       isAutoCalling = true;
       isShowSearchFloatingButton = false;
+      autoCallingResultList = resultList;
+      yield AutoCallingLoadedState();
     }
 
     if (event is UpdateStaredCaseEvent) {

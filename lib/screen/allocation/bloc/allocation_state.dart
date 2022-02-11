@@ -34,6 +34,10 @@ class TapAreYouAtOfficeOptionsState extends AllocationState {}
 
 class UpdateNewValueState extends AllocationState {}
 
+class AutoCallingLoadingState extends AllocationState {}
+
+class AutoCallingLoadedState extends AllocationState {}
+
 class TapPriorityState extends AllocationState {
   final dynamic successResponse;
   TapPriorityState({this.successResponse});

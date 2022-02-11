@@ -450,7 +450,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           '0',
                       caseId: bloc.resultList[state.customerIndex!].caseId!,
                       sId: bloc.resultList[state.customerIndex!].sId!,
-                      agrRef: Singleton.instance.agentRef ?? '',
+                      agrRef: Singleton.instance.agrRef ?? '',
                       agentName: Singleton.instance.agentName ?? '',
                       agentType:
                           (Singleton.instance.usertype == Constants.telecaller)
@@ -483,6 +483,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   }
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
+                                  print(
+                                      '====================>>>>>>>>>>==== > ${postResult['data']['result']}');
                                   CaseDetailsBloc caseDetailsloc =
                                       CaseDetailsBloc(bloc)
                                         ..add(CaseDetailsInitialEvent(
@@ -497,6 +499,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                             'phoneIndex': state.phoneIndex,
                                             'mobileList': tempMobileList,
                                             'context': context,
+                                            'callId': postResult['data']
+                                                ['result'],
                                           },
                                           context: context,
                                         ));

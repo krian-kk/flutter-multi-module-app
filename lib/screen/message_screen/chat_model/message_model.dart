@@ -58,8 +58,6 @@ class ReceivingData {
   }
 }
 
-
-
 // class Data {
 //   String? message;
 //   String? dateSend;
