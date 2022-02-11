@@ -87,6 +87,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   int starCount = 0;
   // List priorityCaseAddressList = [];
   List<Result> resultList = [];
+  List<Result> autoCallingResultList = [];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   int? selectedStar;
@@ -154,11 +155,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             );
 
         resultList.clear();
+        autoCallingResultList.clear();
         starCount = 0;
 
         if (priorityListData['success']) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            autoCallingResultList
+                .add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
               starCount++;
@@ -216,7 +220,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // print(priorityListData['data']);
         }
       }
-      totalCount = resultList.length;
+      totalCount = autoCallingResultList.length;
       yield AllocationLoadedState(successResponse: resultList);
     }
     // if (event is IncreaseCountEvent) {
@@ -280,20 +284,23 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
     if (event is StartCallingEvent) {
       if (event.isIncreaseCount && event.customerIndex! < totalCount) {
-        Result val = resultList[event.customerIndex! - 1];
-        resultList.remove(val);
-        resultList.add(val);
+        Result val = autoCallingResultList[event.customerIndex! - 1];
+        autoCallingResultList.remove(val);
+        autoCallingResultList.add(val);
         // print('============== > ${val.cust}');
-        // print('============== > ${resultList[event.customerIndex! - 1].cust}');
+        // print(
+        //     '============== > ${autoCallingResultList[event.customerIndex! - 1].cust}');
         // print(
         //     '===================================================================');
-        // print('================ > ${resultList.length}');
+        // print('================ > ${autoCallingResultList.length}');
         customerCount++;
       }
       Singleton.instance.startCalling = true;
 
       yield StartCallingState(
-        customerIndex: event.customerIndex,
+        customerIndex: event.isIncreaseCount
+            ? event.customerIndex! - 1
+            : event.customerIndex!,
         phoneIndex: event.phoneIndex,
       );
     }

@@ -168,7 +168,7 @@ class AutoCalling {
                   shrinkWrap: true,
                   primary: false,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: bloc.resultList.length,
+                  itemCount: bloc.autoCallingResultList.length,
                   itemBuilder: (context, indexs) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 20.0),
@@ -199,9 +199,10 @@ class AutoCalling {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 24, vertical: 2),
                                 child: CustomText(
-                                  bloc.resultList[indexs].bankName! +
+                                  bloc.autoCallingResultList[indexs].bankName! +
                                       " / " +
-                                      bloc.resultList[indexs].agrRef!,
+                                      bloc.autoCallingResultList[indexs]
+                                          .agrRef!,
                                   fontSize: FontSize.twelve,
                                   color: ColorResource.color101010,
                                 ),
@@ -229,7 +230,8 @@ class AutoCalling {
                                       SizedBox(
                                         width: 260,
                                         child: CustomText(
-                                          bloc.resultList[indexs].cust!,
+                                          bloc.autoCallingResultList[indexs]
+                                              .cust!,
                                           fontSize: FontSize.sixteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w400,
@@ -243,7 +245,9 @@ class AutoCalling {
                                   const Spacer(),
                                   // bloc.allocationList[index].newlyAdded!
                                   // ?
-                                  bloc.resultList[indexs].telSubStatus == "new"
+                                  bloc.autoCallingResultList[indexs]
+                                              .telSubStatus ==
+                                          "new"
                                       ? Container(
                                           width: 55,
                                           height: 19,
@@ -267,29 +271,32 @@ class AutoCalling {
                               ),
                             ),
                             ListView.builder(
-                                itemCount:
-                                    bloc.resultList[indexs].address?.length ??
-                                        0,
+                                itemCount: bloc.autoCallingResultList[indexs]
+                                        .address?.length ??
+                                    0,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, i) {
-                                  if (bloc.resultList[indexs].address?[i]
-                                          .cType ==
+                                  if (bloc.autoCallingResultList[indexs]
+                                          .address?[i].cType ==
                                       'mobile') {
                                     return GestureDetector(
                                       onTap: () async {
                                         print(
-                                            "getting agref value error ---> ${bloc.resultList[indexs].agrRef}}");
-                                        Singleton.instance.agrRef =
-                                            bloc.resultList[indexs].agrRef;
+                                            "getting agref value error ---> ${bloc.autoCallingResultList[indexs].agrRef}}");
+                                        Singleton.instance.agrRef = bloc
+                                            .autoCallingResultList[indexs]
+                                            .agrRef;
 
-                                        print(bloc.resultList[indexs].agrRef);
+                                        print(bloc.autoCallingResultList[indexs]
+                                            .agrRef);
                                         CaseDetailsBloc caseDetailsloc =
                                             CaseDetailsBloc(bloc)
                                               ..add(CaseDetailsInitialEvent(
                                                 paramValues: {
                                                   'caseID': bloc
-                                                      .resultList[indexs]
+                                                      .autoCallingResultList[
+                                                          indexs]
                                                       .caseId,
                                                   'customerIndex': i,
                                                   'phoneIndex': i,
@@ -304,13 +311,19 @@ class AutoCalling {
                                           context,
                                           caseDetailsloc,
                                           i,
-                                          bloc.resultList[indexs].caseId!,
-                                          bloc.resultList[indexs].address![i],
-                                          bloc.resultList[indexs].cust!,
-                                          (bloc.resultList[indexs].bankName! +
+                                          bloc.autoCallingResultList[indexs]
+                                              .caseId!,
+                                          bloc.autoCallingResultList[indexs]
+                                              .address![i],
+                                          bloc.autoCallingResultList[indexs]
+                                              .cust!,
+                                          (bloc.autoCallingResultList[indexs]
+                                                  .bankName! +
                                               " / " +
-                                              bloc.resultList[indexs].agrRef!),
-                                          bloc.resultList[indexs].due,
+                                              bloc.autoCallingResultList[indexs]
+                                                  .agrRef!),
+                                          bloc.autoCallingResultList[indexs]
+                                              .due,
                                         );
                                       },
                                       child: Container(
@@ -338,8 +351,11 @@ class AutoCalling {
                                                   MainAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                  bloc.resultList[indexs]
-                                                          .address?[i].value ??
+                                                  bloc
+                                                          .autoCallingResultList[
+                                                              indexs]
+                                                          .address?[i]
+                                                          .value ??
                                                       '_',
                                                   color:
                                                       ColorResource.color484848,
@@ -348,12 +364,12 @@ class AutoCalling {
                                                 const SizedBox(
                                                   width: 15,
                                                 ),
-                                                ShowHealthStatus.healthStatus(
-                                                    bloc
-                                                            .resultList[indexs]
-                                                            .address?[i]
-                                                            .health ??
-                                                        ''),
+                                                ShowHealthStatus.healthStatus(bloc
+                                                        .autoCallingResultList[
+                                                            indexs]
+                                                        .address?[i]
+                                                        .health ??
+                                                    ''),
                                                 // bloc.mobileNumberList[1]
                                                 //             .callResponse !=
                                                 //         null
@@ -484,7 +500,8 @@ class AutoCalling {
                             InkWell(
                               onTap: () {
                                 bloc.add(NavigateCaseDetailEvent(paramValues: {
-                                  'caseID': bloc.resultList[indexs].caseId,
+                                  'caseID':
+                                      bloc.autoCallingResultList[indexs].caseId,
                                 }));
                               },
                               child: SizedBox(
