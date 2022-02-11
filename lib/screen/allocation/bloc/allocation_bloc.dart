@@ -292,7 +292,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         //     '============== > ${autoCallingResultList[event.customerIndex! - 1].cust}');
         // print(
         //     '===================================================================');
-        // print('================ > ${autoCallingResultList.length}');
+        // print('================== > ${autoCallingResultList.length}');
         customerCount++;
       }
       Singleton.instance.startCalling = true;
