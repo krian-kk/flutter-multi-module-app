@@ -15,6 +15,7 @@ import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dar
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -422,38 +423,22 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     fontWeight: FontWeight.w600,
                                     onTap: () async {
                                       if (widget.bloc.isAutoCalling) {
-                                        Map<String, dynamic> postResult =
-                                            await APIRepository.apiRequest(
-                                          APIRequestType.POST,
-                                          HttpUrl.callCustomerStatusGetUrl,
-                                          requestBodydata: {
-                                            'id': widget
-                                                .bloc.paramValue['callId']
-                                                .toString()
-                                          },
-                                        );
-                                        GetCallCustomerStatusModel
-                                            getCallCustomerStatusModel =
-                                            GetCallCustomerStatusModel.fromJson(
-                                                postResult);
-                                        if (postResult[Constants.success]) {
-                                          if (getCallCustomerStatusModel
-                                                  .result?.first.status2 ==
-                                              null) {
-                                            AppUtils.showToast(
-                                                'Please Wait Call is On Going');
-                                          } else {
-                                            widget.bloc.allocationBloc
-                                                .add(StartCallingEvent(
-                                              customerIndex:
-                                                  widget.bloc.paramValue[
-                                                          'customerIndex'] +
-                                                      1,
-                                              phoneIndex: 0,
-                                              isIncreaseCount: true,
-                                            ));
-                                            Navigator.pop(context);
-                                          }
+                                        print(
+                                            '========================================= > djdkjdjdkkd');
+                                        if (await CallCustomerStatus
+                                            .callStatusCheck(
+                                                callId: widget.bloc
+                                                    .paramValue['callId'])) {
+                                          widget.bloc.allocationBloc
+                                              .add(StartCallingEvent(
+                                            customerIndex:
+                                                widget.bloc.paramValue[
+                                                        'customerIndex'] +
+                                                    1,
+                                            phoneIndex: 0,
+                                            isIncreaseCount: true,
+                                          ));
+                                          Navigator.pop(context);
                                         }
                                       } else {
                                         Navigator.pop(context);
