@@ -59,9 +59,6 @@ class _PhoneScreenState extends State<PhoneScreen>
         tabIndex: _controller.index,
         currentHealth: widget.bloc.caseDetailsAPIValue.result
             ?.callDetails![widget.index]['health']));
-
-    print(widget.index);
-    print(widget.bloc.caseDetailsAPIValue.result?.callDetails![widget.index]);
   }
 
   @override

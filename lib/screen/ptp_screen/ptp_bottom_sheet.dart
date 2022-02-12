@@ -61,7 +61,6 @@ class CustomPtpBottomSheet extends StatefulWidget {
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
 
-  // String selectedDate = '';
   TextEditingController ptpTimeControlller = TextEditingController();
   TextEditingController ptpAmountControlller = TextEditingController();
   TextEditingController referenceControlller = TextEditingController();
@@ -227,7 +226,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             StringResource.reference,
                             referenceControlller,
                             focusNode: ptpReferenceFocusNode,
-                            // validationRules: const ['required'],
                             isLabel: true,
                             validatorCallBack: () {},
                             onEditing: () => ptpRemarksFocusNode.requestFocus(),
@@ -378,7 +376,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     eventModule: widget.isCall!
                                         ? 'Telecalling'
                                         : 'Field Allocation',
-                                    // agrRef: Singleton.instance.agrRef ?? '',
                                     agrRef: widget.bloc.caseDetailsAPIValue
                                             .result?.caseDetails?.agrRef ??
                                         '',
@@ -393,8 +390,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                           Singleton.instance.contactId_0 ?? '',
                                     ),
                                   );
-                                  // print(
-                                  //     'Response Date => ${jsonEncode(requestBodyData)}');
 
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
@@ -550,13 +545,11 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // selectedDate = newDate.toString();
     });
   }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
@@ -583,8 +576,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         });
     if (newTime == null) return;
 
-    // final hours = newTime.hour.toString().padLeft(2, '0');
-    // final minutes = newTime.minute.toString().padLeft(2, '0');
     final time = newTime.format(context).toString();
     setState(() {
       controller.text = time;

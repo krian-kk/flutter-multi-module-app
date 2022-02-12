@@ -41,8 +41,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
     ];
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),

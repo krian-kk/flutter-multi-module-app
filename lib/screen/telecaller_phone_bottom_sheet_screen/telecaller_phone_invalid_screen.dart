@@ -33,8 +33,6 @@ class _TelecallerPhonenInvalidScreenState
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];

@@ -45,8 +45,6 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    // required this.resAddressId_0,
-    // required this.contactId_0,
     this.postValue,
     this.isCall,
     required this.health,
@@ -59,8 +57,6 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  // final String contactId_0;
-  // final String resAddressId_0;
   final bool? isCall;
   final String health;
   final bool isAutoCalling;

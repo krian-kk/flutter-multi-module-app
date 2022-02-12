@@ -46,8 +46,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -293,6 +291,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
+
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {

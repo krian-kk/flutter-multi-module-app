@@ -28,18 +28,6 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  // if (Platform.isIOS) {
-  //   await Firebase.initializeApp(
-  //     options: const FirebaseOptions(
-  //         apiKey: 'AIzaSyCw10OEIZ2GRZhC7dzx-j8dy1Lq7hWwe1g',
-  //         appId: '269383074254',
-  //         messagingSenderId: '269383074254',
-  //         projectId: 'origa-4e133'),
-  //   );
-  // } else {
-  //   await Firebase.initializeApp();
-  // }
-  // await Hive.openBox<OrigoDynamicTable>('testBox4');
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

@@ -51,7 +51,6 @@ class CustomRepoBottomSheet extends StatefulWidget {
 
 class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   TextEditingController dateControlller = TextEditingController();
-  // String selectedDate = '';
   TextEditingController timeControlller = TextEditingController();
   TextEditingController modelMakeControlller = TextEditingController();
   TextEditingController registrationNoControlller = TextEditingController();
@@ -342,12 +341,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                         cType: widget.postValue['cType'],
                                         value: widget.postValue['value'],
                                         health: widget.health,
-                                        // resAddressId0:
-                                        //     Singleton.instance.resAddressId_0 ??
-                                        //         '',
-                                        // contactId0:
-                                        //     Singleton.instance.contactId_0 ??
-                                        //         '',
                                       )
                                     ],
                                     callID: Singleton.instance.callID ?? '0',
@@ -382,9 +375,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     jsonDecode(jsonEncode(
                                             requestBodyData.toJson()))
                                         as Map<String, dynamic>;
-                                // FormData sendingData =
-                                //     FormData.fromMap(postdata);
-                                // sendingData.files.addAll(DioClient.listOfMultiPart(uploadFileLists));
                                 List<dynamic> value = [];
                                 for (var element in uploadFileLists) {
                                   value.add(await MultipartFile.fromFile(
@@ -469,7 +459,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),

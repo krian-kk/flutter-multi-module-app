@@ -555,14 +555,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                         MainAxisSize
                                                                             .min,
                                                                     children: [
-                                                                      // const Icon(
-                                                                      //   Icons
-                                                                      //       .message_rounded,
-                                                                      //   color: ColorResource
-                                                                      //       .colorffffff,
-                                                                      //   size:
-                                                                      //       22,
-                                                                      // ),
                                                                       SvgPicture.asset(
                                                                           ImageResource
                                                                               .sms),
@@ -587,58 +579,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               ),
                                                         const SizedBox(
                                                             width: 10),
-                                                        // GestureDetector(
-                                                        //   onTap: () {
-                                                        //     print("objewwwct");
-                                                        //   },
-                                                        //   child: Container(
-                                                        //     padding:
-                                                        //         const EdgeInsets
-                                                        //                 .symmetric(
-                                                        //             horizontal:
-                                                        //                 15,
-                                                        //             vertical:
-                                                        //                 10),
-                                                        //     decoration:
-                                                        //         BoxDecoration(
-                                                        //       color: ColorResource
-                                                        //           .color23375A,
-                                                        //       borderRadius:
-                                                        //           BorderRadius
-                                                        //               .circular(
-                                                        //                   10),
-                                                        //       border: Border.all(
-                                                        //           color: ColorResource
-                                                        //               .colorECECEC,
-                                                        //           width: 1.0),
-                                                        //     ),
-                                                        //     child: Row(
-                                                        //       mainAxisSize:
-                                                        //           MainAxisSize
-                                                        //               .min,
-                                                        //       children: [
-                                                        //         SvgPicture.asset(
-                                                        //             ImageResource
-                                                        //                 .whatsApp),
-                                                        //         const SizedBox(
-                                                        //             width: 7),
-                                                        //         CustomText(
-                                                        //           Constants
-                                                        //               .sendWhatsapp
-                                                        //               .toUpperCase(),
-                                                        //  fontSize: FontSize
-                                                        //                       .twelve,
-                                                        //                   fontWeight: FontWeight
-                                                        //                       .w700,
-                                                        //           lineHeight:
-                                                        //               1.0,
-                                                        //           color: ColorResource
-                                                        //               .colorffffff,
-                                                        //         ),
-                                                        //       ],
-                                                        //     ),
-                                                        //   ),
-                                                        // )
                                                       ],
                                                     )
                                                   ],
@@ -655,30 +595,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        // CustomText(
-                                        //   bloc.caseDetailsAPIValue.result
-                                        //           ?.caseDetails?.cust
-                                        //           ?.toUpperCase() ??
-                                        //       '', //--------------- doubt -----------
-                                        //   color: ColorResource.color333333,
-                                        //   fontSize: FontSize.fourteen,
-                                        //   fontStyle: FontStyle.normal,
-                                        //   fontWeight: FontWeight.w700,
-                                        // ),
-
-                                        // if (bloc.caseDetailsAPIValue.result!
-                                        //     .otherLoanDetails!.isEmpty)
-                                        //   const Padding(
-                                        //     padding: EdgeInsets.symmetric(
-                                        //         vertical: 15),
-                                        //     child: Center(
-                                        //         child: CustomText(
-                                        //             Constants
-                                        //                 .noOtherLoanAvailable,
-                                        //             color: ColorResource
-                                        //                 .color000000)),
-                                        //   ),
-
                                         ListView.builder(
                                             physics:
                                                 const NeverScrollableScrollPhysics(),

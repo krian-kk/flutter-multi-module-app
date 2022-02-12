@@ -60,7 +60,6 @@ class CustomRemainderBottomSheet extends StatefulWidget {
 class _CustomRemainderBottomSheetState
     extends State<CustomRemainderBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
-  // String selectedDate = '';
   TextEditingController nextActionTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
@@ -396,7 +395,6 @@ class _CustomRemainderBottomSheetState
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),

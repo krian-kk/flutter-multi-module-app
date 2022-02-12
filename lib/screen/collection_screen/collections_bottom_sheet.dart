@@ -273,7 +273,6 @@ class _CustomCollectionsBottomSheetState
                             Languages.of(context)!.refCheque,
                             chequeControlller,
                             focusNode: chequeFocusNode,
-                            // validationRules: const ['required'],
                             isLabel: true,
                             onEditing: () => remarksFocusNode.requestFocus(),
                           )),
@@ -463,8 +462,6 @@ class _CustomCollectionsBottomSheetState
                                             : 'Field Allocation',
                                         invalidNumber: false);
 
-                                    // print(jsonEncode(requestBodyData.toJson()));
-
                                     final Map<String, dynamic> postdata =
                                         jsonDecode(jsonEncode(
                                                 requestBodyData.toJson()))
@@ -576,8 +573,6 @@ class _CustomCollectionsBottomSheetState
                                             ? 'Telecalling'
                                             : 'Field Allocation',
                                         invalidNumber: false);
-
-                                    // print(jsonEncode(requestBodyData.toJson()));
 
                                     final Map<String, dynamic> postdata =
                                         jsonDecode(jsonEncode(
