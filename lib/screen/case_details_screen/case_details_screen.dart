@@ -1197,7 +1197,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               listOfMobileNo: s1,
               userType: bloc.userType.toString(),
-              caseId: bloc.caseId.toString(),
+              caseId: bloc.caseId != null
+                  ? bloc.caseId!
+                  : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
+              custName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
           case Constants.addNewContact:

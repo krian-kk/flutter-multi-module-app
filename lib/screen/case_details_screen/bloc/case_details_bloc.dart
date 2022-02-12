@@ -52,6 +52,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   AllocationBloc allocationBloc;
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
+  String? custName;
   String? agentName;
   bool isEventSubmited = false;
   bool isSubmitedForMyVisits = false;
@@ -967,6 +968,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               listOfMobileNo: s1,
               userType: userType.toString(),
               caseId: caseId.toString(),
+              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
 

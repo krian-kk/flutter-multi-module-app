@@ -29,6 +29,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final String sid;
   final List<String> listOfMobileNo;
   final CaseDetailsApiModel? caseDetailsAPIValue;
+  final String? custName;
 
   const CallCustomerBottomSheet({
     Key? key,
@@ -38,6 +39,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
     required this.userType,
     required this.sid,
     required this.listOfMobileNo,
+    this.custName,
   }) : super(key: key);
 
   @override
@@ -269,8 +271,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     callerId:
                                         Singleton.instance.callingID ?? '',
                                     aRef: Singleton.instance.agentRef ?? '',
-                                    customerName:
-                                        Singleton.instance.agentName ?? '',
+                                    customerName: widget.custName!,
                                     service: bloc.serviceProviderListValue,
                                     callerServiceID:
                                         Singleton.instance.callerServiceID ??

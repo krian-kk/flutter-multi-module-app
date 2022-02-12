@@ -11,6 +11,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/message_screen/chat_screen_bloc.dart';
 import 'package:origa/screen/message_screen/chat_screen_event.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -58,8 +59,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId!));
-    messageController.text = 'Welcome';
-    clientIDFromARef = widget.fromARefId;
+    messageController.text = '';
+    clientIDFromARef = widget.fromARefId ?? Singleton.instance.agentRef;
     toARef = widget.toARefId;
     createAblyRealtimeInstance();
     super.initState();
@@ -276,7 +277,7 @@ class _ChatScreenState extends State<ChatScreen> {
       });
 
       chatChannel.subscribe(name: clientIDFromARef).listen((event) {
-        debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
+        print('New Message arrived from $clientIDFromARef ${event.data}');
 
         // if (event.data is String) {
         //   debugPrint("event data is String");
@@ -300,7 +301,7 @@ class _ChatScreenState extends State<ChatScreen> {
           );
         });
       }).onData((data) {
-        debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
+        print('New daTA arrived from $clientIDFromARef ${data.data}');
 
         setState(() {
           ReceivingData receivedData =
@@ -353,102 +354,9 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void sendMessage({String? messageContent}) async {
-    print("send message clicked");
-    chatChannel.publish(messages: [
-      ably.Message(name: toARef, data: messageContent),
-    ]).then((value) {
-      debugPrint('Success state-->111');
-      setState(() {
-        messageHistory.insert(
-          0,
-          ChatHistory(
-              data: messageContent, name: toARef, dateTime: DateTime.now()),
-        );
-      });
-      messageController.clear();
-    }).catchError((error) {
-      debugPrint('Error state--> ${error.toString()}');
-      messageController.clear();
-    });
-    // try {
-    //   realtimeInstance = ably.Realtime(options: clientOptions);
-    //   chatChannel = realtimeInstance.channels
-    //       .get('chat:mobile:messages:$clientIDFromARef-$toARef');
-
-    //   presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
-    //   await presenceChannel!.presence.enterClient(clientIDFromARef!, 'enter');
-    //   debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
-    //   presenceChannel!.presence
-    //       .subscribe(action: PresenceAction.enter)
-    //       .listen((ably.PresenceMessage event) async {
-    //     debugPrint('Who are all in online--> ${event.clientId}');
-    //     debugPrint('New message arrived ${event.data}');
-    //     if (toARef == event.clientId) {
-    //       print("message sending progress---->");
-    //       chatChannel.publish(messages: [
-    //         ably.Message(name: toARef, data: messageContent),
-    //       ]).then((value) {
-    //         debugPrint('Success state-->111');
-    //         setState(() {
-    //           messageHistory.insert(
-    //             0,
-    //             ChatHistory(
-    //                 data: messageContent,
-    //                 name: toARef,
-    //                 dateTime: DateTime.now()),
-    //           );
-    //         });
-    //         messageController.clear();
-    //       }).catchError((error) {
-    //         debugPrint('Error state--> ${error.toString()}');
-    //         messageController.clear();
-    //       });
-    //     } else {
-    //       print("Message publish with notification ---->${event.data}");
-    //       chatChannel.publish(messages: [
-    //         ably.Message(
-    //           name: toARef,
-    //           data: messageContent,
-    //           // extras: ably.MessageExtras({
-    //           //   'push': {
-    //           //     'notification': {
-    //           //       'title': clientIDFromARef,
-    //           //       'body': messageContent,
-    //           //       'sound': 'default',
-    //           //     },
-    //           //   },
-    //           // })
-    //         )
-    //       ]).then((value) {
-    //         debugPrint('Success state-->fem');
-    //         setState(() {
-    //           messageHistory.insert(
-    //             0,
-    //             ChatHistory(
-    //                 data: messageContent,
-    //                 name: toARef,
-    //                 dateTime: DateTime.now()),
-    //           );
-    //         });
-    //         messageController.clear();
-    //       }).catchError((error) {
-    //         debugPrint('Error state fcm --> ${error.toString()}');
-    //         messageController.clear();
-    //       });
-    //       messageController.clear();
-    //       // Have to integrate with FCM after that message
-    //     }
-    //   });
-    // } catch (error) {
-    //   debugPrint(error.toString());
-    //   rethrow;
-    // }
-  }
-
-  void leavePresence() async {
-    await chatChannel.presence.leave();
-  }
+  // void leavePresence() async {
+  //   await chatChannel.presence.leave();
+  // }
 
   _buildMessage(ChatHistory message, bool isMe) {
     final Container msg = Container(
@@ -577,7 +485,27 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: GestureDetector(
                     onTap: () {
                       if (messageController.text.trim().isNotEmpty) {
-                        sendMessage(messageContent: messageController.text);
+                        // sendMessage(messageContent: messageController.text);
+                        chatChannel.publish(messages: [
+                          ably.Message(
+                              name: toARef,
+                              data: messageController.text.trim()),
+                        ]).then((value) {
+                          debugPrint('Success state-->111');
+                          setState(() {
+                            messageHistory.insert(
+                              0,
+                              ChatHistory(
+                                  data: messageController.text.trim(),
+                                  name: toARef,
+                                  dateTime: DateTime.now()),
+                            );
+                          });
+                          messageController.clear();
+                        }).catchError((error) {
+                          debugPrint('Error state--> ${error.toString()}');
+                          messageController.clear();
+                        });
                       } else {
                         debugPrint("space removed");
                       }
