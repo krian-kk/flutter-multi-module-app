@@ -420,8 +420,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     fontWeight: FontWeight.w600,
                                     onTap: () async {
                                       if (widget.bloc.isAutoCalling) {
-                                        print(
-                                            '========================================= > djdkjdjdkkd');
                                         if (await CallCustomerStatus
                                             .callStatusCheck(
                                                 callId: widget.bloc
@@ -475,7 +473,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       Languages.of(context)!
                                           .cancel
                                           .toUpperCase(),
-                                      onTap: () => Navigator.pop(context),
+                                      onTap: () {
+                                        Singleton.instance.startCalling = false;
+                                        Navigator.pop(context);
+                                      },
                                       color: ColorResource.colorEA6D48,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FontStyle.normal,
