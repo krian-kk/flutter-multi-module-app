@@ -13,7 +13,6 @@ import 'package:origa/models/dashboard_event_count_model/dashboard_event_count_m
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
-// import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/models/my_receipts_model.dart';
 import 'package:origa/models/priority_case_list.dart';
@@ -159,7 +158,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.myReceipts,
-              subTitle: Constants.events,
+              subTitle: Languages.of(event.context!)!.event,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.receipts!.count.toString() ?? '0',
@@ -171,7 +170,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               title: userType == Constants.fieldagent
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
-              subTitle: Constants.events,
+              subTitle: Languages.of(event.context!)!.event,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.visits?.count.toString() ?? '0',
@@ -180,17 +179,19 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                       '0',
             ),
             DashboardListModel(
-                title: Languages.of(event.context!)!.myDeposists,
-                subTitle: '',
-                image: '',
-                count: '',
-                amountRs: ''),
+              title: Languages.of(event.context!)!.myDeposists,
+              subTitle: '',
+              image: '',
+              count: '',
+              amountRs: '',
+            ),
             DashboardListModel(
-                title: Languages.of(event.context!)!.yardingSelfRelease,
-                subTitle: '',
-                image: '',
-                count: '',
-                amountRs: ''),
+              title: Languages.of(event.context!)!.yardingSelfRelease,
+              subTitle: '',
+              image: '',
+              count: '',
+              amountRs: '',
+            ),
           ]);
         } else if (dashboardData['statusCode'] == 401 ||
             dashboardData['data'] == Constants.connectionTimeout ||

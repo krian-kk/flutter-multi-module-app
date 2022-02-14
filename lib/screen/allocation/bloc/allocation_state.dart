@@ -34,6 +34,10 @@ class TapAreYouAtOfficeOptionsState extends AllocationState {}
 
 class UpdateNewValueState extends AllocationState {}
 
+class AutoCallingLoadingState extends AllocationState {}
+
+class AutoCallingLoadedState extends AllocationState {}
+
 class TapPriorityState extends AllocationState {
   final dynamic successResponse;
   TapPriorityState({this.successResponse});
@@ -81,4 +85,10 @@ class StartCallingState extends AllocationState {
   final int? phoneIndex;
   // final Result? customerList;
   StartCallingState({this.customerIndex, this.phoneIndex});
+}
+
+class AutoCallContactHealthUpdateState extends AllocationState {
+  final int? contactIndex;
+  final int? caseIndex;
+  AutoCallContactHealthUpdateState({this.contactIndex, this.caseIndex});
 }

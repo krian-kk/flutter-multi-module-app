@@ -293,7 +293,7 @@ class LanguageTa extends Languages {
   String get customerMet => 'வாடிக்கையாளர் சந்திப்பு';
 
   @override
-  String get customerNotMet => 'வாடிக்கையாளர் சந்திக்கவில்லை';
+  String get customerNotMet => 'சந்திக்கவில்லை';
 
   @override
   String get logout => 'வெளியேறு';
@@ -383,7 +383,7 @@ class LanguageTa extends Languages {
   String get call => 'அழைப்பு';
 
   @override
-  String get viewMap => 'வரைபடத்தைப் பார்க்கவும்';
+  String get viewMap => 'வரைபடம்';
 
   @override
   String get captureImage => 'படத்தைப் பிடிக்கவும்';
@@ -694,4 +694,33 @@ class LanguageTa extends Languages {
 
   @override
   String get successfullySubmitted => 'வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!!';
+
+  @override
+  String get loginViaDifferentUser => 'வெவ்வேறு பயனர் மூலம் உள்நுழைக';
+
+  @override
+  String get event => 'நிகழ்வுகள்';
+
+  @override
+  String get changeSecurePIN => 'பாதுகாப்பான பின்னை மாற்றவும்';
+
+  @override
+  String get changeYourSecureDigitPIN => 'உங்கள் பாதுகாப்பான பின்னை மாற்றவும்';
+
+  @override
+  String get newPin => 'புதிய பின்';
+
+  @override
+  String get save => 'சேமிக்க';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      '4 இலக்க பின்னை உருவாக்கி உங்கள் கணக்கைப் பாதுகாக்கவும்';
+
+  @override
+  String get enterYourSecureFourdDigitPin =>
+      'உங்கள் பாதுகாப்பான 4 இலக்க பின்னை உள்ளிடவும்';
+
+  @override
+  String get forgotPin => 'பின்னை மறந்துவிட்டீர்களா?';
 }

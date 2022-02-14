@@ -7,6 +7,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
+import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -27,14 +28,18 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final String caseId;
   final String sid;
   final List<String> listOfMobileNo;
+  final CaseDetailsApiModel? caseDetailsAPIValue;
+  final String? custName;
 
   const CallCustomerBottomSheet({
     Key? key,
     required this.customerLoanUserWidget,
+    this.caseDetailsAPIValue,
     required this.caseId,
     required this.userType,
     required this.sid,
     required this.listOfMobileNo,
+    this.custName,
   }) : super(key: key);
 
   @override
@@ -266,15 +271,18 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     callerId:
                                         Singleton.instance.callingID ?? '',
                                     aRef: Singleton.instance.agentRef ?? '',
-                                    customerName:
-                                        Singleton.instance.agentName ?? '',
+                                    customerName: widget.custName!,
                                     service: bloc.serviceProviderListValue,
                                     callerServiceID:
                                         Singleton.instance.callerServiceID ??
                                             '',
                                     caseId: widget.caseId,
                                     sId: widget.sid,
-                                    agrRef: Singleton.instance.agentRef ?? '',
+                                    // agrRef: Singleton.instance.agentRef ?? '',
+                                    //AgrRef is Agrement number
+                                    agrRef: widget.caseDetailsAPIValue!.result!
+                                            .caseDetails!.agrRef ??
+                                        '',
                                     agentName:
                                         Singleton.instance.agentName ?? '',
                                     agentType: (widget.userType ==

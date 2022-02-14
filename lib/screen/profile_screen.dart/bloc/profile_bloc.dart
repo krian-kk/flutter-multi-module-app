@@ -26,9 +26,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   // it's manage the Refresh the page basaed on Internet connection
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
-  // ProfileResultModel offlineProfileValue = ProfileResultModel();
-  // Future<Box<OrigoMapDynamicTable>> profileHiveBox =
-  //     Hive.openBox<OrigoMapDynamicTable>('ProfileHiveApiResultsBox');
 
   List<NotificationMainModel> notificationList = [];
   List<LanguageModel> languageList = [];
@@ -59,14 +56,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (getProfileData['success']) {
           Map<String, dynamic> jsonData = getProfileData['data'];
           profileAPIValue = ProfileApiModel.fromJson(jsonData);
-
-          // profileHiveBox.then((value) => value.put(
-          //     'EventDetails1',
-          //     OrigoMapDynamicTable(
-          //       status: jsonData['status'],
-          //       message: jsonData['message'],
-          //       result: jsonData['result'][0],
-          //     )));
         } else if (getProfileData['statusCode'] == 401 ||
             getProfileData['data'] == Constants.connectionTimeout ||
             getProfileData['statusCode'] == 502) {
@@ -74,10 +63,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           noInternetAndServerErrorMsg = getProfileData['data'];
         }
       }
-      // await profileHiveBox.then(
-      //   (value) => offlineProfileValue = ProfileResultModel.fromJson(
-      //       Map<String, dynamic>.from(value.get('EventDetails1')!.result)),
-      // );
 
       notificationList.addAll([
         NotificationMainModel('Today Sep 15   7:04 PM', [
@@ -101,6 +86,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
     if (event is ClickChangePassswordEvent) {
       yield ClickChangePasswordState();
+    }
+    if (event is ClickChangeSecurityPinEvent) {
+      yield ClickChangeSecurityPinState();
     }
     if (event is ClickMessageEvent) {
       yield ClickMessageState(
@@ -130,9 +118,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is PostProfileImageEvent) {
       isProfileImageUpdating = true;
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.singleFileUpload, HttpUrl.changeProfileImage,
-          // file: [event.postValue]
-          imageFile: event.postValue);
+        APIRequestType.singleFileUpload,
+        HttpUrl.changeProfileImage,
+        imageFile: event.postValue,
+      );
       if (postResult[Constants.success]) {
         isProfileImageUpdating = false;
         yield PostDataApiSuccessState();

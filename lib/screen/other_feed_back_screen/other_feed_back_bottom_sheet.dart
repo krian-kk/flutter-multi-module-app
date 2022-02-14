@@ -21,6 +21,7 @@ import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -44,8 +45,6 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     required this.caseId,
     required this.customerLoanUserWidget,
     required this.userType,
-    // required this.resAddressId_0,
-    // required this.contactId_0,
     this.postValue,
     this.isCall,
     required this.health,
@@ -58,8 +57,6 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
   final String userType;
   final dynamic postValue;
-  // final String contactId_0;
-  // final String resAddressId_0;
   final bool? isCall;
   final String health;
   final bool isAutoCalling;
@@ -111,8 +108,6 @@ class _CustomOtherFeedBackBottomSheetState
 
   @override
   void initState() {
-    // print(Singleton
-    //     .instance.feedbackTemplate?.result!.feedbackTemplate![0].data!);
     if (Singleton.instance.feedbackTemplate?.result!.feedbackTemplate != null) {
       isVehicleAvailable = Singleton.instance.feedbackTemplate?.result!
               .feedbackTemplate![0].data![0].value ??
@@ -122,10 +117,6 @@ class _CustomOtherFeedBackBottomSheetState
       dateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
     });
-    // for (var element in widget.bloc.contractorDetailsValue.result!
-    //             .feedbackTemplate![0].data![0].options![0].viewValue!) {}
-    //         collectorFeedBackValueDropdownList.addAll(widget.bloc.contractorDetailsValue.result!
-    //             .feedbackTemplate![0].data![0].options![0].viewValue!);
     super.initState();
   }
 
@@ -197,14 +188,6 @@ class _CustomOtherFeedBackBottomSheetState
                               ],
                             ),
                             const SizedBox(height: 20),
-                            // CustomText(
-                            //   Languages.of(context)!.customerMetCategory,
-                            //   fontSize: FontSize.fourteen,
-                            //   fontWeight: FontWeight.w700,
-                            //   color: ColorResource.color000000,
-                            //   fontStyle: FontStyle.normal,
-                            // ),
-                            // const SizedBox(height: 10),
                             expandList([
                               FeedbackTemplate(
                                   name: 'Add New Contact',
@@ -218,15 +201,6 @@ class _CustomOtherFeedBackBottomSheetState
                                         ?.result?.feedbackTemplate?.length ??
                                     0,
                                 itemBuilder: (context, int index) {
-                                  // isVehicleAvailable = widget
-                                  //         .bloc
-                                  //         .contractorDetailsValue
-                                  //         .result!
-                                  //         .feedbackTemplate![index]
-                                  //         .data![0]
-                                  //         .value ??
-                                  //     false;
-
                                   return expandList(
                                       Singleton.instance.feedbackTemplate!
                                           .result!.feedbackTemplate!,
@@ -383,172 +357,201 @@ class _CustomOtherFeedBackBottomSheetState
                                 //   );
                                 // } else {
                                 setState(() => isSubmit = false);
+                                bool isNotAutoCalling = true;
 
-                                Position position = Position(
-                                  longitude: 0,
-                                  latitude: 0,
-                                  timestamp: DateTime.now(),
-                                  accuracy: 0,
-                                  altitude: 0,
-                                  heading: 0,
-                                  speed: 0,
-                                  speedAccuracy: 0,
-                                );
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    position = res;
+                                if (widget.isAutoCalling) {
+                                  await CallCustomerStatus.callStatusCheck(
+                                          callId: widget.paramValue['callId'])
+                                      .then((value) {
+                                    isNotAutoCalling = value;
                                   });
                                 }
-                                var requestBodyData = OtherFeedBackPostModel(
-                                  eventId:
-                                      ConstantEventValues.otherFeedbackEventId,
-                                  eventType: (widget.userType ==
-                                              Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : FEEDBACK'
-                                      : 'FEEDBACK',
-                                  voiceCallEventCode:
-                                      ConstantEventValues.voiceCallEventCode,
-                                  createdBy: Singleton.instance.agentRef ?? '',
-                                  agentName: Singleton.instance.agentName ?? '',
-                                  agrRef: Singleton.instance.agrRef ?? '',
-                                  contractor:
-                                      Singleton.instance.contractor ?? '',
-                                  callID: Singleton.instance.callID ?? '',
-                                  callerServiceID:
-                                      Singleton.instance.callerServiceID ?? '',
-                                  callingID: Singleton.instance.callingID ?? '',
-                                  caseId: widget.caseId,
-                                  eventCode:
-                                      ConstantEventValues.otherFeedbackEvenCode,
-                                  eventModule: widget.isCall!
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                                  invalidNumber: false,
-                                  eventAttr: EventAttr(
-                                    remarks: remarksController.text,
-                                    vehicleavailable: isVehicleAvailable,
-                                    collectorfeedback:
-                                        collectorFeedBackValue ?? '',
-                                    actionproposed: actionproposedValue ?? '',
-                                    actionDate: dateControlller.text,
-                                    imageLocation: [''],
-                                    longitude: position.longitude,
-                                    latitude: position.latitude,
-                                    accuracy: position.accuracy,
-                                    altitude: position.altitude,
-                                    heading: position.heading,
-                                    speed: position.speed,
-                                    altitudeAccuracy: 0,
-                                    // agentLocation: AgentLocation(),
-                                    contact: otherFeedbackContact.isNotEmpty
-                                        ? otherFeedbackContact
-                                        : null,
-                                  ),
-                                  contact: OtherFeedBackContact(
-                                    cType: widget.postValue['cType'],
-                                    health: widget.health,
-                                    value: widget.postValue['value'],
-                                    resAddressId0:
-                                        widget.postValue['resAddressId_0'] ??
+                                if (isNotAutoCalling) {
+                                  Position position = Position(
+                                    longitude: 0,
+                                    latitude: 0,
+                                    timestamp: DateTime.now(),
+                                    accuracy: 0,
+                                    altitude: 0,
+                                    heading: 0,
+                                    speed: 0,
+                                    speedAccuracy: 0,
+                                  );
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    setState(() {
+                                      position = res;
+                                    });
+                                  }
+                                  var requestBodyData = OtherFeedBackPostModel(
+                                    eventId: ConstantEventValues
+                                        .otherFeedbackEventId,
+                                    eventType: (widget.userType ==
+                                                Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : FEEDBACK'
+                                        : 'FEEDBACK',
+                                    voiceCallEventCode:
+                                        ConstantEventValues.voiceCallEventCode,
+                                    createdBy:
+                                        Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    agrRef: Singleton.instance.agrRef ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
+                                    callID: Singleton.instance.callID ?? '',
+                                    callerServiceID:
+                                        Singleton.instance.callerServiceID ??
                                             '',
-                                    contactId0:
-                                        widget.postValue['contactId0'] ?? '',
-                                  ),
-                                );
-                                final Map<String, dynamic> postdata =
-                                    jsonDecode(jsonEncode(
-                                            requestBodyData.toJson()))
-                                        as Map<String, dynamic>;
-                                List<dynamic> value = [];
-                                for (var element in uploadFileLists) {
-                                  value.add(await MultipartFile.fromFile(
-                                      element.path.toString()));
-                                }
-                                postdata.addAll({
-                                  'files': value,
-                                });
-
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                  APIRequestType.UPLOAD,
-                                  HttpUrl.otherFeedBackPostUrl(
-                                      'feedback', widget.userType),
-                                  formDatas: FormData.fromMap(postdata),
-                                );
-
-                                if (postResult[Constants.success]) {
-                                  widget.bloc.add(
-                                    ChangeIsSubmitForMyVisitEvent(
-                                      Constants.otherFeedback,
+                                    callingID:
+                                        Singleton.instance.callingID ?? '',
+                                    caseId: widget.caseId,
+                                    eventCode: ConstantEventValues
+                                        .otherFeedbackEvenCode,
+                                    eventModule: widget.isCall!
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
+                                    invalidNumber: false,
+                                    eventAttr: EventAttr(
+                                      remarks: remarksController.text,
+                                      vehicleavailable: isVehicleAvailable,
+                                      collectorfeedback:
+                                          collectorFeedBackValue ?? '',
+                                      actionproposed: actionproposedValue ?? '',
+                                      actionDate: dateControlller.text,
+                                      imageLocation: [''],
+                                      longitude: position.longitude,
+                                      latitude: position.latitude,
+                                      accuracy: position.accuracy,
+                                      altitude: position.altitude,
+                                      heading: position.heading,
+                                      speed: position.speed,
+                                      altitudeAccuracy: 0,
+                                      // agentLocation: AgentLocation(),
+                                      contact: otherFeedbackContact.isNotEmpty
+                                          ? otherFeedbackContact
+                                          : null,
+                                    ),
+                                    contact: OtherFeedBackContact(
+                                      cType: widget.postValue['cType'],
+                                      health: widget.health,
+                                      value: widget.postValue['value'],
+                                      resAddressId0:
+                                          widget.postValue['resAddressId_0'] ??
+                                              '',
+                                      contactId0:
+                                          widget.postValue['contactId0'] ?? '',
                                     ),
                                   );
-                                  if (!(widget.userType ==
-                                          Constants.fieldagent &&
-                                      widget.isCall!)) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitEvent(),
-                                    );
+                                  final Map<String, dynamic> postdata =
+                                      jsonDecode(jsonEncode(
+                                              requestBodyData.toJson()))
+                                          as Map<String, dynamic>;
+                                  List<dynamic> value = [];
+                                  for (var element in uploadFileLists) {
+                                    value.add(await MultipartFile.fromFile(
+                                        element.path.toString()));
                                   }
+                                  postdata.addAll({
+                                    'files': value,
+                                  });
 
-                                  widget.bloc.add(
-                                    ChangeHealthStatusEvent(),
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                    APIRequestType.UPLOAD,
+                                    HttpUrl.otherFeedBackPostUrl(
+                                        'feedback', widget.userType),
+                                    formDatas: FormData.fromMap(postdata),
                                   );
 
-                                  if (widget.isAutoCalling) {
-                                    Navigator.pop(widget.paramValue['context']);
-                                    Navigator.pop(widget.paramValue['context']);
-                                    widget.allocationBloc!
-                                        .add(StartCallingEvent(
-                                      customerIndex:
-                                          widget.paramValue['customerIndex'] +
-                                              1,
-                                      phoneIndex: 0,
-                                      isIncreaseCount: true,
-                                    ));
-                                  } else {
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    if (widget.isCall!) {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < (otherFeedbackContact.length);
-                                            i++) {
-                                          widget.bloc.listOfCallDetails?.add(
-                                              jsonDecode(jsonEncode(
-                                                  otherFeedbackContact[i])));
-                                        }
-                                      });
-                                      widget.bloc
-                                          .add(AddedNewCallContactListEvent());
-                                      // print(widget.bloc.listOfCallDetails);
-                                    } else {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < (otherFeedbackContact.length);
-                                            i++) {
-                                          // if (widget.bloc.listOfAddressDetails!
-                                          //     .contains(otherFeedbackContact[i])) {
-                                          widget.bloc.listOfAddressDetails?.add(
-                                              jsonDecode(jsonEncode(
-                                                  otherFeedbackContact[i])));
-                                        }
-                                        // }
-                                      });
-                                      widget.bloc
-                                          .add(AddedNewAddressListEvent());
-                                      // print(widget.bloc.listOfAddressDetails);
+                                  if (postResult[Constants.success]) {
+                                    widget.bloc.add(
+                                      ChangeIsSubmitForMyVisitEvent(
+                                        Constants.otherFeedback,
+                                      ),
+                                    );
+                                    if (!(widget.userType ==
+                                            Constants.fieldagent &&
+                                        widget.isCall!)) {
+                                      widget.bloc.add(
+                                        ChangeIsSubmitEvent(),
+                                      );
                                     }
 
-                                    Navigator.pop(context);
-                                  }
-                                } else {}
-                                // }
+                                    widget.bloc.add(
+                                      ChangeHealthStatusEvent(),
+                                    );
+
+                                    if (widget.isAutoCalling) {
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      // if (widget.health == 'jones') {
+                                      // } else {
+                                      //   print(
+                                      //       'Health Value is ================= > ${widget.health}');
+                                      // widget.allocationBloc!
+                                      //     .add(StartCallingEvent(
+                                      //   customerIndex: widget
+                                      //           .paramValue['customerIndex'] +
+                                      //       1,
+                                      //   phoneIndex: 0,
+                                      //   isIncreaseCount: true,
+                                      // ));
+                                      // }
+                                      widget.allocationBloc!
+                                          .add(StartCallingEvent(
+                                        customerIndex:
+                                            widget.paramValue['customerIndex'] +
+                                                1,
+                                        phoneIndex: 0,
+                                        isIncreaseCount: true,
+                                      ));
+                                    } else {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                      if (widget.isCall!) {
+                                        setState(() {
+                                          for (int i = 0;
+                                              i < (otherFeedbackContact.length);
+                                              i++) {
+                                            widget.bloc.listOfCallDetails?.add(
+                                                jsonDecode(jsonEncode(
+                                                    otherFeedbackContact[i])));
+                                          }
+                                        });
+                                        widget.bloc.add(
+                                            AddedNewCallContactListEvent());
+                                        // print(widget.bloc.listOfCallDetails);
+                                      } else {
+                                        setState(() {
+                                          for (int i = 0;
+                                              i < (otherFeedbackContact.length);
+                                              i++) {
+                                            // if (widget.bloc.listOfAddressDetails!
+                                            //     .contains(otherFeedbackContact[i])) {
+                                            widget.bloc.listOfAddressDetails
+                                                ?.add(jsonDecode(jsonEncode(
+                                                    otherFeedbackContact[i])));
+                                          }
+                                          // }
+                                        });
+                                        widget.bloc
+                                            .add(AddedNewAddressListEvent());
+                                        // print(widget.bloc.listOfAddressDetails);
+                                      }
+
+                                      Navigator.pop(context);
+                                    }
+                                  } else {}
+                                  // }
+                                }
                               }
                               setState(() => isSubmit = true);
                             }

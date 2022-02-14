@@ -87,6 +87,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   int starCount = 0;
   // List priorityCaseAddressList = [];
   List<Result> resultList = [];
+  List<Result> autoCallingResultList = [];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   int? selectedStar;
@@ -154,11 +155,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             );
 
         resultList.clear();
+        autoCallingResultList.clear();
         starCount = 0;
 
         if (priorityListData['success']) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            autoCallingResultList
+                .add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
               starCount++;
@@ -216,7 +220,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // print(priorityListData['data']);
         }
       }
-      totalCount = resultList.length;
+      totalCount = autoCallingResultList.length;
       yield AllocationLoadedState(successResponse: resultList);
     }
     // if (event is IncreaseCountEvent) {
@@ -277,21 +281,26 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+
     if (event is StartCallingEvent) {
-      if (event.isIncreaseCount && customerCount < totalCount) {
+      if (event.isIncreaseCount && event.customerIndex! < totalCount) {
+        Result val = autoCallingResultList[event.customerIndex! - 1];
+        autoCallingResultList.remove(val);
+        autoCallingResultList.add(val);
+        // print('============== > ${val.cust}');
+        // print(
+        //     '============== > ${autoCallingResultList[event.customerIndex! - 1].cust}');
+        // print(
+        //     '===================================================================');
+        // print('================== > ${autoCallingResultList.length}');
         customerCount++;
       }
       Singleton.instance.startCalling = true;
-      // yield* Stream.periodic(
-      //     const Duration(seconds: 45),
-      //     (index) => StartCallingState(
-      //           customerIndex: event.customerIndex,
-      //           // customerList: event.customerList,
-      //           phoneIndex: event.phoneIndex,
-      //         ));
+
       yield StartCallingState(
-        customerIndex: event.customerIndex,
-        // customerList: event.customerList,
+        customerIndex: event.isIncreaseCount
+            ? event.customerIndex! - 1
+            : event.customerIndex!,
         phoneIndex: event.phoneIndex,
       );
     }
@@ -601,8 +610,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is ShowAutoCallingEvent) {
+      yield AutoCallingLoadingState();
       isAutoCalling = true;
       isShowSearchFloatingButton = false;
+      autoCallingResultList = resultList;
+      yield AutoCallingLoadedState();
     }
 
     if (event is UpdateStaredCaseEvent) {
@@ -617,6 +629,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield UpdateStaredCaseState(
           caseId: event.caseID,
           isStared: resultList[event.selectedStarIndex].starredCase);
+    }
+
+    if (event is AutoCallContactHealthUpdateEvent) {
+      yield AutoCallContactHealthUpdateState(
+          contactIndex: event.contactIndex, caseIndex: event.caseIndex);
     }
   }
 }

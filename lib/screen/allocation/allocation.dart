@@ -17,6 +17,7 @@ import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
 import 'package:origa/router.dart';
@@ -412,6 +413,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           messageShowBottomSheet();
         }
         if (state is StartCallingState) {
+          setState(() {});
           if (bloc.customerCount < bloc.totalCount) {
             Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
@@ -421,6 +423,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
                 AgencyDetailsModel voiceAgencyDetails =
                     AgencyDetailsModel.fromJson(jsonData);
+
                 if (state.customerIndex! < bloc.resultList.length) {
                   List<Address> tempMobileList = [];
                   bloc.resultList[state.customerIndex!].address
@@ -433,18 +436,23 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      to: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      callerId: Singleton.instance.callingID ?? '0',
+                      to: tempMobileList[state.phoneIndex!].value ?? '',
+                      callerId: voiceAgencyDetails.result?.voiceAgencyData
+                              ?.first.callerIds?.first ??
+                          '0',
                       aRef: Singleton.instance.agentRef ?? '',
                       customerName: Singleton.instance.agentName ?? '',
                       service: voiceAgencyDetails
                               .result?.voiceAgencyData?.first.agencyId ??
                           '0',
-                      callerServiceID:
-                          Singleton.instance.callerServiceID ?? '0',
+                      callerServiceID: voiceAgencyDetails
+                              .result?.voiceAgencyData?.first.agencyId ??
+                          '0',
                       caseId: bloc.resultList[state.customerIndex!].caseId!,
                       sId: bloc.resultList[state.customerIndex!].sId!,
-                      agrRef: Singleton.instance.agentRef ?? '',
+                      // agrRef: Singleton.instance.agentRef ?? '',
+                      agrRef:
+                          bloc.resultList[state.customerIndex!].agrRef ?? '',
                       agentName: Singleton.instance.agentName ?? '',
                       agentType:
                           (Singleton.instance.usertype == Constants.telecaller)
@@ -477,6 +485,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   }
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
+                                  print(
+                                      '====================>>>>>>>>>>==== > ${postResult['data']['result']}');
                                   CaseDetailsBloc caseDetailsloc =
                                       CaseDetailsBloc(bloc)
                                         ..add(CaseDetailsInitialEvent(
@@ -491,6 +501,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                             'phoneIndex': state.phoneIndex,
                                             'mobileList': tempMobileList,
                                             'context': context,
+                                            'callId': postResult['data']
+                                                ['result'],
                                           },
                                           context: context,
                                         ));
@@ -720,6 +732,34 @@ class _AllocationScreenState extends State<AllocationScreen> {
             AppUtils.showToast(Constants.successfullySubmitted);
           }
         }
+
+        if (state is AutoCallContactHealthUpdateState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = '2';
+                break;
+              case 1:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = '1';
+                break;
+              case 2:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = '0';
+                break;
+              default:
+                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
+                    .health = data.currentHealth;
+                break;
+            }
+          });
+        }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
@@ -818,6 +858,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             Visibility(
                               visible: bloc.areyouatOffice,
                               child: Container(
+                                width: double.infinity,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),
                                 decoration: BoxDecoration(
@@ -827,23 +868,21 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       color: ColorResource.colorECECEC,
                                       width: 1.0),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                child: Wrap(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SvgPicture.asset(ImageResource.location),
                                     const SizedBox(
                                       width: 13.0,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      child: FittedBox(
-                                        child: CustomText(
-                                          Languages.of(context)!.areYouAtOffice,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color000000,
-                                        ),
+                                      // width: MediaQuery.of(context).size.width *
+                                      //     0.3,
+                                      child: CustomText(
+                                        Languages.of(context)!.areYouAtOffice,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResource.color000000,
                                       ),
                                     ),
                                     const SizedBox(
@@ -869,7 +908,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       width: 5.0,
                                     ),
                                     SizedBox(
-                                        width: 76,
+                                        width: 85,
                                         height: 40,
                                         child: CustomButton(
                                           Languages.of(context)!.no,
@@ -1012,15 +1051,34 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             Expanded(
                               flex: 5,
                               child: CustomButton(
-                                Languages.of(context)!
-                                    .startCalling
-                                    .toUpperCase(),
-                                fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
+                                // Languages.of(context)!
+                                //     .startCalling
+                                //     .toUpperCase(),
+                                null,
+
                                 cardShape: 5,
-                                trailingWidget:
-                                    SvgPicture.asset(ImageResource.vector),
+                                trailingWidget: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: SvgPicture.asset(ImageResource.vector),
+                                ),
                                 isLeading: true,
+                                isTrailing: true,
+                                leadingWidget: Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: CustomText(
+                                      Languages.of(context)!
+                                          .startCalling
+                                          .toUpperCase(),
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorResource.colorFFFFFF,
+                                    ),
+                                  ),
+                                ),
                                 onTap: () async {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: 0,

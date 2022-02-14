@@ -217,7 +217,6 @@ class Contact {
   }
 }
 
-
 // class MyReceiptsCaseModel {
 //   int? status;
 //   String? message;

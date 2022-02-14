@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/return_value_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -40,6 +40,7 @@ import 'package:origa/widgets/custom_text.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   final dynamic paramValues;
+
   const CaseDetailsScreen({Key? key, this.paramValues}) : super(key: key);
 
   @override
@@ -554,14 +555,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                         MainAxisSize
                                                                             .min,
                                                                     children: [
-                                                                      // const Icon(
-                                                                      //   Icons
-                                                                      //       .message_rounded,
-                                                                      //   color: ColorResource
-                                                                      //       .colorffffff,
-                                                                      //   size:
-                                                                      //       22,
-                                                                      // ),
                                                                       SvgPicture.asset(
                                                                           ImageResource
                                                                               .sms),
@@ -586,58 +579,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               ),
                                                         const SizedBox(
                                                             width: 10),
-                                                        // GestureDetector(
-                                                        //   onTap: () {
-                                                        //     print("objewwwct");
-                                                        //   },
-                                                        //   child: Container(
-                                                        //     padding:
-                                                        //         const EdgeInsets
-                                                        //                 .symmetric(
-                                                        //             horizontal:
-                                                        //                 15,
-                                                        //             vertical:
-                                                        //                 10),
-                                                        //     decoration:
-                                                        //         BoxDecoration(
-                                                        //       color: ColorResource
-                                                        //           .color23375A,
-                                                        //       borderRadius:
-                                                        //           BorderRadius
-                                                        //               .circular(
-                                                        //                   10),
-                                                        //       border: Border.all(
-                                                        //           color: ColorResource
-                                                        //               .colorECECEC,
-                                                        //           width: 1.0),
-                                                        //     ),
-                                                        //     child: Row(
-                                                        //       mainAxisSize:
-                                                        //           MainAxisSize
-                                                        //               .min,
-                                                        //       children: [
-                                                        //         SvgPicture.asset(
-                                                        //             ImageResource
-                                                        //                 .whatsApp),
-                                                        //         const SizedBox(
-                                                        //             width: 7),
-                                                        //         CustomText(
-                                                        //           Constants
-                                                        //               .sendWhatsapp
-                                                        //               .toUpperCase(),
-                                                        //  fontSize: FontSize
-                                                        //                       .twelve,
-                                                        //                   fontWeight: FontWeight
-                                                        //                       .w700,
-                                                        //           lineHeight:
-                                                        //               1.0,
-                                                        //           color: ColorResource
-                                                        //               .colorffffff,
-                                                        //         ),
-                                                        //       ],
-                                                        //     ),
-                                                        //   ),
-                                                        // )
                                                       ],
                                                     )
                                                   ],
@@ -654,30 +595,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           fontStyle: FontStyle.normal,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        // CustomText(
-                                        //   bloc.caseDetailsAPIValue.result
-                                        //           ?.caseDetails?.cust
-                                        //           ?.toUpperCase() ??
-                                        //       '', //--------------- doubt -----------
-                                        //   color: ColorResource.color333333,
-                                        //   fontSize: FontSize.fourteen,
-                                        //   fontStyle: FontStyle.normal,
-                                        //   fontWeight: FontWeight.w700,
-                                        // ),
-
-                                        // if (bloc.caseDetailsAPIValue.result!
-                                        //     .otherLoanDetails!.isEmpty)
-                                        //   const Padding(
-                                        //     padding: EdgeInsets.symmetric(
-                                        //         vertical: 15),
-                                        //     child: Center(
-                                        //         child: CustomText(
-                                        //             Constants
-                                        //                 .noOtherLoanAvailable,
-                                        //             color: ColorResource
-                                        //                 .color000000)),
-                                        //   ),
-
                                         ListView.builder(
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
@@ -778,7 +695,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                           index]
                                                                       .cust!
                                                                       .toUpperCase()
-                                                                  : '_', // ----------- doubt ---------------
+                                                                  : '_',
+                                                              // ----------- doubt ---------------
                                                               color: ColorResource
                                                                   .color333333,
                                                               fontSize: FontSize
@@ -1083,7 +1001,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1101,7 +1019,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1119,7 +1037,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1137,7 +1055,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1157,7 +1075,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1176,7 +1094,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1195,7 +1113,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1212,7 +1130,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1228,7 +1146,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1246,7 +1164,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1267,18 +1185,23 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             });
 
             return CallCustomerBottomSheet(
+              caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
               ),
               listOfMobileNo: s1,
               userType: bloc.userType.toString(),
-              caseId: bloc.caseId.toString(),
+              caseId: bloc.caseId != null
+                  ? bloc.caseId!
+                  : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
+              custName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
           case Constants.addNewContact:
@@ -1287,7 +1210,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,

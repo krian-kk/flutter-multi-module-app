@@ -11,7 +11,6 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/case_details_api_model/case_details.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
@@ -20,6 +19,7 @@ import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -187,41 +187,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     ),
                                   ],
                                 )),
-                                // const SizedBox(width: 7),
-                                // Flexible(
-                                //     child: Column(
-                                //   mainAxisAlignment: MainAxisAlignment.start,
-                                //   crossAxisAlignment:
-                                //       CrossAxisAlignment.start,
-                                //   mainAxisSize: MainAxisSize.min,
-                                //   children: [
-                                //     CustomText(
-                                //       Languages.of(context)!.otsPaymentTime,
-                                //       fontSize: FontSize.twelve,
-                                //       fontWeight: FontWeight.w400,
-                                //       color: ColorResource.color666666,
-                                //       fontStyle: FontStyle.normal,
-                                //     ),
-                                //     SizedBox(
-                                //       width: (MediaQuery.of(context)
-                                //               .size
-                                //               .width) /
-                                //           2,
-                                //       child: CustomReadOnlyTextField(
-                                //         '',
-                                //         otsPaymentTimeControlller,
-                                //         // validationRules: const ['required'],
-                                //         isReadOnly: true,
-                                //         onTapped: () => pickTime(context,
-                                //             otsPaymentTimeControlller),
-                                //         suffixWidget: SvgPicture.asset(
-                                //           ImageResource.clock,
-                                //           fit: BoxFit.scaleDown,
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ],
-                                // )),
                               ],
                             ),
                             const SizedBox(height: 15),
@@ -361,132 +326,145 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       Constants.pleaseSelectOptions);
                                 } else {
                                   setState(() => isSubmit = false);
-                                  Position position = Position(
-                                    longitude: 0,
-                                    latitude: 0,
-                                    timestamp: DateTime.now(),
-                                    accuracy: 0,
-                                    altitude: 0,
-                                    heading: 0,
-                                    speed: 0,
-                                    speedAccuracy: 0,
-                                  );
-                                  if (Geolocator.checkPermission().toString() !=
-                                      PermissionStatus.granted.toString()) {
-                                    Position res =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
-                                    setState(() {
-                                      position = res;
+                                  bool isNotAutoCalling = true;
+                                  if (widget.isAutoCalling) {
+                                    await CallCustomerStatus.callStatusCheck(
+                                            callId: widget.paramValue['callId'])
+                                        .then((value) {
+                                      isNotAutoCalling = value;
                                     });
                                   }
-                                  var requestBodyData = OtsPostModel(
-                                    eventId: ConstantEventValues.otsEventId,
-                                    eventType: (widget.userType ==
-                                                Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : OTS'
-                                        : 'OTS',
-                                    caseId: widget.caseId,
-                                    imageLocation: [''],
-                                    eventAttr: OTSEventAttr(
-                                      date: otsPaymentDateControlller.text,
-                                      remarkOts: remarksControlller.text,
-                                      amntOts:
-                                          otsProposedAmountControlller.text,
-                                      appStatus: 'OTS',
-                                      mode: selectedPaymentModeButton,
-                                      altitude: position.altitude,
-                                      accuracy: position.accuracy,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      latitude: position.latitude,
-                                      longitude: position.longitude,
-                                    ),
-                                    eventCode: ConstantEventValues.otsEvenCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    eventModule: widget.isCall!
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    contact: OTSContact(
-                                      cType: widget.postValue['cType'],
-                                      health: ConstantEventValues.otsHealth,
-                                      value: widget.postValue['value'],
-                                    ),
-                                    callId: Singleton.instance.callID ?? '0',
-                                    callingId:
-                                        Singleton.instance.callingID ?? '0',
-                                    callerServiceId:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                  );
-
-                                  final Map<String, dynamic> postdata =
-                                      jsonDecode(jsonEncode(
-                                              requestBodyData.toJson()))
-                                          as Map<String, dynamic>;
-                                  List<dynamic> value = [];
-                                  for (var element in uploadFileLists) {
-                                    value.add(await MultipartFile.fromFile(
-                                        element.path.toString()));
-                                  }
-                                  postdata.addAll({
-                                    'files': value,
-                                  });
-
-                                  Map<String, dynamic> postResult =
-                                      await APIRepository.apiRequest(
-                                    APIRequestType.UPLOAD,
-                                    HttpUrl.otsPostUrl,
-                                    formDatas: FormData.fromMap(postdata),
-                                  );
-
-                                  if (postResult[Constants.success]) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitForMyVisitEvent(
-                                        Constants.ots,
-                                      ),
+                                  if (isNotAutoCalling) {
+                                    Position position = Position(
+                                      longitude: 0,
+                                      latitude: 0,
+                                      timestamp: DateTime.now(),
+                                      accuracy: 0,
+                                      altitude: 0,
+                                      heading: 0,
+                                      speed: 0,
+                                      speedAccuracy: 0,
                                     );
-                                    if (!(widget.userType ==
-                                            Constants.fieldagent &&
-                                        widget.isCall!)) {
-                                      widget.bloc.add(ChangeIsSubmitEvent());
+                                    if (Geolocator.checkPermission()
+                                            .toString() !=
+                                        PermissionStatus.granted.toString()) {
+                                      Position res =
+                                          await Geolocator.getCurrentPosition(
+                                              desiredAccuracy:
+                                                  LocationAccuracy.best);
+                                      setState(() {
+                                        position = res;
+                                      });
                                     }
-
-                                    widget.bloc.add(
-                                      ChangeHealthStatusEvent(),
+                                    var requestBodyData = OtsPostModel(
+                                      eventId: ConstantEventValues.otsEventId,
+                                      eventType: (widget.userType ==
+                                                  Constants.telecaller ||
+                                              widget.isCall!)
+                                          ? 'TC : OTS'
+                                          : 'OTS',
+                                      caseId: widget.caseId,
+                                      imageLocation: [''],
+                                      eventAttr: OTSEventAttr(
+                                        date: otsPaymentDateControlller.text,
+                                        remarkOts: remarksControlller.text,
+                                        amntOts:
+                                            otsProposedAmountControlller.text,
+                                        appStatus: 'OTS',
+                                        mode: selectedPaymentModeButton,
+                                        altitude: position.altitude,
+                                        accuracy: position.accuracy,
+                                        heading: position.heading,
+                                        speed: position.speed,
+                                        latitude: position.latitude,
+                                        longitude: position.longitude,
+                                      ),
+                                      eventCode:
+                                          ConstantEventValues.otsEvenCode,
+                                      createdBy:
+                                          Singleton.instance.agentRef ?? '',
+                                      agentName:
+                                          Singleton.instance.agentName ?? '',
+                                      eventModule: widget.isCall!
+                                          ? 'Telecalling'
+                                          : 'Field Allocation',
+                                      contact: OTSContact(
+                                        cType: widget.postValue['cType'],
+                                        health: ConstantEventValues.otsHealth,
+                                        value: widget.postValue['value'],
+                                      ),
+                                      callId: Singleton.instance.callID ?? '0',
+                                      callingId:
+                                          Singleton.instance.callingID ?? '0',
+                                      callerServiceId:
+                                          Singleton.instance.callerServiceID ??
+                                              '',
+                                      voiceCallEventCode: ConstantEventValues
+                                          .voiceCallEventCode,
+                                      agrRef: Singleton.instance.agrRef ?? '',
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
                                     );
 
-                                    if (widget.isAutoCalling) {
-                                      Navigator.pop(
-                                          widget.paramValue['context']);
-                                      Navigator.pop(
-                                          widget.paramValue['context']);
-                                      widget.allocationBloc!
-                                          .add(StartCallingEvent(
-                                        customerIndex:
-                                            widget.paramValue['customerIndex'] +
-                                                1,
-                                        phoneIndex: 0,
-                                        isIncreaseCount: true,
-                                      ));
-                                    } else {
-                                      AppUtils.topSnackBar(context,
-                                          Constants.successfullySubmitted);
-                                      Navigator.pop(context);
+                                    final Map<String, dynamic> postdata =
+                                        jsonDecode(jsonEncode(
+                                                requestBodyData.toJson()))
+                                            as Map<String, dynamic>;
+                                    List<dynamic> value = [];
+                                    for (var element in uploadFileLists) {
+                                      value.add(await MultipartFile.fromFile(
+                                          element.path.toString()));
+                                    }
+                                    postdata.addAll({
+                                      'files': value,
+                                    });
+
+                                    Map<String, dynamic> postResult =
+                                        await APIRepository.apiRequest(
+                                      APIRequestType.UPLOAD,
+                                      HttpUrl.otsPostUrl,
+                                      formDatas: FormData.fromMap(postdata),
+                                    );
+
+                                    if (postResult[Constants.success]) {
+                                      widget.bloc.add(
+                                        ChangeIsSubmitForMyVisitEvent(
+                                          Constants.ots,
+                                        ),
+                                      );
+                                      if (!(widget.userType ==
+                                              Constants.fieldagent &&
+                                          widget.isCall!)) {
+                                        widget.bloc.add(ChangeIsSubmitEvent());
+                                      }
+
+                                      widget.bloc.add(
+                                        ChangeHealthStatusEvent(),
+                                      );
+
+                                      if (widget.isAutoCalling) {
+                                        Navigator.pop(
+                                            widget.paramValue['context']);
+                                        Navigator.pop(
+                                            widget.paramValue['context']);
+                                        widget.allocationBloc!
+                                            .add(StartCallingEvent(
+                                          customerIndex: widget
+                                                  .paramValue['customerIndex'] +
+                                              1,
+                                          phoneIndex: 0,
+                                          isIncreaseCount: true,
+                                        ));
+                                      } else {
+                                        AppUtils.topSnackBar(context,
+                                            Constants.successfullySubmitted);
+                                        Navigator.pop(context);
+                                      }
                                     }
                                   }
                                 }
                               }
+
                               setState(() => isSubmit = true);
                             }
                           : () {},

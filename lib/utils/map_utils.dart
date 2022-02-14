@@ -28,7 +28,7 @@ class MapUtils {
         // AppUtils.showToast("Loading...");
         await launch(googleUrl);
       } catch (e) {
-        debugPrint("map not. open ---> ${e}");
+        debugPrint("map not. open ---> $e");
         AppUtils.showErrorToast("Could not open the map.");
       }
     } else if (Platform.isIOS) {
@@ -39,7 +39,7 @@ class MapUtils {
         // AppUtils.showToast("Loading...");
         await launch(googleUrl);
       } catch (e) {
-        debugPrint("map not. open ---> ${e}");
+        debugPrint("map not. open ---> $e");
         AppUtils.showErrorToast("Could not open the map.");
       }
     }
@@ -87,7 +87,6 @@ class MapUtils {
       currentLocation = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
     }
-    print("current location ----> ${currentLocation}");
     return currentLocation!;
   }
 

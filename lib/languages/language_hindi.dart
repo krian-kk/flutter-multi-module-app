@@ -692,4 +692,34 @@ class LanguageHi extends Languages {
 
   @override
   String get successfullySubmitted => 'सफलतापूर्वक प्रस्तुत किया गया!!';
+
+  @override
+  String get loginViaDifferentUser =>
+      'विभिन्न उपयोगकर्ता के माध्यम से लॉगिन करें';
+
+  @override
+  String get event => 'आयोजन';
+
+  @override
+  String get changeSecurePIN => 'सुरक्षित पिन बदलें';
+
+  @override
+  String get changeYourSecureDigitPIN => 'अपना सुरक्षित 4-अंकीय पिन बदलें';
+
+  @override
+  String get newPin => 'नया पिन';
+
+  @override
+  String get save => 'सहेजें';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      '4 अंकों का पिन बनाकर अपना खाता सुरक्षित करें';
+
+  @override
+  String get enterYourSecureFourdDigitPin =>
+      'अपना सुरक्षित 4 अंकों का पिन दर्ज करें';
+
+  @override
+  String get forgotPin => 'पिन भूल गए?';
 }

@@ -154,12 +154,6 @@ class _AddressDetailsBottomSheetScreenState
                                                           ?.addressDetails![i]
                                                       ['resAddressId_0'] ??
                                                   "";
-                                              // print(widget
-                                              //     .bloc
-                                              //     .caseDetailsAPIValue
-                                              //     .result
-                                              //     ?.callDetails!
-                                              //     .toString());
 
                                               for (var element in widget
                                                   .bloc
@@ -279,43 +273,6 @@ class _AddressDetailsBottomSheetScreenState
                                                                           0.0);
                                                             }
                                                           },
-
-                                                          // Navigator.push(
-                                                          //     context,
-                                                          //     MaterialPageRoute(
-                                                          //         builder:
-                                                          //             (context) =>
-                                                          //                 MapScreen(
-                                                          //                   multipleLatLong: [
-                                                          //                     MapMarkerModel(
-                                                          //                       caseId: "1234444",
-                                                          //                       address: "gollahalli",
-                                                          //                       due: "90000",
-                                                          //                       name: "Nandha",
-                                                          //                       latitude: 11.639163,
-                                                          //                       longitude: 78.143815,
-                                                          //                     ),
-                                                          //                     MapMarkerModel(
-                                                          //                       caseId: "1234444",
-                                                          //                       address: "gollahalli",
-                                                          //                       due: "90000",
-                                                          //                       name: "Nandha",
-                                                          //                       latitude: 12.509128,
-                                                          //                       longitude: 78.216494,
-                                                          //                     ),
-                                                          //                   ],
-                                                          //                 )));
-                                                          // },
-                                                          // onTap: () => widget.bloc.add(
-                                                          //     ClickOpenBottomSheetEvent(
-                                                          //         Constants
-                                                          //             .viewMap,
-                                                          //         widget
-                                                          //             .bloc
-                                                          //             .caseDetailsAPIValue
-                                                          //             .result
-                                                          //             ?.addressDetails,
-                                                          //         false)),
                                                           child: Container(
                                                               decoration: const BoxDecoration(
                                                                   color: ColorResource

@@ -295,17 +295,26 @@ class _AddressScreenState extends State<AddressScreen>
                                 const SizedBox(width: 40),
                                 Expanded(
                                     child: SizedBox(
-                                  height: 47,
+                                  height: 45,
                                   child: CustomButton(
-                                    Languages.of(context)!.eventDetails,
-                                    onTap: () => widget.bloc.add(
-                                      ClickOpenBottomSheetEvent(
-                                          Constants.eventDetails,
-                                          widget.bloc.caseDetailsAPIValue.result
-                                              ?.addressDetails,
-                                          false),
+                                    // Languages.of(context)!.eventDetails,
+                                    null,
+                                    isTrailing: true,
+                                    leadingWidget: CustomText(
+                                      Languages.of(context)!.eventDetails,
+                                      fontSize: FontSize.twelve,
+                                      color: ColorResource.color23375A,
+                                      lineHeight: 1,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
                                     ),
-                                    textColor: ColorResource.color23375A,
+                                    onTap: () => widget.bloc.add(
+                                        ClickOpenBottomSheetEvent(
+                                            Constants.eventDetails,
+                                            widget.bloc.caseDetailsAPIValue
+                                                .result?.callDetails,
+                                            false)),
+
                                     borderColor: ColorResource.color23375A,
                                     buttonBackgroundColor:
                                         ColorResource.colorFFFFFF,

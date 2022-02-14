@@ -2,25 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/bloc/telecaller_phone_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class PhonenInvalidScreen extends StatefulWidget {
-  const PhonenInvalidScreen(
+class TelecallerPhonenInvalidScreen extends StatefulWidget {
+  const TelecallerPhonenInvalidScreen(
       {Key? key, required this.context, required this.bloc})
       : super(key: key);
 
   final BuildContext context;
-  final CaseDetailsBloc bloc;
+  final TelecallerPhoneBloc bloc;
 
   @override
-  State<PhonenInvalidScreen> createState() => _PhonenInvalidScreenState();
+  State<TelecallerPhonenInvalidScreen> createState() =>
+      _TelecallerPhonenInvalidScreenState();
 }
 
-class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
+class _TelecallerPhonenInvalidScreenState
+    extends State<TelecallerPhonenInvalidScreen> {
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
@@ -117,8 +119,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails, true,
+          widget.bloc.add(ClickOpenBottomSheetEvent(
+              element.stringResourceValue, const [], true,
               health: '0'));
         },
         child: Container(

@@ -34,6 +34,7 @@ import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -51,6 +52,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   AllocationBloc allocationBloc;
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
+  String? custName;
   String? agentName;
   bool isEventSubmited = false;
   bool isSubmitedForMyVisits = false;
@@ -173,6 +175,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+
           // caseDetailsHiveBox.then((value) => value.put(
           //     'case' + caseId.toString(),
           //     OrigoMapDynamicTable(
@@ -192,8 +195,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       value.get('case' + caseId.toString())!.result),
       // );
 
+      print(
+          "case agref --> ${caseDetailsAPIValue.result?.caseDetails?.agrRef}");
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
+      Singleton.instance.agrRef =
+          caseDetailsAPIValue.result?.caseDetails?.agrRef ?? '';
 
       loanAmountController.text = caseDetailsAPIValue
               .result?.caseDetails!.loanAmt
@@ -278,30 +285,39 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
       // ]);
       phoneCustomerMetGridList.addAll([
-        CustomerMetGridModel(ImageResource.ptp, Constants.ptp,
+        CustomerMetGridModel(
+            ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.ptp, caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.rtp, Constants.rtp,
+        CustomerMetGridModel(
+            ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(
                 Constants.rtp, caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.dispute, Constants.dispute,
+        CustomerMetGridModel(ImageResource.dispute,
+            Languages.of(event.context!)!.dispute.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.remainder,
-            (Constants.remainder + '/CB').toUpperCase(),
+        CustomerMetGridModel(
+            ImageResource.remainder,
+            (Languages.of(event.context!)!.remainderCb.toUpperCase())
+                .toUpperCase()
+                .toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
-        CustomerMetGridModel(ImageResource.collections, Constants.collections,
+        CustomerMetGridModel(ImageResource.collections,
+            Languages.of(event.context!)!.collections.toUpperCase(),
             onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
                 caseDetailsAPIValue.result?.callDetails!, true)),
             isCall: true),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ots, caseDetailsAPIValue.result?.callDetails!, true)),
+                Languages.of(event.context!)!.ots.toUpperCase(),
+                caseDetailsAPIValue.result?.callDetails!,
+                true)),
             isCall: true),
       ]);
 
@@ -346,19 +362,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           paramValues: event.paramValues);
     }
     if (event is ChangeIsSubmitEvent) {
-      // print("------Nandha NK-------");
-      // yield UpdateHealthStatusState();
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
       isEventSubmited = true;
 
       yield UpdateSuccessfullState();
     }
-
-    if (event is ChangeHealthStatusEvent) {
-      print("------Nandha NK123-------");
-      yield UpdateHealthStatusState();
-    }
-
     if (event is ChangeIsSubmitForMyVisitEvent) {
       submitedEventType = event.eventType;
       isSubmitedForMyVisits = true;
@@ -384,47 +392,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];
 
               eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
-              // print(getEventDetailsData['data']['result'][3]['eventAttr']);
-
-              // eventDetailsHiveBox.then((value) => value.put(
-              //     'EventDetails1',
-              //     OrigoDynamicTable(
-              //       status: jsonData['status'],
-              //       message: jsonData['message'],
-              //       result: jsonData['result'],
-              //     )));
             } else {
               AppUtils.showToast(getEventDetailsData['data']['message']);
             }
           }
-          // await eventDetailsHiveBox.then((value) {
-          //   value.get('EventDetails1')?.result.forEach((element) {
-          //     offlineEventDetailsListValue.add(EventDetailsResultModel.fromJson(
-          //         Map<String, dynamic>.from(element)));
-          //   })
-          // });
           break;
-        // case Constants.otherFeedback:
-        // if (ConnectivityResult.none ==
-        //     await Connectivity().checkConnectivity()) {
-        //   yield NoInternetState();
-        // } else {
-        //   Map<String, dynamic> getContractorDetails =
-        //       await APIRepository.apiRequest(
-        //           APIRequestType.GET, HttpUrl.contractorDetail);
-        //   if (getContractorDetails[Constants.success] == true) {
-        //     Map<String, dynamic> jsonData = getContractorDetails['data'];
-        //     contractorDetailsValue =
-        //         ContractorDetailsModel.fromJson(jsonData);
-        //   } else {
-        //     AppUtils.showToast(getContractorDetails['data'] ?? '');
-        //     // AppUtils.showToast(getContractorDetails['data']);
-        //   }
-        // }
-        // break;
         default:
       }
-      if (isAutoCalling) {
+      if (isAutoCalling || paramValue['contactIndex'] != null) {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
@@ -585,140 +560,173 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickPhoneInvalidButtonEvent) {
       yield DisablePhoneInvalidBtnState();
-      late Map<String, dynamic> resultValue = {Constants.success: false};
-      if (phoneInvalidFormKey.currentState!.validate()) {
-        if (phoneSelectedInvalidClip != '') {
-          if (phoneSelectedInvalidClip ==
-              Languages.of(event.context)!.doesNotExist) {
-            resultValue = await phoneInvalidButtonClick(
-                Constants.doesNotExist,
+      bool isNotAutoCalling = true;
+      if (isAutoCalling) {
+        await CallCustomerStatus.callStatusCheck(callId: paramValue['callId'])
+            .then((value) {
+          isNotAutoCalling = value;
+        });
+      }
+      if (isNotAutoCalling) {
+        late Map<String, dynamic> resultValue = {Constants.success: false};
+        if (phoneInvalidFormKey.currentState!.validate()) {
+          if (phoneSelectedInvalidClip != '') {
+            if (phoneSelectedInvalidClip ==
+                Languages.of(event.context)!.doesNotExist) {
+              resultValue = await phoneInvalidButtonClick(
+                  Constants.doesNotExist,
+                  caseId.toString(),
+                  HttpUrl.numberNotWorkingUrl(
+                      'doesNotExist', userType.toString()));
+            } else if (phoneSelectedInvalidClip ==
+                Languages.of(event.context)!.incorrectNumber) {
+              resultValue = await phoneInvalidButtonClick(
+                Constants.incorrectNumber,
+                caseId.toString(),
+                HttpUrl.incorrectNumberUrl('incorrectNo', userType.toString()),
+              );
+            } else if (phoneSelectedInvalidClip ==
+                Languages.of(event.context)!.numberNotWorking) {
+              resultValue = await phoneInvalidButtonClick(
+                Constants.numberNotWorking,
                 caseId.toString(),
                 HttpUrl.numberNotWorkingUrl(
-                    'doesNotExist', userType.toString()));
-          } else if (phoneSelectedInvalidClip ==
-              Languages.of(event.context)!.incorrectNumber) {
-            resultValue = await phoneInvalidButtonClick(
-              Constants.incorrectNumber,
-              caseId.toString(),
-              HttpUrl.incorrectNumberUrl('incorrectNo', userType.toString()),
-            );
-          } else if (phoneSelectedInvalidClip ==
-              Languages.of(event.context)!.numberNotWorking) {
-            resultValue = await phoneInvalidButtonClick(
-              Constants.numberNotWorking,
-              caseId.toString(),
-              HttpUrl.numberNotWorkingUrl(
-                  'numberNotWorking', userType.toString()),
-            );
-          } else if (phoneSelectedInvalidClip ==
-              Languages.of(event.context)!.notOperational) {
-            resultValue = await phoneInvalidButtonClick(
-                Constants.notOpeartional,
-                caseId.toString(),
-                HttpUrl.notOperationalUrl(
-                    'notOperational', userType.toString()));
+                    'numberNotWorking', userType.toString()),
+              );
+            } else if (phoneSelectedInvalidClip ==
+                Languages.of(event.context)!.notOperational) {
+              resultValue = await phoneInvalidButtonClick(
+                  Constants.notOpeartional,
+                  caseId.toString(),
+                  HttpUrl.notOperationalUrl(
+                      'notOperational', userType.toString()));
+            }
+          } else {
+            AppUtils.showToast(Constants.pleaseSelectOptions);
           }
-        } else {
-          AppUtils.showToast(Constants.pleaseSelectOptions);
         }
-      }
-      if (resultValue[Constants.success]) {
-        if (isAutoCalling) {
-          allocationBloc.add(StartCallingEvent(
-            customerIndex: paramValue['customerIndex'],
-            phoneIndex: paramValue['phoneIndex'] + 1,
-            // customerList: widget.bloc.allocationBloc
-            //     .resultList[(widget.bloc
-            //         .paramValue['customerIndex']) +
-            //     1],
-          ));
-          Navigator.pop(paramValue['context']);
+        if (resultValue[Constants.success]) {
+          if (isAutoCalling) {
+            if (Singleton.instance.startCalling ?? false) {
+              allocationBloc.add(StartCallingEvent(
+                customerIndex: paramValue['customerIndex'],
+                phoneIndex: paramValue['phoneIndex'] + 1,
+              ));
+            }
+            Navigator.pop(paramValue['context']);
+          }
+          yield UpdateHealthStatusState();
+
+          // update autocalling screen case list of contact health
+          if (paramValue['contactIndex'] != null) {
+            print("update autocalling screen case list of contact health");
+            allocationBloc.add(AutoCallContactHealthUpdateEvent(
+              contactIndex: paramValue['contactIndex'],
+              caseIndex: paramValue['caseIndex'],
+            ));
+          }
         }
-        yield UpdateHealthStatusState();
+
         yield PostDataApiSuccessState();
       }
       yield EnablePhoneInvalidBtnState();
     }
     if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
       yield DisableUnreachableBtnState();
-      late Map<String, dynamic> resultValue;
-      if (phoneSelectedUnreadableClip ==
-          Languages.of(event.context)!.lineBusy) {
-        resultValue = await unreachableButtonClick(
-          Constants.lineBusy,
-          caseId.toString(),
-          ConstantEventValues.lineBusyEvenCode,
-          HttpUrl.unreachableUrl(
-            'lineBusy',
-            userType.toString(),
-          ),
-        );
-      } else if (phoneSelectedUnreadableClip ==
-          Languages.of(event.context)!.switchOff) {
-        resultValue = await unreachableButtonClick(
-          Constants.switchOff,
-          caseId.toString(),
-          ConstantEventValues.switchOffEvenCode,
-          HttpUrl.unreachableUrl(
-            'switchOff',
-            userType.toString(),
-          ),
-        );
-      } else if (phoneSelectedUnreadableClip ==
-          Languages.of(event.context)!.rnr) {
-        resultValue = await unreachableButtonClick(
-          Constants.rnr,
-          caseId.toString(),
-          ConstantEventValues.rnrEvenCode,
-          HttpUrl.unreachableUrl(
-            'RNR',
-            userType.toString(),
-          ),
-        );
-      } else if (phoneSelectedUnreadableClip ==
-          Languages.of(event.context)!.outOfNetwork) {
-        resultValue = await unreachableButtonClick(
-          Constants.outOfNetwork,
-          caseId.toString(),
-          ConstantEventValues.outOfNetworkEvenCode,
-          HttpUrl.unreachableUrl(
-            'outOfNetwork',
-            userType.toString(),
-          ),
-        );
-      } else if (phoneSelectedUnreadableClip ==
-          Languages.of(event.context)!.disConnecting) {
-        resultValue = await unreachableButtonClick(
-          Constants.disconnecting,
-          caseId.toString(),
-          ConstantEventValues.disConnectingEvenCode,
-          HttpUrl.unreachableUrl(
-            'disconnecting',
-            userType.toString(),
-          ),
-        );
+      bool isNotAutoCalling = true;
+      if (isAutoCalling) {
+        await CallCustomerStatus.callStatusCheck(callId: paramValue['callId'])
+            .then((value) {
+          isNotAutoCalling = value;
+        });
       }
-      if (resultValue[Constants.success]) {
-        isSubmitedForMyVisits = true;
-        submitedEventType = 'Phone Unreachable';
-        if (userType == Constants.telecaller) {
-          isEventSubmited = true;
-          caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      if (isNotAutoCalling) {
+        late Map<String, dynamic> resultValue;
+        if (phoneSelectedUnreadableClip ==
+            Languages.of(event.context)!.lineBusy) {
+          resultValue = await unreachableButtonClick(
+            Constants.lineBusy,
+            caseId.toString(),
+            ConstantEventValues.lineBusyEvenCode,
+            HttpUrl.unreachableUrl(
+              'lineBusy',
+              userType.toString(),
+            ),
+          );
+        } else if (phoneSelectedUnreadableClip ==
+            Languages.of(event.context)!.switchOff) {
+          resultValue = await unreachableButtonClick(
+            Constants.switchOff,
+            caseId.toString(),
+            ConstantEventValues.switchOffEvenCode,
+            HttpUrl.unreachableUrl(
+              'switchOff',
+              userType.toString(),
+            ),
+          );
+        } else if (phoneSelectedUnreadableClip ==
+            Languages.of(event.context)!.rnr) {
+          resultValue = await unreachableButtonClick(
+            Constants.rnr,
+            caseId.toString(),
+            ConstantEventValues.rnrEvenCode,
+            HttpUrl.unreachableUrl(
+              'RNR',
+              userType.toString(),
+            ),
+          );
+        } else if (phoneSelectedUnreadableClip ==
+            Languages.of(event.context)!.outOfNetwork) {
+          resultValue = await unreachableButtonClick(
+            Constants.outOfNetwork,
+            caseId.toString(),
+            ConstantEventValues.outOfNetworkEvenCode,
+            HttpUrl.unreachableUrl(
+              'outOfNetwork',
+              userType.toString(),
+            ),
+          );
+        } else if (phoneSelectedUnreadableClip ==
+            Languages.of(event.context)!.disConnecting) {
+          resultValue = await unreachableButtonClick(
+            Constants.disconnecting,
+            caseId.toString(),
+            ConstantEventValues.disConnectingEvenCode,
+            HttpUrl.unreachableUrl(
+              'disconnecting',
+              userType.toString(),
+            ),
+          );
         }
-        if (isAutoCalling) {
-          allocationBloc.add(StartCallingEvent(
-            customerIndex: paramValue['customerIndex'],
-            phoneIndex: paramValue['phoneIndex'] + 1,
-          ));
-          Navigator.pop(paramValue['context']);
+        if (resultValue[Constants.success]) {
+          isSubmitedForMyVisits = true;
+          submitedEventType = 'Phone Unreachable';
+          if (userType == Constants.telecaller) {
+            isEventSubmited = true;
+            caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+          }
+          if (isAutoCalling) {
+            allocationBloc.add(StartCallingEvent(
+              customerIndex: paramValue['customerIndex'],
+              phoneIndex: paramValue['phoneIndex'] + 1,
+            ));
+            Navigator.pop(paramValue['context']);
+          }
+          print("00====---000");
+          yield UpdateHealthStatusState();
+
+          // update autocalling screen case list of contact health
+          if (paramValue['contactIndex'] != null) {
+            allocationBloc.add(AutoCallContactHealthUpdateEvent(
+              contactIndex: paramValue['contactIndex'],
+              caseIndex: paramValue['caseIndex'],
+            ));
+          }
+          yield PostDataApiSuccessState();
         }
-        print("00====---000");
-        yield UpdateHealthStatusState();
-        yield PostDataApiSuccessState();
       }
       yield EnableUnreachableBtnState();
     }
-
     if (event is SendSMSEvent) {
       if (Singleton.instance.contractorInformations!.result!.sendSms!) {
         var requestBodyData = SendSMS(
@@ -738,21 +746,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         AppUtils.showErrorToast("SMS is not activated");
       }
     }
-
     if (event is UpdateHealthStatusEvent) {
       Singleton.instance.updateHealthStatus = {
         'selectedHealthIndex': event.selectedHealthIndex!,
         'tabIndex': event.tabIndex,
         'currentHealth': event.currentHealth,
       };
-      print(Singleton.instance.updateHealthStatus);
+    }
+    if (event is ChangeHealthStatusEvent) {
+      print("Event submitted ==> ");
 
-      // yield UpdateHealthStatusState(
-      //   event.context,
-      //   selectedHealthIndex: event.selectedHealthIndex!,
-      //   tabIndex: event.tabIndex,
-      //   currentHealth: event.currentHealth,
-      // );
+      yield UpdateHealthStatusState();
     }
   }
 
@@ -778,13 +782,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -797,13 +804,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -816,13 +826,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -835,13 +848,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -854,14 +870,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               isCall: isCall,
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
@@ -873,7 +892,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               Languages.of(context)!.ots,
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -881,7 +901,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               userType: userType.toString(),
               isCall: isCall,
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
@@ -895,13 +917,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
               ),
               userType: userType.toString(),
-              postValue: list[indexValue!],
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
               isCall: isCall,
               health: health ?? ConstantEventValues.healthTwo,
               isAutoCalling: isAutoCalling,
@@ -915,7 +940,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               CaseDetailsBloc(AllocationBloc()),
               customeLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -935,7 +961,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: caseDetailsAPIValue.result?.caseDetails?.caseId ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -943,6 +970,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               listOfMobileNo: s1,
               userType: userType.toString(),
               caseId: caseId.toString(),
+              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
             );
 
@@ -990,8 +1018,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         contact: PhoneUnreachbleContact(
-          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
-          value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
+          cType: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['cType']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['cType'],
+          value: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['value']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['value'],
           health: ConstantEventValues.phoneUnreachableHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
@@ -1170,6 +1204,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String caseId,
     String urlString,
   ) async {
+    print("selecedted case index ==> ${paramValue['contactIndex']}");
+    // indexValue = allocationBloc.indexValue;
     var requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
@@ -1189,8 +1225,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         ),
         eventModule: 'Telecalling',
         contact: PhoneInvalidContact(
-          cType: caseDetailsAPIValue.result?.callDetails![indexValue!]['cType'],
-          value: caseDetailsAPIValue.result?.callDetails![indexValue!]['value'],
+          cType: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['cType']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['cType'],
+          value: indexValue != null
+              ? caseDetailsAPIValue.result?.callDetails![indexValue!]['value']
+              : caseDetailsAPIValue
+                  .result?.callDetails![paramValue['contactIndex']]['value'],
           health: ConstantEventValues.phoneInvalidHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));

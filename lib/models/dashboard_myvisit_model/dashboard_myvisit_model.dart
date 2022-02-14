@@ -241,74 +241,74 @@ class Contact {
 //   String? caseId;
 //   String? customerId;
 
-  // CasesNew(
-  //     {this.sId,
-  //     this.pos,
-  //     this.due,
-  //     this.originalDue,
-  //     this.odVal,
-  //     this.cust,
-  //     this.agrRef,
-  //     this.collSubStatus,
-  //     this.fieldfollowUpPriority,
-  //     this.telSubStatus,
-  //     this.followUpDate,
-  //     this.fieldfollowUpDate,
-  //     this.bankName,
-  //     this.aRef,
-  //     this.contact,
-  //     this.totalReceiptAmount,
-  //     this.caseId,
-  //     this.customerId});
+// CasesNew(
+//     {this.sId,
+//     this.pos,
+//     this.due,
+//     this.originalDue,
+//     this.odVal,
+//     this.cust,
+//     this.agrRef,
+//     this.collSubStatus,
+//     this.fieldfollowUpPriority,
+//     this.telSubStatus,
+//     this.followUpDate,
+//     this.fieldfollowUpDate,
+//     this.bankName,
+//     this.aRef,
+//     this.contact,
+//     this.totalReceiptAmount,
+//     this.caseId,
+//     this.customerId});
 
-  // CasesNew.fromJson(Map<String, dynamic> json) {
-  //   sId = json['_id'];
-  //   pos = json['pos'];
-  //   due = json['due'];
-  //   originalDue = json['original_due'];
-  //   odVal = json['odVal'];
-  //   cust = json['cust'];
-  //   agrRef = json['agrRef'];
-  //   collSubStatus = json['collSubStatus'];
-  //   fieldfollowUpPriority = json['fieldfollowUpPriority'];
-  //   telSubStatus = json['telSubStatus'];
-  //   followUpDate = json['followUpDate'];
-  //   fieldfollowUpDate = json['fieldfollowUpDate'];
-  //   bankName = json['bankName'];
-  //   aRef = json['aRef'];
-  //   if (json['contact'] != null) {
-  //     contact = <Contact>[];
-  //     json['contact'].forEach((v) {
-  //       contact!.add(new Contact.fromJson(v));
-  //     });
-  //   }
-  //   totalReceiptAmount = json['totalReceiptAmount'];
-  //   caseId = json['caseId'];
-  //   customerId = json['customerId'];
-  // }
+// CasesNew.fromJson(Map<String, dynamic> json) {
+//   sId = json['_id'];
+//   pos = json['pos'];
+//   due = json['due'];
+//   originalDue = json['original_due'];
+//   odVal = json['odVal'];
+//   cust = json['cust'];
+//   agrRef = json['agrRef'];
+//   collSubStatus = json['collSubStatus'];
+//   fieldfollowUpPriority = json['fieldfollowUpPriority'];
+//   telSubStatus = json['telSubStatus'];
+//   followUpDate = json['followUpDate'];
+//   fieldfollowUpDate = json['fieldfollowUpDate'];
+//   bankName = json['bankName'];
+//   aRef = json['aRef'];
+//   if (json['contact'] != null) {
+//     contact = <Contact>[];
+//     json['contact'].forEach((v) {
+//       contact!.add(new Contact.fromJson(v));
+//     });
+//   }
+//   totalReceiptAmount = json['totalReceiptAmount'];
+//   caseId = json['caseId'];
+//   customerId = json['customerId'];
+// }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['_id'] = this.sId;
-  //   data['pos'] = this.pos;
-  //   data['due'] = this.due;
-  //   data['original_due'] = this.originalDue;
-  //   data['odVal'] = this.odVal;
-  //   data['cust'] = this.cust;
-  //   data['agrRef'] = this.agrRef;
-  //   data['collSubStatus'] = this.collSubStatus;
-  //   data['fieldfollowUpPriority'] = this.fieldfollowUpPriority;
-  //   data['telSubStatus'] = this.telSubStatus;
-  //   data['followUpDate'] = this.followUpDate;
-  //   data['fieldfollowUpDate'] = this.fieldfollowUpDate;
-  //   data['bankName'] = this.bankName;
-  //   data['aRef'] = this.aRef;
-  //   if (this.contact != null) {
-  //     data['contact'] = this.contact!.map((v) => v.toJson()).toList();
-  //   }
-  //   data['totalReceiptAmount'] = this.totalReceiptAmount;
-  //   data['caseId'] = this.caseId;
-  //   data['customerId'] = this.customerId;
-  //   return data;
-  // }
+// Map<String, dynamic> toJson() {
+//   final Map<String, dynamic> data = new Map<String, dynamic>();
+//   data['_id'] = this.sId;
+//   data['pos'] = this.pos;
+//   data['due'] = this.due;
+//   data['original_due'] = this.originalDue;
+//   data['odVal'] = this.odVal;
+//   data['cust'] = this.cust;
+//   data['agrRef'] = this.agrRef;
+//   data['collSubStatus'] = this.collSubStatus;
+//   data['fieldfollowUpPriority'] = this.fieldfollowUpPriority;
+//   data['telSubStatus'] = this.telSubStatus;
+//   data['followUpDate'] = this.followUpDate;
+//   data['fieldfollowUpDate'] = this.fieldfollowUpDate;
+//   data['bankName'] = this.bankName;
+//   data['aRef'] = this.aRef;
+//   if (this.contact != null) {
+//     data['contact'] = this.contact!.map((v) => v.toJson()).toList();
+//   }
+//   data['totalReceiptAmount'] = this.totalReceiptAmount;
+//   data['caseId'] = this.caseId;
+//   data['customerId'] = this.customerId;
+//   return data;
+// }
 // }

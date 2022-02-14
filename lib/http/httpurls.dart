@@ -176,6 +176,10 @@ class HttpUrl {
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
+  // For call Get Status
+  static const String callCustomerStatusGetUrl =
+      baseUrl + version + fieldAgent + 'case-details-events/getCallStatus';
+
   // DashBoard
   static const String dashboardPriorityFollowUpUrl =
       baseUrl + version + fieldAgent + 'case-details/priorityFollowUp';

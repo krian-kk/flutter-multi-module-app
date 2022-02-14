@@ -67,6 +67,8 @@ class UpdateNewValuesEvent extends AllocationEvent {
 
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
 
+class ClickStartCallingEvent extends AllocationEvent {}
+
 class StartCallingEvent extends AllocationEvent {
   final int? customerIndex;
   final int? phoneIndex;
@@ -78,4 +80,10 @@ class StartCallingEvent extends AllocationEvent {
     this.customerList,
     this.isIncreaseCount = false,
   });
+}
+
+class AutoCallContactHealthUpdateEvent extends AllocationEvent {
+  final int? contactIndex;
+  final int? caseIndex;
+  AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
 }

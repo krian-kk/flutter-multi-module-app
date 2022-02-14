@@ -3,10 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/bloc/telecaller_phone_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -14,21 +13,23 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
-class PhoneUnreachableScreen extends StatefulWidget {
-  const PhoneUnreachableScreen({
+class TelecallerPhoneUnreachableScreen extends StatefulWidget {
+  const TelecallerPhoneUnreachableScreen({
     Key? key,
     required this.context,
     required this.bloc,
   }) : super(key: key);
 
   final BuildContext context;
-  final CaseDetailsBloc bloc;
+  final TelecallerPhoneBloc bloc;
 
   @override
-  State<PhoneUnreachableScreen> createState() => _PhoneUnreachableScreenState();
+  State<TelecallerPhoneUnreachableScreen> createState() =>
+      _TelecallerPhoneUnreachableScreenState();
 }
 
-class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
+class _TelecallerPhoneUnreachableScreenState
+    extends State<TelecallerPhoneUnreachableScreen> {
   String selectedOptionBottomSheetButton = '';
 
   @override
@@ -144,10 +145,10 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                 .hideCallTriedSmsButton!
                             ? const SizedBox()
                             : GestureDetector(
-                                onTap: () {
-                                  widget.bloc.add(SendSMSEvent(context,
-                                      type: Constants.callTriedType));
-                                },
+                                // onTap: () {
+                                //   widget.bloc.add(SendSMSEvent(context,
+                                //       type: Constants.callTriedType));
+                                // },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 10),
@@ -214,17 +215,17 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
     List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
-        onTap: () {
-          setState(() {
-            selectedOptionBottomSheetButton = element.title;
-          });
-          widget.bloc.add(ClickOpenBottomSheetEvent(
-            element.stringResourceValue,
-            widget.bloc.caseDetailsAPIValue.result?.callDetails,
-            true,
-            health: ConstantEventValues.healthOne,
-          ));
-        },
+        // onTap: () {
+        //   setState(() {
+        //     selectedOptionBottomSheetButton = element.title;
+        //   });
+        //   widget.bloc.add(ClickOpenBottomSheetEvent(
+        //     element.stringResourceValue,
+        //     widget.bloc.caseDetailsAPIValue.result?.callDetails,
+        //     true,
+        //     health: ConstantEventValues.healthOne,
+        //   ));
+        // },
         child: Container(
           height: 45,
           decoration: BoxDecoration(
@@ -291,7 +292,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
-
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {

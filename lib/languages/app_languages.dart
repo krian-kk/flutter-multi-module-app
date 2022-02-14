@@ -464,4 +464,22 @@ abstract class Languages {
   String get eventUpdatedSuccessfully;
 
   String get successfullySubmitted;
+
+  String get loginViaDifferentUser;
+
+  String get event;
+
+  String get changeSecurePIN;
+
+  String get changeYourSecureDigitPIN;
+
+  String get enterYourSecureFourdDigitPin;
+
+  String get newPin;
+
+  String get save;
+
+  String get secureYourAccountByCreatingAFourDigitPin;
+
+  String get forgotPin;
 }

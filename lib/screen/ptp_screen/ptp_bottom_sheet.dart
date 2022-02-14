@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -14,6 +15,7 @@ import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -25,7 +27,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
@@ -59,7 +60,7 @@ class CustomPtpBottomSheet extends StatefulWidget {
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   TextEditingController ptpDateControlller = TextEditingController();
-  // String selectedDate = '';
+
   TextEditingController ptpTimeControlller = TextEditingController();
   TextEditingController ptpAmountControlller = TextEditingController();
   TextEditingController referenceControlller = TextEditingController();
@@ -87,6 +88,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.89,
       child: Scaffold(
@@ -224,7 +226,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             StringResource.reference,
                             referenceControlller,
                             focusNode: ptpReferenceFocusNode,
-                            // validationRules: const ['required'],
                             isLabel: true,
                             validatorCallBack: () {},
                             onEditing: () => ptpRemarksFocusNode.requestFocus(),
@@ -301,122 +302,141 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             if (_formKey.currentState!.validate()) {
                               if (selectedPaymentModeButton != '') {
                                 setState(() => isSubmit = false);
-                                Position position = Position(
-                                  longitude: 0,
-                                  latitude: 0,
-                                  timestamp: DateTime.now(),
-                                  accuracy: 0,
-                                  altitude: 0,
-                                  heading: 0,
-                                  speed: 0,
-                                  speedAccuracy: 0,
-                                );
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    position = res;
+                                bool isNotAutoCalling = true;
+                                if (widget.isAutoCalling) {
+                                  await CallCustomerStatus.callStatusCheck(
+                                          callId: widget.paramValue['callId'])
+                                      .then((value) {
+                                    isNotAutoCalling = value;
                                   });
                                 }
-                                var requestBodyData = PTPPostModel(
-                                  eventId: ConstantEventValues.ptpEventId,
-                                  eventType: (widget.userType ==
-                                              Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : PTP'
-                                      : 'PTP',
-                                  eventCode: ConstantEventValues.ptpEventCode,
-                                  caseId: widget.caseId,
-                                  eventAttr: EventAttr(
-                                    pTPType: ConstantEventValues.ptpType,
-                                    date: ptpDateControlller.text,
-                                    time: ptpTimeControlller.text,
-                                    remarks: remarksControlller.text,
-                                    ptpAmount:
-                                        int.parse(ptpAmountControlller.text),
-                                    reference: referenceControlller.text,
-                                    mode: selectedPaymentModeButton,
-                                    followUpPriority: 'PTP',
-                                    longitude: position.longitude,
-                                    latitude: position.latitude,
-                                    accuracy: position.accuracy,
-                                    altitude: position.altitude,
-                                    heading: position.heading,
-                                    speed: position.speed,
-                                  ),
-                                  callID: Singleton.instance.callID ?? " ",
-                                  callingID:
-                                      Singleton.instance.callingID ?? " ",
-                                  callerServiceID:
-                                      Singleton.instance.callerServiceID ?? " ",
-                                  voiceCallEventCode:
-                                      ConstantEventValues.voiceCallEventCode,
-                                  createdBy: Singleton.instance.agentRef ?? '',
-                                  agentName: Singleton.instance.agentName ?? '',
-                                  contractor:
-                                      Singleton.instance.contractor ?? '',
-                                  eventModule: widget.isCall!
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                                  agrRef: Singleton.instance.agrRef ?? '',
-                                  contact: PTPContact(
-                                    cType: widget.postValue['cType'],
-                                    value: widget.postValue['value'],
-                                    health: ConstantEventValues.ptpHealth,
-                                    resAddressId0:
-                                        Singleton.instance.resAddressId_0 ?? '',
-                                    contactId0:
-                                        Singleton.instance.contactId_0 ?? '',
-                                  ),
-                                );
-                                // print(
-                                //     'Response Date => ${jsonEncode(requestBodyData)}');
 
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                  APIRequestType.POST,
-                                  HttpUrl.ptpPostUrl(
-                                    'ptp',
-                                    widget.userType,
-                                  ),
-                                  requestBodydata: jsonEncode(requestBodyData),
-                                );
-                                if (postResult[Constants.success]) {
-                                  widget.bloc.add(
-                                    ChangeIsSubmitForMyVisitEvent(
-                                      Constants.ptp,
+                                if (isNotAutoCalling) {
+                                  Position position = Position(
+                                    longitude: 0,
+                                    latitude: 0,
+                                    timestamp: DateTime.now(),
+                                    accuracy: 0,
+                                    altitude: 0,
+                                    heading: 0,
+                                    speed: 0,
+                                    speedAccuracy: 0,
+                                  );
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+
+                                    setState(() {
+                                      position = res;
+                                    });
+                                  }
+                                  var requestBodyData = PTPPostModel(
+                                    eventId: ConstantEventValues.ptpEventId,
+                                    eventType: (widget.userType ==
+                                                Constants.telecaller ||
+                                            widget.isCall!)
+                                        ? 'TC : PTP'
+                                        : 'PTP',
+                                    eventCode: ConstantEventValues.ptpEventCode,
+                                    caseId: widget.caseId,
+                                    eventAttr: EventAttr(
+                                      pTPType: ConstantEventValues.ptpType,
+                                      date: ptpDateControlller.text,
+                                      time: ptpTimeControlller.text,
+                                      remarks: remarksControlller.text,
+                                      ptpAmount:
+                                          int.parse(ptpAmountControlller.text),
+                                      reference: referenceControlller.text,
+                                      mode: selectedPaymentModeButton,
+                                      followUpPriority: 'PTP',
+                                      longitude: position.longitude,
+                                      latitude: position.latitude,
+                                      accuracy: position.accuracy,
+                                      altitude: position.altitude,
+                                      heading: position.heading,
+                                      speed: position.speed,
+                                    ),
+                                    callID: Singleton.instance.callID ?? " ",
+                                    callingID:
+                                        Singleton.instance.callingID ?? " ",
+                                    callerServiceID:
+                                        Singleton.instance.callerServiceID ??
+                                            " ",
+                                    voiceCallEventCode:
+                                        ConstantEventValues.voiceCallEventCode,
+                                    createdBy:
+                                        Singleton.instance.agentRef ?? '',
+                                    agentName:
+                                        Singleton.instance.agentName ?? '',
+                                    contractor:
+                                        Singleton.instance.contractor ?? '',
+                                    eventModule: widget.isCall!
+                                        ? 'Telecalling'
+                                        : 'Field Allocation',
+                                    agrRef: widget.bloc.caseDetailsAPIValue
+                                            .result?.caseDetails?.agrRef ??
+                                        '',
+                                    contact: PTPContact(
+                                      cType: widget.postValue['cType'],
+                                      value: widget.postValue['value'],
+                                      health: ConstantEventValues.ptpHealth,
+                                      resAddressId0:
+                                          Singleton.instance.resAddressId_0 ??
+                                              '',
+                                      contactId0:
+                                          Singleton.instance.contactId_0 ?? '',
                                     ),
                                   );
-                                  if (!(widget.userType ==
-                                          Constants.fieldagent &&
-                                      widget.isCall!)) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitEvent(),
-                                    );
-                                  }
 
-                                  widget.bloc.add(
-                                    ChangeHealthStatusEvent(),
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                    APIRequestType.POST,
+                                    HttpUrl.ptpPostUrl(
+                                      'ptp',
+                                      widget.userType,
+                                    ),
+                                    requestBodydata:
+                                        jsonEncode(requestBodyData),
                                   );
+                                  if (postResult[Constants.success]) {
+                                    widget.bloc.add(
+                                      ChangeIsSubmitForMyVisitEvent(
+                                        Constants.ptp,
+                                      ),
+                                    );
+                                    if (!(widget.userType ==
+                                            Constants.fieldagent &&
+                                        widget.isCall!)) {
+                                      widget.bloc.add(
+                                        ChangeIsSubmitEvent(),
+                                      );
+                                    }
 
-                                  if (widget.isAutoCalling) {
-                                    Navigator.pop(widget.paramValue['context']);
-                                    Navigator.pop(widget.paramValue['context']);
-                                    widget.allocationBloc!
-                                        .add(StartCallingEvent(
-                                      customerIndex:
-                                          widget.paramValue['customerIndex'] +
-                                              1,
-                                      phoneIndex: 0,
-                                      isIncreaseCount: true,
-                                    ));
-                                  } else {
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    Navigator.pop(context);
+                                    widget.bloc.add(
+                                      ChangeHealthStatusEvent(),
+                                    );
+
+                                    if (widget.isAutoCalling) {
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      Navigator.pop(
+                                          widget.paramValue['context']);
+                                      widget.allocationBloc!
+                                          .add(StartCallingEvent(
+                                        customerIndex:
+                                            widget.paramValue['customerIndex'] +
+                                                1,
+                                        phoneIndex: 0,
+                                        isIncreaseCount: true,
+                                      ));
+                                    } else {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                      Navigator.pop(context);
+                                    }
                                   }
                                 }
                               } else {
@@ -525,13 +545,11 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     setState(() {
       controller.text = formattedDate;
-      // selectedDate = newDate.toString();
     });
   }
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
@@ -558,8 +576,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         });
     if (newTime == null) return;
 
-    // final hours = newTime.hour.toString().padLeft(2, '0');
-    // final minutes = newTime.minute.toString().padLeft(2, '0');
     final time = newTime.format(context).toString();
     setState(() {
       controller.text = time;

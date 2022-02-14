@@ -12,6 +12,7 @@ import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -59,7 +60,6 @@ class CustomRemainderBottomSheet extends StatefulWidget {
 class _CustomRemainderBottomSheetState
     extends State<CustomRemainderBottomSheet> {
   TextEditingController nextActionDateControlller = TextEditingController();
-  // String selectedDate = '';
   TextEditingController nextActionTimeControlller = TextEditingController();
   TextEditingController remarksControlller = TextEditingController();
 
@@ -236,94 +236,110 @@ class _CustomRemainderBottomSheetState
                         ? () async {
                             if (_formKey.currentState!.validate()) {
                               setState(() => isSubmit = false);
-
-                              LatLng latLng = const LatLng(0, 0);
-                              if (Geolocator.checkPermission().toString() !=
-                                  PermissionStatus.granted.toString()) {
-                                Position res =
-                                    await Geolocator.getCurrentPosition(
-                                        desiredAccuracy: LocationAccuracy.best);
-                                setState(() {
-                                  latLng = LatLng(res.latitude, res.longitude);
+                              bool isNotAutoCalling = true;
+                              if (widget.isAutoCalling) {
+                                await CallCustomerStatus.callStatusCheck(
+                                        callId: widget.paramValue['callId'])
+                                    .then((value) {
+                                  isNotAutoCalling = value;
                                 });
                               }
-                              var requestBodyData = ReminderPostAPI(
-                                eventId: ConstantEventValues.remainderEventId,
-                                eventType:
-                                    (widget.userType == Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : REMINDER'
-                                        : 'REMINDER',
-                                caseId: widget.caseId,
-                                eventCode:
-                                    ConstantEventValues.remainderEvenCode,
-                                voiceCallEventCode:
-                                    ConstantEventValues.voiceCallEventCode,
-                                callerServiceID:
-                                    Singleton.instance.callerServiceID ?? '',
-                                createdBy: Singleton.instance.agentRef ?? '',
-                                agentName: Singleton.instance.agentName ?? '',
-                                agrRef: Singleton.instance.agrRef ?? '',
-                                contractor: Singleton.instance.contractor ?? '',
-                                eventModule: widget.isCall!
-                                    ? 'Telecalling'
-                                    : 'Field Allocation',
-                                eventAttr: EventAttr(
-                                  reminderDate: nextActionDateControlller.text,
-                                  time: nextActionTimeControlller.text,
-                                  remarks: remarksControlller.text,
-                                  longitude: latLng.longitude,
-                                  latitude: latLng.latitude,
-                                ),
-                                contact: Contact(
-                                  cType: widget.postValue['cType'],
-                                  value: widget.postValue['value'],
-                                  health: ConstantEventValues.remainderHealth,
-                                  resAddressId0:
-                                      Singleton.instance.resAddressId_0 ?? '',
-                                  contactId0:
-                                      Singleton.instance.contactId_0 ?? '',
-                                ),
-                                callID: Singleton.instance.callID,
-                                callingID: Singleton.instance.callingID,
-                              );
-                              Map<String, dynamic> postResult =
-                                  await APIRepository.apiRequest(
-                                APIRequestType.POST,
-                                HttpUrl.reminderPostUrl(
-                                    'reminder', widget.userType),
-                                requestBodydata: jsonEncode(requestBodyData),
-                              );
-                              if (postResult[Constants.success]) {
-                                widget.bloc.add(
-                                  ChangeIsSubmitForMyVisitEvent(
-                                    Constants.remainder,
-                                  ),
-                                );
-                                if (!(widget.userType == Constants.fieldagent &&
-                                    widget.isCall!)) {
-                                  widget.bloc.add(
-                                    ChangeIsSubmitEvent(),
-                                  );
+                              if (isNotAutoCalling) {
+                                LatLng latLng = const LatLng(0, 0);
+                                if (Geolocator.checkPermission().toString() !=
+                                    PermissionStatus.granted.toString()) {
+                                  Position res =
+                                      await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.best);
+                                  setState(() {
+                                    latLng =
+                                        LatLng(res.latitude, res.longitude);
+                                  });
                                 }
-
-                                widget.bloc.add(
-                                  ChangeHealthStatusEvent(),
+                                var requestBodyData = ReminderPostAPI(
+                                  eventId: ConstantEventValues.remainderEventId,
+                                  eventType: (widget.userType ==
+                                              Constants.telecaller ||
+                                          widget.isCall!)
+                                      ? 'TC : REMINDER'
+                                      : 'REMINDER',
+                                  caseId: widget.caseId,
+                                  eventCode:
+                                      ConstantEventValues.remainderEvenCode,
+                                  voiceCallEventCode:
+                                      ConstantEventValues.voiceCallEventCode,
+                                  callerServiceID:
+                                      Singleton.instance.callerServiceID ?? '',
+                                  createdBy: Singleton.instance.agentRef ?? '',
+                                  agentName: Singleton.instance.agentName ?? '',
+                                  agrRef: Singleton.instance.agrRef ?? '',
+                                  contractor:
+                                      Singleton.instance.contractor ?? '',
+                                  eventModule: widget.isCall!
+                                      ? 'Telecalling'
+                                      : 'Field Allocation',
+                                  eventAttr: EventAttr(
+                                    reminderDate:
+                                        nextActionDateControlller.text,
+                                    time: nextActionTimeControlller.text,
+                                    remarks: remarksControlller.text,
+                                    longitude: latLng.longitude,
+                                    latitude: latLng.latitude,
+                                  ),
+                                  contact: Contact(
+                                    cType: widget.postValue['cType'],
+                                    value: widget.postValue['value'],
+                                    health: ConstantEventValues.remainderHealth,
+                                    resAddressId0:
+                                        Singleton.instance.resAddressId_0 ?? '',
+                                    contactId0:
+                                        Singleton.instance.contactId_0 ?? '',
+                                  ),
+                                  callID: Singleton.instance.callID,
+                                  callingID: Singleton.instance.callingID,
                                 );
+                                Map<String, dynamic> postResult =
+                                    await APIRepository.apiRequest(
+                                  APIRequestType.POST,
+                                  HttpUrl.reminderPostUrl(
+                                      'reminder', widget.userType),
+                                  requestBodydata: jsonEncode(requestBodyData),
+                                );
+                                if (postResult[Constants.success]) {
+                                  widget.bloc.add(
+                                    ChangeIsSubmitForMyVisitEvent(
+                                      Constants.remainder,
+                                    ),
+                                  );
+                                  if (!(widget.userType ==
+                                          Constants.fieldagent &&
+                                      widget.isCall!)) {
+                                    widget.bloc.add(
+                                      ChangeIsSubmitEvent(),
+                                    );
+                                  }
 
-                                if (widget.isAutoCalling) {
-                                  Navigator.pop(widget.paramValue['context']);
-                                  Navigator.pop(widget.paramValue['context']);
-                                  widget.allocationBloc!.add(StartCallingEvent(
-                                    customerIndex:
-                                        widget.paramValue['customerIndex'] + 1,
-                                    phoneIndex: 0,
-                                    isIncreaseCount: true,
-                                  ));
-                                } else {
-                                  AppUtils.topSnackBar(
-                                      context, Constants.successfullySubmitted);
-                                  Navigator.pop(context);
+                                  widget.bloc.add(
+                                    ChangeHealthStatusEvent(),
+                                  );
+
+                                  if (widget.isAutoCalling) {
+                                    Navigator.pop(widget.paramValue['context']);
+                                    Navigator.pop(widget.paramValue['context']);
+                                    widget.allocationBloc!
+                                        .add(StartCallingEvent(
+                                      customerIndex:
+                                          widget.paramValue['customerIndex'] +
+                                              1,
+                                      phoneIndex: 0,
+                                      isIncreaseCount: true,
+                                    ));
+                                  } else {
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    Navigator.pop(context);
+                                  }
                                 }
                               }
                             }
@@ -379,7 +395,6 @@ class _CustomRemainderBottomSheetState
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),

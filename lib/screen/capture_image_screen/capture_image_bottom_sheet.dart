@@ -215,9 +215,6 @@ class _CustomCaptureImageBottomSheetState
                                           PostImageCapturedModel(
                                               eventId: ConstantEventValues
                                                   .captureImageEventId,
-                                              // files: uploadFileLists.isNotEmpty
-                                              //     ? uploadFileLists
-                                              //     : [],
                                               eventCode: ConstantEventValues
                                                   .captureImageEvenCode,
                                               caseId: widget.bloc.caseId

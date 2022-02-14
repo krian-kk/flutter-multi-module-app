@@ -92,9 +92,6 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
-      // print('response data -------->');
-      // print(response!.headers['access-token']);
-      // print('response Headers -------->');
 
       if (response!.headers['access-token'] != null) {
         print('Here get New Access Token for every API call then store');
@@ -114,8 +111,6 @@ class APIRepository {
         'statusCode': response.data['status'],
       };
     } on DioError catch (e) {
-      // print("-------NK------");
-      // print(e.response!.statusCode);
       dynamic error;
       String? invalidAccessServerError;
       if (e.response != null) {
