@@ -17,7 +17,7 @@ class CallCustomerStatus {
         return false;
       } else {
         if (postResult['data']['result'][0]['status2'] == null) {
-          if (postResult['data']['result'][0]['status2'] == 'ANSWER') {
+          if (postResult['data']['result'][0]['status1'] == 'ANSWER') {
             AppUtils.showToast('Please Wait Call is On Going');
           } else {
             AppUtils.showToast('Please Speak with customer');

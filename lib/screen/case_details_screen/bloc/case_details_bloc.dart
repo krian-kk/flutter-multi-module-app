@@ -607,10 +607,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
         if (resultValue[Constants.success]) {
           if (isAutoCalling) {
-            allocationBloc.add(StartCallingEvent(
-              customerIndex: paramValue['customerIndex'],
-              phoneIndex: paramValue['phoneIndex'] + 1,
-            ));
+            if (Singleton.instance.startCalling ?? false) {
+              allocationBloc.add(StartCallingEvent(
+                customerIndex: paramValue['customerIndex'],
+                phoneIndex: paramValue['phoneIndex'] + 1,
+              ));
+            }
             Navigator.pop(paramValue['context']);
           }
           yield UpdateHealthStatusState();
