@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,6 +14,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/models/receipt_sendsms_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -111,249 +113,328 @@ class _CustomCollectionsBottomSheetState
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
     ];
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.transparent,
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
-                child: KeyboardActions(
-                  config: KeyboardActionsConfig(
-                    keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                    actions: [
-                      KeyboardActionsItem(
-                        focusNode: amountCollectedFocusNode,
-                        displayArrows: false,
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          widget.customerLoanUserWidget,
-                          const SizedBox(height: 11),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!.amountCollected,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorResource.color666666,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        (MediaQuery.of(context).size.width) / 2,
-                                    child: CustomReadOnlyTextField(
-                                      '',
-                                      amountCollectedControlller,
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          1, 23, 5, 10),
-                                      validatorCallBack: () {},
-                                      keyBoardType: TextInputType.number,
-                                      focusNode: amountCollectedFocusNode,
-                                      validationRules: const ['required'],
-                                      suffixWidget: Column(
+    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state is UpdateHealthStatusState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                print('dkjdlkjdkl;kd;lkd;lkd;');
+
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
+          print(
+              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Colors.transparent,
+              body: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                      title: widget.cardTitle,
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15)
+                          .copyWith(bottom: 5),
+                    ),
+                    Expanded(
+                      child: KeyboardActions(
+                        config: KeyboardActionsConfig(
+                          keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                          actions: [
+                            KeyboardActionsItem(
+                              focusNode: amountCollectedFocusNode,
+                              displayArrows: false,
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                widget.customerLoanUserWidget,
+                                const SizedBox(height: 11),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!
+                                              .amountCollected,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w400,
+                                          color: ColorResource.color666666,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        SizedBox(
+                                          width: (MediaQuery.of(context)
+                                                  .size
+                                                  .width) /
+                                              2,
+                                          child: CustomReadOnlyTextField(
+                                            '',
+                                            amountCollectedControlller,
+                                            contentPadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    1, 23, 5, 10),
+                                            validatorCallBack: () {},
+                                            keyBoardType: TextInputType.number,
+                                            focusNode: amountCollectedFocusNode,
+                                            validationRules: const ['required'],
+                                            suffixWidget: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      amountCollectedControlller
+                                                          .text = (int.parse(
+                                                                  amountCollectedControlller
+                                                                      .text) +
+                                                              1)
+                                                          .toString();
+                                                    });
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                    ImageResource
+                                                        .dropDownIncreaseArrow,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      amountCollectedControlller
+                                                          .text = (int.parse(
+                                                                  amountCollectedControlller
+                                                                      .text) -
+                                                              1)
+                                                          .toString();
+                                                    });
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                    ImageResource
+                                                        .dropDownDecreaseArrow,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                    const SizedBox(width: 7),
+                                    Flexible(
+                                        child: SizedBox(
+                                      child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                amountCollectedControlller
-                                                    .text = (int.parse(
-                                                            amountCollectedControlller
-                                                                .text) +
-                                                        1)
-                                                    .toString();
-                                              });
-                                            },
-                                            child: SvgPicture.asset(
-                                              ImageResource
-                                                  .dropDownIncreaseArrow,
+                                          CustomText(
+                                            Languages.of(context)!.date,
+                                            fontSize: FontSize.twelve,
+                                            fontWeight: FontWeight.w400,
+                                            color: ColorResource.color666666,
+                                            fontStyle: FontStyle.normal,
+                                          ),
+                                          CustomReadOnlyTextField(
+                                            '',
+                                            dateControlller,
+                                            validationRules: const ['required'],
+                                            isReadOnly: true,
+                                            onTapped: () => pickDate(
+                                                context, dateControlller),
+                                            suffixWidget: SvgPicture.asset(
+                                              ImageResource.calendar,
+                                              fit: BoxFit.scaleDown,
                                             ),
                                           ),
-                                          const SizedBox(height: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                amountCollectedControlller
-                                                    .text = (int.parse(
-                                                            amountCollectedControlller
-                                                                .text) -
-                                                        1)
-                                                    .toString();
-                                              });
-                                            },
-                                            child: SvgPicture.asset(
-                                              ImageResource
-                                                  .dropDownDecreaseArrow,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
                                         ],
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                              const SizedBox(width: 7),
-                              Flexible(
-                                  child: SizedBox(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CustomText(
-                                      Languages.of(context)!.date,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w400,
-                                      color: ColorResource.color666666,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                    CustomReadOnlyTextField(
-                                      '',
-                                      dateControlller,
-                                      validationRules: const ['required'],
-                                      isReadOnly: true,
-                                      onTapped: () =>
-                                          pickDate(context, dateControlller),
-                                      suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
+                                    )),
                                   ],
                                 ),
-                              )),
-                            ],
+                                const SizedBox(height: 15),
+                                CustomText(
+                                  Languages.of(context)!.paymentMode,
+                                  fontSize: FontSize.fourteen,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: ColorResource.color101010,
+                                ),
+                                const SizedBox(height: 8),
+                                Wrap(
+                                  runSpacing: 10,
+                                  spacing: 18,
+                                  children: _buildPaymentButton(
+                                      paymentModeButtonList),
+                                ),
+                                const SizedBox(height: 15),
+                                Flexible(
+                                    child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.refCheque,
+                                  chequeControlller,
+                                  focusNode: chequeFocusNode,
+                                  isLabel: true,
+                                  onEditing: () =>
+                                      remarksFocusNode.requestFocus(),
+                                )),
+                                const SizedBox(height: 15),
+                                CustomReadOnlyTextField(
+                                  Languages.of(context)!.remarks,
+                                  remarksControlller,
+                                  focusNode: remarksFocusNode,
+                                  validationRules: const ['required'],
+                                  isLabel: true,
+                                  onEditing: () => remarksFocusNode.unfocus(),
+                                ),
+                                const SizedBox(height: 15),
+                                CustomButton(
+                                  Languages.of(context)!.customUpload,
+                                  fontWeight: FontWeight.w700,
+                                  onTap: () => getFiles(),
+                                  trailingWidget:
+                                      SvgPicture.asset(ImageResource.upload),
+                                  fontSize: FontSize.sixteen,
+                                  buttonBackgroundColor:
+                                      ColorResource.color23375A,
+                                  borderColor: ColorResource.colorDADADA,
+                                  cardShape: 50,
+                                  cardElevation: 1,
+                                  isLeading: true,
+                                ),
+                                const SizedBox(height: 15),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 15),
-                          CustomText(
-                            Languages.of(context)!.paymentMode,
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                            color: ColorResource.color101010,
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            runSpacing: 10,
-                            spacing: 18,
-                            children:
-                                _buildPaymentButton(paymentModeButtonList),
-                          ),
-                          const SizedBox(height: 15),
-                          Flexible(
-                              child: CustomReadOnlyTextField(
-                            Languages.of(context)!.refCheque,
-                            chequeControlller,
-                            focusNode: chequeFocusNode,
-                            isLabel: true,
-                            onEditing: () => remarksFocusNode.requestFocus(),
-                          )),
-                          const SizedBox(height: 15),
-                          CustomReadOnlyTextField(
-                            Languages.of(context)!.remarks,
-                            remarksControlller,
-                            focusNode: remarksFocusNode,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            onEditing: () => remarksFocusNode.unfocus(),
-                          ),
-                          const SizedBox(height: 15),
-                          CustomButton(
-                            Languages.of(context)!.customUpload,
-                            fontWeight: FontWeight.w700,
-                            onTap: () => getFiles(),
-                            trailingWidget:
-                                SvgPicture.asset(ImageResource.upload),
-                            fontSize: FontSize.sixteen,
-                            buttonBackgroundColor: ColorResource.color23375A,
-                            borderColor: ColorResource.colorDADADA,
-                            cardShape: 50,
-                            cardElevation: 1,
-                            isLeading: true,
-                          ),
-                          const SizedBox(height: 15),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    AppUtils.showToast('Unable to send SMS');
-                    Navigator.pop(context);
-                  },
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
+              bottomNavigationBar: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: const Offset(1.0, 1.0),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 25),
-                Singleton.instance.startCalling ?? false
-                    ? SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          AppUtils.showToast('Unable to send SMS');
+                          Navigator.pop(context);
+                        },
+                        child: SizedBox(
+                            width: 95,
+                            child: Center(
+                                child: CustomText(
+                              Languages.of(context)!.cancel.toUpperCase(),
+                              color: ColorResource.colorEA6D48,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              fontSize: FontSize.sixteen,
+                            ))),
+                      ),
+                      const SizedBox(width: 25),
+                      Singleton.instance.startCalling ?? false
+                          ? SizedBox(
+                              width: Singleton.instance.startCalling ?? false
+                                  ? 130
+                                  : 191,
+                              child: CustomButton(
+                                isSubmit
+                                    ? Languages.of(context)!
+                                            .stop
+                                            .toUpperCase() +
+                                        ' & ' +
+                                        Languages.of(context)!
+                                            .submit
+                                            .toUpperCase()
+                                    : null,
+                                isLeading: !isSubmit,
+                                trailingWidget: CustomLoadingWidget(
+                                  gradientColors: [
+                                    ColorResource.colorFFFFFF,
+                                    ColorResource.colorFFFFFF.withOpacity(0.7),
+                                  ],
+                                ),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w700,
+                                onTap: isSubmit
+                                    ? () => submitCollectionEvent(true)
+                                    : () {},
+                                cardShape: 5,
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
                         width: Singleton.instance.startCalling ?? false
-                            ? 130
+                            ? 120
                             : 191,
                         child: CustomButton(
                           isSubmit
-                              ? Languages.of(context)!.stop.toUpperCase() +
-                                  ' & ' +
-                                  Languages.of(context)!.submit.toUpperCase()
+                              ? Languages.of(context)!.submit.toUpperCase()
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
@@ -365,36 +446,18 @@ class _CustomCollectionsBottomSheetState
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w700,
                           onTap: isSubmit
-                              ? () => submitCollectionEvent(true)
+                              ? () => submitCollectionEvent(false)
                               : () {},
                           cardShape: 5,
                         ),
-                      )
-                    : const SizedBox(),
-                SizedBox(
-                  width: Singleton.instance.startCalling ?? false ? 120 : 191,
-                  child: CustomButton(
-                    isSubmit
-                        ? Languages.of(context)!.submit.toUpperCase()
-                        : null,
-                    isLeading: !isSubmit,
-                    trailingWidget: CustomLoadingWidget(
-                      gradientColors: [
-                        ColorResource.colorFFFFFF,
-                        ColorResource.colorFFFFFF.withOpacity(0.7),
-                      ],
-                    ),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w700,
-                    onTap:
-                        isSubmit ? () => submitCollectionEvent(false) : () {},
-                    cardShape: 5,
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

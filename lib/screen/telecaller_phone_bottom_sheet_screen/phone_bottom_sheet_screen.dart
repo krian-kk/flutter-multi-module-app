@@ -607,6 +607,7 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
               postValue: paramValues,
               isCall: isCall,
               bloc: CaseDetailsBloc(AllocationBloc()),
+              // bloc: widget.bloc,
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(

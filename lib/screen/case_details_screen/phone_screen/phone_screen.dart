@@ -81,6 +81,8 @@ class _PhoneScreenState extends State<PhoneScreen>
 
         if (state is UpdateHealthStatusState) {
           print(
+              'Initial values-> ${widget.bloc.caseDetailsAPIValue.result?.callDetails!}');
+          print(
               "data of new health ==> ${Singleton.instance.updateHealthStatus}");
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));

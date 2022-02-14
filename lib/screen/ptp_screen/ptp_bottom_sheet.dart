@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -89,209 +91,289 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
-            ),
-            Expanded(
-              child: KeyboardActions(
-                config: KeyboardActionsConfig(
-                  keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                  actions: [
-                    KeyboardActionsItem(
-                      focusNode: ptpAmountFocusNode,
-                      displayArrows: false,
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          widget.customerLoanUserWidget,
-                          const SizedBox(height: 11),
-                          Row(
-                            children: [
-                              Flexible(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!.ptpDate,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorResource.color666666,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        (MediaQuery.of(context).size.width) / 2,
-                                    child: CustomReadOnlyTextField(
-                                      '',
-                                      ptpDateControlller,
-                                      isReadOnly: true,
-                                      validationRules: const ['required'],
-                                      onTapped: () =>
-                                          pickDate(context, ptpDateControlller),
-                                      suffixWidget: SvgPicture.asset(
-                                        ImageResource.calendar,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                              const SizedBox(width: 7),
-                              Flexible(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    Languages.of(context)!.ptpTime,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w400,
-                                    color: ColorResource.color666666,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        (MediaQuery.of(context).size.width) / 2,
-                                    child: CustomReadOnlyTextField(
-                                      '',
-                                      ptpTimeControlller,
-                                      validatorCallBack: () {},
-                                      isReadOnly: true,
-                                      validationRules: const ['required'],
-                                      onTapped: () =>
-                                          pickTime(context, ptpTimeControlller),
-                                      suffixWidget: SvgPicture.asset(
-                                        ImageResource.clock,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                          Flexible(
-                              child: CustomReadOnlyTextField(
-                            Languages.of(context)!.ptpAmount,
-                            ptpAmountControlller,
+    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state is UpdateHealthStatusState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                print('dkjdlkjdkl;kd;lkd;lkd;');
+
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
+          print(
+              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Colors.transparent,
+              body: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BottomSheetAppbar(
+                    title: widget.cardTitle,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                            .copyWith(bottom: 5),
+                  ),
+                  Expanded(
+                    child: KeyboardActions(
+                      config: KeyboardActionsConfig(
+                        keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                        actions: [
+                          KeyboardActionsItem(
                             focusNode: ptpAmountFocusNode,
-                            validatorCallBack: () {},
-                            keyBoardType: TextInputType.number,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            onEditing: () {
-                              ptpReferenceFocusNode.requestFocus();
-                            },
-                          )),
-                          const SizedBox(height: 15),
-                          CustomText(
-                            Languages.of(context)!.paymentMode,
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                            color: ColorResource.color101010,
+                            displayArrows: false,
                           ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            runSpacing: 10,
-                            spacing: 18,
-                            children:
-                                _buildPaymentButton(paymentModeButtonList),
-                          ),
-                          const SizedBox(height: 21),
-                          CustomReadOnlyTextField(
-                            StringResource.reference,
-                            referenceControlller,
-                            focusNode: ptpReferenceFocusNode,
-                            isLabel: true,
-                            validatorCallBack: () {},
-                            onEditing: () => ptpRemarksFocusNode.requestFocus(),
-                          ),
-                          const SizedBox(height: 20),
-                          CustomReadOnlyTextField(
-                            Languages.of(context)!.remarks,
-                            remarksControlller,
-                            focusNode: ptpRemarksFocusNode,
-                            validationRules: const ['required'],
-                            isLabel: true,
-                            validatorCallBack: () {},
-                            onEditing: () => ptpRemarksFocusNode.unfocus(),
-                          ),
-                          const SizedBox(height: 15)
                         ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                        child: SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                widget.customerLoanUserWidget,
+                                const SizedBox(height: 11),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!.ptpDate,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w400,
+                                          color: ColorResource.color666666,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        SizedBox(
+                                          width: (MediaQuery.of(context)
+                                                  .size
+                                                  .width) /
+                                              2,
+                                          child: CustomReadOnlyTextField(
+                                            '',
+                                            ptpDateControlller,
+                                            isReadOnly: true,
+                                            validationRules: const ['required'],
+                                            onTapped: () => pickDate(
+                                                context, ptpDateControlller),
+                                            suffixWidget: SvgPicture.asset(
+                                              ImageResource.calendar,
+                                              fit: BoxFit.scaleDown,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                    const SizedBox(width: 7),
+                                    Flexible(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          Languages.of(context)!.ptpTime,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w400,
+                                          color: ColorResource.color666666,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        SizedBox(
+                                          width: (MediaQuery.of(context)
+                                                  .size
+                                                  .width) /
+                                              2,
+                                          child: CustomReadOnlyTextField(
+                                            '',
+                                            ptpTimeControlller,
+                                            validatorCallBack: () {},
+                                            isReadOnly: true,
+                                            validationRules: const ['required'],
+                                            onTapped: () => pickTime(
+                                                context, ptpTimeControlller),
+                                            suffixWidget: SvgPicture.asset(
+                                              ImageResource.clock,
+                                              fit: BoxFit.scaleDown,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Flexible(
+                                    child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.ptpAmount,
+                                  ptpAmountControlller,
+                                  focusNode: ptpAmountFocusNode,
+                                  validatorCallBack: () {},
+                                  keyBoardType: TextInputType.number,
+                                  validationRules: const ['required'],
+                                  isLabel: true,
+                                  onEditing: () {
+                                    ptpReferenceFocusNode.requestFocus();
+                                  },
+                                )),
+                                const SizedBox(height: 15),
+                                CustomText(
+                                  Languages.of(context)!.paymentMode,
+                                  fontSize: FontSize.fourteen,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: ColorResource.color101010,
+                                ),
+                                const SizedBox(height: 8),
+                                Wrap(
+                                  runSpacing: 10,
+                                  spacing: 18,
+                                  children: _buildPaymentButton(
+                                      paymentModeButtonList),
+                                ),
+                                const SizedBox(height: 21),
+                                CustomReadOnlyTextField(
+                                  StringResource.reference,
+                                  referenceControlller,
+                                  focusNode: ptpReferenceFocusNode,
+                                  isLabel: true,
+                                  validatorCallBack: () {},
+                                  onEditing: () =>
+                                      ptpRemarksFocusNode.requestFocus(),
+                                ),
+                                const SizedBox(height: 20),
+                                CustomReadOnlyTextField(
+                                  Languages.of(context)!.remarks,
+                                  remarksControlller,
+                                  focusNode: ptpRemarksFocusNode,
+                                  validationRules: const ['required'],
+                                  isLabel: true,
+                                  validatorCallBack: () {},
+                                  onEditing: () =>
+                                      ptpRemarksFocusNode.unfocus(),
+                                ),
+                                const SizedBox(height: 15)
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
+              bottomNavigationBar: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: const Offset(1.0, 1.0),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 25),
-                Singleton.instance.startCalling ?? false
-                    ? SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: SizedBox(
+                            width: 95,
+                            child: Center(
+                                child: CustomText(
+                              Languages.of(context)!.cancel.toUpperCase(),
+                              color: ColorResource.colorEA6D48,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              fontSize: FontSize.sixteen,
+                            ))),
+                      ),
+                      const SizedBox(width: 25),
+                      Singleton.instance.startCalling ?? false
+                          ? SizedBox(
+                              width: Singleton.instance.startCalling ?? false
+                                  ? 130
+                                  : 191,
+                              child: CustomButton(
+                                isSubmit
+                                    ? Languages.of(context)!
+                                            .stop
+                                            .toUpperCase() +
+                                        ' & ' +
+                                        Languages.of(context)!
+                                            .submit
+                                            .toUpperCase()
+                                    : null,
+                                isLeading: !isSubmit,
+                                trailingWidget: CustomLoadingWidget(
+                                  gradientColors: [
+                                    ColorResource.colorFFFFFF,
+                                    ColorResource.colorFFFFFF.withOpacity(0.7),
+                                  ],
+                                ),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                onTap: isSubmit
+                                    ? () => submitPTPEvent(true)
+                                    : () {},
+                                cardShape: 5,
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
                         width: Singleton.instance.startCalling ?? false
-                            ? 130
+                            ? 120
                             : 191,
                         child: CustomButton(
                           isSubmit
-                              ? Languages.of(context)!.stop.toUpperCase() +
-                                  ' & ' +
-                                  Languages.of(context)!.submit.toUpperCase()
+                              ? Languages.of(context)!.submit.toUpperCase()
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
@@ -302,34 +384,17 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                           ),
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w600,
-                          onTap: isSubmit ? () => submitPTPEvent(true) : () {},
+                          onTap: isSubmit ? () => submitPTPEvent(false) : () {},
                           cardShape: 5,
                         ),
-                      )
-                    : const SizedBox(),
-                SizedBox(
-                  width: Singleton.instance.startCalling ?? false ? 120 : 191,
-                  child: CustomButton(
-                    isSubmit
-                        ? Languages.of(context)!.submit.toUpperCase()
-                        : null,
-                    isLeading: !isSubmit,
-                    trailingWidget: CustomLoadingWidget(
-                      gradientColors: [
-                        ColorResource.colorFFFFFF,
-                        ColorResource.colorFFFFFF.withOpacity(0.7),
-                      ],
-                    ),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    onTap: isSubmit ? () => submitPTPEvent(false) : () {},
-                    cardShape: 5,
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

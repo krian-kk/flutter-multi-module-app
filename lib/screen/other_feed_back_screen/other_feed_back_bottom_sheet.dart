@@ -17,6 +17,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -124,247 +125,303 @@ class _CustomOtherFeedBackBottomSheetState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          resizeToAvoidBottomInset: true,
-          body: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BottomSheetAppbar(
-                  title: widget.cardTitle,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+      listener: (context, state) {
+        if (state is UpdateHealthStatusState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                print('dkjdlkjdkl;kd;lkd;lkd;');
+
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
+          print(
+              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              resizeToAvoidBottomInset: true,
+              body: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                      title: widget.cardTitle,
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15)
                           .copyWith(bottom: 5),
-                ),
-                Expanded(
-                  child: KeyboardActions(
-                    config: const KeyboardActionsConfig(
-                      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                      actions: [],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            widget.customerLoanUserWidget,
-                            const SizedBox(height: 11),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    Expanded(
+                      child: KeyboardActions(
+                        config: const KeyboardActionsConfig(
+                          keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                          actions: [],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: SingleChildScrollView(
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionDate,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width - 44) /
-                                          2,
-                                  child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.date,
-                                    dateControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () =>
-                                        pickDate(context, dateControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                widget.customerLoanUserWidget,
+                                const SizedBox(height: 11),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      Languages.of(context)!.nextActionDate,
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w400,
+                                      color: ColorResource.color666666,
+                                      fontStyle: FontStyle.normal,
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            expandList([
-                              FeedbackTemplate(
-                                  name: 'Add New Contact',
-                                  expanded: false,
-                                  data: [Data(name: 'addNewContact')])
-                            ], 0),
-                            ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: Singleton.instance.feedbackTemplate
-                                        ?.result?.feedbackTemplate?.length ??
-                                    0,
-                                itemBuilder: (context, int index) {
-                                  return expandList(
-                                      Singleton.instance.feedbackTemplate!
-                                          .result!.feedbackTemplate!,
-                                      index);
-                                }),
-                            const SizedBox(height: 5),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 13),
-                              child: CustomReadOnlyTextField(
-                                Languages.of(context)!.remark + '*',
-                                remarksController,
-                                validationRules: const ['required'],
-                                isLabel: true,
-                                isEnable: true,
-                              ),
-                            ),
-                            const SizedBox(height: 25),
-                            GestureDetector(
-                              onTap: () {},
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50),
-                                      side: const BorderSide(
-                                        width: 0.5,
-                                        color: ColorResource.colorDADADA,
+                                    SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width -
+                                                  44) /
+                                              2,
+                                      child: CustomReadOnlyTextField(
+                                        Languages.of(context)!.date,
+                                        dateControlller,
+                                        validationRules: const ['required'],
+                                        isReadOnly: true,
+                                        onTapped: () =>
+                                            pickDate(context, dateControlller),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.calendar,
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                       ),
                                     ),
-                                    color: ColorResource.color23375A,
-                                    elevation: 2,
-                                    child: InkWell(
-                                      onTap: () => getFiles(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                expandList([
+                                  FeedbackTemplate(
+                                      name: 'Add New Contact',
+                                      expanded: false,
+                                      data: [Data(name: 'addNewContact')])
+                                ], 0),
+                                ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: Singleton
+                                            .instance
+                                            .feedbackTemplate
+                                            ?.result
+                                            ?.feedbackTemplate
+                                            ?.length ??
+                                        0,
+                                    itemBuilder: (context, int index) {
+                                      return expandList(
+                                          Singleton.instance.feedbackTemplate!
+                                              .result!.feedbackTemplate!,
+                                          index);
+                                    }),
+                                const SizedBox(height: 5),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 13),
+                                  child: CustomReadOnlyTextField(
+                                    Languages.of(context)!.remark + '*',
+                                    remarksController,
+                                    validationRules: const ['required'],
+                                    isLabel: true,
+                                    isEnable: true,
+                                  ),
+                                ),
+                                const SizedBox(height: 25),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          side: const BorderSide(
+                                            width: 0.5,
+                                            color: ColorResource.colorDADADA,
+                                          ),
+                                        ),
+                                        color: ColorResource.color23375A,
+                                        elevation: 2,
+                                        child: InkWell(
+                                          onTap: () => getFiles(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
                                               children: [
-                                                SvgPicture.asset(
-                                                    ImageResource.upload),
-                                                const SizedBox(width: 5),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        ImageResource.upload),
+                                                    const SizedBox(width: 5),
+                                                    const CustomText(
+                                                      'UPLOAD AUDIO FILE',
+                                                      color: ColorResource
+                                                          .colorFFFFFF,
+                                                      fontSize:
+                                                          FontSize.sixteen,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    )
+                                                  ],
+                                                ),
                                                 const CustomText(
-                                                  'UPLOAD AUDIO FILE',
+                                                  'UPTO 5MB',
+                                                  lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
-                                                  fontSize: FontSize.sixteen,
+                                                  fontSize: FontSize.twelve,
                                                   fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
                                                 )
                                               ],
                                             ),
-                                            const CustomText(
-                                              'UPTO 5MB',
-                                              lineHeight: 1,
-                                              color: ColorResource.colorFFFFFF,
-                                              fontSize: FontSize.twelve,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                              ),
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                              ],
                             ),
-                            const SizedBox(height: 15),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
-                ),
-              ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: SizedBox(
-                        width: 95,
-                        child: Center(
-                            child: CustomText(
-                          Languages.of(context)!.cancel.toUpperCase(),
-                          color: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          fontSize: FontSize.sixteen,
-                        ))),
-                  ),
-                  const SizedBox(width: 25),
-                  Singleton.instance.startCalling ?? false
-                      ? SizedBox(
-                          width: Singleton.instance.startCalling ?? false
-                              ? 130
-                              : 191,
-                          child: CustomButton(
-                            isSubmit
-                                ? Languages.of(context)!.stop.toUpperCase() +
-                                    ' & ' +
-                                    Languages.of(context)!.submit.toUpperCase()
-                                : null,
-                            isLeading: !isSubmit,
-                            trailingWidget: CustomLoadingWidget(
-                              gradientColors: [
-                                ColorResource.colorFFFFFF,
-                                ColorResource.colorFFFFFF.withOpacity(0.7),
-                              ],
-                            ),
-                            fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
-                            onTap: isSubmit
-                                ? () => submitOtherFeedbackEvent(true)
-                                : () {},
-                            cardShape: 5,
-                          ),
-                        )
-                      : const SizedBox(),
-                  SizedBox(
-                    width: Singleton.instance.startCalling ?? false ? 120 : 191,
-                    child: CustomButton(
-                      isSubmit
-                          ? Languages.of(context)!.submit.toUpperCase()
-                          : null,
-                      isLeading: !isSubmit,
-                      trailingWidget: CustomLoadingWidget(
-                        gradientColors: [
-                          ColorResource.colorFFFFFF,
-                          ColorResource.colorFFFFFF.withOpacity(0.7),
-                        ],
-                      ),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      onTap: isSubmit
-                          ? () => submitOtherFeedbackEvent(false)
-                          : () {},
-                      cardShape: 5,
+              ),
+              bottomNavigationBar: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: const Offset(1.0, 1.0),
                     ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: SizedBox(
+                            width: 95,
+                            child: Center(
+                                child: CustomText(
+                              Languages.of(context)!.cancel.toUpperCase(),
+                              color: ColorResource.colorEA6D48,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              fontSize: FontSize.sixteen,
+                            ))),
+                      ),
+                      const SizedBox(width: 25),
+                      Singleton.instance.startCalling ?? false
+                          ? SizedBox(
+                              width: Singleton.instance.startCalling ?? false
+                                  ? 130
+                                  : 191,
+                              child: CustomButton(
+                                isSubmit
+                                    ? Languages.of(context)!
+                                            .stop
+                                            .toUpperCase() +
+                                        ' & ' +
+                                        Languages.of(context)!
+                                            .submit
+                                            .toUpperCase()
+                                    : null,
+                                isLeading: !isSubmit,
+                                trailingWidget: CustomLoadingWidget(
+                                  gradientColors: [
+                                    ColorResource.colorFFFFFF,
+                                    ColorResource.colorFFFFFF.withOpacity(0.7),
+                                  ],
+                                ),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                onTap: isSubmit
+                                    ? () => submitOtherFeedbackEvent(true)
+                                    : () {},
+                                cardShape: 5,
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
+                        width: Singleton.instance.startCalling ?? false
+                            ? 120
+                            : 191,
+                        child: CustomButton(
+                          isSubmit
+                              ? Languages.of(context)!.submit.toUpperCase()
+                              : null,
+                          isLeading: !isSubmit,
+                          trailingWidget: CustomLoadingWidget(
+                            gradientColors: [
+                              ColorResource.colorFFFFFF,
+                              ColorResource.colorFFFFFF.withOpacity(0.7),
+                            ],
+                          ),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          onTap: isSubmit
+                              ? () => submitOtherFeedbackEvent(false)
+                              : () {},
+                          cardShape: 5,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
