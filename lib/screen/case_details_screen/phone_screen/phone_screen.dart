@@ -81,6 +81,8 @@ class _PhoneScreenState extends State<PhoneScreen>
 
         if (state is UpdateHealthStatusState) {
           print(
+              'Initial values-> ${widget.bloc.caseDetailsAPIValue.result?.callDetails!}');
+          print(
               "data of new health ==> ${Singleton.instance.updateHealthStatus}");
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
@@ -197,7 +199,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   ?.callDetails![widget.index]
                                               ['health']),
                                       GestureDetector(
-                                        onTap: () => Navigator.pop(context),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          Singleton.instance.startCalling =
+                                              false;
+                                        },
                                         child: Container(
                                           padding: const EdgeInsets.all(2),
                                           child: SvgPicture.asset(
@@ -483,8 +489,101 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       fontSize: FontSize.sixteen,
                                     ))),
                                 const SizedBox(width: 25),
+                                Singleton.instance.startCalling ?? false
+                                    ? SizedBox(
+                                        width:
+                                            Singleton.instance.startCalling ??
+                                                    false
+                                                ? 130
+                                                : 191,
+                                        child: _controller.index == 1
+                                            ? CustomButton(
+                                                isSubmitFirst
+                                                    ? Languages.of(context)!
+                                                            .stop
+                                                            .toUpperCase() +
+                                                        ' & ' +
+                                                        Languages.of(context)!
+                                                            .submit
+                                                            .toUpperCase()
+                                                    : null,
+                                                isLeading: !isSubmitFirst,
+                                                trailingWidget:
+                                                    CustomLoadingWidget(
+                                                  gradientColors: [
+                                                    ColorResource.colorFFFFFF,
+                                                    ColorResource.colorFFFFFF
+                                                        .withOpacity(0.7),
+                                                  ],
+                                                ),
+                                                fontSize: FontSize.sixteen,
+                                                fontWeight: FontWeight.w600,
+                                                onTap: isSubmitFirst
+                                                    ? () {
+                                                        if (widget
+                                                            .bloc
+                                                            .phoneUnreachableFormKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          if (widget.bloc
+                                                                  .phoneSelectedUnreadableClip !=
+                                                              '') {
+                                                            widget.bloc.add(
+                                                                ClickPhoneUnreachableSubmitedButtonEvent(
+                                                              context,
+                                                              autoCallingStopAndSubmit:
+                                                                  false,
+                                                            ));
+                                                          } else {
+                                                            AppUtils.showToast(
+                                                                Constants
+                                                                    .pleaseSelectOptions);
+                                                          }
+                                                        }
+                                                      }
+                                                    : () {},
+                                                cardShape: 5,
+                                              )
+                                            : CustomButton(
+                                                isSubmitSecond
+                                                    ? Languages.of(context)!
+                                                            .stop
+                                                            .toUpperCase() +
+                                                        ' & ' +
+                                                        Languages.of(context)!
+                                                            .submit
+                                                            .toUpperCase()
+                                                    : null,
+                                                isLeading: !isSubmitSecond,
+                                                trailingWidget:
+                                                    CustomLoadingWidget(
+                                                  gradientColors: [
+                                                    ColorResource.colorFFFFFF,
+                                                    ColorResource.colorFFFFFF
+                                                        .withOpacity(0.7),
+                                                  ],
+                                                ),
+                                                fontSize: FontSize.sixteen,
+                                                fontWeight: FontWeight.w600,
+                                                onTap: isSubmitSecond
+                                                    ? () {
+                                                        Singleton.instance
+                                                                .startCalling =
+                                                            false;
+                                                        widget.bloc.add(
+                                                            ClickPhoneInvalidButtonEvent(
+                                                                context));
+                                                      }
+                                                    : () {},
+                                                cardShape: 5,
+                                              ),
+                                      )
+                                    : const SizedBox(),
                                 SizedBox(
-                                  width: 191,
+                                  width:
+                                      Singleton.instance.startCalling ?? false
+                                          ? 120
+                                          : 191,
                                   child: _controller.index == 1
                                       ? CustomButton(
                                           isSubmitFirst

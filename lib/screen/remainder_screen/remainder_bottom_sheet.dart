@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/reminder_post_model/reminder_post_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -74,286 +76,352 @@ class _CustomRemainderBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.89,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        resizeToAvoidBottomInset: true,
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetAppbar(
-                title: widget.cardTitle,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                        .copyWith(bottom: 5),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget.customerLoanUserWidget,
-                        const SizedBox(height: 11),
-                        Row(
-                          children: [
-                            Flexible(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionDate,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width) / 2,
+    return BlocListener<CaseDetailsBloc, CaseDetailsState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state is UpdateHealthStatusState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                print('dkjdlkjdkl;kd;lkd;lkd;');
+
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
+          print(
+              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              resizeToAvoidBottomInset: true,
+              body: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                      title: widget.cardTitle,
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15)
+                          .copyWith(bottom: 5),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              widget.customerLoanUserWidget,
+                              const SizedBox(height: 11),
+                              Row(
+                                children: [
+                                  Flexible(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomText(
+                                        Languages.of(context)!.nextActionDate,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w400,
+                                        color: ColorResource.color666666,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      SizedBox(
+                                        width: (MediaQuery.of(context)
+                                                .size
+                                                .width) /
+                                            2,
+                                        child: CustomReadOnlyTextField(
+                                          '',
+                                          nextActionDateControlller,
+                                          validationRules: const ['required'],
+                                          isReadOnly: true,
+                                          onTapped: () => pickDate(context,
+                                              nextActionDateControlller),
+                                          suffixWidget: SvgPicture.asset(
+                                            ImageResource.calendar,
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                  const SizedBox(width: 7),
+                                  Flexible(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomText(
+                                        Languages.of(context)!.nextActionTime,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w400,
+                                        color: ColorResource.color666666,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      SizedBox(
+                                        width: (MediaQuery.of(context)
+                                                .size
+                                                .width) /
+                                            2,
+                                        child: CustomReadOnlyTextField(
+                                          '',
+                                          nextActionTimeControlller,
+                                          validationRules: const ['required'],
+                                          isReadOnly: true,
+                                          onTapped: () => pickTime(context,
+                                              nextActionTimeControlller),
+                                          suffixWidget: SvgPicture.asset(
+                                            ImageResource.clock,
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                ],
+                              ),
+                              const SizedBox(height: 15),
+                              Flexible(
                                   child: CustomReadOnlyTextField(
-                                    '',
-                                    nextActionDateControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () => pickDate(
-                                        context, nextActionDateControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                            const SizedBox(width: 7),
-                            Flexible(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionTime,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width) / 2,
-                                  child: CustomReadOnlyTextField(
-                                    '',
-                                    nextActionTimeControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () => pickTime(
-                                        context, nextActionTimeControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.clock,
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                          ],
+                                Languages.of(context)!.remarks,
+                                remarksControlller,
+                                validationRules: const ['required'],
+                                isLabel: true,
+                              )),
+                              const SizedBox(height: 15),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 15),
-                        Flexible(
-                            child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
-                          remarksControlller,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                        )),
-                        const SizedBox(height: 15),
-                      ],
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              bottomNavigationBar: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: const Offset(1.0, 1.0),
+                    ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: SizedBox(
+                            width: 95,
+                            child: Center(
+                                child: CustomText(
+                              Languages.of(context)!.cancel.toUpperCase(),
+                              color: ColorResource.colorEA6D48,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              fontSize: FontSize.sixteen,
+                            ))),
+                      ),
+                      const SizedBox(width: 25),
+                      Singleton.instance.startCalling ?? false
+                          ? SizedBox(
+                              width: Singleton.instance.startCalling ?? false
+                                  ? 130
+                                  : 191,
+                              child: CustomButton(
+                                isSubmit
+                                    ? Languages.of(context)!
+                                            .stop
+                                            .toUpperCase() +
+                                        ' & ' +
+                                        Languages.of(context)!
+                                            .submit
+                                            .toUpperCase()
+                                    : null,
+                                isLeading: !isSubmit,
+                                trailingWidget: CustomLoadingWidget(
+                                  gradientColors: [
+                                    ColorResource.colorFFFFFF,
+                                    ColorResource.colorFFFFFF.withOpacity(0.7),
+                                  ],
+                                ),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                cardShape: 5,
+                                onTap: isSubmit
+                                    ? () => submitRemainderEvent(true)
+                                    : () {},
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
+                        width: Singleton.instance.startCalling ?? false
+                            ? 120
+                            : 191,
+                        child: CustomButton(
+                          isSubmit
+                              ? Languages.of(context)!.submit.toUpperCase()
+                              : null,
+                          isLeading: !isSubmit,
+                          trailingWidget: CustomLoadingWidget(
+                            gradientColors: [
+                              ColorResource.colorFFFFFF,
+                              ColorResource.colorFFFFFF.withOpacity(0.7),
+                            ],
+                          ),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          cardShape: 5,
+                          onTap: isSubmit
+                              ? () => submitRemainderEvent(false)
+                              : () {},
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          decoration: BoxDecoration(
-            color: ColorResource.colorFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: ColorResource.color000000.withOpacity(.25),
-                blurRadius: 2.0,
-                offset: const Offset(1.0, 1.0),
-              ),
-            ],
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
-                ),
-                const SizedBox(width: 25),
-                SizedBox(
-                  width: 191,
-                  child: CustomButton(
-                    isSubmit
-                        ? Languages.of(context)!.submit.toUpperCase()
-                        : null,
-                    isLeading: !isSubmit,
-                    trailingWidget: CustomLoadingWidget(
-                      gradientColors: [
-                        ColorResource.colorFFFFFF,
-                        ColorResource.colorFFFFFF.withOpacity(0.7),
-                      ],
-                    ),
-                    fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
-                    cardShape: 5,
-                    onTap: isSubmit
-                        ? () async {
-                            if (_formKey.currentState!.validate()) {
-                              setState(() => isSubmit = false);
-                              bool isNotAutoCalling = true;
-                              if (widget.isAutoCalling) {
-                                await CallCustomerStatus.callStatusCheck(
-                                        callId: widget.paramValue['callId'])
-                                    .then((value) {
-                                  isNotAutoCalling = value;
-                                });
-                              }
-                              if (isNotAutoCalling) {
-                                LatLng latLng = const LatLng(0, 0);
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    latLng =
-                                        LatLng(res.latitude, res.longitude);
-                                  });
-                                }
-                                var requestBodyData = ReminderPostAPI(
-                                  eventId: ConstantEventValues.remainderEventId,
-                                  eventType: (widget.userType ==
-                                              Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : REMINDER'
-                                      : 'REMINDER',
-                                  caseId: widget.caseId,
-                                  eventCode:
-                                      ConstantEventValues.remainderEvenCode,
-                                  voiceCallEventCode:
-                                      ConstantEventValues.voiceCallEventCode,
-                                  callerServiceID:
-                                      Singleton.instance.callerServiceID ?? '',
-                                  createdBy: Singleton.instance.agentRef ?? '',
-                                  agentName: Singleton.instance.agentName ?? '',
-                                  agrRef: Singleton.instance.agrRef ?? '',
-                                  contractor:
-                                      Singleton.instance.contractor ?? '',
-                                  eventModule: widget.isCall!
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                                  eventAttr: EventAttr(
-                                    reminderDate:
-                                        nextActionDateControlller.text,
-                                    time: nextActionTimeControlller.text,
-                                    remarks: remarksControlller.text,
-                                    longitude: latLng.longitude,
-                                    latitude: latLng.latitude,
-                                  ),
-                                  contact: Contact(
-                                    cType: widget.postValue['cType'],
-                                    value: widget.postValue['value'],
-                                    health: ConstantEventValues.remainderHealth,
-                                    resAddressId0:
-                                        Singleton.instance.resAddressId_0 ?? '',
-                                    contactId0:
-                                        Singleton.instance.contactId_0 ?? '',
-                                  ),
-                                  callID: Singleton.instance.callID,
-                                  callingID: Singleton.instance.callingID,
-                                );
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                  APIRequestType.POST,
-                                  HttpUrl.reminderPostUrl(
-                                      'reminder', widget.userType),
-                                  requestBodydata: jsonEncode(requestBodyData),
-                                );
-                                if (postResult[Constants.success]) {
-                                  widget.bloc.add(
-                                    ChangeIsSubmitForMyVisitEvent(
-                                      Constants.remainder,
-                                    ),
-                                  );
-                                  if (!(widget.userType ==
-                                          Constants.fieldagent &&
-                                      widget.isCall!)) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitEvent(),
-                                    );
-                                  }
-
-                                  widget.bloc.add(
-                                    ChangeHealthStatusEvent(),
-                                  );
-
-                                  if (widget.isAutoCalling) {
-                                    Navigator.pop(widget.paramValue['context']);
-                                    Navigator.pop(widget.paramValue['context']);
-                                    widget.allocationBloc!
-                                        .add(StartCallingEvent(
-                                      customerIndex:
-                                          widget.paramValue['customerIndex'] +
-                                              1,
-                                      phoneIndex: 0,
-                                      isIncreaseCount: true,
-                                    ));
-                                  } else {
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    Navigator.pop(context);
-                                  }
-                                }
-                              }
-                            }
-                            setState(() => isSubmit = true);
-                          }
-                        : () {},
-                  ),
-                ),
-              ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
+  }
+
+  submitRemainderEvent(bool stopValue) async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => isSubmit = false);
+      bool isNotAutoCalling = true;
+      if (widget.isAutoCalling) {
+        await CallCustomerStatus.callStatusCheck(
+                callId: widget.paramValue['callId'])
+            .then((value) {
+          isNotAutoCalling = value;
+        });
+      }
+      if (isNotAutoCalling) {
+        LatLng latLng = const LatLng(0, 0);
+        if (Geolocator.checkPermission().toString() !=
+            PermissionStatus.granted.toString()) {
+          Position res = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.best);
+          setState(() {
+            latLng = LatLng(res.latitude, res.longitude);
+          });
+        }
+        var requestBodyData = ReminderPostAPI(
+          eventId: ConstantEventValues.remainderEventId,
+          eventType: (widget.userType == Constants.telecaller || widget.isCall!)
+              ? 'TC : REMINDER'
+              : 'REMINDER',
+          caseId: widget.caseId,
+          eventCode: ConstantEventValues.remainderEvenCode,
+          voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+          callerServiceID: Singleton.instance.callerServiceID ?? '',
+          createdBy: Singleton.instance.agentRef ?? '',
+          agentName: Singleton.instance.agentName ?? '',
+          agrRef: Singleton.instance.agrRef ?? '',
+          contractor: Singleton.instance.contractor ?? '',
+          eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
+          eventAttr: EventAttr(
+            reminderDate: nextActionDateControlller.text,
+            time: nextActionTimeControlller.text,
+            remarks: remarksControlller.text,
+            longitude: latLng.longitude,
+            latitude: latLng.latitude,
+          ),
+          contact: Contact(
+            cType: widget.postValue['cType'],
+            value: widget.postValue['value'],
+            health: ConstantEventValues.remainderHealth,
+            resAddressId0: Singleton.instance.resAddressId_0 ?? '',
+            contactId0: Singleton.instance.contactId_0 ?? '',
+          ),
+          callID: Singleton.instance.callID,
+          callingID: Singleton.instance.callingID,
+        );
+        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.POST,
+          HttpUrl.reminderPostUrl('reminder', widget.userType),
+          requestBodydata: jsonEncode(requestBodyData),
+        );
+        if (postResult[Constants.success]) {
+          widget.bloc.add(
+            ChangeIsSubmitForMyVisitEvent(
+              Constants.remainder,
+            ),
+          );
+          if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+            widget.bloc.add(
+              ChangeIsSubmitEvent(),
+            );
+          }
+
+          widget.bloc.add(
+            ChangeHealthStatusEvent(),
+          );
+
+          if (widget.isAutoCalling) {
+            Navigator.pop(widget.paramValue['context']);
+            Navigator.pop(widget.paramValue['context']);
+            Singleton.instance.startCalling = false;
+            if (!stopValue) {
+              widget.allocationBloc!.add(StartCallingEvent(
+                customerIndex: widget.paramValue['customerIndex'] + 1,
+                phoneIndex: 0,
+                isIncreaseCount: true,
+              ));
+            }
+          } else {
+            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            Navigator.pop(context);
+          }
+        }
+      }
+    }
+    setState(() => isSubmit = true);
   }
 
   Future pickDate(

@@ -607,12 +607,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
         if (resultValue[Constants.success]) {
           if (isAutoCalling) {
-            if (Singleton.instance.startCalling ?? false) {
+            if (event.autoCallingStopAndSubmit) {
               allocationBloc.add(StartCallingEvent(
                 customerIndex: paramValue['customerIndex'],
                 phoneIndex: paramValue['phoneIndex'] + 1,
               ));
             }
+            Singleton.instance.startCalling = false;
             Navigator.pop(paramValue['context']);
           }
           yield UpdateHealthStatusState();
@@ -706,13 +707,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
           }
           if (isAutoCalling) {
-            allocationBloc.add(StartCallingEvent(
-              customerIndex: paramValue['customerIndex'],
-              phoneIndex: paramValue['phoneIndex'] + 1,
-            ));
+            if (event.autoCallingStopAndSubmit) {
+              allocationBloc.add(StartCallingEvent(
+                customerIndex: paramValue['customerIndex'],
+                phoneIndex: paramValue['phoneIndex'] + 1,
+              ));
+            }
+            Singleton.instance.startCalling = false;
             Navigator.pop(paramValue['context']);
           }
-          print("00====---000");
           yield UpdateHealthStatusState();
 
           // update autocalling screen case list of contact health
@@ -796,7 +799,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              bloc: CaseDetailsBloc(AllocationBloc()),
+              bloc: this,
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -818,7 +821,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              bloc: CaseDetailsBloc(AllocationBloc()),
+              bloc: this,
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -840,7 +843,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              bloc: CaseDetailsBloc(AllocationBloc()),
+              bloc: this,
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -862,7 +865,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              bloc: CaseDetailsBloc(AllocationBloc()),
+              bloc: this,
             );
           case Constants.collections:
             return CustomCollectionsBottomSheet(
@@ -885,7 +888,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              bloc: CaseDetailsBloc(AllocationBloc()),
+              bloc: this,
             );
           case Constants.ots:
             return CustomOtsBottomSheet(
@@ -907,13 +910,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              bloc: CaseDetailsBloc(AllocationBloc()),
+              bloc: this,
             );
 
           case Constants.otherFeedback:
             return CustomOtherFeedBackBottomSheet(
               Languages.of(context)!.otherFeedBack,
-              CaseDetailsBloc(AllocationBloc()),
+              this,
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',

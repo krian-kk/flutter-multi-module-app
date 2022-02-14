@@ -42,12 +42,16 @@ class ClickAddressInvalidButtonEvent extends CaseDetailsEvent {
 
 class ClickPhoneInvalidButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
-  ClickPhoneInvalidButtonEvent(this.context);
+  final bool autoCallingStopAndSubmit;
+  ClickPhoneInvalidButtonEvent(this.context,
+      {this.autoCallingStopAndSubmit = true});
 }
 
 class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
-  ClickPhoneUnreachableSubmitedButtonEvent(this.context);
+  final bool autoCallingStopAndSubmit;
+  ClickPhoneUnreachableSubmitedButtonEvent(this.context,
+      {this.autoCallingStopAndSubmit = true});
 }
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {

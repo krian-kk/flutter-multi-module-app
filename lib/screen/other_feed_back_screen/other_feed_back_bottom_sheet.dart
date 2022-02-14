@@ -17,6 +17,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -124,448 +125,491 @@ class _CustomOtherFeedBackBottomSheetState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.89,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          resizeToAvoidBottomInset: true,
-          body: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BottomSheetAppbar(
-                  title: widget.cardTitle,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+      listener: (context, state) {
+        if (state is UpdateHealthStatusState) {
+          print(
+              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                print('dkjdlkjdkl;kd;lkd;lkd;');
+
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
+          print(
+              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
+        }
+      },
+      child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.89,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              resizeToAvoidBottomInset: true,
+              body: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BottomSheetAppbar(
+                      title: widget.cardTitle,
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15)
                           .copyWith(bottom: 5),
-                ),
-                Expanded(
-                  child: KeyboardActions(
-                    config: const KeyboardActionsConfig(
-                      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                      actions: [],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            widget.customerLoanUserWidget,
-                            const SizedBox(height: 11),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    Expanded(
+                      child: KeyboardActions(
+                        config: const KeyboardActionsConfig(
+                          keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                          actions: [],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: SingleChildScrollView(
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.nextActionDate,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width - 44) /
-                                          2,
-                                  child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.date,
-                                    dateControlller,
-                                    validationRules: const ['required'],
-                                    isReadOnly: true,
-                                    onTapped: () =>
-                                        pickDate(context, dateControlller),
-                                    suffixWidget: SvgPicture.asset(
-                                      ImageResource.calendar,
-                                      fit: BoxFit.scaleDown,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                widget.customerLoanUserWidget,
+                                const SizedBox(height: 11),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      Languages.of(context)!.nextActionDate,
+                                      fontSize: FontSize.twelve,
+                                      fontWeight: FontWeight.w400,
+                                      color: ColorResource.color666666,
+                                      fontStyle: FontStyle.normal,
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            expandList([
-                              FeedbackTemplate(
-                                  name: 'Add New Contact',
-                                  expanded: false,
-                                  data: [Data(name: 'addNewContact')])
-                            ], 0),
-                            ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: Singleton.instance.feedbackTemplate
-                                        ?.result?.feedbackTemplate?.length ??
-                                    0,
-                                itemBuilder: (context, int index) {
-                                  return expandList(
-                                      Singleton.instance.feedbackTemplate!
-                                          .result!.feedbackTemplate!,
-                                      index);
-                                }),
-                            const SizedBox(height: 5),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 13),
-                              child: CustomReadOnlyTextField(
-                                Languages.of(context)!.remark + '*',
-                                remarksController,
-                                validationRules: const ['required'],
-                                isLabel: true,
-                                isEnable: true,
-                              ),
-                            ),
-                            const SizedBox(height: 25),
-                            GestureDetector(
-                              onTap: () {},
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50),
-                                      side: const BorderSide(
-                                        width: 0.5,
-                                        color: ColorResource.colorDADADA,
+                                    SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width -
+                                                  44) /
+                                              2,
+                                      child: CustomReadOnlyTextField(
+                                        Languages.of(context)!.date,
+                                        dateControlller,
+                                        validationRules: const ['required'],
+                                        isReadOnly: true,
+                                        onTapped: () =>
+                                            pickDate(context, dateControlller),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.calendar,
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                       ),
                                     ),
-                                    color: ColorResource.color23375A,
-                                    elevation: 2,
-                                    child: InkWell(
-                                      onTap: () => getFiles(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                expandList([
+                                  FeedbackTemplate(
+                                      name: 'Add New Contact',
+                                      expanded: false,
+                                      data: [Data(name: 'addNewContact')])
+                                ], 0),
+                                ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: Singleton
+                                            .instance
+                                            .feedbackTemplate
+                                            ?.result
+                                            ?.feedbackTemplate
+                                            ?.length ??
+                                        0,
+                                    itemBuilder: (context, int index) {
+                                      return expandList(
+                                          Singleton.instance.feedbackTemplate!
+                                              .result!.feedbackTemplate!,
+                                          index);
+                                    }),
+                                const SizedBox(height: 5),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 13),
+                                  child: CustomReadOnlyTextField(
+                                    Languages.of(context)!.remark + '*',
+                                    remarksController,
+                                    validationRules: const ['required'],
+                                    isLabel: true,
+                                    isEnable: true,
+                                  ),
+                                ),
+                                const SizedBox(height: 25),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          side: const BorderSide(
+                                            width: 0.5,
+                                            color: ColorResource.colorDADADA,
+                                          ),
+                                        ),
+                                        color: ColorResource.color23375A,
+                                        elevation: 2,
+                                        child: InkWell(
+                                          onTap: () => getFiles(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
                                               children: [
-                                                SvgPicture.asset(
-                                                    ImageResource.upload),
-                                                const SizedBox(width: 5),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        ImageResource.upload),
+                                                    const SizedBox(width: 5),
+                                                    const CustomText(
+                                                      'UPLOAD AUDIO FILE',
+                                                      color: ColorResource
+                                                          .colorFFFFFF,
+                                                      fontSize:
+                                                          FontSize.sixteen,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    )
+                                                  ],
+                                                ),
                                                 const CustomText(
-                                                  'UPLOAD AUDIO FILE',
+                                                  'UPTO 5MB',
+                                                  lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
-                                                  fontSize: FontSize.sixteen,
+                                                  fontSize: FontSize.twelve,
                                                   fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
                                                 )
                                               ],
                                             ),
-                                            const CustomText(
-                                              'UPTO 5MB',
-                                              lineHeight: 1,
-                                              color: ColorResource.colorFFFFFF,
-                                              fontSize: FontSize.twelve,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                              ),
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                              ],
                             ),
-                            const SizedBox(height: 15),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorResource.color000000.withOpacity(.25),
-                  blurRadius: 2.0,
-                  offset: const Offset(1.0, 1.0),
-                ),
-              ],
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: SizedBox(
-                        width: 95,
-                        child: Center(
-                            child: CustomText(
-                          Languages.of(context)!.cancel.toUpperCase(),
-                          color: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          fontSize: FontSize.sixteen,
-                        ))),
-                  ),
-                  const SizedBox(width: 25),
-                  SizedBox(
-                    width: 191,
-                    child: CustomButton(
-                      isSubmit
-                          ? Languages.of(context)!.submit.toUpperCase()
-                          : null,
-                      isLeading: !isSubmit,
-                      trailingWidget: CustomLoadingWidget(
-                        gradientColors: [
-                          ColorResource.colorFFFFFF,
-                          ColorResource.colorFFFFFF.withOpacity(0.7),
-                        ],
-                      ),
-                      fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
-                      onTap: isSubmit
-                          ? () async {
-                              setState(() {});
-                              otherFeedbackContact.clear();
-                              for (int i = 0; i < (listOfContact.length); i++) {
-                                if (listOfContact[i]
-                                    .controller
-                                    .text
-                                    .isNotEmpty) {
-                                  otherFeedbackContact.add(OtherFeedBackContact(
-                                      cType: listOfContact[i]
-                                          .formValue
-                                          .toLowerCase(),
-                                      value: listOfContact[i].controller.text,
-                                      contactId0: '',
-                                      resAddressId0: ''));
-                                } else {
-                                  // otherFeedbackContact.clear();
-                                }
-                              }
-                              // SharedPreferences _pref =
-                              //     await SharedPreferences.getInstance();
-                              if (_formKey.currentState!.validate()) {
-                                // if (uploadFileLists.isEmpty) {
-                                //   AppUtils.showToast(
-                                //     'upload of audio file',
-                                //     gravity: ToastGravity.CENTER,
-                                //   );
-                                // } else {
-                                setState(() => isSubmit = false);
-                                bool isNotAutoCalling = true;
-
-                                if (widget.isAutoCalling) {
-                                  await CallCustomerStatus.callStatusCheck(
-                                          callId: widget.paramValue['callId'])
-                                      .then((value) {
-                                    isNotAutoCalling = value;
-                                  });
-                                }
-                                if (isNotAutoCalling) {
-                                  Position position = Position(
-                                    longitude: 0,
-                                    latitude: 0,
-                                    timestamp: DateTime.now(),
-                                    accuracy: 0,
-                                    altitude: 0,
-                                    heading: 0,
-                                    speed: 0,
-                                    speedAccuracy: 0,
-                                  );
-                                  if (Geolocator.checkPermission().toString() !=
-                                      PermissionStatus.granted.toString()) {
-                                    Position res =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
-                                    setState(() {
-                                      position = res;
-                                    });
-                                  }
-                                  var requestBodyData = OtherFeedBackPostModel(
-                                    eventId: ConstantEventValues
-                                        .otherFeedbackEventId,
-                                    eventType: (widget.userType ==
-                                                Constants.telecaller ||
-                                            widget.isCall!)
-                                        ? 'TC : FEEDBACK'
-                                        : 'FEEDBACK',
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                    callID: Singleton.instance.callID ?? '',
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    callingID:
-                                        Singleton.instance.callingID ?? '',
-                                    caseId: widget.caseId,
-                                    eventCode: ConstantEventValues
-                                        .otherFeedbackEvenCode,
-                                    eventModule: widget.isCall!
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    invalidNumber: false,
-                                    eventAttr: EventAttr(
-                                      remarks: remarksController.text,
-                                      vehicleavailable: isVehicleAvailable,
-                                      collectorfeedback:
-                                          collectorFeedBackValue ?? '',
-                                      actionproposed: actionproposedValue ?? '',
-                                      actionDate: dateControlller.text,
-                                      imageLocation: [''],
-                                      longitude: position.longitude,
-                                      latitude: position.latitude,
-                                      accuracy: position.accuracy,
-                                      altitude: position.altitude,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      altitudeAccuracy: 0,
-                                      // agentLocation: AgentLocation(),
-                                      contact: otherFeedbackContact.isNotEmpty
-                                          ? otherFeedbackContact
-                                          : null,
-                                    ),
-                                    contact: OtherFeedBackContact(
-                                      cType: widget.postValue['cType'],
-                                      health: widget.health,
-                                      value: widget.postValue['value'],
-                                      resAddressId0:
-                                          widget.postValue['resAddressId_0'] ??
-                                              '',
-                                      contactId0:
-                                          widget.postValue['contactId0'] ?? '',
-                                    ),
-                                  );
-                                  final Map<String, dynamic> postdata =
-                                      jsonDecode(jsonEncode(
-                                              requestBodyData.toJson()))
-                                          as Map<String, dynamic>;
-                                  List<dynamic> value = [];
-                                  for (var element in uploadFileLists) {
-                                    value.add(await MultipartFile.fromFile(
-                                        element.path.toString()));
-                                  }
-                                  postdata.addAll({
-                                    'files': value,
-                                  });
-
-                                  Map<String, dynamic> postResult =
-                                      await APIRepository.apiRequest(
-                                    APIRequestType.UPLOAD,
-                                    HttpUrl.otherFeedBackPostUrl(
-                                        'feedback', widget.userType),
-                                    formDatas: FormData.fromMap(postdata),
-                                  );
-
-                                  if (postResult[Constants.success]) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitForMyVisitEvent(
-                                        Constants.otherFeedback,
-                                      ),
-                                    );
-                                    if (!(widget.userType ==
-                                            Constants.fieldagent &&
-                                        widget.isCall!)) {
-                                      widget.bloc.add(
-                                        ChangeIsSubmitEvent(),
-                                      );
-                                    }
-
-                                    widget.bloc.add(
-                                      ChangeHealthStatusEvent(),
-                                    );
-
-                                    if (widget.isAutoCalling) {
-                                      Navigator.pop(
-                                          widget.paramValue['context']);
-                                      Navigator.pop(
-                                          widget.paramValue['context']);
-                                      // if (widget.health == 'jones') {
-                                      // } else {
-                                      //   print(
-                                      //       'Health Value is ================= > ${widget.health}');
-                                      // widget.allocationBloc!
-                                      //     .add(StartCallingEvent(
-                                      //   customerIndex: widget
-                                      //           .paramValue['customerIndex'] +
-                                      //       1,
-                                      //   phoneIndex: 0,
-                                      //   isIncreaseCount: true,
-                                      // ));
-                                      // }
-                                      widget.allocationBloc!
-                                          .add(StartCallingEvent(
-                                        customerIndex:
-                                            widget.paramValue['customerIndex'] +
-                                                1,
-                                        phoneIndex: 0,
-                                        isIncreaseCount: true,
-                                      ));
-                                    } else {
-                                      AppUtils.topSnackBar(context,
-                                          Constants.successfullySubmitted);
-                                      if (widget.isCall!) {
-                                        setState(() {
-                                          for (int i = 0;
-                                              i < (otherFeedbackContact.length);
-                                              i++) {
-                                            widget.bloc.listOfCallDetails?.add(
-                                                jsonDecode(jsonEncode(
-                                                    otherFeedbackContact[i])));
-                                          }
-                                        });
-                                        widget.bloc.add(
-                                            AddedNewCallContactListEvent());
-                                        // print(widget.bloc.listOfCallDetails);
-                                      } else {
-                                        setState(() {
-                                          for (int i = 0;
-                                              i < (otherFeedbackContact.length);
-                                              i++) {
-                                            // if (widget.bloc.listOfAddressDetails!
-                                            //     .contains(otherFeedbackContact[i])) {
-                                            widget.bloc.listOfAddressDetails
-                                                ?.add(jsonDecode(jsonEncode(
-                                                    otherFeedbackContact[i])));
-                                          }
-                                          // }
-                                        });
-                                        widget.bloc
-                                            .add(AddedNewAddressListEvent());
-                                        // print(widget.bloc.listOfAddressDetails);
-                                      }
-
-                                      Navigator.pop(context);
-                                    }
-                                  } else {}
-                                  // }
-                                }
-                              }
-                              setState(() => isSubmit = true);
-                            }
-                          : () {},
-                      cardShape: 5,
+              ),
+              bottomNavigationBar: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                decoration: BoxDecoration(
+                  color: ColorResource.colorFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorResource.color000000.withOpacity(.25),
+                      blurRadius: 2.0,
+                      offset: const Offset(1.0, 1.0),
                     ),
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: SizedBox(
+                            width: 95,
+                            child: Center(
+                                child: CustomText(
+                              Languages.of(context)!.cancel.toUpperCase(),
+                              color: ColorResource.colorEA6D48,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              fontSize: FontSize.sixteen,
+                            ))),
+                      ),
+                      const SizedBox(width: 25),
+                      Singleton.instance.startCalling ?? false
+                          ? SizedBox(
+                              width: Singleton.instance.startCalling ?? false
+                                  ? 130
+                                  : 191,
+                              child: CustomButton(
+                                isSubmit
+                                    ? Languages.of(context)!
+                                            .stop
+                                            .toUpperCase() +
+                                        ' & ' +
+                                        Languages.of(context)!
+                                            .submit
+                                            .toUpperCase()
+                                    : null,
+                                isLeading: !isSubmit,
+                                trailingWidget: CustomLoadingWidget(
+                                  gradientColors: [
+                                    ColorResource.colorFFFFFF,
+                                    ColorResource.colorFFFFFF.withOpacity(0.7),
+                                  ],
+                                ),
+                                fontSize: FontSize.sixteen,
+                                fontWeight: FontWeight.w600,
+                                onTap: isSubmit
+                                    ? () => submitOtherFeedbackEvent(true)
+                                    : () {},
+                                cardShape: 5,
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
+                        width: Singleton.instance.startCalling ?? false
+                            ? 120
+                            : 191,
+                        child: CustomButton(
+                          isSubmit
+                              ? Languages.of(context)!.submit.toUpperCase()
+                              : null,
+                          isLeading: !isSubmit,
+                          trailingWidget: CustomLoadingWidget(
+                            gradientColors: [
+                              ColorResource.colorFFFFFF,
+                              ColorResource.colorFFFFFF.withOpacity(0.7),
+                            ],
+                          ),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          onTap: isSubmit
+                              ? () => submitOtherFeedbackEvent(false)
+                              : () {},
+                          cardShape: 5,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
+  }
+
+  submitOtherFeedbackEvent(bool stopValue) async {
+    setState(() {});
+    otherFeedbackContact.clear();
+    for (int i = 0; i < (listOfContact.length); i++) {
+      if (listOfContact[i].controller.text.isNotEmpty) {
+        otherFeedbackContact.add(OtherFeedBackContact(
+            cType: listOfContact[i].formValue.toLowerCase(),
+            value: listOfContact[i].controller.text,
+            contactId0: '',
+            resAddressId0: ''));
+      } else {
+        // otherFeedbackContact.clear();
+      }
+    }
+    // SharedPreferences _pref =
+    //     await SharedPreferences.getInstance();
+    if (_formKey.currentState!.validate()) {
+      // if (uploadFileLists.isEmpty) {
+      //   AppUtils.showToast(
+      //     'upload of audio file',
+      //     gravity: ToastGravity.CENTER,
+      //   );
+      // } else {
+      setState(() => isSubmit = false);
+      bool isNotAutoCalling = true;
+
+      if (widget.isAutoCalling) {
+        await CallCustomerStatus.callStatusCheck(
+                callId: widget.paramValue['callId'])
+            .then((value) {
+          isNotAutoCalling = value;
+        });
+      }
+      if (isNotAutoCalling) {
+        Position position = Position(
+          longitude: 0,
+          latitude: 0,
+          timestamp: DateTime.now(),
+          accuracy: 0,
+          altitude: 0,
+          heading: 0,
+          speed: 0,
+          speedAccuracy: 0,
+        );
+        if (Geolocator.checkPermission().toString() !=
+            PermissionStatus.granted.toString()) {
+          Position res = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.best);
+          setState(() {
+            position = res;
+          });
+        }
+        var requestBodyData = OtherFeedBackPostModel(
+          eventId: ConstantEventValues.otherFeedbackEventId,
+          eventType: (widget.userType == Constants.telecaller || widget.isCall!)
+              ? 'TC : FEEDBACK'
+              : 'FEEDBACK',
+          voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+          createdBy: Singleton.instance.agentRef ?? '',
+          agentName: Singleton.instance.agentName ?? '',
+          agrRef: Singleton.instance.agrRef ?? '',
+          contractor: Singleton.instance.contractor ?? '',
+          callID: Singleton.instance.callID ?? '',
+          callerServiceID: Singleton.instance.callerServiceID ?? '',
+          callingID: Singleton.instance.callingID ?? '',
+          caseId: widget.caseId,
+          eventCode: ConstantEventValues.otherFeedbackEvenCode,
+          eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
+          invalidNumber: false,
+          eventAttr: EventAttr(
+            remarks: remarksController.text,
+            vehicleavailable: isVehicleAvailable,
+            collectorfeedback: collectorFeedBackValue ?? '',
+            actionproposed: actionproposedValue ?? '',
+            actionDate: dateControlller.text,
+            imageLocation: [''],
+            longitude: position.longitude,
+            latitude: position.latitude,
+            accuracy: position.accuracy,
+            altitude: position.altitude,
+            heading: position.heading,
+            speed: position.speed,
+            altitudeAccuracy: 0,
+            // agentLocation: AgentLocation(),
+            contact:
+                otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
+          ),
+          contact: OtherFeedBackContact(
+            cType: widget.postValue['cType'],
+            health: widget.health,
+            value: widget.postValue['value'],
+            resAddressId0: widget.postValue['resAddressId_0'] ?? '',
+            contactId0: widget.postValue['contactId0'] ?? '',
+          ),
+        );
+        final Map<String, dynamic> postdata =
+            jsonDecode(jsonEncode(requestBodyData.toJson()))
+                as Map<String, dynamic>;
+        List<dynamic> value = [];
+        for (var element in uploadFileLists) {
+          value.add(await MultipartFile.fromFile(element.path.toString()));
+        }
+        postdata.addAll({
+          'files': value,
+        });
+
+        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.UPLOAD,
+          HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
+          formDatas: FormData.fromMap(postdata),
+        );
+
+        if (postResult[Constants.success]) {
+          widget.bloc.add(
+            ChangeIsSubmitForMyVisitEvent(
+              Constants.otherFeedback,
+            ),
+          );
+          if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+            widget.bloc.add(
+              ChangeIsSubmitEvent(),
+            );
+          }
+
+          widget.bloc.add(
+            ChangeHealthStatusEvent(),
+          );
+
+          if (widget.isAutoCalling) {
+            Navigator.pop(widget.paramValue['context']);
+            Navigator.pop(widget.paramValue['context']);
+            Singleton.instance.startCalling = false;
+            // if (widget.health == 'jones') {
+            // } else {
+            //   print(
+            //       'Health Value is ================= > ${widget.health}');
+            // widget.allocationBloc!
+            //     .add(StartCallingEvent(
+            //   customerIndex: widget
+            //           .paramValue['customerIndex'] +
+            //       1,
+            //   phoneIndex: 0,
+            //   isIncreaseCount: true,
+            // ));
+            // }
+            if (!stopValue) {
+              widget.allocationBloc!.add(StartCallingEvent(
+                customerIndex: widget.paramValue['customerIndex'] + 1,
+                phoneIndex: 0,
+                isIncreaseCount: true,
+              ));
+            }
+          } else {
+            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            if (widget.isCall!) {
+              setState(() {
+                for (int i = 0; i < (otherFeedbackContact.length); i++) {
+                  widget.bloc.listOfCallDetails
+                      ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
+                }
+              });
+              widget.bloc.add(AddedNewCallContactListEvent());
+              // print(widget.bloc.listOfCallDetails);
+            } else {
+              setState(() {
+                for (int i = 0; i < (otherFeedbackContact.length); i++) {
+                  // if (widget.bloc.listOfAddressDetails!
+                  //     .contains(otherFeedbackContact[i])) {
+                  widget.bloc.listOfAddressDetails
+                      ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
+                }
+                // }
+              });
+              widget.bloc.add(AddedNewAddressListEvent());
+              // print(widget.bloc.listOfAddressDetails);
+            }
+
+            Navigator.pop(context);
+          }
+        } else {}
+        // }
+      }
+    }
+    setState(() => isSubmit = true);
   }
 
   Future pickDate(

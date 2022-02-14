@@ -413,7 +413,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
           messageShowBottomSheet();
         }
         if (state is StartCallingState) {
+          Singleton.instance.startCalling = true;
           setState(() {});
+
           if (bloc.customerCount < bloc.totalCount) {
             Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
@@ -485,8 +487,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   }
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
-                                  print(
-                                      '====================>>>>>>>>>>==== > ${postResult['data']['result']}');
                                   CaseDetailsBloc caseDetailsloc =
                                       CaseDetailsBloc(bloc)
                                         ..add(CaseDetailsInitialEvent(
@@ -562,6 +562,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
               }
             }
           } else {
+            Singleton.instance.startCalling = false;
             AppUtils.showToast('Auto Calling is Complete');
           }
         }
