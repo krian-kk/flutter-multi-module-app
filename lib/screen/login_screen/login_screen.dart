@@ -413,14 +413,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         const SizedBox(
-                                          height: 35,
+                                          height: 60,
                                         ),
                                         // SvgPicture.asset(ImageResource.origa),
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 35),
                                             child: Image.asset(
-                                                ImageResource.applogo)),
+                                                ImageResource.origa)),
                                         const SizedBox(
                                           height: 17,
                                         ),

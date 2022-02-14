@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // SvgPicture.asset(ImageResource.origa),
           Padding(
             padding: const EdgeInsets.all(17.0),
-            child: Image.asset(ImageResource.applogo),
+            child: Image.asset(ImageResource.origa),
           ),
           // CustomText(
           //   Languages.of(context)!.origa,
