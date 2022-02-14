@@ -607,12 +607,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         }
         if (resultValue[Constants.success]) {
           if (isAutoCalling) {
-            if (Singleton.instance.startCalling ?? false) {
+            if (event.autoCallingStopAndSubmit) {
               allocationBloc.add(StartCallingEvent(
                 customerIndex: paramValue['customerIndex'],
                 phoneIndex: paramValue['phoneIndex'] + 1,
               ));
             }
+            Singleton.instance.startCalling = false;
             Navigator.pop(paramValue['context']);
           }
           yield UpdateHealthStatusState();
@@ -706,13 +707,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
           }
           if (isAutoCalling) {
-            allocationBloc.add(StartCallingEvent(
-              customerIndex: paramValue['customerIndex'],
-              phoneIndex: paramValue['phoneIndex'] + 1,
-            ));
+            if (event.autoCallingStopAndSubmit) {
+              allocationBloc.add(StartCallingEvent(
+                customerIndex: paramValue['customerIndex'],
+                phoneIndex: paramValue['phoneIndex'] + 1,
+              ));
+            }
+            Singleton.instance.startCalling = false;
             Navigator.pop(paramValue['context']);
           }
-          print("00====---000");
           yield UpdateHealthStatusState();
 
           // update autocalling screen case list of contact health

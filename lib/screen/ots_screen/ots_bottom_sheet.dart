@@ -303,8 +303,34 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                         ))),
                   ),
                   const SizedBox(width: 25),
+                  Singleton.instance.startCalling ?? false
+                      ? SizedBox(
+                          width: Singleton.instance.startCalling ?? false
+                              ? 130
+                              : 191,
+                          child: CustomButton(
+                            isSubmit
+                                ? Languages.of(context)!.stop.toUpperCase() +
+                                    ' & ' +
+                                    Languages.of(context)!.submit.toUpperCase()
+                                : null,
+                            isLeading: !isSubmit,
+                            trailingWidget: CustomLoadingWidget(
+                              gradientColors: [
+                                ColorResource.colorFFFFFF,
+                                ColorResource.colorFFFFFF.withOpacity(0.7),
+                              ],
+                            ),
+                            fontSize: FontSize.sixteen,
+                            fontWeight: FontWeight.w600,
+                            onTap:
+                                isSubmit ? () => submitOTSEvent(true) : () {},
+                            cardShape: 5,
+                          ),
+                        )
+                      : const SizedBox(),
                   SizedBox(
-                    width: 191,
+                    width: Singleton.instance.startCalling ?? false ? 120 : 191,
                     child: CustomButton(
                       isSubmit
                           ? Languages.of(context)!.submit.toUpperCase()
@@ -318,156 +344,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       ),
                       fontSize: FontSize.sixteen,
                       fontWeight: FontWeight.w600,
-                      onTap: isSubmit
-                          ? () async {
-                              if (_formKey.currentState!.validate()) {
-                                if (selectedPaymentModeButton == '') {
-                                  AppUtils.showToast(
-                                      Constants.pleaseSelectOptions);
-                                } else {
-                                  setState(() => isSubmit = false);
-                                  bool isNotAutoCalling = true;
-                                  if (widget.isAutoCalling) {
-                                    await CallCustomerStatus.callStatusCheck(
-                                            callId: widget.paramValue['callId'])
-                                        .then((value) {
-                                      isNotAutoCalling = value;
-                                    });
-                                  }
-                                  if (isNotAutoCalling) {
-                                    Position position = Position(
-                                      longitude: 0,
-                                      latitude: 0,
-                                      timestamp: DateTime.now(),
-                                      accuracy: 0,
-                                      altitude: 0,
-                                      heading: 0,
-                                      speed: 0,
-                                      speedAccuracy: 0,
-                                    );
-                                    if (Geolocator.checkPermission()
-                                            .toString() !=
-                                        PermissionStatus.granted.toString()) {
-                                      Position res =
-                                          await Geolocator.getCurrentPosition(
-                                              desiredAccuracy:
-                                                  LocationAccuracy.best);
-                                      setState(() {
-                                        position = res;
-                                      });
-                                    }
-                                    var requestBodyData = OtsPostModel(
-                                      eventId: ConstantEventValues.otsEventId,
-                                      eventType: (widget.userType ==
-                                                  Constants.telecaller ||
-                                              widget.isCall!)
-                                          ? 'TC : OTS'
-                                          : 'OTS',
-                                      caseId: widget.caseId,
-                                      imageLocation: [''],
-                                      eventAttr: OTSEventAttr(
-                                        date: otsPaymentDateControlller.text,
-                                        remarkOts: remarksControlller.text,
-                                        amntOts:
-                                            otsProposedAmountControlller.text,
-                                        appStatus: 'OTS',
-                                        mode: selectedPaymentModeButton,
-                                        altitude: position.altitude,
-                                        accuracy: position.accuracy,
-                                        heading: position.heading,
-                                        speed: position.speed,
-                                        latitude: position.latitude,
-                                        longitude: position.longitude,
-                                      ),
-                                      eventCode:
-                                          ConstantEventValues.otsEvenCode,
-                                      createdBy:
-                                          Singleton.instance.agentRef ?? '',
-                                      agentName:
-                                          Singleton.instance.agentName ?? '',
-                                      eventModule: widget.isCall!
-                                          ? 'Telecalling'
-                                          : 'Field Allocation',
-                                      contact: OTSContact(
-                                        cType: widget.postValue['cType'],
-                                        health: ConstantEventValues.otsHealth,
-                                        value: widget.postValue['value'],
-                                      ),
-                                      callId: Singleton.instance.callID ?? '0',
-                                      callingId:
-                                          Singleton.instance.callingID ?? '0',
-                                      callerServiceId:
-                                          Singleton.instance.callerServiceID ??
-                                              '',
-                                      voiceCallEventCode: ConstantEventValues
-                                          .voiceCallEventCode,
-                                      agrRef: Singleton.instance.agrRef ?? '',
-                                      contractor:
-                                          Singleton.instance.contractor ?? '',
-                                    );
-
-                                    final Map<String, dynamic> postdata =
-                                        jsonDecode(jsonEncode(
-                                                requestBodyData.toJson()))
-                                            as Map<String, dynamic>;
-                                    List<dynamic> value = [];
-                                    for (var element in uploadFileLists) {
-                                      value.add(await MultipartFile.fromFile(
-                                          element.path.toString()));
-                                    }
-                                    postdata.addAll({
-                                      'files': value,
-                                    });
-
-                                    Map<String, dynamic> postResult =
-                                        await APIRepository.apiRequest(
-                                      APIRequestType.UPLOAD,
-                                      HttpUrl.otsPostUrl,
-                                      formDatas: FormData.fromMap(postdata),
-                                    );
-
-                                    if (postResult[Constants.success]) {
-                                      widget.bloc.add(
-                                        ChangeIsSubmitForMyVisitEvent(
-                                          Constants.ots,
-                                        ),
-                                      );
-                                      if (!(widget.userType ==
-                                              Constants.fieldagent &&
-                                          widget.isCall!)) {
-                                        widget.bloc.add(ChangeIsSubmitEvent());
-                                      }
-
-                                      widget.bloc.add(
-                                        ChangeHealthStatusEvent(),
-                                      );
-
-                                      if (widget.isAutoCalling) {
-                                        Navigator.pop(
-                                            widget.paramValue['context']);
-                                        Navigator.pop(
-                                            widget.paramValue['context']);
-                                        widget.allocationBloc!
-                                            .add(StartCallingEvent(
-                                          customerIndex: widget
-                                                  .paramValue['customerIndex'] +
-                                              1,
-                                          phoneIndex: 0,
-                                          isIncreaseCount: true,
-                                        ));
-                                      } else {
-                                        AppUtils.topSnackBar(context,
-                                            Constants.successfullySubmitted);
-                                        Navigator.pop(context);
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-
-                              setState(() => isSubmit = true);
-                            }
-                          : () {},
+                      onTap: isSubmit ? () => submitOTSEvent(false) : () {},
                       cardShape: 5,
                     ),
                   ),
@@ -478,6 +355,131 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
         ),
       ),
     );
+  }
+
+  submitOTSEvent(bool stopValue) async {
+    if (_formKey.currentState!.validate()) {
+      if (selectedPaymentModeButton == '') {
+        AppUtils.showToast(Constants.pleaseSelectOptions);
+      } else {
+        setState(() => isSubmit = false);
+        bool isNotAutoCalling = true;
+        if (widget.isAutoCalling) {
+          await CallCustomerStatus.callStatusCheck(
+                  callId: widget.paramValue['callId'])
+              .then((value) {
+            isNotAutoCalling = value;
+          });
+        }
+        if (isNotAutoCalling) {
+          Position position = Position(
+            longitude: 0,
+            latitude: 0,
+            timestamp: DateTime.now(),
+            accuracy: 0,
+            altitude: 0,
+            heading: 0,
+            speed: 0,
+            speedAccuracy: 0,
+          );
+          if (Geolocator.checkPermission().toString() !=
+              PermissionStatus.granted.toString()) {
+            Position res = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.best);
+            setState(() {
+              position = res;
+            });
+          }
+          var requestBodyData = OtsPostModel(
+            eventId: ConstantEventValues.otsEventId,
+            eventType:
+                (widget.userType == Constants.telecaller || widget.isCall!)
+                    ? 'TC : OTS'
+                    : 'OTS',
+            caseId: widget.caseId,
+            imageLocation: [''],
+            eventAttr: OTSEventAttr(
+              date: otsPaymentDateControlller.text,
+              remarkOts: remarksControlller.text,
+              amntOts: otsProposedAmountControlller.text,
+              appStatus: 'OTS',
+              mode: selectedPaymentModeButton,
+              altitude: position.altitude,
+              accuracy: position.accuracy,
+              heading: position.heading,
+              speed: position.speed,
+              latitude: position.latitude,
+              longitude: position.longitude,
+            ),
+            eventCode: ConstantEventValues.otsEvenCode,
+            createdBy: Singleton.instance.agentRef ?? '',
+            agentName: Singleton.instance.agentName ?? '',
+            eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
+            contact: OTSContact(
+              cType: widget.postValue['cType'],
+              health: ConstantEventValues.otsHealth,
+              value: widget.postValue['value'],
+            ),
+            callId: Singleton.instance.callID ?? '0',
+            callingId: Singleton.instance.callingID ?? '0',
+            callerServiceId: Singleton.instance.callerServiceID ?? '',
+            voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+            agrRef: Singleton.instance.agrRef ?? '',
+            contractor: Singleton.instance.contractor ?? '',
+          );
+
+          final Map<String, dynamic> postdata =
+              jsonDecode(jsonEncode(requestBodyData.toJson()))
+                  as Map<String, dynamic>;
+          List<dynamic> value = [];
+          for (var element in uploadFileLists) {
+            value.add(await MultipartFile.fromFile(element.path.toString()));
+          }
+          postdata.addAll({
+            'files': value,
+          });
+
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            APIRequestType.UPLOAD,
+            HttpUrl.otsPostUrl,
+            formDatas: FormData.fromMap(postdata),
+          );
+
+          if (postResult[Constants.success]) {
+            widget.bloc.add(
+              ChangeIsSubmitForMyVisitEvent(
+                Constants.ots,
+              ),
+            );
+            if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+              widget.bloc.add(ChangeIsSubmitEvent());
+            }
+
+            widget.bloc.add(
+              ChangeHealthStatusEvent(),
+            );
+
+            if (widget.isAutoCalling) {
+              Navigator.pop(widget.paramValue['context']);
+              Navigator.pop(widget.paramValue['context']);
+              Singleton.instance.startCalling = false;
+              if (!stopValue) {
+                widget.allocationBloc!.add(StartCallingEvent(
+                  customerIndex: widget.paramValue['customerIndex'] + 1,
+                  phoneIndex: 0,
+                  isIncreaseCount: true,
+                ));
+              }
+            } else {
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              Navigator.pop(context);
+            }
+          }
+        }
+      }
+    }
+
+    setState(() => isSubmit = true);
   }
 
   Future pickDate(

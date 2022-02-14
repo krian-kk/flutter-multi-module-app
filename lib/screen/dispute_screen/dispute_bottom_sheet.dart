@@ -206,8 +206,34 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       ))),
                 ),
                 const SizedBox(width: 25),
+                Singleton.instance.startCalling ?? false
+                    ? SizedBox(
+                        width: Singleton.instance.startCalling ?? false
+                            ? 130
+                            : 191,
+                        child: CustomButton(
+                          isSubmit
+                              ? Languages.of(context)!.stop.toUpperCase() +
+                                  ' & ' +
+                                  Languages.of(context)!.submit.toUpperCase()
+                              : null,
+                          isLeading: !isSubmit,
+                          trailingWidget: CustomLoadingWidget(
+                            gradientColors: [
+                              ColorResource.colorFFFFFF,
+                              ColorResource.colorFFFFFF.withOpacity(0.7),
+                            ],
+                          ),
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w600,
+                          onTap:
+                              isSubmit ? () => submitDisbuteEvent(true) : () {},
+                          cardShape: 5,
+                        ),
+                      )
+                    : const SizedBox(),
                 SizedBox(
-                  width: 191,
+                  width: Singleton.instance.startCalling ?? false ? 120 : 191,
                   child: CustomButton(
                     isSubmit
                         ? Languages.of(context)!.submit.toUpperCase()
@@ -221,129 +247,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     ),
                     fontSize: FontSize.sixteen,
                     fontWeight: FontWeight.w600,
-                    onTap: isSubmit
-                        ? () async {
-                            if (_formKey.currentState!.validate()) {
-                              // if (disputeDropDownValue != 'select') {
-                              setState(() => isSubmit = false);
-                              bool isNotAutoCalling = true;
-                              if (widget.isAutoCalling) {
-                                await CallCustomerStatus.callStatusCheck(
-                                        callId: widget.paramValue['callId'])
-                                    .then((value) {
-                                  isNotAutoCalling = value;
-                                });
-                              }
-                              if (isNotAutoCalling) {
-                                LatLng latLng = const LatLng(0, 0);
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    latLng =
-                                        LatLng(res.latitude, res.longitude);
-                                  });
-                                }
-                                var requestBodyData = DisputePostModel(
-                                  eventId: ConstantEventValues.disputeEventId,
-                                  eventType: (widget.userType ==
-                                              Constants.telecaller ||
-                                          widget.isCall!)
-                                      ? 'TC : DISPUTE'
-                                      : 'DISPUTE',
-                                  caseId: widget.caseId,
-                                  eventCode:
-                                      ConstantEventValues.disputeEventCode,
-                                  voiceCallEventCode:
-                                      ConstantEventValues.voiceCallEventCode,
-                                  createdBy: Singleton.instance.agentRef ?? '',
-                                  agentName: Singleton.instance.agentName ?? '',
-                                  contractor:
-                                      Singleton.instance.contractor ?? '',
-                                  agrRef: Singleton.instance.agrRef ?? '',
-                                  eventModule: widget.isCall!
-                                      ? 'Telecalling'
-                                      : 'Field Allocation',
-                                  callID: Singleton.instance.callID,
-                                  callerServiceID:
-                                      Singleton.instance.callerServiceID ?? '',
-                                  callingID: Singleton.instance.callingID,
-                                  eventAttr: EventAttr(
-                                    actionDate: nextActionDateControlller.text,
-                                    remarks: remarksControlller.text,
-                                    disputereasons:
-                                        disputeDropDownValue != 'select'
-                                            ? disputeDropDownValue
-                                            : '',
-                                    longitude: latLng.longitude,
-                                    latitude: latLng.latitude,
-                                  ),
-                                  contact: Contact(
-                                    cType: widget.postValue['cType'],
-                                    value: widget.postValue['value'],
-                                    health: ConstantEventValues.disputeHealth,
-                                    resAddressId0:
-                                        Singleton.instance.resAddressId_0 ?? '',
-                                    contactId0:
-                                        Singleton.instance.contactId_0 ?? '',
-                                  ),
-                                );
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                        APIRequestType.POST,
-                                        HttpUrl.disputePostUrl(
-                                          'dispute',
-                                          widget.userType,
-                                        ),
-                                        requestBodydata:
-                                            jsonEncode(requestBodyData));
-                                if (postResult[Constants.success]) {
-                                  widget.bloc.add(
-                                    ChangeIsSubmitForMyVisitEvent(
-                                      Constants.dispute,
-                                    ),
-                                  );
-                                  if (!(widget.userType ==
-                                          Constants.fieldagent &&
-                                      widget.isCall!)) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitEvent(),
-                                    );
-                                  }
-
-                                  widget.bloc.add(
-                                    ChangeHealthStatusEvent(),
-                                  );
-
-                                  if (widget.isAutoCalling) {
-                                    Navigator.pop(widget.paramValue['context']);
-                                    Navigator.pop(widget.paramValue['context']);
-                                    widget.allocationBloc!
-                                        .add(StartCallingEvent(
-                                      customerIndex:
-                                          widget.paramValue['customerIndex'] +
-                                              1,
-                                      phoneIndex: 0,
-                                      isIncreaseCount: true,
-                                    ));
-                                  } else {
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    Navigator.pop(context);
-                                  }
-                                }
-                              }
-                              // } else {
-                              //   AppUtils.showToast(
-                              //       Constants.pleaseSelectDropDownValue);
-                              // }
-                              setState(() => isSubmit = true);
-                            }
-                          }
-                        : () {},
+                    onTap: isSubmit ? () => submitDisbuteEvent(false) : () {},
                     cardShape: 5,
                   ),
                 ),
@@ -353,6 +257,111 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
         ),
       ),
     );
+  }
+
+  submitDisbuteEvent(bool stopValue) async {
+    {
+      if (_formKey.currentState!.validate()) {
+        // if (disputeDropDownValue != 'select') {
+        setState(() => isSubmit = false);
+        bool isNotAutoCalling = true;
+        if (widget.isAutoCalling) {
+          await CallCustomerStatus.callStatusCheck(
+                  callId: widget.paramValue['callId'])
+              .then((value) {
+            isNotAutoCalling = value;
+          });
+        }
+        if (isNotAutoCalling) {
+          LatLng latLng = const LatLng(0, 0);
+          if (Geolocator.checkPermission().toString() !=
+              PermissionStatus.granted.toString()) {
+            Position res = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.best);
+            setState(() {
+              latLng = LatLng(res.latitude, res.longitude);
+            });
+          }
+          var requestBodyData = DisputePostModel(
+            eventId: ConstantEventValues.disputeEventId,
+            eventType:
+                (widget.userType == Constants.telecaller || widget.isCall!)
+                    ? 'TC : DISPUTE'
+                    : 'DISPUTE',
+            caseId: widget.caseId,
+            eventCode: ConstantEventValues.disputeEventCode,
+            voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+            createdBy: Singleton.instance.agentRef ?? '',
+            agentName: Singleton.instance.agentName ?? '',
+            contractor: Singleton.instance.contractor ?? '',
+            agrRef: Singleton.instance.agrRef ?? '',
+            eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
+            callID: Singleton.instance.callID,
+            callerServiceID: Singleton.instance.callerServiceID ?? '',
+            callingID: Singleton.instance.callingID,
+            eventAttr: EventAttr(
+              actionDate: nextActionDateControlller.text,
+              remarks: remarksControlller.text,
+              disputereasons:
+                  disputeDropDownValue != 'select' ? disputeDropDownValue : '',
+              longitude: latLng.longitude,
+              latitude: latLng.latitude,
+            ),
+            contact: Contact(
+              cType: widget.postValue['cType'],
+              value: widget.postValue['value'],
+              health: ConstantEventValues.disputeHealth,
+              resAddressId0: Singleton.instance.resAddressId_0 ?? '',
+              contactId0: Singleton.instance.contactId_0 ?? '',
+            ),
+          );
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              APIRequestType.POST,
+              HttpUrl.disputePostUrl(
+                'dispute',
+                widget.userType,
+              ),
+              requestBodydata: jsonEncode(requestBodyData));
+          if (postResult[Constants.success]) {
+            widget.bloc.add(
+              ChangeIsSubmitForMyVisitEvent(
+                Constants.dispute,
+              ),
+            );
+            if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+              widget.bloc.add(
+                ChangeIsSubmitEvent(),
+              );
+            }
+
+            widget.bloc.add(
+              ChangeHealthStatusEvent(),
+            );
+
+            if (widget.isAutoCalling) {
+              Navigator.pop(widget.paramValue['context']);
+              Navigator.pop(widget.paramValue['context']);
+              Singleton.instance.startCalling = false;
+              if (!stopValue) {
+                widget.allocationBloc!.add(StartCallingEvent(
+                  customerIndex: widget.paramValue['customerIndex'] + 1,
+                  phoneIndex: 0,
+                  isIncreaseCount: true,
+                ));
+              }
+            } else {
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              Navigator.pop(context);
+            }
+          }
+        }
+        // } else {
+        //   AppUtils.showToast(
+        //       Constants.pleaseSelectDropDownValue);
+        // }
+        setState(() => isSubmit = true);
+      }
+    }
   }
 
   Future pickDate(
