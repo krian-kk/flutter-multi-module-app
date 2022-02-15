@@ -871,7 +871,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   children: [
                                     SvgPicture.asset(ImageResource.location),
                                     const SizedBox(
-                                      width: 13.0,
+                                      width: 3.0,
                                     ),
                                     SizedBox(
                                       // width: MediaQuery.of(context).size.width *
@@ -884,10 +884,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      width: 10.0,
+                                      width: 8.0,
                                     ),
                                     SizedBox(
-                                        width: 76,
+                                        width: 74,
                                         height: 40,
                                         child: CustomButton(
                                           Languages.of(context)!.yes,
@@ -903,7 +903,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                           },
                                         )),
                                     const SizedBox(
-                                      width: 5.0,
+                                      width: 3.0,
                                     ),
                                     SizedBox(
                                         width: 85,

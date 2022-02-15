@@ -1,5 +1,3 @@
-import 'package:origa/http/env.dart';
-
 class HttpUrl {
   // static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
   // static const String baseUrl = Env.instalmintUrl;

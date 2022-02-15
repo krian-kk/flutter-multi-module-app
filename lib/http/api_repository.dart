@@ -94,8 +94,7 @@ class APIRepository {
           '\n  response-->${jsonDecode(response.toString())}');
 
       if (response!.headers['access-token'] != null) {
-        print('Here get New Access Token for every API call then store');
-        print(response.headers['access-token']);
+        debugPrint('Access Token is => ${response.headers['access-token']}');
         // Here get New Access Token for every API call then store
         if (response.headers['access-token']![0].toString() != 'false') {
           _prefs.setString(Constants.accessToken,
@@ -121,9 +120,10 @@ class APIRepository {
         error = Constants
             .connectionTimeout; // connection timeout sometime will come
       }
-      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+
+      debugPrint(
+          'Error Status :  urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
-      print('response dio error data -------->');
 
       if (error.toString() != "DioErrorType.response") {
         // isPop is used for if i load new api then get any error then pop the back screen

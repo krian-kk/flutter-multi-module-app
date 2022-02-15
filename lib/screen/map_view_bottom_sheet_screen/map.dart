@@ -81,7 +81,7 @@ class _MapNavigationState extends State<MapNavigation> {
       });
       await createMarker();
     }).catchError((e) {
-      print(e);
+      debugPrint(e);
     });
   }
 
@@ -261,7 +261,7 @@ class _MapNavigationState extends State<MapNavigation> {
 
       return true;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return false;
   }

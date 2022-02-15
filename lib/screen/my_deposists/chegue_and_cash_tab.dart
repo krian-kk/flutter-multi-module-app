@@ -390,12 +390,14 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                 // print(receiptAmount);
                                               });
                                               ids.clear();
-                                              selectedValue.forEach((element) {
+
+                                              for (var element
+                                                  in selectedValue) {
                                                 if (element.isSelected) {
                                                   // print(element._id);
                                                   ids.add(element._id);
                                                 }
-                                              });
+                                              }
                                             },
                                           ),
                                         )

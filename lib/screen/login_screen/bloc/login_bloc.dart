@@ -109,10 +109,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           APIRequestType.post, HttpUrl.loginUrl,
           requestBodydata: event.paramValue);
 
-      print(response.toString());
       if (response['success'] == false) {
         yield SignInLoadedState();
-        // print("Login errors");
         AppUtils.showToast(response['data'], backgroundColor: Colors.red);
       } else if (response['statusCode'] == 401) {
         loginErrorResponse = LoginErrorMessage.fromJson(response['data']);
@@ -132,15 +130,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               backgroundColor: Colors.red);
         }
       } else {
-        print('---------status success------');
         if (response['data']['data'] != null) {
           loginResponse = LoginResponseModel.fromJson(response['data']);
           // Store the access-token in local storage
-          print('get header values---------->');
-          print(loginResponse.data!.accessToken!);
-          print(loginResponse.data!.refreshToken!);
-          print(loginResponse.data!.sessionState!);
-          print(event.userId!);
           _prefs.setString(
               Constants.accessToken, loginResponse.data!.accessToken!);
           _prefs.setInt(

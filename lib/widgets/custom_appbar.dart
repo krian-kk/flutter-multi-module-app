@@ -88,7 +88,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
           //  showSearch
           //     ? searchBar()
           //     :
-          titleString != null || titleString != ''
+          titleString != ''
               ? widget.subTitle == null || widget.subTitle == ''
                   ? CustomText(
                       titleString,
