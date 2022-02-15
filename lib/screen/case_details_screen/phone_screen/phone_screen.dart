@@ -255,7 +255,16 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         .caseDetailsAPIValue
                                                         .result
                                                         ?.callDetails,
-                                                    false)),
+                                                    false,
+                                                    seleectedContactNumber:
+                                                        widget
+                                                            .bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.callDetails![
+                                                                widget.index]
+                                                                ['value']
+                                                            .toString())),
                                             child: Container(
                                                 decoration: const BoxDecoration(
                                                     color: ColorResource

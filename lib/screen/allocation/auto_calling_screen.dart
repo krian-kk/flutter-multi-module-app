@@ -159,7 +159,7 @@ class AutoCalling {
                                           23, 0, 10, 0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Column(
                                             crossAxisAlignment:
@@ -177,7 +177,7 @@ class AutoCalling {
                                                 height: 3.0,
                                               ),
                                               SizedBox(
-                                                width: 260,
+                                                // width: 260,
                                                 child: CustomText(
                                                   bloc
                                                       .autoCallingResultList[
