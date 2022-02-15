@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Font {
   static const Font latoBold = Font("Lato-Bold");
   static const Font latoItalic = Font("Lato-Italic");
@@ -51,7 +49,7 @@ class FontSize {
   static const double thirtyFive = 35.0;
 }
 
-class FontWeights {
-  static const bold = FontWeight.bold;
-  static const normal = FontWeight.normal;
-}
+// class FontWeights {
+//   static const bold = FontWeight.bold;
+//   static const normal = FontWeight.normal;
+// }

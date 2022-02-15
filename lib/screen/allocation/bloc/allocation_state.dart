@@ -24,12 +24,6 @@ class NavigateCaseDetailState extends AllocationState {
 
 class FilterSelectOptionState extends AllocationState {}
 
-class SearchScreenLoadingState extends AllocationState {}
-
-class SearchScreenLoadedState extends AllocationState {}
-
-class SearchScreenNormalState extends AllocationState {}
-
 class TapAreYouAtOfficeOptionsState extends AllocationState {}
 
 class UpdateNewValueState extends AllocationState {}
@@ -56,16 +50,6 @@ class TapBuildRouteState extends AllocationState {
 class BuildRouteLoadMoreState extends AllocationState {
   final dynamic successResponse;
   BuildRouteLoadMoreState({this.successResponse});
-}
-
-class SearchScreenSuccessState extends AllocationState {
-  final SearchModel data;
-  SearchScreenSuccessState(this.data);
-}
-
-class SearchFailedState extends AllocationState {
-  final String error;
-  SearchFailedState(this.error);
 }
 
 class CaseListViewLoadingState extends AllocationState {}

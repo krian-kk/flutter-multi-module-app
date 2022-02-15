@@ -16,7 +16,6 @@ import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dar
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/models/my_receipts_model.dart';
 import 'package:origa/models/priority_case_list.dart';
-import 'package:origa/models/receipts_weekly_model/case.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
@@ -26,13 +25,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
-
-class DashboardReceiptWeekly {
-  late String caseId;
-  late String appStatus;
-  late ReceiptWeeklyCase caseValue;
-  DashboardReceiptWeekly(this.caseId, this.appStatus, this.caseValue);
-}
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());

@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gravity: ToastGravity.CENTER);
       }
     } on PlatformException catch (e) {
-      print(e.message);
+      debugPrint(e.message);
     }
   }
 

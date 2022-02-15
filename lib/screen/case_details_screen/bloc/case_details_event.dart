@@ -9,13 +9,6 @@ class CaseDetailsInitialEvent extends CaseDetailsEvent {
   CaseDetailsInitialEvent({this.paramValues, this.context});
 }
 
-class LaunchWhatsappEvent extends CaseDetailsEvent {
-  final String whatsappUrlAddress;
-  LaunchWhatsappEvent(this.whatsappUrlAddress);
-}
-
-class LaunchSMSEvent extends CaseDetailsEvent {}
-
 class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
   final int index;
   ClickMainAddressBottomSheetEvent(this.index);
@@ -27,8 +20,6 @@ class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
 }
 
 class ClickViewMapEvent extends CaseDetailsEvent {}
-
-class ClickUnreachableButtonEvent extends CaseDetailsEvent {}
 
 class ClickCustomerNotMetButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
@@ -79,14 +70,6 @@ class PostImageCapturedEvent extends CaseDetailsEvent {
   final List<File>? fileData;
   PostImageCapturedEvent({this.postData, this.fileData});
 }
-
-class EnableUnreachableBtnEvent extends CaseDetailsEvent {}
-
-class DisableUnreachableBtnEvent extends CaseDetailsEvent {}
-
-class EnablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
-
-class DisablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
 
 class AddedNewAddressListEvent extends CaseDetailsEvent {}
 

@@ -17,7 +17,7 @@ import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 
-enum TravelModes { driving, bicycling, transit, walking }
+// enum TravelModes { driving, bicycling, transit, walking }
 
 class MapNavigation extends StatefulWidget {
   final List<dynamic>? multipleLatLong;

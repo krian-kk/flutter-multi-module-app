@@ -1,10 +1,10 @@
-part of 'no_allocation_bloc.dart';
+// part of 'no_allocation_bloc.dart';
 
-@immutable
-class NoAllocationState extends BaseEquatable {}
+// @immutable
+// class NoAllocationState extends BaseEquatable {}
 
-class NoAllocationInitial extends NoAllocationState {}
+// class NoAllocationInitial extends NoAllocationState {}
 
-class NoAllocationLoadingState extends NoAllocationState {}
+// class NoAllocationLoadingState extends NoAllocationState {}
 
-class NoAllocationLoadedState extends NoAllocationState {}
+// class NoAllocationLoadedState extends NoAllocationState {}
