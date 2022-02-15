@@ -1,8 +1,8 @@
 import 'package:origa/http/env.dart';
 
 class HttpUrl {
-  // static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
-  static const String baseUrl = Env.instalmintUrl;
+  static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
+  // static const String baseUrl = Env.instalmintUrl;
   // static const String baseUrl = 'https://devapi.instalmint.com/';
   // static const String baseUrl = 'https://origa-dev/';
   static const String version = 'v1/';
