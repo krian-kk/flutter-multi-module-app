@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/launcher_icon"
-        android:label="Instalmint">
+        android:label="Origa">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
