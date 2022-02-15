@@ -195,8 +195,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       value.get('case' + caseId.toString())!.result),
       // );
 
-      print(
-          "case agref --> ${caseDetailsAPIValue.result?.caseDetails?.agrRef}");
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
       Singleton.instance.agrRef =
@@ -620,7 +618,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
           // update autocalling screen case list of contact health
           if (paramValue['contactIndex'] != null) {
-            print("update autocalling screen case list of contact health");
             allocationBloc.add(AutoCallContactHealthUpdateEvent(
               contactIndex: paramValue['contactIndex'],
               caseIndex: paramValue['caseIndex'],
@@ -757,8 +754,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       };
     }
     if (event is ChangeHealthStatusEvent) {
-      print("Event submitted ==> ");
-
       yield UpdateHealthStatusState();
     }
   }
@@ -1207,8 +1202,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String caseId,
     String urlString,
   ) async {
-    print("selecedted case index ==> ${paramValue['contactIndex']}");
-    // indexValue = allocationBloc.indexValue;
     var requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,

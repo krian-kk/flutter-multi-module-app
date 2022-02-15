@@ -6,7 +6,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
-import 'package:origa/screen/telecaller_phone_bottom_sheet_screen/phone_bottom_sheet_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -241,17 +240,11 @@ class AutoCalling {
                                               'mobile') {
                                             return GestureDetector(
                                               onTap: () async {
-                                                print(
-                                                    "getting agref value error ---> ${bloc.autoCallingResultList[indexs].agrRef}}");
                                                 Singleton.instance.agrRef = bloc
                                                     .autoCallingResultList[
                                                         indexs]
                                                     .agrRef;
 
-                                                print(bloc
-                                                    .autoCallingResultList[
-                                                        indexs]
-                                                    .agrRef);
                                                 CaseDetailsBloc caseDetailsloc =
                                                     CaseDetailsBloc(bloc)
                                                       ..add(

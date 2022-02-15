@@ -117,19 +117,14 @@ class _CustomCollectionsBottomSheetState
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          print(
-              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                print('dkjdlkjdkl;kd;lkd;lkd;');
-
                 widget.bloc.caseDetailsAPIValue.result
                     ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
-
                 break;
               case 1:
                 widget.bloc.caseDetailsAPIValue.result
@@ -146,8 +141,6 @@ class _CustomCollectionsBottomSheetState
                 break;
             }
           });
-          print(
-              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(

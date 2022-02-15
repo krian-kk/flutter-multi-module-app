@@ -48,7 +48,6 @@ class _AddressScreenState extends State<AddressScreen>
     super.initState();
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
-    print("selected tab.....r index");
     // Get Initial address health status based on selected tab customer met / customer not met / invalid
     widget.bloc.add(UpdateHealthStatusEvent(context,
         selectedHealthIndex: widget.index,
@@ -59,9 +58,7 @@ class _AddressScreenState extends State<AddressScreen>
 
   _handleTabSelection() {
     if (_controller.indexIsChanging) {
-      setState(() {
-        print("selected tab index");
-      });
+      setState(() {});
     }
   }
 

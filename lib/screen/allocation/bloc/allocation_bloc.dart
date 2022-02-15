@@ -356,11 +356,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       index = _pref.getInt('autoCallingIndexValue') ?? 0;
       indexValue = index;
       _pref.setInt('autoCallingIndexValue', index + 1);
-      print(Singleton.instance.startCalling);
       if (Singleton.instance.startCalling ?? false) {
-        print(Singleton.instance.startCalling.toString() + 'jdlj');
         yield StartCallingState();
-        print('ddldk');
       }
     }
     if (event is CallUnSuccessfullyConnectedEvent) {
@@ -371,7 +368,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       _pref.setInt('autoCallingIndexValue', index + 1);
       _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
       if (Singleton.instance.startCalling ?? false) {
-        print('tdjdjkdjd');
         yield StartCallingState();
       }
     }
@@ -455,7 +451,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
     if (event is UpdateNewValuesEvent) {
       resultList.asMap().forEach((index, value) {
-        print(event.paramValue);
         if (value.caseId == event.paramValue) {
           value.collSubStatus = 'used';
         }

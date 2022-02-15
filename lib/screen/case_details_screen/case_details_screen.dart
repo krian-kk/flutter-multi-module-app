@@ -1012,8 +1012,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc: bloc,
             );
           case Constants.rtp:
-            print('jdk==================');
-            print('Bloc values--> ${bloc.addressCustomerMetGridList}');
             return CustomRtpBottomSheet(
               Languages.of(context)!.rtp,
               caseId: bloc.caseId.toString(),

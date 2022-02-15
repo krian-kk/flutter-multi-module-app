@@ -134,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Languages.of(context)!.save,
                   fontSize: FontSize.sixteen,
                   onTap: () {
-                    print('gjghj');
                     showComformSecurePinDialogBox(securePinCodeContoller.text);
                     // Navigator.pop(context);
                   },
@@ -216,7 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: () {
                       showForgorSecurePinDialogBox();
-                      print('On Pressed');
                     },
                     child: Container(
                       padding: const EdgeInsets.all(2),
@@ -275,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: SvgPicture.asset(ImageResource.close),
                             ))
                       ]),
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: SizedBox(
                       width: 250,

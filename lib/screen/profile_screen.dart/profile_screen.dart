@@ -149,7 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Languages.of(context)!.save,
                   fontSize: FontSize.sixteen,
                   onTap: () {
-                    print('API Call for Save Password');
                     Navigator.pop(context);
                   },
                 ),
