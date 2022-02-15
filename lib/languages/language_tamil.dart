@@ -14,13 +14,13 @@ class LanguageTa extends Languages {
   String get password => 'கடவுச்சொல்';
 
   @override
-  String get userId => 'பயனர் பெயர்';
+  String get userId => 'பணியாளர் ஐடி';
 
   @override
   String get userName => 'பயனர் பெயர்';
 
   @override
-  String get rememberMe => 'என்னை நினைவு செய்யுங்கள்';
+  String get rememberMe => 'என்னை நினைவு செய்';
 
   @override
   String get passwordNotMatch => 'கடவுச்சொல் பொருந்தவில்லை';
@@ -29,7 +29,7 @@ class LanguageTa extends Languages {
   String get resetPassword => 'கடவுச்சொல்லை மீட்டமைக்க';
 
   @override
-  String get loginViaDiffrentUser => 'வெவ்வேறு பயனர் வழியாக உள்நுழைக';
+  String get loginViaDiffrentUser => 'வேறு ஒரு பணியாளராக உள்நுழைக';
 
   @override
   String get allocation => 'ஒதுக்கீடு';
@@ -62,10 +62,10 @@ class LanguageTa extends Languages {
   String get mapView => 'வரைபடக் காட்சி';
 
   @override
-  String get hignPriority => 'அதி முக்கியத்துவம்';
+  String get hignPriority => 'அதி முக்கியம்';
 
   @override
-  String get searchbasedOn => 'அடிப்படையில் தேடல்';
+  String get searchbasedOn => 'தேடு';
 
   @override
   String get message => 'செய்தி';
@@ -74,7 +74,7 @@ class LanguageTa extends Languages {
   String get followUpDate => 'பின்தொடரும் தேதி';
 
   @override
-  String get change => 'மாற்றம்';
+  String get change => 'மாற்று';
 
   @override
   String get all => 'அனைத்தும்';
@@ -95,19 +95,19 @@ class LanguageTa extends Languages {
   String get amount => 'தொகை';
 
   @override
-  String get priorityFollowUp => 'முன்னுரிமை பின்பற்றுதல்';
+  String get priorityFollowUp => 'அதி முக்கிய';
 
   @override
-  String get untouchedCases => 'தீண்டப்படாத வழக்குகள்';
+  String get untouchedCases => 'தொடாத கேஸ்';
 
   @override
-  String get brokenPTP => 'உடைந்த PTP';
+  String get brokenPTP => 'பணம் வராத PTP';
 
   @override
   String get myReceipts => 'எனது ரசீதுகள்';
 
   @override
-  String get myVisits => 'எனது வருகைகள்';
+  String get myVisits => 'எனது சந்திப்புகள்';
 
   @override
   String get myCalls => 'என் அழைப்புகள்';
@@ -122,7 +122,7 @@ class LanguageTa extends Languages {
   String get help => 'உதவி';
 
   @override
-  String get count => 'மொத்தம்';
+  String get count => 'எண்ணிக்கை';
 
   @override
   String get today => 'இன்று';
@@ -179,7 +179,7 @@ class LanguageTa extends Languages {
   String get receiptAmount => 'ரசீது தொகை*';
 
   @override
-  String get depositAmount => 'வைப்பு தொகை*';
+  String get depositAmount => 'டெபாசிஸ்ட் தொகை*';
 
   @override
   String get yarding => 'யார்டிங்';
@@ -194,10 +194,10 @@ class LanguageTa extends Languages {
   String get repoStatus => 'ரெப்போ நிலை';
 
   @override
-  String get yardName => 'முற்றத்தின் பெயர்*';
+  String get yardName => 'யார்டின் பெயர்*';
 
   @override
-  String get remark => 'கருத்துக்கள்';
+  String get remark => 'குறிப்புகள்';
 
   @override
   String get uploadDepositSlip => 'டெபாசிட் சீட்டை பதிவேற்றவும்';
@@ -206,13 +206,13 @@ class LanguageTa extends Languages {
   String get send => 'அனுப்பு';
 
   @override
-  String get typeYourMessage => 'உங்கள் செய்தியைத் தட்டச்சு செய்யவும்';
+  String get typeYourMessage => 'செய்தியை சொல்லுங்கள்';
 
   @override
   String get cancel => 'ரத்து செய்';
 
   @override
-  String get search => 'தேடல்';
+  String get search => 'தேடு';
 
   @override
   String get searchAllocationDetails => 'ஒதுக்கீடு விவரங்களைத் தேடவும்';
@@ -290,10 +290,10 @@ class LanguageTa extends Languages {
   String get view => 'விவரம்';
 
   @override
-  String get customerMet => 'வாடிக்கையாளர் சந்திப்பு';
+  String get customerMet => 'வாடிக்கையாளர் சந்தித்தது';
 
   @override
-  String get customerNotMet => 'சந்திக்கவில்லை';
+  String get customerNotMet => 'வாடிக்கையாளர் சந்திக்காதது';
 
   @override
   String get logout => 'வெளியேறு';
@@ -314,22 +314,22 @@ class LanguageTa extends Languages {
   String get remainderCb => 'நினைவூட்டல்/CB';
 
   @override
-  String get collections => 'சேகரிப்புகள்';
+  String get collections => 'வசூல்';
 
   @override
   String get ots => 'OTS';
 
   @override
-  String get product => 'தயாரிப்பு';
+  String get product => 'கடன் வகை';
 
   @override
-  String get batchNo => 'தொகுதி எண்.';
+  String get batchNo => 'அடுக்கு எண்.';
 
   @override
   String get done => 'முடிந்தது';
 
   @override
-  String get select => 'தேர்ந்தெடுக்கவும்';
+  String get select => 'தேர்வு செய்க';
 
   @override
   String get error => 'பிழை';
@@ -338,13 +338,13 @@ class LanguageTa extends Languages {
   String get homeAddress => 'வீட்டு முகவரி';
 
   @override
-  String get markAsHome => 'முகப்பு எனக் குறிக்கவும்';
+  String get markAsHome => 'வீடு எனக் குறிக்கவும்';
 
   @override
   String get notification => 'அறிவிப்பு';
 
   @override
-  String get changeLanguage => 'மொழியை மாற்றவும்';
+  String get changeLanguage => 'மொழியை மாற்று';
 
   @override
   String get changePassword => 'கடவுச்சொல்லை மாற்று';
@@ -386,7 +386,7 @@ class LanguageTa extends Languages {
   String get viewMap => 'வரைபடம்';
 
   @override
-  String get captureImage => 'படத்தைப் பிடிக்கவும்';
+  String get captureImage => 'புகைபடத்தைப் பிடிக்கவும்';
 
   @override
   String get uploadPhoto => 'புகைப்படத்தைப் பதிவேற்றவும்';
@@ -401,10 +401,10 @@ class LanguageTa extends Languages {
   String get declinedCall => 'நிராகரிக்கப்பட்ட அழைப்பு';
 
   @override
-  String get leftMessage => 'செய்தியை விட்டுச் சென்றது';
+  String get leftMessage => 'தகவல் சொல்லியுள்ளேன்';
 
   @override
-  String get doorLocked => 'கதவு பூட்டப்பட்டது';
+  String get doorLocked => 'கதவு பூட்டியுள்ளது';
 
   @override
   String get entryRestricted => 'நுழைவு தடைசெய்யப்பட்டுள்ளது';
@@ -416,13 +416,13 @@ class LanguageTa extends Languages {
   String get repo => 'ரெப்போ';
 
   @override
-  String get otherFeedBack => 'பிற கருத்து';
+  String get otherFeedBack => 'பிற குறிப்பு';
 
   @override
   String get submit => 'சமர்ப்பிக்கவும்';
 
   @override
-  String get nextActionDate => 'அடுத்த நடவடிக்கை தேதி*';
+  String get nextActionDate => 'அடுத்த செயல் தேதி*';
 
   @override
   String get nextActionTime => 'அடுத்த செயல் நேரம்*';
@@ -455,10 +455,10 @@ class LanguageTa extends Languages {
   String get time => 'நேரம்*';
 
   @override
-  String get refCheque => 'REF / சரிபார்ப்பு எண்.';
+  String get refCheque => 'REF / காசோலை எண்.';
 
   @override
-  String get otsProposedAmount => 'OTS உத்தேச தொகை*';
+  String get otsProposedAmount => 'OTS  விரும்பிய தொகை*';
 
   @override
   String get otsPaymentDate => 'OTS செலுத்தும் தேதி*';
@@ -473,7 +473,7 @@ class LanguageTa extends Languages {
   String get disputeReason => 'சர்ச்சை காரணம்';
 
   @override
-  String get modelMake => 'மாதிரி தயாரிக்கவும்*';
+  String get modelMake => 'மாடல்  மேக்*';
 
   @override
   String get registrationNo => 'பதிவு எண்*';
@@ -482,7 +482,7 @@ class LanguageTa extends Languages {
   String get chassisNo => 'Chassis எண்*';
 
   @override
-  String get customUpload => 'தனிப்பயன் பதிவேற்றம்';
+  String get customUpload => 'பதிவேற்றம்';
 
   @override
   String get eventDetails => 'நிகழ்வு விவரங்கள்';
@@ -491,7 +491,7 @@ class LanguageTa extends Languages {
   String get pickUp => 'எடு';
 
   @override
-  String get selfPay => 'சுய ஊதியம்';
+  String get selfPay => 'தானே செலுத்துவது';
 
   @override
   String get digital => 'டிஜிட்டல்';
@@ -503,7 +503,7 @@ class LanguageTa extends Languages {
   String get wrongAddress => 'தவறான முகவரி';
 
   @override
-  String get shifted => 'மாற்றப்பட்டது';
+  String get shifted => 'காலி செய்துவிட்டார்';
 
   @override
   String get addressNotFound => 'முகவரி கிடைக்கவில்லை';
@@ -512,7 +512,7 @@ class LanguageTa extends Languages {
   String get callCustomer => 'வாடிக்கையாளரை அழைக்கவும்';
 
   @override
-  String get agentContactNo => 'முகவர் தொடர்பு எண்*';
+  String get agentContactNo => 'பணியாளர் தொடர்பு எண்*';
 
   @override
   String get customerContactNo => 'வாடிக்கையாளர் தொடர்பு எண்*';
@@ -521,7 +521,7 @@ class LanguageTa extends Languages {
   String get serviceProvidersList => 'சேவை வழங்குநரின் பட்டியல்';
 
   @override
-  String get callersId => 'அழைப்பாளர் ஐடிகள்';
+  String get callersId => 'அழைப்பு ஐடிகள்';
 
   @override
   String get customerMetCategory => 'வாடிக்கையாளர் சந்தித்த வகை';
@@ -533,13 +533,13 @@ class LanguageTa extends Languages {
   String get unreachable => 'அணுக முடியாதது';
 
   @override
-  String get writeYourRemarksHere => 'உங்கள் கருத்துக்களை இங்கே எழுதுங்கள்';
+  String get writeYourRemarksHere => 'உங்கள் குறிப்புகளை இங்கே எழுதுங்கள்';
 
   @override
   String get selectLanguage => 'மொழியை தேர்ந்தெடுங்கள்';
 
   @override
-  String get doesNotExist => 'இல்லை';
+  String get doesNotExist => 'எண் இல்லை';
 
   @override
   String get incorrectNumber => 'தவறான எண்';
@@ -554,16 +554,16 @@ class LanguageTa extends Languages {
   String get lineBusy => 'லைன் பிஸி';
 
   @override
-  String get switchOff => 'அனைத்து விடு';
+  String get switchOff => 'அணைக்கப்பட்டுள்ளது';
 
   @override
   String get rnr => 'RNR';
 
   @override
-  String get outOfNetwork => 'நெட்வொர்க்கிற்கு வெளியே';
+  String get outOfNetwork => 'நெட்ஒர்க்கிலில்லை';
 
   @override
-  String get disConnecting => 'துண்டிக்கிறது';
+  String get disConnecting => 'துண்டிக்கின்றார்';
 
   @override
   String get address => 'முகவரி ';
@@ -572,17 +572,17 @@ class LanguageTa extends Languages {
   String get phoneNumber => 'தொலைபேசி எண் ';
 
   @override
-  String get letsConnectWithManager => 'மேலாளருடன் இணைவோம்';
+  String get letsConnectWithManager => 'மேலாளருடன் இணைப்போம்';
 
   @override
   String get noAllocation => 'ஒதுக்கீடு இல்லை';
 
   @override
   String get noAllocationMessage =>
-      'உங்களுக்கு இன்னும் ஒதுக்கீடு வழங்கப்படவில்லை, உங்கள் மேலாளர் manager சரிபார்க்கவும்,';
+      'உங்களுக்கு இன்னும் ஒதுக்கீடு வழங்கப்படவில்லை, உங்கள் மேலாளரை தொடர்புகொள்ளவும்,';
 
   @override
-  String get caseView => 'வழக்கு பார்வை';
+  String get caseView => 'கேஸ் விவரம்';
 
   @override
   String get stop => 'நிறுத்து';
@@ -600,7 +600,7 @@ class LanguageTa extends Languages {
   String get email => 'மின்னஞ்சல்';
 
   @override
-  String get check => 'காசோலை';
+  String get check => 'சரி பார்க்கவும்';
 
   @override
   String get resendOTP => 'OTP ஐ மீண்டும் அனுப்பவா?';
@@ -651,20 +651,20 @@ class LanguageTa extends Languages {
   String get enterConfirmNewPassword => 'புதிய கடவு சொல்லை உறுதி செய்';
 
   @override
-  String get clear => 'தெளிவு';
+  String get clear => 'தெளிவு செய்';
 
   @override
   String get customerContactType => 'வாடிக்கையாளர் தொடர்பு வகை*';
 
   @override
-  String get contact => 'தொடர்பு கொள்ளவும்';
+  String get contact => 'தொடர்பு';
 
   @override
   String get pleaseSelectDropDownValue =>
       'கீழ்தோன்றும் மதிப்பைத் தேர்ந்தெடுக்கவும்';
 
   @override
-  String get pleaseEnterCurrectUserId => 'சரியான பயனர் ஐடியை உள்ளிடவும்';
+  String get pleaseEnterCurrectUserId => 'சரியான பணியாளர் ஐடியை உள்ளிடவும்';
 
   @override
   String get pleaseSelectOptions => 'விருப்பங்களைத் தேர்ந்தெடுக்கவும்';
@@ -673,13 +673,13 @@ class LanguageTa extends Languages {
   String get pleaseSelectPaymentMode => 'கட்டண முறையைத் தேர்ந்தெடுக்கவும்!';
 
   @override
-  String get pleaseUploadDepositSlip => 'வைப்புச் சீட்டைப் பதிவேற்றவும்';
+  String get pleaseUploadDepositSlip => 'டெபாசிட் சீட்டைப் பதிவேற்றவும்';
 
   @override
-  String get noCaseAvailble => 'எந்த வழக்கும் கிடைக்கவில்லை';
+  String get noCaseAvailble => 'எந்த கேசும் இல்லை';
 
   @override
-  String get shouldBeSelectOneCase => 'ஒரு வழக்கைத் தேர்ந்தெடுக்க வேண்டும்';
+  String get shouldBeSelectOneCase => 'ஒரு கேஸை தேர்ந்தெடுக்க வேண்டும்';
 
   @override
   String get resetPasswordModelViaOTP =>

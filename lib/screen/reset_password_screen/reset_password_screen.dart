@@ -163,7 +163,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     emailController.clear();
                                     Map<String, dynamic> getAgentDetail =
                                         await APIRepository.apiRequest(
-                                            APIRequestType.GET,
+                                            APIRequestType.get,
                                             HttpUrl.resetPasswordCheckUrl(
                                                 userIdController.text));
 
@@ -344,7 +344,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                         : () async {
                                             Map<String, dynamic> postResult =
                                                 await APIRepository.apiRequest(
-                                              APIRequestType.POST,
+                                              APIRequestType.post,
                                               HttpUrl.resendOTPUrl(),
                                               requestBodydata: {
                                                 "aRef": userIdController.text
@@ -417,7 +417,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   ? () async {
                                       Map<String, dynamic> postResult =
                                           await APIRepository.apiRequest(
-                                        APIRequestType.POST,
+                                        APIRequestType.post,
                                         HttpUrl.requestOTPUrl(),
                                         requestBodydata: {
                                           "aRef": userIdController.text
@@ -457,7 +457,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       if (userNameController.text.isNotEmpty) {
                                         Map<String, dynamic> postResult =
                                             await APIRepository.apiRequest(
-                                                APIRequestType.POST,
+                                                APIRequestType.post,
                                                 HttpUrl.verifyOTP(),
                                                 requestBodydata: {
                                               "aRef": userIdController.text,
@@ -643,7 +643,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                               // print(requestBodyData);
                                               Map<String, dynamic> postResult =
                                                   await APIRepository.apiRequest(
-                                                      APIRequestType.POST,
+                                                      APIRequestType.post,
                                                       HttpUrl
                                                           .resetPasswordUrl(),
                                                       requestBodydata:

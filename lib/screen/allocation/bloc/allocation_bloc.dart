@@ -12,7 +12,6 @@ import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
-import 'package:origa/models/search_model/search_model.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
@@ -147,7 +146,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isPriorityLoadMore = true;
 
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.priorityCaseList +
                 'pageNo=${Constants.pageNo}' +
                 '&limit=${Constants.limit}'
@@ -195,7 +194,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           // Get Contractor Details and stored in Singleton
           Map<String, dynamic> getContractorDetails =
               await APIRepository.apiRequest(
-                  APIRequestType.GET, HttpUrl.contractorDetail);
+                  APIRequestType.get, HttpUrl.contractorDetail);
           if (getContractorDetails[Constants.success] == true) {
             Map<String, dynamic> jsonData = getContractorDetails['data'];
             // check and store cloudTelephony true or false
@@ -241,7 +240,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.priorityCaseList +
                 'pageNo=${Constants.pageNo}' +
                 '&limit=${Constants.limit}');
@@ -310,7 +309,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.priorityCaseList +
                 'pageNo=$page' +
                 '&limit=${Constants.limit}');
@@ -356,11 +355,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       index = _pref.getInt('autoCallingIndexValue') ?? 0;
       indexValue = index;
       _pref.setInt('autoCallingIndexValue', index + 1);
-      print(Singleton.instance.startCalling);
       if (Singleton.instance.startCalling ?? false) {
-        print(Singleton.instance.startCalling.toString() + 'jdlj');
         yield StartCallingState();
-        print('ddldk');
       }
     }
     if (event is CallUnSuccessfullyConnectedEvent) {
@@ -371,7 +367,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       _pref.setInt('autoCallingIndexValue', index + 1);
       _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
       if (Singleton.instance.startCalling ?? false) {
-        print('tdjdjkdjd');
         yield StartCallingState();
       }
     }
@@ -389,7 +384,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
-                APIRequestType.GET,
+                APIRequestType.get,
                 HttpUrl.buildRouteCaseList +
                     "lat=${event.paramValues.lat}&" +
                     "lng=${event.paramValues.long}&" +
@@ -427,7 +422,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
-                APIRequestType.GET,
+                APIRequestType.get,
                 HttpUrl.buildRouteCaseList +
                     "lat=${event.paramValues.lat}&" +
                     "lng=${event.paramValues.long}&" +
@@ -455,7 +450,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
     if (event is UpdateNewValuesEvent) {
       resultList.asMap().forEach((index, value) {
-        print(event.paramValue);
         if (value.caseId == event.paramValue) {
           value.collSubStatus = 'used';
         }
@@ -469,7 +463,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
-                APIRequestType.GET,
+                APIRequestType.get,
                 HttpUrl.buildRouteCaseList +
                     "lat=${event.paramValues.lat}&" +
                     "lng=${event.paramValues.long}&" +
@@ -522,19 +516,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        String? starVal;
-        String? recentVal;
+        // String? starVal;
+        // String? recentVal;
         var data = event.returnValue as SearchingDataModel;
-        if (data.isStarCases!) {
-          starVal = "starredOnly=${data.isStarCases}&";
-        }
-        if (data.isMyRecentActivity!) {
-          recentVal = "recentActivity=${data.isMyRecentActivity}&";
-        }
+        // if (data.isStarCases!) {
+        //   starVal = "starredOnly=${data.isStarCases}&";
+        // }
+        // if (data.isMyRecentActivity!) {
+        //   recentVal = "recentActivity=${data.isMyRecentActivity}&";
+        // }
         Map<String, dynamic> getSearchResultData;
         if (data.isStarCases! && data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
-              APIRequestType.GET,
+              APIRequestType.get,
               HttpUrl.searchUrl +
                   "starredOnly=${data.isStarCases}&" +
                   "recentActivity=${data.isMyRecentActivity}&" +
@@ -546,7 +540,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   "collSubStatus=${data.status}");
         } else if (data.isStarCases!) {
           getSearchResultData = await APIRepository.apiRequest(
-              APIRequestType.GET,
+              APIRequestType.get,
               HttpUrl.searchUrl +
                   "starredOnly=${data.isStarCases}&" +
                   "accNo=${data.accountNumber}&" +
@@ -557,7 +551,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   "collSubStatus=${data.status}");
         } else if (data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
-              APIRequestType.GET,
+              APIRequestType.get,
               HttpUrl.searchUrl +
                   "recentActivity=${data.isMyRecentActivity}&" +
                   "accNo=${data.accountNumber}&" +
@@ -568,7 +562,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   "collSubStatus=${data.status}");
         } else {
           getSearchResultData = await APIRepository.apiRequest(
-              APIRequestType.GET,
+              APIRequestType.get,
               HttpUrl.searchUrl +
                   "accNo=${data.accountNumber}&" +
                   "cust=${data.customerName}&" +
@@ -580,7 +574,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         // Map<String, dynamic> getSearchResultData =
         //     await APIRepository.apiRequest(
-        //         APIRequestType.GET,
+        //         APIRequestType.get,
         //         HttpUrl.searchUrl +
         //             "starredOnly=${data.isStarCases}&" +
         //             "recentActivity=${data.isMyRecentActivity}&" +

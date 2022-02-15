@@ -62,14 +62,14 @@ class DepositionMode {
                       children: [
                         BankTab(
                           bloc,
-                          selected_case_Ids: _ids,
+                          selectedCaseIds: _ids,
                           mode: "Bank",
                           custname: custName,
                           receiptAmt: receiptAmount,
                         ),
                         CompanyBranch(
                           bloc,
-                          selected_case_Ids: _ids,
+                          selectedCaseIds: _ids,
                           mode: "Company Branch",
                           custname: custName,
                           receiptAmt: receiptAmount,

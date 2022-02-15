@@ -23,8 +23,6 @@ class NavigateCaseDetailEvent extends AllocationEvent {
 
 class FilterSelectOptionEvent extends AllocationEvent {}
 
-class CaseListViewLoadingEvent extends AllocationEvent {}
-
 class TapPriorityEvent extends AllocationEvent {}
 
 class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
@@ -66,8 +64,6 @@ class UpdateNewValuesEvent extends AllocationEvent {
 }
 
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
-
-class ClickStartCallingEvent extends AllocationEvent {}
 
 class StartCallingEvent extends AllocationEvent {
   final int? customerIndex;

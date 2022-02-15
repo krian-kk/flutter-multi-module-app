@@ -8,13 +8,13 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DebugMode {
-  static bool get isInDebugMode {
-    const bool inDebugMode = true;
-    //assert(inDebugMode = true);
-    return inDebugMode;
-  }
-}
+// class DebugMode {
+//   static bool get isInDebugMode {
+//     const bool inDebugMode = true;
+//     //assert(inDebugMode = true);
+//     return inDebugMode;
+//   }
+// }
 
 class AppUtils {
   static void hideKeyBoard(BuildContext context) {

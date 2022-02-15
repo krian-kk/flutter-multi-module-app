@@ -332,7 +332,7 @@
 //         print('---------before execute----------');
 
 //           Map<String, dynamic> response = await APIRepository.apiRequest(
-//           APIRequestType.POST,
+//           APIRequestType.post,
 //           HttpUrl.loginUrl,
 //           requestBodydata: params);
 

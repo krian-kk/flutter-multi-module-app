@@ -386,7 +386,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
-                                  APIRequestType.UPLOAD,
+                                  APIRequestType.upload,
                                   HttpUrl.repoPostUrl('repo', widget.userType),
                                   formDatas: FormData.fromMap(postdata),
                                 );

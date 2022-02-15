@@ -59,8 +59,6 @@ class SetTimeperiodValueState extends DashboardState {}
 
 class HelpState extends DashboardState {}
 
-class ClickPriorityFollowUpState extends DashboardState {}
-
 class SelectedTimeperiodDataLoadingState extends DashboardState {}
 
 class SelectedTimeperiodDataLoadedState extends DashboardState {}

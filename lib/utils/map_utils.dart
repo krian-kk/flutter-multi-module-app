@@ -1,9 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location_permissions/location_permissions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/env.dart';
 import 'package:origa/models/location_converter.dart';
@@ -54,7 +51,7 @@ class MapUtils {
           "https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Env.googleMapAPI}";
 
       Map<String, dynamic> getAddressToLatlng =
-          await APIRepository.apiRequest(APIRequestType.GET, geocodeURL);
+          await APIRepository.apiRequest(APIRequestType.get, geocodeURL);
 
       getLocationLatLng =
           LocationConverterModel.fromJson(getAddressToLatlng['data']);

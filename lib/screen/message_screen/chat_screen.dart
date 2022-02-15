@@ -235,7 +235,7 @@ class _ChatScreenState extends State<ChatScreen> {
         try {
           final Map<String, dynamic> tokenRequestMap =
               await APIRepository.apiRequest(
-                  APIRequestType.GET, HttpUrl.chatTokenRequest);
+                  APIRequestType.get, HttpUrl.chatTokenRequest);
           debugPrint(
               'Chat token request data ===> ${tokenRequestMap['data']['result']}');
           setState(() {

@@ -7,19 +7,20 @@ class CallCustomerStatus {
   CallCustomerStatus._();
   static Future<bool> callStatusCheck({required String callId}) async {
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
       requestBodydata: {'id': callId},
     );
     if (postResult[Constants.success]) {
       if ((postResult['data']['result'] as List).isEmpty) {
-        AppUtils.showToast('Please Agent Get the Call');
+        AppUtils.showToast('Wait few seconds, You\'ll get call from Admin');
         return false;
       } else {
         if (postResult['data']['result'][0]['status2'] == null) {
-          if (postResult['data']['result'][0]['status1'] == 'ANSWER') {
-            AppUtils.showToast('Please Wait Call is On Going');
+          if (postResult['data']['result'][0]['status'] == 'ANSWER') {
+            AppUtils.showToast('Please wait for the call is ongoing');
           } else {
+            // From Agent Doesn't Pick the Call
             AppUtils.showToast('Please Speak with customer');
           }
           return false;

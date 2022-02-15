@@ -134,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Languages.of(context)!.save,
                   fontSize: FontSize.sixteen,
                   onTap: () {
-                    print('gjghj');
                     showComformSecurePinDialogBox(securePinCodeContoller.text);
                     // Navigator.pop(context);
                   },
@@ -216,7 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: () {
                       showForgorSecurePinDialogBox();
-                      print('On Pressed');
                     },
                     child: Container(
                       padding: const EdgeInsets.all(2),
@@ -275,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: SvgPicture.asset(ImageResource.close),
                             ))
                       ]),
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: SizedBox(
                       width: 250,
@@ -680,7 +678,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //       print('---------before execute----------');
 
   //         Map<String, dynamic> response = await APIRepository.apiRequest(
-  //         APIRequestType.POST,
+  //         APIRequestType.post,
   //         HttpUrl.loginUrl,
   //         requestBodydata: params);
 
@@ -776,7 +774,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // here is state is submitting, we are showing loading indicator on container then.
   // if it completed then showing a Icon.
   Widget circularLoading(bool done) {
-    final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
+    // final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
@@ -843,7 +841,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

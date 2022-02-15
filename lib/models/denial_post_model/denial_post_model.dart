@@ -79,7 +79,6 @@ class DenialPostModel {
 class EventAttr {
   late String actionDate;
   late String? reasons;
-
   late String remarks;
   late String amountDenied;
   late String followUpPriority;
@@ -110,7 +109,6 @@ class EventAttr {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['actionDate'] = actionDate;
     data['reasons'] = reasons;
-
     data['remarks'] = remarks;
     data['amountDenied'] = amountDenied;
     data['followUpPriority'] = followUpPriority;

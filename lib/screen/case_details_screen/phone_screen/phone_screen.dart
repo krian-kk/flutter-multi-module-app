@@ -1,12 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/get_call_customer_status_model/get_call_customer_status_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -80,10 +75,6 @@ class _PhoneScreenState extends State<PhoneScreen>
         }
 
         if (state is UpdateHealthStatusState) {
-          print(
-              'Initial values-> ${widget.bloc.caseDetailsAPIValue.result?.callDetails!}');
-          print(
-              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 

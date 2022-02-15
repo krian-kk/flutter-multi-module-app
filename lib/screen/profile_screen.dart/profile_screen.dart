@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gravity: ToastGravity.CENTER);
       }
     } on PlatformException catch (e) {
-      print(e.message);
+      debugPrint(e.message);
     }
   }
 
@@ -149,7 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Languages.of(context)!.save,
                   fontSize: FontSize.sixteen,
                   onTap: () {
-                    print('API Call for Save Password');
                     Navigator.pop(context);
                   },
                 ),
@@ -180,11 +179,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      ProfileNavigation(
-          title: Languages.of(context)!.changeSecurePIN,
-          onTap: () {
-            bloc.add(ClickChangeSecurityPinEvent());
-          })
+      // ProfileNavigation(
+      //     title: Languages.of(context)!.changeSecurePIN,
+      //     onTap: () {
+      //       bloc.add(ClickChangeSecurityPinEvent());
+      //     })
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -470,74 +469,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       BorderRadius.all(
                                                           Radius.circular(
                                                               10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 21,
-                                                        vertical: 14),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                              child: ListTile(
+                                                title: SizedBox(
+                                                  // width: 260,
+                                                  child: CustomText(
+                                                    profileNavigationList[index]
+                                                        .title
+                                                        .toUpperCase(),
+                                                    lineHeight: 1,
+                                                    fontSize: FontSize.sixteen,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: ColorResource
+                                                        .color23375A,
+                                                  ),
+                                                ),
+                                                trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
-                                                    GestureDetector(
-                                                      child: Row(
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 260,
-                                                            child: CustomText(
-                                                              profileNavigationList[
-                                                                      index]
-                                                                  .title
-                                                                  .toUpperCase(),
-                                                              lineHeight: 1,
-                                                              fontSize: FontSize
-                                                                  .sixteen,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                              color: ColorResource
-                                                                  .color23375A,
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          profileNavigationList[
-                                                                          index]
-                                                                      .notificationCount ==
-                                                                  null
-                                                              ? const SizedBox()
-                                                              : CircleAvatar(
-                                                                  backgroundColor:
-                                                                      ColorResource
-                                                                          .color23375A,
-                                                                  radius: 13,
-                                                                  child: Center(
-                                                                    child: CustomText(
-                                                                        profileNavigationList[index]
-                                                                            .notificationCount
-                                                                            .toString(),
-                                                                        lineHeight:
-                                                                            1,
-                                                                        fontSize:
-                                                                            FontSize
-                                                                                .twelve,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        color: ColorResource
-                                                                            .colorFFFFFF),
-                                                                  ),
-                                                                )
-                                                        ],
-                                                      ),
-                                                    ),
                                                     SvgPicture.asset(
                                                         ImageResource
-                                                            .forwardArrow)
+                                                            .forwardArrow),
                                                   ],
                                                 ),
                                               ),

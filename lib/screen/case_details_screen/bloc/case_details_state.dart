@@ -24,8 +24,6 @@ class ClickMainCallBottomSheetState extends CaseDetailsState {
   ClickMainCallBottomSheetState(this.i);
 }
 
-class ClickAddAddressState extends CaseDetailsState {}
-
 class ClickViewMapState extends CaseDetailsState {}
 
 // class CDNoInternetConnectionState extends CaseDetailsState {}

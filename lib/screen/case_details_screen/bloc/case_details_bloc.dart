@@ -167,7 +167,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else {
         isNoInternetAndServerError = false;
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
+            APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
             isPop: true);
 
         if (caseDetailsData[Constants.success] == true) {
@@ -195,8 +195,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //       value.get('case' + caseId.toString())!.result),
       // );
 
-      print(
-          "case agref --> ${caseDetailsAPIValue.result?.caseDetails?.agrRef}");
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
       Singleton.instance.agrRef =
@@ -384,7 +382,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           } else {
             Map<String, dynamic> getEventDetailsData =
                 await APIRepository.apiRequest(
-                    APIRequestType.GET,
+                    APIRequestType.get,
                     HttpUrl.eventDetailsUrl(
                         caseId: caseId, userType: userType));
 
@@ -421,7 +419,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       });
 
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.UPLOAD,
+        APIRequestType.upload,
         HttpUrl.imageCaptured + "userType=$userType",
         formDatas: FormData.fromMap(postdata),
       );
@@ -620,7 +618,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
           // update autocalling screen case list of contact health
           if (paramValue['contactIndex'] != null) {
-            print("update autocalling screen case list of contact health");
             allocationBloc.add(AutoCallContactHealthUpdateEvent(
               contactIndex: paramValue['contactIndex'],
               caseIndex: paramValue['caseIndex'],
@@ -738,7 +735,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           type: event.type,
         );
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST,
+          APIRequestType.post,
           HttpUrl.sendSMSurl,
           requestBodydata: jsonEncode(requestBodyData),
         );
@@ -757,8 +754,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       };
     }
     if (event is ChangeHealthStatusEvent) {
-      print("Event submitted ==> ");
-
       yield UpdateHealthStatusState();
     }
   }
@@ -1033,7 +1028,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
@@ -1105,7 +1100,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         ));
 
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
@@ -1185,7 +1180,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           )
         ]);
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
@@ -1207,8 +1202,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String caseId,
     String urlString,
   ) async {
-    print("selecedted case index ==> ${paramValue['contactIndex']}");
-    // indexValue = allocationBloc.indexValue;
     var requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
@@ -1240,7 +1233,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );

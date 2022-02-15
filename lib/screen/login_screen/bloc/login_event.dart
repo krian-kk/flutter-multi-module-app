@@ -13,8 +13,6 @@ class SignInEvent extends LoginEvent {
   SignInEvent({this.paramValue, this.userId});
 }
 
-class HomeTabEvent extends LoginEvent {}
-
 class NoInternetConnectionEvent extends LoginEvent {}
 
 class ResendOTPEvent extends LoginEvent {}

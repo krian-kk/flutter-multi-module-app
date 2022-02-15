@@ -39,7 +39,7 @@ class AuthenticationBloc
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {
-        print('Token Issue is === > $getToken');
+        debugPrint('Token Issue is === > $getToken');
         if (JwtDecoder.isExpired(getToken)) {
           yield AuthenticationUnAuthenticated();
         } else {
@@ -56,7 +56,7 @@ class AuthenticationBloc
                 _prefs.getString(Constants.agentRef) ?? "";
 
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
+                APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
               // print(agentDetail['data']);

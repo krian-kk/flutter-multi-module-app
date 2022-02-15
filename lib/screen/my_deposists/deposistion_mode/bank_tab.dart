@@ -23,13 +23,13 @@ import 'package:objectid/objectid.dart';
 
 class BankTab extends StatefulWidget {
   final DashboardBloc bloc;
-  final List<String>? selected_case_Ids;
+  final List<String>? selectedCaseIds;
   final String? mode;
   final String? custname;
   final double? receiptAmt;
   const BankTab(this.bloc,
       {Key? key,
-      this.selected_case_Ids,
+      this.selectedCaseIds,
       this.mode,
       this.custname,
       this.receiptAmt})
@@ -148,13 +148,10 @@ class _BankTabState extends State<BankTab> {
 
                                   final id = ObjectId();
                                   var requestBodyData = BankDepositPostModel(
-                                      caseIds:
-                                          widget.selected_case_Ids!.length == 1
-                                              ? [
-                                                  ...widget.selected_case_Ids!,
-                                                  '$id'
-                                                ]
-                                              : widget.selected_case_Ids!,
+                                      caseIds: widget.selectedCaseIds!.length ==
+                                              1
+                                          ? [...widget.selectedCaseIds!, '$id']
+                                          : widget.selectedCaseIds!,
                                       contractor:
                                           Singleton.instance.contractor ?? '',
                                       deposition: Deposition(
@@ -202,7 +199,7 @@ class _BankTabState extends State<BankTab> {
                                   }
 
                                   // Map<String, dynamic> postResult =
-                                  //     await APIRepository.apiRequest(APIRequestType.POST,
+                                  //     await APIRepository.apiRequest(APIRequestType.post,
                                   //     HttpUrl.bankDeposit,
                                   //         requestBodydata: jsonEncode(requestBodyData));
                                   // if (postResult['success']) {

@@ -28,7 +28,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
   TextEditingController? controller = TextEditingController();
   final TextStyle? style;
   final double? titleSpacing;
-  GlobalKey<_CustomAppbarState> _myKey = GlobalKey();
+  // GlobalKey<_CustomAppbarState> _myKey = GlobalKey();
 
   CustomAppbar({
     Key? key,
@@ -88,7 +88,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
           //  showSearch
           //     ? searchBar()
           //     :
-          titleString != null || titleString != ''
+          titleString != ''
               ? widget.subTitle == null || widget.subTitle == ''
                   ? CustomText(
                       titleString,
