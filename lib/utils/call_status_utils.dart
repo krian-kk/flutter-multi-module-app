@@ -20,6 +20,7 @@ class CallCustomerStatus {
           if (postResult['data']['result'][0]['status'] == 'ANSWER') {
             AppUtils.showToast('Please wait for the call is ongoing');
           } else {
+            // From Agent Doesn't Pick the Call
             AppUtils.showToast('Please Speak with customer');
           }
           return false;
