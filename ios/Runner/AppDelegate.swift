@@ -31,14 +31,15 @@ import FirebaseMessaging
     }
     application.registerForRemoteNotifications()
     Messaging.messaging().delegate = self
-//    Messaging.messaging().token { token, error in
-//                  if let error = error {
-//                      print("Error fetching FCM registration token: \(error)")
-//                  } else if let token = token {
-//                      print("FCM registration token: \(token)")
-//                }
-//    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+    
+override func applicationWillResignActive(_ application: UIApplication) {
+    self.window.isHidden = true;
+  }
+  override func applicationDidBecomeActive(_ application: UIApplication) {
+    self.window.isHidden = false;
   }
 }
 
