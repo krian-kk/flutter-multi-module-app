@@ -526,7 +526,7 @@ class _CustomOtherFeedBackBottomSheetState
         });
 
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.UPLOAD,
+          APIRequestType.upload,
           HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
           formDatas: FormData.fromMap(postdata),
         );

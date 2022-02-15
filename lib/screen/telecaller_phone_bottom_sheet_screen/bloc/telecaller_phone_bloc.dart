@@ -125,7 +125,7 @@ class TelecallerPhoneBloc
             } else {
               Map<String, dynamic> getEventDetailsData =
                   await APIRepository.apiRequest(
-                      APIRequestType.GET,
+                      APIRequestType.get,
                       HttpUrl.eventDetailsUrl(
                         caseId: caseId,
                         userType: Singleton.instance.usertype!,
@@ -134,15 +134,6 @@ class TelecallerPhoneBloc
               if (getEventDetailsData[Constants.success] == true) {
                 Map<String, dynamic> jsonData = getEventDetailsData['data'];
                 eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
-                print(getEventDetailsData['data']['result'][3]['eventAttr']);
-
-                // eventDetailsHiveBox.then((value) => value.put(
-                //     'EventDetails1',
-                //     OrigoDynamicTable(
-                //       status: jsonData['status'],
-                //       message: jsonData['message'],
-                //       result: jsonData['result'],
-                //     )));
               } else {
                 AppUtils.showToast(getEventDetailsData['data']['message']);
               }
@@ -345,7 +336,7 @@ class TelecallerPhoneBloc
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );
@@ -388,7 +379,7 @@ class TelecallerPhoneBloc
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       urlString,
       requestBodydata: jsonEncode(requestBodyData),
     );

@@ -56,7 +56,7 @@ class AuthenticationBloc
                 _prefs.getString(Constants.agentRef) ?? "";
 
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
+                APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
               // print(agentDetail['data']);

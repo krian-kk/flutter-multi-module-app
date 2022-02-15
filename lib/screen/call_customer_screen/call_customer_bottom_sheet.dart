@@ -253,7 +253,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                               if (_formKey.currentState!.validate()) {
                                 // Map<String, dynamic> enableCloudTel =
                                 //     await APIRepository.apiRequest(
-                                //   APIRequestType.POST,
+                                //   APIRequestType.post,
                                 //   HttpUrl.enableCloudTelephony,
                                 //   requestBodydata: {
                                 //     "contractor": Singleton.instance.contractor
@@ -293,7 +293,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
-                                    APIRequestType.POST,
+                                    APIRequestType.post,
                                     HttpUrl.callCustomerUrl,
                                     requestBodydata:
                                         jsonEncode(requestBodyData),

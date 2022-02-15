@@ -11,12 +11,12 @@ import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum APIRequestType {
-  GET,
-  POST,
-  PUT,
-  DELETE,
-  UPLOAD,
-  DOWNLOAD,
+  get,
+  post,
+  put,
+  delete,
+  upload,
+  download,
   singleFileUpload
 }
 
@@ -44,15 +44,15 @@ class APIRepository {
     try {
       Response? response;
       switch (requestType) {
-        case APIRequestType.GET:
-        case APIRequestType.DELETE:
+        case APIRequestType.get:
+        case APIRequestType.delete:
           {
-            response = requestType == APIRequestType.DELETE
+            response = requestType == APIRequestType.delete
                 ? await DioClient.dioConfig().delete(urlString)
                 : await DioClient.dioConfig().get(urlString);
             break;
           }
-        case APIRequestType.UPLOAD:
+        case APIRequestType.upload:
           {
             // final FormData data = FormData.fromMap({
             //   'files': DioClient.listOfMultiPart(file),
@@ -69,13 +69,13 @@ class APIRepository {
                 await DioClient.dioFileConfig().post(urlString, data: data);
             break;
           }
-        case APIRequestType.DOWNLOAD:
+        case APIRequestType.download:
           {
             response = await DioClient.dioConfig().download(urlString, savePath,
                 onReceiveProgress: onReceiveProgress);
             break;
           }
-        case APIRequestType.PUT:
+        case APIRequestType.put:
           {
             response = await DioClient.dioConfig().put(
               urlString,
@@ -83,7 +83,7 @@ class APIRepository {
             );
             break;
           }
-        case APIRequestType.POST:
+        case APIRequestType.post:
         default:
           {
             response = await DioClient.dioConfig()

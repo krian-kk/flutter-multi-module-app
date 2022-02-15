@@ -72,8 +72,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   @override
   void initState() {
     super.initState();
-    print(
-        'Initial values-> ${widget.bloc.caseDetailsAPIValue.result?.callDetails!}');
     setState(() {
       nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 7)));
@@ -86,19 +84,13 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          print(
-              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
-
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                print('dkjdlkjdkl;kd;lkd;lkd;');
-
                 widget.bloc.caseDetailsAPIValue.result
                     ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
-
                 break;
               case 1:
                 widget.bloc.caseDetailsAPIValue.result
@@ -115,8 +107,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                 break;
             }
           });
-          print(
-              'New Health Values => ${widget.bloc.caseDetailsAPIValue.result?.callDetails![data.selectedHealthIndex!]['health']}');
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -381,7 +371,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
           callingID: Singleton.instance.callingID,
         );
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.POST,
+            APIRequestType.post,
             HttpUrl.denialPostUrl('denial', widget.userType),
             requestBodydata: jsonEncode(requestBodyData));
         if (postResult[Constants.success]) {

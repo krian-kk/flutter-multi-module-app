@@ -106,7 +106,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
 
       Map<String, dynamic> response = await APIRepository.apiRequest(
-          APIRequestType.POST, HttpUrl.loginUrl,
+          APIRequestType.post, HttpUrl.loginUrl,
           requestBodydata: event.paramValue);
 
       print(response.toString());
@@ -163,7 +163,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (loginResponse.data!.accessToken != null) {
             // Execute agent detail URl to get Agent details
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + event.userId!);
+                APIRequestType.get, HttpUrl.agentDetailUrl + event.userId!);
 
             if (agentDetail['success'] == false) {
               // Here facing error so close the loading
@@ -267,10 +267,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                           baseOs: _deviceData['version.baseOS'],
                         ),
                       );
-
-                      Map<String, dynamic> postResult =
-                          await APIRepository.apiRequest(
-                        APIRequestType.POST,
+                      await APIRepository.apiRequest(
+                        APIRequestType.post,
                         HttpUrl.mobileInfoUrl,
                         requestBodydata: jsonEncode(requestBodyData.toJson()),
                       );
@@ -292,9 +290,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                         ),
                         created: _deviceData['utsname.sysname'],
                       );
-                      Map<String, dynamic> postResult =
-                          await APIRepository.apiRequest(
-                        APIRequestType.POST,
+                      await APIRepository.apiRequest(
+                        APIRequestType.post,
                         HttpUrl.mobileInfoUrl,
                         requestBodydata: jsonEncode(requestBodyData.toJson()),
                       );

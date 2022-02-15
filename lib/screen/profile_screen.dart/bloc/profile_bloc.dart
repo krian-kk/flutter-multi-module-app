@@ -51,7 +51,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       } else {
         isNoInternetAndServerError = false;
         Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.profileUrl);
+            APIRequestType.get, HttpUrl.profileUrl);
 
         if (getProfileData['success']) {
           Map<String, dynamic> jsonData = getProfileData['data'];

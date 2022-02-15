@@ -375,7 +375,7 @@ class _CustomRemainderBottomSheetState
           callingID: Singleton.instance.callingID,
         );
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.POST,
+          APIRequestType.post,
           HttpUrl.reminderPostUrl('reminder', widget.userType),
           requestBodydata: jsonEncode(requestBodyData),
         );

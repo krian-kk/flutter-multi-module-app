@@ -7,7 +7,7 @@ class CallCustomerStatus {
   CallCustomerStatus._();
   static Future<bool> callStatusCheck({required String callId}) async {
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.POST,
+      APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
       requestBodydata: {'id': callId},
     );

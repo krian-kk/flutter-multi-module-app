@@ -499,7 +499,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           });
 
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.UPLOAD,
+            APIRequestType.upload,
             HttpUrl.otsPostUrl,
             formDatas: FormData.fromMap(postdata),
           );

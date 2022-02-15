@@ -28,7 +28,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
   TextEditingController? controller = TextEditingController();
   final TextStyle? style;
   final double? titleSpacing;
-  GlobalKey<_CustomAppbarState> _myKey = GlobalKey();
+  // GlobalKey<_CustomAppbarState> _myKey = GlobalKey();
 
   CustomAppbar({
     Key? key,

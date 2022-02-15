@@ -546,7 +546,7 @@ class _CustomCollectionsBottomSheetState
             });
 
             Map<String, dynamic> postResult = await APIRepository.apiRequest(
-              APIRequestType.UPLOAD,
+              APIRequestType.upload,
               HttpUrl.collectionPostUrl('collection', widget.userType),
               formDatas: FormData.fromMap(postdata),
             );
@@ -644,7 +644,7 @@ class _CustomCollectionsBottomSheetState
 
                 Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
-                  APIRequestType.UPLOAD,
+                  APIRequestType.upload,
                   HttpUrl.collectionPostUrl('collection', widget.userType),
                   formDatas: FormData.fromMap(postdata),
                 );
@@ -701,7 +701,7 @@ class _CustomCollectionsBottomSheetState
                     );
                     Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
-                      APIRequestType.POST,
+                      APIRequestType.post,
                       HttpUrl.sendSMSurl,
                       requestBodydata: jsonEncode(requestBodyData),
                     );

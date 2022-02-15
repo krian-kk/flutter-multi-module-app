@@ -678,7 +678,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //       print('---------before execute----------');
 
   //         Map<String, dynamic> response = await APIRepository.apiRequest(
-  //         APIRequestType.POST,
+  //         APIRequestType.post,
   //         HttpUrl.loginUrl,
   //         requestBodydata: params);
 
@@ -774,7 +774,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // here is state is submitting, we are showing loading indicator on container then.
   // if it completed then showing a Icon.
   Widget circularLoading(bool done) {
-    final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
+    // final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,

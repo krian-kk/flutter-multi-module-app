@@ -199,7 +199,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
 
                     Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
-                      APIRequestType.POST,
+                      APIRequestType.post,
                       HttpUrl.homeAddressUrl(),
                       requestBodydata: jsonEncode(requestBodyData),
                     );

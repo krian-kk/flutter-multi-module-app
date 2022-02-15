@@ -419,7 +419,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           if (bloc.customerCount < bloc.totalCount) {
             Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
-                    APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
+                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
             if (getAgencyDetailsData[Constants.success]) {
               if (Singleton.instance.cloudTelephony!) {
                 Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
@@ -463,7 +463,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     );
                     Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
-                      APIRequestType.POST,
+                      APIRequestType.post,
                       HttpUrl.callCustomerUrl,
                       requestBodydata: jsonEncode(requestBodyData),
                     );
@@ -665,7 +665,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
             await APIRepository.apiRequest(
-              APIRequestType.POST,
+              APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
@@ -676,7 +676,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
             await APIRepository.apiRequest(
-              APIRequestType.POST,
+              APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
@@ -720,7 +720,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             eventCode: ConstantEventValues.areYouAtOfficeEvenCode,
           );
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.POST,
+            APIRequestType.post,
             HttpUrl.areYouAtOfficeUrl(),
             requestBodydata: jsonEncode(requestBodyData),
           );
@@ -735,11 +735,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is AutoCallContactHealthUpdateState) {
-          print(
-              "data of new health ==> ${Singleton.instance.updateHealthStatus}");
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
-
           setState(() {
             switch (data.tabIndex) {
               case 0:

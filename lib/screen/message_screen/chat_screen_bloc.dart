@@ -21,7 +21,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       } else {
         Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.chatHistory);
+            APIRequestType.get, HttpUrl.chatHistory);
 
         if (chatHistory[Constants.success]) {
           print(
@@ -29,7 +29,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
         } else {}
 
         Map<String, dynamic> agentInformation = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.agentInformation + 'aRef=${event.toAref}');
 
         if (agentInformation[Constants.success]) {

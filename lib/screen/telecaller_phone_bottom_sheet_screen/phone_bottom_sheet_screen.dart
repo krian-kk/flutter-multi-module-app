@@ -103,7 +103,6 @@ class _TelecallerPhoneScreenState extends State<TelecallerPhoneScreen>
           // Navigator.pop(context);
         }
         if (state is TcClickOpenBottomSheetState) {
-          print('djd');
           openBottomSheet(context, state.title, state.list, state.isCall,
               health: state.health);
         }

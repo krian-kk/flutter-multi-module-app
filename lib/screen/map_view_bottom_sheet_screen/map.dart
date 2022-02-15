@@ -40,7 +40,7 @@ class _MapNavigationState extends State<MapNavigation> {
   final startAddressFocusNode = FocusNode();
   final desrinationAddressFocusNode = FocusNode();
 
-  String? _placeDistance;
+  // String? _placeDistance;
 
   Set<Marker> markers = {};
   MapMarkerModel mapResult = MapMarkerModel();
@@ -300,7 +300,7 @@ class _MapNavigationState extends State<MapNavigation> {
   //   //     "https://maps.googleapis.com/maps/api/directions/json?";
 
   //   // Map<String, dynamic> polylineData = await APIRepository.apiRequest(
-  //   //     APIRequestType.GET,
+  //   //     APIRequestType.get,
   //   //     polyLineApi +
   //   //         "origin=$startLatitude,$startLongitude&" +
   //   //         "destination=$destinationLatitude,$destinationLongitude&" +

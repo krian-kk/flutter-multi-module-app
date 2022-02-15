@@ -27,7 +27,7 @@ class CustomTextField extends StatefulWidget {
   final bool isLabel;
   final String? descriptionText;
   final List<TextInputFormatter>? inputformaters;
-  List<String> validationRules = [];
+  final List<String> validationRules;
   final Function? oncomplete;
   final Function? onEditing;
   final Function? onChange;
@@ -38,38 +38,40 @@ class CustomTextField extends StatefulWidget {
   final AutovalidateMode? autovalidateMode;
   final EdgeInsetsGeometry? contentPadding;
 
-  CustomTextField(this.hintText, this.controller,
-      {Key? key,
-      this.obscureText = false,
-      this.suffixWidget,
-      this.prefixWidget,
-      this.isEnable = true,
-      this.onTapped,
-      this.isReadOnly = false,
-      this.maximumWordCount,
-      this.titleColor = ColorResource.color666666,
-      this.textColor = ColorResource.color333333,
-      this.borderColor = ColorResource.colorDADADA,
-      this.errorborderColor = Colors.red,
-      this.isHighlighted = false,
-      this.highlightColor = ColorResource.colorDADADA,
-      this.focusNode,
-      this.focusTextColor,
-      this.keyBoardType = TextInputType.name,
-      this.descriptionText,
-      this.oncomplete,
-      this.validatorCallBack,
-      this.onEditing,
-      this.onChange,
-      this.inputformaters,
-      this.isLabel = false,
-      this.isBorder = false,
-      this.isFill = false,
-      this.autovalidateMode,
-      this.cursorColor = ColorResource.color666666,
-      this.contentPadding = const EdgeInsets.fromLTRB(25, 15, 20, 15),
-      this.validationRules = const []})
-      : super(key: key);
+  const CustomTextField(
+    this.hintText,
+    this.controller, {
+    Key? key,
+    this.obscureText = false,
+    this.suffixWidget,
+    this.prefixWidget,
+    this.isEnable = true,
+    this.onTapped,
+    this.isReadOnly = false,
+    this.maximumWordCount,
+    this.titleColor = ColorResource.color666666,
+    this.textColor = ColorResource.color333333,
+    this.borderColor = ColorResource.colorDADADA,
+    this.errorborderColor = Colors.red,
+    this.isHighlighted = false,
+    this.highlightColor = ColorResource.colorDADADA,
+    this.focusNode,
+    this.focusTextColor,
+    this.keyBoardType = TextInputType.name,
+    this.descriptionText,
+    this.oncomplete,
+    this.validatorCallBack,
+    this.onEditing,
+    this.onChange,
+    this.inputformaters,
+    this.isLabel = false,
+    this.isBorder = false,
+    this.isFill = false,
+    this.autovalidateMode,
+    this.cursorColor = ColorResource.color666666,
+    this.contentPadding = const EdgeInsets.fromLTRB(25, 15, 20, 15),
+    this.validationRules = const [],
+  }) : super(key: key);
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();

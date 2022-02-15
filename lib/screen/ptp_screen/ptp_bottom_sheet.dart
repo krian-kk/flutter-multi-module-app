@@ -468,7 +468,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           );
 
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.POST,
+            APIRequestType.post,
             HttpUrl.ptpPostUrl(
               'ptp',
               widget.userType,

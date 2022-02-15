@@ -367,7 +367,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
             ),
           );
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
-              APIRequestType.POST,
+              APIRequestType.post,
               HttpUrl.disputePostUrl(
                 'dispute',
                 widget.userType,

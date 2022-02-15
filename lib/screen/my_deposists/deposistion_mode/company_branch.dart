@@ -22,13 +22,13 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 
 class CompanyBranch extends StatefulWidget {
   final DashboardBloc bloc;
-  final List<String>? selected_case_Ids;
+  final List<String>? selectedCaseIds;
   final String? mode;
   final String? custname;
   final double? receiptAmt;
   const CompanyBranch(this.bloc,
       {Key? key,
-      this.selected_case_Ids,
+      this.selectedCaseIds,
       this.mode,
       this.custname,
       this.receiptAmt})
@@ -143,13 +143,10 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                     final id = ObjectId();
                                     var requestBodyData =
                                         CompanyBranchDepositPostModel(
-                                      caseIds:
-                                          widget.selected_case_Ids!.length == 1
-                                              ? [
-                                                  ...widget.selected_case_Ids!,
-                                                  '$id'
-                                                ]
-                                              : widget.selected_case_Ids!,
+                                      caseIds: widget.selectedCaseIds!.length ==
+                                              1
+                                          ? [...widget.selectedCaseIds!, '$id']
+                                          : widget.selectedCaseIds!,
                                       contractor:
                                           Singleton.instance.contractor ?? "",
                                       deposition: Deposition(
@@ -176,10 +173,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         context: context,
                                       ));
                                     } else {
-                                      print(
-                                          double.parse(receiptController.text));
-                                      print(
-                                          double.parse(depositController.text));
                                       DialogUtils.showDialog(
                                           buildContext: context,
                                           title: Constants
@@ -203,7 +196,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                     }
 
                                     // Map<String, dynamic> postResult =
-                                    //     await APIRepository.apiRequest(APIRequestType.POST,
+                                    //     await APIRepository.apiRequest(APIRequestType.post,
                                     //     HttpUrl.companyBranchDeposit,
                                     //         requestBodydata: jsonEncode(requestBodyData));
                                     // if (postResult['success']) {

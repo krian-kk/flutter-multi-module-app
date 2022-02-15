@@ -42,7 +42,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
     }
   }
 
-  int? _selectedIndex;
+  // int? _selectedIndex;
   List<String> ids = [];
   String? custName;
   List<SelectedValue> selectedValue = [];
@@ -51,7 +51,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
 
   _onSelected(int index) {
     setState(() {
-      _selectedIndex = index;
+      // _selectedIndex = index;
     });
   }
 
@@ -73,7 +73,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                 if (selectedValue[0].isSelected) {
                   for (var element in selectedValue) {
                     if (element.isSelected) {
-                      print(element.isSelected);
+                      // print(element.isSelected);
                       // depositionModeSheet(context);
                     }
                     // else {
