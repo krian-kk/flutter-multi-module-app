@@ -719,4 +719,15 @@ class LanguageEn extends Languages {
 
   @override
   String get forgotPin => 'Forgot PIN?';
+
+  @override
+  String get waitFewSecondsYouGetCallFromAdmin =>
+      'Wait a few seconds, You\'ll get a call from Admin';
+
+  @override
+  String get pleaseWaitForTheCallIsOngoing =>
+      'Please wait for the call is ongoing';
+
+  @override
+  String get pleaseSpeakWithCustomer => 'Please Speak with the customer';
 }

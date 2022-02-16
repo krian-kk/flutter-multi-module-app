@@ -76,3 +76,5 @@ class AutoCallContactHealthUpdateState extends AllocationState {
   final int? caseIndex;
   AutoCallContactHealthUpdateState({this.contactIndex, this.caseIndex});
 }
+
+class AutoCallingContactSortState extends AllocationState {}

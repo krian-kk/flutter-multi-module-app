@@ -83,3 +83,5 @@ class AutoCallContactHealthUpdateEvent extends AllocationEvent {
   final int? caseIndex;
   AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
 }
+
+class AutoCallingContactSortEvent extends AllocationEvent {}

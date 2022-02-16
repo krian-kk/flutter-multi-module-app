@@ -256,11 +256,14 @@ class _CustomRemainderBottomSheetState
                               fontSize: FontSize.sixteen,
                             ))),
                       ),
-                      const SizedBox(width: 25),
+                      SizedBox(
+                          width: Singleton.instance.startCalling ?? false
+                              ? 5
+                              : 25),
                       Singleton.instance.startCalling ?? false
                           ? SizedBox(
                               width: Singleton.instance.startCalling ?? false
-                                  ? 130
+                                  ? 125
                                   : 191,
                               child: CustomButton(
                                 isSubmit
@@ -289,9 +292,8 @@ class _CustomRemainderBottomSheetState
                             )
                           : const SizedBox(),
                       SizedBox(
-                        width: Singleton.instance.startCalling ?? false
-                            ? 120
-                            : 191,
+                        width:
+                            Singleton.instance.startCalling ?? false ? 95 : 191,
                         child: CustomButton(
                           isSubmit
                               ? Languages.of(context)!.submit.toUpperCase()
@@ -328,7 +330,7 @@ class _CustomRemainderBottomSheetState
       bool isNotAutoCalling = true;
       if (widget.isAutoCalling) {
         await CallCustomerStatus.callStatusCheck(
-                callId: widget.paramValue['callId'])
+                callId: widget.paramValue['callId'], context: context)
             .then((value) {
           isNotAutoCalling = value;
         });
