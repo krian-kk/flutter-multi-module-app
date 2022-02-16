@@ -402,7 +402,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
         yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
-            health: event.health);
+            health: event.health,
+            selectedContactNumber: event.seleectedContactNumber);
       }
     }
     if (event is PostImageCapturedEvent) {
@@ -754,6 +755,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       };
     }
     if (event is ChangeHealthStatusEvent) {
+      // update autocalling screen case list of contact health
+      if (paramValue['contactIndex'] != null) {
+        print("update autocalling screen case list of contact health");
+        allocationBloc.add(AutoCallContactHealthUpdateEvent(
+          contactIndex: paramValue['contactIndex'],
+          caseIndex: paramValue['caseIndex'],
+        ));
+      }
+
       yield UpdateHealthStatusState();
     }
   }

@@ -249,6 +249,8 @@ class _CallDetailsBottomSheetScreenState
                                                         SizedBox(
                                                             child: InkWell(
                                                           onTap: () {
+                                                            debugPrint(
+                                                                "call customer--->");
                                                             widget.bloc.add(ClickOpenBottomSheetEvent(
                                                                 Constants
                                                                     .callCustomer,
@@ -257,7 +259,12 @@ class _CallDetailsBottomSheetScreenState
                                                                     .caseDetailsAPIValue
                                                                     .result
                                                                     ?.callDetails,
-                                                                false));
+                                                                false,
+                                                                seleectedContactNumber:
+                                                                    widget.bloc.listOfCallDetails?[i]
+                                                                            [
+                                                                            'value'] ??
+                                                                        ''));
                                                           },
                                                           child: Container(
                                                               decoration: const BoxDecoration(
