@@ -612,9 +612,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is AutoCallingContactSortEvent) {
-      print('Start Auto Calling ');
-      print('Addersjkjskljlkfj. => ${autoCallingResultList.length}');
-
       for (var element in autoCallingResultList) {
         element.address
             ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));

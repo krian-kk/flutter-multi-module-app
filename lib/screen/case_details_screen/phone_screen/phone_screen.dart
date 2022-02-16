@@ -75,6 +75,7 @@ class _PhoneScreenState extends State<PhoneScreen>
         }
 
         if (state is UpdateHealthStatusState) {
+          print('j==============================================jkjk=');
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
@@ -428,8 +429,9 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       if (widget.bloc.isAutoCalling) {
                                         if (await CallCustomerStatus
                                             .callStatusCheck(
-                                                callId: widget.bloc
-                                                    .paramValue['callId'])) {
+                                                callId: widget
+                                                    .bloc.paramValue['callId'],
+                                                context: context)) {
                                           widget.bloc.allocationBloc
                                               .add(StartCallingEvent(
                                             customerIndex:
@@ -488,13 +490,17 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       fontStyle: FontStyle.normal,
                                       fontSize: FontSize.sixteen,
                                     ))),
-                                const SizedBox(width: 25),
+                                SizedBox(
+                                    width:
+                                        Singleton.instance.startCalling ?? false
+                                            ? 5
+                                            : 25),
                                 Singleton.instance.startCalling ?? false
                                     ? SizedBox(
                                         width:
                                             Singleton.instance.startCalling ??
                                                     false
-                                                ? 130
+                                                ? 125
                                                 : 191,
                                         child: _controller.index == 1
                                             ? CustomButton(
@@ -567,12 +573,15 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                 fontWeight: FontWeight.w600,
                                                 onTap: isSubmitSecond
                                                     ? () {
-                                                        Singleton.instance
-                                                                .startCalling =
-                                                            false;
+                                                        // Singleton.instance
+                                                        //         .startCalling =
+                                                        //     false;
                                                         widget.bloc.add(
                                                             ClickPhoneInvalidButtonEvent(
-                                                                context));
+                                                          context,
+                                                          autoCallingStopAndSubmit:
+                                                              false,
+                                                        ));
                                                       }
                                                     : () {},
                                                 cardShape: 5,
@@ -582,7 +591,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                 SizedBox(
                                   width:
                                       Singleton.instance.startCalling ?? false
-                                          ? 120
+                                          ? 95
                                           : 191,
                                   child: _controller.index == 1
                                       ? CustomButton(
@@ -613,7 +622,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         '') {
                                                       widget.bloc.add(
                                                           ClickPhoneUnreachableSubmitedButtonEvent(
-                                                              context));
+                                                        context,
+                                                      ));
                                                     } else {
                                                       AppUtils.showToast(Constants
                                                           .pleaseSelectOptions);

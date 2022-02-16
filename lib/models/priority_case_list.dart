@@ -98,6 +98,10 @@ class Result {
       json['contact'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
+      if (address!.isNotEmpty) {
+        address
+            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+      }
     } else {
       address = <Address>[];
       json['address'].forEach((v) {
@@ -144,7 +148,7 @@ class Address {
   Address.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
-    health = json['health'] ?? " ";
+    health = json['health'] ?? '1.5';
   }
 
   Map<String, dynamic> toJson() {

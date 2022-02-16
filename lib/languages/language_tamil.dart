@@ -723,4 +723,15 @@ class LanguageTa extends Languages {
 
   @override
   String get forgotPin => 'பின்னை மறந்துவிட்டீர்களா?';
+
+  @override
+  String get waitFewSecondsYouGetCallFromAdmin =>
+      'சில வினாடிகள் காத்திருக்கவும், நிர்வாகியிடமிருந்து உங்களுக்கு அழைப்பு வரும்';
+
+  @override
+  String get pleaseWaitForTheCallIsOngoing =>
+      'அழைப்பு நடந்துகொண்டிருக்கும் வரை காத்திருக்கவும்';
+
+  @override
+  String get pleaseSpeakWithCustomer => 'தயவுசெய்து வாடிக்கையாளருடன் பேசுங்கள்';
 }

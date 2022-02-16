@@ -349,11 +349,14 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                 fontSize: FontSize.sixteen,
                               ))),
                         ),
-                        const SizedBox(width: 25),
+                        SizedBox(
+                            width: Singleton.instance.startCalling ?? false
+                                ? 5
+                                : 25),
                         Singleton.instance.startCalling ?? false
                             ? SizedBox(
                                 width: Singleton.instance.startCalling ?? false
-                                    ? 130
+                                    ? 125
                                     : 191,
                                 child: CustomButton(
                                   isSubmit
@@ -384,7 +387,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                             : const SizedBox(),
                         SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 120
+                              ? 95
                               : 191,
                           child: CustomButton(
                             isSubmit
@@ -425,7 +428,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
         bool isNotAutoCalling = true;
         if (widget.isAutoCalling) {
           await CallCustomerStatus.callStatusCheck(
-                  callId: widget.paramValue['callId'])
+                  callId: widget.paramValue['callId'], context: context)
               .then((value) {
             isNotAutoCalling = value;
           });

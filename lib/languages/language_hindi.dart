@@ -722,4 +722,15 @@ class LanguageHi extends Languages {
 
   @override
   String get forgotPin => 'पिन भूल गए?';
+
+  @override
+  String get waitFewSecondsYouGetCallFromAdmin =>
+      'कुछ सेकंड प्रतीक्षा करें, आपको व्यवस्थापक की ओर से कॉल आएगी';
+
+  @override
+  String get pleaseWaitForTheCallIsOngoing =>
+      'कृपया प्रतीक्षा करें कॉल जारी है';
+
+  @override
+  String get pleaseSpeakWithCustomer => 'कृपया ग्राहक से बात करें';
 }

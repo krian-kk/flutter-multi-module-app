@@ -561,7 +561,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield DisablePhoneInvalidBtnState();
       bool isNotAutoCalling = true;
       if (isAutoCalling) {
-        await CallCustomerStatus.callStatusCheck(callId: paramValue['callId'])
+        await CallCustomerStatus.callStatusCheck(
+                callId: paramValue['callId'], context: event.context)
             .then((value) {
           isNotAutoCalling = value;
         });
@@ -634,7 +635,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield DisableUnreachableBtnState();
       bool isNotAutoCalling = true;
       if (isAutoCalling) {
-        await CallCustomerStatus.callStatusCheck(callId: paramValue['callId'])
+        await CallCustomerStatus.callStatusCheck(
+                callId: paramValue['callId'], context: event.context)
             .then((value) {
           isNotAutoCalling = value;
         });
@@ -757,7 +759,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ChangeHealthStatusEvent) {
       // update autocalling screen case list of contact health
       if (paramValue['contactIndex'] != null) {
-        print("update autocalling screen case list of contact health");
         allocationBloc.add(AutoCallContactHealthUpdateEvent(
           contactIndex: paramValue['contactIndex'],
           caseIndex: paramValue['caseIndex'],
@@ -1120,7 +1121,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
-
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1200,7 +1200,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
-
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }
