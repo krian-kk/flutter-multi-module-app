@@ -611,6 +611,17 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallingLoadedState();
     }
 
+    if (event is AutoCallingContactSortEvent) {
+      print('Start Auto Calling ');
+      print('Addersjkjskljlkfj. => ${autoCallingResultList.length}');
+
+      autoCallingResultList.forEach((element) {
+        element.address
+            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+      });
+      yield AutoCallingContactSortState();
+    }
+
     if (event is UpdateStaredCaseEvent) {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {

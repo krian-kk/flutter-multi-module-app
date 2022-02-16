@@ -409,6 +409,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
           mapView(context);
           bloc.isShowSearchPincode = false;
         }
+        if (state is AutoCallingContactSortState) {
+          setState(() {});
+        }
         if (state is MessageState) {
           messageShowBottomSheet();
         }
@@ -756,6 +759,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     .health = data.currentHealth;
                 break;
             }
+            bloc.add(AutoCallingContactSortEvent());
           });
         }
       },
