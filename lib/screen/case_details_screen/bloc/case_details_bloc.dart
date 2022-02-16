@@ -402,7 +402,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
         yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
-            health: event.health);
+            health: event.health,
+            selectedContactNumber: event.seleectedContactNumber);
       }
     }
     if (event is PostImageCapturedEvent) {
@@ -560,7 +561,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield DisablePhoneInvalidBtnState();
       bool isNotAutoCalling = true;
       if (isAutoCalling) {
-        await CallCustomerStatus.callStatusCheck(callId: paramValue['callId'])
+        await CallCustomerStatus.callStatusCheck(
+                callId: paramValue['callId'], context: event.context)
             .then((value) {
           isNotAutoCalling = value;
         });
@@ -633,7 +635,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield DisableUnreachableBtnState();
       bool isNotAutoCalling = true;
       if (isAutoCalling) {
-        await CallCustomerStatus.callStatusCheck(callId: paramValue['callId'])
+        await CallCustomerStatus.callStatusCheck(
+                callId: paramValue['callId'], context: event.context)
             .then((value) {
           isNotAutoCalling = value;
         });
@@ -754,6 +757,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       };
     }
     if (event is ChangeHealthStatusEvent) {
+      // update autocalling screen case list of contact health
+      if (paramValue['contactIndex'] != null) {
+        allocationBloc.add(AutoCallContactHealthUpdateEvent(
+          contactIndex: paramValue['contactIndex'],
+          caseIndex: paramValue['caseIndex'],
+        ));
+      }
+
       yield UpdateHealthStatusState();
     }
   }
@@ -1110,7 +1121,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
-
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1190,7 +1200,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
-
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }

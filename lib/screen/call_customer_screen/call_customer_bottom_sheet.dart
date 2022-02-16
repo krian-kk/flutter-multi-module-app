@@ -30,6 +30,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final List<String> listOfMobileNo;
   final CaseDetailsApiModel? caseDetailsAPIValue;
   final String? custName;
+  final String? contactNumber;
 
   const CallCustomerBottomSheet({
     Key? key,
@@ -40,6 +41,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
     required this.sid,
     required this.listOfMobileNo,
     this.custName,
+    this.contactNumber,
   }) : super(key: key);
 
   @override
@@ -62,12 +64,13 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   void initState() {
     super.initState();
     bloc = CallCustomerBloc()..add(CallCustomerInitialEvent());
+    customerContactNoDropDownValue = widget.contactNumber!;
 
     for (var element in widget.listOfMobileNo) {
       customerContactNoDropdownList.add(element);
     }
 
-    customerContactNoDropDownValue = customerContactNoDropdownList.first;
+    // customerContactNoDropDownValue = customerContactNoDropdownList.first;
   }
 
   @override

@@ -88,7 +88,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           }
           if (state is ClickOpenBottomSheetState) {
             openBottomSheet(context, state.title, state.list, state.isCall,
-                health: state.health);
+                health: state.health,
+                selectedContact: state.selectedContactNumber);
           }
           if (state is CDNoInternetState) {
             AppUtils.noInternetSnackbar(context);
@@ -979,7 +980,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
   openBottomSheet(
       BuildContext buildContext, String cardTitle, List list, bool? isCall,
-      {String? health}) {
+      {String? health, String? selectedContact}) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -1203,6 +1204,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               custName:
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
+              contactNumber: selectedContact,
             );
           case Constants.addNewContact:
             return AddNewContactBottomSheet(

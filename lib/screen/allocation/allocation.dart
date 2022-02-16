@@ -409,6 +409,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
           mapView(context);
           bloc.isShowSearchPincode = false;
         }
+        if (state is AutoCallingContactSortState) {
+          setState(() {});
+        }
         if (state is MessageState) {
           messageShowBottomSheet();
         }
@@ -740,22 +743,23 @@ class _AllocationScreenState extends State<AllocationScreen> {
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
-                    .health = '2';
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = '2';
                 break;
               case 1:
-                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
-                    .health = '1';
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = '1';
                 break;
               case 2:
-                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
-                    .health = '0';
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = '0';
                 break;
               default:
-                bloc.resultList[state.caseIndex!].address?[state.contactIndex!]
-                    .health = data.currentHealth;
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = data.currentHealth;
                 break;
             }
+            bloc.add(AutoCallingContactSortEvent());
           });
         }
       },

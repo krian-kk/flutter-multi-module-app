@@ -482,4 +482,10 @@ abstract class Languages {
   String get secureYourAccountByCreatingAFourDigitPin;
 
   String get forgotPin;
+
+  String get waitFewSecondsYouGetCallFromAdmin;
+
+  String get pleaseWaitForTheCallIsOngoing;
+
+  String get pleaseSpeakWithCustomer;
 }
