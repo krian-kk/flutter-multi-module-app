@@ -75,7 +75,6 @@ class _PhoneScreenState extends State<PhoneScreen>
         }
 
         if (state is UpdateHealthStatusState) {
-          print('j==============================================jkjk=');
           UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
