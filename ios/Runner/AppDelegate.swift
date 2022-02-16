@@ -33,14 +33,6 @@ import FirebaseMessaging
     Messaging.messaging().delegate = self
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-
-    
-override func applicationWillResignActive(_ application: UIApplication) {
-    self.window.isHidden = true;
-  }
-  override func applicationDidBecomeActive(_ application: UIApplication) {
-    self.window.isHidden = false;
-  }
 }
 
 /** Called when push notification is received **/
