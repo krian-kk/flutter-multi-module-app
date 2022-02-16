@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/router.dart';
@@ -26,6 +27,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
