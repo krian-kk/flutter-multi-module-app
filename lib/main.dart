@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/router.dart';
@@ -18,17 +17,9 @@ import 'authentication/authentication_event.dart';
 import 'bloc.dart';
 
 void main() async {
-  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    debugPrint('Handling a background message ID ${message.messageId}');
-    debugPrint(
-        'Handling a background message Title ${message.notification!.title}');
-  }
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

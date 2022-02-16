@@ -1,6 +1,7 @@
 class HttpUrl {
   // static const String baseUrl = 'https://uat-collect.origa.ai/app_otc/';
   static const String baseUrl = 'https://collect.instalmint.com/app_otc/';
+
   // static const String baseUrl = 'https://devapi.instalmint.com/';
   // static const String baseUrl = 'https://origa-dev/';
   static const String version = 'v1/';
@@ -20,6 +21,7 @@ class HttpUrl {
       'https://collect.instalmint.com/node/api/user/loginWeb';
   static const String agentDetailUrl =
       'https://collect.instalmint.com/node/field-allocation/agents/';
+
   // Get agent detail for Reset password screen
   static String resetPasswordCheckUrl(String agentName) =>
       'https://collect.instalmint.com/node/field-allocation/agents/info/$agentName';
@@ -37,6 +39,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'profile/voiceAgencyDetails';
   static const String agentInformation =
       baseUrl + version + fieldAgent + 'profile/agentDetails?';
+
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl +
       version +
@@ -60,6 +63,7 @@ class HttpUrl {
       'case-details-events/enableCloudTelephony';
   static const String mobileInfoUrl =
       baseUrl + version + fieldAgent + 'profile/mobileInfo';
+
   // Post API ===================================================
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
@@ -69,6 +73,7 @@ class HttpUrl {
       'case-details-events/$selectValue?userType=$userTypeValue';
   static const String otsPostUrl =
       baseUrl + version + fieldAgent + 'case-details-events/ots';
+
   // Other FeedBack Post API
   static String otherFeedBackPostUrl(
           String selectValue, String userTypeValue) =>
@@ -76,95 +81,117 @@ class HttpUrl {
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   // Contractor detail api for FeedBack page
   static String contractorDetail =
       baseUrl + version + fieldAgent + 'case-details-events/contractorDetails';
+
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
       baseUrl + version + fieldAgent + 'profile/officeCheckIn';
 
   // baseUrl + version + fieldAgent + '';
   static String requestOTPUrl() => baseUrl + 'public/requestOtp';
+
   static String homeAddressUrl() =>
       baseUrl + version + fieldAgent + 'profile/homeAddress';
+
   static String resendOTPUrl() => baseUrl + 'public/requestOtp';
+
   static String resetPasswordUrl() => baseUrl + 'public/resetPassword';
+
   static String verifyOTP() => baseUrl + 'public/verifyOtp';
+
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String reminderPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String repoPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String disputePostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String ptpPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String unreachableUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String leftMessageUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String doorLockedUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String entryRestrictedUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String wrongAddressUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String shiftedUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String addressNotFoundUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String doesNotExistUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String incorrectNumberUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String numberNotWorkingUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
+
   static String notOperationalUrl(String selectValue, String userTypeValue) =>
       baseUrl +
       version +
@@ -196,6 +223,7 @@ class HttpUrl {
       baseUrl + version + fieldAgent + 'case-details/yardingData';
   static const String searchUrl =
       baseUrl + version + fieldAgent + 'case-details/search?';
+
   // static const String fileUpload = '';
 
   //post API

@@ -6,11 +6,11 @@ import FirebaseMessaging
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, MessagingDelegate {
+
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-//    Messaging.messaging().delegate = self;
     FirebaseApp.configure()
     application.registerForRemoteNotifications()
     GMSServices.provideAPIKey("AIzaSyCd2C9YZHP8pHM36PANa8eOCfGU9oCyKTE")
@@ -33,8 +33,9 @@ import FirebaseMessaging
     Messaging.messaging().delegate = self
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    
+    
 }
-
 /** Called when push notification is received **/
 @available(iOS 10.0, *)
 extension AppDelegate: UNUserNotificationCenterDelegate{
