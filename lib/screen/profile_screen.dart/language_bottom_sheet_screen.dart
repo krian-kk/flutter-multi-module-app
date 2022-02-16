@@ -54,8 +54,11 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
           Languages.of(context)!.choiceOtherLanguages, 'hi'),
       LanguageModel(StringResource.tamil, false,
           Languages.of(context)!.choiceOtherLanguages, 'ta'),
-      LanguageModel(StringResource.kannadam, false,
-          Languages.of(context)!.choiceOtherLanguages, 'ka')
+
+      /*Not available in First release*/
+
+      // LanguageModel(StringResource.kannadam, false,
+      //     Languages.of(context)!.choiceOtherLanguages, 'ka')
     ];
     return SingleChildScrollView(
       child: SizedBox(
