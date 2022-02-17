@@ -30,6 +30,13 @@
             {
               "client_id": "927842067224-ovmnqe0t93d7gjobf0uaeb69v6i3r4mn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "927842067224-gvh1p4k8d1g2u9uqvri25hqjkmeacfef.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mcollect.origa.ai"
+              }
             }
           ]
         }

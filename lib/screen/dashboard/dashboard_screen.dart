@@ -6,8 +6,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/return_value_model.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
+import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/my_deposists/my_deposists.dart';
 import 'package:origa/screen/my_recipts/my_receipts.dart';
 import 'package:origa/screen/my_visit/my_visits.dart';
@@ -609,6 +609,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                             .title!,
                                                         fontSize:
                                                             FontSize.twelve,
+                                                        lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -634,12 +635,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               BorderRadius
                                                                   .circular(75),
                                                         ),
-                                                        child: Center(
+                                                        child: Container(
+                                                          alignment: Alignment.center,
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      5),
                                                           child: CustomText(
                                                             bloc
                                                                 .dashboardList[
                                                                     index]
                                                                 .title!,
+                                                            isSingleLine: false,
+                                                            textAlign: TextAlign.center,
                                                             fontSize:
                                                                 FontSize.twelve,
                                                             fontWeight:

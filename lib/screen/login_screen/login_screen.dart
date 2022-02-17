@@ -1,14 +1,17 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -54,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
-    Firebase.initializeApp();
     super.initState();
   }
 
@@ -410,9 +412,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const SizedBox(
-                                          height: 60,
-                                        ),
+                                        const SizedBox(height: 40),
                                         // SvgPicture.asset(ImageResource.origa),
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -757,6 +757,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
+
   //     CustomButton(
   //       StringResource.signIn.toUpperCase(),
   //       buttonBackgroundColor: ColorResource.colorEA8A38,

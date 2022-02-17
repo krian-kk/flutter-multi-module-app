@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
+import 'package:origa/models/contractor_information_model.dart';
 
 class Singleton {
+  String baseUrl = '';
   String? accessToken;
   String? refreshToken;
   String? sessionID;
