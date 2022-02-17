@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
   var messageController = TextEditingController();
 
   // var myRandomClientId = '';
-  List<Messages> messages = [];
+  // List<Messages> messages = [];
   String? clientIDFromARef;
   String? toARef;
 
@@ -62,6 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
     messageController.text = '';
     clientIDFromARef = widget.fromARefId ?? Singleton.instance.agentRef;
     toARef = widget.toARefId;
+    print('FromID--> ${widget.fromARefId} and ToID --> ${widget.toARefId}');
     createAblyRealtimeInstance();
     super.initState();
     // bloc = ChatScreenBloc()..add(ChatInitialEvent());
@@ -73,8 +74,6 @@ class _ChatScreenState extends State<ChatScreen> {
     leaveChannelPresence();
     super.dispose();
   }
-
-  List<ChatHistory> messageHistory = [];
 
   Future<void> leaveChannelPresence() async {
     presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
@@ -184,15 +183,15 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         const SizedBox(height: 7),
                         Expanded(
-                          child: messageHistory.isNotEmpty
+                          child: bloc.messageHistory.isNotEmpty
                               ? ListView.builder(
                                   reverse: true,
                                   padding: const EdgeInsets.only(top: 15.0),
-                                  itemCount: messageHistory.length,
+                                  itemCount: bloc.messageHistory.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     final ChatHistory message =
-                                        messageHistory[index];
+                                        bloc.messageHistory[index];
                                     // final bool isMe = message.sender!.id == currentUser.id;
                                     // message.name == clientIDFromARef;
                                     return _buildMessage(
@@ -281,7 +280,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
         // if (event.data is String) {
         //   debugPrint("event data is String");
-        //   messageHistory.insert(
+        //   bloc.messageHistory.insert(
         //     0,
         //     ChatHistory(
         //         data: event.data.toString(),
@@ -292,7 +291,7 @@ class _ChatScreenState extends State<ChatScreen> {
         setState(() {
           ReceivingData receivedData =
               ReceivingData.fromJson(jsonDecode(jsonEncode(event.data)));
-          messageHistory.insert(
+          bloc.messageHistory.insert(
             0,
             ChatHistory(
                 data: receivedData.message,
@@ -308,7 +307,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
           debugPrint(receivedData.dateSent);
           debugPrint("received data2 value ==> ${receivedData.message}");
-          messageHistory.insert(
+          bloc.messageHistory.insert(
             0,
             ChatHistory(
                 data: receivedData.message,
@@ -327,7 +326,7 @@ class _ChatScreenState extends State<ChatScreen> {
         result.items.forEach((element) {
           if (element.data is String) {
             print("is String====>");
-            messageHistory.insert(
+            bloc.messageHistory.insert(
               0,
               ChatHistory(
                   data: element.data,
@@ -338,7 +337,7 @@ class _ChatScreenState extends State<ChatScreen> {
             print("is ObjectData====>");
             ReceivingData receivedData =
                 ReceivingData.fromJson(jsonDecode(jsonEncode(element.data)));
-            messageHistory.insert(
+            bloc.messageHistory.insert(
               0,
               ChatHistory(
                   data: receivedData.message,
@@ -470,63 +469,110 @@ class _ChatScreenState extends State<ChatScreen> {
                   Languages.of(context)!.typeYourMessage,
                   messageController,
                   isBorder: true,
+
                   borderColor: ColorResource.colorDADADA,
                   keyBoardType: TextInputType.multiline,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 7.0),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  suffixWidget: SizedBox(
+                    width: 80,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (messageController.text.trim().isNotEmpty) {
+                          // sendMessage(messageContent: messageController.text);
+                          chatChannel.publish(messages: [
+                            ably.Message(
+                                name: toARef,
+                                data: messageController.text.trim()),
+                          ]).then((value) {
+                            debugPrint('Success state-->111');
+                            setState(() {
+                              bloc.messageHistory.insert(
+                                0,
+                                ChatHistory(
+                                    data: messageController.text.trim(),
+                                    name: toARef,
+                                    dateTime: DateTime.now()),
+                              );
+                            });
+                            messageController.clear();
+                          }).catchError((error) {
+                            debugPrint('Error state--> ${error.toString()}');
+                            messageController.clear();
+                          });
+                        } else {
+                          debugPrint("space removed");
+                        }
+                      },
+                      child: Container(
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                              color: ColorResource.colorEA6D48,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          child: Center(
+                            child: CustomText(
+                              Languages.of(context)!.send.toUpperCase(),
+                              fontSize: FontSize.fifteen,
+                              color: ColorResource.colorffffff,
+                              lineHeight: 1,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )),
+                    ),
+                  ),
                   // inputformaters: [
                   //   BlacklistingTextInputFormatter(RegExp(r"\s\b|\b\s"))
                   // ],
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (messageController.text.trim().isNotEmpty) {
-                        // sendMessage(messageContent: messageController.text);
-                        chatChannel.publish(messages: [
-                          ably.Message(
-                              name: toARef,
-                              data: messageController.text.trim()),
-                        ]).then((value) {
-                          debugPrint('Success state-->111');
-                          setState(() {
-                            messageHistory.insert(
-                              0,
-                              ChatHistory(
-                                  data: messageController.text.trim(),
-                                  name: toARef,
-                                  dateTime: DateTime.now()),
-                            );
-                          });
-                          messageController.clear();
-                        }).catchError((error) {
-                          debugPrint('Error state--> ${error.toString()}');
-                          messageController.clear();
-                        });
-                      } else {
-                        debugPrint("space removed");
-                      }
-                    },
-                    child: Container(
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                            color: ColorResource.colorEA6D48,
-                            borderRadius: BorderRadius.circular(5.0)),
-                        child: Center(
-                          child: CustomText(
-                            Languages.of(context)!.send.toUpperCase(),
-                            fontSize: FontSize.sixteen,
-                            color: ColorResource.colorffffff,
-                            lineHeight: 1,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )),
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Padding(
+              //     padding: const EdgeInsets.symmetric(vertical: 2),
+              //     child: GestureDetector(
+              //       onTap: () {
+              //         if (messageController.text.trim().isNotEmpty) {
+              //           // sendMessage(messageContent: messageController.text);
+              //           chatChannel.publish(messages: [
+              //             ably.Message(
+              //                 name: toARef,
+              //                 data: messageController.text.trim()),
+              //           ]).then((value) {
+              //             debugPrint('Success state-->111');
+              //             setState(() {
+              //               bloc.messageHistory.insert(
+              //                 0,
+              //                 ChatHistory(
+              //                     data: messageController.text.trim(),
+              //                     name: toARef,
+              //                     dateTime: DateTime.now()),
+              //               );
+              //             });
+              //             messageController.clear();
+              //           }).catchError((error) {
+              //             debugPrint('Error state--> ${error.toString()}');
+              //             messageController.clear();
+              //           });
+              //         } else {
+              //           debugPrint("space removed");
+              //         }
+              //       },
+              //       child: Container(
+              //           height: double.infinity,
+              //           decoration: BoxDecoration(
+              //               color: ColorResource.colorEA6D48,
+              //               borderRadius: BorderRadius.circular(5.0)),
+              //           child: Center(
+              //             child: CustomText(
+              //               Languages.of(context)!.send.toUpperCase(),
+              //               fontSize: FontSize.sixteen,
+              //               color: ColorResource.colorffffff,
+              //               lineHeight: 1,
+              //               fontWeight: FontWeight.w600,
+              //             ),
+              //           )),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

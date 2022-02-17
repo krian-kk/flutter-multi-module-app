@@ -70,11 +70,11 @@ class CustomCollectionsBottomSheet extends StatefulWidget {
 
 class _CustomCollectionsBottomSheetState
     extends State<CustomCollectionsBottomSheet> {
-  TextEditingController amountCollectedControlller = TextEditingController();
-  TextEditingController dateControlller = TextEditingController();
+  late TextEditingController amountCollectedControlller;
+  late TextEditingController dateControlller;
+  late TextEditingController chequeControlller;
+  late TextEditingController remarksControlller;
   String selectedDate = '';
-  TextEditingController chequeControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -82,9 +82,9 @@ class _CustomCollectionsBottomSheetState
 
   bool isSubmit = true;
 
-  FocusNode amountCollectedFocusNode = FocusNode();
-  FocusNode chequeFocusNode = FocusNode();
-  FocusNode remarksFocusNode = FocusNode();
+  late FocusNode amountCollectedFocusNode;
+  late FocusNode chequeFocusNode;
+  late FocusNode remarksFocusNode;
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
@@ -99,11 +99,27 @@ class _CustomCollectionsBottomSheetState
   @override
   void initState() {
     super.initState();
+    amountCollectedControlller = TextEditingController();
+    dateControlller = TextEditingController();
+    chequeControlller = TextEditingController();
+    remarksControlller = TextEditingController();
+    amountCollectedFocusNode = FocusNode();
+    chequeFocusNode = FocusNode();
+    remarksFocusNode = FocusNode();
     setState(() {
       selectedDate = DateTime.now().toString();
 
       dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     });
+  }
+
+  @override
+  void dispose() {
+    amountCollectedControlller.dispose();
+    dateControlller.dispose();
+    chequeControlller.dispose();
+    remarksControlller.dispose();
+    super.dispose();
   }
 
   @override

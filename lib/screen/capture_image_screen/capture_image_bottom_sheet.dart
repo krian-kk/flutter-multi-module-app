@@ -41,7 +41,7 @@ class CustomCaptureImageBottomSheet extends StatefulWidget {
 
 class _CustomCaptureImageBottomSheetState
     extends State<CustomCaptureImageBottomSheet> {
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController remarksControlller;
 
   final _formKey = GlobalKey<FormState>();
   List<File> uploadFileLists = [];
@@ -50,7 +50,14 @@ class _CustomCaptureImageBottomSheetState
 
   @override
   void initState() {
+    remarksControlller = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    remarksControlller.dispose();
+    super.dispose();
   }
 
   getFiles() async {

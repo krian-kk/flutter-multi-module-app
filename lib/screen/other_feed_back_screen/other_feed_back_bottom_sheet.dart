@@ -71,8 +71,8 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
 
 class _CustomOtherFeedBackBottomSheetState
     extends State<CustomOtherFeedBackBottomSheet> {
-  TextEditingController dateControlller = TextEditingController();
-  TextEditingController remarksController = TextEditingController();
+  late TextEditingController dateControlller;
+  late TextEditingController remarksController;
   final _formKey = GlobalKey<FormState>();
   List<File> uploadFileLists = [];
   bool isSubmit = true;
@@ -109,6 +109,8 @@ class _CustomOtherFeedBackBottomSheetState
 
   @override
   void initState() {
+    dateControlller = TextEditingController();
+    remarksController = TextEditingController();
     if (Singleton.instance.feedbackTemplate?.result!.feedbackTemplate != null) {
       isVehicleAvailable = Singleton.instance.feedbackTemplate?.result!
               .feedbackTemplate![0].data![0].value ??
@@ -119,6 +121,13 @@ class _CustomOtherFeedBackBottomSheetState
           .format(DateTime.now().add(const Duration(days: 1)));
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    dateControlller.dispose();
+    remarksController.dispose();
   }
 
   @override

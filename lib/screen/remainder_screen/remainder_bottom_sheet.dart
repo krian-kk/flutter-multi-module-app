@@ -61,9 +61,9 @@ class CustomRemainderBottomSheet extends StatefulWidget {
 
 class _CustomRemainderBottomSheetState
     extends State<CustomRemainderBottomSheet> {
-  TextEditingController nextActionDateControlller = TextEditingController();
-  TextEditingController nextActionTimeControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController nextActionDateControlller;
+  late TextEditingController nextActionTimeControlller;
+  late TextEditingController remarksControlller;
 
   bool isSubmit = true;
 
@@ -71,7 +71,18 @@ class _CustomRemainderBottomSheetState
 
   @override
   void initState() {
+    nextActionDateControlller = TextEditingController();
+    nextActionTimeControlller = TextEditingController();
+    remarksControlller = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    nextActionDateControlller.dispose();
+    nextActionTimeControlller.dispose();
+    remarksControlller.dispose();
+    super.dispose();
   }
 
   @override

@@ -331,7 +331,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       inactiveColor: ColorResource.color232222
                                           .withOpacity(0.3),
                                       fieldHeight: 46,
-                                      fieldWidth: 30,
+                                      fieldWidth: 28,
                                       borderWidth: 1,
                                     ),
                                   ),

@@ -60,9 +60,8 @@ class CustomDisputeBottomSheet extends StatefulWidget {
 }
 
 class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
-  TextEditingController nextActionDateControlller = TextEditingController();
-  // String selectedDate = '';
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController nextActionDateControlller;
+  late TextEditingController remarksControlller;
 
   String disputeDropDownValue = 'select';
   bool isSubmit = true;
@@ -72,10 +71,19 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   @override
   void initState() {
     super.initState();
+    nextActionDateControlller = TextEditingController();
+    remarksControlller = TextEditingController();
     setState(() {
       nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 7)));
     });
+  }
+
+  @override
+  void dispose() {
+    nextActionDateControlller.dispose();
+    remarksControlller.dispose();
+    super.dispose();
   }
 
   @override
