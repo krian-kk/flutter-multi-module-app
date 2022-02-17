@@ -51,7 +51,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
 
 class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   late CallCustomerBloc bloc;
-  TextEditingController agentContactNoControlller = TextEditingController();
+  late TextEditingController agentContactNoControlller;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -63,14 +63,19 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   @override
   void initState() {
     super.initState();
+    agentContactNoControlller = TextEditingController();
     bloc = CallCustomerBloc()..add(CallCustomerInitialEvent());
     customerContactNoDropDownValue = widget.contactNumber!;
-
     for (var element in widget.listOfMobileNo) {
       customerContactNoDropdownList.add(element);
     }
-
     // customerContactNoDropDownValue = customerContactNoDropdownList.first;
+  }
+
+  @override
+  void dispose() {
+    agentContactNoControlller.dispose();
+    super.dispose();
   }
 
   @override

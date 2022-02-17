@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/broken_ptp/broken_ptp.dart';
@@ -228,7 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             dynamic returnValue = await Navigator.pushNamed(
               context,
               AppRoutes.caseDetailsScreen,
-              arguments: state.paramValues,
+              arguments: CaseDetailsNaviagationModel(state.paramValues),
             );
             RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));

@@ -59,9 +59,9 @@ class CustomRtpBottomSheet extends StatefulWidget {
 }
 
 class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
-  TextEditingController ptpDateControlller = TextEditingController();
-  TextEditingController nextActionDateControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController ptpDateControlller;
+  late TextEditingController nextActionDateControlller;
+  late TextEditingController remarksControlller;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -72,10 +72,21 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   @override
   void initState() {
     super.initState();
+    ptpDateControlller = TextEditingController();
+    nextActionDateControlller = TextEditingController();
+    remarksControlller = TextEditingController();
     setState(() {
       nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 7)));
     });
+  }
+
+  @override
+  void dispose() {
+    ptpDateControlller.dispose();
+    nextActionDateControlller.dispose();
+    remarksControlller.dispose();
+    super.dispose();
   }
 
   @override

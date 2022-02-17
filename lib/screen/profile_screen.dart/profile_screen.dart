@@ -540,7 +540,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: 200,
                               child: CustomButton(
-                                Languages.of(context)!.message,
+                                Languages.of(context)!.message.toUpperCase(),
                                 onTap: () => bloc.add(ClickMessageEvent(
                                   fromId: bloc.profileAPIValue.result![0].aRef,
                                   toId: bloc.profileAPIValue.result![0].parent,

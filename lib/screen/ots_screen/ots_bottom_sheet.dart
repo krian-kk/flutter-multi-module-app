@@ -65,14 +65,12 @@ class CustomOtsBottomSheet extends StatefulWidget {
 }
 
 class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
-  TextEditingController otsProposedAmountControlller = TextEditingController();
-  TextEditingController otsPaymentDateControlller = TextEditingController();
-  // String selectedDate = '';
-  // TextEditingController otsPaymentTimeControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController otsProposedAmountControlller;
+  late TextEditingController otsPaymentDateControlller;
+  late TextEditingController remarksControlller;
   String selectedPaymentModeButton = '';
 
-  FocusNode otsProposedAmountFocusNode = FocusNode();
+  late FocusNode otsProposedAmountFocusNode;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -81,7 +79,20 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   @override
   void initState() {
+    otsProposedAmountControlller = TextEditingController();
+    otsPaymentDateControlller = TextEditingController();
+    remarksControlller = TextEditingController();
+    otsProposedAmountFocusNode = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    otsProposedAmountControlller.dispose();
+    otsPaymentDateControlller.dispose();
+    remarksControlller.dispose();
+    otsProposedAmountFocusNode.dispose();
+    super.dispose();
   }
 
   getFiles() async {

@@ -14,6 +14,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_model.dart';
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
+import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/models/searching_data_model.dart';
@@ -511,29 +512,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                         ));
                                   await phoneBottomSheet(
                                       context, caseDetailsloc, 0);
-                                  // Navigator.pushNamed(
-                                  //     context, AppRoutes.caseDetailsScreen,
-                                  //     arguments: {
-                                  //       'caseID': bloc
-                                  //           .resultList[state.customerIndex!].caseId,
-                                  //       'isAutoCalling': true,
-                                  //       'customerIndex': state.customerIndex,
-                                  //       'phoneIndex': state.phoneIndex,
-                                  //       'mobileList': tempMobileList,
-                                  //     });
                                 } else {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: state.customerIndex! + 1,
                                     phoneIndex: 0,
-                                    // customerList: widget.bloc.allocationBloc
-                                    //     .resultList[(widget.bloc
-                                    //         .paramValue['customerIndex']) +
-                                    //     1],
                                   ));
                                 }
-                                // else {
-                                // }
-                                // if(bloc.resultList[state.customerIndex].address. )
                               } else {
                                 Singleton.instance.startCalling = false;
                               }
@@ -576,7 +560,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is NavigateCaseDetailState) {
           dynamic returnValue = await Navigator.pushNamed(
               context, AppRoutes.caseDetailsScreen,
-              arguments: state.paramValues);
+              arguments: CaseDetailsNaviagationModel(state.paramValues,
+                  allocationBloc: bloc));
           RetrunValueModel retrunModelValue =
               RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
 
@@ -1019,7 +1004,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     ],
                   ),
                   bottomNavigationBar: Visibility(
-                    visible: bloc.isAutoCalling,
+                    visible: bloc.isAutoCalling &&
+                        bloc.autoCallingResultList.isNotEmpty,
                     child: Container(
                       height: 88,
                       decoration: const BoxDecoration(
