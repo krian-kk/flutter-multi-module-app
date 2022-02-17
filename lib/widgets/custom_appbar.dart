@@ -79,7 +79,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
       centerTitle: false,
       backgroundColor: widget.backgroundColor,
       automaticallyImplyLeading: false,
-      backwardsCompatibility: false,
+      // backwardsCompatibility: false,
       titleSpacing: widget.titleSpacing ?? 0,
       title:
           //  showSearch

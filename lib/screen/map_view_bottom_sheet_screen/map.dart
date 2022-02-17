@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'dart:math' show cos, sqrt, asin;
 
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -221,9 +222,9 @@ class _MapNavigationState extends State<MapNavigation> {
                 okBtnFunction: (val) async {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                      arguments: {
+                      arguments: CaseDetailsNaviagationModel({
                         'caseID': element['caseId'],
-                      });
+                      }));
                 });
           },
           // icon: customIcon,

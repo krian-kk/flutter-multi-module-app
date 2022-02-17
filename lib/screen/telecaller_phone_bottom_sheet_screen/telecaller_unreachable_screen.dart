@@ -141,8 +141,9 @@ class _TelecallerPhoneUnreachableScreenState
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Singleton.instance.contractorInformations!.result!
-                                .hideCallTriedSmsButton!
+                        Singleton.instance.contractorInformations?.result
+                                    ?.hideCallTriedSmsButton ??
+                                true
                             ? const SizedBox()
                             : GestureDetector(
                                 // onTap: () {

@@ -61,17 +61,16 @@ class CustomPtpBottomSheet extends StatefulWidget {
 }
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
-  TextEditingController ptpDateControlller = TextEditingController();
+  late TextEditingController ptpDateControlller;
+  late TextEditingController ptpTimeControlller;
+  late TextEditingController ptpAmountControlller;
+  late TextEditingController referenceControlller;
+  late TextEditingController remarksControlller;
+  late TextEditingController loanDurationController;
 
-  TextEditingController ptpTimeControlller = TextEditingController();
-  TextEditingController ptpAmountControlller = TextEditingController();
-  TextEditingController referenceControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
-  TextEditingController loanDurationController = TextEditingController();
-
-  FocusNode ptpAmountFocusNode = FocusNode();
-  FocusNode ptpReferenceFocusNode = FocusNode();
-  FocusNode ptpRemarksFocusNode = FocusNode();
+  late FocusNode ptpAmountFocusNode;
+  late FocusNode ptpReferenceFocusNode;
+  late FocusNode ptpRemarksFocusNode;
 
   bool isSubmit = true;
 
@@ -81,7 +80,30 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
   @override
   void initState() {
+    ptpAmountFocusNode = FocusNode();
+    ptpReferenceFocusNode = FocusNode();
+    ptpRemarksFocusNode = FocusNode();
+    ptpTimeControlller = TextEditingController();
+    ptpAmountControlller = TextEditingController();
+    referenceControlller = TextEditingController();
+    remarksControlller = TextEditingController();
+    loanDurationController = TextEditingController();
+    ptpDateControlller = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ptpAmountFocusNode.dispose();
+    ptpReferenceFocusNode.dispose();
+    ptpRemarksFocusNode.dispose();
+    ptpTimeControlller.dispose();
+    ptpAmountControlller.dispose();
+    referenceControlller.dispose();
+    remarksControlller.dispose();
+    loanDurationController.dispose();
+    ptpDateControlller.dispose();
+    super.dispose();
   }
 
   @override

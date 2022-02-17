@@ -86,7 +86,7 @@ class AppUtils {
               borderColor: ColorResource.colorffffff,
               onTap: () {
                 // ignore: deprecated_member_use
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                     .hideCurrentSnackBar(reason: SnackBarClosedReason.action);
               },
             ),

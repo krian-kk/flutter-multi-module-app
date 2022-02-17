@@ -50,12 +50,12 @@ class CustomRepoBottomSheet extends StatefulWidget {
 }
 
 class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
-  TextEditingController dateControlller = TextEditingController();
-  TextEditingController timeControlller = TextEditingController();
-  TextEditingController modelMakeControlller = TextEditingController();
-  TextEditingController registrationNoControlller = TextEditingController();
-  TextEditingController chassisNoControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController dateControlller;
+  late TextEditingController timeControlller;
+  late TextEditingController modelMakeControlller;
+  late TextEditingController registrationNoControlller;
+  late TextEditingController chassisNoControlller;
+  late TextEditingController remarksControlller;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -63,13 +63,36 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   List<File> uploadFileLists = [];
 
-  FocusNode modelMakeFocusNode = FocusNode();
-  FocusNode registraionNoFocusNode = FocusNode();
-  FocusNode chassisNoFocusNode = FocusNode();
+  late FocusNode modelMakeFocusNode;
+  late FocusNode registraionNoFocusNode;
+  late FocusNode chassisNoFocusNode;
 
   @override
   void initState() {
+    dateControlller = TextEditingController();
+    timeControlller = TextEditingController();
+    modelMakeControlller = TextEditingController();
+    registrationNoControlller = TextEditingController();
+    chassisNoControlller = TextEditingController();
+    remarksControlller = TextEditingController();
+    modelMakeFocusNode = FocusNode();
+    registraionNoFocusNode = FocusNode();
+    chassisNoFocusNode = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    dateControlller.dispose();
+    timeControlller.dispose();
+    modelMakeControlller.dispose();
+    registrationNoControlller.dispose();
+    chassisNoControlller.dispose();
+    remarksControlller.dispose();
+    modelMakeFocusNode.dispose();
+    registraionNoFocusNode.dispose();
+    chassisNoFocusNode.dispose();
+    super.dispose();
   }
 
   getFiles() async {
