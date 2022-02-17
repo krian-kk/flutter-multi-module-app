@@ -1,6 +1,7 @@
 class HttpUrl {
   static String url = 'https://uat-collect.origa.ai';
 
+
   // static String? url = Singleton.instance.baseUrl;
   static const String version = 'v1/';
   static const String apiType = 'app_otc/';
