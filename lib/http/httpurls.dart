@@ -71,16 +71,16 @@ class HttpUrl {
       baseUrl + fieldAgent + 'profile/officeCheckIn';
 
   // baseUrl  + fieldAgent + '';
-  static String requestOTPUrl() => baseUrl + 'public/requestOtp';
+  static String requestOTPUrl() => '$url/$apiType' + 'public/requestOtp';
 
   static String homeAddressUrl() =>
       baseUrl + fieldAgent + 'profile/homeAddress';
 
-  static String resendOTPUrl() => baseUrl + 'public/requestOtp';
+  static String resendOTPUrl() => '$url/$apiType' + 'public/requestOtp';
 
-  static String resetPasswordUrl() => baseUrl + 'public/resetPassword';
+  static String resetPasswordUrl() => '$url/$apiType' + 'public/resetPassword';
 
-  static String verifyOTP() => baseUrl + 'public/verifyOtp';
+  static String verifyOTP() => '$url/$apiType' + 'public/verifyOtp';
 
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
