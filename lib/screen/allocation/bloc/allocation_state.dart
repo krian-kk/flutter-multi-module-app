@@ -67,7 +67,6 @@ class UpdateStaredCaseState extends AllocationState {
 class StartCallingState extends AllocationState {
   final int? customerIndex;
   final int? phoneIndex;
-  // final Result? customerList;
   StartCallingState({this.customerIndex, this.phoneIndex});
 }
 

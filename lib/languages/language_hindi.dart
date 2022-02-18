@@ -733,4 +733,13 @@ class LanguageHi extends Languages {
 
   @override
   String get pleaseSpeakWithCustomer => 'कृपया ग्राहक से बात करें';
+
+  @override
+  String get doesntGetTheAgentAddress => 'एजेंट का पता नहीं मिलता!';
+
+  @override
+  String get autoCallingIsComplete => 'ऑटो कॉलिंग पूरी हो गई है';
+
+  @override
+  String get pleaseCallAgain => 'कृपया फिर से कॉल करें!';
 }

@@ -62,30 +62,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   BuildContext? caseDetailsContext;
 
-  // allocationBloc.
-  // String? agrRef;
-  // String eventCode = ;
-
   int? indexValue;
   String? userType;
   dynamic paramValue;
 
   // Online Purpose
-  // bool isNoInternet = false;
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
   EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
-  // ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
-
-  // CaseDetailsResultModel offlineCaseDetailsValue = CaseDetailsResultModel();
-  // List<EventDetailsResultModel> offlineEventDetailsListValue = [];
-
-  // Future<Box<OrigoMapDynamicTable>> caseDetailsHiveBox =
-  //     Hive.openBox<OrigoMapDynamicTable>('CaseDetailsHiveApiResultsBox');
-  // Future<Box<OrigoDynamicTable>> eventDetailsHiveBox =
-  //     Hive.openBox<OrigoDynamicTable>('EventDetailsHiveApiResultsBox');
-  // var Box = Hive.box<CaseDetailsHiveModel>('CaseDetailsHiveApiResultsBox19');
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -156,7 +141,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
-      // agrRef = _pref.getString(Constants.agentRef);
 
       //check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
@@ -175,25 +159,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-
-          // caseDetailsHiveBox.then((value) => value.put(
-          //     'case' + caseId.toString(),
-          //     OrigoMapDynamicTable(
-          //       status: jsonData['status'],
-          //       message: jsonData['message'],
-          //       result: jsonData['result'],
-          //     )));
         } else if (caseDetailsData['statusCode'] == 401 ||
             caseDetailsData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           noInternetAndServerErrorMsg = caseDetailsData['data'];
         }
       }
-
-      // await caseDetailsHiveBox.then(
-      //   (value) => offlineCaseDetailsValue = CaseDetailsResultModel.fromJson(
-      //       value.get('case' + caseId.toString())!.result),
-      // );
 
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
@@ -275,13 +246,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 caseDetailsAPIValue.result?.addressDetails!, false))),
       ]);
 
-      // expandOtherFeedback.addAll([
-      //   OtherFeedbackExpandModel(header: 'ABC', subtitle: 'subtitle'),
-      //   OtherFeedbackExpandModel(
-      //       header: 'VEHICLE AVAILABLE', subtitle: 'subtitle'),
-      //   OtherFeedbackExpandModel(
-      //       header: 'COLLECTOR FEEDDBACK', subtitle: 'subtitle'),
-      // ]);
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(
             ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
@@ -469,7 +433,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   .result?.addressDetails?[indexValue!]['value']
                   .toString(),
               'health': ConstantEventValues.addressCustomerNotMetHealth,
-              // 'resAddressId_0': '6181646813c5cf70dea671d2',
               'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
             }
           ],
@@ -490,7 +453,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   .result?.addressDetails?[indexValue!]['value']
                   .toString(),
               'health': ConstantEventValues.addressCustomerNotMetHealth,
-              // 'resAddressId_0': '6181646813c5cf70dea671d2',
               'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
             }
           ],
@@ -619,7 +581,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           yield UpdateHealthStatusState();
 
           // update autocalling screen case list of contact health
-          if (paramValue['contactIndex'] != null) {
+          if (paramValue['contactIndex'] != null ||
+              paramValue['phoneIndex'] != null) {
             allocationBloc.add(AutoCallContactHealthUpdateEvent(
               contactIndex: paramValue['contactIndex'],
               caseIndex: paramValue['caseIndex'],
@@ -719,7 +682,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           yield UpdateHealthStatusState();
 
           // update autocalling screen case list of contact health
-          if (paramValue['contactIndex'] != null) {
+          if (paramValue['contactIndex'] != null ||
+              paramValue['phoneIndex'] != null) {
             allocationBloc.add(AutoCallContactHealthUpdateEvent(
               contactIndex: paramValue['contactIndex'],
               caseIndex: paramValue['caseIndex'],
@@ -758,7 +722,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ChangeHealthStatusEvent) {
       // update autocalling screen case list of contact health
-      if (paramValue['contactIndex'] != null) {
+      if (paramValue['contactIndex'] != null ||
+          paramValue['phoneIndex'] != null) {
         allocationBloc.add(AutoCallContactHealthUpdateEvent(
           contactIndex: paramValue['contactIndex'],
           caseIndex: paramValue['caseIndex'],
@@ -769,6 +734,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
   }
 
+  // Open the Bottom Sheet Only in Auto Calling Feature
   openBottomSheet(
       BuildContext buildContext, String cardTitle, List list, bool? isCall,
       {String? health}) {
@@ -941,7 +907,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isAutoCalling: isAutoCalling,
               allocationBloc: allocationBloc,
               paramValue: paramValue,
-              // bloc: CaseDetailsBloc(AllocationBloc()),
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
@@ -981,6 +946,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
+              contactNumber: listOfAddress![paramValue['phoneIndex']].value,
             );
 
           default:

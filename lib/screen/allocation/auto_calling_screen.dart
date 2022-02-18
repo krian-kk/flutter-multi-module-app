@@ -201,7 +201,6 @@ class AutoCalling {
                                                       height: 3.0,
                                                     ),
                                                     SizedBox(
-                                                      // width: 260,
                                                       child: CustomText(
                                                         bloc
                                                             .autoCallingResultList[
@@ -229,7 +228,6 @@ class AutoCalling {
                                                     ? Container(
                                                         width: 55,
                                                         height: 19,
-                                                        // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                                         decoration: BoxDecoration(
                                                             color: ColorResource
                                                                 .colorD5344C,

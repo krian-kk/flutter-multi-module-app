@@ -38,16 +38,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // _initPackageInfo();
     bloc = DashboardBloc()..add(DashboardInitialEvent(context));
   }
-
-  // Future<void> _initPackageInfo() async {
-  //   final info = await PackageInfo.fromPlatform();
-  //   setState(() {
-  //     version = info.version;
-  //   });
-  // }
 
   Widget userActivity(
       {String? header,
@@ -55,7 +47,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       Color? backgrountColor,
       required Color leadingColor}) {
     return Container(
-      // width: 120,
       height: 60,
       decoration: BoxDecoration(
           color: backgrountColor, borderRadius: BorderRadius.circular(10)),
@@ -77,7 +68,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
                   header!,
@@ -86,7 +76,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontWeight: FontWeight.w700,
                   lineHeight: 1.0,
                 ),
-                // const Spacer(),
                 CustomText(
                   count ?? '0',
                   color: ColorResource.color23375A,
@@ -106,9 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-              // top: false,
-              bottom: false,
-              child: PriorityFollowUpBottomSheet(bloc));
+              bottom: false, child: PriorityFollowUpBottomSheet(bloc));
         });
   }
 
@@ -116,10 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: BrokenPTPBottomSheet(bloc));
+          return SafeArea(bottom: false, child: BrokenPTPBottomSheet(bloc));
         });
   }
 
@@ -128,9 +112,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-              // top: false,
-              bottom: false,
-              child: UntouchedCasesBottomSheet(bloc));
+              bottom: false, child: UntouchedCasesBottomSheet(bloc));
         });
   }
 
@@ -138,10 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: MyVisitsBottomSheet(bloc));
+          return SafeArea(bottom: false, child: MyVisitsBottomSheet(bloc));
         });
   }
 
@@ -149,10 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: MyReceiptsBottomSheet(bloc));
+          return SafeArea(bottom: false, child: MyReceiptsBottomSheet(bloc));
         });
   }
 
@@ -160,10 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: MyDeposistsBottomSheet(bloc));
+          return SafeArea(bottom: false, child: MyDeposistsBottomSheet(bloc));
         });
   }
 
@@ -171,10 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              // top: false,
-              bottom: false,
-              child: YardingAndSelfRelease(bloc));
+          return SafeArea(bottom: false, child: YardingAndSelfRelease(bloc));
         });
   }
 
@@ -258,8 +228,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     retrunModelValue.returnCollectionAmount));
               }
             }
-            // if (retrunModelValue.isSubmit) {
-            // }
           }
 
           if (state is NavigateSearchState) {
@@ -384,12 +352,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       ],
                                     ),
                                   ),
-                                  // userActivity(
-                                  //   StringResource.customerMet,
-                                  //   '20',
-                                  //   ColorResource.colorBEC4CF,
-                                  //   ColorResource.color73C170,
-                                  // ),
                                   const SizedBox(
                                     height: 8,
                                   ),
@@ -422,14 +384,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           height: 5,
                                         ),
                                         LinearPercentIndicator(
-                                          // width: MediaQuery.of(context).size.width,
                                           padding: const EdgeInsets.all(4),
                                           animation: true,
                                           addAutomaticKeepAlive: false,
                                           lineHeight: 12.0,
                                           animationDuration: 2500,
                                           // Result must change
-                                          // percent: (bloc.mtdCaseCompleted!/bloc.mtdCaseTotal!),
                                           percent: (bloc.mtdCaseCompleted! ==
                                                       0 &&
                                                   bloc.mtdCaseTotal! == 0)
@@ -439,7 +399,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   ? (bloc.mtdCaseCompleted! /
                                                       bloc.mtdCaseTotal!)
                                                   : 0.0,
-                                          // center: Text("80.0%"),
                                           linearStrokeCap:
                                               LinearStrokeCap.roundAll,
                                           progressColor:
@@ -490,13 +449,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           height: 5,
                                         ),
                                         LinearPercentIndicator(
-                                          // width: MediaQuery.of(context).size.width,
                                           padding: const EdgeInsets.all(4),
                                           addAutomaticKeepAlive: false,
                                           animation: true,
                                           lineHeight: 12.0,
                                           animationDuration: 2500,
-                                          // percent: (bloc.mtdAmountCompleted! / bloc.mtdAmountTotal!),
                                           percent: (bloc.mtdAmountCompleted! ==
                                                       0 &&
                                                   bloc.mtdAmountTotal! == 0)
@@ -506,7 +463,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   ? (bloc.mtdAmountCompleted! /
                                                       bloc.mtdAmountTotal!)
                                                   : 0.0,
-                                          // center: Text("80.0%"),
                                           linearStrokeCap:
                                               LinearStrokeCap.roundAll,
                                           progressColor:
@@ -582,7 +538,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   YardingAndSelfReleaseEvent());
                                               break;
                                             default:
-                                            // AppUtils.showToast('');
                                           }
                                         },
                                         child: index == 5
@@ -731,10 +686,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                         .center,
                                                                 children: [
                                                                   SizedBox(
-                                                                      // height: 40,
                                                                       width:
                                                                           105,
-                                                                      // color: ColorResource.color101010,
                                                                       child:
                                                                           CustomText(
                                                                         bloc.dashboardList[index]
@@ -757,7 +710,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                         .image!),
                                                                 ],
                                                               ),
-                                                              // const SizedBox(height: 4,),
                                                               const Spacer(),
                                                               Row(
                                                                 children: [
@@ -833,35 +785,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     mainAxisSpacing: 4.0,
                                     crossAxisSpacing: 4.0,
                                   ),
-                                  // const SizedBox(height: 5),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //       horizontal: 2),
-                                  //   child: CustomButton(
-                                  //     Languages.of(context)!.help.toUpperCase(),
-                                  //     fontSize: FontSize.sixteen,
-                                  //     fontWeight: FontWeight.bold,
-                                  //     textColor: ColorResource.color23375A,
-                                  //     buttonBackgroundColor:
-                                  //         ColorResource.colorBEC4CF,
-                                  //     borderColor: ColorResource.colorBEC4CF,
-                                  //     cardElevation: 0,
-                                  //     cardShape: 75,
-                                  //     isLeading: true,
-                                  //     onTap: () {
-                                  //       AppUtils.showToast(
-                                  //           Languages.of(context)!.help);
-                                  //     },
-                                  //     trailingWidget: Row(
-                                  //       children: [
-                                  //         SvgPicture.asset(ImageResource.help),
-                                  //         const SizedBox(
-                                  //           width: 7,
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ),

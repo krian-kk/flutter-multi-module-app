@@ -48,9 +48,6 @@ import 'custom_card_list.dart';
 class AllocationScreen extends StatefulWidget {
   const AllocationScreen({Key? key}) : super(key: key);
 
-  // AuthenticationBloc authenticationBloc;
-  // AllocationScreen(this.authenticationBloc);
-
   @override
   _AllocationScreenState createState() => _AllocationScreenState();
 }
@@ -99,8 +96,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
     setState(() {
       position = result;
     });
-    // print('position------> ${position.heading}');
-    // print(position);
     List<Placemark> placemarks =
         await placemarkFromCoordinates(result.latitude, result.longitude);
 
@@ -110,7 +105,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
           placemarks.toList().first.subLocality.toString() +
           ', ' +
           placemarks.toList().first.postalCode.toString();
-      // print(currentAddress);
     });
   }
 
@@ -427,6 +421,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             if (getAgencyDetailsData[Constants.success]) {
               if (Singleton.instance.cloudTelephony!) {
                 Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
+
                 AgencyDetailsModel voiceAgencyDetails =
                     AgencyDetailsModel.fromJson(jsonData);
 
@@ -447,7 +442,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               ?.first.callerIds?.first ??
                           '0',
                       aRef: Singleton.instance.agentRef ?? '',
-                      customerName: Singleton.instance.agentName ?? '',
+                      customerName: bloc.resultList[state.customerIndex!].cust!,
                       service: voiceAgencyDetails
                               .result?.voiceAgencyData?.first.agencyId ??
                           '0',
@@ -456,7 +451,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           '0',
                       caseId: bloc.resultList[state.customerIndex!].caseId!,
                       sId: bloc.resultList[state.customerIndex!].sId!,
-                      // agrRef: Singleton.instance.agentRef ?? '',
                       agrRef:
                           bloc.resultList[state.customerIndex!].agrRef ?? '',
                       agentName: Singleton.instance.agentName ?? '',
@@ -500,9 +494,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                     state.customerIndex!]
                                                 .caseId,
                                             'isAutoCalling': true,
+                                            'caseIndex': state.customerIndex,
                                             'customerIndex':
                                                 state.customerIndex,
                                             'phoneIndex': state.phoneIndex,
+                                            'contactIndex': state.phoneIndex,
                                             'mobileList': tempMobileList,
                                             'context': context,
                                             'callId': postResult['data']
@@ -532,6 +528,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           _timer.cancel();
                         }
                       });
+                    } else {
+                      AppUtils.showToast(
+                          Languages.of(context)!.pleaseCallAgain);
                     }
                   } else {
                     bloc.add(StartCallingEvent(
@@ -547,10 +546,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 //   'tel:' + '6374578994',
                 // );
               }
+            } else {
+              AppUtils.showToast(
+                  Languages.of(context)!.doesntGetTheAgentAddress);
             }
           } else {
             Singleton.instance.startCalling = false;
-            AppUtils.showToast('Auto Calling is Complete');
+            AppUtils.showToast(
+              Languages.of(context)!.autoCallingIsComplete,
+            );
           }
         }
         if (state is UpdateNewValueState) {
@@ -1016,38 +1020,41 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              flex: 4,
-                              child: CustomButton(
-                                Languages.of(context)!.stop.toUpperCase(),
-                                fontSize: FontSize.sixteen,
-                                textColor: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
-                                cardShape: 5,
-                                buttonBackgroundColor:
-                                    ColorResource.colorffffff,
-                                borderColor: ColorResource.colorffffff,
-                                onTap: () async {
-                                  SharedPreferences _pref =
-                                      await SharedPreferences.getInstance();
-                                  _pref.setInt('autoCallingIndexValue', 0);
-                                  _pref.setInt('autoCallingSubIndexValue', 0);
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
+                            // Expanded(
+                            //   flex: 4,
+                            //   child: CustomButton(
+                            //     Languages.of(context)!.stop.toUpperCase(),
+                            //     fontSize: FontSize.sixteen,
+                            //     textColor: ColorResource.colorEA6D48,
+                            //     fontWeight: FontWeight.w600,
+                            //     cardShape: 5,
+                            //     buttonBackgroundColor:
+                            //         ColorResource.colorffffff,
+                            //     borderColor: ColorResource.colorffffff,
+                            //     onTap: () async {
+                            //       SharedPreferences _pref =
+                            //           await SharedPreferences.getInstance();
+                            //       _pref.setInt('autoCallingIndexValue', 0);
+                            //       _pref.setInt('autoCallingSubIndexValue', 0);
+                            //     },
+                            //   ),
+                            // ),
+                            // Expanded(
+                            //   flex: 5,
+                            //   child:
+                            SizedBox(
+                              width: 200,
                               child: CustomButton(
                                 // Languages.of(context)!
                                 //     .startCalling
                                 //     .toUpperCase(),
                                 null,
-
                                 cardShape: 5,
                                 trailingWidget: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0,
+                                    horizontal: 12.0,
                                   ),
                                   child: SvgPicture.asset(ImageResource.vector),
                                 ),
@@ -1062,6 +1069,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       Languages.of(context)!
                                           .startCalling
                                           .toUpperCase(),
+                                      textAlign: TextAlign.center,
                                       fontWeight: FontWeight.w600,
                                       color: ColorResource.colorFFFFFF,
                                     ),
@@ -1076,6 +1084,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 },
                               ),
                             ),
+                            // ),
                           ],
                         ),
                       ),

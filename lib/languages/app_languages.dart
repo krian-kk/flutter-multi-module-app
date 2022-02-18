@@ -488,4 +488,10 @@ abstract class Languages {
   String get pleaseWaitForTheCallIsOngoing;
 
   String get pleaseSpeakWithCustomer;
+
+  String get doesntGetTheAgentAddress;
+
+  String get autoCallingIsComplete;
+
+  String get pleaseCallAgain;
 }

@@ -167,9 +167,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                         color: ColorResource.colorffffff,
                                         size: 22,
                                       ),
-                                      // SvgPicture.asset(
-                                      //     ImageResource
-                                      //         .whatsApp),
                                       const SizedBox(width: 5),
                                       CustomText(
                                           Constants.sendSMS.toUpperCase(),
@@ -188,16 +185,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             context,
                           ),
                         ),
-                        // const SizedBox(height: 19),
-                        // Wrap(
-                        //   spacing: 15,
-                        //   runSpacing: 8,
-                        //   children: _buildOptionBottomSheetOpenButton(
-                        //     optionBottomSheetButtonList,
-                        //     context,
-                        //   ),
-                        // ),
-                        // const SizedBox(height: 120)
                       ],
                     ),
                   ),

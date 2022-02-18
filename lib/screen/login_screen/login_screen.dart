@@ -46,8 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool _isChecked = false;
 
-  // String? userType;
-
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
@@ -58,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  // _passwordVisibleOrNot the password show status
+  // PasswordVisibleOrNot the password show status
   void _passwordVisibleOrNot() {
     setState(() {
       _obscureText = !_obscureText;
@@ -135,7 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontSize: FontSize.sixteen,
                   onTap: () {
                     showComformSecurePinDialogBox(securePinCodeContoller.text);
-                    // Navigator.pop(context);
                   },
                 ),
               ],
@@ -362,7 +359,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppUtils.noInternetSnackbar(context);
                       }
                       if (state is HomeTabState) {
-                        // showSecurePinDialogBox();
                         Navigator.pushReplacementNamed(
                             context, AppRoutes.homeTabScreen);
                       }
@@ -413,7 +409,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const SizedBox(
                                           height: 60,
                                         ),
-                                        // SvgPicture.asset(ImageResource.origa),
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 35),
@@ -446,9 +441,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
-                                          // onChange: (){
-                                          //    _formKey.currentState!.validate();
-                                          // },
                                           validatorCallBack: (bool values) {},
                                         ),
                                         const SizedBox(
@@ -474,9 +466,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
-                                          // onChange: (){
-                                          //    _formKey.currentState!.validate();
-                                          // },
                                           validatorCallBack: (bool values) {},
                                           suffixWidget: InkWell(
                                             onTap: _passwordVisibleOrNot,
@@ -560,7 +549,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     userId.clear();
                                                     password.clear();
                                                     _isChecked = false;
-                                                    // signin submit button activities
+                                                    // Signin submit button activities
                                                   });
                                                 }
                                               : () {
@@ -757,28 +746,14 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-  //     CustomButton(
-  //       StringResource.signIn.toUpperCase(),
-  //       buttonBackgroundColor: ColorResource.colorEA8A38,
-  //       borderColor: ColorResource.colorEA8A38,
-  //       onTap: () {
-  //         _signIn(fcmToken: fcmToken);
-  //       },
-  //       cardShape: 85,
-  //       fontSize: FontSize.sixteen,
-  //       fontWeight: FontWeight.w600,
-  //   textColor: ColorResource.color23375A,
-  //     );
 
-  // this is custom Widget to show rounded container
-  // here is state is submitting, we are showing loading indicator on container then.
-  // if it completed then showing a Icon.
+  // This is custom Widget to show rounded container
+  // Here is state is submitting, we are showing loading indicator on container then.
+  // If it completed then showing a Icon.
   Widget circularLoading(bool done) {
-    // final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        // color: color,
         gradient: LinearGradient(
           colors: [
             ColorResource.colorFFC23B,

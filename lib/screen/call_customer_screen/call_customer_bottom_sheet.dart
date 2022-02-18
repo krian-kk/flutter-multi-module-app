@@ -58,8 +58,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   List<String> customerContactNoDropdownList = [];
   String customerContactNoDropDownValue = '';
 
-  // List<CaseListModel> caseDetaislListModel = [];
-
   @override
   void initState() {
     super.initState();
@@ -69,7 +67,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
     for (var element in widget.listOfMobileNo) {
       customerContactNoDropdownList.add(element);
     }
-    // customerContactNoDropDownValue = customerContactNoDropdownList.first;
   }
 
   @override
@@ -259,20 +256,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 });
                               }
                               if (_formKey.currentState!.validate()) {
-                                // Map<String, dynamic> enableCloudTel =
-                                //     await APIRepository.apiRequest(
-                                //   APIRequestType.post,
-                                //   HttpUrl.enableCloudTelephony,
-                                //   requestBodydata: {
-                                //     "contractor": Singleton.instance.contractor
-                                //   },
-                                // );
-                                // if (enableCloudTel['data']['result']) {
-                                // print(enableCloudTel['data']);
-                                // Singleton.instance.callingID != ''
                                 if (Singleton.instance.cloudTelephony! &&
                                     Singleton.instance.callingID != null) {
-                                  // print("call id checking");
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
@@ -286,8 +271,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                             '',
                                     caseId: widget.caseId,
                                     sId: widget.sid,
-                                    // agrRef: Singleton.instance.agentRef ?? '',
-                                    //AgrRef is Agrement number
                                     agrRef: widget.caseDetailsAPIValue!.result!
                                             .caseDetails!.agrRef ??
                                         '',
@@ -310,17 +293,10 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     AppUtils.showToast(
                                         Constants.callConnectedPleaseWait);
                                   }
-                                  // else {}
                                 } else {
-                                  // print(" no call call id checking");
-
                                   AppUtils.makePhoneCall(
                                       'tel:' + customerContactNoDropDownValue);
                                 }
-                                // } else {
-                                //   AppUtils.makePhoneCall(
-                                //       'tel:' + customerContactNoDropDownValue);
-                                // }
                               }
                               if (mounted) {
                                 setState(() {

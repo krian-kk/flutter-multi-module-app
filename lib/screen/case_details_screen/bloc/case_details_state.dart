@@ -26,8 +26,6 @@ class ClickMainCallBottomSheetState extends CaseDetailsState {
 
 class ClickViewMapState extends CaseDetailsState {}
 
-// class CDNoInternetConnectionState extends CaseDetailsState {}
-
 class CallCaseDetailsState extends CaseDetailsState {
   final dynamic paramValues;
   CallCaseDetailsState({this.paramValues});
@@ -79,12 +77,5 @@ class PhoneBottomSheetSuccessState extends CaseDetailsState {}
 class UpdateSuccessfullState extends CaseDetailsState {}
 
 class UpdateHealthStatusState extends CaseDetailsState {
-  // final BuildContext context;
-  // final int? selectedHealthIndex;
-  // final int? tabIndex;
-  // final dynamic currentHealth;
-  UpdateHealthStatusState(
-      // this.context,
-      //   {this.selectedHealthIndex, this.tabIndex, this.currentHealth}
-      );
+  UpdateHealthStatusState();
 }

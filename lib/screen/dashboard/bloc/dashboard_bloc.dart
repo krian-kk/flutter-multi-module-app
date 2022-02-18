@@ -29,7 +29,6 @@ part 'dashboard_state.dart';
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
-  // List<CaseListModel> caseList = [];
   String? userType;
   String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
@@ -38,14 +37,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardAllModels untouchedCasesData = DashboardAllModels();
   MyVisitsCaseModel myVisitsData = MyVisitsCaseModel();
   MyReceiptsCaseModel myReceiptsData = MyReceiptsCaseModel();
-  // DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
-  // DashboardUntouchedCasesModel untouchedCasesData =
-  //     DashboardUntouchedCasesModel();
-  // DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
-  // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
   MyDeposistModel myDeposistsData = MyDeposistModel();
-  // Deposists selected case index
-  // List listOfIndex = [];
 
   YardingData yardingAndSelfReleaseData = YardingData();
   DashboardCardCount dashboardCardCounts = DashboardCardCount();
@@ -56,22 +48,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'MONTHLY',
   ];
 
-  // // Show the Options
-  // String? customerMetCountValue;
-  // String? customerNotMetCountValue;
-  // String? customerInvalidCountValue;
-
   dynamic mtdCaseCompleted = 0;
   dynamic mtdCaseTotal = 0;
   dynamic mtdAmountCompleted = 0;
   dynamic mtdAmountTotal = 0;
 
   String? todayDate;
-  // this is search result cases
+  // This is search result cases
   List<Result> searchResultList = [];
   bool isShowSearchResult = false;
 
-  // it's manage the Refresh the page basaed on Internet connection
+  // It's manage the Refresh the page basaed on Internet connection
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
 
@@ -106,8 +93,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
 
         if (dashboardData!['success']) {
-          // var jsonData = dashboardData['data']['result'];
-
           dashboardCardCounts =
               DashboardCardCount.fromJson(dashboardData['data']);
 
@@ -641,7 +626,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           (int.parse(dashboardList[1].count!) - 1).toString();
 
       dashboardList[1].amountRs =
-          (int.parse(dashboardList[1].amountRs!) - event.caseAmount).toString();
+          (double.parse(dashboardList[1].amountRs!) - event.caseAmount)
+              .toString();
       untouchedCasesData.result!.totalAmt =
           untouchedCasesData.result!.totalAmt! - event.caseAmount;
 
@@ -685,7 +671,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           (int.parse(dashboardList[4].count!) + 1).toString();
       if (event.isNotMyReceipts) {
         dashboardList[4].amountRs =
-            (int.parse(dashboardList[4].amountRs!) + event.caseAmount)
+            (double.parse(dashboardList[4].amountRs!) + event.caseAmount)
                 .toString();
       }
       yield UpdateSuccessfulState();

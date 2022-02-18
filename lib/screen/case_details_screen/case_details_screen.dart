@@ -89,21 +89,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           listener: (context, state) {
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
-              // Navigator.pop(context);
             }
             if (state is UpdateSuccessfullState) {
               setState(() {});
             }
             if (state is ClickMainAddressBottomSheetState) {
-              // Navigator.pop(context);
               addressBottomSheet(context, bloc, state.i);
             }
-            // if (state is SubmitSuccessState) {
-            //   print('djdjjdkdkdj');
-
-            // }
             if (state is ClickMainCallBottomSheetState) {
-              // Navigator.pop(context);
               phoneBottomSheet(context, bloc, state.i);
             }
             if (state is ClickOpenBottomSheetState) {
@@ -747,7 +740,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                         .cust!
                                                                         .toUpperCase()
                                                                     : '_',
-                                                                // ----------- doubt ---------------
                                                                 color: ColorResource
                                                                     .color333333,
                                                                 fontSize: FontSize
@@ -905,8 +897,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                           ),
                                                         ),
                                                       ),
-                                                      // Image.asset(ImageResource
-                                                      //     .direction),
                                                       const SizedBox(width: 8),
                                                       Expanded(
                                                           child: CustomText(
@@ -1013,9 +1003,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         context: buildContext,
         builder: (BuildContext context) {
           return PhoneScreen(bloc: bloc, index: i);
-          // return SizedBox(
-          //     height: MediaQuery.of(context).size.height * 0.89,
-          //     child: PhoneScreen(bloc: bloc));
         });
   }
 
@@ -1115,10 +1102,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               ),
               userType: bloc.userType.toString(),
               postValue: list[bloc.indexValue!],
-
               isCall: isCall,
               bloc: bloc,
-              // eventCode: bloc.eventCode,
             );
           case Constants.collections:
             return CustomCollectionsBottomSheet(
@@ -1270,11 +1255,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
             );
-          // case Constants.viewMap:
-          //   return MapViewBottomSheetScreen(
-          //       title: Languages.of(context)!.viewMap,
-          //       agentLocation:
-          //           bloc.caseDetailsAPIValue.result?.caseDetails?.pincode);
           default:
             return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,
