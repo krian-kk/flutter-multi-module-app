@@ -21,12 +21,13 @@ class ClickMainAddressBottomSheetState extends CaseDetailsState {
 
 class ClickMainCallBottomSheetState extends CaseDetailsState {
   final int i;
-  ClickMainCallBottomSheetState(this.i);
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickMainCallBottomSheetState(this.i,
+      {this.isCallFromCaseDetails = false, this.callId});
 }
 
 class ClickViewMapState extends CaseDetailsState {}
-
-// class CDNoInternetConnectionState extends CaseDetailsState {}
 
 class CallCaseDetailsState extends CaseDetailsState {
   final dynamic paramValues;
@@ -44,8 +45,11 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
   final bool? isCall;
   final String? health;
   final String? selectedContactNumber;
+  final bool isCallFromCallDetails;
   ClickOpenBottomSheetState(this.title, this.list, this.isCall,
-      {this.health, this.selectedContactNumber});
+      {this.health,
+      this.selectedContactNumber,
+      this.isCallFromCallDetails = false});
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}
@@ -79,12 +83,5 @@ class PhoneBottomSheetSuccessState extends CaseDetailsState {}
 class UpdateSuccessfullState extends CaseDetailsState {}
 
 class UpdateHealthStatusState extends CaseDetailsState {
-  // final BuildContext context;
-  // final int? selectedHealthIndex;
-  // final int? tabIndex;
-  // final dynamic currentHealth;
-  UpdateHealthStatusState(
-      // this.context,
-      //   {this.selectedHealthIndex, this.tabIndex, this.currentHealth}
-      );
+  UpdateHealthStatusState();
 }

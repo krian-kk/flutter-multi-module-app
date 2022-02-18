@@ -1,17 +1,14 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -49,8 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool _isChecked = false;
 
-  // String? userType;
-
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
@@ -60,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  // _passwordVisibleOrNot the password show status
+  // PasswordVisibleOrNot the password show status
   void _passwordVisibleOrNot() {
     setState(() {
       _obscureText = !_obscureText;
@@ -137,7 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontSize: FontSize.sixteen,
                   onTap: () {
                     showComformSecurePinDialogBox(securePinCodeContoller.text);
-                    // Navigator.pop(context);
                   },
                 ),
               ],
@@ -364,7 +358,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppUtils.noInternetSnackbar(context);
                       }
                       if (state is HomeTabState) {
-                        // showSecurePinDialogBox();
                         Navigator.pushReplacementNamed(
                             context, AppRoutes.homeTabScreen);
                       }
@@ -413,7 +406,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 40),
-                                        // SvgPicture.asset(ImageResource.origa),
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 35),
@@ -446,9 +438,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
-                                          // onChange: (){
-                                          //    _formKey.currentState!.validate();
-                                          // },
                                           validatorCallBack: (bool values) {},
                                         ),
                                         const SizedBox(
@@ -474,9 +463,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
-                                          // onChange: (){
-                                          //    _formKey.currentState!.validate();
-                                          // },
                                           validatorCallBack: (bool values) {},
                                           suffixWidget: InkWell(
                                             onTap: _passwordVisibleOrNot,
@@ -560,7 +546,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     userId.clear();
                                                     password.clear();
                                                     _isChecked = false;
-                                                    // signin submit button activities
+                                                    // Signin submit button activities
                                                   });
                                                 }
                                               : () {
@@ -758,6 +744,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
+  // This is custom Widget to show rounded container
+  // Here is state is submitting, we are showing loading indicator on container then.
+  // If it completed then showing a Icon.
   //     CustomButton(
   //       StringResource.signIn.toUpperCase(),
   //       buttonBackgroundColor: ColorResource.colorEA8A38,
@@ -775,11 +764,9 @@ class _LoginScreenState extends State<LoginScreen> {
   // here is state is submitting, we are showing loading indicator on container then.
   // if it completed then showing a Icon.
   Widget circularLoading(bool done) {
-    // final color = done ? ColorResource.colorFFC23B : ColorResource.colorFFC23B;
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        // color: color,
         gradient: LinearGradient(
           colors: [
             ColorResource.colorFFC23B,

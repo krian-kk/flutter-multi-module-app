@@ -108,19 +108,6 @@ class _CallDetailsBottomSheetScreenState
                             itemCount:
                                 widget.bloc.listOfCallDetails?.length ?? 0,
                             itemBuilder: (context, i) {
-                              // Contact Health from high to low
-                              // if (widget.bloc.listOfCallDetails?[i]['cType']
-                              //         .isNotEmpty &&
-                              //     widget.bloc.listOfCallDetails?[i]['value']
-                              //         .isNotEmpty &&
-                              //     widget.bloc.listOfCallDetails?[i]['health'] !=
-                              //         '') {
-                              //   print(
-                              //       "call detail health values---->${widget.bloc.listOfCallDetails?[i]['health'] ?? "0"}");
-                              //   widget.bloc.listOfCallDetails?.sort((a, b) =>
-                              //       b["health"].compareTo(a["health"]) ?? '');
-                              // }
-
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
                                           "mobile" ||
@@ -260,6 +247,8 @@ class _CallDetailsBottomSheetScreenState
                                                                     .result
                                                                     ?.callDetails,
                                                                 false,
+                                                                isCallFromCallDetails:
+                                                                    true,
                                                                 seleectedContactNumber:
                                                                     widget.bloc.listOfCallDetails?[i]
                                                                             [

@@ -71,6 +71,9 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
       if (event is EnableSubmitEvent) {
         isSubmit = true;
       }
+      if (event is NavigationPhoneBottomSheetEvent) {
+        emit.call(NavigationPhoneBottomSheetState(event.callId));
+      }
     });
   }
 }

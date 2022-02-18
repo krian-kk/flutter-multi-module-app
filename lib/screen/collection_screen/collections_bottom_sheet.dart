@@ -657,9 +657,7 @@ class _CustomCollectionsBottomSheetState
               okBtnFunction: (val) async {
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
-
                 setState(() => isSubmit = false);
-
                 Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                   APIRequestType.upload,
@@ -737,7 +735,6 @@ class _CustomCollectionsBottomSheetState
           }
         }
       }
-      // }
     }
     setState(() => isSubmit = true);
   }

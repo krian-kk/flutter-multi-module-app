@@ -12,3 +12,8 @@ class CallCustomerLoadedState extends CallCustomerState {}
 class CallCustomerSuccessState extends CallCustomerState {}
 
 class NoInternetState extends CallCustomerState {}
+
+class NavigationPhoneBottomSheetState extends CallCustomerState {
+  final String callId;
+  NavigationPhoneBottomSheetState(this.callId);
+}

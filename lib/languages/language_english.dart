@@ -730,4 +730,13 @@ class LanguageEn extends Languages {
 
   @override
   String get pleaseSpeakWithCustomer => 'Please Speak with the customer';
+
+  @override
+  String get doesntGetTheAgentAddress => 'Doesn\'t Get the Agent Address!';
+
+  @override
+  String get autoCallingIsComplete => 'Auto Calling is Complete';
+
+  @override
+  String get pleaseCallAgain => 'Please Call Again!';
 }

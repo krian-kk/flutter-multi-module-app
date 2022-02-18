@@ -91,8 +91,6 @@ class EventAttr {
   late double speed;
   late double latitude;
   late double longitude;
-  // late double distance;
-  // late AgentLocation agentLocation;
   late List? contact;
 
   EventAttr({
@@ -110,8 +108,6 @@ class EventAttr {
     required this.speed,
     required this.latitude,
     required this.longitude,
-    // this.distance = 0,
-    // required this.agentLocation,
     required this.contact,
   });
 
@@ -130,8 +126,6 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    // distance = json['distance'];
-    // agentLocation = AgentLocation.fromJson(json['agentLocation']);
     contact = json['contact'].forEach((v) {
       contact?.add(v);
     });
@@ -153,8 +147,6 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    // data['distance'] = distance;
-    // data['agentLocation'] = agentLocation.toJson();
     data['contact'] = contact?.map((v) => v.toJson()).toList();
     return data;
   }

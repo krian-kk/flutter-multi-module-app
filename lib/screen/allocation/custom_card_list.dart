@@ -67,7 +67,6 @@ class CustomCardList {
                                           .toString() +
                                       " Meters"
                                   : '-',
-                              // resultData[index].distanceMeters.toString(),
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
                               color: ColorResource.color101010,
@@ -140,10 +139,8 @@ class CustomCardList {
                           boxShadow: const [
                             BoxShadow(
                               color: Color.fromRGBO(0, 0, 0, 0.25),
-                              // spreadRadius: 1,
                               blurRadius: 2,
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),
@@ -166,7 +163,6 @@ class CustomCardList {
                               ),
                             ),
                             AppUtils.showDivider(),
-                            // const SizedBox(height: 6.0,),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                               child: Row(
@@ -196,14 +192,12 @@ class CustomCardList {
                                       ],
                                     ),
                                   ),
-                                  // const Spacer(),
                                   resultData[index].collSubStatus == "new" &&
                                           Singleton.instance.usertype ==
                                               Constants.fieldagent
                                       ? Container(
                                           width: 55,
                                           height: 19,
-                                          // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                           decoration: BoxDecoration(
                                               color: ColorResource.colorD5344C,
                                               borderRadius:
@@ -224,7 +218,6 @@ class CustomCardList {
                                           ? Container(
                                               width: 55,
                                               height: 19,
-                                              // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                               decoration: BoxDecoration(
                                                   color:
                                                       ColorResource.colorD5344C,
@@ -245,7 +238,6 @@ class CustomCardList {
                                 ],
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 6),
@@ -321,7 +313,6 @@ class CustomCardList {
                               ),
                               child: AppUtils.showDivider(),
                             ),
-                            //  const SizedBox(height: 5,),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(23, 5, 14, 13),
                               child: Column(
@@ -396,7 +387,6 @@ class CustomCardList {
                             : SvgPicture.asset(ImageResource.unStar),
                       ),
                     ),
-                  // : const SizedBox(),
                 ],
               ),
             ],

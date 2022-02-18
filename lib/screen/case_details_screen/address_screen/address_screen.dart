@@ -64,11 +64,6 @@ class _AddressScreenState extends State<AddressScreen>
 
   @override
   Widget build(BuildContext context) {
-    // List<CustomerMetNotButtonModel> customerMetNotButtonList = [
-    //   CustomerMetNotButtonModel(Languages.of(context)!.leftMessage),
-    //   CustomerMetNotButtonModel(Languages.of(context)!.doorLocked),
-    //   CustomerMetNotButtonModel(Languages.of(context)!.entryRestricted),
-    // ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (context, state) {
@@ -124,7 +119,6 @@ class _AddressScreenState extends State<AddressScreen>
             child: Scaffold(
               resizeToAvoidBottomInset: true,
               backgroundColor: Colors.transparent,
-              // backgroundColor: ColorResource.colorF7F8FA,
               body: DefaultTabController(
                 length: 3,
                 child: Container(
@@ -170,8 +164,6 @@ class _AddressScreenState extends State<AddressScreen>
                                 Wrap(
                                   spacing: 27,
                                   children: [
-                                    // SvgPicture.asset(
-                                    //     ImageResource.activePerson),
                                     ShowHealthStatus.healthStatus(widget
                                             .bloc
                                             .caseDetailsAPIValue
@@ -241,12 +233,6 @@ class _AddressScreenState extends State<AddressScreen>
                                               destinationLocation.lng ?? 0.0);
                                     }
                                   },
-                                  // onTap: () => widget.bloc.add(
-                                  //     ClickOpenBottomSheetEvent(
-                                  //         Constants.viewMap,
-                                  //         widget.bloc.caseDetailsAPIValue.result
-                                  //             ?.callDetails,
-                                  //         false)),
                                   child: SizedBox(
                                       width: 10,
                                       child: Container(
@@ -266,8 +252,6 @@ class _AddressScreenState extends State<AddressScreen>
                                                   ),
                                                 ),
                                               ),
-                                              // Image.asset(
-                                              //     ImageResource.direction),
                                               const SizedBox(width: 10),
                                               SizedBox(
                                                 width: MediaQuery.of(context)
@@ -294,7 +278,6 @@ class _AddressScreenState extends State<AddressScreen>
                                     child: SizedBox(
                                   height: 45,
                                   child: CustomButton(
-                                    // Languages.of(context)!.eventDetails,
                                     null,
                                     isTrailing: true,
                                     leadingWidget: CustomText(
@@ -311,7 +294,6 @@ class _AddressScreenState extends State<AddressScreen>
                                             widget.bloc.caseDetailsAPIValue
                                                 .result?.callDetails,
                                             false)),
-
                                     borderColor: ColorResource.color23375A,
                                     buttonBackgroundColor:
                                         ColorResource.colorFFFFFF,
@@ -367,7 +349,6 @@ class _AddressScreenState extends State<AddressScreen>
                       ),
                       Expanded(
                           child: SingleChildScrollView(
-                        // physics: NeverScrollableScrollPhysics(),
                         child: Column(
                           children: [
                             Column(children: [
@@ -479,10 +460,8 @@ class _AddressScreenState extends State<AddressScreen>
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      // isEnabled: (bloc.selectedUnreadableClip == ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
-
                                       onTap: isSubmitFirst
                                           ? () {
                                               if (widget
@@ -519,7 +498,6 @@ class _AddressScreenState extends State<AddressScreen>
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      // isEnabled: (bloc.selectedInvalidClip != ''),
                                       fontSize: FontSize.sixteen,
                                       fontWeight: FontWeight.w600,
                                       onTap: isSubmitSecond
@@ -602,14 +580,6 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
     _controller.complete(controller);
   }
 
-  // void _onMapTypeButtonPressed() {
-  //   setState(() {
-  //     _currentMapType = _currentMapType == MapType.normal
-  //         ? MapType.satellite
-  //         : MapType.normal;
-  //   });
-  // }
-
   void _onAddMarkerButtonPressed() async {
     final CameraPosition _position1 = CameraPosition(
       bearing: 192.833,
@@ -671,18 +641,4 @@ class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
       ),
     );
   }
-
-  // Widget tapButton(Function onTap, IconData icon) {
-  //   return FloatingActionButton(
-  //     onPressed: () {
-  //       onTap();
-  //     },
-  //     mini: true,
-  //     materialTapTargetSize: MaterialTapTargetSize.padded,
-  //     backgroundColor: Color(0xFF188D3D),
-  //     child: Icon(
-  //       icon,
-  //     ),
-  //   );
-  // }
 }

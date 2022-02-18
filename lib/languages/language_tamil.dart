@@ -734,4 +734,13 @@ class LanguageTa extends Languages {
 
   @override
   String get pleaseSpeakWithCustomer => 'தயவுசெய்து வாடிக்கையாளருடன் பேசுங்கள்';
+
+  @override
+  String get doesntGetTheAgentAddress => 'முகவர் முகவரியைப் பெறவில்லை!';
+
+  @override
+  String get autoCallingIsComplete => 'தானியங்கி அழைப்பு முடிந்தது';
+
+  @override
+  String get pleaseCallAgain => 'தயவுசெய்து மீண்டும் அழைக்கவும்!';
 }

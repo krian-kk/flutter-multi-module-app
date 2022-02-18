@@ -220,7 +220,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                     'Error:': 'Failed to get platform version.'
                   };
                 }
-                // if (!mounted) return;
                 _deviceData = deviceData;
 
                 if (_deviceData.isNotEmpty) {
