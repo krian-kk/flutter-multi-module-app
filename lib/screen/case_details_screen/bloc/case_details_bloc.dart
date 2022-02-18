@@ -246,43 +246,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 caseDetailsAPIValue.result?.addressDetails!, false))),
       ]);
 
-      phoneCustomerMetGridList.addAll([
-        CustomerMetGridModel(
-            ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.ptp, caseDetailsAPIValue.result?.callDetails!, true)),
-            isCall: true),
-        CustomerMetGridModel(
-            ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Constants.rtp, caseDetailsAPIValue.result?.callDetails!, true)),
-            isCall: true),
-        CustomerMetGridModel(ImageResource.dispute,
-            Languages.of(event.context!)!.dispute.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
-                caseDetailsAPIValue.result?.callDetails!, true)),
-            isCall: true),
-        CustomerMetGridModel(
-            ImageResource.remainder,
-            (Languages.of(event.context!)!.remainderCb.toUpperCase())
-                .toUpperCase()
-                .toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
-                caseDetailsAPIValue.result?.callDetails!, true)),
-            isCall: true),
-        CustomerMetGridModel(ImageResource.collections,
-            Languages.of(event.context!)!.collections.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
-                caseDetailsAPIValue.result?.callDetails!, true)),
-            isCall: true),
-        CustomerMetGridModel(ImageResource.ots, Constants.ots,
-            onTap: () => add(ClickOpenBottomSheetEvent(
-                Languages.of(event.context!)!.ots.toUpperCase(),
-                caseDetailsAPIValue.result?.callDetails!,
-                true)),
-            isCall: true),
-      ]);
-
       // Customer Not met Next Action Date is = Current Date + 3 days
       addressCustomerNotMetNextActionDateController.text =
           DateFormat('yyyy-MM-dd')
@@ -298,6 +261,75 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         yield ClickMainCallBottomSheetState(0);
         yield PhoneBottomSheetSuccessState();
       }
+    }
+    if (event is PhoneBottomSheetInitialEvent) {
+      yield PhoneBottomSheetLoadingState();
+      phoneCustomerMetGridList.clear();
+      phoneCustomerMetGridList.addAll([
+        CustomerMetGridModel(
+            ImageResource.ptp, Languages.of(event.context)!.ptp.toUpperCase(),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.ptp,
+                  caseDetailsAPIValue.result?.callDetails!,
+                  true,
+                  isCallFromCallDetails: event.isCallFromCaseDetails,
+                  callId: event.callId,
+                )),
+            isCall: true),
+        CustomerMetGridModel(
+            ImageResource.rtp, Languages.of(event.context)!.rtp.toUpperCase(),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.rtp,
+                  caseDetailsAPIValue.result?.callDetails!,
+                  true,
+                  isCallFromCallDetails: event.isCallFromCaseDetails,
+                  callId: event.callId,
+                )),
+            isCall: true),
+        CustomerMetGridModel(ImageResource.dispute,
+            Languages.of(event.context)!.dispute.toUpperCase(),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.dispute,
+                  caseDetailsAPIValue.result?.callDetails!,
+                  true,
+                  isCallFromCallDetails: event.isCallFromCaseDetails,
+                  callId: event.callId,
+                )),
+            isCall: true),
+        CustomerMetGridModel(
+            ImageResource.remainder,
+            (Languages.of(event.context)!.remainderCb.toUpperCase())
+                .toUpperCase()
+                .toUpperCase(),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.remainder,
+                  caseDetailsAPIValue.result?.callDetails!,
+                  true,
+                  isCallFromCallDetails: event.isCallFromCaseDetails,
+                  callId: event.callId,
+                )),
+            isCall: true),
+        CustomerMetGridModel(ImageResource.collections,
+            Languages.of(event.context)!.collections.toUpperCase(),
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                  Constants.collections,
+                  caseDetailsAPIValue.result?.callDetails!,
+                  true,
+                  isCallFromCallDetails: event.isCallFromCaseDetails,
+                  callId: event.callId,
+                )),
+            isCall: true),
+        CustomerMetGridModel(ImageResource.ots, Constants.ots,
+            onTap: () => add(ClickOpenBottomSheetEvent(
+                  Languages.of(event.context)!.ots.toUpperCase(),
+                  caseDetailsAPIValue.result?.callDetails!,
+                  true,
+                  isCallFromCallDetails: event.isCallFromCaseDetails,
+                  callId: event.callId,
+                )),
+            isCall: true),
+      ]);
+      yield PhoneBottomSheetLoadedState();
     }
     if (event is AddedNewAddressListEvent) {
       yield AddedNewAddressListState();
@@ -376,6 +408,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           health: event.health,
           selectedContactNumber: event.seleectedContactNumber,
           isCallFromCallDetails: event.isCallFromCallDetails,
+          callId: event.callId,
         );
       }
     }
@@ -531,12 +564,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickPhoneInvalidButtonEvent) {
       yield DisablePhoneInvalidBtnState();
       bool isNotAutoCalling = true;
-      if (isAutoCalling
-          // ||
-          //     (event.isCallFromCaseDetails && event.callId != null)
-          ) {
+      if (isAutoCalling ||
+          (event.isCallFromCaseDetails && event.callId != null)) {
         await CallCustomerStatus.callStatusCheck(
-                callId: paramValue['callId'], context: event.context)
+                callId: (event.isCallFromCaseDetails)
+                    ? event.callId
+                    : paramValue['callId'],
+                context: event.context)
             .then((value) {
           isNotAutoCalling = value;
         });
@@ -609,12 +643,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
       yield DisableUnreachableBtnState();
       bool isNotAutoCalling = true;
-      if (isAutoCalling
-          // ||
-          //     (event.isCallFromCaseDetails && event.callId != null)
-          ) {
+      if (isAutoCalling ||
+          (event.isCallFromCaseDetails && event.callId != null)) {
         await CallCustomerStatus.callStatusCheck(
-                callId: paramValue['callId'], context: event.context)
+                callId: (event.isCallFromCaseDetails)
+                    ? event.callId
+                    : paramValue['callId'],
+                context: event.context)
             .then((value) {
           isNotAutoCalling = value;
         });

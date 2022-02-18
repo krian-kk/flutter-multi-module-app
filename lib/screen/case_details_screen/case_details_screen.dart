@@ -58,7 +58,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-
     bloc = CaseDetailsBloc(widget.allocationBloc)
       ..add(CaseDetailsInitialEvent(
           paramValues: widget.paramValues, context: context));
@@ -106,10 +105,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is ClickOpenBottomSheetState) {
-              openBottomSheet(context, state.title, state.list, state.isCall,
-                  health: state.health,
-                  selectedContact: state.selectedContactNumber,
-                  isCallFromCallDetails: state.isCallFromCallDetails);
+              openBottomSheet(
+                context,
+                state.title,
+                state.list,
+                state.isCall,
+                health: state.health,
+                selectedContact: state.selectedContactNumber,
+                isCallFromCallDetails: state.isCallFromCallDetails,
+                callId: state.callId,
+              );
             }
             if (state is CDNoInternetState) {
               AppUtils.noInternetSnackbar(context);
@@ -1031,7 +1036,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
   openBottomSheet(
       BuildContext buildContext, String cardTitle, List list, bool? isCall,
-      {String? health, String? selectedContact, bool? isCallFromCallDetails}) {
+      {String? health,
+      String? selectedContact,
+      required bool isCallFromCallDetails,
+      String? callId}) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -1062,6 +1070,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               isCall: isCall,
               bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.rtp:
             return CustomRtpBottomSheet(
@@ -1080,6 +1090,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               isCall: isCall,
               bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.dispute:
             return CustomDisputeBottomSheet(
@@ -1098,6 +1110,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               isCall: isCall,
               bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.remainder:
             return CustomRemainderBottomSheet(
@@ -1116,6 +1130,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               isCall: isCall,
               bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.collections:
             return CustomCollectionsBottomSheet(
@@ -1136,6 +1152,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc: bloc,
               custName:
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.ots:
             return CustomOtsBottomSheet(
@@ -1154,6 +1172,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               isCall: isCall,
               postValue: list[bloc.indexValue!],
               bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.repo:
             return CustomRepoBottomSheet(
@@ -1205,6 +1225,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               isCall: isCall,
               health: health ?? ConstantEventValues.healthTwo,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
             );
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
@@ -1253,7 +1275,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: selectedContact,
-              isCallFromCallDetails: isCallFromCallDetails ?? false,
+              isCallFromCallDetails: isCallFromCallDetails,
               caseDetailsBloc: bloc,
             );
           case Constants.addNewContact:

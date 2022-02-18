@@ -12,6 +12,10 @@ class CaseDetailsLoadingState extends CaseDetailsState {}
 
 class CaseDetailsLoadedState extends CaseDetailsState {}
 
+class PhoneBottomSheetLoadingState extends CaseDetailsState {}
+
+class PhoneBottomSheetLoadedState extends CaseDetailsState {}
+
 class CDNoInternetState extends CaseDetailsState {}
 
 class ClickMainAddressBottomSheetState extends CaseDetailsState {
@@ -46,10 +50,16 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
   final String? health;
   final String? selectedContactNumber;
   final bool isCallFromCallDetails;
-  ClickOpenBottomSheetState(this.title, this.list, this.isCall,
-      {this.health,
-      this.selectedContactNumber,
-      this.isCallFromCallDetails = false});
+  final String? callId;
+  ClickOpenBottomSheetState(
+    this.title,
+    this.list,
+    this.isCall, {
+    this.health,
+    this.selectedContactNumber,
+    this.isCallFromCallDetails = false,
+    this.callId,
+  });
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}

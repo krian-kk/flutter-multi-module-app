@@ -42,6 +42,8 @@ class CustomDisputeBottomSheet extends StatefulWidget {
     this.isAutoCalling = false,
     this.allocationBloc,
     this.paramValue,
+    this.isCallFromCaseDetails = false,
+    this.callId,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -53,6 +55,8 @@ class CustomDisputeBottomSheet extends StatefulWidget {
   final AllocationBloc? allocationBloc;
   final dynamic paramValue;
   final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<CustomDisputeBottomSheet> createState() =>
@@ -326,10 +330,14 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
         if (disputeDropDownValue != 'select') {
           setState(() => isSubmit = false);
           bool isNotAutoCalling = true;
-          if (widget.isAutoCalling) {
+          if (widget.isAutoCalling ||
+              (widget.isCallFromCaseDetails && widget.callId != null)) {
             await CallCustomerStatus.callStatusCheck(
-                    callId: widget.paramValue['callId'], context: context)
-                .then((value) {
+              callId: (widget.isCallFromCaseDetails)
+                  ? widget.callId
+                  : widget.paramValue['callId'],
+              context: context,
+            ).then((value) {
               isNotAutoCalling = value;
             });
           }
