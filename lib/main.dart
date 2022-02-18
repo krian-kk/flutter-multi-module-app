@@ -1,6 +1,6 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +17,8 @@ import 'authentication/authentication_event.dart';
 import 'bloc.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -53,10 +52,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     bloc = BlocProvider.of<AuthenticationBloc>(context);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('Notification print-> ${message.notification!.title}');
-      debugPrint('notification!.body-> ${message.notification!.body}');
-    });
+    setupRemoteConfig();
     super.initState();
   }
 
@@ -74,6 +70,19 @@ class _MyAppState extends State<MyApp> {
       });
     });
     super.didChangeDependencies();
+  }
+
+  Future<FirebaseRemoteConfig> setupRemoteConfig() async {
+    await Firebase.initializeApp();
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.ensureInitialized();
+    await remoteConfig.activate();
+    await remoteConfig.fetch();
+    return remoteConfig;
+  }
+
+  Future<String> getURL({FirebaseRemoteConfig? remoteConfig}) async {
+    return FirebaseRemoteConfig.instance.getString('mobile_app_baseUrl');
   }
 
   @override

@@ -247,6 +247,8 @@ class _CallDetailsBottomSheetScreenState
                                                                     .result
                                                                     ?.callDetails,
                                                                 false,
+                                                                isCallFromCallDetails:
+                                                                    true,
                                                                 seleectedContactNumber:
                                                                     widget.bloc.listOfCallDetails?[i]
                                                                             [

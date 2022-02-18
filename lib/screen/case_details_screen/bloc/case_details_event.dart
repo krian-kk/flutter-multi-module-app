@@ -16,7 +16,10 @@ class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
 
 class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
   final int index;
-  ClickMainCallBottomSheetEvent(this.index);
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickMainCallBottomSheetEvent(this.index,
+      {this.isCallFromCaseDetails = false, this.callId});
 }
 
 class ClickViewMapEvent extends CaseDetailsEvent {}
@@ -34,15 +37,25 @@ class ClickAddressInvalidButtonEvent extends CaseDetailsEvent {
 class ClickPhoneInvalidButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
   final bool autoCallingStopAndSubmit;
+  final bool isCallFromCaseDetails;
+  final String? callId;
   ClickPhoneInvalidButtonEvent(this.context,
-      {this.autoCallingStopAndSubmit = true});
+      {this.autoCallingStopAndSubmit = true,
+      this.isCallFromCaseDetails = false,
+      this.callId});
 }
 
 class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
   final bool autoCallingStopAndSubmit;
-  ClickPhoneUnreachableSubmitedButtonEvent(this.context,
-      {this.autoCallingStopAndSubmit = true});
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickPhoneUnreachableSubmitedButtonEvent(
+    this.context, {
+    this.autoCallingStopAndSubmit = true,
+    this.isCallFromCaseDetails = false,
+    this.callId,
+  });
 }
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {
@@ -62,8 +75,12 @@ class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String? health;
   final BuildContext? context;
   final String? seleectedContactNumber;
+  final bool isCallFromCallDetails;
   ClickOpenBottomSheetEvent(this.title, this.list, this.isCall,
-      {this.health, this.context, this.seleectedContactNumber});
+      {this.health,
+      this.context,
+      this.seleectedContactNumber,
+      this.isCallFromCallDetails = false});
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {

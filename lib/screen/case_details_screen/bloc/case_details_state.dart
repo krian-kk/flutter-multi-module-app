@@ -21,7 +21,10 @@ class ClickMainAddressBottomSheetState extends CaseDetailsState {
 
 class ClickMainCallBottomSheetState extends CaseDetailsState {
   final int i;
-  ClickMainCallBottomSheetState(this.i);
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickMainCallBottomSheetState(this.i,
+      {this.isCallFromCaseDetails = false, this.callId});
 }
 
 class ClickViewMapState extends CaseDetailsState {}
@@ -42,8 +45,11 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
   final bool? isCall;
   final String? health;
   final String? selectedContactNumber;
+  final bool isCallFromCallDetails;
   ClickOpenBottomSheetState(this.title, this.list, this.isCall,
-      {this.health, this.selectedContactNumber});
+      {this.health,
+      this.selectedContactNumber,
+      this.isCallFromCallDetails = false});
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}

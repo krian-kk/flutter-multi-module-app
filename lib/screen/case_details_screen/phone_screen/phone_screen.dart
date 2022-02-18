@@ -22,8 +22,15 @@ import 'package:origa/widgets/health_status_widget.dart';
 
 class PhoneScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
   final int index;
-  const PhoneScreen({Key? key, required this.bloc, required this.index})
+  final String? callId;
+  const PhoneScreen(
+      {Key? key,
+      required this.bloc,
+      required this.index,
+      this.isCallFromCaseDetails = false,
+      this.callId})
       : super(key: key);
 
   @override
@@ -671,7 +678,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                 ? () {
                                                     widget.bloc.add(
                                                         ClickPhoneInvalidButtonEvent(
-                                                            context));
+                                                      context,
+                                                      isCallFromCaseDetails: widget
+                                                          .isCallFromCaseDetails,
+                                                      callId: widget.callId,
+                                                    ));
                                                   }
                                                 : () {},
                                             cardShape: 5,

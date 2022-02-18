@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.mcollect.origa.ai",
+  "variantName": "processDebugResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 11,
+      "versionName": "2.0.11.0",
+      "outputFile": "instalmint-11--debug-20220218173028.apk"
+    }
+  ]
+}

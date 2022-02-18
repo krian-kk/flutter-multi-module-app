@@ -97,12 +97,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               addressBottomSheet(context, bloc, state.i);
             }
             if (state is ClickMainCallBottomSheetState) {
-              phoneBottomSheet(context, bloc, state.i);
+              phoneBottomSheet(
+                context,
+                bloc,
+                state.i,
+                state.isCallFromCaseDetails,
+                callId: state.callId,
+              );
             }
             if (state is ClickOpenBottomSheetState) {
               openBottomSheet(context, state.title, state.list, state.isCall,
                   health: state.health,
-                  selectedContact: state.selectedContactNumber);
+                  selectedContact: state.selectedContactNumber,
+                  isCallFromCallDetails: state.isCallFromCallDetails);
             }
             if (state is CDNoInternetState) {
               AppUtils.noInternetSnackbar(context);
@@ -997,12 +1004,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     );
   }
 
-  void phoneBottomSheet(
-      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+  void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,
+      bool isCallFromCaseDetails,
+      {String? callId}) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return PhoneScreen(bloc: bloc, index: i);
+          return PhoneScreen(
+              bloc: bloc,
+              index: i,
+              isCallFromCaseDetails: isCallFromCaseDetails,
+              callId: callId);
         });
   }
 
@@ -1019,7 +1031,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
   openBottomSheet(
       BuildContext buildContext, String cardTitle, List list, bool? isCall,
-      {String? health, String? selectedContact}) {
+      {String? health, String? selectedContact, bool? isCallFromCallDetails}) {
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -1221,7 +1233,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 }
               } else {}
             });
-
             return CallCustomerBottomSheet(
               caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(
@@ -1242,6 +1253,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: selectedContact,
+              isCallFromCallDetails: isCallFromCallDetails ?? false,
+              caseDetailsBloc: bloc,
             );
           case Constants.addNewContact:
             return AddNewContactBottomSheet(

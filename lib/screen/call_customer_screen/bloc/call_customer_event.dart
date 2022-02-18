@@ -8,3 +8,8 @@ class CallCustomerInitialEvent extends CallCustomerEvent {}
 class DisableSubmitEvent extends CallCustomerEvent {}
 
 class EnableSubmitEvent extends CallCustomerEvent {}
+
+class NavigationPhoneBottomSheetEvent extends CallCustomerEvent {
+  final String callId;
+  NavigationPhoneBottomSheetEvent(this.callId);
+}

@@ -52,7 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
-    Firebase.initializeApp();
     super.initState();
   }
 
@@ -406,9 +405,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const SizedBox(
-                                          height: 60,
-                                        ),
+                                        const SizedBox(height: 40),
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 35),
@@ -750,6 +747,22 @@ class _LoginScreenState extends State<LoginScreen> {
   // This is custom Widget to show rounded container
   // Here is state is submitting, we are showing loading indicator on container then.
   // If it completed then showing a Icon.
+  //     CustomButton(
+  //       StringResource.signIn.toUpperCase(),
+  //       buttonBackgroundColor: ColorResource.colorEA8A38,
+  //       borderColor: ColorResource.colorEA8A38,
+  //       onTap: () {
+  //         _signIn(fcmToken: fcmToken);
+  //       },
+  //       cardShape: 85,
+  //       fontSize: FontSize.sixteen,
+  //       fontWeight: FontWeight.w600,
+  //   textColor: ColorResource.color23375A,
+  //     );
+
+  // this is custom Widget to show rounded container
+  // here is state is submitting, we are showing loading indicator on container then.
+  // if it completed then showing a Icon.
   Widget circularLoading(bool done) {
     return Container(
       decoration: const BoxDecoration(

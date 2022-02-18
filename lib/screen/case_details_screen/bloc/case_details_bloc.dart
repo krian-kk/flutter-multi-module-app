@@ -311,7 +311,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickMainCallBottomSheetEvent) {
       indexValue = event.index;
-      yield ClickMainCallBottomSheetState(event.index);
+      yield ClickMainCallBottomSheetState(
+        event.index,
+        isCallFromCaseDetails: event.isCallFromCaseDetails,
+        callId: event.callId,
+      );
     }
     if (event is ClickViewMapEvent) {
       yield ClickViewMapState();
@@ -365,9 +369,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
-        yield ClickOpenBottomSheetState(event.title, event.list!, event.isCall,
-            health: event.health,
-            selectedContactNumber: event.seleectedContactNumber);
+        yield ClickOpenBottomSheetState(
+          event.title,
+          event.list!,
+          event.isCall,
+          health: event.health,
+          selectedContactNumber: event.seleectedContactNumber,
+          isCallFromCallDetails: event.isCallFromCallDetails,
+        );
       }
     }
     if (event is PostImageCapturedEvent) {
@@ -522,7 +531,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickPhoneInvalidButtonEvent) {
       yield DisablePhoneInvalidBtnState();
       bool isNotAutoCalling = true;
-      if (isAutoCalling) {
+      if (isAutoCalling
+          // ||
+          //     (event.isCallFromCaseDetails && event.callId != null)
+          ) {
         await CallCustomerStatus.callStatusCheck(
                 callId: paramValue['callId'], context: event.context)
             .then((value) {
@@ -597,7 +609,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ClickPhoneUnreachableSubmitedButtonEvent) {
       yield DisableUnreachableBtnState();
       bool isNotAutoCalling = true;
-      if (isAutoCalling) {
+      if (isAutoCalling
+          // ||
+          //     (event.isCallFromCaseDetails && event.callId != null)
+          ) {
         await CallCustomerStatus.callStatusCheck(
                 callId: paramValue['callId'], context: event.context)
             .then((value) {
@@ -947,6 +962,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: listOfAddress![paramValue['phoneIndex']].value,
+              caseDetailsBloc: this,
             );
 
           default:

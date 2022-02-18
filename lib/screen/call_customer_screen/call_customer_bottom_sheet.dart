@@ -9,6 +9,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -31,18 +32,22 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final CaseDetailsApiModel? caseDetailsAPIValue;
   final String? custName;
   final String? contactNumber;
+  final bool? isCallFromCallDetails;
+  final CaseDetailsBloc caseDetailsBloc;
 
-  const CallCustomerBottomSheet({
-    Key? key,
-    required this.customerLoanUserWidget,
-    this.caseDetailsAPIValue,
-    required this.caseId,
-    required this.userType,
-    required this.sid,
-    required this.listOfMobileNo,
-    this.custName,
-    this.contactNumber,
-  }) : super(key: key);
+  const CallCustomerBottomSheet(
+      {Key? key,
+      required this.customerLoanUserWidget,
+      this.caseDetailsAPIValue,
+      required this.caseId,
+      required this.userType,
+      required this.sid,
+      required this.listOfMobileNo,
+      this.custName,
+      this.contactNumber,
+      this.isCallFromCallDetails,
+      required this.caseDetailsBloc})
+      : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -90,6 +95,14 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
               agentContactNoControlller.text =
                   bloc.voiceAgencyDetails.result?.agentAgencyContact ?? '';
             });
+          }
+          if (state is NavigationPhoneBottomSheetState) {
+            Navigator.pop(context);
+            widget.caseDetailsBloc.add(ClickMainCallBottomSheetEvent(
+              widget.caseDetailsBloc.indexValue ?? 0,
+              isCallFromCaseDetails: true,
+              callId: state.callId,
+            ));
           }
         },
         child: BlocBuilder<CallCustomerBloc, CallCustomerState>(
@@ -292,6 +305,10 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   if (postResult[Constants.success]) {
                                     AppUtils.showToast(
                                         Constants.callConnectedPleaseWait);
+                                    if (widget.isCallFromCallDetails ?? false) {
+                                      bloc.add(NavigationPhoneBottomSheetEvent(
+                                          postResult['data']['result']));
+                                    }
                                   }
                                 } else {
                                   AppUtils.makePhoneCall(
