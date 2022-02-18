@@ -1,7 +1,6 @@
 class HttpUrl {
   static String url = 'https://uat-collect.origa.ai';
 
-
   // static String? url = Singleton.instance.baseUrl;
   static const String version = 'v1/';
   static const String apiType = 'app_otc/';
@@ -30,10 +29,7 @@ class HttpUrl {
       baseUrl + fieldAgent + 'profile/agentDetails?';
 
   static String eventDetailsUrl({String? caseId, String? userType}) =>
-      baseUrl +
-      version +
-      fieldAgent +
-      'case-details-events/eventDetails?caseId=$caseId';
+      baseUrl + fieldAgent + 'case-details-events/eventDetails?caseId=$caseId';
   static final String priorityCaseList =
       baseUrl + fieldAgent + 'case-details/priority?';
   static final String updateStaredCase =
@@ -45,10 +41,8 @@ class HttpUrl {
       baseUrl + fieldAgent + 'profile/dashEventCount';
   static final String callCustomerUrl =
       baseUrl + fieldAgent + 'case-details-events/clickToCall';
-  static final String enableCloudTelephony = baseUrl +
-      version +
-      fieldAgent +
-      'case-details-events/enableCloudTelephony';
+  static final String enableCloudTelephony =
+      baseUrl + fieldAgent + 'case-details-events/enableCloudTelephony';
   static final String mobileInfoUrl =
       baseUrl + fieldAgent + 'profile/mobileInfo';
 
@@ -56,7 +50,6 @@ class HttpUrl {
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
   static final String otsPostUrl =
@@ -66,7 +59,6 @@ class HttpUrl {
   static String otherFeedBackPostUrl(
           String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
@@ -92,97 +84,81 @@ class HttpUrl {
 
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String reminderPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String repoPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String disputePostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String ptpPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String unreachableUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String leftMessageUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String doorLockedUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String entryRestrictedUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String wrongAddressUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String shiftedUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String addressNotFoundUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String doesNotExistUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String incorrectNumberUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String numberNotWorkingUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
   static String notOperationalUrl(String selectValue, String userTypeValue) =>
       baseUrl +
-      version +
       fieldAgent +
       'case-details-events/$selectValue?userType=$userTypeValue';
 
