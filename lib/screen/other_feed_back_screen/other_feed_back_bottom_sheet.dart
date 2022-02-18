@@ -52,6 +52,8 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     this.isAutoCalling = false,
     this.allocationBloc,
     this.paramValue,
+    this.isCallFromCaseDetails = false,
+    this.callId,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -63,6 +65,8 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final bool isAutoCalling;
   final AllocationBloc? allocationBloc;
   final dynamic paramValue;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<CustomOtherFeedBackBottomSheet> createState() =>
@@ -456,9 +460,13 @@ class _CustomOtherFeedBackBottomSheetState
       setState(() => isSubmit = false);
       bool isNotAutoCalling = true;
 
-      if (widget.isAutoCalling) {
+      if (widget.isAutoCalling ||
+          (widget.isCallFromCaseDetails && widget.callId != null)) {
         await CallCustomerStatus.callStatusCheck(
-                callId: widget.paramValue['callId'], context: context)
+                callId: (widget.isCallFromCaseDetails)
+                    ? widget.callId
+                    : widget.paramValue['callId'],
+                context: context)
             .then((value) {
           isNotAutoCalling = value;
         });
@@ -478,9 +486,11 @@ class _CustomOtherFeedBackBottomSheetState
             PermissionStatus.granted.toString()) {
           Position res = await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.best);
-          setState(() {
-            position = res;
-          });
+          if (mounted) {
+            setState(() {
+              position = res;
+            });
+          }
         }
         var requestBodyData = OtherFeedBackPostModel(
           eventId: ConstantEventValues.otherFeedbackEventId,

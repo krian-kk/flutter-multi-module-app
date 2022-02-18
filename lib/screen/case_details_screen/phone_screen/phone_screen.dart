@@ -5,6 +5,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/case_details_screen/phone_screen/bloc/phone_screen_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
@@ -40,6 +41,7 @@ class PhoneScreen extends StatefulWidget {
 class _PhoneScreenState extends State<PhoneScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
+  late PhoneScreenBloc bloc;
 
   bool isSubmitFirst = true;
   bool isSubmitSecond = true;
@@ -53,6 +55,14 @@ class _PhoneScreenState extends State<PhoneScreen>
   @override
   void initState() {
     super.initState();
+    widget.bloc.add(PhoneBottomSheetInitialEvent(
+      context: context,
+      isCallFromCaseDetails: widget.isCallFromCaseDetails,
+      callId: widget.callId,
+    ));
+    // bloc = PhoneScreenBloc()
+    //   ..add(PhoneScreenBottomSheetIntialEvent(
+    //       context: context, caseDetailsBloc: widget.bloc));
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
 
@@ -119,7 +129,8 @@ class _PhoneScreenState extends State<PhoneScreen>
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
         builder: (context, state) {
-          if (state is CaseDetailsLoadingState) {
+          if (state is CaseDetailsLoadingState ||
+              state is PhoneBottomSheetLoadingState) {
             return SizedBox(
               height: MediaQuery.of(context).size.height * 0.89,
               child: Scaffold(
@@ -406,14 +417,26 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       controller: _controller,
                                       children: [
                                         PhoneConnectedScreen(
-                                            bloc: widget.bloc,
-                                            context: context),
+                                          bloc: widget.bloc,
+                                          context: context,
+                                          isCallFromCaseDetails:
+                                              widget.isCallFromCaseDetails,
+                                          callId: widget.callId,
+                                        ),
                                         PhoneUnreachableScreen(
-                                            bloc: widget.bloc,
-                                            context: context),
+                                          bloc: widget.bloc,
+                                          context: context,
+                                          isCallFromCaseDetails:
+                                              widget.isCallFromCaseDetails,
+                                          callId: widget.callId,
+                                        ),
                                         PhonenInvalidScreen(
-                                            bloc: widget.bloc,
-                                            context: context),
+                                          bloc: widget.bloc,
+                                          context: context,
+                                          isCallFromCaseDetails:
+                                              widget.isCallFromCaseDetails,
+                                          callId: widget.callId,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -648,6 +671,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         widget.bloc.add(
                                                             ClickPhoneUnreachableSubmitedButtonEvent(
                                                           context,
+                                                          isCallFromCaseDetails:
+                                                              widget
+                                                                  .isCallFromCaseDetails,
+                                                          callId: widget.callId,
                                                         ));
                                                       } else {
                                                         AppUtils.showToast(Constants

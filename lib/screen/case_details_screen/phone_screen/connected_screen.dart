@@ -15,10 +15,14 @@ class PhoneConnectedScreen extends StatefulWidget {
     Key? key,
     required this.bloc,
     required this.context,
+    this.isCallFromCaseDetails = false,
+    this.callId,
   }) : super(key: key);
 
   final CaseDetailsBloc bloc;
   final BuildContext context;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<PhoneConnectedScreen> createState() => _PhoneConnectedScreenState();
@@ -26,8 +30,51 @@ class PhoneConnectedScreen extends StatefulWidget {
 
 class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
+  // List<CustomerMetGridModel> phoneCustomerMetGridList = [];
   @override
   Widget build(BuildContext context) {
+    // phoneCustomerMetGridList.addAll([
+    //   CustomerMetGridModel(
+    //       ImageResource.ptp, Languages.of(context)!.ptp.toUpperCase(),
+    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(Constants.ptp,
+    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!, true)),
+    //       isCall: true),
+    //   CustomerMetGridModel(
+    //       ImageResource.rtp, Languages.of(context)!.rtp.toUpperCase(),
+    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(Constants.rtp,
+    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!, true)),
+    //       isCall: true),
+    //   CustomerMetGridModel(
+    //       ImageResource.dispute, Languages.of(context)!.dispute.toUpperCase(),
+    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+    //           Constants.dispute,
+    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
+    //           true)),
+    //       isCall: true),
+    //   CustomerMetGridModel(
+    //       ImageResource.remainder,
+    //       (Languages.of(context)!.remainderCb.toUpperCase())
+    //           .toUpperCase()
+    //           .toUpperCase(),
+    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+    //           Constants.remainder,
+    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
+    //           true)),
+    //       isCall: true),
+    //   CustomerMetGridModel(ImageResource.collections,
+    //       Languages.of(context)!.collections.toUpperCase(),
+    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+    //           Constants.collections,
+    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
+    //           true)),
+    //       isCall: true),
+    //   CustomerMetGridModel(ImageResource.ots, Constants.ots,
+    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+    //           Languages.of(context)!.ots.toUpperCase(),
+    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
+    //           true)),
+    //       isCall: true),
+    // ]);
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
@@ -139,9 +186,14 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
             selectedOptionBottomSheetButton = element.title;
           });
           widget.bloc.add(
-            ClickOpenBottomSheetEvent(element.stringResourceValue,
-                widget.bloc.caseDetailsAPIValue.result?.callDetails, true,
-                health: ConstantEventValues.healthTwo),
+            ClickOpenBottomSheetEvent(
+              element.stringResourceValue,
+              widget.bloc.caseDetailsAPIValue.result?.callDetails,
+              true,
+              health: ConstantEventValues.healthTwo,
+              isCallFromCallDetails: widget.isCallFromCaseDetails,
+              callId: widget.callId,
+            ),
           );
         },
         child: Container(

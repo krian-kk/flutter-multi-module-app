@@ -19,10 +19,14 @@ class PhoneUnreachableScreen extends StatefulWidget {
     Key? key,
     required this.context,
     required this.bloc,
+    this.isCallFromCaseDetails = false,
+    this.callId,
   }) : super(key: key);
 
   final BuildContext context;
   final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<PhoneUnreachableScreen> createState() => _PhoneUnreachableScreenState();
@@ -211,6 +215,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
             widget.bloc.caseDetailsAPIValue.result?.callDetails,
             true,
             health: ConstantEventValues.healthOne,
+            isCallFromCallDetails: widget.isCallFromCaseDetails,
+            callId: widget.callId,
           ));
         },
         child: Container(

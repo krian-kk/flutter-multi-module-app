@@ -44,6 +44,8 @@ class CustomPtpBottomSheet extends StatefulWidget {
     this.isAutoCalling = false,
     this.allocationBloc,
     this.paramValue,
+    this.callId,
+    this.isCallFromCaseDetails = false,
   }) : super(key: key);
   final String cardTitle;
   final String caseId;
@@ -55,6 +57,8 @@ class CustomPtpBottomSheet extends StatefulWidget {
   final AllocationBloc? allocationBloc;
   final dynamic paramValue;
   final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<CustomPtpBottomSheet> createState() => _CustomPtpBottomSheetState();
@@ -420,10 +424,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       if (selectedPaymentModeButton != '') {
         setState(() => isSubmit = false);
         bool isNotAutoCalling = true;
-        if (widget.isAutoCalling) {
+        if (widget.isAutoCalling ||
+            (widget.isCallFromCaseDetails && widget.callId != null)) {
           await CallCustomerStatus.callStatusCheck(
-                  callId: widget.paramValue['callId'], context: context)
-              .then((value) {
+            callId: (widget.isCallFromCaseDetails)
+                ? widget.callId
+                : widget.paramValue['callId'],
+            context: context,
+          ).then((value) {
             isNotAutoCalling = value;
           });
         }
