@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -17,9 +18,12 @@ class NoCaseAvailble {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // SvgPicture.asset(ImageResource.noCaseAvailable),
-            Image.asset(ImageResource.caseNotAvailable),
-            // const SizedBox(height: 25,),
+            // SvgPicture.asset(
+            //   ImageResource.noCaseAvailable,
+            //   height: 30,
+            //   width: 30,
+            // ),
+            Image.asset(ImageResource.noCaseAvailable),
             const CustomText(
               Constants.noCasesAvailable,
               fontSize: FontSize.sixteen,
