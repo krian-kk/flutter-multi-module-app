@@ -198,8 +198,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                     .listOfAddressDetails?[
                                                                         i][
                                                                         'value']
-                                                                    .toString()
-                                                                    .toUpperCase() ??
+                                                                    .toString() ??
                                                                 '_',
                                                             fontSize: FontSize
                                                                 .fourteen,

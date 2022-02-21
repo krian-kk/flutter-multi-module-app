@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,13 +24,12 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
-import 'dart:async';
-
 import 'package:permission_handler/permission_handler.dart';
 
 class AddressScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
   final int index;
+
   const AddressScreen({Key? key, required this.bloc, required this.index})
       : super(key: key);
 
@@ -191,8 +192,7 @@ class _AddressScreenState extends State<AddressScreen>
                                           .result
                                           ?.addressDetails![widget.index]
                                               ['value']
-                                          .toString()
-                                          .toUpperCase() ??
+                                          .toString() ??
                                       '_',
                                   fontWeight: FontWeight.w400,
                                   fontSize: FontSize.fourteen,
@@ -201,78 +201,78 @@ class _AddressScreenState extends State<AddressScreen>
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               children: [
                                 Expanded(
-                                    child: GestureDetector(
-                                  onTap: () async {
-                                    Position? currentLocation;
-                                    await MapUtils.getCurrentLocation()
-                                        .then((value) {
-                                      setState(() {
-                                        currentLocation = value;
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      Position? currentLocation;
+                                      await MapUtils.getCurrentLocation()
+                                          .then((value) {
+                                        setState(() {
+                                          currentLocation = value;
+                                        });
                                       });
-                                    });
-                                    Northeast? destinationLocation =
-                                        await MapUtils.convertAddressToLarlng(
-                                            address: widget
-                                                    .bloc
-                                                    .caseDetailsAPIValue
-                                                    .result!
-                                                    .addressDetails![
-                                                widget.index]['value']);
-                                    if (destinationLocation != null) {
-                                      MapUtils.openMap(
-                                          startLatitude:
-                                              currentLocation!.latitude,
-                                          startLongitude:
-                                              currentLocation!.longitude,
-                                          destinationLatitude:
-                                              destinationLocation.lat ?? 0.0,
-                                          destinationLongitude:
-                                              destinationLocation.lng ?? 0.0);
-                                    }
-                                  },
-                                  child: SizedBox(
+                                      Northeast? destinationLocation =
+                                          await MapUtils.convertAddressToLarlng(
+                                              address: widget
+                                                      .bloc
+                                                      .caseDetailsAPIValue
+                                                      .result!
+                                                      .addressDetails![
+                                                  widget.index]['value']);
+                                      if (destinationLocation != null) {
+                                        MapUtils.openMap(
+                                            startLatitude:
+                                                currentLocation!.latitude,
+                                            startLongitude:
+                                                currentLocation!.longitude,
+                                            destinationLatitude:
+                                                destinationLocation.lat ?? 0.0,
+                                            destinationLongitude:
+                                                destinationLocation.lng ?? 0.0);
+                                      }
+                                    },
+                                    child: SizedBox(
                                       width: 10,
                                       child: Container(
-                                          decoration: const BoxDecoration(
-                                              color: ColorResource.colorBEC4CF,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(75.0))),
-                                          child: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundColor:
-                                                    ColorResource.color23375A,
-                                                radius: 20,
-                                                child: Center(
-                                                  child: SvgPicture.asset(
-                                                    ImageResource.direction,
-                                                  ),
+                                        decoration: const BoxDecoration(
+                                            color: ColorResource.colorBEC4CF,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(75.0))),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  ColorResource.color23375A,
+                                              radius: 20,
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  ImageResource.direction,
                                                 ),
                                               ),
-                                              const SizedBox(width: 10),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.21,
-                                                child: FittedBox(
-                                                  child: CustomText(
-                                                    Languages.of(context)!
-                                                        .viewMap
-                                                        .toUpperCase(),
-                                                    fontSize: FontSize.fourteen,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: ColorResource
-                                                        .color23375A,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ))),
-                                )),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            CustomText(
+                                              Languages.of(context)!
+                                                  .viewMap
+                                                  .toUpperCase(),
+                                              lineHeight: 1,
+                                              fontSize: FontSize.fourteen,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color23375A,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 const SizedBox(width: 40),
                                 Expanded(
                                     child: SizedBox(
@@ -305,6 +305,8 @@ class _AddressScreenState extends State<AddressScreen>
                         ),
                       ),
                       Container(
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
                         decoration: const BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
@@ -400,7 +402,7 @@ class _AddressScreenState extends State<AddressScreen>
                               width: 190,
                               child: CustomButton(
                                 Languages.of(context)!.done.toUpperCase(),
-                                fontSize: FontSize.sixteen,
+                                fontSize: FontSize.eighteen,
                                 fontWeight: FontWeight.w600,
                                 onTap: () => Navigator.pop(context),
                                 cardShape: 5,
@@ -428,21 +430,20 @@ class _AddressScreenState extends State<AddressScreen>
                             horizontal: 20, vertical: 5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            InkWell(
-                              onTap: () => Navigator.pop(context),
-                              child: SizedBox(
-                                  width: 95,
-                                  child: Center(
-                                      child: CustomText(
-                                    Languages.of(context)!.cancel.toUpperCase(),
-                                    color: ColorResource.colorEA6D48,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: FontSize.sixteen,
-                                  ))),
+                            Expanded(
+                              child: CustomButton(
+                                Languages.of(context)!.cancel.toUpperCase(),
+                                fontSize: FontSize.eighteen,
+                                fontWeight: FontWeight.w600,
+                                buttonBackgroundColor: Colors.white,
+                                borderColor: Colors.white,
+                                textColor: ColorResource.colorEA6D48,
+                                onTap: () => Navigator.pop(context),
+                                cardShape: 5,
+                              ),
                             ),
-                            const SizedBox(width: 25),
                             SizedBox(
                               width: 191,
                               child: _controller.index == 1
@@ -460,7 +461,7 @@ class _AddressScreenState extends State<AddressScreen>
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      fontSize: FontSize.sixteen,
+                                      fontSize: FontSize.eighteen,
                                       fontWeight: FontWeight.w600,
                                       onTap: isSubmitFirst
                                           ? () {
@@ -498,7 +499,7 @@ class _AddressScreenState extends State<AddressScreen>
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      fontSize: FontSize.sixteen,
+                                      fontSize: FontSize.eighteen,
                                       fontWeight: FontWeight.w600,
                                       onTap: isSubmitSecond
                                           ? () {

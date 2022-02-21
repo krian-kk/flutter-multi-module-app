@@ -18,7 +18,7 @@ import 'bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -52,7 +52,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     bloc = BlocProvider.of<AuthenticationBloc>(context);
-    setupRemoteConfig();
     super.initState();
   }
 
@@ -72,18 +71,6 @@ class _MyAppState extends State<MyApp> {
     super.didChangeDependencies();
   }
 
-  Future<FirebaseRemoteConfig> setupRemoteConfig() async {
-    await Firebase.initializeApp();
-    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    await remoteConfig.ensureInitialized();
-    await remoteConfig.activate();
-    await remoteConfig.fetch();
-    return remoteConfig;
-  }
-
-  Future<String> getURL({FirebaseRemoteConfig? remoteConfig}) async {
-    return FirebaseRemoteConfig.instance.getString('mobile_app_baseUrl');
-  }
 
   @override
   Widget build(BuildContext context) {

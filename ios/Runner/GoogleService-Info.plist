@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>9444734201-8trnnta07eo9fug1ojhla0gpt74r5e1q.apps.googleusercontent.com</string>
+	<string>927842067224-gvh1p4k8d1g2u9uqvri25hqjkmeacfef.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.9444734201-8trnnta07eo9fug1ojhla0gpt74r5e1q</string>
+	<string>com.googleusercontent.apps.927842067224-gvh1p4k8d1g2u9uqvri25hqjkmeacfef</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAU97tNOFdv8_wHT5GJWpCFcJo85WgKGNE</string>
+	<string>AIzaSyDZSVdBFQckiLyUQU4jCOdXHifXSZ_h7jQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>9444734201</string>
+	<string>927842067224</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.mcollect.origa.ai</string>
 	<key>PROJECT_ID</key>
-	<string>fir-project-4d27b</string>
+	<string>instalmint-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fir-project-4d27b.appspot.com</string>
+	<string>instalmint-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:9444734201:ios:8506ee78b77e66c8d45e28</string>
+	<string>1:927842067224:ios:9a5d8e753b98f73538746d</string>
 	<key>DATABASE_URL</key>
-	<string>https://fir-project-4d27b-default-rtdb.firebaseio.com</string>
+	<string>https://instalmint-prod-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

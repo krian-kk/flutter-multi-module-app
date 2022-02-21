@@ -256,8 +256,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .result
                                                   ?.callDetails![widget.index]
                                                       ['value']
-                                                  .toString()
-                                                  .toUpperCase() ??
+                                                  .toString() ??
                                               '_',
                                       fontWeight: FontWeight.w400,
                                       fontSize: FontSize.fourteen,
@@ -472,7 +471,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     width: 190,
                                     child: CustomButton(
                                       Languages.of(context)!.done.toUpperCase(),
-                                      fontSize: FontSize.sixteen,
+                                      fontSize: FontSize.eighteen,
                                       fontWeight: FontWeight.w600,
                                       onTap: () async {
                                         if (widget.bloc.isAutoCalling) {
@@ -521,26 +520,21 @@ class _PhoneScreenState extends State<PhoneScreen>
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                      width: 95,
-                                      child: Center(
-                                          child: CustomText(
-                                        Languages.of(context)!
-                                            .cancel
-                                            .toUpperCase(),
-                                        onTap: () {
-                                          Singleton.instance.startCalling =
-                                              false;
-                                          Navigator.pop(context);
-                                        },
-                                        color: ColorResource.colorEA6D48,
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: FontSize.sixteen,
-                                      ))),
+                                  Expanded(
+                                    child: CustomButton(
+                                      Languages.of(context)!.cancel.toUpperCase(),
+                                      fontSize: FontSize.eighteen,
+                                      fontWeight: FontWeight.w600,
+                                      buttonBackgroundColor: Colors.white,
+                                      borderColor: Colors.white,
+                                      textColor: ColorResource.colorEA6D48,
+                                      onTap: () => Navigator.pop(context),
+                                      cardShape: 5,
+                                    ),
+                                  ),
                                   SizedBox(
                                       width: Singleton.instance.startCalling ??
                                               false
@@ -573,7 +567,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                           .withOpacity(0.7),
                                                     ],
                                                   ),
-                                                  fontSize: FontSize.sixteen,
+                                                  fontSize: FontSize.eighteen,
                                                   fontWeight: FontWeight.w600,
                                                   onTap: isSubmitFirst
                                                       ? () {
@@ -620,7 +614,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                           .withOpacity(0.7),
                                                     ],
                                                   ),
-                                                  fontSize: FontSize.sixteen,
+                                                  fontSize: FontSize.eighteen,
                                                   fontWeight: FontWeight.w600,
                                                   onTap: isSubmitSecond
                                                       ? () {
@@ -656,7 +650,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     .withOpacity(0.7),
                                               ],
                                             ),
-                                            fontSize: FontSize.sixteen,
+                                            fontSize: FontSize.eighteen,
                                             fontWeight: FontWeight.w600,
                                             onTap: isSubmitFirst
                                                 ? () {
@@ -699,7 +693,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     .withOpacity(0.7),
                                               ],
                                             ),
-                                            fontSize: FontSize.sixteen,
+                                            fontSize: FontSize.eighteen,
                                             fontWeight: FontWeight.w600,
                                             onTap: isSubmitSecond
                                                 ? () {
