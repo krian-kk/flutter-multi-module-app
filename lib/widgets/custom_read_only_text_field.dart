@@ -12,6 +12,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final bool isEnable;
   final bool isReadOnly;
   final Function? onTapped;
+  final Function? onChanged;
   final Widget? prefixWidget;
   final TextInputType keyBoardType;
   final int? maximumWordCount;
@@ -44,6 +45,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.prefixWidget,
     this.isEnable = true,
     this.onTapped,
+    this.onChanged,
     this.isReadOnly = false,
     this.maximumWordCount,
     this.titleColor = ColorResource.color666666,
@@ -131,6 +133,10 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             }
           },
           onChanged: (q) {
+            if (widget.onChanged != null) {
+              widget.onChanged!();
+            }
+
             setState(() {});
             // FocusScope.of(context).unfocus();
           },
@@ -168,7 +174,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               isDense: true,
               counterText: widget.descriptionText,
               contentPadding: widget.contentPadding ??
-                  const EdgeInsets.fromLTRB(0, 10, 0, 4),
+                  const EdgeInsets.fromLTRB(0, 10, 0, 9),
+              // const EdgeInsets.fromLTRB(0, 10, 0, 4),
               errorMaxLines: 1,
               suffixIcon: widget.suffixWidget,
               errorStyle: const TextStyle(

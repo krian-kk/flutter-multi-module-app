@@ -9,16 +9,16 @@ class MyReceiptsCaseModel {
     status = json['status'];
     message = json['message'];
     result = json['result'] != null
-        ? new MyReceiptResult.fromJson(json['result'])
+        ? MyReceiptResult.fromJson(json['result'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -26,7 +26,7 @@ class MyReceiptsCaseModel {
 
 class MyReceiptResult {
   int? totalCount;
-  dynamic? totalAmt;
+  dynamic totalAmt;
   ReceiptCases? approved;
   ReceiptCases? rejected;
   ReceiptCases? newCase;
@@ -42,27 +42,26 @@ class MyReceiptResult {
     totalCount = json['totalCount'];
     totalAmt = json['totalAmt'];
     approved = json['approved'] != null
-        ? new ReceiptCases.fromJson(json['approved'])
+        ? ReceiptCases.fromJson(json['approved'])
         : null;
     rejected = json['rejected'] != null
-        ? new ReceiptCases.fromJson(json['rejected'])
+        ? ReceiptCases.fromJson(json['rejected'])
         : null;
-    newCase =
-        json['new'] != null ? new ReceiptCases.fromJson(json['new']) : null;
+    newCase = json['new'] != null ? ReceiptCases.fromJson(json['new']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['totalCount'] = this.totalCount;
-    data['totalAmt'] = this.totalAmt;
-    if (this.approved != null) {
-      data['approved'] = this.approved!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['totalCount'] = totalCount;
+    data['totalAmt'] = totalAmt;
+    if (approved != null) {
+      data['approved'] = approved!.toJson();
     }
-    if (this.rejected != null) {
-      data['rejected'] = this.rejected!.toJson();
+    if (rejected != null) {
+      data['rejected'] = rejected!.toJson();
     }
-    if (this.newCase != null) {
-      data['new'] = this.newCase!.toJson();
+    if (newCase != null) {
+      data['new'] = newCase!.toJson();
     }
     return data;
   }
@@ -70,7 +69,7 @@ class MyReceiptResult {
 
 class ReceiptCases {
   int? count;
-  dynamic? totalAmt;
+  dynamic totalAmt;
   List<Cases>? cases;
 
   ReceiptCases({this.count, this.totalAmt, this.cases});
@@ -81,17 +80,17 @@ class ReceiptCases {
     if (json['cases'] != null) {
       cases = <Cases>[];
       json['cases'].forEach((v) {
-        cases!.add(new Cases.fromJson(v));
+        cases!.add(Cases.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
-    data['totalAmt'] = this.totalAmt;
-    if (this.cases != null) {
-      data['cases'] = this.cases!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['totalAmt'] = totalAmt;
+    if (cases != null) {
+      data['cases'] = cases!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -99,9 +98,9 @@ class ReceiptCases {
 
 class Cases {
   String? sId;
-  dynamic? due;
-  dynamic? originalDue;
-  dynamic? odVal;
+  dynamic due;
+  dynamic originalDue;
+  dynamic odVal;
   String? cust;
   String? agrRef;
   String? collSubStatus;
@@ -112,7 +111,7 @@ class Cases {
   String? bankName;
   String? aRef;
   List<Contact>? contact;
-  dynamic? totalReceiptAmount;
+  dynamic totalReceiptAmount;
   String? caseId;
   String? customerId;
 
@@ -161,7 +160,7 @@ class Cases {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['due'] = due;
     data['original_due'] = originalDue;
@@ -208,16 +207,15 @@ class Contact {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cType'] = this.cType;
-    data['health'] = this.health;
-    data['value'] = this.value;
-    data['resAddressId_0'] = this.resAddressId0;
-    data['contactId_0'] = this.contactId0;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cType'] = cType;
+    data['health'] = health;
+    data['value'] = value;
+    data['resAddressId_0'] = resAddressId0;
+    data['contactId_0'] = contactId0;
     return data;
   }
 }
-
 
 // class MyReceiptsCaseModel {
 //   int? status;

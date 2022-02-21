@@ -19,10 +19,14 @@ class PhoneUnreachableScreen extends StatefulWidget {
     Key? key,
     required this.context,
     required this.bloc,
+    this.isCallFromCaseDetails = false,
+    this.callId,
   }) : super(key: key);
 
   final BuildContext context;
   final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<PhoneUnreachableScreen> createState() => _PhoneUnreachableScreenState();
@@ -46,8 +50,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -142,8 +144,9 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Singleton.instance.contractorInformations!.result!
-                                .hideCallTriedSmsButton!
+                        Singleton.instance.contractorInformations?.result
+                                    ?.hideCallTriedSmsButton ??
+                                true
                             ? const SizedBox()
                             : GestureDetector(
                                 onTap: () {
@@ -168,9 +171,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                         color: ColorResource.colorffffff,
                                         size: 22,
                                       ),
-                                      // SvgPicture.asset(
-                                      //     ImageResource
-                                      //         .whatsApp),
                                       const SizedBox(width: 5),
                                       CustomText(
                                           Constants.sendSMS.toUpperCase(),
@@ -189,16 +189,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             context,
                           ),
                         ),
-                        const SizedBox(height: 19),
-                        Wrap(
-                          spacing: 15,
-                          runSpacing: 8,
-                          children: _buildOptionBottomSheetOpenButton(
-                            optionBottomSheetButtonList,
-                            context,
-                          ),
-                        ),
-                        // const SizedBox(height: 120)
                       ],
                     ),
                   ),
@@ -225,6 +215,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
             widget.bloc.caseDetailsAPIValue.result?.callDetails,
             true,
             health: ConstantEventValues.healthOne,
+            isCallFromCallDetails: widget.isCallFromCaseDetails,
+            callId: widget.callId,
           ));
         },
         child: Container(
@@ -293,6 +285,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
     List<Widget> widgets = [];
+
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {

@@ -4,7 +4,7 @@ import 'repayment_info.dart';
 
 class CaseDetails {
   String? id;
-  dynamic? pos;
+  dynamic pos;
   dynamic due;
   String? cust;
   dynamic odVal;
@@ -22,6 +22,7 @@ class CaseDetails {
   List<List<Attr>>? attr;
   RepaymentInfo? repaymentInfo;
   String? caseId;
+  String? agrRef;
 
   CaseDetails({
     this.id,
@@ -43,6 +44,7 @@ class CaseDetails {
     this.attr,
     this.repaymentInfo,
     this.caseId,
+    this.agrRef,
   });
 
   factory CaseDetails.fromJson(Map<String, dynamic> json) => CaseDetails(
@@ -74,6 +76,7 @@ class CaseDetails {
             : RepaymentInfo.fromJson(
                 Map<String, dynamic>.from(json['repaymentInfo'])),
         caseId: json['caseId'] as String?,
+        agrRef: json['agrRef'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,5 +99,6 @@ class CaseDetails {
         'attr': attr?.map((e) => e.map((e) => e.toJson()).toList()).toList(),
         'repaymentInfo': repaymentInfo?.toJson(),
         'caseId': caseId,
+        'agrRef': agrRef,
       };
 }

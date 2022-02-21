@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:origa/http/dio_client.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -19,6 +18,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -42,7 +42,7 @@ class CustomCaptureImageBottomSheet extends StatefulWidget {
 
 class _CustomCaptureImageBottomSheetState
     extends State<CustomCaptureImageBottomSheet> {
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController remarksControlller;
 
   final _formKey = GlobalKey<FormState>();
   List<File> uploadFileLists = [];
@@ -51,7 +51,14 @@ class _CustomCaptureImageBottomSheetState
 
   @override
   void initState() {
+    remarksControlller = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    remarksControlller.dispose();
+    super.dispose();
   }
 
   getFiles() async {
@@ -157,18 +164,8 @@ class _CustomCaptureImageBottomSheetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       const SizedBox(width: 25),
                       SizedBox(
@@ -216,9 +213,6 @@ class _CustomCaptureImageBottomSheetState
                                           PostImageCapturedModel(
                                               eventId: ConstantEventValues
                                                   .captureImageEventId,
-                                              // files: uploadFileLists.isNotEmpty
-                                              //     ? uploadFileLists
-                                              //     : [],
                                               eventCode: ConstantEventValues
                                                   .captureImageEvenCode,
                                               caseId: widget.bloc.caseId

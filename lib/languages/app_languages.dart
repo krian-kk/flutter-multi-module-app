@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:origa/models/reset_password_model/reset_password_model.dart';
-import 'package:origa/widgets/no_case_available.dart';
 
 abstract class Languages {
   static Languages? of(BuildContext context) {
@@ -466,4 +464,52 @@ abstract class Languages {
   String get eventUpdatedSuccessfully;
 
   String get successfullySubmitted;
+
+  String get loginViaDifferentUser;
+
+  String get event;
+
+  String get changeSecurePIN;
+
+  String get changeYourSecureDigitPIN;
+
+  String get enterYourSecureFourdDigitPin;
+
+  String get newPin;
+
+  String get save;
+
+  String get secureYourAccountByCreatingAFourDigitPin;
+
+  String get forgotPin;
+
+  String get waitFewSecondsYouGetCallFromAdmin;
+
+  String get pleaseWaitForTheCallIsOngoing;
+
+  String get pleaseSpeakWithCustomer;
+
+  String get doesntGetTheAgentAddress;
+
+  String get autoCallingIsComplete;
+
+  String get pleaseCallAgain;
+
+  String get approved;
+
+  String get pendingApproval;
+
+  String get rejected;
+
+  String get homeAddressNotAvailable;
+
+  String get sendSMS;
+
+  String get uploadFile;
+
+  String get upto5mb;
+
+  String get addMoreContact;
+
+  String get uploadAudioFile;
 }

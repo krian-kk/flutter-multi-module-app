@@ -476,7 +476,7 @@ class LanguageEn extends Languages {
   String get modelMake => 'MODEL MAKE*';
 
   @override
-  String get registrationNo => 'REGISTRATION NO*';
+  String get registrationNo => 'Registration No';
 
   @override
   String get chassisNo => 'CHASSIS NO*';
@@ -691,4 +691,79 @@ class LanguageEn extends Languages {
 
   @override
   String get successfullySubmitted => 'Successfully submitted!!';
+
+  @override
+  String get loginViaDifferentUser => 'Login via different user';
+
+  @override
+  String get event => 'Events';
+
+  @override
+  String get changeSecurePIN => 'CHANGE Secure PIN';
+
+  @override
+  String get changeYourSecureDigitPIN => 'Change your secure 4-digit PIN';
+
+  @override
+  String get newPin => 'New Pin';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      'Secure your account by creating a 4 digit PIN';
+
+  @override
+  String get enterYourSecureFourdDigitPin => 'Enter your secure 4-digit PIN';
+
+  @override
+  String get forgotPin => 'Forgot PIN?';
+
+  @override
+  String get waitFewSecondsYouGetCallFromAdmin =>
+      'Wait a few seconds, You\'ll get a call from Admin';
+
+  @override
+  String get pleaseWaitForTheCallIsOngoing =>
+      'Please wait for the call is ongoing';
+
+  @override
+  String get pleaseSpeakWithCustomer => 'Please Speak with the customer';
+
+  @override
+  String get doesntGetTheAgentAddress => 'Doesn\'t Get the Agent Address!';
+
+  @override
+  String get autoCallingIsComplete => 'Auto Calling is Complete';
+
+  @override
+  String get pleaseCallAgain => 'Please Call Again!';
+
+  @override
+  String get approved => 'Approved';
+
+  @override
+  String get pendingApproval => 'Pending Approval';
+
+  @override
+  String get rejected => 'Rejected';
+
+  @override
+  String get homeAddressNotAvailable => 'Home address not available.';
+
+  @override
+  String get sendSMS => 'SEND SMS';
+
+  @override
+  String get uploadFile => 'UPLOAD FILE';
+
+  @override
+  String get upto5mb => 'UPTO 5MB';
+
+  @override
+  String get addMoreContact => 'ADD MORE CONTACT';
+
+  @override
+  String get uploadAudioFile => 'UPLOAD AUDIO FILE';
 }

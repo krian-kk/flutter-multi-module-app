@@ -38,7 +38,17 @@ class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
 class NavigateCaseDetailEvent extends DashboardEvent {
   final dynamic paramValues;
-  NavigateCaseDetailEvent({this.paramValues});
+  final bool isUnTouched;
+  final bool isPriorityFollowUp;
+  final bool isBrokenPTP;
+  final bool isMyReceipts;
+  NavigateCaseDetailEvent({
+    this.paramValues,
+    this.isUnTouched = false,
+    this.isPriorityFollowUp = false,
+    this.isBrokenPTP = false,
+    this.isMyReceipts = false,
+  });
 }
 
 class NavigateSearchEvent extends DashboardEvent {}
@@ -78,4 +88,34 @@ class PostSelfreleaseDataEvent extends DashboardEvent {
 
 class HelpEvent extends DashboardEvent {}
 
-class NoInternetConnectionEvent extends DashboardEvent {}
+class UpdateUnTouchedCasesEvent extends DashboardEvent {
+  final String caseId;
+  final dynamic caseAmount;
+  UpdateUnTouchedCasesEvent(this.caseId, this.caseAmount);
+}
+
+class UpdatePriorityFollowUpCasesEvent extends DashboardEvent {
+  final String caseId;
+  final dynamic caseAmount;
+  UpdatePriorityFollowUpCasesEvent(this.caseId, this.caseAmount);
+}
+
+class UpdateMyVisitCasesEvent extends DashboardEvent {
+  final String caseId;
+  final dynamic caseAmount;
+  final bool isNotMyReceipts;
+  UpdateMyVisitCasesEvent(this.caseId, this.caseAmount,
+      {this.isNotMyReceipts = true});
+}
+
+class UpdateMyReceiptsCasesEvent extends DashboardEvent {
+  final String caseId;
+  final dynamic caseAmount;
+  UpdateMyReceiptsCasesEvent(this.caseId, this.caseAmount);
+}
+
+class UpdateBrokenCasesEvent extends DashboardEvent {
+  final String caseId;
+  final dynamic caseAmount;
+  UpdateBrokenCasesEvent(this.caseId, this.caseAmount);
+}

@@ -3,24 +3,20 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/authentication/authentication_bloc.dart';
-import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/http/dio_client.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
-import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum APIRequestType {
-  GET,
-  POST,
-  PUT,
-  DELETE,
-  UPLOAD,
-  DOWNLOAD,
+  get,
+  post,
+  put,
+  delete,
+  upload,
+  download,
   singleFileUpload
 }
 
@@ -48,15 +44,15 @@ class APIRepository {
     try {
       Response? response;
       switch (requestType) {
-        case APIRequestType.GET:
-        case APIRequestType.DELETE:
+        case APIRequestType.get:
+        case APIRequestType.delete:
           {
-            response = requestType == APIRequestType.DELETE
+            response = requestType == APIRequestType.delete
                 ? await DioClient.dioConfig().delete(urlString)
                 : await DioClient.dioConfig().get(urlString);
             break;
           }
-        case APIRequestType.UPLOAD:
+        case APIRequestType.upload:
           {
             // final FormData data = FormData.fromMap({
             //   'files': DioClient.listOfMultiPart(file),
@@ -73,13 +69,13 @@ class APIRepository {
                 await DioClient.dioFileConfig().post(urlString, data: data);
             break;
           }
-        case APIRequestType.DOWNLOAD:
+        case APIRequestType.download:
           {
             response = await DioClient.dioConfig().download(urlString, savePath,
                 onReceiveProgress: onReceiveProgress);
             break;
           }
-        case APIRequestType.PUT:
+        case APIRequestType.put:
           {
             response = await DioClient.dioConfig().put(
               urlString,
@@ -87,7 +83,7 @@ class APIRepository {
             );
             break;
           }
-        case APIRequestType.POST:
+        case APIRequestType.post:
         default:
           {
             response = await DioClient.dioConfig()
@@ -96,13 +92,9 @@ class APIRepository {
       }
       debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(response.toString())}');
-      // print('response data -------->');
-      // print(response!.headers['access-token']);
-      // print('response Headers -------->');
 
       if (response!.headers['access-token'] != null) {
-        print('Here get New Access Token for every API call then store');
-        print(response.headers['access-token']);
+        debugPrint('Access Token is => ${response.headers['access-token']}');
         // Here get New Access Token for every API call then store
         if (response.headers['access-token']![0].toString() != 'false') {
           _prefs.setString(Constants.accessToken,
@@ -118,8 +110,6 @@ class APIRepository {
         'statusCode': response.data['status'],
       };
     } on DioError catch (e) {
-      // print("-------NK------");
-      // print(e.response!.statusCode);
       dynamic error;
       String? invalidAccessServerError;
       if (e.response != null) {
@@ -130,9 +120,10 @@ class APIRepository {
         error = Constants
             .connectionTimeout; // connection timeout sometime will come
       }
-      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
+
+      debugPrint(
+          'Error Status :  urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
-      print('response dio error data -------->');
 
       if (error.toString() != "DioErrorType.response") {
         // isPop is used for if i load new api then get any error then pop the back screen
@@ -140,7 +131,7 @@ class APIRepository {
           Navigator.pop(Singleton.instance.buildContext!);
         }
         apiErrorStatus(
-            ErrorString: error.toString(), position: ToastGravity.CENTER);
+            errorString: error.toString(), position: ToastGravity.CENTER);
       }
 
       if (e.response != null) {
@@ -166,18 +157,18 @@ class APIRepository {
                 AppRoutes.loginScreen, (route) => false);
           }
           apiErrorStatus(
-              ErrorString: errVal ?? e.response!.data['message'],
+              errorString: errVal ?? e.response!.data['message'],
               position: ToastGravity.BOTTOM);
         } else if (e.response!.statusCode == 502) {
           //  server not response --> api not working
           invalidAccessServerError = Constants.internalServerError;
           apiErrorStatus(
-              ErrorString: Constants.internalServerError,
+              errorString: Constants.internalServerError,
               position: ToastGravity.BOTTOM);
         } else if (e.response!.statusCode == 400) {
           //Event address not present
           apiErrorStatus(
-              ErrorString: e.response!.data['message'] ?? '',
+              errorString: e.response!.data['message'] ?? '',
               position: ToastGravity.BOTTOM);
         }
       }
@@ -190,7 +181,7 @@ class APIRepository {
 
       returnValue = {
         'success': false,
-        'data': invalidAccessServerError != null
+        'data': (invalidAccessServerError != null)
             ? invalidAccessServerError
             : e.response != null
                 ? e.response!.data
@@ -202,9 +193,9 @@ class APIRepository {
     return returnValue;
   }
 
-  static void apiErrorStatus({String? ErrorString, ToastGravity? position}) {
+  static void apiErrorStatus({String? errorString, ToastGravity? position}) {
     Fluttertoast.showToast(
-        msg: ErrorString!,
+        msg: errorString!,
         toastLength: Toast.LENGTH_LONG,
         gravity: position ?? ToastGravity.CENTER,
         timeInSecForIosWeb: 3,

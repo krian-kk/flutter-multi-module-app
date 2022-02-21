@@ -7,7 +7,9 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
+import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -20,7 +22,6 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
   final Widget customerLoanUserWidget;
@@ -28,15 +29,25 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final String caseId;
   final String sid;
   final List<String> listOfMobileNo;
+  final CaseDetailsApiModel? caseDetailsAPIValue;
+  final String? custName;
+  final String? contactNumber;
+  final bool? isCallFromCallDetails;
+  final CaseDetailsBloc caseDetailsBloc;
 
-  const CallCustomerBottomSheet({
-    Key? key,
-    required this.customerLoanUserWidget,
-    required this.caseId,
-    required this.userType,
-    required this.sid,
-    required this.listOfMobileNo,
-  }) : super(key: key);
+  const CallCustomerBottomSheet(
+      {Key? key,
+      required this.customerLoanUserWidget,
+      this.caseDetailsAPIValue,
+      required this.caseId,
+      required this.userType,
+      required this.sid,
+      required this.listOfMobileNo,
+      this.custName,
+      this.contactNumber,
+      this.isCallFromCallDetails,
+      required this.caseDetailsBloc})
+      : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -45,25 +56,28 @@ class CallCustomerBottomSheet extends StatefulWidget {
 
 class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   late CallCustomerBloc bloc;
-  TextEditingController agentContactNoControlller = TextEditingController();
+  late TextEditingController agentContactNoControlller;
 
   final _formKey = GlobalKey<FormState>();
 
   List<String> customerContactNoDropdownList = [];
   String customerContactNoDropDownValue = '';
 
-  // List<CaseListModel> caseDetaislListModel = [];
-
   @override
   void initState() {
     super.initState();
+    agentContactNoControlller = TextEditingController();
     bloc = CallCustomerBloc()..add(CallCustomerInitialEvent());
-
+    customerContactNoDropDownValue = widget.contactNumber!;
     for (var element in widget.listOfMobileNo) {
       customerContactNoDropdownList.add(element);
     }
+  }
 
-    customerContactNoDropDownValue = customerContactNoDropdownList.first;
+  @override
+  void dispose() {
+    agentContactNoControlller.dispose();
+    super.dispose();
   }
 
   @override
@@ -81,6 +95,14 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
               agentContactNoControlller.text =
                   bloc.voiceAgencyDetails.result?.agentAgencyContact ?? '';
             });
+          }
+          if (state is NavigationPhoneBottomSheetState) {
+            Navigator.pop(context);
+            widget.caseDetailsBloc.add(ClickMainCallBottomSheetEvent(
+              widget.caseDetailsBloc.indexValue ?? 0,
+              isCallFromCaseDetails: true,
+              callId: state.callId,
+            ));
           }
         },
         child: BlocBuilder<CallCustomerBloc, CallCustomerState>(
@@ -216,19 +238,17 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
+                        Expanded(
+                            child: CustomButton(
+                          Languages.of(context)!.done.toUpperCase(),
+                          fontSize: FontSize.eighteen,
+                          fontWeight: FontWeight.w600,
+                          buttonBackgroundColor: Colors.white,
+                          borderColor: Colors.white,
+                          textColor: ColorResource.colorEA6D48,
                           onTap: () => Navigator.pop(context),
-                          child: SizedBox(
-                              width: 95,
-                              child: Center(
-                                  child: CustomText(
-                                Languages.of(context)!.done.toUpperCase(),
-                                color: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FontStyle.normal,
-                                fontSize: FontSize.sixteen,
-                              ))),
-                        ),
+                          cardShape: 5,
+                        )),
                         const SizedBox(width: 25),
                         SizedBox(
                           width: 191,
@@ -247,35 +267,24 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 });
                               }
                               if (_formKey.currentState!.validate()) {
-                                // Map<String, dynamic> enableCloudTel =
-                                //     await APIRepository.apiRequest(
-                                //   APIRequestType.POST,
-                                //   HttpUrl.enableCloudTelephony,
-                                //   requestBodydata: {
-                                //     "contractor": Singleton.instance.contractor
-                                //   },
-                                // );
-                                // if (enableCloudTel['data']['result']) {
-                                // print(enableCloudTel['data']);
-                                // Singleton.instance.callingID != ''
                                 if (Singleton.instance.cloudTelephony! &&
                                     Singleton.instance.callingID != null) {
-                                  // print("call id checking");
                                   var requestBodyData = CallCustomerModel(
                                     from: agentContactNoControlller.text,
                                     to: customerContactNoDropDownValue,
                                     callerId:
                                         Singleton.instance.callingID ?? '',
                                     aRef: Singleton.instance.agentRef ?? '',
-                                    customerName:
-                                        Singleton.instance.agentName ?? '',
+                                    customerName: widget.custName!,
                                     service: bloc.serviceProviderListValue,
                                     callerServiceID:
                                         Singleton.instance.callerServiceID ??
                                             '',
                                     caseId: widget.caseId,
                                     sId: widget.sid,
-                                    agrRef: Singleton.instance.agentRef ?? '',
+                                    agrRef: widget.caseDetailsAPIValue!.result!
+                                            .caseDetails!.agrRef ??
+                                        '',
                                     agentName:
                                         Singleton.instance.agentName ?? '',
                                     agentType: (widget.userType ==
@@ -286,7 +295,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
 
                                   Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
-                                    APIRequestType.POST,
+                                    APIRequestType.post,
                                     HttpUrl.callCustomerUrl,
                                     requestBodydata:
                                         jsonEncode(requestBodyData),
@@ -294,18 +303,15 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   if (postResult[Constants.success]) {
                                     AppUtils.showToast(
                                         Constants.callConnectedPleaseWait);
+                                    if (widget.isCallFromCallDetails ?? false) {
+                                      bloc.add(NavigationPhoneBottomSheetEvent(
+                                          postResult['data']['result']));
+                                    }
                                   }
-                                  // else {}
                                 } else {
-                                  // print(" no call call id checking");
-
                                   AppUtils.makePhoneCall(
                                       'tel:' + customerContactNoDropDownValue);
                                 }
-                                // } else {
-                                //   AppUtils.makePhoneCall(
-                                //       'tel:' + customerContactNoDropDownValue);
-                                // }
                               }
                               if (mounted) {
                                 setState(() {

@@ -25,6 +25,7 @@ class MyVisitsState extends DashboardState {}
 
 class ReturnVisitsApiState extends DashboardState {
   final dynamic returnData;
+
   ReturnVisitsApiState({this.returnData});
 }
 
@@ -34,7 +35,17 @@ class YardingAndSelfReleaseState extends DashboardState {}
 
 class NavigateCaseDetailState extends DashboardState {
   final dynamic paramValues;
-  NavigateCaseDetailState({this.paramValues});
+  final bool unTouched;
+  final bool isPriorityFollowUp;
+  final bool isBrokenPTP;
+  final bool isMyReceipts;
+  NavigateCaseDetailState({
+    this.paramValues,
+    this.unTouched = false,
+    this.isPriorityFollowUp = false,
+    this.isBrokenPTP = false,
+    this.isMyReceipts = false,
+  });
 }
 
 class NavigateSearchState extends DashboardState {}
@@ -47,8 +58,6 @@ class GetSearchDataState extends DashboardState {
 class SetTimeperiodValueState extends DashboardState {}
 
 class HelpState extends DashboardState {}
-
-class ClickPriorityFollowUpState extends DashboardState {}
 
 class SelectedTimeperiodDataLoadingState extends DashboardState {}
 
@@ -73,3 +82,5 @@ class EnableRSYardingSubmitBtnState extends DashboardState {}
 class DisableRSSelfReleaseSubmitBtnState extends DashboardState {}
 
 class EnableRSSelfReleaseSubmitBtnState extends DashboardState {}
+
+class UpdateSuccessfulState extends DashboardState {}

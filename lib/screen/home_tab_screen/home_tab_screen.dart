@@ -61,7 +61,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                         length: 3,
                         child: Column(children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(left: 24, right: 8),
+                            padding: const EdgeInsets.only(left: 20, right: 4),
                             child: Row(
                               children: [
                                 Expanded(
@@ -90,8 +90,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                             setState(() {
                                               title = StringResource.dashboard
                                                   .toUpperCase();
-                                              print("Slected Tab");
-                                              print(index);
                                             });
                                             break;
                                           case 2:

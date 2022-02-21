@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -15,7 +13,7 @@ class DepositionMode {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.83,
       child: Container(
-        padding: EdgeInsets.only(top: 16),
+        padding: const EdgeInsets.only(top: 16),
         child: DefaultTabController(
           length: 2,
           child: SafeArea(
@@ -30,14 +28,11 @@ class DepositionMode {
 
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   BottomSheetAppbar(
                     title: Languages.of(context)!.depositionMode,
                   ),
-                  SizedBox(
-                    height: 7,
-                  ),
+                  const SizedBox(height: 7),
                   Container(
                     // width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
@@ -47,7 +42,7 @@ class DepositionMode {
                     child: TabBar(
                       isScrollable: false,
                       indicatorColor: ColorResource.colorD5344C,
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color23375A,
                           fontSize: FontSize.fourteen,
@@ -67,14 +62,14 @@ class DepositionMode {
                       children: [
                         BankTab(
                           bloc,
-                          selected_case_Ids: _ids,
+                          selectedCaseIds: _ids,
                           mode: "Bank",
                           custname: custName,
                           receiptAmt: receiptAmount,
                         ),
                         CompanyBranch(
                           bloc,
-                          selected_case_Ids: _ids,
+                          selectedCaseIds: _ids,
                           mode: "Company Branch",
                           custname: custName,
                           receiptAmt: receiptAmount,

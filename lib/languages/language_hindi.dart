@@ -14,25 +14,25 @@ class LanguageHi extends Languages {
   String get password => 'पासवर्ड';
 
   @override
-  String get userId => 'उपयोगकर्ता नाम';
+  String get userId => 'उपयोगकर्ता का पहचान';
 
   @override
-  String get userName => 'उपयोगकर्ता नाम';
+  String get userName => 'उपयोगकर्ता का नाम';
 
   @override
   String get rememberMe => 'मुझे याद रखें';
 
   @override
-  String get passwordNotMatch => "पासवर्ड मेल नहीं खाता";
+  String get passwordNotMatch => 'पासवर्ड से मेल नहीं खाता';
 
   @override
-  String get resetPassword => 'ओटीपी के माध्यम से पासवर्ड रीसेट करें';
+  String get resetPassword => 'OTP के माध्यम से पासवर्ड रीसेट करें';
 
   @override
-  String get loginViaDiffrentUser => 'भिन्न उपयोगकर्ता के माध्यम से लॉगिन करें';
+  String get loginViaDiffrentUser => 'अलग उपयोगकर्ता के माध्यम से लॉगिन करें';
 
   @override
-  String get allocation => 'आवंटन';
+  String get allocation => 'निर्वटन';
 
   @override
   String get dashboard => 'डैशबोर्ड';
@@ -41,7 +41,7 @@ class LanguageHi extends Languages {
   String get profile => 'प्रोफ़ाइल';
 
   @override
-  String get areYouAtOffice => 'क्या आप ऑफिस में हैं?';
+  String get areYouAtOffice => 'क्या आप कार्यालय में हैं?';
 
   @override
   String get yes => 'हां';
@@ -53,10 +53,10 @@ class LanguageHi extends Languages {
   String get pincode => 'पिन कोड';
 
   @override
-  String get priority => 'वरीयता';
+  String get priority => 'प्राथमिकता';
 
   @override
-  String get buildRoute => 'मार्ग बनाएँ';
+  String get buildRoute => 'मार्ग का निर्माण करें ';
 
   @override
   String get mapView => 'नक्शा देखें';
@@ -65,13 +65,13 @@ class LanguageHi extends Languages {
   String get hignPriority => 'उच्च प्राथमिकता';
 
   @override
-  String get searchbasedOn => 'पर आधारित खोजें';
+  String get searchbasedOn => 'खोज के आधार पर';
 
   @override
   String get message => 'संदेश';
 
   @override
-  String get followUpDate => 'आगे की कार्यवाही की तारीख';
+  String get followUpDate => 'आगे की कार्यवाही की तारी';
 
   @override
   String get change => 'परिवर्तन';
@@ -80,13 +80,13 @@ class LanguageHi extends Languages {
   String get all => 'सभी';
 
   @override
-  String get under5km => '5 किमी. के नीचे';
+  String get under5km => '5 किमी से कम';
 
   @override
-  String get more5km => '5Km-10Km';
+  String get more5km => '5 किमी-10 किमी';
 
   @override
-  String get mtdResolutionProgress => 'एमटीडी संकल्प प्रगति';
+  String get mtdResolutionProgress => 'MTD प्रस्ताव की प्रगति';
 
   @override
   String get customer => 'ग्राहक';
@@ -98,7 +98,7 @@ class LanguageHi extends Languages {
   String get priorityFollowUp => 'प्राथमिकता का पालन करें';
 
   @override
-  String get untouchedCases => 'अछूते मामले';
+  String get untouchedCases => 'अनछुआ मामले';
 
   @override
   String get brokenPTP => 'टूटा हुआ पीटीपी';
@@ -107,10 +107,10 @@ class LanguageHi extends Languages {
   String get myReceipts => 'मेरी रसीदें';
 
   @override
-  String get myVisits => 'मेरा दौरा';
+  String get myVisits => 'मेरी यात्राएं';
 
   @override
-  String get myCalls => 'मेरी कॉल';
+  String get myCalls => 'मेरा कॉल';
 
   @override
   String get myDeposists => 'मेरे जमाकर्ता';
@@ -131,10 +131,10 @@ class LanguageHi extends Languages {
   String get weekly => 'साप्ताहिक';
 
   @override
-  String get monthly => 'महीने के';
+  String get monthly => 'मासिक';
 
   @override
-  String get cheque => 'जाँच';
+  String get cheque => 'चेक';
 
   @override
   String get cash => 'नकद';
@@ -143,16 +143,16 @@ class LanguageHi extends Languages {
   String get loanAccountNumber => 'ऋण खाता संख्या';
 
   @override
-  String get receiptDate => 'पर्ची की तारीख';
+  String get receiptDate => 'प्राप्ति की तारीख';
 
   @override
-  String get selected => 'गिने चुने';
+  String get selected => 'चुना हुआ';
 
   @override
-  String get enterDepositionDetails => 'जमा विवरण दर्ज करें';
+  String get enterDepositionDetails => 'बयान के विवरण दर्ज करें';
 
   @override
-  String get depositionMode => 'जमा मोड';
+  String get depositionMode => 'बयान का तरीका';
 
   @override
   String get bank => 'बैंक';
@@ -161,13 +161,13 @@ class LanguageHi extends Languages {
   String get companybranch => 'कंपनी शाखा';
 
   @override
-  String get branchName => 'शाखा का नाम*';
+  String get branchName => 'शाखा का नाम *';
 
   @override
   String get bankName => 'बैंक का नाम*';
 
   @override
-  String get ifscCode => 'आईएफएससी कोड*';
+  String get ifscCode => 'IFSC कोड *';
 
   @override
   String get accNumber => 'खाता संख्या*';
@@ -185,13 +185,13 @@ class LanguageHi extends Languages {
   String get yarding => 'यार्डिंग';
 
   @override
-  String get repoDate => 'रेपो तिथि';
+  String get repoDate => 'REPO तिथि';
 
   @override
   String get selfRelease => 'स्वयं रिलीज';
 
   @override
-  String get repoStatus => 'रेपो स्थिति';
+  String get repoStatus => 'REPO स्थिति';
 
   @override
   String get yardName => 'यार्ड का नाम*';
@@ -206,7 +206,7 @@ class LanguageHi extends Languages {
   String get send => 'भेजना';
 
   @override
-  String get typeYourMessage => 'अपना संदेश टाइप करें';
+  String get typeYourMessage => 'अपना संदेश लिखें';
 
   @override
   String get cancel => 'रद्द करना';
@@ -224,13 +224,13 @@ class LanguageHi extends Languages {
   String get customerName => 'ग्राहक का नाम';
 
   @override
-  String get dpdBucket => 'डीपीडी/बाल्टी';
+  String get dpdBucket => 'DPD/बाल्टी';
 
   @override
   String get status => 'स्थिति';
 
   @override
-  String get customerID => 'ग्राहक आईडी, ग्राहक पहचान';
+  String get customerID => 'ग्राहक का पहचान';
 
   @override
   String get myRecentActivity => 'मेरी हाल की गतिविधि';
@@ -248,28 +248,28 @@ class LanguageHi extends Languages {
   String get loanAmount => 'उधार की राशि';
 
   @override
-  String get loanDuration => 'ऋण अवधि';
+  String get loanDuration => 'ऋण की अवधि';
 
   @override
   String get pos => 'POS';
 
   @override
-  String get schemeCode => 'योजना कोड';
+  String get schemeCode => 'योजना की कोड';
 
   @override
-  String get emiStartDate => 'ईएमआई प्रारंभ तिथि';
+  String get emiStartDate => 'EMI  की प्रारंभ तिथि';
 
   @override
-  String get repaymentInfo => 'चुकौती जानकारी';
+  String get repaymentInfo => 'दुबारा भुगतान की जानकारी';
 
   @override
-  String get beneficiaryDetails => 'लाभार्थी विवरण';
+  String get beneficiaryDetails => 'लाभार्थी का विवरण';
 
   @override
-  String get repaymentBankName => 'चुकौती बैंक का नाम';
+  String get repaymentBankName => 'वापसी बैंक का नाम';
 
   @override
-  String get referenceLender => 'संदर्भ ऋणदाता';
+  String get referenceLender => 'लाभार्थी का विवरण';
 
   @override
   String get referenceUrl => 'संदर्भ URL';
@@ -278,7 +278,7 @@ class LanguageHi extends Languages {
   String get caseDetials => 'मामले का विवरण';
 
   @override
-  String get sendSms => 'संदेश भेजो';
+  String get sendSms => 'संदेश भेजें';
 
   @override
   String get sendWhatsapp => 'व्हाट्सएप भेजें';
@@ -287,13 +287,13 @@ class LanguageHi extends Languages {
   String get otherLoanOf => 'अन्य ऋण';
 
   @override
-  String get view => 'दृश्य';
+  String get view => 'देखें';
 
   @override
-  String get customerMet => 'ग्राहक मौसम';
+  String get customerMet => 'ग्राहक से मिले';
 
   @override
-  String get customerNotMet => 'ग्राहक नहीं मिला';
+  String get customerNotMet => 'ग्राहक से नहीं मिले';
 
   @override
   String get logout => 'लॉग आउट';
@@ -302,28 +302,28 @@ class LanguageHi extends Languages {
   String get invalid => 'अमान्य';
 
   @override
-  String get ptp => 'पीटीपी';
+  String get ptp => 'PTP';
 
   @override
-  String get rtp => 'आरटीपी (इनकार)';
+  String get rtp => 'RTP (अस्वीकार)';
 
   @override
   String get dispute => 'विवाद';
 
   @override
-  String get remainderCb => 'रिमाइंडर/सीबी';
+  String get remainderCb => 'रिमाइंडर/CB';
 
   @override
   String get collections => 'संग्रह';
 
   @override
-  String get ots => 'ओ टी एस';
+  String get ots => 'OTS';
 
   @override
   String get product => 'उत्पाद';
 
   @override
-  String get batchNo => 'बैच नम्बर।';
+  String get batchNo => 'बैच नं।';
 
   @override
   String get done => 'किया हुआ';
@@ -356,34 +356,34 @@ class LanguageHi extends Languages {
   String get defaultLanguage => 'डिफ़ॉल्ट भाषा';
 
   @override
-  String get english => 'ENGLISH';
+  String get english => 'अंग्रेज़ी';
 
   @override
-  String get hindi => 'हिन्दी  / HINDI';
+  String get hindi => 'हिन्दी / HINDI';
 
   @override
-  String get tamil => 'தமிழ்  / TAMIL';
+  String get tamil => 'தமிழ் / तमिल';
 
   @override
-  String get kannada => 'ಕನ್ನಡ  / KANNADA';
+  String get kannada => 'ಕನ್ನಡ / कन्नड़';
 
   @override
-  String get read => 'पढ़ना';
+  String get read => 'पढ़े ';
 
   @override
   String get addressDetails => 'पते का विवरण';
 
   @override
-  String get callDetails => 'कॉल विवरण';
+  String get callDetails => 'कॉल का विवरण';
 
   @override
-  String get okay => 'ठीक';
+  String get okay => 'ठीक है';
 
   @override
-  String get call => 'बुलाना';
+  String get call => 'कॉल';
 
   @override
-  String get viewMap => 'मानचित्र';
+  String get viewMap => 'नक्शा देखें';
 
   @override
   String get captureImage => 'छवि कैप्चर करें';
@@ -401,10 +401,10 @@ class LanguageHi extends Languages {
   String get declinedCall => 'अस्वीकृत कॉल';
 
   @override
-  String get leftMessage => 'बायां संदेश';
+  String get leftMessage => 'संदेश छोड़ा';
 
   @override
-  String get doorLocked => 'दरवाजा बंद कर दिया';
+  String get doorLocked => 'दरवाज़ा बंद';
 
   @override
   String get entryRestricted => 'प्रवेश प्रतिबंधित';
@@ -413,13 +413,13 @@ class LanguageHi extends Languages {
   String get addNewContact => 'नए संपर्क को जोड़े';
 
   @override
-  String get repo => 'रेपो';
+  String get repo => 'REPO';
 
   @override
   String get otherFeedBack => 'अन्य प्रतिक्रिया';
 
   @override
-  String get submit => 'प्रस्तुत';
+  String get submit => 'निवेदन करें ';
 
   @override
   String get nextActionDate => 'अगली कार्रवाई की तारीख*';
@@ -431,13 +431,13 @@ class LanguageHi extends Languages {
   String get remarks => 'टिप्पणियां*';
 
   @override
-  String get ptpDate => 'पीटीपी तिथि*';
+  String get ptpDate => 'PTP का तिथि*';
 
   @override
-  String get ptpTime => 'पीटीपी समय*';
+  String get ptpTime => 'PTP का समय*';
 
   @override
-  String get ptpAmount => 'पीटीपी राशि*';
+  String get ptpAmount => 'PTP का राशि*';
 
   @override
   String get paymentMode => 'भुगतान का प्रकार';
@@ -455,19 +455,19 @@ class LanguageHi extends Languages {
   String get time => 'समय*';
 
   @override
-  String get refCheque => 'संदर्भ/जांच सं.';
+  String get refCheque => 'REF/चेक ';
 
   @override
-  String get otsProposedAmount => 'ओटीएस प्रस्तावित राशि*';
+  String get otsProposedAmount => 'OTS प्रस्तावित राशि*';
 
   @override
-  String get otsPaymentDate => 'ओटीएस भुगतान तिथि*';
+  String get otsPaymentDate => 'OTS भुगतान तिथि*';
 
   @override
-  String get otsPaymentTime => 'ओटीएस भुगतान समय';
+  String get otsPaymentTime => 'OTS भुगतान समय*';
 
   @override
-  String get rtpDenialReason => 'आरटीपी/अस्वीकार कारण';
+  String get rtpDenialReason => 'RTP/अस्वीकार का  कारण';
 
   @override
   String get disputeReason => 'विवाद का कारण';
@@ -476,10 +476,10 @@ class LanguageHi extends Languages {
   String get modelMake => 'मॉडल बनाना*';
 
   @override
-  String get registrationNo => 'पंजीकरण क्रमांक*';
+  String get registrationNo => 'पंजीकरण क्रमांक';
 
   @override
-  String get chassisNo => 'चास्सिस संख्या*';
+  String get chassisNo => 'चेसिस संख्या*';
 
   @override
   String get customUpload => 'कस्टम अपलोड';
@@ -491,7 +491,7 @@ class LanguageHi extends Languages {
   String get pickUp => 'पिक-अप';
 
   @override
-  String get selfPay => 'स्व भुगतान';
+  String get selfPay => 'स्वयं भुगतान';
 
   @override
   String get digital => 'डिजिटल';
@@ -518,13 +518,13 @@ class LanguageHi extends Languages {
   String get customerContactNo => 'ग्राहक संपर्क नंबर*';
 
   @override
-  String get serviceProvidersList => 'सेवा प्रदाता की सूची';
+  String get serviceProvidersList => 'सेवा  प्रदान करनेवाला की सूची';
 
   @override
   String get callersId => 'कॉलर आईडी';
 
   @override
-  String get customerMetCategory => 'ग्राहक मिले श्रेणी';
+  String get customerMetCategory => 'ग्राहक श्रेणी से मिले';
 
   @override
   String get connected => 'जुड़े हुए';
@@ -572,20 +572,20 @@ class LanguageHi extends Languages {
   String get phoneNumber => 'फ़ोन नंबर ';
 
   @override
-  String get letsConnectWithManager => 'आइए प्रबंधक से जुड़ें';
+  String get letsConnectWithManager => 'प्रबंधक के साथ जुड़े ';
 
   @override
   String get noAllocation => 'कोई आवंटन नहीं';
 
   @override
   String get noAllocationMessage =>
-      'अभी तक कोई आवंटन आवंटित नहीं हुआ है, अपने प्रबंधक देबाशीष से संपर्क करें,';
+      'अभी तक कोई निर्धारण (आवंटन आवंटित) नहीं हुआ है, अपने प्रबंधक देबाशीष से संपर्क करें,';
 
   @override
-  String get caseView => 'मामला दृश्य';
+  String get caseView => 'केस को देखे ';
 
   @override
-  String get stop => 'विराम';
+  String get stop => 'रुकें';
 
   @override
   String get startCalling => 'कॉल करना शुरू करें';
@@ -609,19 +609,19 @@ class LanguageHi extends Languages {
   String get sendOTP => 'OTP भेजें';
 
   @override
-  String get businessLoss => 'व्यापार हानि';
+  String get businessLoss => 'व्यावसायिक हानि';
 
   @override
-  String get covidImpacted => 'कोविड प्रभावित';
+  String get covidImpacted => 'कोविड से प्रभावित';
 
   @override
   String get financialReason => 'वित्तीय कारण';
 
   @override
-  String get incomeLossInTheFamily => 'परिवार में आय की हानि';
+  String get incomeLossInTheFamily => 'परिवार में आय में कमी।';
 
   @override
-  String get intention => 'का इरादा';
+  String get intention => 'इरादा';
 
   @override
   String get jobLoss => 'नौकरी खोना';
@@ -636,7 +636,7 @@ class LanguageHi extends Languages {
   String get salaryIssue => 'वेतन मुद्दा';
 
   @override
-  String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं';
+  String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं है  ';
 
   @override
   String get mode => 'तरीका';
@@ -651,25 +651,26 @@ class LanguageHi extends Languages {
   String get enterConfirmNewPassword => 'नए पासवर्ड की पुष्टि करें';
 
   @override
-  String get clear => 'स्पष्ट';
+  String get clear => 'साफ़ करें';
 
   @override
-  String get customerContactType => 'ग्राहक संपर्क प्रकार*';
+  String get customerContactType => 'ग्राहक संपर्क के प्रकार *';
 
   @override
-  String get contact => 'संपर्क';
+  String get contact => 'संपर्क करें';
 
   @override
   String get pleaseSelectDropDownValue => 'कृपया ड्रॉप डाउन वैल्यू चुनें';
 
   @override
-  String get pleaseEnterCurrectUserId => 'कृपया सही यूजर आईडी दर्ज करें';
+  String get pleaseEnterCurrectUserId =>
+      'कृपया सही उपयोगकर्ता का पहचान दर्ज करें';
 
   @override
   String get pleaseSelectOptions => 'कृपया विकल्प चुनें';
 
   @override
-  String get pleaseSelectPaymentMode => 'कृपया भुगतान मोड चुनें!';
+  String get pleaseSelectPaymentMode => 'कृपया भुगतान का तरीका चुनें!';
 
   @override
   String get pleaseUploadDepositSlip => 'कृपया जमा पर्ची अपलोड करें';
@@ -678,18 +679,94 @@ class LanguageHi extends Languages {
   String get noCaseAvailble => 'कोई मामला उपलब्ध नहीं';
 
   @override
-  String get shouldBeSelectOneCase => 'एक मामले का चयन किया जाना चाहिए';
+  String get shouldBeSelectOneCase => 'एक केस का चयन करना चाहिए';
 
   @override
-  String get resetPasswordModelViaOTP =>
-      'ओटीपी के माध्यम से पासवर्ड रीसेट करें';
+  String get resetPasswordModelViaOTP => 'OTP के माध्यम से पासवर्ड रीसेट करें';
 
   @override
-  String get successfullyUpdated => 'सफलतापूर्वक उत्परिवर्तित !!';
+  String get successfullyUpdated => 'सफलतापूर्वक  अपडेट किया गया !!';
 
   @override
   String get eventUpdatedSuccessfully => 'ईवेंट सफलतापूर्वक अपडेट किया गया.';
 
   @override
-  String get successfullySubmitted => 'सफलतापूर्वक प्रस्तुत किया गया!!';
+  String get successfullySubmitted => 'सफलतापूर्वक जमा किया गया!!';
+
+  @override
+  String get loginViaDifferentUser =>
+      'विभिन्न उपयोगकर्ता के माध्यम से लॉगिन करें';
+
+  @override
+  String get event => 'आयोजन';
+
+  @override
+  String get changeSecurePIN => 'सुरक्षित पिन बदलें';
+
+  @override
+  String get changeYourSecureDigitPIN => 'अपना सुरक्षित 4-अंकीय पिन बदलें';
+
+  @override
+  String get newPin => 'नया पिन';
+
+  @override
+  String get save => 'सहेजें';
+
+  @override
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      '4 अंकों का पिन बनाकर अपना खाता सुरक्षित करें';
+
+  @override
+  String get enterYourSecureFourdDigitPin =>
+      'अपना सुरक्षित 4 अंकों का पिन दर्ज करें';
+
+  @override
+  String get forgotPin => 'पिन भूल गए?';
+
+  @override
+  String get waitFewSecondsYouGetCallFromAdmin =>
+      'कुछ सेकंड प्रतीक्षा करें, आपको व्यवस्थापक की ओर से कॉल आएगी';
+
+  @override
+  String get pleaseWaitForTheCallIsOngoing =>
+      'कृपया प्रतीक्षा करें कॉल जारी है';
+
+  @override
+  String get pleaseSpeakWithCustomer => 'कृपया ग्राहक से बात करें';
+
+  @override
+  String get doesntGetTheAgentAddress => 'एजेंट का पता नहीं मिलता!';
+
+  @override
+  String get autoCallingIsComplete => 'ऑटो कॉलिंग पूरी हो गई है';
+
+  @override
+  String get pleaseCallAgain => 'कृपया फिर से कॉल करें!';
+
+  @override
+  String get approved => 'स्वीकृत';
+
+  @override
+  String get pendingApproval => 'लंबित अनुमोदन';
+
+  @override
+  String get rejected => 'अस्वीकृत';
+
+  @override
+  String get homeAddressNotAvailable => 'घर का पता उपलब्ध नहीं है.';
+
+  @override
+  String get sendSMS => 'SMS भेजना';
+
+  @override
+  String get uploadFile => 'फ़ाइल अपलोड करें';
+
+  @override
+  String get upto5mb => '5MB तक';
+
+  @override
+  String get addMoreContact => 'अधिक संपर्क जोड़ें';
+
+  @override
+  String get uploadAudioFile => 'ऑडियो फ़ाइल अपलोड करें';
 }

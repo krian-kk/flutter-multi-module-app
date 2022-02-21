@@ -16,7 +16,6 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class MapViewBottomSheetScreen extends StatefulWidget {
   const MapViewBottomSheetScreen({
@@ -200,7 +199,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
 
                     Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
-                      APIRequestType.POST,
+                      APIRequestType.post,
                       HttpUrl.homeAddressUrl(),
                       requestBodydata: jsonEncode(requestBodyData),
                     );

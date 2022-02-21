@@ -17,11 +17,11 @@ class AgentInformation {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -109,35 +109,35 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['areaCode'] = this.areaCode;
-    data['aRef'] = this.aRef;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['contractor'] = this.contractor;
-    data['status'] = this.status;
-    data['children'] = this.children;
-    if (this.audit != null) {
-      data['audit'] = this.audit!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['areaCode'] = areaCode;
+    data['aRef'] = aRef;
+    data['name'] = name;
+    data['type'] = type;
+    data['contractor'] = contractor;
+    data['status'] = status;
+    data['children'] = children;
+    if (audit != null) {
+      data['audit'] = audit!.toJson();
     }
-    if (this.contact != null) {
-      data['contact'] = this.contact!.map((v) => v.toJson()).toList();
+    if (contact != null) {
+      data['contact'] = contact!.map((v) => v.toJson()).toList();
     }
-    data['webLogin'] = this.webLogin;
-    data['dateJoining'] = this.dateJoining;
-    data['dateResign'] = this.dateResign;
-    data['defMobileNumber'] = this.defMobileNumber;
-    data['roleLevel'] = this.roleLevel;
-    data['aId'] = this.aId;
-    data['aclId'] = this.aclId;
-    data['parent'] = this.parent;
-    data['parentId'] = this.parentId;
-    data['lastOtp'] = this.lastOtp;
-    data['userAdmin'] = this.userAdmin;
-    data['failedLoginCounter'] = this.failedLoginCounter;
-    if (this.fcm != null) {
-      data['fcm'] = this.fcm!.toJson();
+    data['webLogin'] = webLogin;
+    data['dateJoining'] = dateJoining;
+    data['dateResign'] = dateResign;
+    data['defMobileNumber'] = defMobileNumber;
+    data['roleLevel'] = roleLevel;
+    data['aId'] = aId;
+    data['aclId'] = aclId;
+    data['parent'] = parent;
+    data['parentId'] = parentId;
+    data['lastOtp'] = lastOtp;
+    data['userAdmin'] = userAdmin;
+    data['failedLoginCounter'] = failedLoginCounter;
+    if (fcm != null) {
+      data['fcm'] = fcm!.toJson();
     }
     return data;
   }
@@ -159,11 +159,11 @@ class Audit {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['crBy'] = this.crBy;
-    data['crAt'] = this.crAt;
-    data['upBy'] = this.upBy;
-    data['upAt'] = this.upAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['crBy'] = crBy;
+    data['crAt'] = crAt;
+    data['upBy'] = upBy;
+    data['upAt'] = upAt;
     return data;
   }
 }
@@ -180,9 +180,9 @@ class Contact {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['cType'] = this.cType;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['cType'] = cType;
     return data;
   }
 }
@@ -191,7 +191,7 @@ class Fcm {
   String? socketId;
   String? displayName;
   int? status;
-  Null? avatar;
+  dynamic avatar;
   String? id;
   int? participantType;
 
@@ -213,13 +213,13 @@ class Fcm {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['socketId'] = this.socketId;
-    data['displayName'] = this.displayName;
-    data['status'] = this.status;
-    data['avatar'] = this.avatar;
-    data['id'] = this.id;
-    data['participantType'] = this.participantType;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['socketId'] = socketId;
+    data['displayName'] = displayName;
+    data['status'] = status;
+    data['avatar'] = avatar;
+    data['id'] = id;
+    data['participantType'] = participantType;
     return data;
   }
 }

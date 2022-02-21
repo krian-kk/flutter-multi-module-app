@@ -1,5 +1,5 @@
-part of 'no_allocation_bloc.dart';
+// part of 'no_allocation_bloc.dart';
 
-class NoAllocationEvent extends BaseEquatable {}
+// class NoAllocationEvent extends BaseEquatable {}
 
-class NoAllocationInitialEvent extends NoAllocationEvent {}
+// class NoAllocationInitialEvent extends NoAllocationEvent {}

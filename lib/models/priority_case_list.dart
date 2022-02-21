@@ -30,7 +30,7 @@ class PriorityCaseListModel {
 class Result {
   String? sId;
   dynamic due;
- late bool starredCase;
+  late bool starredCase;
   String? cust;
   String? collSubStatus;
   String? telSubStatus;
@@ -98,6 +98,10 @@ class Result {
       json['contact'].forEach((v) {
         address?.add(Address.fromJson(v));
       });
+      if (address!.isNotEmpty) {
+        address
+            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+      }
     } else {
       address = <Address>[];
       json['address'].forEach((v) {
@@ -137,18 +141,21 @@ class Result {
 class Address {
   String? cType;
   String? value;
+  String? health;
 
-  Address({this.cType, this.value});
+  Address({this.cType, this.value, this.health});
 
   Address.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
+    health = json['health'] ?? '1.5';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
     data['value'] = value;
+    data['health'] = health;
     return data;
   }
 }
@@ -165,7 +172,7 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['lat'] = lat;
     data['lng'] = lng;
     return data;

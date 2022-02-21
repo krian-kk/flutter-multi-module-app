@@ -7,7 +7,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
@@ -107,13 +106,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
 
       Map<String, dynamic> response = await APIRepository.apiRequest(
-          APIRequestType.POST, HttpUrl.loginUrl,
+          APIRequestType.post, HttpUrl.loginUrl,
           requestBodydata: event.paramValue);
 
-      print(response.toString());
       if (response['success'] == false) {
         yield SignInLoadedState();
-        // print("Login errors");
         AppUtils.showToast(response['data'], backgroundColor: Colors.red);
       } else if (response['statusCode'] == 401) {
         loginErrorResponse = LoginErrorMessage.fromJson(response['data']);
@@ -133,15 +130,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               backgroundColor: Colors.red);
         }
       } else {
-        print('---------status success------');
         if (response['data']['data'] != null) {
           loginResponse = LoginResponseModel.fromJson(response['data']);
           // Store the access-token in local storage
-          print('get header values---------->');
-          print(loginResponse.data!.accessToken!);
-          print(loginResponse.data!.refreshToken!);
-          print(loginResponse.data!.sessionState!);
-          print(event.userId!);
           _prefs.setString(
               Constants.accessToken, loginResponse.data!.accessToken!);
           _prefs.setInt(
@@ -164,7 +155,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (loginResponse.data!.accessToken != null) {
             // Execute agent detail URl to get Agent details
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + event.userId!);
+                APIRequestType.get, HttpUrl.agentDetailUrl + event.userId!);
 
             if (agentDetail['success'] == false) {
               // Here facing error so close the loading
@@ -229,7 +220,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                     'Error:': 'Failed to get platform version.'
                   };
                 }
-                // if (!mounted) return;
                 _deviceData = deviceData;
 
                 if (_deviceData.isNotEmpty) {
@@ -268,10 +258,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                           baseOs: _deviceData['version.baseOS'],
                         ),
                       );
-
-                      Map<String, dynamic> postResult =
-                          await APIRepository.apiRequest(
-                        APIRequestType.POST,
+                      await APIRepository.apiRequest(
+                        APIRequestType.post,
                         HttpUrl.mobileInfoUrl,
                         requestBodydata: jsonEncode(requestBodyData.toJson()),
                       );
@@ -293,9 +281,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                         ),
                         created: _deviceData['utsname.sysname'],
                       );
-                      Map<String, dynamic> postResult =
-                          await APIRepository.apiRequest(
-                        APIRequestType.POST,
+                      await APIRepository.apiRequest(
+                        APIRequestType.post,
                         HttpUrl.mobileInfoUrl,
                         requestBodydata: jsonEncode(requestBodyData.toJson()),
                       );

@@ -14,11 +14,11 @@ class ContractorAllInformationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -149,71 +149,68 @@ class ContractorResult {
     if (json['userAdminList'] != null) {
       userAdminList = <UserAdminList>[];
       json['userAdminList'].forEach((v) {
-        userAdminList!.add(new UserAdminList.fromJson(v));
+        userAdminList!.add(UserAdminList.fromJson(v));
       });
     }
     if (json['feedbackTemplate'] != null) {
       feedbackTemplate = <FeedbackTemplate>[];
       json['feedbackTemplate'].forEach((v) {
-        feedbackTemplate!.add(new FeedbackTemplate.fromJson(v));
+        feedbackTemplate!.add(FeedbackTemplate.fromJson(v));
       });
     }
     otsEnable = json['otsEnable'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['usernamePrefix'] = this.usernamePrefix;
-    data['contractor'] = this.contractor;
-    data['contractorName'] = this.contractorName;
-    data['contactorAttr'] = this.contactorAttr;
-    data['geoLocCompulsaryApp'] = this.geoLocCompulsaryApp;
-    data['nodeVersion'] = this.nodeVersion;
-    data['oldVersionCompatibility'] = this.oldVersionCompatibility;
-    data['perDayReceiptLimit'] = this.perDayReceiptLimit;
-    data['autoApprovalReceipt'] = this.autoApprovalReceipt;
-    data['receiptAckSmsTemplate'] = this.receiptAckSmsTemplate;
-    data['sendSms'] = this.sendSms;
-    data['autoApprovalReceiptTelecalling'] =
-        this.autoApprovalReceiptTelecalling;
-    data['attachBankToAgrRef'] = this.attachBankToAgrRef;
-    data['bankExistCheck'] = this.bankExistCheck;
-    data['reportEndDate'] = this.reportEndDate;
-    data['reportStartDate'] = this.reportStartDate;
-    data['cloudTelephony'] = this.cloudTelephony;
-    data['contactMasking'] = this.contactMasking;
-    data['hideSendRepaymentInfo'] = this.hideSendRepaymentInfo;
-    data['repaymentSmsTemplate'] = this.repaymentSmsTemplate;
-    data['callTriedSmsTemplate'] = this.callTriedSmsTemplate;
-    data['hideCallTriedSmsButton'] = this.hideCallTriedSmsButton;
-    data['ptpSms'] = this.ptpSms;
-    data['ptpSmsTemplate'] = this.ptpSmsTemplate;
-    data['disabledTcRecommendFieldCollect'] =
-        this.disabledTcRecommendFieldCollect;
-    data['reportTime'] = this.reportTime;
-    data['roleLevel'] = this.roleLevel;
-    data['tokenVerified'] = this.tokenVerified;
-    data['version'] = this.version;
-    if (this.myCasesQueue != null) {
-      data['myCasesQueue'] = this.myCasesQueue!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['usernamePrefix'] = usernamePrefix;
+    data['contractor'] = contractor;
+    data['contractorName'] = contractorName;
+    data['contactorAttr'] = contactorAttr;
+    data['geoLocCompulsaryApp'] = geoLocCompulsaryApp;
+    data['nodeVersion'] = nodeVersion;
+    data['oldVersionCompatibility'] = oldVersionCompatibility;
+    data['perDayReceiptLimit'] = perDayReceiptLimit;
+    data['autoApprovalReceipt'] = autoApprovalReceipt;
+    data['receiptAckSmsTemplate'] = receiptAckSmsTemplate;
+    data['sendSms'] = sendSms;
+    data['autoApprovalReceiptTelecalling'] = autoApprovalReceiptTelecalling;
+    data['attachBankToAgrRef'] = attachBankToAgrRef;
+    data['bankExistCheck'] = bankExistCheck;
+    data['reportEndDate'] = reportEndDate;
+    data['reportStartDate'] = reportStartDate;
+    data['cloudTelephony'] = cloudTelephony;
+    data['contactMasking'] = contactMasking;
+    data['hideSendRepaymentInfo'] = hideSendRepaymentInfo;
+    data['repaymentSmsTemplate'] = repaymentSmsTemplate;
+    data['callTriedSmsTemplate'] = callTriedSmsTemplate;
+    data['hideCallTriedSmsButton'] = hideCallTriedSmsButton;
+    data['ptpSms'] = ptpSms;
+    data['ptpSmsTemplate'] = ptpSmsTemplate;
+    data['disabledTcRecommendFieldCollect'] = disabledTcRecommendFieldCollect;
+    data['reportTime'] = reportTime;
+    data['roleLevel'] = roleLevel;
+    data['tokenVerified'] = tokenVerified;
+    data['version'] = version;
+    if (myCasesQueue != null) {
+      data['myCasesQueue'] = myCasesQueue!.toJson();
     }
-    if (this.reports != null) {
-      data['reports'] = this.reports!.toJson();
+    if (reports != null) {
+      data['reports'] = reports!.toJson();
     }
-    data['disabledTcSurrender'] = this.disabledTcSurrender;
-    data['agentLocationMandatory'] = this.agentLocationMandatory;
-    data['attributeExistCheck'] = this.attributeExistCheck;
-    data['caseStatusDownload'] = this.caseStatusDownload;
-    if (this.userAdminList != null) {
-      data['userAdminList'] =
-          this.userAdminList!.map((v) => v.toJson()).toList();
+    data['disabledTcSurrender'] = disabledTcSurrender;
+    data['agentLocationMandatory'] = agentLocationMandatory;
+    data['attributeExistCheck'] = attributeExistCheck;
+    data['caseStatusDownload'] = caseStatusDownload;
+    if (userAdminList != null) {
+      data['userAdminList'] = userAdminList!.map((v) => v.toJson()).toList();
     }
-    if (this.feedbackTemplate != null) {
+    if (feedbackTemplate != null) {
       data['feedbackTemplate'] =
-          this.feedbackTemplate!.map((v) => v.toJson()).toList();
+          feedbackTemplate!.map((v) => v.toJson()).toList();
     }
-    data['otsEnable'] = this.otsEnable;
+    data['otsEnable'] = otsEnable;
     return data;
   }
 }
@@ -235,13 +232,13 @@ class MyCasesQueue {
   MyCasesQueue.fromJson(Map<String, dynamic> json) {
     sortOrderMyCasesUsingTelSubStatus =
         json['sortOrderMyCasesUsingTelSubStatus'] != null
-            ? new SortOrderMyCasesUsingTelSubStatus.fromJson(
+            ? SortOrderMyCasesUsingTelSubStatus.fromJson(
                 json['sortOrderMyCasesUsingTelSubStatus'])
             : null;
     if (json['last3DayEventOrder'] != null) {
       last3DayEventOrder = <Last3DayEventOrder>[];
       json['last3DayEventOrder'].forEach((v) {
-        last3DayEventOrder!.add(new Last3DayEventOrder.fromJson(v));
+        last3DayEventOrder!.add(Last3DayEventOrder.fromJson(v));
       });
     }
     myCasesQueueLength = json['myCasesQueueLength'];
@@ -250,18 +247,18 @@ class MyCasesQueue {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.sortOrderMyCasesUsingTelSubStatus != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (sortOrderMyCasesUsingTelSubStatus != null) {
       data['sortOrderMyCasesUsingTelSubStatus'] =
-          this.sortOrderMyCasesUsingTelSubStatus!.toJson();
+          sortOrderMyCasesUsingTelSubStatus!.toJson();
     }
-    if (this.last3DayEventOrder != null) {
+    if (last3DayEventOrder != null) {
       data['last3DayEventOrder'] =
-          this.last3DayEventOrder!.map((v) => v.toJson()).toList();
+          last3DayEventOrder!.map((v) => v.toJson()).toList();
     }
-    data['myCasesQueueLength'] = this.myCasesQueueLength;
-    data['sortingOn'] = this.sortingOn;
-    data['orderByCol'] = this.orderByCol;
+    data['myCasesQueueLength'] = myCasesQueueLength;
+    data['sortingOn'] = sortingOn;
+    data['orderByCol'] = orderByCol;
     return data;
   }
 }
@@ -325,24 +322,24 @@ class SortOrderMyCasesUsingTelSubStatus {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['new'] = this.new_;
-    data['ptp'] = this.ptp;
-    data['reminder'] = this.reminder;
-    data['feedback'] = this.feedback;
-    data['denial'] = this.denial;
-    data['dispute'] = this.dispute;
-    data['receipt'] = this.receipt;
-    data['Surrender'] = this.surrender;
-    data['rnr'] = this.rnr;
-    data['linebusy'] = this.linebusy;
-    data['switchoff'] = this.switchoff;
-    data['outofnetwork'] = this.outofnetwork;
-    data['disconnecting'] = this.disconnecting;
-    data['doesnotexist'] = this.doesnotexist;
-    data['incorrectnumber'] = this.incorrectnumber;
-    data['numbernotworking'] = this.numbernotworking;
-    data['notoperational'] = this.notoperational;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['new'] = new_;
+    data['ptp'] = ptp;
+    data['reminder'] = reminder;
+    data['feedback'] = feedback;
+    data['denial'] = denial;
+    data['dispute'] = dispute;
+    data['receipt'] = receipt;
+    data['Surrender'] = surrender;
+    data['rnr'] = rnr;
+    data['linebusy'] = linebusy;
+    data['switchoff'] = switchoff;
+    data['outofnetwork'] = outofnetwork;
+    data['disconnecting'] = disconnecting;
+    data['doesnotexist'] = doesnotexist;
+    data['incorrectnumber'] = incorrectnumber;
+    data['numbernotworking'] = numbernotworking;
+    data['notoperational'] = notoperational;
     return data;
   }
 }
@@ -359,9 +356,9 @@ class Last3DayEventOrder {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['telSubStatus'] = this.telSubStatus;
-    data['days'] = this.days;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['telSubStatus'] = telSubStatus;
+    data['days'] = days;
     return data;
   }
 }
@@ -403,24 +400,24 @@ class Reports {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.feedback != null) {
-      data['feedback'] = this.feedback!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (feedback != null) {
+      data['feedback'] = feedback!.toJson();
     }
-    if (this.resolution != null) {
-      data['resolution'] = this.resolution!.toJson();
+    if (resolution != null) {
+      data['resolution'] = resolution!.toJson();
     }
-    if (this.callLogReport != null) {
-      data['callLogReport'] = this.callLogReport!.toJson();
+    if (callLogReport != null) {
+      data['callLogReport'] = callLogReport!.toJson();
     }
-    if (this.agentPerformance != null) {
-      data['agentPerformance'] = this.agentPerformance!.toJson();
+    if (agentPerformance != null) {
+      data['agentPerformance'] = agentPerformance!.toJson();
     }
-    if (this.caseStatus != null) {
-      data['caseStatus'] = this.caseStatus!.toJson();
+    if (caseStatus != null) {
+      data['caseStatus'] = caseStatus!.toJson();
     }
-    if (this.agentGeoAnalysis != null) {
-      data['agentGeoAnalysis'] = this.agentGeoAnalysis!.toJson();
+    if (agentGeoAnalysis != null) {
+      data['agentGeoAnalysis'] = agentGeoAnalysis!.toJson();
     }
     return data;
   }
@@ -441,18 +438,18 @@ class Feedback {
     if (json['fields'] != null) {
       fields = <Fields>[];
       json['fields'].forEach((v) {
-        fields!.add(new Fields.fromJson(v));
+        fields!.add(Fields.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['s3Bucket'] = this.s3Bucket;
-    data['s3FolderName'] = this.s3FolderName;
-    data['s3FilePath'] = this.s3FilePath;
-    if (this.fields != null) {
-      data['fields'] = this.fields!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['s3Bucket'] = s3Bucket;
+    data['s3FolderName'] = s3FolderName;
+    data['s3FilePath'] = s3FilePath;
+    if (fields != null) {
+      data['fields'] = fields!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -470,9 +467,9 @@ class Fields {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['label'] = this.label;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['label'] = label;
+    data['value'] = value;
     return data;
   }
 }
@@ -493,11 +490,11 @@ class UserAdminList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['aRef'] = this.aRef;
-    data['name'] = this.name;
-    data['userAdmin'] = this.userAdmin;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['aRef'] = aRef;
+    data['name'] = name;
+    data['userAdmin'] = userAdmin;
+    data['type'] = type;
     return data;
   }
 }
@@ -530,19 +527,19 @@ class FeedbackTemplate {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['hide'] = this.hide;
-    data['expanded'] = this.expanded;
-    data['label'] = this.label;
-    data['reportColumnMerged'] = this.reportColumnMerged;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['type'] = type;
+    data['hide'] = hide;
+    data['expanded'] = expanded;
+    data['label'] = label;
+    data['reportColumnMerged'] = reportColumnMerged;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -587,16 +584,16 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['hide'] = this.hide;
-    data['value'] = this.value;
-    data['label'] = this.label;
-    data['required'] = this.required;
-    data['disabled'] = this.disabled;
-    if (this.options != null) {
-      data['options'] = this.options!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['type'] = type;
+    data['hide'] = hide;
+    data['value'] = value;
+    data['label'] = label;
+    data['required'] = required;
+    data['disabled'] = disabled;
+    if (options != null) {
+      data['options'] = options!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -614,9 +611,9 @@ class Options {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['viewValue'] = this.viewValue;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['viewValue'] = viewValue;
     return data;
   }
 }

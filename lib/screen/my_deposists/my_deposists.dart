@@ -28,11 +28,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
     // bloc = MydeposistsBloc()..add(MydeposistsInitialEvent());
     super.initState();
   }
-  //   int? _selectedIndex;
-
-  // _onSelected(int index) {
-  //   setState(() => _selectedIndex = index);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,24 +62,8 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                     length: 2,
                     child: SafeArea(
                       child: Scaffold(
-                        // bottomNavigationBar: Container(
-                        //   height: 66,
-                        //   color: ColorResource.colorFFFFFF,
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
-                        //     child: CustomButton(
-                        //       Languages.of(context)!.enterDepositionDetails,
-                        //       fontSize: FontSize.sixteen,
-                        //       fontWeight: FontWeight.w600,
-                        //       onTap: () {
-                        //         depositionModeSheet(context);
-                        //       },
-                        //     ),
-                        //   ),
-                        // ),
                         body: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             BottomSheetAppbar(
                               title: Languages.of(context)!.myDeposists,
@@ -169,7 +148,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                               ),
                             ),
                             Container(
-                              // width: MediaQuery.of(context).size.width,
                               decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(
@@ -208,7 +186,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                   .buildNoCaseAvailable(),
                                             ))
                                           : ChegueAndCasshResults(widget.bloc,
-                                              // mode: "CHEQUE",
                                               result: widget
                                                   .bloc
                                                   .myDeposistsData
@@ -233,11 +210,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                   .myDeposistsData
                                                   .result!
                                                   .cash),
-                                  // StatefulBuilder(
-                                  //     builder: (BuildContext context, StateSetter setState) {
-                                  //     return  CashResults.buildListCashAndChegue(widget.bloc, setState);
-                                  //   }
-                                  // ),
                                 ],
                               ),
                             ),
@@ -279,7 +251,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
         //   default:
         // }
         widget.bloc.add(DeposistsApiEvent(timePeiod: option));
-        print(option);
       },
       child: Card(
         shape: RoundedRectangleBorder(

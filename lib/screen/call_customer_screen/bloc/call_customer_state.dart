@@ -9,12 +9,11 @@ class CallCustomerLoadingState extends CallCustomerState {}
 
 class CallCustomerLoadedState extends CallCustomerState {}
 
-class CallCustomerFailureState extends CallCustomerState {}
-
 class CallCustomerSuccessState extends CallCustomerState {}
 
 class NoInternetState extends CallCustomerState {}
 
-class DisableSubmitState extends CallCustomerState {}
-
-class EnableSubmitState extends CallCustomerState {}
+class NavigationPhoneBottomSheetState extends CallCustomerState {
+  final String callId;
+  NavigationPhoneBottomSheetState(this.callId);
+}

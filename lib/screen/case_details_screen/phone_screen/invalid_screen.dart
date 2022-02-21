@@ -4,17 +4,24 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhonenInvalidScreen extends StatefulWidget {
-  const PhonenInvalidScreen(
-      {Key? key, required this.context, required this.bloc})
-      : super(key: key);
+  const PhonenInvalidScreen({
+    Key? key,
+    required this.context,
+    required this.bloc,
+    this.isCallFromCaseDetails = false,
+    this.callId,
+  }) : super(key: key);
 
   final BuildContext context;
   final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final String? callId;
 
   @override
   State<PhonenInvalidScreen> createState() => _PhonenInvalidScreenState();
@@ -31,8 +38,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -119,10 +124,14 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("call detail invalid iscall ===> true");
-          widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.callDetails, true,
-              health: '0'));
+          widget.bloc.add(ClickOpenBottomSheetEvent(
+            element.stringResourceValue,
+            widget.bloc.caseDetailsAPIValue.result?.callDetails,
+            true,
+            health: ConstantEventValues.healthZero,
+            isCallFromCallDetails: widget.isCallFromCaseDetails,
+            callId: widget.callId,
+          ));
         },
         child: Container(
           height: 45,

@@ -6,7 +6,7 @@ abstract class AuthenticationEvent extends BaseEquatable {}
 class AppStarted extends AuthenticationEvent {
   @override
   String toString() => 'AppStarted';
-  BuildContext? context;
+  final BuildContext? context;
   AppStarted({this.context});
 }
 

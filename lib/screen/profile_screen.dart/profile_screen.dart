@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -28,6 +28,7 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -52,8 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void getAddress() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     addressValue = (_pref.getString('addressValue') ?? '').toString();
-    print("-----------addressValue");
-    print(addressValue);
   }
 
   Future pickImage(
@@ -72,8 +71,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gravity: ToastGravity.CENTER);
       }
     } on PlatformException catch (e) {
-      print(e.message);
+      debugPrint(e.message);
     }
+  }
+
+  Future<void> showSecurePinDialogBox() async {
+    TextEditingController pinCodeContoller = TextEditingController();
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        child: CustomText(
+                          Languages.of(context)!.changeYourSecureDigitPIN,
+                          fontSize: FontSize.sixteen,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            child: SvgPicture.asset(ImageResource.close),
+                          ))
+                    ]),
+                const SizedBox(height: 10),
+                CustomText(
+                  Languages.of(context)!.newPin,
+                  fontSize: FontSize.sixteen,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w700,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: PinCodeTextField(
+                    appContext: context,
+                    controller: pinCodeContoller,
+                    length: 4,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    obscureText: false,
+                    animationType: AnimationType.scale,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    textStyle: const TextStyle(
+                      fontSize: FontSize.fourteen,
+                      color: ColorResource.color23375A,
+                    ),
+                    keyboardType: TextInputType.number,
+                    pinTheme: PinTheme(
+                      fieldOuterPadding: const EdgeInsets.all(8),
+                      activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                      selectedColor: ColorResource.color23375A.withOpacity(0.3),
+                      inactiveColor: ColorResource.color232222.withOpacity(0.3),
+                      fieldHeight: 46,
+                      fieldWidth: 40,
+                      borderWidth: 1,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                CustomButton(
+                  Languages.of(context)!.save,
+                  fontSize: FontSize.sixteen,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -87,16 +169,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //     onTap: () {
       //       bloc.add(ClickNotificationEvent());
       //     }),
-      // ProfileNavigation(
-      //     title: Languages.of(context)!.selectLanguage,
-      //     onTap: () {
-      //       bloc.add(ClickChangeLaunguageEvent());
-      //     }),
+      ProfileNavigation(
+          title: Languages.of(context)!.selectLanguage,
+          onTap: () {
+            bloc.add(ClickChangeLaunguageEvent());
+          }),
       ProfileNavigation(
           title: Languages.of(context)!.changePassword,
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
-          })
+          }),
+      // ProfileNavigation(
+      //     title: Languages.of(context)!.changeSecurePIN,
+      //     onTap: () {
+      //       bloc.add(ClickChangeSecurityPinEvent());
+      //     })
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -130,6 +217,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (state is LoginState) {
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.loginScreen, (route) => false);
+        }
+        if (state is ClickChangeSecurityPinState) {
+          showSecurePinDialogBox();
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -347,7 +437,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             .result
                                                             ?.first
                                                             .homeAddress ??
-                                                        'Home address not available.',
+                                                        Languages.of(context)!
+                                                            .homeAddressNotAvailable,
                                                 fontSize: FontSize.fourteen,
                                                 fontWeight: FontWeight.w400,
                                                 fontStyle: FontStyle.normal,
@@ -379,69 +470,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       BorderRadius.all(
                                                           Radius.circular(
                                                               10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 21,
-                                                        vertical: 14),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                              child: ListTile(
+                                                title: SizedBox(
+                                                  // width: 260,
+                                                  child: CustomText(
+                                                    profileNavigationList[index]
+                                                        .title
+                                                        .toUpperCase(),
+                                                    lineHeight: 1,
+                                                    fontSize: FontSize.sixteen,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: ColorResource
+                                                        .color23375A,
+                                                  ),
+                                                ),
+                                                trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
-                                                    GestureDetector(
-                                                      child: Row(
-                                                        children: [
-                                                          CustomText(
-                                                            profileNavigationList[
-                                                                    index]
-                                                                .title
-                                                                .toUpperCase(),
-                                                            lineHeight: 1,
-                                                            fontSize: FontSize
-                                                                .sixteen,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            color: ColorResource
-                                                                .color23375A,
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          profileNavigationList[
-                                                                          index]
-                                                                      .notificationCount ==
-                                                                  null
-                                                              ? const SizedBox()
-                                                              : CircleAvatar(
-                                                                  backgroundColor:
-                                                                      ColorResource
-                                                                          .color23375A,
-                                                                  radius: 13,
-                                                                  child: Center(
-                                                                    child: CustomText(
-                                                                        profileNavigationList[index]
-                                                                            .notificationCount
-                                                                            .toString(),
-                                                                        lineHeight:
-                                                                            1,
-                                                                        fontSize:
-                                                                            FontSize
-                                                                                .twelve,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        color: ColorResource
-                                                                            .colorFFFFFF),
-                                                                  ),
-                                                                )
-                                                        ],
-                                                      ),
-                                                    ),
                                                     SvgPicture.asset(
                                                         ImageResource
-                                                            .forwardArrow)
+                                                            .forwardArrow),
                                                   ],
                                                 ),
                                               ),
@@ -491,7 +541,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: 200,
                               child: CustomButton(
-                                Languages.of(context)!.message,
+                                Languages.of(context)!.message.toUpperCase(),
                                 onTap: () => bloc.add(ClickMessageEvent(
                                   fromId: bloc.profileAPIValue.result![0].aRef,
                                   toId: bloc.profileAPIValue.result![0].parent,

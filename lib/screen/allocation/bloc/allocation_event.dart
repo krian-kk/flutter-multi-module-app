@@ -23,8 +23,6 @@ class NavigateCaseDetailEvent extends AllocationEvent {
 
 class FilterSelectOptionEvent extends AllocationEvent {}
 
-class CaseListViewLoadingEvent extends AllocationEvent {}
-
 class TapPriorityEvent extends AllocationEvent {}
 
 class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
@@ -60,6 +58,11 @@ class UpdateStaredCaseEvent extends AllocationEvent {
 
 class CallSuccessfullyConnectedEvent extends AllocationEvent {}
 
+class UpdateNewValuesEvent extends AllocationEvent {
+  final String paramValue;
+  UpdateNewValuesEvent(this.paramValue);
+}
+
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}
 
 class StartCallingEvent extends AllocationEvent {
@@ -74,3 +77,11 @@ class StartCallingEvent extends AllocationEvent {
     this.isIncreaseCount = false,
   });
 }
+
+class AutoCallContactHealthUpdateEvent extends AllocationEvent {
+  final int? contactIndex;
+  final int? caseIndex;
+  AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
+}
+
+class AutoCallingContactSortEvent extends AllocationEvent {}

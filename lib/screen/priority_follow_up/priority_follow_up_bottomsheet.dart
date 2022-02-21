@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/widgets/case_list_widget.dart';
@@ -99,7 +98,10 @@ class _PriorityFollowUpBottomSheetState
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: CaseLists.buildListView(
-                                  widget.bloc, widget.bloc.priortyFollowUpData),
+                                widget.bloc,
+                                widget.bloc.priortyFollowUpData,
+                                isPriorityFollowUp: true,
+                              ),
                             ),
                           )
                   ],

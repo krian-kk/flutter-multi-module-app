@@ -7,6 +7,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -16,10 +17,11 @@ import 'package:origa/widgets/no_case_available.dart';
 class CaseLists {
   static Widget buildListView(
     DashboardBloc bloc,
-    DashboardAllModels listData,
-  ) {
-    print('----------nk---------');
-    print(listData.result);
+    DashboardAllModels listData, {
+    bool untouchedCases = false,
+    bool isPriorityFollowUp = false,
+    bool brokenPTP = false,
+  }) {
     return bloc.selectedFilterDataLoading
         ? const CustomLoadingWidget()
         : listData.result == null || listData.result!.cases!.isEmpty
@@ -80,7 +82,8 @@ class CaseLists {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      listData.result!.totalAmt.toString(),
+                                      Constants.inr +
+                                          listData.result!.totalAmt.toString(),
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
@@ -95,9 +98,13 @@ class CaseLists {
                         padding: const EdgeInsets.only(top: 20),
                         child: InkWell(
                           onTap: () {
-                            bloc.add(NavigateCaseDetailEvent(paramValues: {
-                              'caseID': listData.result!.cases![index].caseId,
-                            }));
+                            bloc.add(NavigateCaseDetailEvent(
+                              paramValues: {
+                                'caseID': listData.result!.cases![index].caseId,
+                              },
+                              isUnTouched: untouchedCases,
+                              isPriorityFollowUp: isPriorityFollowUp,
+                            ));
                             Singleton.instance.agrRef =
                                 listData.result!.cases![index].agrRef ?? '';
                           },
@@ -357,7 +364,15 @@ class CaseLists {
                                         children: [
                                           CustomText(
                                             listData.result!.cases![index]
-                                                .followUpDate!,
+                                                        .followUpDate !=
+                                                    '-'
+                                                ? DateFormateUtils
+                                                    .followUpDateFormate(
+                                                        listData
+                                                            .result!
+                                                            .cases![index]
+                                                            .followUpDate!)
+                                                : '-',
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,

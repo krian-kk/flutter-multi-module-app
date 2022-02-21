@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +7,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/dio_client.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
+import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -21,6 +20,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -33,6 +33,7 @@ class CustomRepoBottomSheet extends StatefulWidget {
     Key? key,
     required this.caseId,
     required this.customerLoanUserWidget,
+    required this.bloc,
     this.postValue,
     required this.userType,
     required this.health,
@@ -43,19 +44,19 @@ class CustomRepoBottomSheet extends StatefulWidget {
   final String userType;
   final dynamic postValue;
   final String health;
+  final CaseDetailsBloc bloc;
 
   @override
   State<CustomRepoBottomSheet> createState() => _CustomRepoBottomSheetState();
 }
 
 class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
-  TextEditingController dateControlller = TextEditingController();
-  // String selectedDate = '';
-  TextEditingController timeControlller = TextEditingController();
-  TextEditingController modelMakeControlller = TextEditingController();
-  TextEditingController registrationNoControlller = TextEditingController();
-  TextEditingController chassisNoControlller = TextEditingController();
-  TextEditingController remarksControlller = TextEditingController();
+  late TextEditingController dateControlller;
+  late TextEditingController timeControlller;
+  late TextEditingController modelMakeControlller;
+  late TextEditingController registrationNoControlller;
+  late TextEditingController chassisNoControlller;
+  late TextEditingController remarksControlller;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -63,13 +64,36 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   List<File> uploadFileLists = [];
 
-  FocusNode modelMakeFocusNode = FocusNode();
-  FocusNode registraionNoFocusNode = FocusNode();
-  FocusNode chassisNoFocusNode = FocusNode();
+  late FocusNode modelMakeFocusNode;
+  late FocusNode registraionNoFocusNode;
+  late FocusNode chassisNoFocusNode;
 
   @override
   void initState() {
+    dateControlller = TextEditingController();
+    timeControlller = TextEditingController();
+    modelMakeControlller = TextEditingController();
+    registrationNoControlller = TextEditingController();
+    chassisNoControlller = TextEditingController();
+    remarksControlller = TextEditingController();
+    modelMakeFocusNode = FocusNode();
+    registraionNoFocusNode = FocusNode();
+    chassisNoFocusNode = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    dateControlller.dispose();
+    timeControlller.dispose();
+    modelMakeControlller.dispose();
+    registrationNoControlller.dispose();
+    chassisNoControlller.dispose();
+    remarksControlller.dispose();
+    modelMakeFocusNode.dispose();
+    registraionNoFocusNode.dispose();
+    chassisNoFocusNode.dispose();
+    super.dispose();
   }
 
   getFiles() async {
@@ -188,7 +212,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.registrationNo,
+                          Languages.of(context)!.registrationNo.toUpperCase() +
+                              '*',
                           registrationNoControlller,
                           focusNode: registraionNoFocusNode,
                           validationRules: const ['required'],
@@ -254,18 +279,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SizedBox(
-                      width: 95,
-                      child: Center(
-                          child: CustomText(
-                        Languages.of(context)!.cancel.toUpperCase(),
-                        color: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        fontSize: FontSize.sixteen,
-                      ))),
+                Expanded(
+                  child: CustomCancelButton.cancelButton(context),
                 ),
                 const SizedBox(width: 25),
                 SizedBox(
@@ -341,12 +356,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                         cType: widget.postValue['cType'],
                                         value: widget.postValue['value'],
                                         health: widget.health,
-                                        // resAddressId0:
-                                        //     Singleton.instance.resAddressId_0 ??
-                                        //         '',
-                                        // contactId0:
-                                        //     Singleton.instance.contactId_0 ??
-                                        //         '',
                                       )
                                     ],
                                     callID: Singleton.instance.callID ?? '0',
@@ -376,43 +385,39 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       heading: position.heading,
                                       speed: position.speed,
                                     ));
-                                print(
-                                    'Response Date => ${jsonEncode(requestBodyData)}');
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
                                             requestBodyData.toJson()))
                                         as Map<String, dynamic>;
-                                // FormData sendingData =
-                                //     FormData.fromMap(postdata);
-                                // sendingData.files.addAll(DioClient.listOfMultiPart(uploadFileLists));
                                 List<dynamic> value = [];
                                 for (var element in uploadFileLists) {
                                   value.add(await MultipartFile.fromFile(
                                       element.path.toString()));
-                                  // postdata.addAll({
-                                  //   'files': await MultipartFile.fromFile(
-                                  //       element.path.toString()),
-                                  //   // DioClient.listOfMultiPart(uploadFileLists)
-                                  // });
-                                  print("image path vale ==>${value}");
                                 }
                                 postdata.addAll({
                                   'files': value,
-                                  // DioClient.listOfMultiPart(uploadFileLists)
                                 });
 
                                 Map<String, dynamic> postResult =
                                     await APIRepository.apiRequest(
-                                  APIRequestType.UPLOAD,
+                                  APIRequestType.upload,
                                   HttpUrl.repoPostUrl('repo', widget.userType),
                                   formDatas: FormData.fromMap(postdata),
-                                  // requestBodydata:
-                                  //     jsonEncode(requestBodyData.toJson()),
                                 );
                                 if (postResult[Constants.success]) {
+                                  widget.bloc.add(
+                                    ChangeIsSubmitForMyVisitEvent(
+                                      Constants.repo,
+                                    ),
+                                  );
+                                  widget.bloc.add(ChangeIsSubmitEvent());
+
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);
+                                  widget.bloc.add(
+                                    ChangeHealthStatusEvent(),
+                                  );
                                   Navigator.pop(context);
                                 }
                               }
@@ -469,7 +474,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   Future pickTime(
       BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),

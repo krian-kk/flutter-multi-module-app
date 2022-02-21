@@ -10,15 +10,12 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/models/dashboard_card_count_model.dart';
 import 'package:origa/models/dashboard_event_count_model/dashboard_event_count_model.dart';
-import 'package:origa/models/dashboard_event_count_model/result.dart';
 import 'package:origa/models/dashboard_model.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/models/dashboard_myvisit_model/dashboard_myvisit_model.dart';
-// import 'package:origa/models/dashboard_models/dashboard_all_model.dart';
 import 'package:origa/models/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:origa/models/my_receipts_model.dart';
 import 'package:origa/models/priority_case_list.dart';
-import 'package:origa/models/receipts_weekly_model/case.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
@@ -29,17 +26,9 @@ import 'package:flutter/material.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
-class DashboardReceiptWeekly {
-  late String caseId;
-  late String appStatus;
-  late ReceiptWeeklyCase caseValue;
-  DashboardReceiptWeekly(this.caseId, this.appStatus, this.caseValue);
-}
-
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
-  // List<CaseListModel> caseList = [];
   String? userType;
   String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
@@ -48,14 +37,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardAllModels untouchedCasesData = DashboardAllModels();
   MyVisitsCaseModel myVisitsData = MyVisitsCaseModel();
   MyReceiptsCaseModel myReceiptsData = MyReceiptsCaseModel();
-  // DashboardBrokenModel brokenPTPData = DashboardBrokenModel();
-  // DashboardUntouchedCasesModel untouchedCasesData =
-  //     DashboardUntouchedCasesModel();
-  // DashboardMyvisitModel myVisitsData = DashboardMyvisitModel();
-  // DashboardMyReceiptsModel myReceiptsData = DashboardMyReceiptsModel();
   MyDeposistModel myDeposistsData = MyDeposistModel();
-  // Deposists selected case index
-  // List listOfIndex = [];
 
   YardingData yardingAndSelfReleaseData = YardingData();
   DashboardCardCount dashboardCardCounts = DashboardCardCount();
@@ -66,22 +48,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     'MONTHLY',
   ];
 
-  // // Show the Options
-  // String? customerMetCountValue;
-  // String? customerNotMetCountValue;
-  // String? customerInvalidCountValue;
-
   dynamic mtdCaseCompleted = 0;
   dynamic mtdCaseTotal = 0;
   dynamic mtdAmountCompleted = 0;
   dynamic mtdAmountTotal = 0;
 
   String? todayDate;
-  // this is search result cases
+  // This is search result cases
   List<Result> searchResultList = [];
   bool isShowSearchResult = false;
 
-  // it's manage the Refresh the page basaed on Internet connection
+  // It's manage the Refresh the page basaed on Internet connection
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
 
@@ -109,19 +86,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic>? dashboardData;
         if (userType == Constants.fieldagent) {
           dashboardData = await APIRepository.apiRequest(
-              APIRequestType.GET, HttpUrl.dashboardUrl + "userType=$userType");
+              APIRequestType.get, HttpUrl.dashboardUrl + "userType=$userType");
         } else if (userType == Constants.telecaller) {
-          dashboardData = await APIRepository.apiRequest(APIRequestType.GET,
+          dashboardData = await APIRepository.apiRequest(APIRequestType.get,
               HttpUrl.telDashboardUrl + "userType=$userType");
         }
 
         if (dashboardData!['success']) {
-          // var jsonData = dashboardData['data']['result'];
-
           dashboardCardCounts =
               DashboardCardCount.fromJson(dashboardData['data']);
-
-          print(dashboardCardCounts.result?.notMet?.count);
 
           mtdCaseCompleted = dashboardCardCounts.result?.mtdCases!.completed;
           mtdCaseTotal = dashboardCardCounts.result?.mtdCases!.total;
@@ -162,7 +135,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             ),
             DashboardListModel(
               title: Languages.of(event.context!)!.myReceipts,
-              subTitle: Constants.events,
+              subTitle: Languages.of(event.context!)!.event,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.receipts!.count.toString() ?? '0',
@@ -174,7 +147,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               title: userType == Constants.fieldagent
                   ? Languages.of(event.context!)!.myVisits
                   : Languages.of(event.context!)!.myCalls,
-              subTitle: Constants.events,
+              subTitle: Languages.of(event.context!)!.event,
               image: ImageResource.vectorArrow,
               count:
                   dashboardCardCounts.result?.visits?.count.toString() ?? '0',
@@ -183,17 +156,19 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                       '0',
             ),
             DashboardListModel(
-                title: Languages.of(event.context!)!.myDeposists,
-                subTitle: '',
-                image: '',
-                count: '',
-                amountRs: ''),
+              title: Languages.of(event.context!)!.myDeposists,
+              subTitle: '',
+              image: '',
+              count: '',
+              amountRs: '',
+            ),
             DashboardListModel(
-                title: Languages.of(event.context!)!.yardingSelfRelease,
-                subTitle: '',
-                image: '',
-                count: '',
-                amountRs: ''),
+              title: Languages.of(event.context!)!.yardingSelfRelease,
+              subTitle: '',
+              image: '',
+              count: '',
+              amountRs: '',
+            ),
           ]);
         } else if (dashboardData['statusCode'] == 401 ||
             dashboardData['data'] == Constants.connectionTimeout ||
@@ -203,7 +178,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
         // Map<String, dynamic> getDashboardEventCountValue =
         //     await APIRepository.apiRequest(
-        //         APIRequestType.GET, HttpUrl.dashboardEventCountUrl);
+        //         APIRequestType.get, HttpUrl.dashboardEventCountUrl);
 
         // if (getDashboardEventCountValue['success']) {
         //   print("Today Activities ==> ${getDashboardEventCountValue['data']}");
@@ -257,7 +232,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         // }
 
         // Map<String, dynamic> getDashboardEventCountValue1 =
-        //     await APIRepository.apiRequest(APIRequestType.GET,
+        //     await APIRepository.apiRequest(APIRequestType.get,
         //         'https://uat-collect.origa.ai/app_otc/v1/agent/case-details/receipts?timePeriod=WEEKLY');
 
         // ReceiptsWeeklyModel tempModel = ReceiptsWeeklyModel();
@@ -351,7 +326,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getPriorityFollowUpData =
             await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.dashboardPriorityFollowUpUrl);
+                APIRequestType.get, HttpUrl.dashboardPriorityFollowUpUrl);
         priortyFollowUpData =
             DashboardAllModels.fromJson(getPriorityFollowUpData['data']);
         // print(getPriorityFollowUpData['data']);
@@ -370,7 +345,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getUntouchedCasesData =
             await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.dashboardUntouchedCasesUrl);
+                APIRequestType.get, HttpUrl.dashboardUntouchedCasesUrl);
         untouchedCasesData =
             DashboardAllModels.fromJson(getUntouchedCasesData['data']);
         // print(getUntouchedCasesData['data']);
@@ -388,7 +363,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getBrokenPTPData = await APIRepository.apiRequest(
-            APIRequestType.GET, HttpUrl.dashboardBrokenPTPUrl);
+            APIRequestType.get, HttpUrl.dashboardBrokenPTPUrl);
         brokenPTPData = DashboardAllModels.fromJson(getBrokenPTPData['data']);
         if (getBrokenPTPData[Constants.success]) {
           yield BrokenPTPState();
@@ -405,7 +380,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=' + selectedFilter!);
         myReceiptsData =
             MyReceiptsCaseModel.fromJson(getMyReceiptsData['data']);
@@ -426,7 +401,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=${event.timePeiod}');
         if (getMyReceiptsData[Constants.success]) {
           yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
@@ -444,10 +419,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getMyVisitsData;
         if (userType == Constants.fieldagent) {
-          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
               HttpUrl.dashboardMyVisitsUrl + 'timePeriod=' + selectedFilter!);
         } else {
-          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
               HttpUrl.dashboardMyCallsUrl + 'timePeriod=' + selectedFilter!);
         }
 
@@ -471,14 +446,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getMyVisitsData;
         if (userType == Constants.fieldagent) {
-          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
               HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
         } else {
-          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.GET,
+          getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
               HttpUrl.dashboardMyCallsUrl + "timePeriod=${event.timePeiod}");
         }
         // Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
-        //     APIRequestType.GET,
+        //     APIRequestType.get,
         //     HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
         if (getMyVisitsData[Constants.success]) {
           yield ReturnVisitsApiState(returnData: getMyVisitsData['data']);
@@ -492,7 +467,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.dashboardMyDeposistsUrl + 'timePeriod=' + selectedFilter!);
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
         // print(getMyDepositsData['data']);
@@ -511,7 +486,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         yield NoInternetConnectionState();
       } else {
         Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
-            APIRequestType.GET,
+            APIRequestType.get,
             HttpUrl.dashboardMyDeposistsUrl + "timePeriod=${event.timePeiod}");
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
         if (getMyDepositsData[Constants.success]) {}
@@ -525,7 +500,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getYardingAndSelfReleaseData =
             await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.dashboardYardingAndSelfReleaseUrl);
+                APIRequestType.get, HttpUrl.dashboardYardingAndSelfReleaseUrl);
         yardingAndSelfReleaseData =
             YardingData.fromJson(getYardingAndSelfReleaseData['data']);
         if (getYardingAndSelfReleaseData[Constants.success]) {
@@ -539,7 +514,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     if (event is PostBankDepositDataEvent) {
       yield DisableMDBankSubmitBtnState();
       // Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      //     APIRequestType.POST, HttpUrl.bankDeposit + "userType=$userType",
+      //     APIRequestType.post, HttpUrl.bankDeposit + "userType=$userType",
       //     requestBodydata: jsonEncode(event.postData));
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
@@ -551,9 +526,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.UPLOAD,
+        APIRequestType.upload,
         HttpUrl.bankDeposit + "userType=$userType",
         formDatas: FormData.fromMap(postdata),
       );
@@ -576,9 +550,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.UPLOAD,
+        APIRequestType.upload,
         HttpUrl.companyBranchDeposit + "userType=$userType",
         formDatas: FormData.fromMap(postdata),
       );
@@ -601,9 +574,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.UPLOAD,
+        APIRequestType.upload,
         HttpUrl.yarding + "userType=$userType",
         formDatas: FormData.fromMap(postdata),
       );
@@ -626,9 +598,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       postdata.addAll({
         'files': value,
       });
-      print('Post Data => ${postdata}');
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.UPLOAD,
+        APIRequestType.upload,
         HttpUrl.selfRelease + "userType=$userType",
         formDatas: FormData.fromMap(postdata),
       );
@@ -640,7 +611,77 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is NavigateCaseDetailEvent) {
-      yield NavigateCaseDetailState(paramValues: event.paramValues);
+      yield NavigateCaseDetailState(
+        paramValues: event.paramValues,
+        unTouched: event.isUnTouched,
+        isPriorityFollowUp: event.isPriorityFollowUp,
+        isBrokenPTP: event.isBrokenPTP,
+        isMyReceipts: event.isMyReceipts,
+      );
+    }
+
+    if (event is UpdateUnTouchedCasesEvent) {
+      untouchedCasesData.result!.count = untouchedCasesData.result!.count! - 1;
+      dashboardList[1].count =
+          (int.parse(dashboardList[1].count!) - 1).toString();
+
+      dashboardList[1].amountRs =
+          (double.parse(dashboardList[1].amountRs!) - event.caseAmount)
+              .toString();
+      untouchedCasesData.result!.totalAmt =
+          untouchedCasesData.result!.totalAmt! - event.caseAmount;
+
+      untouchedCasesData.result!.cases!
+          .removeWhere((element) => element.caseId == event.caseId);
+
+      yield UpdateSuccessfulState();
+    }
+    if (event is UpdateBrokenCasesEvent) {
+      brokenPTPData.result!.count = brokenPTPData.result!.count! - 1;
+      dashboardList[2].count =
+          (int.parse(dashboardList[2].count!) - 1).toString();
+
+      dashboardList[2].amountRs =
+          (int.parse(dashboardList[2].amountRs!) - event.caseAmount).toString();
+      brokenPTPData.result!.totalAmt =
+          brokenPTPData.result!.totalAmt! - event.caseAmount;
+      brokenPTPData.result!.cases!
+          .removeWhere((element) => element.caseId == event.caseId);
+
+      yield UpdateSuccessfulState();
+    }
+    if (event is UpdatePriorityFollowUpCasesEvent) {
+      priortyFollowUpData.result!.count =
+          priortyFollowUpData.result!.count! - 1;
+      dashboardList[0].count =
+          (int.parse(dashboardList[0].count!) - 1).toString();
+
+      dashboardList[0].amountRs =
+          (int.parse(dashboardList[0].amountRs!) - event.caseAmount).toString();
+      priortyFollowUpData.result!.totalAmt =
+          priortyFollowUpData.result!.totalAmt! - event.caseAmount;
+
+      priortyFollowUpData.result!.cases!
+          .removeWhere((element) => element.caseId == event.caseId);
+      yield UpdateSuccessfulState();
+    }
+
+    if (event is UpdateMyVisitCasesEvent) {
+      dashboardList[4].count =
+          (int.parse(dashboardList[4].count!) + 1).toString();
+      if (event.isNotMyReceipts) {
+        dashboardList[4].amountRs =
+            (double.parse(dashboardList[4].amountRs!) + event.caseAmount)
+                .toString();
+      }
+      yield UpdateSuccessfulState();
+    }
+    if (event is UpdateMyReceiptsCasesEvent) {
+      dashboardList[3].count =
+          (int.parse(dashboardList[3].count!) + 1).toString();
+      dashboardList[3].amountRs =
+          (int.parse(dashboardList[3].amountRs!) + event.caseAmount).toString();
+      yield UpdateSuccessfulState();
     }
 
     if (event is NavigateSearchEvent) {
@@ -663,7 +704,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         Map<String, dynamic> getSearchResultData =
             await APIRepository.apiRequest(
-                APIRequestType.GET,
+                APIRequestType.get,
                 HttpUrl.searchUrl +
                     "starredOnly=${event.returnValue.isStarCases}&" +
                     "recentActivity=${event.returnValue.isMyRecentActivity}&" +
@@ -676,7 +717,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
         //         Map<String, dynamic> getSearchResultData =
         // await APIRepository.apiRequest(
-        //     APIRequestType.GET,
+        //     APIRequestType.get,
         //     HttpUrl.priorityCaseList +
         //         'pageNo=${Constants.pageNo}' +
         //         '&limit=${Constants.limit}');

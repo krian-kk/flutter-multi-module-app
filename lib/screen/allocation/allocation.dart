@@ -8,27 +8,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_model.dart';
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
+import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/priority_case_list.dart';
+import 'package:origa/models/return_value_model.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/models/update_staredcase_model.dart';
 import 'package:origa/models/voice_agency_detail_model/voice_agency_detail_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
-import 'package:origa/screen/allocation/map_view.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
-import 'package:origa/screen/message_screen/message.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -49,9 +47,6 @@ import 'custom_card_list.dart';
 
 class AllocationScreen extends StatefulWidget {
   const AllocationScreen({Key? key}) : super(key: key);
-
-  // AuthenticationBloc authenticationBloc;
-  // AllocationScreen(this.authenticationBloc);
 
   @override
   _AllocationScreenState createState() => _AllocationScreenState();
@@ -98,11 +93,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
   void getCurrentLocation() async {
     Position result = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
-    setState(() {
-      position = result;
-    });
-    // print('position------> ${position.heading}');
-    // print(position);
+    if (mounted) {
+      setState(() {
+        position = result;
+      });
+    }
+
     List<Placemark> placemarks =
         await placemarkFromCoordinates(result.latitude, result.longitude);
 
@@ -112,7 +108,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
           placemarks.toList().first.subLocality.toString() +
           ', ' +
           placemarks.toList().first.postalCode.toString();
-      // print(currentAddress);
     });
   }
 
@@ -168,7 +163,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
   void _loadMore() async {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
       if (bloc.hasNextPage) {
-        print("---------Nnadha---------");
         if (bloc.isShowSearchPincode) {
         } else if (bloc.isPriorityLoadMore) {
           bloc.page += 1;
@@ -413,48 +407,28 @@ class _AllocationScreenState extends State<AllocationScreen> {
           mapView(context);
           bloc.isShowSearchPincode = false;
         }
+        if (state is AutoCallingContactSortState) {
+          setState(() {});
+        }
         if (state is MessageState) {
           messageShowBottomSheet();
         }
         if (state is StartCallingState) {
-          print('dkdl');
-          if (bloc.customerCount < bloc.totalCount) {
-            // SharedPreferences _prefs = await SharedPreferences.getInstance();
-            // int autoCallingIndexValue;
-            // int autoCallingSubIndexValue;
-            // autoCallingIndexValue = _prefs.getInt('autoCallingIndexValue') ?? 0;
-            // autoCallingSubIndexValue =
-            //     _prefs.getInt('autoCallingSubIndexValue') ?? 0;
-            // print('AutoCalling Index Value => ${autoCallingIndexValue}');
-            // print('AutoCalling Sub Index Value => ${autoCallingSubIndexValue}');
+          Singleton.instance.startCalling = true;
+          setState(() {});
 
-            // bloc.resultList
-            //     .asMap()
-            //     .forEach((index, element) {
-            //   element.address
-            //       ?.asMap()
-            //       .forEach((subIndex, value) {
-            //     // if (value.cType == 'mobile') {
-            //     _prefs.setInt(
-            //         'autoCallingIndexValue', index);
-            //     _prefs.setInt(
-            //         'autoCallingSubIndexValue', subIndex);
-            //     // }
-            //   });
-            // });
+          if (bloc.customerCount < bloc.totalCount) {
             Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
-                    APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
+                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
             if (getAgencyDetailsData[Constants.success]) {
               if (Singleton.instance.cloudTelephony!) {
                 Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
+
                 AgencyDetailsModel voiceAgencyDetails =
                     AgencyDetailsModel.fromJson(jsonData);
-                print(
-                    'voiceAgent => ${jsonEncode(voiceAgencyDetails.result?.agentAgencyContact)}');
+
                 if (state.customerIndex! < bloc.resultList.length) {
-                  print(
-                      '----------------------------------------> ${state.customerIndex!}');
                   List<Address> tempMobileList = [];
                   bloc.resultList[state.customerIndex!].address
                       ?.asMap()
@@ -466,18 +440,25 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      to: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      callerId: Singleton.instance.callingID ?? '0',
+                      to: tempMobileList[state.phoneIndex!].value ?? '',
+                      callerId: voiceAgencyDetails
+                                  .result?.voiceAgencyData?.first.callerIds !=
+                              []
+                          ? voiceAgencyDetails.result?.voiceAgencyData?.first
+                              .callerIds?.first as String
+                          : '0',
                       aRef: Singleton.instance.agentRef ?? '',
-                      customerName: Singleton.instance.agentName ?? '',
+                      customerName: bloc.resultList[state.customerIndex!].cust!,
                       service: voiceAgencyDetails
                               .result?.voiceAgencyData?.first.agencyId ??
                           '0',
-                      callerServiceID:
-                          Singleton.instance.callerServiceID ?? '0',
+                      callerServiceID: voiceAgencyDetails
+                              .result?.voiceAgencyData?.first.agencyId ??
+                          '0',
                       caseId: bloc.resultList[state.customerIndex!].caseId!,
                       sId: bloc.resultList[state.customerIndex!].sId!,
-                      agrRef: Singleton.instance.agentRef ?? '',
+                      agrRef:
+                          bloc.resultList[state.customerIndex!].agrRef ?? '',
                       agentName: Singleton.instance.agentName ?? '',
                       agentType:
                           (Singleton.instance.usertype == Constants.telecaller)
@@ -486,7 +467,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     );
                     Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
-                      APIRequestType.POST,
+                      APIRequestType.post,
                       HttpUrl.callCustomerUrl,
                       requestBodydata: jsonEncode(requestBodyData),
                     );
@@ -519,39 +500,26 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                     state.customerIndex!]
                                                 .caseId,
                                             'isAutoCalling': true,
+                                            'caseIndex': state.customerIndex,
                                             'customerIndex':
                                                 state.customerIndex,
                                             'phoneIndex': state.phoneIndex,
+                                            'contactIndex': state.phoneIndex,
                                             'mobileList': tempMobileList,
                                             'context': context,
+                                            'callId': postResult['data']
+                                                ['result'],
                                           },
                                           context: context,
                                         ));
                                   await phoneBottomSheet(
                                       context, caseDetailsloc, 0);
-                                  // Navigator.pushNamed(
-                                  //     context, AppRoutes.caseDetailsScreen,
-                                  //     arguments: {
-                                  //       'caseID': bloc
-                                  //           .resultList[state.customerIndex!].caseId,
-                                  //       'isAutoCalling': true,
-                                  //       'customerIndex': state.customerIndex,
-                                  //       'phoneIndex': state.phoneIndex,
-                                  //       'mobileList': tempMobileList,
-                                  //     });
                                 } else {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: state.customerIndex! + 1,
                                     phoneIndex: 0,
-                                    // customerList: widget.bloc.allocationBloc
-                                    //     .resultList[(widget.bloc
-                                    //         .paramValue['customerIndex']) +
-                                    //     1],
                                   ));
                                 }
-                                // else {
-                                // }
-                                // if(bloc.resultList[state.customerIndex].address. )
                               } else {
                                 Singleton.instance.startCalling = false;
                               }
@@ -566,6 +534,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           _timer.cancel();
                         }
                       });
+                    } else {
+                      AppUtils.showToast(
+                          Languages.of(context)!.pleaseCallAgain);
                     }
                   } else {
                     bloc.add(StartCallingEvent(
@@ -577,20 +548,36 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
                 // else {}
               } else {
-                print('dkdk');
                 // AppUtils.makePhoneCall(
                 //   'tel:' + '6374578994',
                 // );
               }
+            } else {
+              AppUtils.showToast(
+                  Languages.of(context)!.doesntGetTheAgentAddress);
             }
           } else {
-            AppUtils.showToast('Auto Calling is Complete');
+            Singleton.instance.startCalling = false;
+            AppUtils.showToast(
+              Languages.of(context)!.autoCallingIsComplete,
+            );
           }
+        }
+        if (state is UpdateNewValueState) {
+          setState(() {});
         }
 
         if (state is NavigateCaseDetailState) {
-          Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-              arguments: state.paramValues);
+          dynamic returnValue = await Navigator.pushNamed(
+              context, AppRoutes.caseDetailsScreen,
+              arguments: CaseDetailsNaviagationModel(state.paramValues,
+                  allocationBloc: bloc));
+          RetrunValueModel retrunModelValue =
+              RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
+
+          if (retrunModelValue.isSubmit) {
+            bloc.add(UpdateNewValuesEvent(retrunModelValue.caseId));
+          }
         }
         if (state is NavigateSearchPageState) {
           final dynamic returnValue =
@@ -676,7 +663,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
             await APIRepository.apiRequest(
-              APIRequestType.POST,
+              APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
@@ -687,7 +674,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
             await APIRepository.apiRequest(
-              APIRequestType.POST,
+              APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
@@ -731,7 +718,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             eventCode: ConstantEventValues.areYouAtOfficeEvenCode,
           );
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.POST,
+            APIRequestType.post,
             HttpUrl.areYouAtOfficeUrl(),
             requestBodydata: jsonEncode(requestBodyData),
           );
@@ -743,6 +730,32 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             AppUtils.showToast(Constants.successfullySubmitted);
           }
+        }
+
+        if (state is AutoCallContactHealthUpdateState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = '2';
+                break;
+              case 1:
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = '1';
+                break;
+              case 2:
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = '0';
+                break;
+              default:
+                bloc.autoCallingResultList[state.caseIndex!]
+                    .address?[state.contactIndex!].health = data.currentHealth;
+                break;
+            }
+            bloc.add(AutoCallingContactSortEvent());
+          });
         }
       },
       child: BlocBuilder<AllocationBloc, AllocationState>(
@@ -795,8 +808,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       child: Container(
                                         height: 26,
                                         width: 26,
-                                        // ignore: prefer_const_constructors
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: ColorResource.colorFFFFFF,
                                           shape: BoxShape.circle,
                                         ),
@@ -843,6 +855,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             Visibility(
                               visible: bloc.areyouatOffice,
                               child: Container(
+                                width: double.infinity,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),
                                 decoration: BoxDecoration(
@@ -853,61 +866,70 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       width: 1.0),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SvgPicture.asset(ImageResource.location),
-                                    const SizedBox(
-                                      width: 13.0,
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      child: FittedBox(
-                                        child: CustomText(
-                                          Languages.of(context)!.areYouAtOffice,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color000000,
-                                        ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                              ImageResource.location),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: CustomText(
+                                              Languages.of(context)!
+                                                  .areYouAtOffice,
+                                              fontSize: FontSize.twelve,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color000000,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    SizedBox(
-                                        width: 76,
-                                        height: 40,
-                                        child: CustomButton(
-                                          Languages.of(context)!.yes,
-                                          fontSize: FontSize.twelve,
-                                          borderColor:
-                                              ColorResource.colorEA6D48,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorEA6D48,
-                                          cardShape: 5,
-                                          onTap: () {
-                                            bloc.add(
-                                                TapAreYouAtOfficeOptionsEvent());
-                                          },
-                                        )),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    SizedBox(
-                                        width: 76,
-                                        height: 40,
-                                        child: CustomButton(
-                                          Languages.of(context)!.no,
-                                          fontSize: FontSize.twelve,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                          cardShape: 5,
-                                          onTap: () {
-                                            bloc.add(
-                                                TapAreYouAtOfficeOptionsEvent());
-                                          },
-                                        )),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 74,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.yes,
+                                                fontSize: FontSize.twelve,
+                                                borderColor:
+                                                    ColorResource.colorEA6D48,
+                                                buttonBackgroundColor:
+                                                    ColorResource.colorEA6D48,
+                                                cardShape: 5,
+                                                onTap: () {
+                                                  bloc.add(
+                                                      TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
+                                          const SizedBox(width: 3.0),
+                                          SizedBox(
+                                              width: 85,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.no,
+                                                fontSize: FontSize.twelve,
+                                                borderColor:
+                                                    ColorResource.color23375A,
+                                                textColor:
+                                                    ColorResource.color23375A,
+                                                buttonBackgroundColor:
+                                                    ColorResource.colorffffff,
+                                                cardShape: 5,
+                                                onTap: () {
+                                                  bloc.add(
+                                                      TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -1003,7 +1025,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     ],
                   ),
                   bottomNavigationBar: Visibility(
-                    visible: bloc.isAutoCalling,
+                    visible: bloc.isAutoCalling &&
+                        bloc.autoCallingResultList.isNotEmpty,
                     child: Container(
                       height: 88,
                       decoration: const BoxDecoration(
@@ -1014,38 +1037,61 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              flex: 4,
+                            // Expanded(
+                            //   flex: 4,
+                            //   child: CustomButton(
+                            //     Languages.of(context)!.stop.toUpperCase(),
+                            //     fontSize: FontSize.sixteen,
+                            //     textColor: ColorResource.colorEA6D48,
+                            //     fontWeight: FontWeight.w600,
+                            //     cardShape: 5,
+                            //     buttonBackgroundColor:
+                            //         ColorResource.colorffffff,
+                            //     borderColor: ColorResource.colorffffff,
+                            //     onTap: () async {
+                            //       SharedPreferences _pref =
+                            //           await SharedPreferences.getInstance();
+                            //       _pref.setInt('autoCallingIndexValue', 0);
+                            //       _pref.setInt('autoCallingSubIndexValue', 0);
+                            //     },
+                            //   ),
+                            // ),
+                            // Expanded(
+                            //   flex: 5,
+                            //   child:
+                            SizedBox(
+                              width: 200,
                               child: CustomButton(
-                                Languages.of(context)!.stop.toUpperCase(),
-                                fontSize: FontSize.sixteen,
-                                textColor: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
+                                // Languages.of(context)!
+                                //     .startCalling
+                                //     .toUpperCase(),
+                                null,
                                 cardShape: 5,
-                                buttonBackgroundColor:
-                                    ColorResource.colorffffff,
-                                borderColor: ColorResource.colorffffff,
-                                onTap: () async {
-                                  SharedPreferences _pref =
-                                      await SharedPreferences.getInstance();
-                                  _pref.setInt('autoCallingIndexValue', 0);
-                                  _pref.setInt('autoCallingSubIndexValue', 0);
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: CustomButton(
-                                Languages.of(context)!
-                                    .startCalling
-                                    .toUpperCase(),
-                                fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
-                                cardShape: 5,
-                                trailingWidget:
-                                    SvgPicture.asset(ImageResource.vector),
+                                trailingWidget: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                  ),
+                                  child: SvgPicture.asset(ImageResource.vector),
+                                ),
                                 isLeading: true,
+                                isTrailing: true,
+                                leadingWidget: Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: CustomText(
+                                      Languages.of(context)!
+                                          .startCalling
+                                          .toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorResource.colorFFFFFF,
+                                    ),
+                                  ),
+                                ),
                                 onTap: () async {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: 0,
@@ -1055,6 +1101,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 },
                               ),
                             ),
+                            // ),
                           ],
                         ),
                       ),

@@ -1,9 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location_permissions/location_permissions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/env.dart';
 import 'package:origa/models/location_converter.dart';
@@ -14,11 +11,12 @@ import 'app_utils.dart';
 class MapUtils {
   MapUtils._();
 
-  static Future<void> openMap(
-      {required double startLatitude,
-      required double startLongitude,
-      required double destinationLatitude,
-      required double destinationLongitude}) async {
+  static Future<void> openMap({
+    required double startLatitude,
+    required double startLongitude,
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
     if (Platform.isAndroid) {
       String googleUrl =
           'https://www.google.com/maps/dir/?api=1&origin=$startLatitude,$startLongitude&destination=$destinationLatitude,$destinationLongitude&travelmode=driving&dir_action=navigate';
@@ -27,7 +25,7 @@ class MapUtils {
         // AppUtils.showToast("Loading...");
         await launch(googleUrl);
       } catch (e) {
-        debugPrint("map not. open ---> ${e}");
+        debugPrint("map not. open ---> $e");
         AppUtils.showErrorToast("Could not open the map.");
       }
     } else if (Platform.isIOS) {
@@ -38,7 +36,7 @@ class MapUtils {
         // AppUtils.showToast("Loading...");
         await launch(googleUrl);
       } catch (e) {
-        debugPrint("map not. open ---> ${e}");
+        debugPrint("map not. open ---> $e");
         AppUtils.showErrorToast("Could not open the map.");
       }
     }
@@ -53,10 +51,12 @@ class MapUtils {
           "https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Env.googleMapAPI}";
 
       Map<String, dynamic> getAddressToLatlng =
-          await APIRepository.apiRequest(APIRequestType.GET, geocodeURL);
+          await APIRepository.apiRequest(APIRequestType.get, geocodeURL);
+
       getLocationLatLng =
           LocationConverterModel.fromJson(getAddressToLatlng['data']);
-      addressToLatlngValue = getLocationLatLng.results![0].geometry!.location;
+      addressToLatlngValue =
+          getLocationLatLng.results!.first.geometry!.location;
     } catch (e) {
       // print(e);
       AppUtils.showToast("Invalid Address");
@@ -68,7 +68,6 @@ class MapUtils {
   static Future<Position> getCurrentLocation() async {
     Position? currentLocation;
     LocationPermission permission = await Geolocator.checkPermission();
-    print(" checking permission ===> ${permission.toString()}");
 
     AppUtils.showToast("Loading...");
 
@@ -85,7 +84,6 @@ class MapUtils {
       currentLocation = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
     }
-    print("current location ----> ${currentLocation}");
     return currentLocation!;
   }
 

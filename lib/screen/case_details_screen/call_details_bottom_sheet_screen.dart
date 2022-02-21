@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -34,6 +35,33 @@ class _CallDetailsBottomSheetScreenState
       listener: (context, state) {
         if (state is AddedNewCallContactListState) {
           widget.bloc.listOfCallDetails;
+        }
+
+        if (state is UpdateHealthStatusState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -80,19 +108,6 @@ class _CallDetailsBottomSheetScreenState
                             itemCount:
                                 widget.bloc.listOfCallDetails?.length ?? 0,
                             itemBuilder: (context, i) {
-                              // Contact Health from high to low
-                              // if (widget.bloc.listOfCallDetails?[i]['cType']
-                              //         .isNotEmpty &&
-                              //     widget.bloc.listOfCallDetails?[i]['value']
-                              //         .isNotEmpty &&
-                              //     widget.bloc.listOfCallDetails?[i]['health'] !=
-                              //         '') {
-                              //   print(
-                              //       "call detail health values---->${widget.bloc.listOfCallDetails?[i]['health'] ?? "0"}");
-                              //   widget.bloc.listOfCallDetails?.sort((a, b) =>
-                              //       b["health"].compareTo(a["health"]) ?? '');
-                              // }
-
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
                                           "mobile" ||
@@ -221,6 +236,8 @@ class _CallDetailsBottomSheetScreenState
                                                         SizedBox(
                                                             child: InkWell(
                                                           onTap: () {
+                                                            debugPrint(
+                                                                "call customer--->");
                                                             widget.bloc.add(ClickOpenBottomSheetEvent(
                                                                 Constants
                                                                     .callCustomer,
@@ -229,7 +246,14 @@ class _CallDetailsBottomSheetScreenState
                                                                     .caseDetailsAPIValue
                                                                     .result
                                                                     ?.callDetails,
-                                                                false));
+                                                                false,
+                                                                isCallFromCallDetails:
+                                                                    true,
+                                                                seleectedContactNumber:
+                                                                    widget.bloc.listOfCallDetails?[i]
+                                                                            [
+                                                                            'value'] ??
+                                                                        ''));
                                                           },
                                                           child: Container(
                                                               decoration: const BoxDecoration(

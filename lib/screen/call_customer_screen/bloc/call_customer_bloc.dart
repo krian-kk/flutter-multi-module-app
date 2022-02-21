@@ -29,12 +29,7 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
         } else {
           Map<String, dynamic> getAgencyDetailsData =
               await APIRepository.apiRequest(
-                  APIRequestType.GET, HttpUrl.voiceAgencyDetailsUrl);
-          // Map<String, dynamic> getEventDetailsData1 =
-          //     await APIRepository.apiRequest(APIRequestType.POST,
-          //         'https://devapi.instalmint.com/v1/chat/tokenRequest',
-          //         requestBodydata: {});
-          // print('Ably Get Values => ${getEventDetailsData1}');
+                  APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
 
           if (getAgencyDetailsData[Constants.success]) {
             Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
@@ -47,7 +42,6 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
                     '';
             if (voiceAgencyDetails
                 .result!.voiceAgencyData!.first.callerIds!.isNotEmpty) {
-              print("0987654321-------");
               callersIDDropdownList = voiceAgencyDetails
                   .result!.voiceAgencyData!.first.callerIds!
                   .cast<String>();
@@ -57,7 +51,6 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
               Singleton.instance.callingID = voiceAgencyDetails
                   .result!.voiceAgencyData!.first.callerIds!.first;
             } else {
-              print("----------0987654321-------");
               Singleton.instance.callingID = null;
             }
 
@@ -77,6 +70,9 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
       }
       if (event is EnableSubmitEvent) {
         isSubmit = true;
+      }
+      if (event is NavigationPhoneBottomSheetEvent) {
+        emit.call(NavigationPhoneBottomSheetState(event.callId));
       }
     });
   }

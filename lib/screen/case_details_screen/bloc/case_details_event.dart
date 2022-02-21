@@ -9,12 +9,16 @@ class CaseDetailsInitialEvent extends CaseDetailsEvent {
   CaseDetailsInitialEvent({this.paramValues, this.context});
 }
 
-class LaunchWhatsappEvent extends CaseDetailsEvent {
-  final String whatsappUrlAddress;
-  LaunchWhatsappEvent(this.whatsappUrlAddress);
+class PhoneBottomSheetInitialEvent extends CaseDetailsEvent {
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  final BuildContext context;
+  PhoneBottomSheetInitialEvent({
+    this.callId,
+    required this.context,
+    this.isCallFromCaseDetails = false,
+  });
 }
-
-class LaunchSMSEvent extends CaseDetailsEvent {}
 
 class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
   final int index;
@@ -23,12 +27,13 @@ class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
 
 class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
   final int index;
-  ClickMainCallBottomSheetEvent(this.index);
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickMainCallBottomSheetEvent(this.index,
+      {this.isCallFromCaseDetails = false, this.callId});
 }
 
 class ClickViewMapEvent extends CaseDetailsEvent {}
-
-class ClickUnreachableButtonEvent extends CaseDetailsEvent {}
 
 class ClickCustomerNotMetButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
@@ -42,12 +47,28 @@ class ClickAddressInvalidButtonEvent extends CaseDetailsEvent {
 
 class ClickPhoneInvalidButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
-  ClickPhoneInvalidButtonEvent(this.context);
+  final bool autoCallingStopAndSubmit;
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickPhoneInvalidButtonEvent(
+    this.context, {
+    this.autoCallingStopAndSubmit = true,
+    this.isCallFromCaseDetails = false,
+    this.callId,
+  });
 }
 
 class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
   final BuildContext context;
-  ClickPhoneUnreachableSubmitedButtonEvent(this.context);
+  final bool autoCallingStopAndSubmit;
+  final bool isCallFromCaseDetails;
+  final String? callId;
+  ClickPhoneUnreachableSubmitedButtonEvent(
+    this.context, {
+    this.autoCallingStopAndSubmit = true,
+    this.isCallFromCaseDetails = false,
+    this.callId,
+  });
 }
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {
@@ -66,8 +87,19 @@ class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final bool? isCall;
   final String? health;
   final BuildContext? context;
-  ClickOpenBottomSheetEvent(this.title, this.list, this.isCall,
-      {this.health, this.context});
+  final String? seleectedContactNumber;
+  final bool isCallFromCallDetails;
+  final String? callId;
+  ClickOpenBottomSheetEvent(
+    this.title,
+    this.list,
+    this.isCall, {
+    this.health,
+    this.context,
+    this.seleectedContactNumber,
+    this.isCallFromCallDetails = false,
+    this.callId,
+  });
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {
@@ -76,20 +108,31 @@ class PostImageCapturedEvent extends CaseDetailsEvent {
   PostImageCapturedEvent({this.postData, this.fileData});
 }
 
-class EnableUnreachableBtnEvent extends CaseDetailsEvent {}
-
-class DisableUnreachableBtnEvent extends CaseDetailsEvent {}
-
-class EnablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
-
-class DisablePhoneInvalidBtnEvent extends CaseDetailsEvent {}
-
 class AddedNewAddressListEvent extends CaseDetailsEvent {}
 
 class AddedNewCallContactListEvent extends CaseDetailsEvent {}
+
+class ChangeIsSubmitEvent extends CaseDetailsEvent {}
+
+class ChangeHealthStatusEvent extends CaseDetailsEvent {}
+
+class ChangeIsSubmitForMyVisitEvent extends CaseDetailsEvent {
+  final String eventType;
+  final dynamic collectionAmount;
+  ChangeIsSubmitForMyVisitEvent(this.eventType, {this.collectionAmount});
+}
 
 class SendSMSEvent extends CaseDetailsEvent {
   final BuildContext context;
   final String? type;
   SendSMSEvent(this.context, {this.type});
+}
+
+class UpdateHealthStatusEvent extends CaseDetailsEvent {
+  final BuildContext context;
+  final int? selectedHealthIndex;
+  final int? tabIndex;
+  final dynamic currentHealth;
+  UpdateHealthStatusEvent(this.context,
+      {this.selectedHealthIndex, this.tabIndex, this.currentHealth});
 }

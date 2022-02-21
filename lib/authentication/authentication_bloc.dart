@@ -22,10 +22,6 @@ class AuthenticationBloc
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
       await Future.delayed(const Duration(seconds: 2));
-      // final response = await InternetAddress.lookup('www.google.com');
-
-      // print('response.isNotEmpty');
-      // print(response.isNotEmpty);
 
       // if (response.isNotEmpty) {}
       Singleton.instance.buildContext = event.context;
@@ -39,14 +35,11 @@ class AuthenticationBloc
       String? getToken = _prefs.getString(Constants.accessToken) ?? "";
       String? getUserName = _prefs.getString(Constants.userId);
       String? getUserType = _prefs.getString(Constants.userType) ?? "";
-      // print(_prefs.getString(Constants.accessToken));
 
       if (getToken == "") {
         yield AuthenticationUnAuthenticated();
       } else {
-        // var tokenIssue = getToken;
-        print('-----token issue---');
-        print(getToken);
+        debugPrint('Token Issue is === > $getToken');
         if (JwtDecoder.isExpired(getToken)) {
           yield AuthenticationUnAuthenticated();
         } else {
@@ -63,7 +56,7 @@ class AuthenticationBloc
                 _prefs.getString(Constants.agentRef) ?? "";
 
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.GET, HttpUrl.agentDetailUrl + getUserName!);
+                APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
               // print(agentDetail['data']);
@@ -78,9 +71,6 @@ class AuthenticationBloc
               AppUtils.showToast(agentDetailError.msg!,
                   backgroundColor: Colors.red);
             } else {
-              // print(agentDetail['data']['status']);
-              // print(JwtDecoder.isExpired(getToken));
-
               // if user inactivity means go to login
               if (agentDetail['data']['status'] == 440) {
                 AgentDetailErrorModel agentInactivityError =
@@ -92,7 +82,6 @@ class AuthenticationBloc
 
               dynamic agentDetails =
                   AgentDetailsModel.fromJson(agentDetail['data']);
-              // print(agentDetails.data![0].agentName!);
               if (agentDetails.data![0].agentType == 'COLLECTOR') {
                 await _prefs.setString(
                     Constants.userType, Constants.fieldagent);

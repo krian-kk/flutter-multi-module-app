@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
+import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/map_screen/map_screen.dart';
-import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
@@ -18,7 +15,6 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AddressDetailsBottomSheetScreen extends StatefulWidget {
   const AddressDetailsBottomSheetScreen({
@@ -42,6 +38,36 @@ class _AddressDetailsBottomSheetScreenState
       listener: (context, state) {
         if (state is AddedNewAddressListState) {
           widget.bloc.listOfAddressDetails;
+        }
+
+        if (state is UpdateHealthStatusState) {
+          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+              Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+
+          setState(() {
+            switch (data.tabIndex) {
+              case 0:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '2';
+                break;
+              case 1:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '1';
+                break;
+              case 2:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    '0';
+                break;
+              default:
+                widget.bloc.caseDetailsAPIValue.result
+                        ?.addressDetails![data.selectedHealthIndex!]['health'] =
+                    data.currentHealth;
+                break;
+            }
+          });
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -128,12 +154,6 @@ class _AddressDetailsBottomSheetScreenState
                                                           ?.addressDetails![i]
                                                       ['resAddressId_0'] ??
                                                   "";
-                                              // print(widget
-                                              //     .bloc
-                                              //     .caseDetailsAPIValue
-                                              //     .result
-                                              //     ?.callDetails!
-                                              //     .toString());
 
                                               for (var element in widget
                                                   .bloc
@@ -178,8 +198,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                     .listOfAddressDetails?[
                                                                         i][
                                                                         'value']
-                                                                    .toString()
-                                                                    .toUpperCase() ??
+                                                                    .toString() ??
                                                                 '_',
                                                             fontSize: FontSize
                                                                 .fourteen,
@@ -233,7 +252,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                         .bloc
                                                                         .caseDetailsAPIValue
                                                                         .result!
-                                                                        .addressDetails![0]['value']);
+                                                                        .addressDetails![i]['value']);
                                                             if (destinationLocation !=
                                                                 null) {
                                                               MapUtils.openMap(
@@ -253,43 +272,6 @@ class _AddressDetailsBottomSheetScreenState
                                                                           0.0);
                                                             }
                                                           },
-
-                                                          // Navigator.push(
-                                                          //     context,
-                                                          //     MaterialPageRoute(
-                                                          //         builder:
-                                                          //             (context) =>
-                                                          //                 MapScreen(
-                                                          //                   multipleLatLong: [
-                                                          //                     MapMarkerModel(
-                                                          //                       caseId: "1234444",
-                                                          //                       address: "gollahalli",
-                                                          //                       due: "90000",
-                                                          //                       name: "Nandha",
-                                                          //                       latitude: 11.639163,
-                                                          //                       longitude: 78.143815,
-                                                          //                     ),
-                                                          //                     MapMarkerModel(
-                                                          //                       caseId: "1234444",
-                                                          //                       address: "gollahalli",
-                                                          //                       due: "90000",
-                                                          //                       name: "Nandha",
-                                                          //                       latitude: 12.509128,
-                                                          //                       longitude: 78.216494,
-                                                          //                     ),
-                                                          //                   ],
-                                                          //                 )));
-                                                          // },
-                                                          // onTap: () => widget.bloc.add(
-                                                          //     ClickOpenBottomSheetEvent(
-                                                          //         Constants
-                                                          //             .viewMap,
-                                                          //         widget
-                                                          //             .bloc
-                                                          //             .caseDetailsAPIValue
-                                                          //             .result
-                                                          //             ?.addressDetails,
-                                                          //         false)),
                                                           child: Container(
                                                               decoration: const BoxDecoration(
                                                                   color: ColorResource
@@ -316,7 +298,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                   ),
                                                                   const SizedBox(
                                                                       width:
-                                                                          12),
+                                                                          10),
                                                                   CustomText(
                                                                     Languages.of(
                                                                             context)!
@@ -327,18 +309,21 @@ class _AddressDetailsBottomSheetScreenState
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
+                                                                    lineHeight:
+                                                                        1,
                                                                     color: ColorResource
                                                                         .color23375A,
                                                                   ),
                                                                   const SizedBox(
-                                                                      width:
-                                                                          12),
+                                                                    width: 17,
+                                                                  ),
                                                                 ],
                                                               )),
                                                         ),
                                                         const Spacer(),
                                                         const SizedBox(
-                                                            width: 5),
+                                                          width: 5,
+                                                        ),
                                                         Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment

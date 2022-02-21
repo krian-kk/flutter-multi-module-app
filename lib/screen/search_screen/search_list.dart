@@ -19,7 +19,6 @@ class SearchCaseList {
         scrollDirection: Axis.vertical,
         itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
-          int listCount = index + 1;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

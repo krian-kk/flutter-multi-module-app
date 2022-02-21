@@ -3,15 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart'; // Stores the Google Maps API Key
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'dart:math' show cos, sqrt, asin;
+// import 'dart:math' show cos, sqrt, asin;
 
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/env.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -20,11 +18,11 @@ import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 
-enum TravelModes { driving, bicycling, transit, walking }
+// enum TravelModes { driving, bicycling, transit, walking }
 
 class MapNavigation extends StatefulWidget {
   final List<dynamic>? multipleLatLong;
-  MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
+  const MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
   @override
   _MapNavigationState createState() => _MapNavigationState();
 }
@@ -43,7 +41,7 @@ class _MapNavigationState extends State<MapNavigation> {
   final startAddressFocusNode = FocusNode();
   final desrinationAddressFocusNode = FocusNode();
 
-  String? _placeDistance;
+  // String? _placeDistance;
 
   Set<Marker> markers = {};
   MapMarkerModel mapResult = MapMarkerModel();
@@ -84,7 +82,7 @@ class _MapNavigationState extends State<MapNavigation> {
       });
       await createMarker();
     }).catchError((e) {
-      print(e);
+      debugPrint(e);
     });
   }
 
@@ -224,9 +222,9 @@ class _MapNavigationState extends State<MapNavigation> {
                 okBtnFunction: (val) async {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                      arguments: {
+                      arguments: CaseDetailsNaviagationModel({
                         'caseID': element['caseId'],
-                      });
+                      }));
                 });
           },
           // icon: customIcon,
@@ -264,7 +262,7 @@ class _MapNavigationState extends State<MapNavigation> {
 
       return true;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return false;
   }
@@ -303,7 +301,7 @@ class _MapNavigationState extends State<MapNavigation> {
   //   //     "https://maps.googleapis.com/maps/api/directions/json?";
 
   //   // Map<String, dynamic> polylineData = await APIRepository.apiRequest(
-  //   //     APIRequestType.GET,
+  //   //     APIRequestType.get,
   //   //     polyLineApi +
   //   //         "origin=$startLatitude,$startLongitude&" +
   //   //         "destination=$destinationLatitude,$destinationLongitude&" +

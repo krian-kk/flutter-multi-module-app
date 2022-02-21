@@ -1,10 +1,10 @@
 class ImageResource {
   static const String applogo = 'assets/app_logo/applogo.png';
-  // static const String origa = 'assets/svg/origa.svg';
+  static const String origa = 'assets/origa.png';
   static const String close = 'assets/svg/close.svg';
   static const String checkOn = 'assets/svg/check_on.svg';
   static const String checkOff = 'assets/svg/check_off.svg';
-  static const caseNotAvailable = 'assets/caseNotAvailable.png';
+  // static const caseNotAvailable = 'assets/caseNotAvailable.png';
   // static const back1 = 'assets/svg/back.svg';
   // static const viewShape1 = 'assets/svg/shape.svg';
   static const String ptp = 'assets/svg/ptp.svg';
@@ -46,7 +46,9 @@ class ImageResource {
   static const String dropDownDecreaseArrow =
       'assets/svg/drop_down_decrease_arrow.svg';
   static const String clock = 'assets/svg/clock.svg';
-  static const String noCaseAvailable = 'assets/svg/noCaseAvailable.svg';
+  static const String noCaseAvailable = 'assets/no_case_details_value_img.png';
+  // static const String noCaseAvailable =
+  //     'assets/svg/no_case_available_image.svg';
   static const String sms = 'assets/svg/SMS.svg';
   static const String unStar = 'assets/svg/unStar.svg';
 }

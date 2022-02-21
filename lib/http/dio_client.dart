@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/http/logging.dart';
 import 'package:origa/singleton.dart';
@@ -96,18 +94,4 @@ class DioClient {
     }
     return multiPartValues;
   }
-}
-
-//This transformer runs the json decoding in a background thread.
-//Thus returing a Future of Map
-class JsonTransformer extends DefaultTransformer {
-  JsonTransformer() : super(jsonDecodeCallback: _parseJson);
-}
-
-Map<String, dynamic> _parseAndDecode(String response) {
-  return jsonDecode(response) as Map<String, dynamic>;
-}
-
-Future<Map<String, dynamic>> _parseJson(String text) {
-  return compute(_parseAndDecode, text);
 }

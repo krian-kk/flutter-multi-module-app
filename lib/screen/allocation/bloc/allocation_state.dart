@@ -24,13 +24,13 @@ class NavigateCaseDetailState extends AllocationState {
 
 class FilterSelectOptionState extends AllocationState {}
 
-class SearchScreenLoadingState extends AllocationState {}
-
-class SearchScreenLoadedState extends AllocationState {}
-
-class SearchScreenNormalState extends AllocationState {}
-
 class TapAreYouAtOfficeOptionsState extends AllocationState {}
+
+class UpdateNewValueState extends AllocationState {}
+
+class AutoCallingLoadingState extends AllocationState {}
+
+class AutoCallingLoadedState extends AllocationState {}
 
 class TapPriorityState extends AllocationState {
   final dynamic successResponse;
@@ -52,16 +52,6 @@ class BuildRouteLoadMoreState extends AllocationState {
   BuildRouteLoadMoreState({this.successResponse});
 }
 
-class SearchScreenSuccessState extends AllocationState {
-  final SearchModel data;
-  SearchScreenSuccessState(this.data);
-}
-
-class SearchFailedState extends AllocationState {
-  final String error;
-  SearchFailedState(this.error);
-}
-
 class CaseListViewLoadingState extends AllocationState {}
 
 class NoInternetConnectionState extends AllocationState {}
@@ -77,6 +67,13 @@ class UpdateStaredCaseState extends AllocationState {
 class StartCallingState extends AllocationState {
   final int? customerIndex;
   final int? phoneIndex;
-  // final Result? customerList;
   StartCallingState({this.customerIndex, this.phoneIndex});
 }
+
+class AutoCallContactHealthUpdateState extends AllocationState {
+  final int? contactIndex;
+  final int? caseIndex;
+  AutoCallContactHealthUpdateState({this.contactIndex, this.caseIndex});
+}
+
+class AutoCallingContactSortState extends AllocationState {}

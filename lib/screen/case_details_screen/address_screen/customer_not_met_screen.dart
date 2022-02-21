@@ -65,7 +65,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
                 body: SingleChildScrollView(
-                  // reverse: MediaQuery.of(context).viewInsets.bottom != 0,
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
@@ -196,7 +195,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("customer not met iscall ===> false");
           widget.bloc.add(
             ClickOpenBottomSheetEvent(
               element.stringResourceValue,

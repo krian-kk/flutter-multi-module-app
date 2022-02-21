@@ -1,20 +1,20 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'deposistion_mode/deposistion_mode.dart';
 
 class SelectedValue {
-  String _id;
+  final String _id;
   bool isSelected;
   SelectedValue(this._id, this.isSelected);
 }
@@ -44,7 +44,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
     }
   }
 
-  int? _selectedIndex;
+  // int? _selectedIndex;
   List<String> ids = [];
   String? custName;
   List<SelectedValue> selectedValue = [];
@@ -53,7 +53,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
 
   _onSelected(int index) {
     setState(() {
-      _selectedIndex = index;
+      // _selectedIndex = index;
     });
   }
 
@@ -72,19 +72,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
               fontSize: FontSize.sixteen,
               fontWeight: FontWeight.w600,
               onTap: () {
-                if (selectedValue[0].isSelected) {
-                  for (var element in selectedValue) {
-                    if (element.isSelected) {
-                      print(element.isSelected);
-                      // depositionModeSheet(context);
-                    }
-                    // else {
-                    //   AppUtils.showToast(
-                    //     Constants.notSelectedCase,
-                    //     gravity: ToastGravity.CENTER,
-                    //   );
-                    // }
-                  }
+                if (ids.isNotEmpty) {
                   depositionModeSheet(context);
                 } else {
                   AppUtils.showToast(
@@ -92,21 +80,11 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                     gravity: ToastGravity.CENTER,
                   );
                 }
-
-                // if (_selectedIndex == null || _selectedIndex == 0) {
-                //   AppUtils.showToast(
-                //     Constants.notSelectedCase,
-                //     gravity: ToastGravity.CENTER,
-                //   );
-                // } else {
-                //   depositionModeSheet(context);
-                // }
               },
             ),
           ),
         ),
         body: Column(
-          // ignore: prefer_const_literals_to_create_immutables
           children: [
             Expanded(
               child: Padding(
@@ -302,104 +280,129 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         23, 5, 14, 13),
                                     child: Row(
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              Languages.of(context)!
-                                                  .receiptDate,
-                                              fontSize: FontSize.fourteen,
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            CustomText(
-                                              widget.result!.cases![index]
-                                                      .eventAttr!.date ??
-                                                  '-',
-                                              fontSize: FontSize.fourteen,
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ],
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                Languages.of(context)!
+                                                    .receiptDate,
+                                                fontSize: FontSize.fourteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              CustomText(
+                                                widget.result!.cases![index]
+                                                            .eventAttr!.date !=
+                                                        null
+                                                    ? DateFormateUtils
+                                                        .followUpDateFormate(
+                                                            widget
+                                                                .result!
+                                                                .cases![index]
+                                                                .eventAttr!
+                                                                .date!)
+                                                    : '-',
+                                                fontSize: FontSize.fourteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        const Spacer(),
-                                        SizedBox(
-                                          width: 123,
-                                          height: 47,
-                                          child: CustomButton(
-                                            Languages.of(context)!
-                                                .selected
-                                                .toUpperCase(),
-                                            fontSize: FontSize.twelve,
-                                            buttonBackgroundColor:
-                                                !selectedValue[index].isSelected
-                                                    ? ColorResource.colorFEFFFF
-                                                    : ColorResource.colorEA6D48,
-                                            borderColor:
-                                                !selectedValue[index].isSelected
-                                                    ? ColorResource.colorFEFFFF
-                                                    : ColorResource.colorEA6D48,
-                                            textColor:
-                                                !selectedValue[index].isSelected
-                                                    ? ColorResource.color23375A
-                                                    : ColorResource.colorFFFFFF,
-                                            cardElevation: 3.0,
-                                            onTap: () {
-                                              _onSelected(index);
-                                              setState(() {
-                                                // widget.result!.cases!
-                                                //     .removeAt(index);
-
-                                                selectedValue[index]
-                                                        .isSelected =
-                                                    !selectedValue[index]
-                                                        .isSelected;
-                                                custName = widget
-                                                        .result!
-                                                        .cases![index]
-                                                        .eventAttr!
-                                                        .customerName ??
-                                                    '';
-                                                if (!selectedValue[index]
-                                                    .isSelected) {
-                                                  receiptAmount =
-                                                      receiptAmount -
-                                                          double.parse(widget
-                                                              .result!
-                                                              .cases![index]
-                                                              .eventAttr!
-                                                              .amountCollected);
-
-                                                  // widget.bloc.listOfIndex
+                                        // const Spacer(),
+                                        Expanded(
+                                          child: SizedBox(
+                                            // width: 123,
+                                            height: 53,
+                                            child: CustomButton(
+                                              selectedValue[index].isSelected
+                                                  ? Languages.of(context)!
+                                                      .selected
+                                                      .toUpperCase()
+                                                  : Languages.of(context)!
+                                                      .select
+                                                      .toUpperCase(),
+                                              fontSize: FontSize.twelve,
+                                              padding: 3,
+                                              buttonBackgroundColor:
+                                                  !selectedValue[index]
+                                                          .isSelected
+                                                      ? ColorResource
+                                                          .colorFEFFFF
+                                                      : ColorResource
+                                                          .colorEA6D48,
+                                              borderColor: !selectedValue[index]
+                                                      .isSelected
+                                                  ? ColorResource.colorFEFFFF
+                                                  : ColorResource.colorEA6D48,
+                                              textColor: !selectedValue[index]
+                                                      .isSelected
+                                                  ? ColorResource.color23375A
+                                                  : ColorResource.colorFFFFFF,
+                                              cardElevation: 3.0,
+                                              onTap: () {
+                                                _onSelected(index);
+                                                setState(() {
+                                                  // widget.result!.cases!
                                                   //     .removeAt(index);
-                                                  // print(
-                                                  //     "Removed selected index ==> ${widget.bloc.listOfIndex}");
-                                                } else {
-                                                  receiptAmount =
-                                                      receiptAmount +
-                                                          double.parse(widget
-                                                              .result!
-                                                              .cases![index]
-                                                              .eventAttr!
-                                                              .amountCollected);
 
-                                                  // widget.bloc.listOfIndex
-                                                  //     .add(index);
-                                                  // print(
-                                                  //     "Addded selected index ==> ${widget.bloc.listOfIndex}");
+                                                  selectedValue[index]
+                                                          .isSelected =
+                                                      !selectedValue[index]
+                                                          .isSelected;
+                                                  custName = widget
+                                                          .result!
+                                                          .cases![index]
+                                                          .eventAttr!
+                                                          .customerName ??
+                                                      '';
+                                                  if (!selectedValue[index]
+                                                      .isSelected) {
+                                                    receiptAmount =
+                                                        receiptAmount -
+                                                            double.parse(widget
+                                                                .result!
+                                                                .cases![index]
+                                                                .eventAttr!
+                                                                .amountCollected);
+
+                                                    // widget.bloc.listOfIndex
+                                                    //     .removeAt(index);
+                                                    // print(
+                                                    //     "Removed selected index ==> ${widget.bloc.listOfIndex}");
+                                                  } else {
+                                                    receiptAmount =
+                                                        receiptAmount +
+                                                            double.parse(widget
+                                                                .result!
+                                                                .cases![index]
+                                                                .eventAttr!
+                                                                .amountCollected);
+
+                                                    // widget.bloc.listOfIndex
+                                                    //     .add(index);
+                                                    // print(
+                                                    //     "Addded selected index ==> ${widget.bloc.listOfIndex}");
+                                                  }
+                                                  // print("----Selected Amount");
+                                                  // print(receiptAmount);
+                                                });
+                                                ids.clear();
+
+                                                for (var element
+                                                    in selectedValue) {
+                                                  if (element.isSelected) {
+                                                    // print(element._id);
+                                                    ids.add(element._id);
+                                                  }
                                                 }
-                                                // print("----Selected Amount");
-                                                // print(receiptAmount);
-                                              });
-                                              ids.clear();
-                                              selectedValue.forEach((element) {
-                                                if (element.isSelected) {
-                                                  // print(element._id);
-                                                  ids.add(element._id);
-                                                }
-                                              });
-                                            },
+                                                print(ids);
+                                              },
+                                            ),
                                           ),
                                         )
                                       ],

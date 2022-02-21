@@ -41,8 +41,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
     ];
 
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
@@ -127,7 +125,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           context,
                         ),
                       ),
-                      // const SizedBox(height: 135)
                     ],
                   ),
                 ),
@@ -148,7 +145,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           setState(() {
             selectedOptionBottomSheetButton = element.title;
           });
-          print("address invalid iscall ===> false");
           widget.bloc.add(ClickOpenBottomSheetEvent(element.stringResourceValue,
               widget.bloc.caseDetailsAPIValue.result?.addressDetails, false,
               health: '0'));
