@@ -67,6 +67,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             widget.bloc.isShowSearchResult = true;
           });
           widget.bloc.selectedFilter = '';
+          widget.bloc.selectedFilterIndex = '';
         }
       },
       child: Container(
@@ -280,27 +281,38 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   List<Widget> _buildFilterOptions() {
     List<Widget> widgets = [];
     for (var element in widget.bloc.filterOption) {
-      widgets.add(_buildFilterWidget(element));
+      widgets.add(_buildFilterWidget(element.value!, element.timeperiodText!));
     }
     return widgets;
   }
 
-  Widget _buildFilterWidget(String option) {
+  Widget _buildFilterWidget(String option, String filterTitle) {
     return InkWell(
       onTap: () {
-        setState(() {
-          widget.bloc.selectedFilter = option;
-        });
-        // switch (option) {
-        //   case 'TODAY':
-        //     break;
-        //   case 'WEEKLY':
-        //     break;
-        //   case 'MONTHLY':
-        //     break;
-        //   default:
-        // }
-        widget.bloc.add(MyVisitApiEvent(timePeiod: option));
+        switch (option) {
+          case '0':
+            setState(() {
+              widget.bloc.selectedFilter = Constants.today;
+              widget.bloc.selectedFilterIndex = '0';
+            });
+            widget.bloc.add(MyVisitApiEvent(timePeiod: Constants.today));
+            break;
+          case '1':
+            setState(() {
+              widget.bloc.selectedFilter = Constants.weeklY;
+              widget.bloc.selectedFilterIndex = '1';
+            });
+            widget.bloc.add(MyVisitApiEvent(timePeiod: Constants.weeklY));
+            break;
+          case '2':
+            setState(() {
+              widget.bloc.selectedFilter = Constants.monthly;
+              widget.bloc.selectedFilterIndex = '2';
+            });
+            widget.bloc.add(MyVisitApiEvent(timePeiod: Constants.monthly));
+            break;
+          default:
+        }
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -313,16 +325,16 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           decoration: BoxDecoration(
             border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
             borderRadius: BorderRadius.circular(10),
-            color: option == widget.bloc.selectedFilter
+            color: option == widget.bloc.selectedFilterIndex
                 ? ColorResource.color23375A
                 : Colors.white,
           ),
           child: Center(
             child: CustomText(
-              option,
+              filterTitle,
               fontSize: FontSize.twelve,
               fontWeight: FontWeight.w700,
-              color: option == widget.bloc.selectedFilter
+              color: option == widget.bloc.selectedFilterIndex
                   ? Colors.white
                   : ColorResource.color101010,
             ),

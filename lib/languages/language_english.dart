@@ -766,4 +766,7 @@ class LanguageEn extends Languages {
 
   @override
   String get uploadAudioFile => 'UPLOAD AUDIO FILE';
+
+  @override
+  String get autoCalling => 'Auto Calling';
 }

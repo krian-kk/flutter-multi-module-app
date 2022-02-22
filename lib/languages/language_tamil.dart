@@ -146,7 +146,7 @@ class LanguageTa extends Languages {
   String get receiptDate => 'ரசீது தேதி';
 
   @override
-  String get selected => 'தேர்வு \n செய்யப்பட்டது';
+  String get selected => 'தேர்வானது';
 
   @override
   String get enterDepositionDetails => 'டெபாசிஷன் விவரங்களை உள்ளிடவும்';
@@ -770,4 +770,7 @@ class LanguageTa extends Languages {
 
   @override
   String get uploadAudioFile => 'ஆடியோ கோப்பை பதிவேற்றவும்';
+
+  @override
+  String get autoCalling => 'தானியங்கி அழைப்பு';
 }

@@ -769,4 +769,7 @@ class LanguageHi extends Languages {
 
   @override
   String get uploadAudioFile => 'ऑडियो फ़ाइल अपलोड करें';
+
+  @override
+  String get autoCalling => 'ऑटो कॉलिंग';
 }

@@ -4,6 +4,10 @@ class Constants {
   static const String pageNo = '1';
   static const String limit = '10';
   static const String help = 'Help';
+  //Case Filter by day
+  static const String today = 'TODAY';
+  static const String weeklY = 'WEEKLY';
+  static const String monthly = 'MONTHLY';
   //Distance Filter
   static const String allDisMeters = '100000';
   static const String maxDisMeters = '10000';

@@ -156,7 +156,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
           if (state is SetTimeperiodValueState) {
-            bloc.selectedFilter = 'TODAY';
+            bloc.selectedFilter = Constants.today;
+            bloc.selectedFilterIndex = '0';
           }
           if (state is PostDataApiSuccessState) {
             while (Navigator.canPop(context)) {
