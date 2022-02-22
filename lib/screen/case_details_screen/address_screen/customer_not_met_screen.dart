@@ -9,10 +9,11 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
+import 'package:origa/utils/select_payment_mode_button_widget.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 
 class CustomerNotMetScreen extends StatefulWidget {
   const CustomerNotMetScreen({
@@ -95,10 +96,17 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                 widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,
                             validationRules: const ['required'],
-                            onTapped: () => pickDate(
-                                context,
-                                widget.bloc
-                                    .addressCustomerNotMetNextActionDateController),
+                            onTapped: () => PickDateAndTimeUtils.pickDate(
+                                context, (newDate) {
+                              if (newDate != null) {
+                                setState(() {
+                                  widget
+                                      .bloc
+                                      .addressCustomerNotMetNextActionDateController
+                                      .text = newDate;
+                                });
+                              }
+                            }),
                             suffixWidget: SvgPicture.asset(
                               ImageResource.calendar,
                               fit: BoxFit.scaleDown,
@@ -177,9 +185,25 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         Wrap(
                           spacing: 15,
                           runSpacing: 8,
-                          children: _buildOptionBottomSheetOpenButton(
+                          children: SelectPaymentModeButtonWidget
+                              .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
+                            (element) {
+                              setState(() {
+                                selectedOptionBottomSheetButton = element.title;
+                              });
+                              widget.bloc.add(
+                                ClickOpenBottomSheetEvent(
+                                  element.stringResourceValue,
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails,
+                                  false,
+                                  health: ConstantEventValues.healthOne,
+                                ),
+                              );
+                            },
+                            selectedOptionBottomSheetButton,
                           ),
                         ),
                       ],
@@ -192,50 +216,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         ),
       ),
     );
-  }
-
-  List<Widget> _buildOptionBottomSheetOpenButton(
-      List<OptionBottomSheetButtonModel> list, BuildContext context) {
-    List<Widget> widgets = [];
-    for (var element in list) {
-      widgets.add(InkWell(
-        onTap: () {
-          setState(() {
-            selectedOptionBottomSheetButton = element.title;
-          });
-          widget.bloc.add(
-            ClickOpenBottomSheetEvent(
-              element.stringResourceValue,
-              widget.bloc.caseDetailsAPIValue.result?.addressDetails,
-              false,
-              health: ConstantEventValues.healthOne,
-            ),
-          );
-        },
-        child: Container(
-          height: 45,
-          decoration: BoxDecoration(
-              color: element.title == selectedOptionBottomSheetButton
-                  ? ColorResource.color23375A
-                  : ColorResource.colorFFFFFF,
-              border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
-            child: CustomText(
-              element.title.toString().toUpperCase(),
-              color: element.title == selectedOptionBottomSheetButton
-                  ? ColorResource.colorFFFFFF
-                  : ColorResource.color23375A,
-              fontWeight: FontWeight.w700,
-              fontSize: FontSize.thirteen,
-              fontStyle: FontStyle.normal,
-            ),
-          ),
-        ),
-      ));
-    }
-    return widgets;
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
@@ -266,43 +246,5 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
       ));
     }
     return widgets;
-  }
-
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.year,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-      widget.bloc.addressCustomerNotMetSelectedDate = newDate.toString();
-    });
   }
 }

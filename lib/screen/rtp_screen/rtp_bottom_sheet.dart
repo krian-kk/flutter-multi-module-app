@@ -20,8 +20,10 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -181,8 +183,16 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                         isReadOnly: true,
                                         onEditing: () =>
                                             _formKey.currentState!.validate(),
-                                        onTapped: () => pickDate(
-                                            context, nextActionDateControlller),
+                                        onTapped: () =>
+                                            PickDateAndTimeUtils.pickDate(
+                                                context, (newDate) {
+                                          if (newDate != null) {
+                                            setState(() {
+                                              nextActionDateControlller.text =
+                                                  newDate;
+                                            });
+                                          }
+                                        }),
                                         suffixWidget: SvgPicture.asset(
                                           ImageResource.calendar,
                                           fit: BoxFit.scaleDown,
@@ -253,18 +263,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
@@ -431,42 +431,5 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
       }
     }
     setState(() => isSubmit = true);
-  }
-
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.year,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-    });
   }
 }

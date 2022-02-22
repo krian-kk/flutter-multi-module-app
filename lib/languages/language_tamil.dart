@@ -146,7 +146,7 @@ class LanguageTa extends Languages {
   String get receiptDate => 'ரசீது தேதி';
 
   @override
-  String get selected => 'தேர்ந்தெடுக்கப்பட்டது';
+  String get selected => 'தேர்வு \n செய்யப்பட்டது';
 
   @override
   String get enterDepositionDetails => 'டெபாசிஷன் விவரங்களை உள்ளிடவும்';
@@ -476,7 +476,7 @@ class LanguageTa extends Languages {
   String get modelMake => 'மாடல்  மேக்*';
 
   @override
-  String get registrationNo => 'பதிவு எண்*';
+  String get registrationNo => 'பதிவு எண்';
 
   @override
   String get chassisNo => 'Chassis எண்*';
@@ -743,4 +743,31 @@ class LanguageTa extends Languages {
 
   @override
   String get pleaseCallAgain => 'தயவுசெய்து மீண்டும் அழைக்கவும்!';
+
+  @override
+  String get approved => 'அங்கீகரிக்கப்பட்டது';
+
+  @override
+  String get pendingApproval => 'நிலுவையிலுள்ள ஒப்புதல்';
+
+  @override
+  String get rejected => 'நிராகரிக்கப்பட்டது';
+
+  @override
+  String get homeAddressNotAvailable => 'வீட்டு முகவரி கிடைக்கவில்லை.';
+
+  @override
+  String get sendSMS => 'SMS அனுப்பவும்';
+
+  @override
+  String get uploadFile => 'கோப்பை பதிவேற்றவும்';
+
+  @override
+  String get upto5mb => '5MB வரை';
+
+  @override
+  String get addMoreContact => 'மேலும் தொடர்பைச் சேர்க்கவும்';
+
+  @override
+  String get uploadAudioFile => 'ஆடியோ கோப்பை பதிவேற்றவும்';
 }

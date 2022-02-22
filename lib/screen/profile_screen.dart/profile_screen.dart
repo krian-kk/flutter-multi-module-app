@@ -437,7 +437,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             .result
                                                             ?.first
                                                             .homeAddress ??
-                                                        'Home address not available.',
+                                                        Languages.of(context)!
+                                                            .homeAddressNotAvailable,
                                                 fontSize: FontSize.fourteen,
                                                 fontWeight: FontWeight.w400,
                                                 fontStyle: FontStyle.normal,

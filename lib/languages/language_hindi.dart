@@ -476,7 +476,7 @@ class LanguageHi extends Languages {
   String get modelMake => 'मॉडल बनाना*';
 
   @override
-  String get registrationNo => 'पंजीकरण क्रमांक*';
+  String get registrationNo => 'पंजीकरण क्रमांक';
 
   @override
   String get chassisNo => 'चेसिस संख्या*';
@@ -742,4 +742,31 @@ class LanguageHi extends Languages {
 
   @override
   String get pleaseCallAgain => 'कृपया फिर से कॉल करें!';
+
+  @override
+  String get approved => 'स्वीकृत';
+
+  @override
+  String get pendingApproval => 'लंबित अनुमोदन';
+
+  @override
+  String get rejected => 'अस्वीकृत';
+
+  @override
+  String get homeAddressNotAvailable => 'घर का पता उपलब्ध नहीं है.';
+
+  @override
+  String get sendSMS => 'SMS भेजना';
+
+  @override
+  String get uploadFile => 'फ़ाइल अपलोड करें';
+
+  @override
+  String get upto5mb => '5MB तक';
+
+  @override
+  String get addMoreContact => 'अधिक संपर्क जोड़ें';
+
+  @override
+  String get uploadAudioFile => 'ऑडियो फ़ाइल अपलोड करें';
 }

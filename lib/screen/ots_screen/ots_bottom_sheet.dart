@@ -27,12 +27,13 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomOtsBottomSheet extends StatefulWidget {
@@ -234,8 +235,16 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                 'required'
                                               ],
                                               isReadOnly: true,
-                                              onTapped: () => pickDate(context,
-                                                  otsPaymentDateControlller),
+                                              onTapped: () =>
+                                                  PickDateAndTimeUtils.pickDate(
+                                                      context, (newDate) {
+                                                if (newDate != null) {
+                                                  setState(() {
+                                                    otsPaymentDateControlller
+                                                        .text = newDate;
+                                                  });
+                                                }
+                                              }),
                                               suffixWidget: SvgPicture.asset(
                                                 ImageResource.calendar,
                                                 fit: BoxFit.scaleDown,
@@ -265,8 +274,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   ),
                                   const SizedBox(height: 8),
                                   Wrap(
-                                    runSpacing: 10,
-                                    spacing: 18,
+                                    runSpacing: 8,
+                                    spacing: 10,
                                     children: _buildPaymentButton(
                                         paymentModeButtonList),
                                   ),
@@ -297,8 +306,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
                                                     const SizedBox(width: 5),
-                                                    const CustomText(
-                                                      'UPLOAD FILE',
+                                                    CustomText(
+                                                      Languages.of(context)!
+                                                          .uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
@@ -310,8 +320,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     )
                                                   ],
                                                 ),
-                                                const CustomText(
-                                                  'UPTO 5MB',
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .upto5mb,
                                                   lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
@@ -352,18 +363,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: SizedBox(
-                              width: 95,
-                              child: Center(
-                                  child: CustomText(
-                                Languages.of(context)!.cancel.toUpperCase(),
-                                color: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FontStyle.normal,
-                                fontSize: FontSize.sixteen,
-                              ))),
+                        Expanded(
+                          child: CustomCancelButton.cancelButton(context),
                         ),
                         SizedBox(
                             width: Singleton.instance.startCalling ?? false
@@ -564,78 +565,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     setState(() => isSubmit = true);
   }
 
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.day,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 3),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-    });
-  }
-
-  Future pickTime(
-      BuildContext context, TextEditingController controller) async {
-    // const initialTime = TimeOfDay(hour: 9, minute: 0);
-    final newTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-    if (newTime == null) return;
-
-    final time = newTime.format(context).toString();
-    setState(() {
-      controller.text = time;
-    });
-  }
-
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
     List<Widget> widgets = [];
     for (var element in list) {
@@ -646,7 +575,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           });
         },
         child: Container(
-          width: 150,
+          width: 156,
           height: 50,
           decoration: BoxDecoration(
               color: element.title == selectedPaymentModeButton
@@ -665,13 +594,13 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: 20,
+                  radius: 19,
                   backgroundColor: ColorResource.colorFFFFFF,
                   child: Center(
                     child: SvgPicture.asset(ImageResource.money),
                   ),
                 ),
-                const SizedBox(width: 7),
+                const SizedBox(width: 5),
                 CustomText(
                   element.title,
                   color: ColorResource.colorFFFFFF,

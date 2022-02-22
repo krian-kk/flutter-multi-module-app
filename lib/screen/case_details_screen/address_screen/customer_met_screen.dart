@@ -9,6 +9,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/select_payment_mode_button_widget.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -147,12 +148,23 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         Wrap(
                           spacing: 15,
                           runSpacing: 8,
-                          children: _buildOptionBottomSheetOpenButton(
+                          children: SelectPaymentModeButtonWidget
+                              .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
+                            (element) {
+                              setState(() => selectedOptionBottomSheetButton =
+                                  element.title);
+                              widget.bloc.add(ClickOpenBottomSheetEvent(
+                                element.stringResourceValue,
+                                widget.bloc.caseDetailsAPIValue.result
+                                    ?.addressDetails,
+                                false,
+                              ));
+                            },
+                            selectedOptionBottomSheetButton,
                           ),
                         ),
-                        const SizedBox(height: 135)
                       ],
                     ),
                   ),
@@ -163,44 +175,5 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
         },
       ),
     );
-  }
-
-  List<Widget> _buildOptionBottomSheetOpenButton(
-      List<OptionBottomSheetButtonModel> list, BuildContext context) {
-    List<Widget> widgets = [];
-    for (var element in list) {
-      widgets.add(InkWell(
-        onTap: () {
-          setState(() => selectedOptionBottomSheetButton = element.title);
-          widget.bloc.add(ClickOpenBottomSheetEvent(
-            element.stringResourceValue,
-            widget.bloc.caseDetailsAPIValue.result?.addressDetails,
-            false,
-          ));
-        },
-        child: Container(
-          height: 45,
-          decoration: BoxDecoration(
-              color: element.title == selectedOptionBottomSheetButton
-                  ? ColorResource.color23375A
-                  : ColorResource.colorFFFFFF,
-              border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
-            child: CustomText(
-              element.title.toString().toUpperCase(),
-              color: element.title == selectedOptionBottomSheetButton
-                  ? ColorResource.colorFFFFFF
-                  : ColorResource.color23375A,
-              fontWeight: FontWeight.w700,
-              fontSize: FontSize.thirteen,
-              fontStyle: FontStyle.normal,
-            ),
-          ),
-        ),
-      ));
-    }
-    return widgets;
   }
 }

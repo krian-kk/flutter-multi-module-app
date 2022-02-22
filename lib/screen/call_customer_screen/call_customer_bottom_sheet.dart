@@ -238,19 +238,17 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
+                        Expanded(
+                            child: CustomButton(
+                          Languages.of(context)!.done.toUpperCase(),
+                          fontSize: FontSize.eighteen,
+                          fontWeight: FontWeight.w600,
+                          buttonBackgroundColor: Colors.white,
+                          borderColor: Colors.white,
+                          textColor: ColorResource.colorEA6D48,
                           onTap: () => Navigator.pop(context),
-                          child: SizedBox(
-                              width: 95,
-                              child: Center(
-                                  child: CustomText(
-                                Languages.of(context)!.done.toUpperCase(),
-                                color: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FontStyle.normal,
-                                fontSize: FontSize.sixteen,
-                              ))),
-                        ),
+                          cardShape: 5,
+                        )),
                         const SizedBox(width: 25),
                         SizedBox(
                           width: 191,

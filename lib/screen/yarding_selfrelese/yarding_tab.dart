@@ -13,6 +13,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -184,8 +185,14 @@ class _YardingTabState extends State<YardingTab> {
                                   validationRules: const ['required'],
                                   isLabel: true,
                                   isReadOnly: true,
-                                  onTapped: () =>
-                                      pickDate(context, dateController),
+                                  onTapped: () => PickDateAndTimeUtils.pickDate(
+                                      context, (newDate) {
+                                    if (newDate != null) {
+                                      setState(() {
+                                        dateController.text = newDate;
+                                      });
+                                    }
+                                  }),
                                 ),
                               ),
                               Padding(
@@ -196,8 +203,14 @@ class _YardingTabState extends State<YardingTab> {
                                   validationRules: const ['required'],
                                   isLabel: true,
                                   isReadOnly: true,
-                                  onTapped: () =>
-                                      pickTime(context, timeController),
+                                  onTapped: () => PickDateAndTimeUtils.pickTime(
+                                      context, (newTime) {
+                                    if (newTime != null) {
+                                      setState(() {
+                                        timeController.text = newTime;
+                                      });
+                                    }
+                                  }),
                                 ),
                               ),
                               Padding(
@@ -239,81 +252,6 @@ class _YardingTabState extends State<YardingTab> {
           },
         ),
       );
-    });
-  }
-
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.day,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-      // _formKey.currentState!.validate();
-    });
-  }
-
-  Future pickTime(
-      BuildContext context, TextEditingController controller) async {
-    const initialTime = TimeOfDay(hour: 9, minute: 0);
-    final newTime = await showTimePicker(
-        context: context,
-        initialTime: initialTime,
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-    if (newTime == null) return;
-
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minutes = newTime.minute.toString().padLeft(2, '0');
-    setState(() {
-      controller.text = '$hours:$minutes';
-      // _formKey.currentState!.validate();
     });
   }
 }

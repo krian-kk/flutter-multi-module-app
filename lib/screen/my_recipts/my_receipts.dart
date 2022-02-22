@@ -8,6 +8,7 @@ import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -176,11 +177,11 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                             border: Border(
                                 bottom: BorderSide(
                                     color: ColorResource.colorD8D8D8))),
-                        child: const Center(
+                        child: Center(
                           child: TabBar(
                             isScrollable: true,
                             indicatorColor: ColorResource.colorD5344C,
-                            labelStyle: TextStyle(
+                            labelStyle: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: ColorResource.color23375A,
                                 fontSize: FontSize.fourteen,
@@ -189,9 +190,9 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                             labelColor: ColorResource.color23375A,
                             unselectedLabelColor: ColorResource.colorC4C4C4,
                             tabs: [
-                              Tab(text: Constants.approved),
-                              Tab(text: Constants.pendingApproval),
-                              Tab(text: Constants.rejected),
+                              Tab(text: Languages.of(context)!.approved),
+                              Tab(text: Languages.of(context)!.pendingApproval),
+                              Tab(text: Languages.of(context)!.rejected),
                             ],
                           ),
                         ),
@@ -610,8 +611,14 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                       Row(
                                         children: [
                                           CustomText(
-                                            caseLists
-                                                .cases![index].followUpDate!,
+                                            caseLists.cases![index]
+                                                        .followUpDate !=
+                                                    '-'
+                                                ? DateFormateUtils
+                                                    .followUpDateFormate(
+                                                        caseLists.cases![index]
+                                                            .followUpDate!)
+                                                : '-',
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,

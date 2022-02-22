@@ -42,7 +42,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
     filePath = '$appDocPath/${widget.caseId}_${DateTime.now().toString()}.mp3';
-    print('File Path => ${filePath}');
+    print('File Path => $filePath');
 
     await Record().hasPermission();
     await Permission.microphone.request();

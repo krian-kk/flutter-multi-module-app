@@ -613,8 +613,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                             width:
                                                                                 7),
                                                                         CustomText(
-                                                                            Constants.sendSMS
-                                                                                .toUpperCase(),
+                                                                            Languages.of(context)!
+                                                                                .sendSMS,
                                                                             fontSize: FontSize
                                                                                 .twelve,
                                                                             fontWeight: FontWeight

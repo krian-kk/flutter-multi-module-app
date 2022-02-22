@@ -172,12 +172,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ? ImageResource.checkOn
                                               : ImageResource.checkOff),
                                           const SizedBox(width: 13),
-                                          CustomText(
-                                            Languages.of(context)!.showOnlyStar,
-                                            color: ColorResource.color000000,
-                                            fontSize: FontSize.sixteen,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w600,
+                                          Flexible(
+                                            child: CustomText(
+                                              Languages.of(context)!
+                                                  .showOnlyStar,
+                                              color: ColorResource.color000000,
+                                              fontSize: FontSize.sixteen,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           )
                                         ],
                                       ),

@@ -28,8 +28,10 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -223,7 +225,14 @@ class _CustomOtherFeedBackBottomSheetState
                                         validationRules: const ['required'],
                                         isReadOnly: true,
                                         onTapped: () =>
-                                            pickDate(context, dateControlller),
+                                            PickDateAndTimeUtils.pickDate(
+                                                context, (newDate) {
+                                          if (newDate != null) {
+                                            setState(() {
+                                              dateControlller.text = newDate;
+                                            });
+                                          }
+                                        }),
                                         suffixWidget: SvgPicture.asset(
                                           ImageResource.calendar,
                                           fit: BoxFit.scaleDown,
@@ -235,7 +244,8 @@ class _CustomOtherFeedBackBottomSheetState
                                 const SizedBox(height: 20),
                                 expandList([
                                   FeedbackTemplate(
-                                      name: 'Add New Contact',
+                                      name:
+                                          Languages.of(context)!.addNewContact,
                                       expanded: false,
                                       data: [Data(name: 'addNewContact')])
                                 ], 0),
@@ -286,31 +296,42 @@ class _CustomOtherFeedBackBottomSheetState
                                         child: InkWell(
                                           onTap: () => getFiles(),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 10, 5, 15),
                                             child: Column(
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
-                                                    const SizedBox(width: 5),
-                                                    const CustomText(
-                                                      'UPLOAD AUDIO FILE',
-                                                      color: ColorResource
-                                                          .colorFFFFFF,
-                                                      fontSize:
-                                                          FontSize.sixteen,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontWeight:
-                                                          FontWeight.w700,
+                                                    const SizedBox(width: 7),
+                                                    Flexible(
+                                                      child: CustomText(
+                                                        Languages.of(context)!
+                                                            .uploadAudioFile,
+                                                        color: ColorResource
+                                                            .colorFFFFFF,
+                                                        fontSize:
+                                                            FontSize.sixteen,
+                                                        lineHeight: 1,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
                                                     )
                                                   ],
                                                 ),
-                                                const CustomText(
-                                                  'UPTO 5MB',
+                                                const SizedBox(height: 3),
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .upto5mb,
                                                   lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
@@ -353,18 +374,8 @@ class _CustomOtherFeedBackBottomSheetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
@@ -626,43 +637,6 @@ class _CustomOtherFeedBackBottomSheetState
     setState(() => isSubmit = true);
   }
 
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.day,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 3),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-    });
-  }
-
   expandList(List<FeedbackTemplate> list, int index) {
     // print('List => ${jsonEncode(list[0])}');
     return Column(
@@ -817,7 +791,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       },
                                       child: CustomReadOnlyTextField(
                                         (listOfContact[index].formValue == '')
-                                            ? 'Contact'
+                                            ? Languages.of(context)!.contact
                                             : (listOfContact[index].formValue ==
                                                         'Mobile' ||
                                                     listOfContact[index]
@@ -900,11 +874,11 @@ class _CustomOtherFeedBackBottomSheetState
                                       width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50.0))),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 11),
                                 child: CustomText(
-                                  'ADD MORE CONTACT',
+                                  Languages.of(context)!.addMoreContact,
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.thirteen,
                                   fontStyle: FontStyle.normal,

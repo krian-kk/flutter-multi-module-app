@@ -8,6 +8,7 @@ import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -77,72 +78,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-          // custMet!.clear();
-          // custNotMet!.clear();
-          // custInvalid!.clear();
-          // custMetTotalAmt = 0.0;
-          // custNotMetTotalAmt = 0.0;
-          // invalidTotalAmt = 0.0;
-          // for (Case element in widget.bloc.myVisitsData.result!.cases!) {
-          //   print(element.collSubStatus);
-          //   if (element.collSubStatus == Constants.ptp ||
-          //       element.collSubStatus == Constants.denial ||
-          //       element.collSubStatus == Constants.dispute ||
-          //       element.collSubStatus == 'Denial' ||
-          //       element.collSubStatus == 'Dispute' ||
-          //       // element.collSubStatus == 'Feedback' ||
-          //       // element.collSubStatus == 'REPO' ||
-          //       element.collSubStatus == Constants.remainder ||
-          //       element.collSubStatus == Constants.remainder_1 ||
-          //       element.collSubStatus == Constants.collections ||
-          //       element.collSubStatus == Constants.receipt ||
-          //       element.collSubStatus == Constants.ots ||
-          //       element.telSubStatus == Constants.ptp ||
-          //       element.telSubStatus == Constants.denial ||
-          //       element.telSubStatus == Constants.dispute ||
-          //       element.telSubStatus == 'Denial' ||
-          //       element.telSubStatus == 'Dispute' ||
-          //       // element.telSubStatus == 'Feedback' ||
-          //       // element.telSubStatus == 'REPO' ||
-          //       element.telSubStatus == Constants.remainder ||
-          //       element.telSubStatus == Constants.remainder_1 ||
-          //       element.telSubStatus == Constants.collections ||
-          //       element.telSubStatus == Constants.receipt ||
-          //       element.telSubStatus == Constants.ots) {
-          //     custMet!.add(element);
-          //     custMetTotalAmt = (custMetTotalAmt + element.due);
-          //   }
-          // }
-
-          // for (Case element in widget.bloc.myVisitsData.result!.cases!) {
-          //   if (element.collSubStatus == Constants.leftMessage ||
-          //       element.collSubStatus == Constants.doorLocked ||
-          //       element.collSubStatus == Constants.entryRestricted ||
-          //       element.collSubStatus == 'new' ||
-          //       element.telSubStatus == Constants.telsubstatuslineBusy ||
-          //       element.telSubStatus == Constants.telsubstatusswitchOff ||
-          //       element.telSubStatus == Constants.telsubstatusrnr ||
-          //       element.telSubStatus == Constants.telsubstatusoutOfNetwork ||
-          //       element.telSubStatus == Constants.telsubstatusdisconnecting ||
-          //       element.telSubStatus == 'new') {
-          //     custNotMet!.add(element);
-          //     custNotMetTotalAmt = (custNotMetTotalAmt + element.due);
-          //   }
-          // }
-
-          // for (Case element in widget.bloc.myVisitsData.result!.cases!) {
-          //   if (element.collSubStatus == Constants.wrongAddress ||
-          //       element.collSubStatus == Constants.shifted ||
-          //       element.collSubStatus == Constants.addressNotFound ||
-          //       element.telSubStatus == Constants.telsubstatusdoesNotExist ||
-          //       element.telSubStatus == Constants.telsubstatusincorrectNumber ||
-          //       element.telSubStatus ==
-          //           Constants.telsubstatusnumberNotWorking ||
-          //       element.telSubStatus == Constants.telsubstatusnotOpeartional) {
-          //     custInvalid!.add(element);
-          //     invalidTotalAmt = (invalidTotalAmt + element.due);
-          //   }
-          // }
           return WillPopScope(
             onWillPop: () async => true,
             child: Container(
@@ -242,6 +177,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                         ),
                       ),
                       Container(
+                        alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width,
                         decoration: const BoxDecoration(
                             border: Border(
@@ -716,8 +652,14 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       Row(
                                         children: [
                                           CustomText(
-                                            caseLists
-                                                .cases![index].followUpDate!,
+                                            caseLists.cases![index]
+                                                        .followUpDate !=
+                                                    '-'
+                                                ? DateFormateUtils
+                                                    .followUpDateFormate(
+                                                        caseLists.cases![index]
+                                                            .followUpDate!)
+                                                : '-',
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,
