@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:origa/main.dart';
+import 'package:origa/may_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String prefSelectedLanguageCode = 'SelectedLanguageCode';
