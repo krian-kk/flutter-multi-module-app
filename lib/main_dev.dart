@@ -1,8 +1,22 @@
-import 'package:origa/may_app.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/singleton.dart';
+
+import 'authentication/authentication_bloc.dart';
+import 'authentication/authentication_event.dart';
+import 'bloc.dart';
+import 'main.dart';
 
 void main() async {
   //development = 1, uat = 2, production = 3
   Singleton.instance.serverPointingType = 1;
-  mainDelegate();
+  Bloc.observer = EchoBlocDelegate();
+  runApp(
+    BlocProvider<AuthenticationBloc>(
+      create: (BuildContext context) {
+        return AuthenticationBloc()..add(AppStarted(context: context));
+      },
+      child: const MyApp(),
+    ),
+  );
 }

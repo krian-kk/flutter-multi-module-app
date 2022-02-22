@@ -17,9 +17,10 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
 
-void mainDelegate() {
+void main() {
   Bloc.observer = EchoBlocDelegate();
-
+  //development = 1, uat = 2, production = 3
+  Singleton.instance.serverPointingType = 3;
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (BuildContext context) {
