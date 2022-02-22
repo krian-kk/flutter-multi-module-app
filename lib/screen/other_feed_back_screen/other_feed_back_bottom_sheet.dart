@@ -288,16 +288,19 @@ class _CustomOtherFeedBackBottomSheetState
                                         child: InkWell(
                                           onTap: () => getFiles(),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(6.0),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                5, 10, 5, 15),
                                             child: Column(
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
-                                                    const SizedBox(width: 3),
+                                                    const SizedBox(width: 7),
                                                     CustomText(
                                                       Languages.of(context)!
                                                           .uploadAudioFile,
@@ -305,6 +308,7 @@ class _CustomOtherFeedBackBottomSheetState
                                                           .colorFFFFFF,
                                                       fontSize:
                                                           FontSize.sixteen,
+                                                      lineHeight: 1,
                                                       fontStyle:
                                                           FontStyle.normal,
                                                       fontWeight:
