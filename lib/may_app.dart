@@ -15,13 +15,20 @@ import 'package:origa/utils/app_theme.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 
 import 'authentication/authentication_bloc.dart';
+import 'bloc.dart';
 
-void mainDelegate() => runApp(BlocProvider<AuthenticationBloc>(
+void mainDelegate() {
+  Bloc.observer = EchoBlocDelegate();
+
+  runApp(
+    BlocProvider<AuthenticationBloc>(
       create: (BuildContext context) {
         return AuthenticationBloc()..add(AppStarted(context: context));
       },
       child: const MyApp(),
-    ));
+    ),
+  );
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -63,6 +70,7 @@ class _MyAppState extends State<MyApp> {
 
   //Getting firebase remote data for app URL
   Future<FirebaseRemoteConfig> setupRemoteConfig() async {
+    await Firebase.initializeApp();
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
@@ -70,13 +78,20 @@ class _MyAppState extends State<MyApp> {
     ));
     await remoteConfig.fetchAndActivate();
     //development = 1, uat = 2, production = 3
-    HttpUrl.url = Singleton.instance.serverPointingType == 1
-        ? HttpUrl.url =
-            remoteConfig.getString('v1_development_mobile_app_baseUrl')
-        : Singleton.instance.serverPointingType == 2
-            ? HttpUrl.url = remoteConfig.getString('v1_uat_mobile_app_baseUrl')
-            : HttpUrl.url =
-                remoteConfig.getString('v1_production_mobile_app_baseUrl');
+    try {
+      HttpUrl.url = Singleton.instance.serverPointingType == 1
+          ? HttpUrl.url =
+              remoteConfig.getString('v1_development_mobile_app_baseUrl')
+          : Singleton.instance.serverPointingType == 2
+              ? HttpUrl.url =
+                  remoteConfig.getString('v1_uat_mobile_app_baseUrl')
+              : HttpUrl.url =
+                  remoteConfig.getString('v1_production_mobile_app_baseUrl');
+      debugPrint('URL -> ${HttpUrl.url}');
+    } catch (e) {
+      debugPrint('Catch-> $e');
+      setupRemoteConfig();
+    }
     return remoteConfig;
   }
 
@@ -111,29 +126,18 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: getRoute,
           debugShowCheckedModeBanner: false,
           home: FutureBuilder(
-              future: Firebase.initializeApp(),
+              future: setupRemoteConfig(),
               builder: (context, snapshot) {
-                if (snapshot.hasError) {
+                if (snapshot.hasError && HttpUrl.url != '') {
                   return Container(
                     child: const CustomLoadingWidget(),
                     alignment: Alignment.center,
                   );
                 } else {
-                  return FutureBuilder(
-                      future: setupRemoteConfig(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError && !snapshot.hasData) {
-                          return Container(
-                            child: const CustomLoadingWidget(),
-                            alignment: Alignment.center,
-                          );
-                        } else {
-                          return addAuthBloc(
-                            context,
-                            const SplashScreen(),
-                          );
-                        }
-                      });
+                  return addAuthBloc(
+                    context,
+                    const SplashScreen(),
+                  );
                 }
               }),
         );
