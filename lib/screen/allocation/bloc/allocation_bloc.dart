@@ -38,7 +38,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int indexValue = 0;
 
-  String selectedDistance = StringResource.all;
+  String? selectedDistance;
 
   bool areyouatOffice = true;
 
@@ -67,9 +67,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List<AutoCallingModel> mobileNumberList = [];
 
   List<String> filterBuildRoute = [
-    StringResource.all,
-    StringResource.under5km,
-    StringResource.more5km,
+    // StringResource.all,
+    // StringResource.under5km,
+    // StringResource.more5km,
   ];
 
   List<AllocationListModel> allocationList = [];
@@ -93,6 +93,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       agentName = _pref.getString(Constants.agentName);
       agrRef = _pref.getString(Constants.agentRef);
       isShowSearchPincode = false;
+      selectedDistance = Languages.of(event.context)!.all;
 
       // check in office location captured or not
       areyouatOffice = _pref.getBool('areyouatOffice') ?? true;
@@ -100,31 +101,42 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
-          StringResource.priority,
-          StringResource.buildRoute,
-          StringResource.mapView,
+          // StringResource.priority,
+          // StringResource.buildRoute,
+          // StringResource.mapView,
+          Languages.of(event.context)!.priority,
+          Languages.of(event.context)!.buildRoute,
+          Languages.of(event.context)!.mapView,
         ];
       } else {
         selectOptions = [
-          StringResource.priority,
-          StringResource.autoCalling,
+          Languages.of(event.context)!.priority,
+          Languages.of(event.context)!.autoCalling,
+          // StringResource.priority,
+          // StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
 
-      // static Autocalling Values
-      mobileNumberList.addAll([
-        AutoCallingModel(
-          mobileNumber: '6374578994',
-          callResponse: 'Declined Call',
-        ),
-        AutoCallingModel(
-          mobileNumber: '9342536805',
-        ),
-        AutoCallingModel(
-          mobileNumber: '6374578994',
-        ),
-      ]);
+      filterBuildRoute = [
+        Languages.of(event.context)!.all,
+        Languages.of(event.context)!.under5km,
+        Languages.of(event.context)!.more5km,
+      ];
+
+      // // static Autocalling Values
+      // mobileNumberList.addAll([
+      //   AutoCallingModel(
+      //     mobileNumber: '6374578994',
+      //     callResponse: 'Declined Call',
+      //   ),
+      //   AutoCallingModel(
+      //     mobileNumber: '9342536805',
+      //   ),
+      //   AutoCallingModel(
+      //     mobileNumber: '6374578994',
+      //   ),
+      // ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;

@@ -30,7 +30,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
   String? userType;
-  String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
   DashboardAllModels brokenPTPData = DashboardAllModels();
@@ -42,11 +41,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   YardingData yardingAndSelfReleaseData = YardingData();
   DashboardCardCount dashboardCardCounts = DashboardCardCount();
 
-  List<String> filterOption = [
-    'TODAY',
-    'WEEKLY',
-    'MONTHLY',
-  ];
+  String? selectedFilter = Constants.today;
+  String? selectedFilterIndex = '0';
+  List<FilterCasesByTimeperiod> filterOption = [];
 
   dynamic mtdCaseCompleted = 0;
   dynamic mtdCaseTotal = 0;
@@ -76,6 +73,20 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       var currentDateTime = DateTime.now();
       String currentDate = DateFormat.yMMMEd().format(currentDateTime);
       todayDate = currentDate;
+
+      filterOption.addAll([
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.today, value: '0'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.weekly, value: '1'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.monthly, value: '2'),
+      ]);
+      //  = [
+      //   Languages.of(event.context!)!.today,
+      //   Languages.of(event.context!)!.weekly,
+      //   Languages.of(event.context!)!.monthly,
+      // ];
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;

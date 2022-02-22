@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -125,6 +126,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                     widget.bloc.myDeposistsData
                                                         .result!.totalAmt
                                                         .toString(),
+                                                // .substring(0, 20),
                                                 fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color101010,
@@ -230,27 +232,42 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
   List<Widget> _buildFilterOptions() {
     List<Widget> widgets = [];
     for (var element in widget.bloc.filterOption) {
-      widgets.add(_buildFilterWidget(element));
+      widgets.add(_buildFilterWidget(element.value!, element.timeperiodText!));
     }
     return widgets;
   }
 
-  Widget _buildFilterWidget(String option) {
+  Widget _buildFilterWidget(String option, String filterTitle) {
     return InkWell(
       onTap: () {
-        setState(() {
-          widget.bloc.selectedFilter = option;
-        });
-        // switch (option) {
-        //   case 'TODAY':
-        //     break;
-        //   case 'WEEKLY':
-        //     break;
-        //   case 'MONTHLY':
-        //     break;
-        //   default:
-        // }
-        widget.bloc.add(DeposistsApiEvent(timePeiod: option));
+        // setState(() {
+        //   widget.bloc.selectedFilter = option;
+        // });
+        switch (option) {
+          case '0':
+            setState(() {
+              widget.bloc.selectedFilter = Constants.today;
+              widget.bloc.selectedFilterIndex = '0';
+            });
+            widget.bloc.add(DeposistsApiEvent(timePeiod: Constants.today));
+            break;
+          case '1':
+            setState(() {
+              widget.bloc.selectedFilter = Constants.weeklY;
+              widget.bloc.selectedFilterIndex = '1';
+            });
+            widget.bloc.add(DeposistsApiEvent(timePeiod: Constants.weeklY));
+            break;
+          case '2':
+            setState(() {
+              widget.bloc.selectedFilter = Constants.monthly;
+              widget.bloc.selectedFilterIndex = '2';
+            });
+            widget.bloc.add(DeposistsApiEvent(timePeiod: Constants.monthly));
+            break;
+          default:
+        }
+        // widget.bloc.add(DeposistsApiEvent(timePeiod: option));
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -263,16 +280,16 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
           decoration: BoxDecoration(
             border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
             borderRadius: BorderRadius.circular(10),
-            color: option == widget.bloc.selectedFilter
+            color: option == widget.bloc.selectedFilterIndex
                 ? ColorResource.color23375A
                 : Colors.white,
           ),
           child: Center(
             child: CustomText(
-              option,
+              filterTitle,
               fontSize: FontSize.twelve,
               fontWeight: FontWeight.w700,
-              color: option == widget.bloc.selectedFilter
+              color: option == widget.bloc.selectedFilterIndex
                   ? Colors.white
                   : ColorResource.color101010,
             ),

@@ -175,91 +175,91 @@ class _AllocationScreenState extends State<AllocationScreen> {
     }
   }
 
-  List<Widget> _buildFilterOptions() {
-    List<Widget> widgets = [];
-    bloc.selectOptions.asMap().forEach((index, element) {
-      widgets.add(_buildFilterWidget(index, element));
-    });
-    return widgets;
-  }
+  // List<Widget> _buildFilterOptions() {
+  //   List<Widget> widgets = [];
+  //   bloc.selectOptions.asMap().forEach((index, element) {
+  //     widgets.add(_buildFilterWidget(index, element));
+  //   });
+  //   return widgets;
+  // }
 
-  Widget _buildFilterWidget(int index, String element) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          bloc.selectedOption = index;
-        });
-        switch (index) {
-          case 0:
-            setState(() {
-              bloc.showFilterDistance = false;
-              bloc.add(TapPriorityEvent());
-            });
-            break;
-          case 1:
-            if (bloc.userType == Constants.fieldagent) {
-              setState(() {
-                bloc.add(TapBuildRouteEvent(
-                    paramValues: BuildRouteDataModel(
-                        lat: position.latitude.toString(),
-                        long: position.longitude.toString(),
-                        maxDistMeters: Constants.allDisMeters)));
-                bloc.showFilterDistance = true;
-              });
-            } else {
-              bloc.add(ShowAutoCallingEvent());
-            }
-            break;
-          case 2:
-            bloc.add(MapViewEvent(
-                paramValues: BuildRouteDataModel(
-                    lat: position.latitude.toString(),
-                    long: position.longitude.toString(),
-                    maxDistMeters: Constants.maxDisMeters)));
-            setState(() {
-              bloc.showFilterDistance = false;
-            });
-            break;
-          default:
-            setState(() {
-              bloc.showFilterDistance = false;
-            });
-        }
-        // if (option == 'Build Route') {
-        //   setState(() {
-        //     bloc.showFilterDistance = true;
-        //   });
-        // } else {
-        //   setState(() {
-        //     bloc.showFilterDistance = false;
-        //   });
-        // }
-        // print(option);
-      },
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-        width: 90,
-        // height: 35,
-        decoration: BoxDecoration(
-          border: Border.all(color: ColorResource.color23375A, width: 0.5),
-          borderRadius: BorderRadius.circular(5),
-          color: index == bloc.selectedOption
-              ? ColorResource.color23375A
-              : Colors.white,
-        ),
-        child: Center(
-          child: CustomText(
-            element,
-            fontSize: FontSize.twelve,
-            fontWeight: FontWeight.w700,
-            color: index == bloc.selectedOption
-                ? Colors.white
-                : ColorResource.color000000,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildFilterWidget(int index, String element) {
+  //   return InkWell(
+  //     onTap: () {
+  //       setState(() {
+  //         bloc.selectedOption = index;
+  //       });
+  //       switch (index) {
+  //         case 0:
+  //           setState(() {
+  //             bloc.showFilterDistance = false;
+  //             bloc.add(TapPriorityEvent());
+  //           });
+  //           break;
+  //         case 1:
+  //           if (bloc.userType == Constants.fieldagent) {
+  //             setState(() {
+  //               bloc.add(TapBuildRouteEvent(
+  //                   paramValues: BuildRouteDataModel(
+  //                       lat: position.latitude.toString(),
+  //                       long: position.longitude.toString(),
+  //                       maxDistMeters: Constants.allDisMeters)));
+  //               bloc.showFilterDistance = true;
+  //             });
+  //           } else {
+  //             bloc.add(ShowAutoCallingEvent());
+  //           }
+  //           break;
+  //         case 2:
+  //           bloc.add(MapViewEvent(
+  //               paramValues: BuildRouteDataModel(
+  //                   lat: position.latitude.toString(),
+  //                   long: position.longitude.toString(),
+  //                   maxDistMeters: Constants.maxDisMeters)));
+  //           setState(() {
+  //             bloc.showFilterDistance = false;
+  //           });
+  //           break;
+  //         default:
+  //           setState(() {
+  //             bloc.showFilterDistance = false;
+  //           });
+  //       }
+  //       // if (option == 'Build Route') {
+  //       //   setState(() {
+  //       //     bloc.showFilterDistance = true;
+  //       //   });
+  //       // } else {
+  //       //   setState(() {
+  //       //     bloc.showFilterDistance = false;
+  //       //   });
+  //       // }
+  //       // print(option);
+  //     },
+  //     child: Container(
+  //       padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+  //       width: 90,
+  //       // height: 35,
+  //       decoration: BoxDecoration(
+  //         border: Border.all(color: ColorResource.color23375A, width: 0.5),
+  //         borderRadius: BorderRadius.circular(5),
+  //         color: index == bloc.selectedOption
+  //             ? ColorResource.color23375A
+  //             : Colors.white,
+  //       ),
+  //       child: Center(
+  //         child: CustomText(
+  //           element,
+  //           fontSize: FontSize.twelve,
+  //           fontWeight: FontWeight.w700,
+  //           color: index == bloc.selectedOption
+  //               ? Colors.white
+  //               : ColorResource.color000000,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildBuildRoute() {
     return Column(
@@ -358,7 +358,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-        width: 93,
+        width: 96,
         // height: 35,
         decoration: BoxDecoration(
           border: Border.all(color: ColorResource.color23375A, width: 0.5),
@@ -909,24 +909,26 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                 },
                                               )),
                                           const SizedBox(width: 3.0),
-                                          SizedBox(
-                                              width: 85,
-                                              height: 40,
-                                              child: CustomButton(
-                                                Languages.of(context)!.no,
-                                                fontSize: FontSize.twelve,
-                                                borderColor:
-                                                    ColorResource.color23375A,
-                                                textColor:
-                                                    ColorResource.color23375A,
-                                                buttonBackgroundColor:
-                                                    ColorResource.colorffffff,
-                                                cardShape: 5,
-                                                onTap: () {
-                                                  bloc.add(
-                                                      TapAreYouAtOfficeOptionsEvent());
-                                                },
-                                              )),
+                                          Expanded(
+                                            child: SizedBox(
+                                                // width: 85,
+                                                height: 40,
+                                                child: CustomButton(
+                                                  Languages.of(context)!.no,
+                                                  fontSize: FontSize.twelve,
+                                                  borderColor:
+                                                      ColorResource.color23375A,
+                                                  textColor:
+                                                      ColorResource.color23375A,
+                                                  buttonBackgroundColor:
+                                                      ColorResource.colorffffff,
+                                                  cardShape: 5,
+                                                  onTap: () {
+                                                    bloc.add(
+                                                        TapAreYouAtOfficeOptionsEvent());
+                                                  },
+                                                )),
+                                          ),
                                         ],
                                       ),
                                     )
@@ -977,11 +979,99 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: Wrap(
-                                runSpacing: 0,
                                 spacing: 10,
-                                children: _buildFilterOptions(),
+                                children: List.generate(
+                                    bloc.selectOptions.length, (index) {
+                                  return ChoiceChip(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5)),
+                                        side: BorderSide(
+                                            color: ColorResource.color23375A,
+                                            width: 0.5)),
+                                    labelPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    label: CustomText(
+                                      bloc.selectOptions[index],
+                                      fontSize: FontSize.twelve,
+                                      lineHeight: 1,
+                                      fontWeight: FontWeight.w700,
+                                      color: index == bloc.selectedOption
+                                          ? Colors.white
+                                          : ColorResource.color000000,
+                                    ),
+                                    selected: bloc.selectedOption == index,
+                                    selectedColor: ColorResource.color23375A,
+                                    onSelected: (value) {
+                                      setState(() {
+                                        bloc.selectedOption =
+                                            value ? index : bloc.selectedOption;
+                                      });
+                                      switch (index) {
+                                        case 0:
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                            bloc.add(TapPriorityEvent());
+                                          });
+                                          break;
+                                        case 1:
+                                          if (bloc.userType ==
+                                              Constants.fieldagent) {
+                                            setState(() {
+                                              bloc.add(TapBuildRouteEvent(
+                                                  paramValues:
+                                                      BuildRouteDataModel(
+                                                          lat: position.latitude
+                                                              .toString(),
+                                                          long: position
+                                                              .longitude
+                                                              .toString(),
+                                                          maxDistMeters: Constants
+                                                              .allDisMeters)));
+                                              bloc.showFilterDistance = true;
+                                            });
+                                          } else {
+                                            bloc.add(ShowAutoCallingEvent());
+                                          }
+                                          break;
+                                        case 2:
+                                          bloc.add(MapViewEvent(
+                                              paramValues: BuildRouteDataModel(
+                                                  lat: position.latitude
+                                                      .toString(),
+                                                  long: position.longitude
+                                                      .toString(),
+                                                  maxDistMeters:
+                                                      Constants.maxDisMeters)));
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                          });
+                                          break;
+                                        default:
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                          });
+                                      }
+                                    },
+                                    backgroundColor: Colors.white,
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                  );
+                                }),
                               ),
                             ),
+                            // Align(
+                            //   alignment: Alignment.bottomLeft,
+                            //   child: Wrap(
+                            //     runSpacing: 0,
+                            //     spacing: 10,
+                            //     children: _buildFilterOptions(),
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: 13.0,
                             ),
