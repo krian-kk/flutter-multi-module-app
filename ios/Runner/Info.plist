@@ -18,7 +18,7 @@
 		<string>ar</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>Instalmint</string>
+	<string>Origa</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -40,17 +40,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>To capture deposit cheque and update user profile image</string>
+	<string>To capture deposit cheque or receipts upload and update the user profile image for profile view</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Using location to provide location details to users to perform collections</string>
+	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Using location to display your location in map</string>
+	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Using location to capture user's current location</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to capture audio for recording collection feedback</string>
+	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to upload deposit images</string>
+	<string>To capture deposit cheque or receipts upload and update the user profile image for profile view</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
