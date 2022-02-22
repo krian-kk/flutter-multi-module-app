@@ -199,8 +199,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 remarksControlller,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                // isVoiceRecordWidget: true,
-                                // caseId: widget.bloc.caseId,
+                                isVoiceRecordWidget: true,
+                                caseId: widget.bloc.caseId,
                               )),
                               const SizedBox(height: 15),
                               Flexible(
