@@ -9,6 +9,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class AddressInvalidScreen extends StatefulWidget {
@@ -66,36 +67,15 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         spacing: 10,
                         children: _buildSelectedClip(selectedClipList),
                       ),
-                      const SizedBox(height: 27),
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: CustomText(
-                            Languages.of(context)!.remarks.toUpperCase(),
-                            color: ColorResource.color666666,
-                            fontSize: FontSize.twelve,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          )),
-                      SizedBox(
-                        width: double.infinity,
-                        child: TextFormField(
-                          controller:
-                              widget.bloc.addressInvalidRemarksController,
-                          focusNode: widget.bloc.addressInvalidRemarksFocusNode,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              hintText:
-                                  Languages.of(context)!.writeYourRemarksHere,
-                              focusColor: ColorResource.colorE5EAF6,
-                              labelStyle:
-                                  const TextStyle(color: Color(0xFF424242))),
-                        ),
-                      ),
+                      const SizedBox(height: 15),
+                      Flexible(
+                          child: CustomReadOnlyTextField(
+                        Languages.of(context)!.remarks,
+                        widget.bloc.addressInvalidRemarksController,
+                        validationRules: const ['required'],
+                        isLabel: true,
+                        // suffixWidget: VoiceRecodingWidget(),
+                      )),
                       const SizedBox(height: 19),
                       CustomButton(
                         Languages.of(context)!.captureImage.toUpperCase(),

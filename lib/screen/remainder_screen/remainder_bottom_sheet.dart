@@ -227,6 +227,7 @@ class _CustomRemainderBottomSheetState
                                   child: CustomReadOnlyTextField(
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
+                                // suffixWidget: VoiceRecodingWidget(),
                                 validationRules: const ['required'],
                                 isLabel: true,
                               )),

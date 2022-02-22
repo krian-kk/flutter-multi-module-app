@@ -1,6 +1,5 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +69,6 @@ class _MyAppState extends State<MyApp> {
     });
     super.didChangeDependencies();
   }
-
 
   @override
   Widget build(BuildContext context) {

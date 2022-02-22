@@ -198,6 +198,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
                                 validationRules: const ['required'],
+                                // suffixWidget: VoiceRecodingWidget(),
                                 isLabel: true,
                               )),
                               const SizedBox(height: 15),

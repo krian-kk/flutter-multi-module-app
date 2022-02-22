@@ -128,12 +128,24 @@ class _CustomCaptureImageBottomSheetState
                                 },
                               ),
                               const SizedBox(height: 15),
+                              // Flexible(
+                              //     child: CustomReadOnlyTextField(
+                              //   Languages.of(context)!.remarks,
+                              //   remarksControlller,
+                              //   validationRules: const ['required'],
+                              //   isLabel: true,
+                              // )),
                               Flexible(
-                                  child: CustomReadOnlyTextField(
-                                Languages.of(context)!.remarks,
-                                remarksControlller,
-                                validationRules: const ['required'],
-                                isLabel: true,
+                                  child: Stack(
+                                children: [
+                                  CustomReadOnlyTextField(
+                                    Languages.of(context)!.remarks,
+                                    remarksControlller,
+                                    validationRules: const ['required'],
+                                    isLabel: true,
+                                    // suffixWidget: VoiceRecodingWidget(),
+                                  ),
+                                ],
                               )),
                               const SizedBox(height: 15),
                             ],

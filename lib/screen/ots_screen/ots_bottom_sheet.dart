@@ -253,6 +253,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     remarksControlller,
                                     validationRules: const ['required'],
                                     isLabel: true,
+                                    // suffixWidget: VoiceRecodingWidget(),
                                   )),
                                   const SizedBox(height: 15),
                                   CustomText(

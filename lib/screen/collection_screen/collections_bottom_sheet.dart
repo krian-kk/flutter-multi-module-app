@@ -348,6 +348,7 @@ class _CustomCollectionsBottomSheetState
                                   validationRules: const ['required'],
                                   isLabel: true,
                                   onEditing: () => remarksFocusNode.unfocus(),
+                                  // suffixWidget: VoiceRecodingWidget(),
                                 ),
                                 const SizedBox(height: 15),
                                 CustomButton(

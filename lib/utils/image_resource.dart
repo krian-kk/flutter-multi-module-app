@@ -51,4 +51,5 @@ class ImageResource {
   //     'assets/svg/no_case_available_image.svg';
   static const String sms = 'assets/svg/SMS.svg';
   static const String unStar = 'assets/svg/unStar.svg';
+  static const String microPhoneImage = 'assets/svg/microphone_img.svg';
 }

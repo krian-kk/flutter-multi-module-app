@@ -112,37 +112,45 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 27),
-                        Align(
-                            alignment: Alignment.bottomLeft,
-                            child: CustomText(
-                              Languages.of(context)!.remarks.toUpperCase(),
-                              color: ColorResource.color666666,
-                              fontSize: FontSize.twelve,
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                            )),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            controller: widget
-                                .bloc.addressCustomerNotMetRemarksController,
-                            focusNode: widget
-                                .bloc.addressCustomerNotMetRemarksFocusNode,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                hintText:
-                                    Languages.of(context)!.writeYourRemarksHere,
-                                focusColor: ColorResource.colorE5EAF6,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF424242))),
-                          ),
-                        ),
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          widget.bloc.addressCustomerNotMetRemarksController,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          // suffixWidget: VoiceRecodingWidget(),
+                        )),
+                        // Align(
+                        //     alignment: Alignment.bottomLeft,
+                        //     child: CustomText(
+                        //       Languages.of(context)!.remarks.toUpperCase(),
+                        //       color: ColorResource.color666666,
+                        //       fontSize: FontSize.twelve,
+                        //       fontWeight: FontWeight.w400,
+                        //       fontStyle: FontStyle.normal,
+                        //     )),
+                        // SizedBox(
+                        //   width: double.infinity,
+                        //   child: TextFormField(
+                        //     controller: widget
+                        //         .bloc.addressCustomerNotMetRemarksController,
+                        //     focusNode: widget
+                        //         .bloc.addressCustomerNotMetRemarksFocusNode,
+                        //     validator: (value) {
+                        //       if (value == null || value.isEmpty) {
+                        //         return 'Please enter some text';
+                        //       }
+                        //       return null;
+                        //     },
+                        //     decoration: InputDecoration(
+                        //         hintText:
+                        //             Languages.of(context)!.writeYourRemarksHere,
+                        //         focusColor: ColorResource.colorE5EAF6,
+                        //         labelStyle:
+                        //             const TextStyle(color: Color(0xFF424242))),
+                        //   ),
+                        // ),
                         const SizedBox(height: 19),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),

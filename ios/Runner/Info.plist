@@ -43,6 +43,8 @@
 	<string>To capture deposit cheque and update user profile image</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Using location to provide location details to users to perform collections</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need to access to the microphone to record audio file</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Using location to display your location in map</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
