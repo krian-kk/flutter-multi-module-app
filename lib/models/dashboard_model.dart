@@ -35,3 +35,13 @@ class CaseListModel {
     this.onTap,
   });
 }
+
+class FilterCasesByTimeperiod {
+  String? timeperiodText;
+  String? value;
+
+  FilterCasesByTimeperiod({
+    this.timeperiodText,
+    this.value,
+  });
+}

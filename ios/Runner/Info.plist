@@ -43,6 +43,9 @@
 	<string>To capture deposit cheque or receipts upload and update the user profile image for profile view</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
+	<string>Using location to provide location details to users to perform collections</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need to access to the microphone to record audio file</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

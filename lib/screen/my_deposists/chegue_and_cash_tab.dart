@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -400,7 +399,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                     ids.add(element._id);
                                                   }
                                                 }
-                                                print(ids);
                                               },
                                             ),
                                           ),

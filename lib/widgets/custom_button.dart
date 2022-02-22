@@ -26,6 +26,8 @@ class CustomButton extends StatefulWidget {
   final Font font;
   final bool isEnabled;
   final double padding;
+  final bool isRemoveExtraPadding;
+  final double? width;
 
   const CustomButton(
     this.text, {
@@ -56,6 +58,8 @@ class CustomButton extends StatefulWidget {
     this.maxLines,
     this.padding = 5.0,
     this.isEnabled = true,
+    this.isRemoveExtraPadding = false,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -74,39 +78,46 @@ class _CustomButtonState extends State<CustomButton> {
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 56,
-        child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(widget.cardShape),
-              side: BorderSide(
-                  width: 0.5,
-                  color: widget.borderColor
-                      .withOpacity(widget.isEnabled ? 1 : 0.3))),
-          color: widget.buttonBackgroundColor
-              .withOpacity(widget.isEnabled ? 1 : 0.3),
-          elevation: widget.cardElevation,
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: Flex(
-              direction: widget.axis,
-              mainAxisAlignment: widget.alignment,
-              children: [
-                if (widget.isLeading) widget.trailingWidget,
-                if (widget.text != null)
-                  Padding(
-                    padding: EdgeInsets.all(widget.padding),
-                    child: Text(
-                      widget.text.toString(),
-                      textAlign: widget.textAlign,
-                      style: Theme.of(context).textTheme.button!.copyWith(
-                          color: widget.textColor
-                              .withOpacity(widget.isEnabled ? 1 : 0.3)),
-                      maxLines: widget.maxLines,
-                      overflow:
-                          widget.isSingleLine ? TextOverflow.ellipsis : null,
+        child: MediaQuery.removePadding(
+          context: context,
+          removeBottom: widget.isRemoveExtraPadding,
+          removeLeft: widget.isRemoveExtraPadding,
+          removeRight: widget.isRemoveExtraPadding,
+          removeTop: widget.isRemoveExtraPadding,
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(widget.cardShape),
+                side: BorderSide(
+                    width: 0.5,
+                    color: widget.borderColor
+                        .withOpacity(widget.isEnabled ? 1 : 0.3))),
+            color: widget.buttonBackgroundColor
+                .withOpacity(widget.isEnabled ? 1 : 0.3),
+            elevation: widget.cardElevation,
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Flex(
+                direction: widget.axis,
+                mainAxisAlignment: widget.alignment,
+                children: [
+                  if (widget.isLeading) widget.trailingWidget,
+                  if (widget.text != null)
+                    Padding(
+                      padding: EdgeInsets.all(widget.padding),
+                      child: Text(
+                        widget.text.toString(),
+                        textAlign: widget.textAlign,
+                        style: Theme.of(context).textTheme.button!.copyWith(
+                            color: widget.textColor
+                                .withOpacity(widget.isEnabled ? 1 : 0.3)),
+                        maxLines: widget.maxLines,
+                        overflow:
+                            widget.isSingleLine ? TextOverflow.ellipsis : null,
+                      ),
                     ),
-                  ),
-                if (widget.isTrailing) widget.leadingWidget
-              ],
+                  if (widget.isTrailing) widget.leadingWidget
+                ],
+              ),
             ),
           ),
         ),

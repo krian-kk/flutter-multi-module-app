@@ -21,7 +21,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
@@ -129,12 +128,24 @@ class _CustomCaptureImageBottomSheetState
                                 },
                               ),
                               const SizedBox(height: 15),
+                              // Flexible(
+                              //     child: CustomReadOnlyTextField(
+                              //   Languages.of(context)!.remarks,
+                              //   remarksControlller,
+                              //   validationRules: const ['required'],
+                              //   isLabel: true,
+                              // )),
                               Flexible(
-                                  child: CustomReadOnlyTextField(
-                                Languages.of(context)!.remarks,
-                                remarksControlller,
-                                validationRules: const ['required'],
-                                isLabel: true,
+                                  child: Stack(
+                                children: [
+                                  CustomReadOnlyTextField(
+                                    Languages.of(context)!.remarks,
+                                    remarksControlller,
+                                    validationRules: const ['required'],
+                                    isLabel: true,
+                                    // suffixWidget: VoiceRecodingWidget(),
+                                  ),
+                                ],
                               )),
                               const SizedBox(height: 15),
                             ],

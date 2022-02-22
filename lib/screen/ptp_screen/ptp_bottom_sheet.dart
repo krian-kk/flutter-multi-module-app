@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -23,7 +21,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:origa/utils/string_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
@@ -215,8 +213,16 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                             // isLabel: true,
                                             isReadOnly: true,
                                             validationRules: const ['required'],
-                                            onTapped: () => pickDate(
-                                                context, ptpDateControlller),
+                                            onTapped: () =>
+                                                PickDateAndTimeUtils.pickDate(
+                                                    context, (newDate) {
+                                              if (newDate != null) {
+                                                setState(() {
+                                                  ptpDateControlller.text =
+                                                      newDate;
+                                                });
+                                              }
+                                            }),
                                             suffixWidget: SvgPicture.asset(
                                               ImageResource.calendar,
                                               fit: BoxFit.scaleDown,
@@ -254,8 +260,16 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                             validatorCallBack: () {},
                                             isReadOnly: true,
                                             validationRules: const ['required'],
-                                            onTapped: () => pickTime(
-                                                context, ptpTimeControlller),
+                                            onTapped: () =>
+                                                PickDateAndTimeUtils.pickTime(
+                                                    context, (newTime) {
+                                              if (newTime != null) {
+                                                setState(() {
+                                                  ptpTimeControlller.text =
+                                                      newTime;
+                                                });
+                                              }
+                                            }),
                                             suffixWidget: SvgPicture.asset(
                                               ImageResource.clock,
                                               fit: BoxFit.scaleDown,
@@ -290,8 +304,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 const SizedBox(height: 8),
                                 Wrap(
-                                  runSpacing: 10,
-                                  spacing: 13,
+                                  runSpacing: 9,
+                                  spacing: 10,
                                   children: _buildPaymentButton(
                                       paymentModeButtonList),
                                 ),
@@ -312,6 +326,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   focusNode: ptpRemarksFocusNode,
                                   validationRules: const ['required'],
                                   isLabel: true,
+                                  // suffixWidget: VoiceRecodingWidget(),
                                   validatorCallBack: () {},
                                   onEditing: () =>
                                       ptpRemarksFocusNode.unfocus(),
@@ -552,7 +567,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           });
         },
         child: Container(
-          width: 163,
+          width: 156,
           height: 50,
           decoration: BoxDecoration(
               color: element.title == selectedPaymentModeButton
@@ -571,13 +586,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: 20,
+                  radius: 19,
                   backgroundColor: ColorResource.colorFFFFFF,
                   child: Center(
                     child: SvgPicture.asset(ImageResource.money),
                   ),
                 ),
-                const SizedBox(width: 7),
+                const SizedBox(width: 6),
                 Flexible(
                   child: CustomText(
                     element.title,
@@ -595,76 +610,5 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       ));
     }
     return widgets;
-  }
-
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.day,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 3),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-    });
-  }
-
-  Future pickTime(
-      BuildContext context, TextEditingController controller) async {
-    final newTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-    if (newTime == null) return;
-
-    final time = newTime.format(context).toString();
-    setState(() {
-      controller.text = time;
-    });
   }
 }

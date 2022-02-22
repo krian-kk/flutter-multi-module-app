@@ -47,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       Color? backgrountColor,
       required Color leadingColor}) {
     return Container(
-      height: 60,
+      height: 65,
       decoration: BoxDecoration(
           color: backgrountColor, borderRadius: BorderRadius.circular(10)),
       child: Row(
@@ -156,7 +156,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
           if (state is SetTimeperiodValueState) {
-            bloc.selectedFilter = 'TODAY';
+            bloc.selectedFilter = Constants.today;
+            bloc.selectedFilterIndex = '0';
           }
           if (state is PostDataApiSuccessState) {
             while (Navigator.canPop(context)) {
@@ -592,9 +593,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                   .circular(75),
                                                         ),
                                                         child: Container(
-                                                          alignment: Alignment.center,
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   horizontal:
                                                                       5),
                                                           child: CustomText(
@@ -603,7 +606,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                     index]
                                                                 .title!,
                                                             isSingleLine: false,
-                                                            textAlign: TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             fontSize:
                                                                 FontSize.twelve,
                                                             fontWeight:

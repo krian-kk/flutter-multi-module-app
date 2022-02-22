@@ -512,4 +512,6 @@ abstract class Languages {
   String get addMoreContact;
 
   String get uploadAudioFile;
+
+  String get autoCalling;
 }

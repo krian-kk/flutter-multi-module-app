@@ -650,12 +650,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   const NeverScrollableScrollPhysics(),
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
-                                              itemCount: bloc
+                                              itemCount: (bloc
+                                                              .caseDetailsAPIValue
+                                                              .result
+                                                              ?.otherLoanDetails
+                                                              ?.length ??
+                                                          0) >=
+                                                      25
+                                                  ? 25
+                                                  : bloc
                                                       .caseDetailsAPIValue
                                                       .result
                                                       ?.otherLoanDetails
-                                                      ?.length ??
-                                                  0,
+                                                      ?.length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
