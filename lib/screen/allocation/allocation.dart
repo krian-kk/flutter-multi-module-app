@@ -875,7 +875,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                         children: [
                                           SvgPicture.asset(
                                               ImageResource.location),
-                                          const SizedBox(width: 10.0),
+                                          const SizedBox(width: 8),
                                           Flexible(
                                             child: CustomText(
                                               Languages.of(context)!
@@ -891,9 +891,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: Row(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
                                           SizedBox(
-                                              width: 74,
+                                              width: 64,
                                               height: 40,
                                               child: CustomButton(
                                                 Languages.of(context)!.yes,
@@ -903,32 +904,31 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                 buttonBackgroundColor:
                                                     ColorResource.colorEA6D48,
                                                 cardShape: 5,
+                                                isRemoveExtraPadding: true,
                                                 onTap: () {
                                                   bloc.add(
                                                       TapAreYouAtOfficeOptionsEvent());
                                                 },
                                               )),
-                                          const SizedBox(width: 3.0),
-                                          Expanded(
-                                            child: SizedBox(
-                                                // width: 85,
-                                                height: 40,
-                                                child: CustomButton(
-                                                  Languages.of(context)!.no,
-                                                  fontSize: FontSize.twelve,
-                                                  borderColor:
-                                                      ColorResource.color23375A,
-                                                  textColor:
-                                                      ColorResource.color23375A,
-                                                  buttonBackgroundColor:
-                                                      ColorResource.colorffffff,
-                                                  cardShape: 5,
-                                                  onTap: () {
-                                                    bloc.add(
-                                                        TapAreYouAtOfficeOptionsEvent());
-                                                  },
-                                                )),
-                                          ),
+                                          SizedBox(
+                                              width: 85,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.no,
+                                                fontSize: FontSize.twelve,
+                                                borderColor:
+                                                    ColorResource.color23375A,
+                                                textColor:
+                                                    ColorResource.color23375A,
+                                                buttonBackgroundColor:
+                                                    ColorResource.colorffffff,
+                                                cardShape: 5,
+                                                isRemoveExtraPadding: true,
+                                                onTap: () {
+                                                  bloc.add(
+                                                      TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
                                         ],
                                       ),
                                     )

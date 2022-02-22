@@ -18,7 +18,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';

@@ -47,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       Color? backgrountColor,
       required Color leadingColor}) {
     return Container(
-      height: 60,
+      height: 65,
       decoration: BoxDecoration(
           color: backgrountColor, borderRadius: BorderRadius.circular(10)),
       child: Row(
@@ -156,7 +156,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         bloc: bloc,
         listener: (BuildContext context, DashboardState state) async {
           if (state is SetTimeperiodValueState) {
-            print("Slected option ===>");
             bloc.selectedFilter = Constants.today;
             bloc.selectedFilterIndex = '0';
           }

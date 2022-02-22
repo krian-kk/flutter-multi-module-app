@@ -28,6 +28,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
@@ -224,7 +225,14 @@ class _CustomOtherFeedBackBottomSheetState
                                         validationRules: const ['required'],
                                         isReadOnly: true,
                                         onTapped: () =>
-                                            pickDate(context, dateControlller),
+                                            PickDateAndTimeUtils.pickDate(
+                                                context, (newDate) {
+                                          if (newDate != null) {
+                                            setState(() {
+                                              dateControlller.text = newDate;
+                                            });
+                                          }
+                                        }),
                                         suffixWidget: SvgPicture.asset(
                                           ImageResource.calendar,
                                           fit: BoxFit.scaleDown,
@@ -289,7 +297,7 @@ class _CustomOtherFeedBackBottomSheetState
                                           onTap: () => getFiles(),
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
-                                                5, 10, 5, 15),
+                                                8, 10, 5, 15),
                                             child: Column(
                                               children: [
                                                 Row(
@@ -301,21 +309,26 @@ class _CustomOtherFeedBackBottomSheetState
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
                                                     const SizedBox(width: 7),
-                                                    CustomText(
-                                                      Languages.of(context)!
-                                                          .uploadAudioFile,
-                                                      color: ColorResource
-                                                          .colorFFFFFF,
-                                                      fontSize:
-                                                          FontSize.sixteen,
-                                                      lineHeight: 1,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontWeight:
-                                                          FontWeight.w700,
+                                                    Flexible(
+                                                      child: CustomText(
+                                                        Languages.of(context)!
+                                                            .uploadAudioFile,
+                                                        color: ColorResource
+                                                            .colorFFFFFF,
+                                                        fontSize:
+                                                            FontSize.sixteen,
+                                                        lineHeight: 1,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
                                                     )
                                                   ],
                                                 ),
+                                                const SizedBox(height: 3),
                                                 CustomText(
                                                   Languages.of(context)!
                                                       .upto5mb,
@@ -622,43 +635,6 @@ class _CustomOtherFeedBackBottomSheetState
       }
     }
     setState(() => isSubmit = true);
-  }
-
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.day,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 3),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-    });
   }
 
   expandList(List<FeedbackTemplate> list, int index) {

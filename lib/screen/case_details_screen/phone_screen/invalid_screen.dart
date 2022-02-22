@@ -7,6 +7,8 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/select_payment_mode_button_widget.dart';
+import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class PhonenInvalidScreen extends StatefulWidget {
@@ -65,44 +67,41 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                           spacing: 10,
                           children: _buildSelectedClip(selectedClipList),
                         ),
-                        const SizedBox(height: 27),
-                        CustomText(
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
-                          color: ColorResource.color666666,
-                          fontWeight: FontWeight.w400,
-                          fontSize: FontSize.twelve,
-                          fontStyle: FontStyle.normal,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            focusNode: widget.bloc.phoneInvalidRemarksFocusNode,
-                            controller:
-                                widget.bloc.phoneInvalidRemarksController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                hintText:
-                                    Languages.of(context)!.writeYourRemarksHere,
-                                focusColor: ColorResource.colorE5EAF6,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF424242))),
-                          ),
-                        ),
+                          widget.bloc.phoneInvalidRemarksController,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          // suffixWidget: VoiceRecodingWidget(),
+                        )),
                         const SizedBox(height: 19),
                         Wrap(
                           spacing: 15,
                           runSpacing: 8,
-                          children: _buildOptionBottomSheetOpenButton(
+                          children: SelectPaymentModeButtonWidget
+                              .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
+                            (element) {
+                              setState(() {
+                                selectedOptionBottomSheetButton = element.title;
+                              });
+                              widget.bloc.add(ClickOpenBottomSheetEvent(
+                                element.stringResourceValue,
+                                widget.bloc.caseDetailsAPIValue.result
+                                    ?.callDetails,
+                                true,
+                                health: ConstantEventValues.healthZero,
+                                isCallFromCallDetails:
+                                    widget.isCallFromCaseDetails,
+                                callId: widget.callId,
+                              ));
+                            },
+                            selectedOptionBottomSheetButton,
                           ),
                         ),
-                        const SizedBox(height: 120)
                       ],
                     ),
                   ),
@@ -113,50 +112,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
         ),
       ),
     );
-  }
-
-  List<Widget> _buildOptionBottomSheetOpenButton(
-      List<OptionBottomSheetButtonModel> list, BuildContext context) {
-    List<Widget> widgets = [];
-    for (var element in list) {
-      widgets.add(InkWell(
-        onTap: () {
-          setState(() {
-            selectedOptionBottomSheetButton = element.title;
-          });
-          widget.bloc.add(ClickOpenBottomSheetEvent(
-            element.stringResourceValue,
-            widget.bloc.caseDetailsAPIValue.result?.callDetails,
-            true,
-            health: ConstantEventValues.healthZero,
-            isCallFromCallDetails: widget.isCallFromCaseDetails,
-            callId: widget.callId,
-          ));
-        },
-        child: Container(
-          height: 45,
-          decoration: BoxDecoration(
-              color: element.title == selectedOptionBottomSheetButton
-                  ? ColorResource.color23375A
-                  : ColorResource.colorFFFFFF,
-              border: Border.all(color: ColorResource.color23375A, width: 0.5),
-              borderRadius: const BorderRadius.all(Radius.circular(50.0))),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
-            child: CustomText(
-              element.title.toString().toUpperCase(),
-              color: element.title == selectedOptionBottomSheetButton
-                  ? ColorResource.colorFFFFFF
-                  : ColorResource.color23375A,
-              fontWeight: FontWeight.w700,
-              fontSize: FontSize.thirteen,
-              fontStyle: FontStyle.normal,
-            ),
-          ),
-        ),
-      ));
-    }
-    return widgets;
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {

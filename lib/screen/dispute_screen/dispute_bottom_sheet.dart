@@ -20,6 +20,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
@@ -173,8 +174,16 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       nextActionDateControlller,
                                       validationRules: const ['required'],
                                       isReadOnly: true,
-                                      onTapped: () => pickDate(
-                                          context, nextActionDateControlller),
+                                      onTapped: () =>
+                                          PickDateAndTimeUtils.pickDate(context,
+                                              (newDate) {
+                                        if (newDate != null) {
+                                          setState(() {
+                                            nextActionDateControlller.text =
+                                                newDate;
+                                          });
+                                        }
+                                      }),
                                       suffixWidget: SvgPicture.asset(
                                         ImageResource.calendar,
                                         fit: BoxFit.scaleDown,
@@ -190,6 +199,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 remarksControlller,
                                 validationRules: const ['required'],
                                 isLabel: true,
+                                isVoiceRecordWidget: true,
+                                caseId: widget.bloc.caseId,
                               )),
                               const SizedBox(height: 15),
                               Flexible(
@@ -423,42 +434,5 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
         setState(() => isSubmit = true);
       }
     }
-  }
-
-  Future pickDate(
-      BuildContext context, TextEditingController controller) async {
-    final newDate = await showDatePicker(
-        context: context,
-        initialDatePickerMode: DatePickerMode.year,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
-                onSurface: ColorResource.color23375A,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: ColorResource.color23375A,
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    setState(() {
-      controller.text = formattedDate;
-    });
   }
 }
