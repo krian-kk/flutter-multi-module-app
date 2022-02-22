@@ -17,6 +17,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
@@ -318,6 +319,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                             .toUpperCase(),
                                                         fontSize:
                                                             FontSize.fourteen,
+                                                        lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -326,7 +328,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     ],
                                                   )),
                                             ))),
-                                    const SizedBox(width: 40),
+                                    const SizedBox(width: 30),
                                     Expanded(
                                         child: SizedBox(
                                       height: 45,
@@ -358,6 +360,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                             ),
                           ),
                           Container(
+                            width: MediaQuery.of(context).size.width,
+                            alignment: Alignment.center,
                             decoration: const BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
@@ -520,20 +524,13 @@ class _PhoneScreenState extends State<PhoneScreen>
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child: CustomButton(
-                                      Languages.of(context)!.cancel.toUpperCase(),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
-                                      buttonBackgroundColor: Colors.white,
-                                      borderColor: Colors.white,
-                                      textColor: ColorResource.colorEA6D48,
-                                      onTap: () => Navigator.pop(context),
-                                      cardShape: 5,
-                                    ),
+                                    child: CustomCancelButton.cancelButton(
+                                        context),
                                   ),
                                   SizedBox(
                                       width: Singleton.instance.startCalling ??

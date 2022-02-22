@@ -29,6 +29,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -229,9 +230,15 @@ class _CustomCollectionsBottomSheetState
                                           child: CustomReadOnlyTextField(
                                             '',
                                             amountCollectedControlller,
-                                            contentPadding:
-                                                const EdgeInsets.fromLTRB(
-                                                    1, 23, 5, 10),
+                                            // contentPadding:
+                                            //     const EdgeInsets.fromLTRB(
+                                            //         1, 23, 5, 10),
+                                            onChanged: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                _formKey.currentState!.save();
+                                              }
+                                            },
                                             validatorCallBack: () {},
                                             keyBoardType: TextInputType.number,
                                             focusNode: amountCollectedFocusNode,
@@ -326,7 +333,7 @@ class _CustomCollectionsBottomSheetState
                                 const SizedBox(height: 8),
                                 Wrap(
                                   runSpacing: 10,
-                                  spacing: 18,
+                                  spacing: 13,
                                   children: _buildPaymentButton(
                                       paymentModeButtonList),
                                 ),
@@ -393,21 +400,8 @@ class _CustomCollectionsBottomSheetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          AppUtils.showToast('Unable to send SMS');
-                          Navigator.pop(context);
-                        },
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
@@ -795,7 +789,7 @@ class _CustomCollectionsBottomSheetState
           });
         },
         child: Container(
-          width: 150,
+          width: 163,
           height: 50,
           decoration: BoxDecoration(
               color: element.title == selectedPaymentModeButton

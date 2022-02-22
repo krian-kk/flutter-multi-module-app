@@ -29,6 +29,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -265,7 +266,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 8),
                                   Wrap(
                                     runSpacing: 10,
-                                    spacing: 18,
+                                    spacing: 13,
                                     children: _buildPaymentButton(
                                         paymentModeButtonList),
                                   ),
@@ -296,8 +297,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
                                                     const SizedBox(width: 5),
-                                                    const CustomText(
-                                                      'UPLOAD FILE',
+                                                    CustomText(
+                                                      Languages.of(context)!
+                                                          .uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
@@ -309,8 +311,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     )
                                                   ],
                                                 ),
-                                                const CustomText(
-                                                  'UPTO 5MB',
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .upto5mb,
                                                   lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
@@ -351,19 +354,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: SizedBox(
-                              width: 95,
-                              child: Center(
-                                  child: CustomText(
-                                Languages.of(context)!.cancel.toUpperCase(),
-                                color: ColorResource.colorEA6D48,
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FontStyle.normal,
-                                fontSize: FontSize.sixteen,
-                              ))),
-                        ),
+                       Expanded(
+                              child: CustomCancelButton.cancelButton(context),
+                            ),
                         SizedBox(
                             width: Singleton.instance.startCalling ?? false
                                 ? 5
@@ -645,7 +638,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           });
         },
         child: Container(
-          width: 150,
+          width: 163,
           height: 50,
           decoration: BoxDecoration(
               color: element.title == selectedPaymentModeButton

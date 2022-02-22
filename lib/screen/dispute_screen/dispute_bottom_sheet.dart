@@ -22,6 +22,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -243,18 +244,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false

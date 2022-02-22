@@ -494,4 +494,22 @@ abstract class Languages {
   String get autoCallingIsComplete;
 
   String get pleaseCallAgain;
+
+  String get approved;
+
+  String get pendingApproval;
+
+  String get rejected;
+
+  String get homeAddressNotAvailable;
+
+  String get sendSMS;
+
+  String get uploadFile;
+
+  String get upto5mb;
+
+  String get addMoreContact;
+
+  String get uploadAudioFile;
 }

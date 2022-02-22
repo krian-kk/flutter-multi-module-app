@@ -7,6 +7,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -81,7 +82,8 @@ class CaseLists {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      listData.result!.totalAmt.toString(),
+                                      Constants.inr +
+                                          listData.result!.totalAmt.toString(),
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
@@ -362,7 +364,15 @@ class CaseLists {
                                         children: [
                                           CustomText(
                                             listData.result!.cases![index]
-                                                .followUpDate!,
+                                                        .followUpDate !=
+                                                    '-'
+                                                ? DateFormateUtils
+                                                    .followUpDateFormate(
+                                                        listData
+                                                            .result!
+                                                            .cases![index]
+                                                            .followUpDate!)
+                                                : '-',
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color101010,
                                             fontWeight: FontWeight.w700,

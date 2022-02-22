@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,6 +20,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
@@ -433,16 +433,7 @@ class _AddressScreenState extends State<AddressScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: CustomButton(
-                                Languages.of(context)!.cancel.toUpperCase(),
-                                fontSize: FontSize.eighteen,
-                                fontWeight: FontWeight.w600,
-                                buttonBackgroundColor: Colors.white,
-                                borderColor: Colors.white,
-                                textColor: ColorResource.colorEA6D48,
-                                onTap: () => Navigator.pop(context),
-                                cardShape: 5,
-                              ),
+                              child: CustomCancelButton.cancelButton(context),
                             ),
                             SizedBox(
                               width: 191,

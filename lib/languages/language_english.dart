@@ -476,7 +476,7 @@ class LanguageEn extends Languages {
   String get modelMake => 'MODEL MAKE*';
 
   @override
-  String get registrationNo => 'REGISTRATION NO*';
+  String get registrationNo => 'Registration No';
 
   @override
   String get chassisNo => 'CHASSIS NO*';
@@ -739,4 +739,31 @@ class LanguageEn extends Languages {
 
   @override
   String get pleaseCallAgain => 'Please Call Again!';
+
+  @override
+  String get approved => 'Approved';
+
+  @override
+  String get pendingApproval => 'Pending Approval';
+
+  @override
+  String get rejected => 'Rejected';
+
+  @override
+  String get homeAddressNotAvailable => 'Home address not available.';
+
+  @override
+  String get sendSMS => 'SEND SMS';
+
+  @override
+  String get uploadFile => 'UPLOAD FILE';
+
+  @override
+  String get upto5mb => 'UPTO 5MB';
+
+  @override
+  String get addMoreContact => 'ADD MORE CONTACT';
+
+  @override
+  String get uploadAudioFile => 'UPLOAD AUDIO FILE';
 }

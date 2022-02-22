@@ -26,6 +26,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -208,8 +209,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                                   .width) /
                                               2,
                                           child: CustomReadOnlyTextField(
+                                            // Languages.of(context)!.ptpDate,
                                             '',
                                             ptpDateControlller,
+                                            // isLabel: true,
                                             isReadOnly: true,
                                             validationRules: const ['required'],
                                             onTapped: () => pickDate(
@@ -244,8 +247,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                                   .width) /
                                               2,
                                           child: CustomReadOnlyTextField(
+                                            // Languages.of(context)!.ptpTime,
                                             '',
                                             ptpTimeControlller,
+                                            // isLabel: true,
                                             validatorCallBack: () {},
                                             isReadOnly: true,
                                             validationRules: const ['required'],
@@ -286,13 +291,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 const SizedBox(height: 8),
                                 Wrap(
                                   runSpacing: 10,
-                                  spacing: 18,
+                                  spacing: 13,
                                   children: _buildPaymentButton(
                                       paymentModeButtonList),
                                 ),
                                 const SizedBox(height: 21),
                                 CustomReadOnlyTextField(
-                                  StringResource.reference,
+                                  Languages.of(context)!.reference,
                                   referenceControlller,
                                   focusNode: ptpReferenceFocusNode,
                                   isLabel: true,
@@ -340,18 +345,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
@@ -557,7 +552,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           });
         },
         child: Container(
-          width: 150,
+          width: 163,
           height: 50,
           decoration: BoxDecoration(
               color: element.title == selectedPaymentModeButton
@@ -583,13 +578,15 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   ),
                 ),
                 const SizedBox(width: 7),
-                CustomText(
-                  element.title,
-                  color: ColorResource.colorFFFFFF,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
+                Flexible(
+                  child: CustomText(
+                    element.title,
+                    color: ColorResource.colorFFFFFF,
+                    fontWeight: FontWeight.w700,
+                    lineHeight: 1,
+                    fontSize: FontSize.sixteen,
+                    fontStyle: FontStyle.normal,
+                  ),
                 )
               ],
             ),

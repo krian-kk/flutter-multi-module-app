@@ -256,24 +256,24 @@ class _ChatScreenState extends State<ChatScreen> {
       debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
       //When click the submit button
       //Who are all in online
-      presenceChannel!.presence
-          .subscribe(action: PresenceAction.enter)
-          .listen((ably.PresenceMessage event) async {
-        debugPrint('Who are all in online--> ${event.clientId}');
-        debugPrint('New message arrived ${event.data}');
-        if (toARef == event.clientId) {
-          //Post messages
-          // await chatChannel.publish(messages: [
-          //   ably.Message(name: clientIDFromARef, data: 'Sai'),
-          // ]).then((value) {
-          //   debugPrint('Success state-->');
-          // }).catchError((error) {
-          //   debugPrint('Error state--> ${error.toString()}');
-          // });
-        } else {
-          // Have to integrate with FCM after that message
-        }
-      });
+      // presenceChannel!.presence
+      //     .subscribe(action: PresenceAction.enter)
+      //     .listen((ably.PresenceMessage event) async {
+      //   debugPrint('Who are all in online--> ${event.clientId}');
+      //   debugPrint('New message arrived ${event.data}');
+      //   if (toARef == event.clientId) {
+      //     //Post messages
+      //     // await chatChannel.publish(messages: [
+      //     //   ably.Message(name: clientIDFromARef, data: 'Sai'),
+      //     // ]).then((value) {
+      //     //   debugPrint('Success state-->');
+      //     // }).catchError((error) {
+      //     //   debugPrint('Error state--> ${error.toString()}');
+      //     // });
+      //   } else {
+      //     // Have to integrate with FCM after that message
+      //   }
+      // });
 
       chatChannel.subscribe(name: clientIDFromARef).listen((event) {
         print('New Message arrived from $clientIDFromARef ${event.data}');

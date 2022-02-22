@@ -6,6 +6,7 @@ import 'package:origa/screen/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
@@ -213,8 +214,11 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                     children: [
                                                       Row(
                                                         children: [
-                                                          const CustomText(
-                                                            "Registration No. ",
+                                                          CustomText(
+                                                            Languages.of(
+                                                                        context)!
+                                                                    .registrationNo +
+                                                                '. ',
                                                             fontSize: FontSize
                                                                 .fourteen,
                                                             color: ColorResource
@@ -236,6 +240,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                   true,
                                                               fontSize: FontSize
                                                                   .seventeen,
+                                                              lineHeight: 1,
                                                               color: ColorResource
                                                                   .color101010,
                                                               fontWeight:
@@ -314,100 +319,121 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
-                                                          23, 5, 14, 13),
+                                                          23, 5, 10, 13),
                                                   child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          CustomText(
-                                                            Languages.of(
-                                                                    context)!
-                                                                .repoDate,
-                                                            fontSize: FontSize
-                                                                .fourteen,
-                                                            color: ColorResource
-                                                                .color101010,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                          CustomText(
-                                                            widget
-                                                                    .bloc
-                                                                    .yardingAndSelfReleaseData
-                                                                    .result![
-                                                                        index]
-                                                                    .eventAttr!
-                                                                    .date ??
-                                                                '',
-                                                            fontSize: FontSize
-                                                                .fourteen,
-                                                            color: ColorResource
-                                                                .color101010,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                        ],
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            CustomText(
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .repoDate,
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              color: ColorResource
+                                                                  .color101010,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                            CustomText(
+                                                              widget
+                                                                          .bloc
+                                                                          .yardingAndSelfReleaseData
+                                                                          .result![
+                                                                              index]
+                                                                          .eventAttr!
+                                                                          .date !=
+                                                                      null
+                                                                  ? DateFormateUtils.followUpDateFormate(widget
+                                                                      .bloc
+                                                                      .yardingAndSelfReleaseData
+                                                                      .result![
+                                                                          index]
+                                                                      .eventAttr!
+                                                                      .date!)
+                                                                  : '',
+                                                              fontSize: FontSize
+                                                                  .fourteen,
+                                                              color: ColorResource
+                                                                  .color101010,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      const Spacer(),
-                                                      SizedBox(
-                                                        width: 123,
-                                                        height: 47,
-                                                        child: _selectedIndex !=
-                                                                    null &&
-                                                                _selectedIndex ==
-                                                                    index
-                                                            ? CustomButton(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .selected,
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .twelve,
-                                                              )
-                                                            : CustomButton(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .select
-                                                                    .toUpperCase(),
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .twelve,
-                                                                buttonBackgroundColor:
-                                                                    ColorResource
-                                                                        .colorFEFFFF,
-                                                                borderColor:
-                                                                    ColorResource
-                                                                        .colorFEFFFF,
-                                                                textColor:
-                                                                    ColorResource
-                                                                        .color23375A,
-                                                                cardElevation:
-                                                                    3.0,
-                                                                onTap: () {
-                                                                  _onSelected(
-                                                                      index);
-                                                                  setState(() {
-                                                                    caseID = widget
-                                                                        .bloc
-                                                                        .yardingAndSelfReleaseData
-                                                                        .result![
-                                                                            index]
-                                                                        .sId!;
-                                                                    // print(
-                                                                    //     caseID);
-                                                                    custName = widget
-                                                                            .bloc
-                                                                            .yardingAndSelfReleaseData
-                                                                            .result![index]
-                                                                            .eventAttr!
-                                                                            .customerName ??
-                                                                        '';
-                                                                  });
-                                                                },
-                                                              ),
+                                                      // const Spacer(),
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          // width: 123,
+                                                          height: 53,
+                                                          child: _selectedIndex !=
+                                                                      null &&
+                                                                  _selectedIndex ==
+                                                                      index
+                                                              ? CustomButton(
+                                                                  Languages.of(
+                                                                          context)!
+                                                                      .selected,
+                                                                  isSingleLine:
+                                                                      true,
+                                                                  padding: 3,
+                                                                  fontSize:
+                                                                      FontSize
+                                                                          .twelve,
+                                                                )
+                                                              : CustomButton(
+                                                                  Languages.of(
+                                                                          context)!
+                                                                      .select
+                                                                      .toUpperCase(),
+                                                                  fontSize:
+                                                                      FontSize
+                                                                          .twelve,
+                                                                  buttonBackgroundColor:
+                                                                      ColorResource
+                                                                          .colorFEFFFF,
+                                                                  borderColor:
+                                                                      ColorResource
+                                                                          .colorFEFFFF,
+                                                                  textColor:
+                                                                      ColorResource
+                                                                          .color23375A,
+                                                                  cardElevation:
+                                                                      3.0,
+                                                                  onTap: () {
+                                                                    _onSelected(
+                                                                        index);
+                                                                    setState(
+                                                                        () {
+                                                                      caseID = widget
+                                                                          .bloc
+                                                                          .yardingAndSelfReleaseData
+                                                                          .result![
+                                                                              index]
+                                                                          .sId!;
+                                                                      // print(
+                                                                      //     caseID);
+                                                                      custName = widget
+                                                                              .bloc
+                                                                              .yardingAndSelfReleaseData
+                                                                              .result![index]
+                                                                              .eventAttr!
+                                                                              .customerName ??
+                                                                          '';
+                                                                    });
+                                                                  },
+                                                                ),
+                                                        ),
                                                       )
                                                     ],
                                                   ),

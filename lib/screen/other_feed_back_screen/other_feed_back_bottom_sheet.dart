@@ -30,6 +30,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
@@ -235,7 +236,8 @@ class _CustomOtherFeedBackBottomSheetState
                                 const SizedBox(height: 20),
                                 expandList([
                                   FeedbackTemplate(
-                                      name: 'Add New Contact',
+                                      name:
+                                          Languages.of(context)!.addNewContact,
                                       expanded: false,
                                       data: [Data(name: 'addNewContact')])
                                 ], 0),
@@ -286,22 +288,27 @@ class _CustomOtherFeedBackBottomSheetState
                                         child: InkWell(
                                           onTap: () => getFiles(),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                5, 10, 5, 15),
                                             child: Column(
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
-                                                    const SizedBox(width: 5),
-                                                    const CustomText(
-                                                      'UPLOAD AUDIO FILE',
+                                                    const SizedBox(width: 7),
+                                                    CustomText(
+                                                      Languages.of(context)!
+                                                          .uploadAudioFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
                                                           FontSize.sixteen,
+                                                      lineHeight: 1,
                                                       fontStyle:
                                                           FontStyle.normal,
                                                       fontWeight:
@@ -309,8 +316,9 @@ class _CustomOtherFeedBackBottomSheetState
                                                     )
                                                   ],
                                                 ),
-                                                const CustomText(
-                                                  'UPTO 5MB',
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .upto5mb,
                                                   lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
@@ -353,18 +361,8 @@ class _CustomOtherFeedBackBottomSheetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SizedBox(
-                            width: 95,
-                            child: Center(
-                                child: CustomText(
-                              Languages.of(context)!.cancel.toUpperCase(),
-                              color: ColorResource.colorEA6D48,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                              fontSize: FontSize.sixteen,
-                            ))),
+                      Expanded(
+                        child: CustomCancelButton.cancelButton(context),
                       ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
@@ -817,7 +815,7 @@ class _CustomOtherFeedBackBottomSheetState
                                       },
                                       child: CustomReadOnlyTextField(
                                         (listOfContact[index].formValue == '')
-                                            ? 'Contact'
+                                            ? Languages.of(context)!.contact
                                             : (listOfContact[index].formValue ==
                                                         'Mobile' ||
                                                     listOfContact[index]
@@ -900,11 +898,11 @@ class _CustomOtherFeedBackBottomSheetState
                                       width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50.0))),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 11),
                                 child: CustomText(
-                                  'ADD MORE CONTACT',
+                                  Languages.of(context)!.addMoreContact,
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.thirteen,
                                   fontStyle: FontStyle.normal,

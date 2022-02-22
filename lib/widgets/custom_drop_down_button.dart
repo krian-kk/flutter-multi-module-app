@@ -62,17 +62,21 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           fontSize: FontSize.twelve,
           fontStyle: FontStyle.normal,
         ),
-        const SizedBox(height: 4),
+        // const SizedBox(height: 4),
         MediaQuery.removePadding(
           removeBottom: true,
           // removeTop: true,
           context: context,
           child: SizedBox(
-            height: 35,
+            // height: 35,
             child: DropdownButton<String>(
               value: widget.selectedValue ?? widget.listOfItems[0],
-              icon: widget.icon ?? SvgPicture.asset(ImageResource.downArrow),
-              iconSize: 24,
+              icon: widget.icon ??
+                  SvgPicture.asset(
+                    ImageResource.downArrow,
+                    width: 16,
+                  ),
+              // iconSize: 24,
               isExpanded: widget.isExpanded,
               style: widget.style ??
                   TextStyle(
@@ -80,6 +84,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
                           ? ColorResource.color666666
                           : ColorResource.color333333,
                       fontWeight: FontWeight.w700,
+                      height: 0.5,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal),
               underline: Container(

@@ -309,6 +309,8 @@ class _AddressDetailsBottomSheetScreenState
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
+                                                                    lineHeight:
+                                                                        1,
                                                                     color: ColorResource
                                                                         .color23375A,
                                                                   ),

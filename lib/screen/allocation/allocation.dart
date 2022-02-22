@@ -441,9 +441,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
                       to: tempMobileList[state.phoneIndex!].value ?? '',
-                      callerId: voiceAgencyDetails.result?.voiceAgencyData
-                              ?.first.callerIds?.first ??
-                          '0',
+                      callerId: voiceAgencyDetails
+                                  .result?.voiceAgencyData?.first.callerIds !=
+                              []
+                          ? voiceAgencyDetails.result?.voiceAgencyData?.first
+                              .callerIds?.first as String
+                          : '0',
                       aRef: Singleton.instance.agentRef ?? '',
                       customerName: bloc.resultList[state.customerIndex!].cust!,
                       service: voiceAgencyDetails
@@ -863,60 +866,69 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       width: 1.0),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                            ImageResource.location),
-                                        const SizedBox(width: 10.0),
-                                        CustomText(
-                                          Languages.of(context)!.areYouAtOffice,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w700,
-                                          color: ColorResource.color000000,
-                                        ),
-                                      ],
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                              ImageResource.location),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: CustomText(
+                                              Languages.of(context)!
+                                                  .areYouAtOffice,
+                                              fontSize: FontSize.twelve,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResource.color000000,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                            width: 74,
-                                            height: 40,
-                                            child: CustomButton(
-                                              Languages.of(context)!.yes,
-                                              fontSize: FontSize.twelve,
-                                              borderColor:
-                                                  ColorResource.colorEA6D48,
-                                              buttonBackgroundColor:
-                                                  ColorResource.colorEA6D48,
-                                              cardShape: 5,
-                                              onTap: () {
-                                                bloc.add(
-                                                    TapAreYouAtOfficeOptionsEvent());
-                                              },
-                                            )),
-                                        const SizedBox(width: 3.0),
-                                        SizedBox(
-                                            width: 85,
-                                            height: 40,
-                                            child: CustomButton(
-                                              Languages.of(context)!.no,
-                                              fontSize: FontSize.twelve,
-                                              borderColor:
-                                                  ColorResource.color23375A,
-                                              textColor:
-                                                  ColorResource.color23375A,
-                                              buttonBackgroundColor:
-                                                  ColorResource.colorffffff,
-                                              cardShape: 5,
-                                              onTap: () {
-                                                bloc.add(
-                                                    TapAreYouAtOfficeOptionsEvent());
-                                              },
-                                            )),
-                                      ],
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 74,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.yes,
+                                                fontSize: FontSize.twelve,
+                                                borderColor:
+                                                    ColorResource.colorEA6D48,
+                                                buttonBackgroundColor:
+                                                    ColorResource.colorEA6D48,
+                                                cardShape: 5,
+                                                onTap: () {
+                                                  bloc.add(
+                                                      TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
+                                          const SizedBox(width: 3.0),
+                                          SizedBox(
+                                              width: 85,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.no,
+                                                fontSize: FontSize.twelve,
+                                                borderColor:
+                                                    ColorResource.color23375A,
+                                                textColor:
+                                                    ColorResource.color23375A,
+                                                buttonBackgroundColor:
+                                                    ColorResource.colorffffff,
+                                                cardShape: 5,
+                                                onTap: () {
+                                                  bloc.add(
+                                                      TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
