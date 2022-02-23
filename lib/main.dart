@@ -19,8 +19,6 @@ import 'bloc.dart';
 
 void main() {
   Bloc.observer = EchoBlocDelegate();
-  //development = 1, uat = 2, production = 3
-  Singleton.instance.serverPointingType = 3;
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (BuildContext context) {
