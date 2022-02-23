@@ -1,6 +1,6 @@
 class HttpUrl {
-  static String url = 'https://collect.origa.ai';
-  // static String url = 'https://uat-collect.origa.ai';
+  // static String url = 'https://collect.origa.ai';
+  static String url = 'https://uat-collect.origa.ai';
   // static String url = 'https://collect.instalmint.com';
 
   // static String? url = Singleton.instance.baseUrl;
