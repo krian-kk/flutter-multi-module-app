@@ -772,4 +772,49 @@ class LanguageHi extends Languages {
 
   @override
   String get autoCalling => 'ऑटो कॉलिंग';
+
+  @override
+  String get callConnectedPleaseWait => 'कॉल कनेक्ट हो जाता है';
+
+  @override
+  String get canceled => 'रद्द';
+
+  @override
+  String get uploadImage => 'तस्वीर डालिये';
+
+  @override
+  String get successfullySMSsend => 'एसएमएस सफलतापूर्वक भेजा गया';
+
+  @override
+  String get pleaseWait => 'कृपया प्रतीक्षा करें ...';
+
+  @override
+  String get userIDDoesNotExist =>
+      'सर ईट डॉस मौजूद नहीं है। कृपया सिस्टम व्यवस्थापक से संपर्क करें';
+
+  @override
+  String get invalidPassword => 'ईविल पैचवर्ड, कृपया सही पैचवर्क करें';
+
+  @override
+  String get notSelectedCase => 'एक मामले का चयन किया जाएगा';
+
+  @override
+  String get pleaseSelectMaximum5MbFile => 'कृपया अधिकतम अफीम स्थान चुनें।';
+
+  @override
+  String get pleaseSelectCustomerContactType =>
+      'कृपया किशोर संपर्क तिथि का चयन करें';
+
+  @override
+  String get pleaseSelectCorrectPassword => 'कृपया सही पासवर्ड दर्ज करें';
+
+  @override
+  String get emailNotAvailable =>
+      'ईमेल आईडी उपलब्ध नहीं है, मोबाइल नंबर उपलब्ध है, एसएमएस के जरिए ओटीपी भेजें';
+
+  @override
+  String get invalidAddress => 'अमान्य पता';
+
+  @override
+  String get loading => 'लोड हो रहा है...';
 }

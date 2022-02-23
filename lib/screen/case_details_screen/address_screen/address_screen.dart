@@ -210,7 +210,7 @@ class _AddressScreenState extends State<AddressScreen>
                                   child: GestureDetector(
                                     onTap: () async {
                                       Position? currentLocation;
-                                      await MapUtils.getCurrentLocation()
+                                      await MapUtils.getCurrentLocation(context)
                                           .then((value) {
                                         setState(() {
                                           currentLocation = value;
@@ -218,12 +218,14 @@ class _AddressScreenState extends State<AddressScreen>
                                       });
                                       Northeast? destinationLocation =
                                           await MapUtils.convertAddressToLarlng(
-                                              address: widget
-                                                      .bloc
-                                                      .caseDetailsAPIValue
-                                                      .result!
-                                                      .addressDetails![
-                                                  widget.index]['value']);
+                                        address: widget
+                                                .bloc
+                                                .caseDetailsAPIValue
+                                                .result!
+                                                .addressDetails![widget.index]
+                                            ['value'],
+                                        context: context,
+                                      );
                                       if (destinationLocation != null) {
                                         MapUtils.openMap(
                                             startLatitude:
@@ -468,8 +470,10 @@ class _AddressScreenState extends State<AddressScreen>
                                                       ClickCustomerNotMetButtonEvent(
                                                           context));
                                                 } else {
-                                                  AppUtils.showToast(Constants
-                                                      .pleaseSelectOptions);
+                                                  AppUtils.showToast(
+                                                    Languages.of(context)!
+                                                        .pleaseSelectOptions,
+                                                  );
                                                 }
                                               } else {}
                                             }

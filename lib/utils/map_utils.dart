@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/env.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -43,7 +44,7 @@ class MapUtils {
   }
 
   static Future<Northeast?> convertAddressToLarlng(
-      {required String address}) async {
+      {required String address, required BuildContext context}) async {
     Northeast? addressToLatlngValue;
     try {
       LocationConverterModel getLocationLatLng = LocationConverterModel();
@@ -59,17 +60,17 @@ class MapUtils {
           getLocationLatLng.results!.first.geometry!.location;
     } catch (e) {
       // print(e);
-      AppUtils.showToast("Invalid Address");
+      AppUtils.showToast(Languages.of(context)!.invalidAddress);
     }
 
     return addressToLatlngValue;
   }
 
-  static Future<Position> getCurrentLocation() async {
+  static Future<Position> getCurrentLocation(BuildContext context) async {
     Position? currentLocation;
     LocationPermission permission = await Geolocator.checkPermission();
 
-    AppUtils.showToast("Loading...");
+    AppUtils.showToast(Languages.of(context)!.loading);
 
     if (permission.toString() == LocationPermission.whileInUse.toString()) {
       // print('Permission Granted');

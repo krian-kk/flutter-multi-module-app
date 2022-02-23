@@ -67,8 +67,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           bloc.add(PostProfileImageEvent(postValue: getProfileImage));
         });
       } else {
-        AppUtils.showToast(StringResource.canceled,
-            gravity: ToastGravity.CENTER);
+        AppUtils.showToast(
+          Languages.of(context)!.canceled,
+          gravity: ToastGravity.CENTER,
+        );
       }
     } on PlatformException catch (e) {
       debugPrint(e.message);

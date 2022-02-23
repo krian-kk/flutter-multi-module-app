@@ -528,21 +528,24 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    child: CustomCancelButton.cancelButton(
-                                        context),
-                                  ),
+                                  Singleton.instance.startCalling ?? false
+                                      ? const SizedBox()
+                                      : Expanded(
+                                          child:
+                                              CustomCancelButton.cancelButton(
+                                                  context),
+                                        ),
                                   SizedBox(
                                       width: Singleton.instance.startCalling ??
                                               false
-                                          ? 5
+                                          ? 0
                                           : 25),
                                   Singleton.instance.startCalling ?? false
                                       ? SizedBox(
                                           width:
                                               Singleton.instance.startCalling ??
                                                       false
-                                                  ? 125
+                                                  ? 150
                                                   : 191,
                                           child: _controller.index == 1
                                               ? CustomButton(
@@ -550,7 +553,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                       ? Languages.of(context)!
                                                               .stop
                                                               .toUpperCase() +
-                                                          ' & ' +
+                                                          ' & \n' +
                                                           Languages.of(context)!
                                                               .submit
                                                               .toUpperCase()
@@ -564,7 +567,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                           .withOpacity(0.7),
                                                     ],
                                                   ),
-                                                  fontSize: FontSize.eighteen,
+                                                  isRemoveExtraPadding: true,
+                                                  fontSize: FontSize.ten,
                                                   fontWeight: FontWeight.w600,
                                                   onTap: isSubmitFirst
                                                       ? () {
@@ -583,9 +587,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                                     false,
                                                               ));
                                                             } else {
-                                                              AppUtils.showToast(
-                                                                  Constants
-                                                                      .pleaseSelectOptions);
+                                                              AppUtils
+                                                                  .showToast(
+                                                                Languages.of(
+                                                                        context)!
+                                                                    .pleaseSelectOptions,
+                                                              );
                                                             }
                                                           }
                                                         }
@@ -597,7 +604,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                       ? Languages.of(context)!
                                                               .stop
                                                               .toUpperCase() +
-                                                          ' & ' +
+                                                          ' & \n' +
                                                           Languages.of(context)!
                                                               .submit
                                                               .toUpperCase()
@@ -630,7 +637,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   SizedBox(
                                     width:
                                         Singleton.instance.startCalling ?? false
-                                            ? 95
+                                            ? 150
                                             : 191,
                                     child: _controller.index == 1
                                         ? CustomButton(
@@ -668,8 +675,10 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                           callId: widget.callId,
                                                         ));
                                                       } else {
-                                                        AppUtils.showToast(Constants
-                                                            .pleaseSelectOptions);
+                                                        AppUtils.showToast(
+                                                          Languages.of(context)!
+                                                              .pleaseSelectOptions,
+                                                        );
                                                       }
                                                     }
                                                   }

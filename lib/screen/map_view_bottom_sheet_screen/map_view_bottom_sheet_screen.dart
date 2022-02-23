@@ -48,7 +48,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
 
   void getLocation() async {
     Position? currentLocation;
-    await MapUtils.getCurrentLocation().then((value) {
+    await MapUtils.getCurrentLocation(context).then((value) {
       setState(() {
         currentLocation = value;
         position = LatLng(value.latitude, value.longitude);

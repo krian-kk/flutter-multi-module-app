@@ -59,7 +59,10 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 

@@ -554,7 +554,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             );
           }
         } else {
-          AppUtils.showToast(Constants.pleaseSelectOptions);
+          AppUtils.showToast(Languages.of(event.context)!.pleaseSelectOptions);
         }
       }
       if (resultValue[Constants.success]) {
@@ -612,7 +612,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                       'notOperational', userType.toString()));
             }
           } else {
-            AppUtils.showToast(Constants.pleaseSelectOptions);
+            AppUtils.showToast(
+              Languages.of(event.context)!.pleaseSelectOptions,
+            );
           }
         }
         if (resultValue[Constants.success]) {
@@ -963,7 +965,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
               Languages.of(context)!.eventDetails,
-              CaseDetailsBloc(AllocationBloc()),
+              this,
               customeLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:

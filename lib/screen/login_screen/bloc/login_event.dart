@@ -10,7 +10,8 @@ class LoginInitialEvent extends LoginEvent {
 class SignInEvent extends LoginEvent {
   final dynamic paramValue;
   final String? userId;
-  SignInEvent({this.paramValue, this.userId});
+  final BuildContext context;
+  SignInEvent({this.paramValue, this.userId, required this.context});
 }
 
 class NoInternetConnectionEvent extends LoginEvent {}
