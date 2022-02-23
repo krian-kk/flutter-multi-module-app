@@ -345,20 +345,20 @@ class AutoCalling {
                                                               .symmetric(
                                                           horizontal: 15,
                                                           vertical: 5),
-                                                      decoration: BoxDecoration(
-                                                        color: bloc
-                                                                    .mobileNumberList[
-                                                                        1]
-                                                                    .callResponse !=
-                                                                null
-                                                            ? ColorResource
-                                                                .colorF6ECEF
-                                                            : ColorResource
-                                                                .colorF8F9FB,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
+                                                      // decoration: BoxDecoration(
+                                                      //   color: bloc
+                                                      //               .mobileNumberList[
+                                                      //                   0]
+                                                      //               .callResponse !=
+                                                      //           null
+                                                      //       ? ColorResource
+                                                      //           .colorF6ECEF
+                                                      //       : ColorResource
+                                                      //           .colorF8F9FB,
+                                                      //   borderRadius:
+                                                      //       BorderRadius
+                                                      //           .circular(10),
+                                                      // ),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -427,21 +427,21 @@ class AutoCalling {
                                                               )
                                                             ],
                                                           ),
-                                                          if (bloc
-                                                                  .mobileNumberList[
-                                                                      1]
-                                                                  .callResponse !=
-                                                              null)
-                                                            CustomText(
-                                                              bloc
-                                                                  .mobileNumberList[
-                                                                      i]
-                                                                  .callResponse!,
-                                                              color: ColorResource
-                                                                  .colorD5344C,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                            ),
+                                                          // if (bloc
+                                                          //         .mobileNumberList[
+                                                          //             1]
+                                                          //         .callResponse !=
+                                                          //     null)
+                                                          //   CustomText(
+                                                          //     bloc
+                                                          //         .mobileNumberList[
+                                                          //             i]
+                                                          //         .callResponse!,
+                                                          //     color: ColorResource
+                                                          //         .colorD5344C,
+                                                          //     fontSize: FontSize
+                                                          //         .fourteen,
+                                                          //   ),
                                                         ],
                                                       ),
                                                     ),
@@ -529,13 +529,15 @@ class AutoCalling {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              bloc.add(NavigateCaseDetailEvent(
-                                                  paramValues: {
-                                                    'caseID': bloc
-                                                        .autoCallingResultList[
-                                                            indexs]
-                                                        .caseId,
-                                                  }));
+                                              bloc.add(
+                                                NavigateCaseDetailEvent(
+                                                    paramValues: {
+                                                      'caseID': bloc
+                                                          .autoCallingResultList[
+                                                              indexs]
+                                                          .caseId,
+                                                    }),
+                                              );
                                             },
                                             child: SizedBox(
                                               width: double.infinity,

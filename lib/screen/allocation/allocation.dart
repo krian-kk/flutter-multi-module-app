@@ -568,15 +568,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is NavigateCaseDetailState) {
-          dynamic returnValue = await Navigator.pushNamed(
-              context, AppRoutes.caseDetailsScreen,
-              arguments: CaseDetailsNaviagationModel(state.paramValues,
-                  allocationBloc: bloc));
-          RetrunValueModel retrunModelValue =
-              RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
+          try {
+            dynamic returnValue = await Navigator.pushNamed(
+                context, AppRoutes.caseDetailsScreen,
+                arguments: CaseDetailsNaviagationModel(state.paramValues,
+                    allocationBloc: bloc));
 
-          if (retrunModelValue.isSubmit) {
-            bloc.add(UpdateNewValuesEvent(retrunModelValue.caseId));
+            RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
+                Map<String, dynamic>.from(returnValue));
+
+            if (returnModelValue.isSubmit) {
+              bloc.add(UpdateNewValuesEvent(returnModelValue.caseId));
+            }
+          } catch (e) {
+            debugPrint(e.toString());
           }
         }
         if (state is NavigateSearchPageState) {

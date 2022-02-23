@@ -132,135 +132,137 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
-      caseDetailsContext = event.context;
-      Singleton.instance.buildContext = event.context;
-      caseId = event.paramValues['caseID'];
-      paramValue = event.paramValues;
-      listOfAddress = event.paramValues['mobileList'];
-
-      SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString(Constants.userType);
-      agentName = _pref.getString(Constants.agentName);
-
-      //check internet
-      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-        isNoInternetAndServerError = true;
-        noInternetAndServerErrorMsg =
-            Languages.of(event.context!)!.noInternetConnection;
-        yield CDNoInternetState();
-      } else {
-        isNoInternetAndServerError = false;
-        Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
-            isPop: true);
-
-        if (caseDetailsData[Constants.success] == true) {
-          Map<String, dynamic> jsonData = caseDetailsData['data'];
-          caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
-          Singleton.instance.caseCustomerName =
-              caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-        } else if (caseDetailsData['statusCode'] == 401 ||
-            caseDetailsData['statusCode'] == 502) {
-          isNoInternetAndServerError = true;
-          noInternetAndServerErrorMsg = caseDetailsData['data'];
-        }
-      }
-
-      Singleton.instance.overDueAmount =
-          caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
-      Singleton.instance.agrRef =
-          caseDetailsAPIValue.result?.caseDetails?.agrRef ?? '';
-
-      loanAmountController.text = caseDetailsAPIValue
-              .result?.caseDetails!.loanAmt
-              .toString()
-              .replaceAll('null', '-') ??
-          '-';
-      loanDurationController.text = caseDetailsAPIValue
-              .result?.caseDetails!.loanDuration
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-      posController.text = caseDetailsAPIValue.result?.caseDetails!.pos
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-      schemeCodeController.text = caseDetailsAPIValue
-              .result?.caseDetails!.schemeCode
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-      emiStartDateController.text = caseDetailsAPIValue
-              .result?.caseDetails!.emiStartDate
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-      bankNameController.text = caseDetailsAPIValue
-              .result?.caseDetails!.bankName
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-      productController.text = caseDetailsAPIValue.result?.caseDetails!.product
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-      batchNoController.text = caseDetailsAPIValue.result?.caseDetails!.batchNo
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
-
-      // Clear the lists
-      listOfAddressDetails?.clear();
-      listOfCallDetails?.clear();
-      //Stor list of address
-      listOfAddressDetails = caseDetailsAPIValue.result?.addressDetails!;
-      //Stor list of contacts (mobile Numbers)
-      listOfCallDetails = caseDetailsAPIValue.result?.callDetails!;
-
-      addressCustomerMetGridList.addAll([
-        CustomerMetGridModel(
-            ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.ptp,
-                caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(
-            ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.rtp,
-                caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.dispute,
-            Languages.of(event.context!)!.dispute.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
-                caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(
-            ImageResource.remainder,
-            (Languages.of(event.context!)!.remainderCb.toUpperCase())
-                .toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
-                caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(ImageResource.collections,
-            Languages.of(event.context!)!.collections.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
-                caseDetailsAPIValue.result?.addressDetails!, false))),
-        CustomerMetGridModel(
-            ImageResource.ots, Languages.of(event.context!)!.ots.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.ots,
-                caseDetailsAPIValue.result?.addressDetails!, false))),
-      ]);
-
-      // Customer Not met Next Action Date is = Current Date + 3 days
-      addressCustomerNotMetNextActionDateController.text =
-          DateFormat('yyyy-MM-dd')
-              .format(DateTime.now().add(const Duration(days: 3)));
-      // Unreachable Next Action Date is = Current Date + 1 days
-      phoneUnreachableNextActionDateController.text = DateFormat('yyyy-MM-dd')
-          .format(DateTime.now().add(const Duration(days: 1)));
-
-      yield CaseDetailsLoadedState();
-      if (event.paramValues['isAutoCalling'] != null) {
-        isAutoCalling = true;
-        indexValue = allocationBloc.indexValue;
-        yield ClickMainCallBottomSheetState(0);
-        yield PhoneBottomSheetSuccessState();
-      }
+      debugPrint('Print-> ${event.paramValues}');
+      // debugPrint('Print-> ${event.paramValues}');
+      // caseDetailsContext = event.context;
+      // Singleton.instance.buildContext = event.context;
+      // caseId = event.paramValues['caseID'];
+      // paramValue = event.paramValues;
+      // listOfAddress = event.paramValues['mobileList'];
+      //
+      // SharedPreferences _pref = await SharedPreferences.getInstance();
+      // userType = _pref.getString(Constants.userType);
+      // agentName = _pref.getString(Constants.agentName);
+      //
+      // //check internet
+      // if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      //   isNoInternetAndServerError = true;
+      //   noInternetAndServerErrorMsg =
+      //       Languages.of(event.context!)!.noInternetConnection;
+      //   yield CDNoInternetState();
+      // } else {
+      //   isNoInternetAndServerError = false;
+      //   Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
+      //       APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
+      //       isPop: true);
+      //
+      //   if (caseDetailsData[Constants.success] == true) {
+      //     Map<String, dynamic> jsonData = caseDetailsData['data'];
+      //     caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+      //     Singleton.instance.caseCustomerName =
+      //         caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+      //   } else if (caseDetailsData['statusCode'] == 401 ||
+      //       caseDetailsData['statusCode'] == 502) {
+      //     isNoInternetAndServerError = true;
+      //     noInternetAndServerErrorMsg = caseDetailsData['data'];
+      //   }
+      // }
+      //
+      // Singleton.instance.overDueAmount =
+      //     caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
+      // Singleton.instance.agrRef =
+      //     caseDetailsAPIValue.result?.caseDetails?.agrRef ?? '';
+      //
+      // loanAmountController.text = caseDetailsAPIValue
+      //         .result?.caseDetails!.loanAmt
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '-';
+      // loanDurationController.text = caseDetailsAPIValue
+      //         .result?.caseDetails!.loanDuration
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      // posController.text = caseDetailsAPIValue.result?.caseDetails!.pos
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      // schemeCodeController.text = caseDetailsAPIValue
+      //         .result?.caseDetails!.schemeCode
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      // emiStartDateController.text = caseDetailsAPIValue
+      //         .result?.caseDetails!.emiStartDate
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      // bankNameController.text = caseDetailsAPIValue
+      //         .result?.caseDetails!.bankName
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      // productController.text = caseDetailsAPIValue.result?.caseDetails!.product
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      // batchNoController.text = caseDetailsAPIValue.result?.caseDetails!.batchNo
+      //         .toString()
+      //         .replaceAll('null', '-') ??
+      //     '_';
+      //
+      // // Clear the lists
+      // listOfAddressDetails?.clear();
+      // listOfCallDetails?.clear();
+      // //Stor list of address
+      // listOfAddressDetails = caseDetailsAPIValue.result?.addressDetails!;
+      // //Stor list of contacts (mobile Numbers)
+      // listOfCallDetails = caseDetailsAPIValue.result?.callDetails!;
+      //
+      // addressCustomerMetGridList.addAll([
+      //   CustomerMetGridModel(
+      //       ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
+      //       onTap: () => add(ClickOpenBottomSheetEvent(Constants.ptp,
+      //           caseDetailsAPIValue.result?.addressDetails!, false))),
+      //   CustomerMetGridModel(
+      //       ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
+      //       onTap: () => add(ClickOpenBottomSheetEvent(Constants.rtp,
+      //           caseDetailsAPIValue.result?.addressDetails!, false))),
+      //   CustomerMetGridModel(ImageResource.dispute,
+      //       Languages.of(event.context!)!.dispute.toUpperCase(),
+      //       onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
+      //           caseDetailsAPIValue.result?.addressDetails!, false))),
+      //   CustomerMetGridModel(
+      //       ImageResource.remainder,
+      //       (Languages.of(event.context!)!.remainderCb.toUpperCase())
+      //           .toUpperCase(),
+      //       onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
+      //           caseDetailsAPIValue.result?.addressDetails!, false))),
+      //   CustomerMetGridModel(ImageResource.collections,
+      //       Languages.of(event.context!)!.collections.toUpperCase(),
+      //       onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
+      //           caseDetailsAPIValue.result?.addressDetails!, false))),
+      //   CustomerMetGridModel(
+      //       ImageResource.ots, Languages.of(event.context!)!.ots.toUpperCase(),
+      //       onTap: () => add(ClickOpenBottomSheetEvent(Constants.ots,
+      //           caseDetailsAPIValue.result?.addressDetails!, false))),
+      // ]);
+      //
+      // // Customer Not met Next Action Date is = Current Date + 3 days
+      // addressCustomerNotMetNextActionDateController.text =
+      //     DateFormat('yyyy-MM-dd')
+      //         .format(DateTime.now().add(const Duration(days: 3)));
+      // // Unreachable Next Action Date is = Current Date + 1 days
+      // phoneUnreachableNextActionDateController.text = DateFormat('yyyy-MM-dd')
+      //     .format(DateTime.now().add(const Duration(days: 1)));
+      //
+      // yield CaseDetailsLoadedState();
+      // if (event.paramValues['isAutoCalling'] != null) {
+      //   isAutoCalling = true;
+      //   indexValue = allocationBloc.indexValue;
+      //   yield ClickMainCallBottomSheetState(0);
+      //   yield PhoneBottomSheetSuccessState();
+      // }
     }
     if (event is PhoneBottomSheetInitialEvent) {
       yield PhoneBottomSheetLoadingState();

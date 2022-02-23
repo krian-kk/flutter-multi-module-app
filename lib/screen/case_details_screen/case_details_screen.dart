@@ -86,6 +86,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
           listener: (context, state) {
+            if (state is CaseDetailsLoadedState) {
+              debugPrint(
+                  'CaseDetailsLoadedState -->${bloc.caseDetailsAPIValue.result!.caseDetails!.bankName}');
+            }
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }

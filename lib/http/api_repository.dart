@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -40,6 +41,9 @@ class APIRepository {
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    debugPrint(
+        'Initial -> urlString-->$urlString \n  requestBodydata-->$requestBodydata}');
 
     try {
       Response? response;
