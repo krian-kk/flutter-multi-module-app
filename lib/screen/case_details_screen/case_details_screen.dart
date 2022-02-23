@@ -654,19 +654,25 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   const NeverScrollableScrollPhysics(),
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
-                                              itemCount: (bloc
-                                                              .caseDetailsAPIValue
-                                                              .result
-                                                              ?.otherLoanDetails
-                                                              ?.length ??
-                                                          0) >=
-                                                      25
-                                                  ? 25
-                                                  : bloc
+                                              // itemCount: (bloc
+                                              //                 .caseDetailsAPIValue
+                                              //                 .result
+                                              //                 ?.otherLoanDetails
+                                              //                 ?.length ??
+                                              //             0) >=
+                                              //         25
+                                              //     ? 25
+                                              //     : bloc
+                                              //         .caseDetailsAPIValue
+                                              //         .result
+                                              //         ?.otherLoanDetails
+                                              //         ?.length,
+                                              itemCount: bloc
                                                       .caseDetailsAPIValue
                                                       .result
                                                       ?.otherLoanDetails
-                                                      ?.length,
+                                                      ?.length ??
+                                                  0,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
