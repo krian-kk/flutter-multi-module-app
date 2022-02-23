@@ -185,7 +185,9 @@ class TelecallerPhoneBloc
                       'notOperational', Singleton.instance.usertype!));
             }
           } else {
-            AppUtils.showToast(Constants.pleaseSelectOptions);
+            AppUtils.showToast(
+              Languages.of(event.context)!.pleaseSelectOptions,
+            );
           }
         }
         if (resultValue[Constants.success]) {

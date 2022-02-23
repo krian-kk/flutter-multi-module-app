@@ -175,7 +175,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             Singleton.instance.contractorInformations =
                 ContractorAllInformationModel.fromJson(jsonData);
           } else {
-            AppUtils.showToast(getContractorDetails['data'] ?? '');
+            if (getContractorDetails['data'] != null) {
+              AppUtils.showToast(getContractorDetails['data'] ?? '');
+            }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||

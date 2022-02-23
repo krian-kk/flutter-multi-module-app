@@ -108,8 +108,9 @@ class _CustomButtonState extends State<CustomButton> {
                         widget.text.toString(),
                         textAlign: widget.textAlign,
                         style: Theme.of(context).textTheme.button!.copyWith(
-                            color: widget.textColor
-                                .withOpacity(widget.isEnabled ? 1 : 0.3)),
+                                color: widget.textColor.withOpacity(
+                              widget.isEnabled ? 1 : 0.3,
+                            )),
                         maxLines: widget.maxLines,
                         overflow:
                             widget.isSingleLine ? TextOverflow.ellipsis : null,

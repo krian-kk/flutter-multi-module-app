@@ -263,24 +263,26 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: CustomCancelButton.cancelButton(context),
-                      ),
+                      Singleton.instance.startCalling ?? false
+                          ? const SizedBox()
+                          : Expanded(
+                              child: CustomCancelButton.cancelButton(context),
+                            ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 5
+                              ? 0
                               : 25),
                       Singleton.instance.startCalling ?? false
                           ? SizedBox(
                               width: Singleton.instance.startCalling ?? false
-                                  ? 125
+                                  ? 150
                                   : 191,
                               child: CustomButton(
                                 isSubmit
                                     ? Languages.of(context)!
                                             .stop
                                             .toUpperCase() +
-                                        ' & ' +
+                                        ' & \n' +
                                         Languages.of(context)!
                                             .submit
                                             .toUpperCase()
@@ -302,7 +304,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                           : const SizedBox(),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 95
+                              ? 150
                               : 191,
                           child: CustomButton(
                             isSubmit
@@ -427,7 +429,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
           }
         }
       } else {
-        AppUtils.showToast(Constants.pleaseSelectDropDownValue);
+        AppUtils.showToast(Languages.of(context)!.pleaseSelectDropDownValue);
       }
     }
     setState(() => isSubmit = true);

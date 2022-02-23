@@ -102,7 +102,10 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -320,7 +323,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                 timeControlller.text != '') {
                               if (uploadFileLists.isEmpty) {
                                 AppUtils.showToast(
-                                  'Upload Image',
+                                  Languages.of(context)!.uploadImage,
                                   gravity: ToastGravity.CENTER,
                                 );
                               } else {

@@ -160,6 +160,10 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                           agentContactNoControlller,
                                           validationRules: const ['required'],
                                           height: 46,
+                                          isReadOnly: true,
+                                          contentPadding:
+                                              const EdgeInsets.fromLTRB(
+                                                  0, 15, 0, 9),
                                         ),
                                       ],
                                     )),
@@ -301,8 +305,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         jsonEncode(requestBodyData),
                                   );
                                   if (postResult[Constants.success]) {
-                                    AppUtils.showToast(
-                                        Constants.callConnectedPleaseWait);
+                                    AppUtils.showToast(Languages.of(context)!
+                                        .callConnectedPleaseWait);
                                     if (widget.isCallFromCallDetails ?? false) {
                                       bloc.add(NavigationPhoneBottomSheetEvent(
                                           postResult['data']['result']));

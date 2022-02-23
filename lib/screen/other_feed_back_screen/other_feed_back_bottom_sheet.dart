@@ -103,13 +103,18 @@ class _CustomOtherFeedBackBottomSheetState
         .pickFiles(allowMultiple: true, type: FileType.image);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
-        AppUtils.showToast('Please Select Maximum 5 MB File.',
-            gravity: ToastGravity.CENTER);
+        AppUtils.showToast(
+          Languages.of(context)!.pleaseSelectMaximum5MbFile,
+          gravity: ToastGravity.CENTER,
+        );
       } else {
         uploadFileLists = result.paths.map((path) => File(path!)).toList();
       }
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -374,24 +379,26 @@ class _CustomOtherFeedBackBottomSheetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: CustomCancelButton.cancelButton(context),
-                      ),
+                      Singleton.instance.startCalling ?? false
+                          ? const SizedBox()
+                          : Expanded(
+                              child: CustomCancelButton.cancelButton(context),
+                            ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 5
+                              ? 0
                               : 25),
                       Singleton.instance.startCalling ?? false
                           ? SizedBox(
                               width: Singleton.instance.startCalling ?? false
-                                  ? 125
+                                  ? 150
                                   : 191,
                               child: CustomButton(
                                 isSubmit
                                     ? Languages.of(context)!
                                             .stop
                                             .toUpperCase() +
-                                        ' & ' +
+                                        ' & \n' +
                                         Languages.of(context)!
                                             .submit
                                             .toUpperCase()
@@ -413,8 +420,9 @@ class _CustomOtherFeedBackBottomSheetState
                             )
                           : const SizedBox(),
                       SizedBox(
-                        width:
-                            Singleton.instance.startCalling ?? false ? 95 : 191,
+                        width: Singleton.instance.startCalling ?? false
+                            ? 150
+                            : 191,
                         child: CustomButton(
                           isSubmit
                               ? Languages.of(context)!.submit.toUpperCase()
@@ -785,7 +793,9 @@ class _CustomOtherFeedBackBottomSheetState
                                         if (listOfContact[index].formValue ==
                                             '') {
                                           AppUtils.showToast(
-                                              "Please select customer contact type");
+                                            Languages.of(context)!
+                                                .pleaseSelectCustomerContactType,
+                                          );
                                         }
                                         // print('object');
                                       },

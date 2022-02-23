@@ -75,7 +75,7 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                   depositionModeSheet(context);
                 } else {
                   AppUtils.showToast(
-                    Constants.notSelectedCase,
+                    Languages.of(context)!.notSelectedCase,
                     gravity: ToastGravity.CENTER,
                   );
                 }

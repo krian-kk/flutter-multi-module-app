@@ -360,24 +360,26 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: CustomCancelButton.cancelButton(context),
-                      ),
+                      Singleton.instance.startCalling ?? false
+                          ? const SizedBox()
+                          : Expanded(
+                              child: CustomCancelButton.cancelButton(context),
+                            ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 5
+                              ? 0
                               : 25),
                       Singleton.instance.startCalling ?? false
                           ? SizedBox(
                               width: Singleton.instance.startCalling ?? false
-                                  ? 125
+                                  ? 150
                                   : 191,
                               child: CustomButton(
                                 isSubmit
                                     ? Languages.of(context)!
                                             .stop
                                             .toUpperCase() +
-                                        ' & ' +
+                                        ' & \n' +
                                         Languages.of(context)!
                                             .submit
                                             .toUpperCase()
@@ -399,8 +401,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             )
                           : const SizedBox(),
                       SizedBox(
-                        width:
-                            Singleton.instance.startCalling ?? false ? 95 : 191,
+                        width: Singleton.instance.startCalling ?? false
+                            ? 150
+                            : 191,
                         child: CustomButton(
                           isSubmit
                               ? Languages.of(context)!.submit.toUpperCase()
@@ -551,7 +554,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           }
         }
       } else {
-        AppUtils.showToast(Constants.pleaseSelectPaymentMode);
+        AppUtils.showToast(Languages.of(context)!.pleaseSelectPaymentMode);
       }
     }
     setState(() => isSubmit = true);

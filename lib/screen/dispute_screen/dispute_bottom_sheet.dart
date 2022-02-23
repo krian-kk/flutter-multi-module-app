@@ -255,24 +255,26 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: CustomCancelButton.cancelButton(context),
-                      ),
+                      Singleton.instance.startCalling ?? false
+                          ? const SizedBox()
+                          : Expanded(
+                              child: CustomCancelButton.cancelButton(context),
+                            ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 5
+                              ? 0
                               : 25),
                       Singleton.instance.startCalling ?? false
                           ? SizedBox(
                               width: Singleton.instance.startCalling ?? false
-                                  ? 125
+                                  ? 150
                                   : 191,
                               child: CustomButton(
                                 isSubmit
                                     ? Languages.of(context)!
                                             .stop
                                             .toUpperCase() +
-                                        ' & ' +
+                                        ' & \n' +
                                         Languages.of(context)!
                                             .submit
                                             .toUpperCase()
@@ -294,8 +296,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                             )
                           : const SizedBox(),
                       SizedBox(
-                        width:
-                            Singleton.instance.startCalling ?? false ? 95 : 191,
+                        width: Singleton.instance.startCalling ?? false
+                            ? 150
+                            : 191,
                         child: CustomButton(
                           isSubmit
                               ? Languages.of(context)!.submit.toUpperCase()
@@ -429,7 +432,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
             }
           }
         } else {
-          AppUtils.showToast(Constants.pleaseSelectDropDownValue);
+          AppUtils.showToast(Languages.of(context)!.pleaseSelectDropDownValue);
         }
         setState(() => isSubmit = true);
       }

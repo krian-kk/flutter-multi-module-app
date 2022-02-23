@@ -101,14 +101,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
     List<Placemark> placemarks =
         await placemarkFromCoordinates(result.latitude, result.longitude);
-
-    setState(() {
-      currentAddress = placemarks.toList().first.street.toString() +
-          ', ' +
-          placemarks.toList().first.subLocality.toString() +
-          ', ' +
-          placemarks.toList().first.postalCode.toString();
-    });
+    if (mounted) {
+      setState(() {
+        currentAddress = placemarks.toList().first.street.toString() +
+            ', ' +
+            placemarks.toList().first.subLocality.toString() +
+            ', ' +
+            placemarks.toList().first.postalCode.toString();
+      });
+    }
   }
 
   mapView(BuildContext buildContext) {
@@ -728,7 +729,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
               bloc.areyouatOffice = false;
               _pref.setBool('areyouatOffice', false);
             });
-            AppUtils.showToast(Constants.successfullySubmitted);
+            AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
           }
         }
 
@@ -825,7 +826,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   ),
                                   onTap: () {
                                     bloc.add(MessageEvent());
-                                    AppUtils.showToast('Message');
+                                    AppUtils.showToast(
+                                        Languages.of(context)!.message);
                                   },
                                 ),
                               ),

@@ -238,7 +238,8 @@ class _AddressDetailsBottomSheetScreenState
                                                             Position?
                                                                 currentLocation;
                                                             await MapUtils
-                                                                    .getCurrentLocation()
+                                                                    .getCurrentLocation(
+                                                                        context)
                                                                 .then((value) {
                                                               setState(() {
                                                                 currentLocation =
@@ -247,12 +248,16 @@ class _AddressDetailsBottomSheetScreenState
                                                             });
                                                             Northeast?
                                                                 destinationLocation =
-                                                                await MapUtils.convertAddressToLarlng(
-                                                                    address: widget
-                                                                        .bloc
-                                                                        .caseDetailsAPIValue
-                                                                        .result!
-                                                                        .addressDetails![i]['value']);
+                                                                await MapUtils
+                                                                    .convertAddressToLarlng(
+                                                              address: widget
+                                                                      .bloc
+                                                                      .caseDetailsAPIValue
+                                                                      .result!
+                                                                      .addressDetails![
+                                                                  i]['value'],
+                                                              context: context,
+                                                            );
                                                             if (destinationLocation !=
                                                                 null) {
                                                               MapUtils.openMap(

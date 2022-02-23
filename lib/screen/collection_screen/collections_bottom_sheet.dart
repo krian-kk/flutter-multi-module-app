@@ -27,7 +27,6 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
@@ -98,7 +97,10 @@ class _CustomCollectionsBottomSheetState
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
-      AppUtils.showToast(StringResource.canceled, gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -410,24 +412,26 @@ class _CustomCollectionsBottomSheetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: CustomCancelButton.cancelButton(context),
-                      ),
+                      Singleton.instance.startCalling ?? false
+                          ? const SizedBox()
+                          : Expanded(
+                              child: CustomCancelButton.cancelButton(context),
+                            ),
                       SizedBox(
                           width: Singleton.instance.startCalling ?? false
-                              ? 5
+                              ? 0
                               : 25),
                       Singleton.instance.startCalling ?? false
                           ? SizedBox(
                               width: Singleton.instance.startCalling ?? false
-                                  ? 125
+                                  ? 150
                                   : 191,
                               child: CustomButton(
                                 isSubmit
                                     ? Languages.of(context)!
                                             .stop
                                             .toUpperCase() +
-                                        ' & ' +
+                                        ' & \n' +
                                         Languages.of(context)!
                                             .submit
                                             .toUpperCase()
@@ -449,8 +453,9 @@ class _CustomCollectionsBottomSheetState
                             )
                           : const SizedBox(),
                       SizedBox(
-                        width:
-                            Singleton.instance.startCalling ?? false ? 95 : 191,
+                        width: Singleton.instance.startCalling ?? false
+                            ? 150
+                            : 191,
                         child: CustomButton(
                           isSubmit
                               ? Languages.of(context)!.submit.toUpperCase()
@@ -484,7 +489,7 @@ class _CustomCollectionsBottomSheetState
   submitCollectionEvent(bool stopValue) async {
     if (_formKey.currentState!.validate()) {
       if (selectedPaymentModeButton == '') {
-        AppUtils.showToast(Constants.pleaseSelectOptions);
+        AppUtils.showToast(Languages.of(context)!.pleaseSelectOptions);
       } else {
         bool isNotAutoCalling = true;
         if (widget.isAutoCalling ||
@@ -734,7 +739,9 @@ class _CustomCollectionsBottomSheetState
                       requestBodydata: jsonEncode(requestBodyData),
                     );
                     if (postResult[Constants.success]) {
-                      AppUtils.showToast(Constants.successfullySMSsend);
+                      AppUtils.showToast(
+                        Languages.of(context)!.successfullySMSsend,
+                      );
                     }
                   } else {
                     AppUtils.showErrorToast("SMS is not activated");
