@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -44,12 +45,14 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
+
 part 'case_details_event.dart';
+
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   AllocationBloc allocationBloc;
+
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? custName;
@@ -122,8 +125,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   late TextEditingController schemeCodeController = TextEditingController();
   late TextEditingController productController = TextEditingController();
   late TextEditingController batchNoController = TextEditingController();
+
 //store list off Address
   List<dynamic>? listOfAddressDetails = [];
+
 //store list off Mobile no
   List<dynamic>? listOfCallDetails = [];
   List<Address>? listOfAddress;
