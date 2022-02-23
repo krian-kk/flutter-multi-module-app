@@ -159,6 +159,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+              .result?.callDetails
+              ?.where((element) => (element['cType'] == 'mobile'))
+              .toList();
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
         } else if (caseDetailsData['statusCode'] == 401 ||
