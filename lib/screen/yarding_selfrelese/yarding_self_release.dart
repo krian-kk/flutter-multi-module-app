@@ -5,7 +5,6 @@ import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -99,7 +98,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                 repoStatusModeSheet(context);
                               } else {
                                 AppUtils.showToast(
-                                  Constants.notSelectedCase,
+                                  Languages.of(context)!.notSelectedCase,
                                   gravity: ToastGravity.CENTER,
                                 );
                               }

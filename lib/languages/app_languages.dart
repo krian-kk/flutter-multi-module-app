@@ -512,6 +512,33 @@ abstract class Languages {
   String get addMoreContact;
 
   String get uploadAudioFile;
-
   String get autoCalling;
+
+  String get callConnectedPleaseWait;
+
+  String get canceled;
+
+  String get uploadImage;
+
+  String get successfullySMSsend;
+
+  String get pleaseWait;
+
+  String get userIDDoesNotExist;
+
+  String get invalidPassword;
+
+  String get notSelectedCase;
+
+  String get pleaseSelectMaximum5MbFile;
+
+  String get pleaseSelectCustomerContactType;
+
+  String get pleaseSelectCorrectPassword;
+
+  String get emailNotAvailable;
+
+  String get invalidAddress;
+
+  String get loading;
 }

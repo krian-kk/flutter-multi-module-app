@@ -770,7 +770,53 @@ class LanguageTa extends Languages {
 
   @override
   String get uploadAudioFile => 'ஆடியோ கோப்பை பதிவேற்றவும்';
-
   @override
   String get autoCalling => 'தானியங்கி அழைப்பு';
+
+  @override
+  String get callConnectedPleaseWait => 'அழைப்பு இணைக்கப்பட்டது';
+
+  @override
+  String get canceled => 'ரத்து செய்யப்பட்டது';
+
+  @override
+  String get uploadImage => 'படத்தை பதிவேற்றம் செய்யவும்';
+
+  @override
+  String get successfullySMSsend => 'SMS வெற்றிகரமாக அனுப்பப்பட்டது';
+
+  @override
+  String get pleaseWait => 'காத்திருங்கள்...';
+
+  @override
+  String get userIDDoesNotExist =>
+      'பயனர் ஐடி இல்லை. கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்';
+
+  @override
+  String get invalidPassword =>
+      'தவறான கடவுச்சொல், சரியான கடவுச்சொல்லை உள்ளிடவும்';
+
+  @override
+  String get notSelectedCase => 'ஒரு வழக்கைத் தேர்ந்தெடுக்க வேண்டும்';
+
+  @override
+  String get pleaseSelectMaximum5MbFile =>
+      'அதிகபட்சம் 5 MB கோப்புகளைத் தேர்ந்தெடுக்கவும்.';
+
+  @override
+  String get pleaseSelectCustomerContactType =>
+      'வாடிக்கையாளர் தொடர்பு வகையைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get pleaseSelectCorrectPassword => 'சரியான கடவுச்சொல்லை உள்ளிடவும்';
+
+  @override
+  String get emailNotAvailable =>
+      'மின்னஞ்சல் ஐடி கிடைக்கவில்லை, மொபைல் எண் உள்ளது, எஸ்எம்எஸ் மூலம் OTP அனுப்பவும்';
+
+  @override
+  String get invalidAddress => 'தவறான முகவரி';
+
+  @override
+  String get loading => 'ஏற்றுகிறது...';
 }

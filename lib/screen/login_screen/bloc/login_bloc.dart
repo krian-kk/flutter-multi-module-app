@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/models/device_info_model/android_device_info.dart';
@@ -119,12 +120,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (loginErrorResponse.msg ==
             "Invalid Credentails, Please contact the administrator") {
           AppUtils.showToast(
-              'User ID does not exist. Please contact system administrator',
-              backgroundColor: Colors.red);
+            Languages.of(event.context)!.userIDDoesNotExist,
+            backgroundColor: Colors.red,
+          );
         } else if (loginErrorResponse.msg ==
             "Invalid password, Please enter correct password") {
-          AppUtils.showToast('Invalid password, Please enter correct password',
-              backgroundColor: Colors.red);
+          AppUtils.showToast(
+            Languages.of(event.context)!.invalidPassword,
+            backgroundColor: Colors.red,
+          );
         } else {
           AppUtils.showToast(loginErrorResponse.msg.toString(),
               backgroundColor: Colors.red);

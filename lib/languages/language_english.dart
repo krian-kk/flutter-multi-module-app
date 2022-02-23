@@ -769,4 +769,51 @@ class LanguageEn extends Languages {
 
   @override
   String get autoCalling => 'Auto Calling';
+
+  @override
+  String get callConnectedPleaseWait => 'Call gets connected';
+
+  @override
+  String get canceled => 'Cancelled';
+
+  @override
+  String get uploadImage => 'Upload Image';
+
+  @override
+  String get successfullySMSsend => 'SMS Sent successfully';
+
+  @override
+  String get pleaseWait => 'Please wait...';
+
+  @override
+  String get userIDDoesNotExist =>
+      'User ID does not exist. Please contact the system administrator';
+
+  @override
+  String get invalidPassword =>
+      'Invalid password, Please enter the correct password';
+
+  @override
+  String get notSelectedCase => 'Should be select one case';
+
+  @override
+  String get pleaseSelectMaximum5MbFile =>
+      'Please Select a Maximum of 5 MB Files.';
+
+  @override
+  String get pleaseSelectCustomerContactType =>
+      'Please select the customer contact type';
+
+  @override
+  String get pleaseSelectCorrectPassword => 'Please Enter Correct Password';
+
+  @override
+  String get emailNotAvailable =>
+      'Email ID not available, Mobile number available, send OTP via SMS';
+
+  @override
+  String get invalidAddress => 'Invalid Address';
+
+  @override
+  String get loading => 'Loading...';
 }

@@ -551,7 +551,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 }
                                               : () {
                                                   AppUtils.showToast(
-                                                      "Please wait..");
+                                                    Languages.of(context)!
+                                                        .pleaseWait,
+                                                  );
                                                 },
                                           borderColor:
                                               ColorResource.color23375A,
@@ -616,7 +618,10 @@ class _LoginScreenState extends State<LoginScreen> {
           'password': password.text,
           'fcmToken': fcmToken
         };
-        bloc.add(SignInEvent(paramValue: params, userId: userId.text));
+        bloc.add(
+          SignInEvent(
+              paramValue: params, userId: userId.text, context: context),
+        );
       }
     }
     _formKey.currentState!.save();
