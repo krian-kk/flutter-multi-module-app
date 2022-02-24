@@ -161,6 +161,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
                 APIRequestType.get, HttpUrl.agentDetailUrl + event.userId!);
 
+
             if (agentDetail['success'] == false) {
               // Here facing error so close the loading
               yield SignInLoadedState();
@@ -175,133 +176,140 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   backgroundColor: Colors.red);
             } else {
               // getting Agent Details
-              dynamic agentDetails =
-                  AgentDetailsModel.fromJson(agentDetail['data']);
+              var agentDetails =
+              AgentDetailsModel.fromJson(agentDetail['data']);
               // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
-              if (agentDetails.data![0].agentType == 'COLLECTOR') {
-                await _prefs.setString(
-                    Constants.userType, Constants.fieldagent);
-                Singleton.instance.usertype = Constants.fieldagent;
-              } else {
-                await _prefs.setString(
-                    Constants.userType, Constants.telecaller);
-                Singleton.instance.usertype = Constants.telecaller;
-              }
-              // here storing all agent details in local storage
-              if (agentDetails.data![0].agentType != null) {
-                Singleton.instance.agentName = agentDetails.data![0].agentName!;
-                await _prefs.setString(
-                    Constants.agentName, agentDetails.data![0].agentName!);
-                await _prefs.setString(
-                    Constants.mobileNo, agentDetails.data![0].mobNo!);
-                await _prefs.setString(
-                    Constants.email, agentDetails.data![0].email!);
-                await _prefs.setString(
-                    Constants.contractor, agentDetails.data![0].contractor!);
-                Singleton.instance.contractor =
-                    agentDetails.data![0].contractor!;
-                await _prefs.setString(
-                    Constants.status, agentDetails.data![0].status!);
-                await _prefs.setString(Constants.code, agentDetails.code!);
-                await _prefs.setBool(
-                    Constants.userAdmin, agentDetails.data![0].userAdmin!);
-
-                yield SignInCompletedState();
-
-                // Here call share device info api
-                Map<String, dynamic> deviceData = <String, dynamic>{};
-
-                try {
-                  if (Platform.isAndroid) {
-                    deviceData = _readAndroidBuildData(
-                        await deviceInfoPlugin.androidInfo);
-                  } else if (Platform.isIOS) {
-                    deviceData =
-                        _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
-                  }
-                } on PlatformException {
-                  deviceData = <String, dynamic>{
-                    'Error:': 'Failed to get platform version.'
-                  };
+              if (agentDetails.status == 200) {
+                if (agentDetails.data!.first.agentType == 'COLLECTOR') {
+                  await _prefs.setString(
+                      Constants.userType, Constants.fieldagent);
+                  Singleton.instance.usertype = Constants.fieldagent;
+                } else {
+                  await _prefs.setString(
+                      Constants.userType, Constants.telecaller);
+                  Singleton.instance.usertype = Constants.telecaller;
                 }
-                _deviceData = deviceData;
+                // here storing all agent details in local storage
+                if (agentDetails.data!.first.agentType != null) {
+                  Singleton.instance.agentName =
+                  agentDetails.data!.first.agentName!;
+                  await _prefs.setString(
+                      Constants.agentName, agentDetails.data!.first.agentName!);
+                  await _prefs.setString(
+                      Constants.mobileNo, agentDetails.data!.first.mobNo!);
+                  await _prefs.setString(
+                      Constants.email, agentDetails.data!.first.email!);
+                  await _prefs.setString(
+                      Constants.contractor, agentDetails.data!.first.contractor!);
+                  Singleton.instance.contractor =
+                  agentDetails.data!.first.contractor!;
+                  await _prefs.setString(
+                      Constants.status, agentDetails.data!.first.status!);
+                  await _prefs.setString(Constants.code, agentDetails.code!);
+                  await _prefs.setBool(
+                      Constants.userAdmin, agentDetails.data!.first.userAdmin!);
 
-                if (_deviceData.isNotEmpty) {
+                  yield SignInCompletedState();
+
+                  // Here call share device info api
+                  Map<String, dynamic> deviceData = <String, dynamic>{};
+
                   try {
                     if (Platform.isAndroid) {
-                      var requestBodyData = AndoridDeviceInfoModel(
-                        board: _deviceData['board'],
-                        bootloader: _deviceData['bootloader'],
-                        brand: _deviceData['brand'],
-                        device: _deviceData['device'],
-                        dislay: _deviceData['display'],
-                        fingerprint: _deviceData['fingerprint'],
-                        hardware: _deviceData['hardware'],
-                        host: _deviceData['host'],
-                        id: _deviceData['id'],
-                        manufacturer: _deviceData['manufacturer'],
-                        model: _deviceData['model'],
-                        product: _deviceData['product'],
-                        supported32BitAbis: _deviceData['supported32BitAbis'],
-                        supported64BitAbis: _deviceData['supported64BitAbis'],
-                        supportedAbis: _deviceData['supportedAbis'],
-                        tags: _deviceData['tags'],
-                        type: _deviceData['type'],
-                        isPhysicalDevice:
-                            _deviceData['isPhysicalDevice'] as bool,
-                        androidId: _deviceData['androidId'],
-                        systemFeatures: [],
-                        version: Version(
-                          securityPatch: _deviceData['version.securityPatch'],
-                          sdkInt: _deviceData['version.sdkInt'].toString(),
-                          previewSdkInt:
-                              _deviceData['version.previewSdkInt'].toString(),
-                          codename: _deviceData['version.codename'],
-                          release: _deviceData['version.release'],
-                          incremental: _deviceData['version.incremental'],
-                          baseOs: _deviceData['version.baseOS'],
-                        ),
-                      );
-                      await APIRepository.apiRequest(
-                        APIRequestType.post,
-                        HttpUrl.mobileInfoUrl,
-                        requestBodydata: jsonEncode(requestBodyData.toJson()),
-                      );
+                      deviceData = _readAndroidBuildData(
+                          await deviceInfoPlugin.androidInfo);
                     } else if (Platform.isIOS) {
-                      var requestBodyData = IOSDeviceInfoModel(
-                        name: _deviceData['name'],
-                        systemName: _deviceData['systemName'],
-                        systemVersion: _deviceData['systemVersion'],
-                        model: _deviceData['model'],
-                        localizedModel: _deviceData['localizedModel'],
-                        identifierForVendor: _deviceData['identifierForVendor'],
-                        isPhysicalDevice: _deviceData['isPhysicalDevice'],
-                        utsname: Utsname(
-                          sysname: _deviceData['utsname.sysname:'],
-                          nodename: _deviceData['utsname.nodename:'],
-                          release: _deviceData['utsname.release:'],
-                          version: _deviceData['utsname.version:'],
-                          machine: _deviceData['utsname.machine:'],
-                        ),
-                        created: _deviceData['utsname.sysname'],
-                      );
-                      await APIRepository.apiRequest(
-                        APIRequestType.post,
-                        HttpUrl.mobileInfoUrl,
-                        requestBodydata: jsonEncode(requestBodyData.toJson()),
-                      );
+                      deviceData =
+                          _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
                     }
-                    // AppUtils.showErrorToast('Success Getting devide info');
                   } on PlatformException {
-                    AppUtils.showErrorToast('Error Getting devide info');
+                    deviceData = <String, dynamic>{
+                      'Error:': 'Failed to get platform version.'
+                    };
                   }
-                } else {
-                  AppUtils.showErrorToast('Device info is empty!');
+                  _deviceData = deviceData;
+
+                  if (_deviceData.isNotEmpty) {
+                    try {
+                      if (Platform.isAndroid) {
+                        var requestBodyData = AndoridDeviceInfoModel(
+                          board: _deviceData['board'],
+                          bootloader: _deviceData['bootloader'],
+                          brand: _deviceData['brand'],
+                          device: _deviceData['device'],
+                          dislay: _deviceData['display'],
+                          fingerprint: _deviceData['fingerprint'],
+                          hardware: _deviceData['hardware'],
+                          host: _deviceData['host'],
+                          id: _deviceData['id'],
+                          manufacturer: _deviceData['manufacturer'],
+                          model: _deviceData['model'],
+                          product: _deviceData['product'],
+                          supported32BitAbis: _deviceData['supported32BitAbis'],
+                          supported64BitAbis: _deviceData['supported64BitAbis'],
+                          supportedAbis: _deviceData['supportedAbis'],
+                          tags: _deviceData['tags'],
+                          type: _deviceData['type'],
+                          isPhysicalDevice:
+                          _deviceData['isPhysicalDevice'] as bool,
+                          androidId: _deviceData['androidId'],
+                          systemFeatures: [],
+                          version: Version(
+                            securityPatch: _deviceData['version.securityPatch'],
+                            sdkInt: _deviceData['version.sdkInt'].toString(),
+                            previewSdkInt:
+                            _deviceData['version.previewSdkInt'].toString(),
+                            codename: _deviceData['version.codename'],
+                            release: _deviceData['version.release'],
+                            incremental: _deviceData['version.incremental'],
+                            baseOs: _deviceData['version.baseOS'],
+                          ),
+                        );
+                        await APIRepository.apiRequest(
+                          APIRequestType.post,
+                          HttpUrl.mobileInfoUrl,
+                          requestBodydata: jsonEncode(requestBodyData.toJson()),
+                        );
+                      } else if (Platform.isIOS) {
+                        var requestBodyData = IOSDeviceInfoModel(
+                          name: _deviceData['name'],
+                          systemName: _deviceData['systemName'],
+                          systemVersion: _deviceData['systemVersion'],
+                          model: _deviceData['model'],
+                          localizedModel: _deviceData['localizedModel'],
+                          identifierForVendor: _deviceData['identifierForVendor'],
+                          isPhysicalDevice: _deviceData['isPhysicalDevice'],
+                          utsname: Utsname(
+                            sysname: _deviceData['utsname.sysname:'],
+                            nodename: _deviceData['utsname.nodename:'],
+                            release: _deviceData['utsname.release:'],
+                            version: _deviceData['utsname.version:'],
+                            machine: _deviceData['utsname.machine:'],
+                          ),
+                          created: _deviceData['utsname.sysname'],
+                        );
+                        await APIRepository.apiRequest(
+                          APIRequestType.post,
+                          HttpUrl.mobileInfoUrl,
+                          requestBodydata: jsonEncode(requestBodyData.toJson()),
+                        );
+                      }
+                      // AppUtils.showErrorToast('Success Getting devide info');
+                    } on PlatformException {
+                      AppUtils.showErrorToast('Error Getting devide info');
+                    }
+                  } else {
+                    AppUtils.showErrorToast('Device info is empty!');
+                  }
+
+                  await Future.delayed(const Duration(milliseconds: 100));
+
+                  yield HomeTabState();
                 }
-
-                await Future.delayed(const Duration(milliseconds: 100));
-
-                yield HomeTabState();
+              }else{
+                yield SignInLoadedState();
+                AppUtils.showToast(agentDetails.msg!,
+                    backgroundColor: Colors.red);
               }
             }
           }

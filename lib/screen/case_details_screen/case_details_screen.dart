@@ -86,10 +86,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
           listener: (context, state) {
-            if (state is CaseDetailsLoadedState) {
-              debugPrint(
-                  'CaseDetailsLoadedState -->${bloc.caseDetailsAPIValue.result!.caseDetails!.bankName}');
-            }
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }
@@ -654,25 +650,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   const NeverScrollableScrollPhysics(),
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
-                                              // itemCount: (bloc
-                                              //                 .caseDetailsAPIValue
-                                              //                 .result
-                                              //                 ?.otherLoanDetails
-                                              //                 ?.length ??
-                                              //             0) >=
-                                              //         25
-                                              //     ? 25
-                                              //     : bloc
-                                              //         .caseDetailsAPIValue
-                                              //         .result
-                                              //         ?.otherLoanDetails
-                                              //         ?.length,
                                               itemCount: bloc
-                                                      .caseDetailsAPIValue
-                                                      .result
-                                                      ?.otherLoanDetails
-                                                      ?.length ??
-                                                  0,
+                                                  .caseDetailsAPIValue
+                                                  .result
+                                                  ?.otherLoanDetails
+                                                  ?.length ?? 0,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
