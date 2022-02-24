@@ -56,6 +56,7 @@ class _PhoneScreenState extends State<PhoneScreen>
   @override
   void initState() {
     super.initState();
+
     widget.bloc.add(PhoneBottomSheetInitialEvent(
       context: context,
       isCallFromCaseDetails: widget.isCallFromCaseDetails,

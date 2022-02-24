@@ -244,6 +244,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
         autoCallingResultList.add(val);
+        autoCallingResultList.last.isCompletedSuccess = true;
         customerCount++;
       }
       Singleton.instance.startCalling = true;
