@@ -163,6 +163,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               .result?.callDetails
               ?.where((element) => (element['cType'] == 'mobile'))
               .toList();
+          caseDetailsAPIValue.result?.callDetails?.sort(
+              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
         } else if (caseDetailsData['statusCode'] == 401 ||
@@ -1006,6 +1008,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: listOfAddress![paramValue['phoneIndex']].value,
               caseDetailsBloc: this,
+              caseDetailsAPIValue: caseDetailsAPIValue,
             );
 
           default:

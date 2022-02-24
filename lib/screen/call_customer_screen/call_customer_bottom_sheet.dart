@@ -35,19 +35,19 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final bool? isCallFromCallDetails;
   final CaseDetailsBloc caseDetailsBloc;
 
-  const CallCustomerBottomSheet(
-      {Key? key,
-      required this.customerLoanUserWidget,
-      this.caseDetailsAPIValue,
-      required this.caseId,
-      required this.userType,
-      required this.sid,
-      required this.listOfMobileNo,
-      this.custName,
-      this.contactNumber,
-      this.isCallFromCallDetails,
-      required this.caseDetailsBloc})
-      : super(key: key);
+  const CallCustomerBottomSheet({
+    Key? key,
+    required this.customerLoanUserWidget,
+    this.caseDetailsAPIValue,
+    required this.caseId,
+    required this.userType,
+    required this.sid,
+    required this.listOfMobileNo,
+    this.custName,
+    this.contactNumber,
+    this.isCallFromCallDetails,
+    required this.caseDetailsBloc,
+  }) : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -178,7 +178,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                           customerContactNoDropDownValue =
                                               newValue.toString()),
                                       icon: SvgPicture.asset(
-                                          ImageResource.downShape),
+                                        ImageResource.downShape,
+                                      ),
                                     )),
                                   ],
                                 ),

@@ -49,29 +49,31 @@ class Result {
   String? accNo;
   List<Address>? address;
   Location? location;
+  bool? isCompletedSuccess = false;
 
-  Result(
-      {this.sId,
-      this.due,
-      this.starredCase = false,
-      this.cust,
-      this.collSubStatus,
-      this.telSubStatus,
-      this.followUpPriority,
-      this.customerId,
-      this.pincode,
-      this.caseId,
-      this.agrRef,
-      this.bankName,
-      this.fieldfollowUpDate,
-      this.sortId,
-      this.followUpDate,
-      this.locationType,
-      this.distanceMeters,
-      this.repoStatus,
-      this.accNo,
-      this.address,
-      this.location});
+  Result({
+    this.sId,
+    this.due,
+    this.starredCase = false,
+    this.cust,
+    this.collSubStatus,
+    this.telSubStatus,
+    this.followUpPriority,
+    this.customerId,
+    this.pincode,
+    this.caseId,
+    this.agrRef,
+    this.bankName,
+    this.fieldfollowUpDate,
+    this.sortId,
+    this.followUpDate,
+    this.locationType,
+    this.distanceMeters,
+    this.repoStatus,
+    this.accNo,
+    this.address,
+    this.location,
+  });
 
   Result.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
