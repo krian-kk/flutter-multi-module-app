@@ -176,92 +176,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
     }
   }
 
-  // List<Widget> _buildFilterOptions() {
-  //   List<Widget> widgets = [];
-  //   bloc.selectOptions.asMap().forEach((index, element) {
-  //     widgets.add(_buildFilterWidget(index, element));
-  //   });
-  //   return widgets;
-  // }
-
-  // Widget _buildFilterWidget(int index, String element) {
-  //   return InkWell(
-  //     onTap: () {
-  //       setState(() {
-  //         bloc.selectedOption = index;
-  //       });
-  //       switch (index) {
-  //         case 0:
-  //           setState(() {
-  //             bloc.showFilterDistance = false;
-  //             bloc.add(TapPriorityEvent());
-  //           });
-  //           break;
-  //         case 1:
-  //           if (bloc.userType == Constants.fieldagent) {
-  //             setState(() {
-  //               bloc.add(TapBuildRouteEvent(
-  //                   paramValues: BuildRouteDataModel(
-  //                       lat: position.latitude.toString(),
-  //                       long: position.longitude.toString(),
-  //                       maxDistMeters: Constants.allDisMeters)));
-  //               bloc.showFilterDistance = true;
-  //             });
-  //           } else {
-  //             bloc.add(ShowAutoCallingEvent());
-  //           }
-  //           break;
-  //         case 2:
-  //           bloc.add(MapViewEvent(
-  //               paramValues: BuildRouteDataModel(
-  //                   lat: position.latitude.toString(),
-  //                   long: position.longitude.toString(),
-  //                   maxDistMeters: Constants.maxDisMeters)));
-  //           setState(() {
-  //             bloc.showFilterDistance = false;
-  //           });
-  //           break;
-  //         default:
-  //           setState(() {
-  //             bloc.showFilterDistance = false;
-  //           });
-  //       }
-  //       // if (option == 'Build Route') {
-  //       //   setState(() {
-  //       //     bloc.showFilterDistance = true;
-  //       //   });
-  //       // } else {
-  //       //   setState(() {
-  //       //     bloc.showFilterDistance = false;
-  //       //   });
-  //       // }
-  //       // print(option);
-  //     },
-  //     child: Container(
-  //       padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-  //       width: 90,
-  //       // height: 35,
-  //       decoration: BoxDecoration(
-  //         border: Border.all(color: ColorResource.color23375A, width: 0.5),
-  //         borderRadius: BorderRadius.circular(5),
-  //         color: index == bloc.selectedOption
-  //             ? ColorResource.color23375A
-  //             : Colors.white,
-  //       ),
-  //       child: Center(
-  //         child: CustomText(
-  //           element,
-  //           fontSize: FontSize.twelve,
-  //           fontWeight: FontWeight.w700,
-  //           color: index == bloc.selectedOption
-  //               ? Colors.white
-  //               : ColorResource.color000000,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildBuildRoute() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -516,6 +430,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   await phoneBottomSheet(
                                       context, caseDetailsloc, 0);
                                 } else {
+
                                   bloc.add(StartCallingEvent(
                                     customerIndex: state.customerIndex! + 1,
                                     phoneIndex: 0,
@@ -544,7 +459,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       customerIndex: state.customerIndex! + 1,
                       phoneIndex: 0,
                     ));
-                  }
+
                 }
 
                 // else {}
@@ -980,9 +895,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 ),
                               ),
                             ),
-                            // const SizedBox(
-                            //   height: 15.0,
-                            // ),
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: Wrap(

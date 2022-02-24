@@ -49,6 +49,7 @@ class Result {
   String? accNo;
   List<Address>? address;
   Location? location;
+  bool? isCompleted = false;
 
   Result(
       {this.sId,
