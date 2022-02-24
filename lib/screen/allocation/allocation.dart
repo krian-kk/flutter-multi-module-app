@@ -459,7 +459,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       customerIndex: state.customerIndex! + 1,
                       phoneIndex: 0,
                     ));
-
+                  }
                 }
 
                 // else {}
