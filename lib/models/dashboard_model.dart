@@ -36,7 +36,6 @@ class CaseListModel {
   });
 }
 
-
 class FilterCasesByTimeperiod {
   String? timeperiodText;
   String? value;

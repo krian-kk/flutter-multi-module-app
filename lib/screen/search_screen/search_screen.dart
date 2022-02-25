@@ -222,8 +222,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   isMyRecentActivity) {
                 bloc.add(NavigatePopEvent());
               } else {
-                AppUtils.showToast(Languages.of(context)!.searchErrorMessage,
-                    gravity: ToastGravity.CENTER);
+                AppUtils.showToast(
+                  Languages.of(context)!.searchErrorMessage,
+                  gravity: ToastGravity.CENTER,
+                );
               }
             },
           ),

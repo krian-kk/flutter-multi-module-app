@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
@@ -101,14 +102,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
     List<Placemark> placemarks =
         await placemarkFromCoordinates(result.latitude, result.longitude);
-
-    setState(() {
-      currentAddress = placemarks.toList().first.street.toString() +
-          ', ' +
-          placemarks.toList().first.subLocality.toString() +
-          ', ' +
-          placemarks.toList().first.postalCode.toString();
-    });
+    if (mounted) {
+      setState(() {
+        currentAddress = placemarks.toList().first.street.toString() +
+            ', ' +
+            placemarks.toList().first.subLocality.toString() +
+            ', ' +
+            placemarks.toList().first.postalCode.toString();
+      });
+    }
   }
 
   mapView(BuildContext buildContext) {
@@ -174,92 +176,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
       }
     }
   }
-
-  // List<Widget> _buildFilterOptions() {
-  //   List<Widget> widgets = [];
-  //   bloc.selectOptions.asMap().forEach((index, element) {
-  //     widgets.add(_buildFilterWidget(index, element));
-  //   });
-  //   return widgets;
-  // }
-  //
-  // Widget _buildFilterWidget(int index, String element) {
-  //   return InkWell(
-  //     onTap: () {
-  //       setState(() {
-  //         bloc.selectedOption = index;
-  //       });
-  //       switch (index) {
-  //         case 0:
-  //           setState(() {
-  //             bloc.showFilterDistance = false;
-  //             bloc.add(TapPriorityEvent());
-  //           });
-  //           break;
-  //         case 1:
-  //           if (bloc.userType == Constants.fieldagent) {
-  //             setState(() {
-  //               bloc.add(TapBuildRouteEvent(
-  //                   paramValues: BuildRouteDataModel(
-  //                       lat: position.latitude.toString(),
-  //                       long: position.longitude.toString(),
-  //                       maxDistMeters: Constants.allDisMeters)));
-  //               bloc.showFilterDistance = true;
-  //             });
-  //           } else {
-  //             bloc.add(ShowAutoCallingEvent());
-  //           }
-  //           break;
-  //         case 2:
-  //           bloc.add(MapViewEvent(
-  //               paramValues: BuildRouteDataModel(
-  //                   lat: position.latitude.toString(),
-  //                   long: position.longitude.toString(),
-  //                   maxDistMeters: Constants.maxDisMeters)));
-  //           setState(() {
-  //             bloc.showFilterDistance = false;
-  //           });
-  //           break;
-  //         default:
-  //           setState(() {
-  //             bloc.showFilterDistance = false;
-  //           });
-  //       }
-  //       // if (option == 'Build Route') {
-  //       //   setState(() {
-  //       //     bloc.showFilterDistance = true;
-  //       //   });
-  //       // } else {
-  //       //   setState(() {
-  //       //     bloc.showFilterDistance = false;
-  //       //   });
-  //       // }
-  //       // print(option);
-  //     },
-  //     child: Container(
-  //       padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-  //       width: 90,
-  //       // height: 35,
-  //       decoration: BoxDecoration(
-  //         border: Border.all(color: ColorResource.color23375A, width: 0.5),
-  //         borderRadius: BorderRadius.circular(5),
-  //         color: index == bloc.selectedOption
-  //             ? ColorResource.color23375A
-  //             : Colors.white,
-  //       ),
-  //       child: Center(
-  //         child: CustomText(
-  //           element,
-  //           fontSize: FontSize.twelve,
-  //           fontWeight: FontWeight.w700,
-  //           color: index == bloc.selectedOption
-  //               ? Colors.white
-  //               : ColorResource.color000000,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildBuildRoute() {
     return Column(
@@ -418,143 +334,151 @@ class _AllocationScreenState extends State<AllocationScreen> {
           setState(() {});
 
           if (bloc.customerCount < bloc.totalCount) {
-            Map<String, dynamic> getAgencyDetailsData =
-                await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
-            if (getAgencyDetailsData[Constants.success]) {
-              if (Singleton.instance.cloudTelephony!) {
-                Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
+            if (!(bloc.autoCallingResultList[state.customerIndex!]
+                .isCompletedSuccess!)) {
+              Map<String, dynamic> getAgencyDetailsData =
+                  await APIRepository.apiRequest(
+                      APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
+              if (getAgencyDetailsData[Constants.success]) {
+                if (Singleton.instance.cloudTelephony!) {
+                  Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
 
-                AgencyDetailsModel voiceAgencyDetails =
-                    AgencyDetailsModel.fromJson(jsonData);
+                  AgencyDetailsModel voiceAgencyDetails =
+                      AgencyDetailsModel.fromJson(jsonData);
 
-                if (state.customerIndex! < bloc.resultList.length) {
-                  List<Address> tempMobileList = [];
-                  bloc.resultList[state.customerIndex!].address
-                      ?.asMap()
-                      .forEach((i, element) {
-                    if (element.cType == 'mobile') {
-                      tempMobileList.add(element);
-                    }
-                  });
-                  if (state.phoneIndex! < tempMobileList.length) {
-                    var requestBodyData = CallCustomerModel(
-                      from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      to: tempMobileList[state.phoneIndex!].value ?? '',
-                      callerId: voiceAgencyDetails
-                                  .result?.voiceAgencyData?.first.callerIds !=
-                              []
-                          ? voiceAgencyDetails.result?.voiceAgencyData?.first
-                              .callerIds?.first as String
-                          : '0',
-                      aRef: Singleton.instance.agentRef ?? '',
-                      customerName: bloc.resultList[state.customerIndex!].cust!,
-                      service: voiceAgencyDetails
-                              .result?.voiceAgencyData?.first.agencyId ??
-                          '0',
-                      callerServiceID: voiceAgencyDetails
-                              .result?.voiceAgencyData?.first.agencyId ??
-                          '0',
-                      caseId: bloc.resultList[state.customerIndex!].caseId!,
-                      sId: bloc.resultList[state.customerIndex!].sId!,
-                      agrRef:
-                          bloc.resultList[state.customerIndex!].agrRef ?? '',
-                      agentName: Singleton.instance.agentName ?? '',
-                      agentType:
-                          (Singleton.instance.usertype == Constants.telecaller)
-                              ? 'TELECALLER'
-                              : 'COLLECTOR',
-                    );
-                    Map<String, dynamic> postResult =
-                        await APIRepository.apiRequest(
-                      APIRequestType.post,
-                      HttpUrl.callCustomerUrl,
-                      requestBodydata: jsonEncode(requestBodyData),
-                    );
-                    if (postResult[Constants.success]) {
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext builderContext) {
-                            _timer =
-                                Timer(const Duration(seconds: 5), () async {
-                              Navigator.of(context).pop();
-                              _timer.cancel();
-                              if (state.customerIndex! <
-                                  bloc.resultList.length) {
-                                List<Address> tempMobileList = [];
-                                bloc.resultList[state.customerIndex!].address
-                                    ?.asMap()
-                                    .forEach((i, element) {
-                                  if (element.cType == 'mobile') {
-                                    tempMobileList.add(element);
+                  if (state.customerIndex! < bloc.resultList.length) {
+                    List<Address> tempMobileList = [];
+                    bloc.autoCallingResultList[state.customerIndex!].address
+                        ?.asMap()
+                        .forEach((i, element) {
+                      if (element.cType == 'mobile') {
+                        tempMobileList.add(element);
+                      }
+                    });
+                    if (state.phoneIndex! < tempMobileList.length) {
+                      var requestBodyData = CallCustomerModel(
+                        from:
+                            voiceAgencyDetails.result?.agentAgencyContact ?? '',
+                        to: tempMobileList[state.phoneIndex!].value ?? '',
+                        callerId: voiceAgencyDetails
+                                    .result?.voiceAgencyData?.first.callerIds !=
+                                []
+                            ? voiceAgencyDetails.result?.voiceAgencyData?.first
+                                .callerIds?.first as String
+                            : '0',
+                        aRef: Singleton.instance.agentRef ?? '',
+                        customerName:
+                            bloc.resultList[state.customerIndex!].cust!,
+                        service: voiceAgencyDetails
+                                .result?.voiceAgencyData?.first.agencyId ??
+                            '0',
+                        callerServiceID: voiceAgencyDetails
+                                .result?.voiceAgencyData?.first.agencyId ??
+                            '0',
+                        caseId: bloc.resultList[state.customerIndex!].caseId!,
+                        sId: bloc.resultList[state.customerIndex!].sId!,
+                        agrRef:
+                            bloc.resultList[state.customerIndex!].agrRef ?? '',
+                        agentName: Singleton.instance.agentName ?? '',
+                        agentType: (Singleton.instance.usertype ==
+                                Constants.telecaller)
+                            ? 'TELECALLER'
+                            : 'COLLECTOR',
+                      );
+                      Map<String, dynamic> postResult =
+                          await APIRepository.apiRequest(
+                        APIRequestType.post,
+                        HttpUrl.callCustomerUrl,
+                        requestBodydata: jsonEncode(requestBodyData),
+                      );
+                      if (postResult[Constants.success]) {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext builderContext) {
+                              _timer =
+                                  Timer(const Duration(seconds: 5), () async {
+                                Navigator.of(context).pop();
+                                _timer.cancel();
+                                if (state.customerIndex! <
+                                    bloc.resultList.length) {
+                                  List<Address> tempMobileList = [];
+                                  bloc.resultList[state.customerIndex!].address
+                                      ?.asMap()
+                                      .forEach((i, element) {
+                                    if (element.cType == 'mobile') {
+                                      tempMobileList.add(element);
+                                    }
+                                  });
+                                  if (state.phoneIndex! <
+                                      tempMobileList.length) {
+                                    CaseDetailsBloc caseDetailsloc =
+                                        CaseDetailsBloc(bloc)
+                                          ..add(CaseDetailsInitialEvent(
+                                            paramValues: {
+                                              'caseID': bloc
+                                                  .resultList[
+                                                      state.customerIndex!]
+                                                  .caseId,
+                                              'isAutoCalling': true,
+                                              'caseIndex': state.customerIndex,
+                                              'customerIndex':
+                                                  state.customerIndex,
+                                              'phoneIndex': state.phoneIndex,
+                                              'contactIndex': state.phoneIndex,
+                                              'mobileList': tempMobileList,
+                                              'context': context,
+                                              'callId': postResult['data']
+                                                  ['result'],
+                                            },
+                                            context: context,
+                                          ));
+                                    await phoneBottomSheet(
+                                        context, caseDetailsloc, 0);
+                                  } else {
+                                    bloc.add(StartCallingEvent(
+                                      customerIndex: state.customerIndex! + 1,
+                                      phoneIndex: 0,
+                                    ));
                                   }
-                                });
-                                if (state.phoneIndex! < tempMobileList.length) {
-                                  CaseDetailsBloc caseDetailsloc =
-                                      CaseDetailsBloc(bloc)
-                                        ..add(CaseDetailsInitialEvent(
-                                          paramValues: {
-                                            'caseID': bloc
-                                                .resultList[
-                                                    state.customerIndex!]
-                                                .caseId,
-                                            'isAutoCalling': true,
-                                            'caseIndex': state.customerIndex,
-                                            'customerIndex':
-                                                state.customerIndex,
-                                            'phoneIndex': state.phoneIndex,
-                                            'contactIndex': state.phoneIndex,
-                                            'mobileList': tempMobileList,
-                                            'context': context,
-                                            'callId': postResult['data']
-                                                ['result'],
-                                          },
-                                          context: context,
-                                        ));
-                                  await phoneBottomSheet(
-                                      context, caseDetailsloc, 0);
                                 } else {
-                                  bloc.add(StartCallingEvent(
-                                    customerIndex: state.customerIndex! + 1,
-                                    phoneIndex: 0,
-                                  ));
+                                  Singleton.instance.startCalling = false;
                                 }
-                              } else {
-                                Singleton.instance.startCalling = false;
-                              }
-                            });
-
-                            return const AlertDialog(
-                              backgroundColor: Colors.white,
-                              title: CustomLoadingWidget(),
-                            );
-                          }).then((val) {
-                        if (_timer.isActive) {
-                          _timer.cancel();
-                        }
-                      });
+                              });
+                              return const AlertDialog(
+                                backgroundColor: Colors.white,
+                                title: CustomLoadingWidget(),
+                              );
+                            }).then((val) {
+                          if (_timer.isActive) {
+                            _timer.cancel();
+                          }
+                        });
+                      } else {
+                        AppUtils.showToast(
+                            Languages.of(context)!.pleaseCallAgain);
+                      }
                     } else {
-                      AppUtils.showToast(
-                          Languages.of(context)!.pleaseCallAgain);
+                      bloc.add(StartCallingEvent(
+                        customerIndex: state.customerIndex! + 1,
+                        phoneIndex: 0,
+                      ));
                     }
-                  } else {
-                    bloc.add(StartCallingEvent(
-                      customerIndex: state.customerIndex! + 1,
-                      phoneIndex: 0,
-                    ));
                   }
+                } else {
+                  // AppUtils.makePhoneCall(
+                  //   'tel:' + '6374578994',
+                  // );
                 }
-
-                // else {}
               } else {
-                // AppUtils.makePhoneCall(
-                //   'tel:' + '6374578994',
-                // );
+                AppUtils.showToast(
+                    Languages.of(context)!.doesntGetTheAgentAddress);
               }
             } else {
               AppUtils.showToast(
-                  Languages.of(context)!.doesntGetTheAgentAddress);
+                'Auto calling has been stoped!',
+                gravity: ToastGravity.CENTER,
+              );
             }
           } else {
             Singleton.instance.startCalling = false;
@@ -568,23 +492,26 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is NavigateCaseDetailState) {
-          dynamic returnValue = await Navigator.pushNamed(
-              context, AppRoutes.caseDetailsScreen,
-              arguments: CaseDetailsNaviagationModel(state.paramValues,
-                  allocationBloc: bloc));
-          RetrunValueModel retrunModelValue =
-              RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
+          try {
+            dynamic returnValue = await Navigator.pushNamed(
+                context, AppRoutes.caseDetailsScreen,
+                arguments: CaseDetailsNaviagationModel(state.paramValues,
+                    allocationBloc: bloc));
 
-          if (retrunModelValue.isSubmit) {
-            bloc.add(UpdateNewValuesEvent(retrunModelValue.caseId));
+            RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
+                Map<String, dynamic>.from(returnValue));
+
+            if (returnModelValue.isSubmit) {
+              bloc.add(UpdateNewValuesEvent(returnModelValue.caseId));
+            }
+          } catch (e) {
+            debugPrint(e.toString());
           }
         }
         if (state is NavigateSearchPageState) {
           final dynamic returnValue =
               await Navigator.pushNamed(context, AppRoutes.searchScreen);
           if (returnValue != null) {
-            // print('search data--------->');
-            // print(returnValue.accountNumber);
             bloc.add(SearchReturnDataEvent(returnValue: returnValue));
             var data = returnValue as SearchingDataModel;
             if (data.isStarCases!) {
@@ -728,7 +655,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
               bloc.areyouatOffice = false;
               _pref.setBool('areyouatOffice', false);
             });
-            AppUtils.showToast(Constants.successfullySubmitted);
+            AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
           }
         }
 
@@ -795,7 +722,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               visible: bloc.isMessageThere,
                               child: SizedBox(
                                 width: 175,
-                                // padding: EdgeInsets.all(10),
                                 child: CustomButton(
                                   Languages.of(context)!.message,
                                   alignment: MainAxisAlignment.end,
@@ -825,7 +751,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   ),
                                   onTap: () {
                                     bloc.add(MessageEvent());
-                                    AppUtils.showToast('Message');
+                                    AppUtils.showToast(
+                                        Languages.of(context)!.message);
                                   },
                                 ),
                               ),
@@ -866,8 +793,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       width: 1.0),
                                 ),
                                 child: Row(
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       flex: 1,
@@ -960,9 +885,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       color: ColorResource.color000000,
                                       fontWeight: FontWeight.w600,
                                     ),
-                                    // const SizedBox(height: 10.0,),
                                     CustomText(
-                                      // Languages.of(context)!.pincode + ' 636808',
                                       searchBasedOnValue ?? "",
                                       fontSize: FontSize.fourteen,
                                       color: ColorResource.color000000,
@@ -974,13 +897,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 ),
                               ),
                             ),
-                            // const SizedBox(
-                            //   height: 15.0,
-                            // ),
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: Wrap(
-                                runSpacing: 0,
                                 spacing: 10,
                                 children: List.generate(
                                     bloc.selectOptions.length, (index) {
@@ -1010,7 +929,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     onSelected: (value) {
                                       setState(() {
                                         bloc.selectedOption =
-                                        value ? index : bloc.selectedOption;
+                                            value ? index : bloc.selectedOption;
                                       });
                                       switch (index) {
                                         case 0:
@@ -1025,14 +944,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                             setState(() {
                                               bloc.add(TapBuildRouteEvent(
                                                   paramValues:
-                                                  BuildRouteDataModel(
-                                                      lat: position.latitude
-                                                          .toString(),
-                                                      long: position
-                                                          .longitude
-                                                          .toString(),
-                                                      maxDistMeters: Constants
-                                                          .allDisMeters)));
+                                                      BuildRouteDataModel(
+                                                          lat: position.latitude
+                                                              .toString(),
+                                                          long: position
+                                                              .longitude
+                                                              .toString(),
+                                                          maxDistMeters: Constants
+                                                              .allDisMeters)));
                                               bloc.showFilterDistance = true;
                                             });
                                           } else {
@@ -1047,7 +966,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                   long: position.longitude
                                                       .toString(),
                                                   maxDistMeters:
-                                                  Constants.maxDisMeters)));
+                                                      Constants.maxDisMeters)));
                                           setState(() {
                                             bloc.showFilterDistance = false;
                                           });
@@ -1081,10 +1000,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             bloc.showFilterDistance
                                 ? _buildBuildRoute()
                                 : const SizedBox(),
-                            // const SizedBox(
-                            //   height: 5.0,
-                            // ),
-                            // Expanded(child: WidgetUtils.buildListView(bloc)),
                           ],
                         ),
                       ),
@@ -1132,34 +1047,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Expanded(
-                            //   flex: 4,
-                            //   child: CustomButton(
-                            //     Languages.of(context)!.stop.toUpperCase(),
-                            //     fontSize: FontSize.sixteen,
-                            //     textColor: ColorResource.colorEA6D48,
-                            //     fontWeight: FontWeight.w600,
-                            //     cardShape: 5,
-                            //     buttonBackgroundColor:
-                            //         ColorResource.colorffffff,
-                            //     borderColor: ColorResource.colorffffff,
-                            //     onTap: () async {
-                            //       SharedPreferences _pref =
-                            //           await SharedPreferences.getInstance();
-                            //       _pref.setInt('autoCallingIndexValue', 0);
-                            //       _pref.setInt('autoCallingSubIndexValue', 0);
-                            //     },
-                            //   ),
-                            // ),
-                            // Expanded(
-                            //   flex: 5,
-                            //   child:
                             SizedBox(
                               width: 200,
                               child: CustomButton(
-                                // Languages.of(context)!
-                                //     .startCalling
-                                //     .toUpperCase(),
                                 null,
                                 cardShape: 5,
                                 trailingWidget: Padding(

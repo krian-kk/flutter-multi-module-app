@@ -35,19 +35,19 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final bool? isCallFromCallDetails;
   final CaseDetailsBloc caseDetailsBloc;
 
-  const CallCustomerBottomSheet(
-      {Key? key,
-      required this.customerLoanUserWidget,
-      this.caseDetailsAPIValue,
-      required this.caseId,
-      required this.userType,
-      required this.sid,
-      required this.listOfMobileNo,
-      this.custName,
-      this.contactNumber,
-      this.isCallFromCallDetails,
-      required this.caseDetailsBloc})
-      : super(key: key);
+  const CallCustomerBottomSheet({
+    Key? key,
+    required this.customerLoanUserWidget,
+    this.caseDetailsAPIValue,
+    required this.caseId,
+    required this.userType,
+    required this.sid,
+    required this.listOfMobileNo,
+    this.custName,
+    this.contactNumber,
+    this.isCallFromCallDetails,
+    required this.caseDetailsBloc,
+  }) : super(key: key);
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -160,6 +160,10 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                           agentContactNoControlller,
                                           validationRules: const ['required'],
                                           height: 46,
+                                          isReadOnly: true,
+                                          contentPadding:
+                                              const EdgeInsets.fromLTRB(
+                                                  0, 15, 0, 9),
                                         ),
                                       ],
                                     )),
@@ -174,7 +178,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                           customerContactNoDropDownValue =
                                               newValue.toString()),
                                       icon: SvgPicture.asset(
-                                          ImageResource.downShape),
+                                        ImageResource.downShape,
+                                      ),
                                     )),
                                   ],
                                 ),
@@ -301,8 +306,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         jsonEncode(requestBodyData),
                                   );
                                   if (postResult[Constants.success]) {
-                                    AppUtils.showToast(
-                                        Constants.callConnectedPleaseWait);
+                                    AppUtils.showToast(Languages.of(context)!
+                                        .callConnectedPleaseWait);
                                     if (widget.isCallFromCallDetails ?? false) {
                                       bloc.add(NavigationPhoneBottomSheetEvent(
                                           postResult['data']['result']));

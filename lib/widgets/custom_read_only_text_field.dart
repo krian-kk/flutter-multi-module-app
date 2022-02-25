@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/validator.dart';
-import 'package:origa/widgets/custom_text.dart';
-import 'package:origa/widgets/voice_record_widget.dart';
 
 class CustomReadOnlyTextField extends StatefulWidget {
   final String hintText;
@@ -186,18 +182,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   contentPadding: widget.contentPadding ??
                       const EdgeInsets.fromLTRB(0, 10, 0, 9),
                   errorMaxLines: 1,
-                  suffixIcon: widget.isVoiceRecordWidget
-                      ? VoiceRecodingWidget(
-                          recording: (values) {
-                            if (values is bool) {
-                              //Click action true/false
-                            } else if (values is String) {
-                              //API response
-                            }
-                          },
-                          caseId: widget.caseId,
-                        )
-                      : widget.suffixWidget,
+                  suffixIcon: widget.suffixWidget,
                   errorStyle: const TextStyle(
                       color: Colors.red,
                       height: 0.7,
@@ -245,53 +230,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             ),
           ),
         ),
-        if (widget.isVoiceRecordWidget) const SizedBox(height: 13),
-        if (widget.isVoiceRecordWidget)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
-                decoration: const BoxDecoration(
-                    color: ColorResource.colorF7F8FA,
-                    borderRadius: BorderRadius.all(Radius.circular(60.0))),
-                child: const CustomText(
-                  'Remarks Recording',
-                  lineHeight: 1,
-                  color: ColorResource.color000000,
-                  fontSize: FontSize.fourteen,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              const SizedBox(width: 5),
-              CircleAvatar(
-                backgroundColor: ColorResource.color23375A,
-                radius: 15,
-                child: Center(
-                  child: SvgPicture.asset(
-                    ImageResource.microPhoneImage,
-                    width: 10,
-                    height: 15,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        if (widget.isVoiceRecordWidget) const SizedBox(height: 6),
-        if (widget.isVoiceRecordWidget)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
-            decoration: const BoxDecoration(
-                color: ColorResource.colorF7F8FA,
-                borderRadius: BorderRadius.all(Radius.circular(60.0))),
-            child: const CustomText(
-              'Hi Reason for Dispute, they will update in a Weeks time!  We can call them next time.',
-              color: ColorResource.color000000,
-              fontSize: FontSize.fourteen,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
       ],
     );
   }

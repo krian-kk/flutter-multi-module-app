@@ -30,7 +30,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   List<DashboardListModel> dashboardList = [];
   String? userType;
-  String? selectedFilter = 'TODAY';
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
   DashboardAllModels brokenPTPData = DashboardAllModels();
@@ -42,11 +41,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   YardingData yardingAndSelfReleaseData = YardingData();
   DashboardCardCount dashboardCardCounts = DashboardCardCount();
 
-  List<String> filterOption = [
-    'TODAY',
-    'WEEKLY',
-    'MONTHLY',
-  ];
+  String? selectedFilter = Constants.today;
+  String? selectedFilterIndex = '0';
+  List<FilterCasesByTimeperiod> filterOption = [];
 
   dynamic mtdCaseCompleted = 0;
   dynamic mtdCaseTotal = 0;
@@ -57,6 +54,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // This is search result cases
   List<Result> searchResultList = [];
   bool isShowSearchResult = false;
+
+// Dashboard card onclick loading 
+  bool isClickToCardLoading = false;
 
   // It's manage the Refresh the page basaed on Internet connection
   bool isNoInternetAndServerError = false;
@@ -76,6 +76,20 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       var currentDateTime = DateTime.now();
       String currentDate = DateFormat.yMMMEd().format(currentDateTime);
       todayDate = currentDate;
+
+      filterOption.addAll([
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.today, value: '0'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.weekly, value: '1'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.monthly, value: '2'),
+      ]);
+      //  = [
+      //   Languages.of(event.context!)!.today,
+      //   Languages.of(event.context!)!.weekly,
+      //   Languages.of(event.context!)!.monthly,
+      // ];
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
@@ -318,6 +332,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is PriorityFollowEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
       // Here we clear and flase the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
@@ -334,9 +350,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield PriorityFollowState();
         }
       }
+      // Disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is UntouchedCasesEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
       // Here we clear and flase the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
@@ -353,9 +373,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield UntouchedCasesState();
         }
       }
+      //disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is BrokenPTPEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
       // Here we clear and flase the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
@@ -369,10 +393,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield BrokenPTPState();
         }
       }
-      // yield BrokenPTPState();
+     // Disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is MyReceiptsEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
       // Here we clear and false the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
@@ -389,7 +416,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield MyReceiptsState();
         }
       }
-      // yield MyReceiptsState();
+      // Disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is ReceiptsApiEvent) {
@@ -411,6 +439,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyVisitsEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
       // Here we clear and false the search resulte
       searchResultList.clear();
       isShowSearchResult = false;
@@ -432,7 +462,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield MyVisitsState();
         }
       }
-      // yield MyVisitsState();
+      // Disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is MyVisitApiEvent) {
@@ -463,6 +494,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyDeposistsEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
+
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -477,7 +511,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield MyDeposistsState();
         }
       }
-      // yield MyDeposistsState();
+      // Disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is DeposistsApiEvent) {
@@ -495,6 +530,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is YardingAndSelfReleaseEvent) {
+      //If you click dashboard card Enabled loading 
+      yield ClickToCardLoadingState();
+
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -508,7 +546,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
       }
 
-      // yield YardingAndSelfReleaseState();
+      // Disabled loading 
+      yield ClickToCardLoadingState();
     }
 
     if (event is PostBankDepositDataEvent) {

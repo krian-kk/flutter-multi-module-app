@@ -5,7 +5,7 @@ class CaseDetailsResultModel {
   CaseDetails? caseDetails;
   List<dynamic>? addressDetails;
   List<dynamic>? callDetails;
-  List<OtherLoanDetail>? otherLoanDetails;
+  List<OtherLoanDetail>? otherLoanDetails = [];
 
   CaseDetailsResultModel({
     this.caseDetails,
@@ -22,9 +22,13 @@ class CaseDetailsResultModel {
                 Map<String, dynamic>.from(json['caseDetails'])),
         addressDetails: json['addressDetails'] as List<dynamic>?,
         callDetails: json['callDetails'] as List<dynamic>?,
-        otherLoanDetails: (json['otherLoanDetails'] as List<dynamic>?)
-            ?.map((e) => OtherLoanDetail.fromJson(Map<String, dynamic>.from(e)))
-            .toList(),
+        otherLoanDetails: json['otherLoanDetails'] != null
+            ? (json['otherLoanDetails'] as List<dynamic>?)
+                ?.map((e) =>
+                    OtherLoanDetail.fromJson(Map<String, dynamic>.from(e)))
+                .take(25)
+                .toList()
+            : [],
       );
 
   Map<String, dynamic> toJson() => {

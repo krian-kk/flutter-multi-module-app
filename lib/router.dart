@@ -150,17 +150,10 @@ class PageBuilder {
   }
 
   static Widget buildCaseDetailsPage(RouteSettings settings) {
-    // // String? loginType;
-    // if (settings.arguments != null) {
-    //   // loginType = settings.arguments.toString();
-    // }
-
-    // print('event.paramValues------');
-    // print(settings.arguments);
     CaseDetailsNaviagationModel caseDetailsNaviagationValue;
     caseDetailsNaviagationValue =
         settings.arguments as CaseDetailsNaviagationModel;
-
+    debugPrint('buildCaseDetailsPage Arg-> ${settings.arguments}');
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
@@ -175,15 +168,8 @@ class PageBuilder {
     );
   }
 
-// static Widget buildCaseDetailsTelecallerPage() {
-//   return BlocProvider(
-//     create: (BuildContext context) =>
-//         BlocProvider.of<CasedetailsTelecallerBloc>(context)
-//           ..add(CaseDetailsTelecallerInitialEvent()),
-//     child: const CaseDetailsTelecallerScreen(),
-//   );
-// }
-
+//TST_8939600444
+//Origa123
 }
 
 Widget addAuthBloc(BuildContext context, Widget widget) {

@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -44,12 +45,14 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
+
 part 'case_details_event.dart';
+
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   AllocationBloc allocationBloc;
+
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? custName;
@@ -122,8 +125,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   late TextEditingController schemeCodeController = TextEditingController();
   late TextEditingController productController = TextEditingController();
   late TextEditingController batchNoController = TextEditingController();
+
 //store list off Address
   List<dynamic>? listOfAddressDetails = [];
+
 //store list off Mobile no
   List<dynamic>? listOfCallDetails = [];
   List<Address>? listOfAddress;
@@ -132,6 +137,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
+      debugPrint('Print-> ${event.paramValues}');
+      debugPrint('Print-> ${event.paramValues}');
       caseDetailsContext = event.context;
       Singleton.instance.buildContext = event.context;
       caseId = event.paramValues['caseID'];
@@ -157,6 +164,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+              .result?.callDetails
+              ?.where((element) => (element['cType'] == 'mobile'))
+              .toList();
+          caseDetailsAPIValue.result?.callDetails?.sort(
+              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
         } else if (caseDetailsData['statusCode'] == 401 ||
@@ -552,7 +565,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             );
           }
         } else {
-          AppUtils.showToast(Constants.pleaseSelectOptions);
+          AppUtils.showToast(Languages.of(event.context)!.pleaseSelectOptions);
         }
       }
       if (resultValue[Constants.success]) {
@@ -610,7 +623,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                       'notOperational', userType.toString()));
             }
           } else {
-            AppUtils.showToast(Constants.pleaseSelectOptions);
+            AppUtils.showToast(
+              Languages.of(event.context)!.pleaseSelectOptions,
+            );
           }
         }
         if (resultValue[Constants.success]) {
@@ -961,7 +976,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           case Constants.eventDetails:
             return CustomEventDetailsBottomSheet(
               Languages.of(context)!.eventDetails,
-              CaseDetailsBloc(AllocationBloc()),
+              this,
               customeLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
@@ -998,6 +1013,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: listOfAddress![paramValue['phoneIndex']].value,
               caseDetailsBloc: this,
+              caseDetailsAPIValue: caseDetailsAPIValue,
             );
 
           default:

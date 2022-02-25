@@ -189,8 +189,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                   ['email'];
                                         } else {
                                           AppUtils.showToast(
-                                              Constants.emailNotAvailable,
-                                              backgroundColor: Colors.red);
+                                            Languages.of(context)!
+                                                .emailNotAvailable,
+                                            backgroundColor: Colors.red,
+                                          );
                                         }
                                       });
                                     }
@@ -665,7 +667,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                               }
                                             } else {
                                               AppUtils.showToast(
-                                                  'Please Enter Correct Password');
+                                                Languages.of(context)!
+                                                    .pleaseSelectCorrectPassword,
+                                              );
                                             }
                                             setState(() =>
                                                 isSaveNewPasswordLoad = true);

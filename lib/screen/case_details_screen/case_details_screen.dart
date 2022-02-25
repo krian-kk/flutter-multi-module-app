@@ -651,11 +651,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
                                               itemCount: bloc
-                                                      .caseDetailsAPIValue
-                                                      .result
-                                                      ?.otherLoanDetails
-                                                      ?.length ??
-                                                  0,
+                                                  .caseDetailsAPIValue
+                                                  .result
+                                                  ?.otherLoanDetails
+                                                  ?.length ?? 0,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {

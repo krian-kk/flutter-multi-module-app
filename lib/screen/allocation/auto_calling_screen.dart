@@ -32,14 +32,6 @@ class AutoCalling {
         context: buildContext,
         builder: (BuildContext context) {
           return PhoneScreen(bloc: bloc, index: i);
-          /* For Testing Future Build */
-          // return TelecallerPhoneScreen(
-          //   caseId: caseId,
-          //   contactValue: contactValue,
-          //   userName: userName,
-          //   userId: userId,
-          //   userAmount: userAmount,
-          // );
         });
   }
 
@@ -345,20 +337,6 @@ class AutoCalling {
                                                               .symmetric(
                                                           horizontal: 15,
                                                           vertical: 5),
-                                                      decoration: BoxDecoration(
-                                                        color: bloc
-                                                                    .mobileNumberList[
-                                                                        1]
-                                                                    .callResponse !=
-                                                                null
-                                                            ? ColorResource
-                                                                .colorF6ECEF
-                                                            : ColorResource
-                                                                .colorF8F9FB,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -392,15 +370,6 @@ class AutoCalling {
                                                                           i]
                                                                       .health ??
                                                                   ''),
-                                                              // bloc.mobileNumberList[1]
-                                                              //             .callResponse !=
-                                                              //         null
-                                                              //     ? SvgPicture.asset(
-                                                              //         ImageResource
-                                                              //             .declinedCall)
-                                                              //     : SvgPicture.asset(
-                                                              //         ImageResource
-                                                              //             .activePerson),
                                                               const Spacer(),
                                                               Row(
                                                                 children: [
@@ -427,21 +396,6 @@ class AutoCalling {
                                                               )
                                                             ],
                                                           ),
-                                                          if (bloc
-                                                                  .mobileNumberList[
-                                                                      1]
-                                                                  .callResponse !=
-                                                              null)
-                                                            CustomText(
-                                                              bloc
-                                                                  .mobileNumberList[
-                                                                      i]
-                                                                  .callResponse!,
-                                                              color: ColorResource
-                                                                  .colorD5344C,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                            ),
                                                         ],
                                                       ),
                                                     ),
@@ -450,78 +404,6 @@ class AutoCalling {
                                                   return const SizedBox();
                                                 }
                                               }),
-                                          // Container(
-                                          //   width: MediaQuery.of(context).size.width,
-                                          //   padding: const EdgeInsets.fromLTRB(20, 17, 12, 17),
-                                          //   margin: const EdgeInsets.symmetric(
-                                          //       horizontal: 15, vertical: 5),
-                                          //   decoration: BoxDecoration(
-                                          //     color:
-                                          //         bloc.mobileNumberList[index].callResponse !=
-                                          //                 null
-                                          //             ? ColorResource.colorF6ECEF
-                                          //             : ColorResource.colorF8F9FB,
-                                          //     borderRadius: BorderRadius.circular(10),
-                                          //   ),
-                                          //   child: Column(
-                                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                                          //     children: [
-                                          //       Row(
-                                          //         mainAxisAlignment: MainAxisAlignment.start,
-                                          //         children: [
-                                          //           CustomText(
-                                          //             bloc.mobileNumberList[index]
-                                          //                 .mobileNumber!,
-                                          //             color: ColorResource.color484848,
-                                          //             fontSize: FontSize.fourteen,
-                                          //           ),
-                                          //           const SizedBox(
-                                          //             width: 15,
-                                          //           ),
-                                          //           bloc.mobileNumberList[index].callResponse !=
-                                          //                   null
-                                          //               ? SvgPicture.asset(
-                                          //                   ImageResource.declinedCall)
-                                          //               : SvgPicture.asset(
-                                          //                   ImageResource.activePerson),
-                                          //           const Spacer(),
-                                          //           InkWell(
-                                          //             onTap: () {
-                                          //               // bloc.add(NavigateCaseDetailTEvent(
-                                          //               //   const {
-                                          //               //     'caseID': '618e382004d8d040ac18841b',
-                                          //               //     'isAddress': true,
-                                          //               //   },
-                                          //               // ));
-                                          //             },
-                                          //             child: Row(
-                                          //               children: [
-                                          //                 CustomText(
-                                          //                   Languages.of(context)!.view,
-                                          //                   fontSize: FontSize.fourteen,
-                                          //                   color: ColorResource.color23375A,
-                                          //                   fontWeight: FontWeight.w700,
-                                          //                 ),
-                                          //                 const SizedBox(
-                                          //                   width: 10,
-                                          //                 ),
-                                          //                 SvgPicture.asset(
-                                          //                     ImageResource.forwardArrow),
-                                          //               ],
-                                          //             ),
-                                          //           )
-                                          //         ],
-                                          //       ),
-                                          //       if (bloc.mobileNumberList[index].callResponse !=
-                                          //           null)
-                                          //         CustomText(
-                                          //           bloc.mobileNumberList[index].callResponse!,
-                                          //           color: ColorResource.colorD5344C,
-                                          //           fontSize: FontSize.fourteen,
-                                          //         ),
-                                          //     ],
-                                          //   ),
-                                          // ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 15, vertical: 6),
@@ -529,13 +411,15 @@ class AutoCalling {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              bloc.add(NavigateCaseDetailEvent(
-                                                  paramValues: {
-                                                    'caseID': bloc
-                                                        .autoCallingResultList[
-                                                            indexs]
-                                                        .caseId,
-                                                  }));
+                                              bloc.add(
+                                                NavigateCaseDetailEvent(
+                                                    paramValues: {
+                                                      'caseID': bloc
+                                                          .autoCallingResultList[
+                                                              indexs]
+                                                          .caseId,
+                                                    }),
+                                              );
                                             },
                                             child: SizedBox(
                                               width: double.infinity,

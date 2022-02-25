@@ -70,7 +70,10 @@ class _CompanyBranchState extends State<CompanyBranch> {
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 

@@ -18,7 +18,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
@@ -101,6 +100,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
+          // StringResource.priority,
+          // StringResource.buildRoute,
+          // StringResource.mapView,
           Languages.of(event.context)!.priority,
           Languages.of(event.context)!.buildRoute,
           Languages.of(event.context)!.mapView,
@@ -109,6 +111,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         selectOptions = [
           Languages.of(event.context)!.priority,
           Languages.of(event.context)!.autoCalling,
+          // StringResource.priority,
+          // StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
@@ -119,6 +123,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         Languages.of(event.context)!.more5km,
       ];
 
+      // // static Autocalling Values
+      // mobileNumberList.addAll([
+      //   AutoCallingModel(
+      //     mobileNumber: '6374578994',
+      //     callResponse: 'Declined Call',
+      //   ),
+      //   AutoCallingModel(
+      //     mobileNumber: '9342536805',
+      //   ),
+      //   AutoCallingModel(
+      //     mobileNumber: '6374578994',
+      //   ),
+      // ]);
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
@@ -169,7 +186,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             Singleton.instance.contractorInformations =
                 ContractorAllInformationModel.fromJson(jsonData);
           } else {
-            AppUtils.showToast(getContractorDetails['data'] ?? '');
+            if (getContractorDetails['data'] != null) {
+              AppUtils.showToast(getContractorDetails['data'] ?? '');
+            }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||
@@ -225,6 +244,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
         autoCallingResultList.add(val);
+        autoCallingResultList.last.isCompletedSuccess = true;
         customerCount++;
       }
       Singleton.instance.startCalling = true;

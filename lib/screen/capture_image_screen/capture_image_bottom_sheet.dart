@@ -66,7 +66,8 @@ class _CustomCaptureImageBottomSheetState
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
-      AppUtils.showToast('Canceled', gravity: ToastGravity.CENTER);
+      AppUtils.showToast(Languages.of(context)!.canceled,
+          gravity: ToastGravity.CENTER);
     }
   }
 
@@ -274,7 +275,7 @@ class _CustomCaptureImageBottomSheetState
                                           fileData: uploadFileLists));
                                     } else {
                                       AppUtils.showToast(
-                                        'Upload Image',
+                                        Languages.of(context)!.uploadImage,
                                         gravity: ToastGravity.CENTER,
                                       );
                                     }

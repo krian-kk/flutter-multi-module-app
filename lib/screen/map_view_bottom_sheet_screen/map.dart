@@ -68,7 +68,7 @@ class _MapNavigationState extends State<MapNavigation> {
   // Method for retrieving the current location
   _getCurrentLocation() async {
     final GoogleMapController controller = await mapController.future;
-    await MapUtils.getCurrentLocation().then((Position position) async {
+    await MapUtils.getCurrentLocation(context).then((Position position) async {
       setState(() {
         _currentPosition = position;
         controller.animateCamera(
