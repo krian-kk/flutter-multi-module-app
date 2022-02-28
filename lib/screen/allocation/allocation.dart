@@ -835,25 +835,26 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                       TapAreYouAtOfficeOptionsEvent());
                                                 },
                                               )),
-                                          SizedBox(
-                                              width: 85,
-                                              height: 40,
-                                              child: CustomButton(
-                                                Languages.of(context)!.no,
-                                                fontSize: FontSize.twelve,
-                                                borderColor:
-                                                    ColorResource.color23375A,
-                                                textColor:
-                                                    ColorResource.color23375A,
-                                                buttonBackgroundColor:
-                                                    ColorResource.colorffffff,
-                                                cardShape: 5,
-                                                isRemoveExtraPadding: true,
-                                                onTap: () {
-                                                  bloc.add(
-                                                      TapAreYouAtOfficeOptionsEvent());
-                                                },
-                                              )),
+                                          Expanded(
+                                            child: SizedBox(
+                                              // width: 85,
+                                                height: 40,
+                                                child: CustomButton(
+                                                  Languages.of(context)!.no,
+                                                  fontSize: FontSize.twelve,
+                                                  borderColor:
+                                                  ColorResource.color23375A,
+                                                  textColor:
+                                                  ColorResource.color23375A,
+                                                  buttonBackgroundColor:
+                                                  ColorResource.colorffffff,
+                                                  cardShape: 5,
+                                                  onTap: () {
+                                                    bloc.add(
+                                                        TapAreYouAtOfficeOptionsEvent());
+                                                  },
+                                                )),
+                                          ),
                                         ],
                                       ),
                                     )
@@ -984,6 +985,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 }),
                               ),
                             ),
+
+                            // Align(
+                            //   alignment: Alignment.bottomLeft,
+                            //   child: Wrap(
+                            //     runSpacing: 0,
+                            //     spacing: 10,
+                            //     children: _buildFilterOptions(),
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: 13.0,
                             ),

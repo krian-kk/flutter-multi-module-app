@@ -369,7 +369,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                         color: ColorResource.colorD8D8D8))),
                             child: TabBar(
                               controller: _controller,
-                              physics: const NeverScrollableScrollPhysics(),
+                              // physics: const NeverScrollableScrollPhysics(),
                               isScrollable: true,
                               indicatorColor: ColorResource.colorD5344C,
                               onTap: (index) {

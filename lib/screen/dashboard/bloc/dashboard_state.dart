@@ -84,3 +84,5 @@ class DisableRSSelfReleaseSubmitBtnState extends DashboardState {}
 class EnableRSSelfReleaseSubmitBtnState extends DashboardState {}
 
 class UpdateSuccessfulState extends DashboardState {}
+
+class ClickToCardLoadingState extends DashboardState {}

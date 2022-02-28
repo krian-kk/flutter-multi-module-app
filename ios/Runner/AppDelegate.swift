@@ -13,7 +13,8 @@ import FirebaseMessaging
 //    Messaging.messaging().delegate = self;
     FirebaseApp.configure()
     application.registerForRemoteNotifications()
-    GMSServices.provideAPIKey("AIzaSyCZI9K_T5crucTDPuNMvolMqRBL_srEMOU")
+    // GMSServices.provideAPIKey("AIzaSyCZI9K_T5crucTDPuNMvolMqRBL_srEMOU")
+    GMSServices.provideAPIKey("AIzaSyCd2C9YZHP8pHM36PANa8eOCfGU9oCyKTE")
     GeneratedPluginRegistrant.register(with: self)
     Messaging.messaging().isAutoInitEnabled = true;
 
