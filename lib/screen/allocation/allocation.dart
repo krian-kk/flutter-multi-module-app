@@ -354,6 +354,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
+                      // for testing purpose using your number here
+                      // from: 'test number',
                       to: tempMobileList[state.phoneIndex!].value ?? '',
                       callerId: voiceAgencyDetails
                                   .result?.voiceAgencyData?.first.callerIds !=
@@ -811,7 +813,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           SizedBox(
-                                              width: 64,
+                                              width: Languages.of(context)!
+                                                          .no
+                                                          .length ==
+                                                      2
+                                                  ? 80
+                                                  : 64,
                                               height: 40,
                                               child: CustomButton(
                                                 Languages.of(context)!.yes,
@@ -827,25 +834,50 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                       TapAreYouAtOfficeOptionsEvent());
                                                 },
                                               )),
-                                          SizedBox(
-                                              width: 85,
-                                              height: 40,
-                                              child: CustomButton(
-                                                Languages.of(context)!.no,
-                                                fontSize: FontSize.twelve,
-                                                borderColor:
-                                                    ColorResource.color23375A,
-                                                textColor:
-                                                    ColorResource.color23375A,
-                                                buttonBackgroundColor:
-                                                    ColorResource.colorffffff,
-                                                cardShape: 5,
-                                                isRemoveExtraPadding: true,
-                                                onTap: () {
-                                                  bloc.add(
-                                                      TapAreYouAtOfficeOptionsEvent());
-                                                },
-                                              )),
+                                          Languages.of(context)!.no.length == 2
+                                              ? SizedBox(
+                                                  width: 80,
+                                                  height: 40,
+                                                  child: CustomButton(
+                                                    Languages.of(context)!.no,
+                                                    fontSize: FontSize.twelve,
+                                                    borderColor: ColorResource
+                                                        .color23375A,
+                                                    textColor: ColorResource
+                                                        .color23375A,
+                                                    buttonBackgroundColor:
+                                                        ColorResource
+                                                            .colorffffff,
+                                                    cardShape: 5,
+                                                    onTap: () {
+                                                      bloc.add(
+                                                          TapAreYouAtOfficeOptionsEvent());
+                                                    },
+                                                  ))
+                                              : Expanded(
+                                                  child: SizedBox(
+                                                      // width: 85,
+                                                      height: 40,
+                                                      child: CustomButton(
+                                                        Languages.of(context)!
+                                                            .no,
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        borderColor:
+                                                            ColorResource
+                                                                .color23375A,
+                                                        textColor: ColorResource
+                                                            .color23375A,
+                                                        buttonBackgroundColor:
+                                                            ColorResource
+                                                                .colorffffff,
+                                                        cardShape: 5,
+                                                        onTap: () {
+                                                          bloc.add(
+                                                              TapAreYouAtOfficeOptionsEvent());
+                                                        },
+                                                      )),
+                                                ),
                                         ],
                                       ),
                                     )
@@ -957,7 +989,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                   long: position.longitude
                                                       .toString(),
                                                   maxDistMeters:
-                                                      Constants.maxDisMeters)));
+                                                      Constants.allDisMeters)));
                                           setState(() {
                                             bloc.showFilterDistance = false;
                                           });
@@ -976,6 +1008,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 }),
                               ),
                             ),
+
+                            // Align(
+                            //   alignment: Alignment.bottomLeft,
+                            //   child: Wrap(
+                            //     runSpacing: 0,
+                            //     spacing: 10,
+                            //     children: _buildFilterOptions(),
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: 13.0,
                             ),
