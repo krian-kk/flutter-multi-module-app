@@ -208,6 +208,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     isLabel: true,
                                     focusNode: otsProposedAmountFocusNode,
                                     keyBoardType: TextInputType.number,
+                                    isNumberOnly: true,
                                   )),
                                   const SizedBox(height: 17),
                                   Row(

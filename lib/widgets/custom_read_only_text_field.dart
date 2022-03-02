@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/validator.dart';
 
@@ -36,6 +37,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final double height;
   final TextCapitalization? textCapitalization;
   final bool isVoiceRecordWidget;
+  final bool isNumberOnly;
   final String? caseId;
 
   const CustomReadOnlyTextField(
@@ -72,6 +74,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.textCapitalization,
     this.isVoiceRecordWidget = false,
     this.caseId = 'case_id',
+    this.isNumberOnly = false,
   }) : super(key: key);
 
   @override
@@ -147,13 +150,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               },
               textCapitalization:
                   widget.textCapitalization ?? TextCapitalization.none,
-
-              // inputFormatters: [
-              //   // if (widget.maximumWordCount != null)
-              //   //   LengthLimitingTextInputFormatter(widget.maximumWordCount),
-              // ],
-              inputFormatters: widget.inputformaters,
-
+              inputFormatters: widget.inputformaters ??
+                  [
+                    FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
+                    if (widget.controller.text.isEmpty)
+                      FilteringTextInputFormatter.deny(' '),
+                    if (widget.maximumWordCount != null)
+                      LengthLimitingTextInputFormatter(widget.maximumWordCount),
+                    if (widget.isNumberOnly)
+                      FilteringTextInputFormatter.digitsOnly,
+                  ],
               autocorrect: false,
               enableSuggestions: false,
               obscureText: widget.obscureText,

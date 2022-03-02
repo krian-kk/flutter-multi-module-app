@@ -15,8 +15,11 @@ class PickDateAndTimeUtils {
           return Theme(
             data: Theme.of(context).copyWith(
               textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
+                subtitle1: TextStyle(
+                  fontSize: 25.0,
+                  color: ColorResource.color000000,
+                ),
+                headline1: TextStyle(fontSize: 20.0),
               ),
               colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
@@ -65,7 +68,9 @@ class PickDateAndTimeUtils {
         });
     if (newTime == null) return;
 
-    final time = newTime.format(context).toString();
-    function(time);
+    // final time = newTime.format(context).toString();
+    final hours = newTime.hour.toString().padLeft(2, '0');
+    final minites = newTime.minute.toString().padLeft(2, '0');
+    function('$hours : $minites');
   }
 }

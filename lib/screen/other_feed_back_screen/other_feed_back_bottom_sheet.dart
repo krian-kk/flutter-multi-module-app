@@ -837,20 +837,39 @@ class _CustomOtherFeedBackBottomSheetState
                                                     'Email Id')
                                                 ? TextInputType.emailAddress
                                                 : TextInputType.name,
-                                        inputformaters:
-                                            (listOfContact[index].formValue ==
-                                                        'Mobile' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Office Contact No.' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Residence Contact No.')
-                                                ? [
-                                                    LengthLimitingTextInputFormatter(
-                                                        10),
-                                                  ]
-                                                : [],
+                                        inputformaters: (listOfContact[index]
+                                                        .formValue ==
+                                                    'Mobile' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Office Contact No.' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Residence Contact No.')
+                                            ? [
+                                                LengthLimitingTextInputFormatter(
+                                                    10),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly,
+                                                FilteringTextInputFormatter
+                                                    .deny(Constants.rEGEXEMOJI),
+                                                if (listOfContact[index]
+                                                    .controller
+                                                    .text
+                                                    .isEmpty)
+                                                  FilteringTextInputFormatter
+                                                      .deny(' '),
+                                              ]
+                                            : [
+                                                FilteringTextInputFormatter
+                                                    .deny(Constants.rEGEXEMOJI),
+                                                if (listOfContact[index]
+                                                    .controller
+                                                    .text
+                                                    .isEmpty)
+                                                  FilteringTextInputFormatter
+                                                      .deny(' ')
+                                              ],
                                       ),
                                     ),
                                   ],

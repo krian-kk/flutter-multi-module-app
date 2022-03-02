@@ -290,6 +290,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   keyBoardType: TextInputType.number,
                                   validationRules: const ['required'],
                                   isLabel: true,
+                                  isNumberOnly: true,
                                   onEditing: () {
                                     ptpReferenceFocusNode.requestFocus();
                                   },
