@@ -546,10 +546,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallingLoadedState();
     }
     if (event is AutoCallingContactSortEvent) {
-      for (var element in autoCallingResultList) {
-        element.address
-            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
-      }
+      // for (var element in autoCallingResultList) {
+      //   element.address
+      //       ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+      // }
       yield AutoCallingContactSortState();
     }
     if (event is UpdateStaredCaseEvent) {
