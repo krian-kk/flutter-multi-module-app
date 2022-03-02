@@ -168,6 +168,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
           if (resultList.length >= 10) {
             hasNextPage = true;
+          } else {
+            hasNextPage = false;
           }
           // Get Contractor Details and stored in Singleton
           Map<String, dynamic> getContractorDetails =
@@ -230,6 +232,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         if (resultList.length >= 10) {
           hasNextPage = true;
+        } else {
+          hasNextPage = false;
         }
       }
 
@@ -279,6 +283,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           ///Chaecking the result length >= 10 for load more data
           if (listOfdata.result!.length >= 10) {
             hasNextPage = true;
+          } else {
+            hasNextPage = false;
           }
         } else {}
       }
@@ -344,6 +350,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         ///checking list if case length becoz of loaD more data
         if (resultList.length >= 10) {
           hasNextPage = true;
+        } else {
+          hasNextPage = false;
         }
       }
       yield TapBuildRouteState(successResponse: resultList);
@@ -381,6 +389,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         ///Chaecking the result length >= 10 for load more data
         if (listOfdata.result!.length >= 10) {
           hasNextPage = true;
+        } else {
+          hasNextPage = false;
         }
       }
       yield BuildRouteLoadMoreState(successResponse: resultList);

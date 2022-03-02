@@ -318,9 +318,14 @@ class _ChatScreenState extends State<ChatScreen> {
       });
 
       //to getting the history of data
-      var result = await chatChannel.history(
-          ably.RealtimeHistoryParams(direction: 'forwards', limit: 10));
+      var result = await chatChannel.history(ably.RealtimeHistoryParams(
+          direction: 'forwards',
+          limit: 100,
+          start: DateTime(DateTime.now().year - 1),
+          end: DateTime.now()));
       debugPrint('The data of history--> ${result.items}');
+      print("start date ==> ${DateTime(DateTime.now().year - 1)}");
+      print("End date ==> ${DateTime.now()}");
 
       setState(() {
         result.items.forEach((element) {
