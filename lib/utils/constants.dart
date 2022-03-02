@@ -9,8 +9,14 @@ class Constants {
   static const String weeklY = 'WEEKLY';
   static const String monthly = 'MONTHLY';
   //Distance Filter
-  static const String allDisMeters = '100000';
+//Distance Filter
+//All -> Build route
+  static const String allDisMeters = '1000000';
+
+//Under 5-10KM -> Build route
   static const String maxDisMeters = '10000';
+
+//Under 5KM -> Build route
   static const String minDisMeters = '5000';
   static const String approx = 'Approx';
   // Type of userType

@@ -1,3 +1,6 @@
+import '../../singleton.dart';
+import '../../utils/constants.dart';
+
 class MyVisitsCaseModel {
   int? status;
   String? message;
@@ -147,7 +150,24 @@ class Cases {
     collSubStatus = json['collSubStatus'];
     fieldfollowUpPriority = json['fieldfollowUpPriority'];
     telSubStatus = json['telSubStatus'];
-    followUpDate = json['followUpDate'] ?? '-';
+    // followUpDate = json['followUpDate'] ?? '-';
+    // Here we will check which user logged in then only set followUpDate
+    if (Singleton.instance.usertype == Constants.fieldagent) {
+      if (json['collSubStatus'] != null &&
+          json['collSubStatus'].toString().toLowerCase() == 'new') {
+        followUpDate = DateTime.now().toString();
+      } else {
+        followUpDate = json['followUpDate'] ?? '-';
+      }
+    } else {
+      if (json['telSubStatus'] != null &&
+          json['telSubStatus'].toString().toLowerCase() == 'new') {
+        followUpDate = DateTime.now().toString();
+      } else {
+        followUpDate = json['followUpDate'] ?? '-';
+      }
+    }
+
     fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
     bankName = json['bankName'];
     aRef = json['aRef'];

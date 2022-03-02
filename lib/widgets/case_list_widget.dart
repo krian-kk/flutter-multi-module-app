@@ -14,6 +14,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
+import 'case_status_widget.dart';
+
 class CaseLists {
   static Widget buildListView(
     DashboardBloc bloc,
@@ -186,65 +188,54 @@ class CaseLists {
                                           ],
                                         ),
                                       ),
+                                      if (Singleton.instance.usertype ==
+                                          Constants.fieldagent)
+                                        listData.result!.cases![index]
+                                                    .collSubStatus ==
+                                                "new"
+                                            ? CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text:
+                                                    Languages.of(context)!.new_,
+                                                width: 55,
+                                              )
+                                            : CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text: listData
+                                                        .result!
+                                                        .cases![index]
+                                                        .collSubStatus ??
+                                                    '',
+                                              ),
+                                      // : const SizedBox(),
+                                      if (Singleton.instance.usertype ==
+                                          Constants.telecaller)
+                                        listData.result!.cases![index]
+                                                    .telSubStatus ==
+                                                "new"
+                                            ? CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text:
+                                                    Languages.of(context)!.new_,
+                                                width: 55,
+                                              )
+                                            : CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text: listData
+                                                        .result!
+                                                        .cases![index]
+                                                        .telSubStatus ??
+                                                    '',
+                                              ),
+                                      // : const SizedBox(),
                                       // const Spacer(),
                                       // if (listData.result!.cases![index]
                                       //         .collSubStatus ==
                                       //     'new')
-                                      listData.result!.cases![index]
-                                                      .collSubStatus ==
-                                                  "new" &&
-                                              Singleton.instance.usertype ==
-                                                  Constants.fieldagent
-                                          ? Container(
-                                              width: 55,
-                                              height: 19,
-                                              // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorD5344C,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              child: Center(
-                                                child: CustomText(
-                                                  Languages.of(context)!.new_,
-                                                  color:
-                                                      ColorResource.colorffffff,
-                                                  fontSize: FontSize.ten,
-                                                  lineHeight: 1,
-                                                ),
-                                              ),
-                                            )
-                                          : listData.result!.cases![index]
-                                                          .telSubStatus ==
-                                                      "new" &&
-                                                  Singleton.instance.usertype ==
-                                                      Constants.telecaller
-                                              ? Container(
-                                                  width: 55,
-                                                  height: 19,
-                                                  // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                                  decoration: BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorD5344C,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30)),
-                                                  child: Center(
-                                                    child: CustomText(
-                                                      Languages.of(context)!
-                                                          .new_,
-                                                      color: ColorResource
-                                                          .colorffffff,
-                                                      fontSize: FontSize.ten,
-                                                      lineHeight: 1,
-                                                    ),
-                                                  ),
-                                                )
-                                              : const SizedBox(),
                                     ],
                                   ),
                                 ),
+                                // listData.result!.cases![index].collSubStatus!,
 
                                 // Padding(
                                 //   padding: const EdgeInsets.symmetric(
@@ -362,21 +353,82 @@ class CaseLists {
                                       ),
                                       Row(
                                         children: [
-                                          CustomText(
+                                          //here check Fieldagent 'collSubSatus'
+                                          if (Singleton.instance.usertype ==
+                                              Constants.fieldagent)
                                             listData.result!.cases![index]
-                                                        .followUpDate !=
-                                                    '-'
-                                                ? DateFormateUtils
-                                                    .followUpDateFormate(
-                                                        listData
-                                                            .result!
-                                                            .cases![index]
-                                                            .followUpDate!)
-                                                : '-',
-                                            fontSize: FontSize.fourteen,
-                                            color: ColorResource.color101010,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                                            .collSubStatus ==
+                                                        "new" &&
+                                                    Singleton.instance
+                                                            .usertype ==
+                                                        Constants.fieldagent
+                                                ? CustomText(
+                                                    DateFormateUtils
+                                                        .followUpDateFormate(
+                                                            DateTime.now()
+                                                                .toString()),
+                                                    fontSize: FontSize.fourteen,
+                                                    color: ColorResource
+                                                        .color101010,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                : CustomText(
+                                                    listData
+                                                                .result!
+                                                                .cases![index]
+                                                                .followUpDate !=
+                                                            '-'
+                                                        ? DateFormateUtils
+                                                            .followUpDateFormate(
+                                                                listData
+                                                                    .result!
+                                                                    .cases![
+                                                                        index]
+                                                                    .followUpDate!)
+                                                        : '-',
+                                                    fontSize: FontSize.fourteen,
+                                                    color: ColorResource
+                                                        .color101010,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                          //here check telecaller 'tellSubSatus'
+                                          if (Singleton.instance.usertype ==
+                                              Constants.telecaller)
+                                            listData.result!.cases![index]
+                                                            .telSubStatus ==
+                                                        "new" &&
+                                                    Singleton.instance
+                                                            .usertype ==
+                                                        Constants.telecaller
+                                                ? CustomText(
+                                                    DateFormateUtils
+                                                        .followUpDateFormate(
+                                                            DateTime.now()
+                                                                .toString()),
+                                                    fontSize: FontSize.fourteen,
+                                                    color: ColorResource
+                                                        .color101010,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                : CustomText(
+                                                    listData
+                                                                .result!
+                                                                .cases![index]
+                                                                .followUpDate !=
+                                                            '-'
+                                                        ? DateFormateUtils
+                                                            .followUpDateFormate(
+                                                                listData
+                                                                    .result!
+                                                                    .cases![
+                                                                        index]
+                                                                    .followUpDate!)
+                                                        : '-',
+                                                    fontSize: FontSize.fourteen,
+                                                    color: ColorResource
+                                                        .color101010,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
                                           const Spacer(),
                                           Row(
                                             children: [

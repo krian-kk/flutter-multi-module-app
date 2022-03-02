@@ -54,7 +54,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int page = 1;
 
-  // There is next page or not
+  // There is used for pagination to scroll up
   bool hasNextPage = false;
   // Show Telecaller Autocalling
   bool isAutoCalling = false;
@@ -546,10 +546,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallingLoadedState();
     }
     if (event is AutoCallingContactSortEvent) {
-      for (var element in autoCallingResultList) {
-        element.address
-            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
-      }
+      // for (var element in autoCallingResultList) {
+      //   element.address
+      //       ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+      // }
       yield AutoCallingContactSortState();
     }
     if (event is UpdateStaredCaseEvent) {

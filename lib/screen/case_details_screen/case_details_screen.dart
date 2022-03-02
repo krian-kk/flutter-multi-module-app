@@ -39,6 +39,8 @@ import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
+import '../../widgets/case_status_widget.dart';
+
 class CaseDetailsScreen extends StatefulWidget {
   final dynamic paramValues;
   final AllocationBloc allocationBloc;
@@ -236,37 +238,52 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   marginTop: 10,
                                                 ),
                                               ),
-                                              if (bloc
-                                                      .caseDetailsAPIValue
-                                                      .result
-                                                      ?.caseDetails
-                                                      ?.collSubStatus ==
-                                                  'new')
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 12),
-                                                  width: 55,
-                                                  height: 18,
-                                                  decoration: const BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorD5344C,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  30.0))),
-                                                  child: Center(
-                                                    child: CustomText(
-                                                      Languages.of(context)!
-                                                          .new_,
-                                                      color: ColorResource
-                                                          .colorFFFFFF,
-                                                      lineHeight: 1,
-                                                      fontSize: FontSize.ten,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                )
+                                              // Here check userType base on show case status
+                                              if (Singleton.instance.usertype ==
+                                                  Constants.fieldagent)
+                                                bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.collSubStatus ==
+                                                        'new'
+                                                    ? CaseStatusWidget
+                                                        .satusTextWidget(
+                                                        context,
+                                                        text: Languages.of(
+                                                                context)!
+                                                            .new_,
+                                                        width: 55,
+                                                      )
+                                                    : caseStatusWidget(
+                                                        text: bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.collSubStatus),
+
+                                              if (Singleton.instance.usertype ==
+                                                  Constants.telecaller)
+                                                bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.telSubStatus ==
+                                                        'new'
+                                                    ? CaseStatusWidget
+                                                        .satusTextWidget(
+                                                        context,
+                                                        text: Languages.of(
+                                                                context)!
+                                                            .new_,
+                                                        width: 55,
+                                                      )
+                                                    : caseStatusWidget(
+                                                        text: bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.telSubStatus),
                                             ],
                                           ),
                                           const SizedBox(height: 16),
@@ -651,10 +668,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
                                               itemCount: bloc
-                                                  .caseDetailsAPIValue
-                                                  .result
-                                                  ?.otherLoanDetails
-                                                  ?.length ?? 0,
+                                                      .caseDetailsAPIValue
+                                                      .result
+                                                      ?.otherLoanDetails
+                                                      ?.length ??
+                                                  0,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
@@ -1303,5 +1321,27 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         }
       },
     );
+  }
+
+  Widget caseStatusWidget({String? text}) {
+    return text != null
+        ? Card(
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            color: ColorResource.colorD5344C,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 3.3),
+              child: CustomText(
+                text,
+                color: ColorResource.colorFFFFFF,
+                lineHeight: 1,
+                fontSize: FontSize.ten,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          )
+        : const SizedBox();
   }
 }
