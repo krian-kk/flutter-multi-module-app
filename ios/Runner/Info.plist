@@ -18,7 +18,7 @@
 		<string>ar</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>Origa</string>
+	<string>Instalmint</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -42,14 +42,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To capture deposit cheque or receipts upload and update the user profile image for profile view</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
-	<string>Using location to provide location details to users to perform collections</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need to access to the microphone to record audio file</string>
+	<string>When you share your location with this application, you will get the nearest customers case details</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
+	<string>When you share your location with this application, you will get the nearest customers case details</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>When you share your location with this application, you&apos;ll get the nearest customer&apos;s case details</string>
+	<string>When you share your location with this application, you will get the nearest customers case details</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To capture deposit cheque or receipts upload and update the user profile image for profile view</string>
 	<key>UIBackgroundModes</key>
