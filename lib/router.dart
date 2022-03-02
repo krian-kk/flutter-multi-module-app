@@ -153,7 +153,6 @@ class PageBuilder {
     CaseDetailsNaviagationModel caseDetailsNaviagationValue;
     caseDetailsNaviagationValue =
         settings.arguments as CaseDetailsNaviagationModel;
-    debugPrint('buildCaseDetailsPage Arg-> ${settings.arguments}');
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
