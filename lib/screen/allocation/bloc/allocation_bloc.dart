@@ -30,6 +30,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int customerCount = 0;
   int totalCount = 0;
+  int tempTotalCount = 0;
 
   String? userType;
   String? agentName;
@@ -154,14 +155,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '&limit=${Constants.limit}');
 
         resultList.clear();
-        autoCallingResultList.clear();
         starCount = 0;
 
         if (priorityListData['success']) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-            autoCallingResultList
-                .add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
               starCount++;
@@ -197,7 +195,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           isNoInternetAndServerErrorMsg = priorityListData['data'];
         }
       }
-      totalCount = autoCallingResultList.length;
       yield AllocationLoadedState(successResponse: resultList);
     }
     if (event is TapPriorityEvent) {
@@ -238,12 +235,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
-
     if (event is StartCallingEvent) {
+      // if (event.isStartFromButtonClick) {
+      //   tempTotalCount = autoCallingResultList.length;
+      // }
       if (event.isIncreaseCount && event.customerIndex! < totalCount) {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
-        autoCallingResultList.add(val);
+        // autoCallingResultList.add(val);
         autoCallingResultList.last.isCompletedSuccess = true;
         customerCount++;
       }
@@ -256,7 +255,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         phoneIndex: event.phoneIndex,
       );
     }
-
     if (event is PriorityLoadMoreEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -286,7 +284,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield PriorityLoadMoreState(successResponse: resultList);
     }
-
     if (event is CallSuccessfullyConnectedEvent) {
       SharedPreferences _pref = await SharedPreferences.getInstance();
       int index;
@@ -308,15 +305,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield StartCallingState();
       }
     }
-
     if (event is TapBuildRouteEvent) {
       yield CaseListViewLoadingState();
-
       page = 1;
       // hasNextPage = true;
       // Now set Build Route case is a load more event
       isPriorityLoadMore = false;
-
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
@@ -332,7 +326,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         resultList.clear();
         multipleLatLong.clear();
-
         buildRouteListData['data']['result']['cases'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
@@ -355,7 +348,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield TapBuildRouteState(successResponse: resultList);
     }
-
     if (event is BuildRouteLoadMoreEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -393,7 +385,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield BuildRouteLoadMoreState(successResponse: resultList);
     }
-
     if (event is UpdateNewValuesEvent) {
       resultList.asMap().forEach((index, value) {
         if (value.caseId == event.paramValue) {
@@ -402,7 +393,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       });
       yield UpdateNewValueState();
     }
-
     if (event is MapViewEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
@@ -436,23 +426,18 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is TapAreYouAtOfficeOptionsEvent) {
       yield TapAreYouAtOfficeOptionsState();
     }
-
     if (event is MessageEvent) {
       yield MessageState();
     }
-
     if (event is NavigateSearchPageEvent) {
       yield NavigateSearchPageState();
     }
-
     if (event is NavigateCaseDetailEvent) {
       yield NavigateCaseDetailState(paramValues: event.paramValues);
     }
-
     if (event is FilterSelectOptionEvent) {
       yield FilterSelectOptionState();
     }
-
     if (event is SearchReturnDataEvent) {
       yield CaseListViewLoadingState();
 
@@ -524,13 +509,24 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield SearchReturnDataState();
     }
-
     if (event is ShowAutoCallingEvent) {
       yield AutoCallingLoadingState();
+      customerCount = 0;
       isAutoCalling = true;
       isShowSearchFloatingButton = false;
-      autoCallingResultList = resultList;
 
+      Map<String, dynamic> autoCallingListData = await APIRepository.apiRequest(
+        APIRequestType.get,
+        HttpUrl.autoCallingURL,
+      );
+      autoCallingResultList.clear();
+      if (autoCallingListData[Constants.success] == true) {
+        for (var element in autoCallingListData['data']['result']) {
+          autoCallingResultList
+              .add(Result.fromJson(jsonDecode(jsonEncode(element))));
+        }
+      }
+      totalCount = autoCallingResultList.length;
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>
             (element.cType == 'office address' ||
@@ -539,7 +535,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield AutoCallingLoadedState();
     }
-
     if (event is AutoCallingContactSortEvent) {
       for (var element in autoCallingResultList) {
         element.address
@@ -547,7 +542,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield AutoCallingContactSortState();
     }
-
     if (event is UpdateStaredCaseEvent) {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -560,7 +554,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           caseId: event.caseID,
           isStared: resultList[event.selectedStarIndex].starredCase);
     }
-
     if (event is AutoCallContactHealthUpdateEvent) {
       yield AutoCallContactHealthUpdateState(
           contactIndex: event.contactIndex, caseIndex: event.caseIndex);

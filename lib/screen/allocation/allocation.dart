@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/http/api_repository.dart';
@@ -332,153 +331,146 @@ class _AllocationScreenState extends State<AllocationScreen> {
         if (state is StartCallingState) {
           Singleton.instance.startCalling = true;
           setState(() {});
-
           if (bloc.customerCount < bloc.totalCount) {
-            if (!(bloc.autoCallingResultList[state.customerIndex!]
-                .isCompletedSuccess!)) {
-              Map<String, dynamic> getAgencyDetailsData =
-                  await APIRepository.apiRequest(
-                      APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
-              if (getAgencyDetailsData[Constants.success]) {
-                if (Singleton.instance.cloudTelephony!) {
-                  Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
+            Map<String, dynamic> getAgencyDetailsData =
+                await APIRepository.apiRequest(
+                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
+            if (getAgencyDetailsData[Constants.success]) {
+              if (Singleton.instance.cloudTelephony!) {
+                Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
 
-                  AgencyDetailsModel voiceAgencyDetails =
-                      AgencyDetailsModel.fromJson(jsonData);
+                AgencyDetailsModel voiceAgencyDetails =
+                    AgencyDetailsModel.fromJson(jsonData);
 
-                  if (state.customerIndex! < bloc.resultList.length) {
-                    List<Address> tempMobileList = [];
-                    bloc.autoCallingResultList[state.customerIndex!].address
-                        ?.asMap()
-                        .forEach((i, element) {
-                      if (element.cType == 'mobile') {
-                        tempMobileList.add(element);
-                      }
-                    });
-                    if (state.phoneIndex! < tempMobileList.length) {
-                      var requestBodyData = CallCustomerModel(
-                        from:
-                            voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                        to: tempMobileList[state.phoneIndex!].value ?? '',
-                        callerId: voiceAgencyDetails
-                                    .result?.voiceAgencyData?.first.callerIds !=
-                                []
-                            ? voiceAgencyDetails.result?.voiceAgencyData?.first
-                                .callerIds?.first as String
-                            : '0',
-                        aRef: Singleton.instance.agentRef ?? '',
-                        customerName:
-                            bloc.resultList[state.customerIndex!].cust!,
-                        service: voiceAgencyDetails
-                                .result?.voiceAgencyData?.first.agencyId ??
-                            '0',
-                        callerServiceID: voiceAgencyDetails
-                                .result?.voiceAgencyData?.first.agencyId ??
-                            '0',
-                        caseId: bloc.resultList[state.customerIndex!].caseId!,
-                        sId: bloc.resultList[state.customerIndex!].sId!,
-                        agrRef:
-                            bloc.resultList[state.customerIndex!].agrRef ?? '',
-                        agentName: Singleton.instance.agentName ?? '',
-                        agentType: (Singleton.instance.usertype ==
-                                Constants.telecaller)
-                            ? 'TELECALLER'
-                            : 'COLLECTOR',
-                      );
-                      Map<String, dynamic> postResult =
-                          await APIRepository.apiRequest(
-                        APIRequestType.post,
-                        HttpUrl.callCustomerUrl,
-                        requestBodydata: jsonEncode(requestBodyData),
-                      );
-                      if (postResult[Constants.success]) {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext builderContext) {
-                              _timer =
-                                  Timer(const Duration(seconds: 5), () async {
-                                Navigator.of(context).pop();
-                                _timer.cancel();
-                                if (state.customerIndex! <
-                                    bloc.resultList.length) {
-                                  List<Address> tempMobileList = [];
-                                  bloc.resultList[state.customerIndex!].address
-                                      ?.asMap()
-                                      .forEach((i, element) {
-                                    if (element.cType == 'mobile') {
-                                      tempMobileList.add(element);
-                                    }
-                                  });
-                                  if (state.phoneIndex! <
-                                      tempMobileList.length) {
-                                    CaseDetailsBloc caseDetailsloc =
-                                        CaseDetailsBloc(bloc)
-                                          ..add(CaseDetailsInitialEvent(
-                                            paramValues: {
-                                              'caseID': bloc
-                                                  .resultList[
-                                                      state.customerIndex!]
-                                                  .caseId,
-                                              'isAutoCalling': true,
-                                              'caseIndex': state.customerIndex,
-                                              'customerIndex':
-                                                  state.customerIndex,
-                                              'phoneIndex': state.phoneIndex,
-                                              'contactIndex': state.phoneIndex,
-                                              'mobileList': tempMobileList,
-                                              'context': context,
-                                              'callId': postResult['data']
-                                                  ['result'],
-                                            },
-                                            context: context,
-                                          ));
-                                    await phoneBottomSheet(
-                                        context, caseDetailsloc, 0);
-                                  } else {
-                                    bloc.add(StartCallingEvent(
-                                      customerIndex: state.customerIndex! + 1,
-                                      phoneIndex: 0,
-                                    ));
-                                  }
-                                } else {
-                                  Singleton.instance.startCalling = false;
-                                }
-                              });
-                              return const AlertDialog(
-                                backgroundColor: Colors.white,
-                                title: CustomLoadingWidget(),
-                              );
-                            }).then((val) {
-                          if (_timer.isActive) {
-                            _timer.cancel();
-                          }
-                        });
-                      } else {
-                        AppUtils.showToast(
-                            Languages.of(context)!.pleaseCallAgain);
-                      }
-                    } else {
-                      bloc.add(StartCallingEvent(
-                        customerIndex: state.customerIndex! + 1,
-                        phoneIndex: 0,
-                      ));
+                if (state.customerIndex! < bloc.autoCallingResultList.length) {
+                  List<Address> tempMobileList = [];
+                  bloc.autoCallingResultList[state.customerIndex!].address
+                      ?.asMap()
+                      .forEach((i, element) {
+                    if (element.cType == 'mobile') {
+                      tempMobileList.add(element);
                     }
+                  });
+                  if (state.phoneIndex! < tempMobileList.length) {
+                    var requestBodyData = CallCustomerModel(
+                      from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
+                      to: tempMobileList[state.phoneIndex!].value ?? '',
+                      callerId: voiceAgencyDetails
+                                  .result?.voiceAgencyData?.first.callerIds !=
+                              []
+                          ? voiceAgencyDetails.result?.voiceAgencyData?.first
+                              .callerIds?.first as String
+                          : '0',
+                      aRef: Singleton.instance.agentRef ?? '',
+                      customerName: bloc
+                          .autoCallingResultList[state.customerIndex!].cust!,
+                      service: voiceAgencyDetails
+                              .result?.voiceAgencyData?.first.agencyId ??
+                          '0',
+                      callerServiceID: voiceAgencyDetails
+                              .result?.voiceAgencyData?.first.agencyId ??
+                          '0',
+                      caseId: bloc
+                          .autoCallingResultList[state.customerIndex!].caseId!,
+                      sId:
+                          bloc.autoCallingResultList[state.customerIndex!].sId!,
+                      agrRef: bloc.autoCallingResultList[state.customerIndex!]
+                              .agrRef ??
+                          '',
+                      agentName: Singleton.instance.agentName ?? '',
+                      agentType:
+                          (Singleton.instance.usertype == Constants.telecaller)
+                              ? 'TELECALLER'
+                              : 'COLLECTOR',
+                    );
+                    Map<String, dynamic> postResult =
+                        await APIRepository.apiRequest(
+                      APIRequestType.post,
+                      HttpUrl.callCustomerUrl,
+                      requestBodydata: jsonEncode(requestBodyData),
+                    );
+                    if (postResult[Constants.success]) {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext builderContext) {
+                            _timer =
+                                Timer(const Duration(seconds: 5), () async {
+                              Navigator.of(context).pop();
+                              _timer.cancel();
+                              if (state.customerIndex! <
+                                  bloc.autoCallingResultList.length) {
+                                List<Address> tempMobileList = [];
+                                bloc.autoCallingResultList[state.customerIndex!]
+                                    .address
+                                    ?.asMap()
+                                    .forEach((i, element) {
+                                  if (element.cType == 'mobile') {
+                                    tempMobileList.add(element);
+                                  }
+                                });
+                                if (state.phoneIndex! < tempMobileList.length) {
+                                  CaseDetailsBloc caseDetailsloc =
+                                      CaseDetailsBloc(bloc)
+                                        ..add(CaseDetailsInitialEvent(
+                                          paramValues: {
+                                            'caseID': bloc
+                                                .autoCallingResultList[
+                                                    state.customerIndex!]
+                                                .caseId,
+                                            'isAutoCalling': true,
+                                            'caseIndex': state.customerIndex,
+                                            'customerIndex':
+                                                state.customerIndex,
+                                            'phoneIndex': state.phoneIndex,
+                                            'contactIndex': state.phoneIndex,
+                                            'mobileList': tempMobileList,
+                                            'context': context,
+                                            'callId': postResult['data']
+                                                ['result'],
+                                          },
+                                          context: context,
+                                        ));
+                                  await phoneBottomSheet(
+                                      context, caseDetailsloc, 0);
+                                } else {
+                                  bloc.add(StartCallingEvent(
+                                    customerIndex: state.customerIndex! + 1,
+                                    phoneIndex: 0,
+                                  ));
+                                }
+                              } else {
+                                Singleton.instance.startCalling = false;
+                              }
+                            });
+                            return const AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: CustomLoadingWidget(),
+                            );
+                          }).then((val) {
+                        if (_timer.isActive) {
+                          _timer.cancel();
+                        }
+                      });
+                    } else {
+                      AppUtils.showToast(
+                          Languages.of(context)!.pleaseCallAgain);
+                    }
+                  } else {
+                    bloc.add(StartCallingEvent(
+                      customerIndex: state.customerIndex! + 1,
+                      phoneIndex: 0,
+                    ));
                   }
-                } else {
-                  // AppUtils.makePhoneCall(
-                  //   'tel:' + '6374578994',
-                  // );
                 }
               } else {
-                AppUtils.showToast(
-                    Languages.of(context)!.doesntGetTheAgentAddress);
+                // AppUtils.makePhoneCall(
+                //   'tel:' + '6374578994',
+                // );
               }
             } else {
               AppUtils.showToast(
-                'Auto calling has been stoped!',
-                gravity: ToastGravity.CENTER,
-              );
+                  Languages.of(context)!.doesntGetTheAgentAddress);
             }
           } else {
             Singleton.instance.startCalling = false;
@@ -835,26 +827,25 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                       TapAreYouAtOfficeOptionsEvent());
                                                 },
                                               )),
-                                          Expanded(
-                                            child: SizedBox(
-                                              // width: 85,
-                                                height: 40,
-                                                child: CustomButton(
-                                                  Languages.of(context)!.no,
-                                                  fontSize: FontSize.twelve,
-                                                  borderColor:
-                                                  ColorResource.color23375A,
-                                                  textColor:
-                                                  ColorResource.color23375A,
-                                                  buttonBackgroundColor:
-                                                  ColorResource.colorffffff,
-                                                  cardShape: 5,
-                                                  onTap: () {
-                                                    bloc.add(
-                                                        TapAreYouAtOfficeOptionsEvent());
-                                                  },
-                                                )),
-                                          ),
+                                          SizedBox(
+                                              width: 85,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.no,
+                                                fontSize: FontSize.twelve,
+                                                borderColor:
+                                                    ColorResource.color23375A,
+                                                textColor:
+                                                    ColorResource.color23375A,
+                                                buttonBackgroundColor:
+                                                    ColorResource.colorffffff,
+                                                cardShape: 5,
+                                                isRemoveExtraPadding: true,
+                                                onTap: () {
+                                                  bloc.add(
+                                                      TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
                                         ],
                                       ),
                                     )
@@ -985,15 +976,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 }),
                               ),
                             ),
-
-                            // Align(
-                            //   alignment: Alignment.bottomLeft,
-                            //   child: Wrap(
-                            //     runSpacing: 0,
-                            //     spacing: 10,
-                            //     children: _buildFilterOptions(),
-                            //   ),
-                            // ),
                             const SizedBox(
                               height: 13.0,
                             ),
@@ -1080,6 +1062,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     customerIndex: 0,
                                     phoneIndex: 0,
                                     customerList: bloc.resultList.first,
+                                    // isStartFromButtonClick: true,
                                   ));
                                 },
                               ),
