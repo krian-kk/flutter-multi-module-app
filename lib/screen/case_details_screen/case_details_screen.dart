@@ -1329,7 +1329,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             elevation: 0,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30.0))),
-            color: ColorResource.colorD5344C,
+            color: CaseStatusWidget.getStatusColor(text),
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 3.3),

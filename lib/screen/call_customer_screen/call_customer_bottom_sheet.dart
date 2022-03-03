@@ -160,7 +160,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                           agentContactNoControlller,
                                           validationRules: const ['required'],
                                           height: 46,
-                                          isReadOnly: false,
+                                          isReadOnly: true,
                                           contentPadding:
                                               const EdgeInsets.fromLTRB(
                                                   0, 15, 0, 9),

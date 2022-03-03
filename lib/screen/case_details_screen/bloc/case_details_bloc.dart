@@ -371,7 +371,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           paramValues: event.paramValues);
     }
     if (event is ChangeIsSubmitEvent) {
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = null;
       isEventSubmited = true;
 
       yield UpdateSuccessfullState();
@@ -730,7 +730,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           submitedEventType = 'Phone Unreachable';
           if (userType == Constants.telecaller) {
             isEventSubmited = true;
-            caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+            caseDetailsAPIValue.result?.caseDetails?.collSubStatus = null;
           }
           if (isAutoCalling) {
             if (event.autoCallingStopAndSubmit) {
@@ -1079,7 +1079,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       submitedEventType = 'Unreachable';
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
-        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = null;
       }
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
@@ -1151,7 +1151,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       submitedEventType = 'Customer Not Met';
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = null;
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1230,7 +1230,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       submitedEventType = 'Address Invalid';
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+      caseDetailsAPIValue.result?.caseDetails?.collSubStatus = null;
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }
@@ -1282,7 +1282,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       submitedEventType = 'Phone Invalid';
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
-        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = 'used';
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus = null;
       }
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
