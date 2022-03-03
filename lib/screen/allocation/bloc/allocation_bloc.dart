@@ -207,6 +207,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Enable the search and hide autocalling screen
       isAutoCalling = false;
       isShowSearchFloatingButton = true;
+      Singleton.instance.startCalling = false;
       // Now set priority case is a load more event
       isPriorityLoadMore = true;
 
@@ -243,12 +244,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // if (event.isStartFromButtonClick) {
       //   tempTotalCount = autoCallingResultList.length;
       // }
-      if (event.isIncreaseCount && event.customerIndex! < totalCount) {
+      if (event.isIncreaseCount && event.customerIndex! <= totalCount) {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
         // autoCallingResultList.add(val);
-        autoCallingResultList.last.isCompletedSuccess = true;
+        // autoCallingResultList.last.isCompletedSuccess = true;
         customerCount++;
+        yield UpdateNewValueState();
       }
       Singleton.instance.startCalling = true;
 

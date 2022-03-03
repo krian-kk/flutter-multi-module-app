@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ColorResource {
   // static const Color color23375A = Color(0xff23375A);
@@ -58,6 +59,9 @@ class ColorResource {
   static const Color colorFFC23B = Color(0xffFFC23B);
   static const Color colorEA8A38 = Color(0xffEA8A38);
   static const Color color203052 = Color(0xff203052);
-
-  //static const Color colorFFB = Color(0xffFFB800);
+  // Helth Status Color
+  static const Color green = Colors.green;
+  static const Color red = Colors.red;
+  static const Color grey = Colors.grey;
+  static const Color orange = Colors.orange;
 }

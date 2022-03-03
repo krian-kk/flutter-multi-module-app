@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 
 class ShowHealthStatus {
@@ -9,25 +10,25 @@ class ShowHealthStatus {
       case '0':
         returnWidget = SvgPicture.asset(
           ImageResource.activePerson,
-          color: Colors.red,
+          color: ColorResource.red,
         );
         break;
       case '1':
         returnWidget = SvgPicture.asset(
           ImageResource.activePerson,
-          color: Colors.orange,
+          color: ColorResource.orange,
         );
         break;
       case '2':
         returnWidget = SvgPicture.asset(
           ImageResource.activePerson,
-          color: Colors.green,
+          color: ColorResource.green,
         );
         break;
       default:
         returnWidget = SvgPicture.asset(
           ImageResource.activePerson,
-          color: Colors.grey,
+          color: ColorResource.grey,
         );
         break;
     }

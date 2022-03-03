@@ -83,7 +83,7 @@ class LanguageEn extends Languages {
   String get under5km => 'Under 5Km';
 
   @override
-  String get more5km => '5Km-10Km';
+  String get more5km => 'Under 10Km';
 
   @override
   String get mtdResolutionProgress => 'MTD RESOLUTION PROGRESS';
