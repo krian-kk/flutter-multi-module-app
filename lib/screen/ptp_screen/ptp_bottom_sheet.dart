@@ -293,6 +293,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   isNumberOnly: true,
                                   onEditing: () {
                                     ptpReferenceFocusNode.requestFocus();
+                                    _formKey.currentState!.validate();
                                   },
                                 )),
                                 const SizedBox(height: 15),
@@ -312,26 +313,26 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 const SizedBox(height: 21),
                                 CustomReadOnlyTextField(
-                                  Languages.of(context)!.reference,
-                                  referenceControlller,
-                                  focusNode: ptpReferenceFocusNode,
-                                  isLabel: true,
-                                  validatorCallBack: () {},
-                                  onEditing: () =>
-                                      ptpRemarksFocusNode.requestFocus(),
-                                ),
+                                    Languages.of(context)!.reference,
+                                    referenceControlller,
+                                    focusNode: ptpReferenceFocusNode,
+                                    isLabel: true,
+                                    validatorCallBack: () {}, onEditing: () {
+                                  ptpRemarksFocusNode.requestFocus();
+                                  _formKey.currentState!.validate();
+                                }),
                                 const SizedBox(height: 20),
                                 CustomReadOnlyTextField(
-                                  Languages.of(context)!.remarks,
-                                  remarksControlller,
-                                  focusNode: ptpRemarksFocusNode,
-                                  validationRules: const ['required'],
-                                  isLabel: true,
-                                  // suffixWidget: VoiceRecodingWidget(),
-                                  validatorCallBack: () {},
-                                  onEditing: () =>
-                                      ptpRemarksFocusNode.unfocus(),
-                                ),
+                                    Languages.of(context)!.remarks,
+                                    remarksControlller,
+                                    focusNode: ptpRemarksFocusNode,
+                                    validationRules: const ['required'],
+                                    isLabel: true,
+                                    // suffixWidget: VoiceRecodingWidget(),
+                                    validatorCallBack: () {}, onEditing: () {
+                                  ptpRemarksFocusNode.unfocus();
+                                  _formKey.currentState!.validate();
+                                }),
                                 const SizedBox(height: 15)
                               ],
                             ),
