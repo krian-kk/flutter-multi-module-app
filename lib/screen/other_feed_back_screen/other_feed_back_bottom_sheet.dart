@@ -610,6 +610,12 @@ class _CustomOtherFeedBackBottomSheetState
                 phoneIndex: 0,
                 isIncreaseCount: true,
               ));
+            } else {
+              if (widget.health == ConstantEventValues.healthTwo) {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
+                ));
+              }
             }
           } else {
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);

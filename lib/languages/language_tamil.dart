@@ -83,7 +83,7 @@ class LanguageTa extends Languages {
   String get under5km => '5கிமீ கீழ்';
 
   @override
-  String get more5km => '5கிமீ-10கிமீ';
+  String get more5km => '10கிமீ கீழ்';
 
   @override
   String get mtdResolutionProgress => 'MTD தீர்மானம் முன்னேற்றம்';
@@ -239,7 +239,8 @@ class LanguageTa extends Languages {
   String get showOnlyStar => 'நட்சத்திரத்தை மட்டும் காட்டு (அதிக முன்னுரிமை)';
 
   @override
-  String get new_ => 'புதியது';
+  // String get new_ => 'புதியது';
+  String get new_ => 'NEW';
 
   @override
   String get overdueAmount => 'தாமதமான தொகை';

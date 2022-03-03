@@ -210,7 +210,12 @@ class CustomCardList {
                                             text: resultData[index]
                                                     .collSubStatus ??
                                                 '',
-                                          ),
+                                            health: resultData[index]
+                                                .address!
+                                                .first
+                                                .health!),
+                                  // Text(
+                                  //     resultData[index].address!.first.health!),
                                   // : const SizedBox(),
                                   if (Singleton.instance.usertype ==
                                       Constants.telecaller)

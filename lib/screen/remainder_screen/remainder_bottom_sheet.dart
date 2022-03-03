@@ -438,6 +438,10 @@ class _CustomRemainderBottomSheetState
                 phoneIndex: 0,
                 isIncreaseCount: true,
               ));
+            } else {
+              widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                customerIndex: widget.paramValue['customerIndex'],
+              ));
             }
           } else {
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);

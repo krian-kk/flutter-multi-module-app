@@ -83,7 +83,7 @@ class LanguageHi extends Languages {
   String get under5km => '5 किमी से कम';
 
   @override
-  String get more5km => '5 किमी-10 किमी';
+  String get more5km => '10 किमी से कम';
 
   @override
   String get mtdResolutionProgress => 'MTD प्रस्ताव की प्रगति';
@@ -239,7 +239,8 @@ class LanguageHi extends Languages {
   String get showOnlyStar => 'केवल स्टार दिखाएं (उच्च प्राथमिकता)';
 
   @override
-  String get new_ => 'नया';
+  // String get new_ => 'नया';
+  String get new_ => 'NEW';
 
   @override
   String get overdueAmount => 'अतिदेय राशि';

@@ -542,6 +542,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               .add(Result.fromJson(jsonDecode(jsonEncode(element))));
         }
       }
+      autoCallingResultList.clear();
+      autoCallingResultList = resultList;
       totalCount = autoCallingResultList.length;
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>

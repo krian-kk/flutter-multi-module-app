@@ -10,7 +10,7 @@ class CaseStatusWidget {
       String? text,
       double? fontSize,
       double? radius,
-      Color? color}) {
+      String? health}) {
     Widget? child;
     if (text != '') {
       child = Container(
@@ -18,7 +18,11 @@ class CaseStatusWidget {
         // height: height ?? 19,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
         decoration: BoxDecoration(
-            color: color ?? ColorResource.colorD5344C,
+            color: health == '0'
+                ? ColorResource.red
+                : health == '1'
+                    ? ColorResource.orange
+                    : ColorResource.green,
             borderRadius: BorderRadius.circular(radius ?? 30)),
         child: Center(
           child: CustomText(
