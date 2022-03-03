@@ -12,6 +12,8 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
+import '../../widgets/case_status_widget.dart';
+
 class CustomCardList {
   static Widget buildListView(AllocationBloc bloc,
       {List<Result>? resultData,
@@ -61,7 +63,9 @@ class CustomCardList {
                             ),
                             CustomText(
                               resultData[index].distanceMeters != null
-                                  ? double.parse(resultData[index]
+                                  ? Constants.approx +
+                                      " " +
+                                      double.parse(resultData[index]
                                               .distanceMeters
                                               .toStringAsFixed(2))
                                           .toString() +
@@ -69,6 +73,7 @@ class CustomCardList {
                                   : '-',
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
+                              lineHeight: 1,
                               color: ColorResource.color101010,
                             ),
                             const SizedBox(
@@ -192,49 +197,36 @@ class CustomCardList {
                                       ],
                                     ),
                                   ),
-                                  resultData[index].collSubStatus == "new" &&
-                                          Singleton.instance.usertype ==
-                                              Constants.fieldagent
-                                      ? Container(
-                                          width: 55,
-                                          height: 19,
-                                          decoration: BoxDecoration(
-                                              color: ColorResource.colorD5344C,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          child: Center(
-                                            child: CustomText(
-                                              Languages.of(context)!.new_,
-                                              color: ColorResource.colorffffff,
-                                              fontSize: FontSize.ten,
-                                              lineHeight: 1,
-                                            ),
+                                  if (Singleton.instance.usertype ==
+                                      Constants.fieldagent)
+                                    resultData[index].collSubStatus == "new"
+                                        ? CaseStatusWidget.satusTextWidget(
+                                            context,
+                                            text: Languages.of(context)!.new_,
+                                            width: 55,
+                                          )
+                                        : CaseStatusWidget.satusTextWidget(
+                                            context,
+                                            text: resultData[index]
+                                                    .collSubStatus ??
+                                                '',
                                           ),
-                                        )
-                                      : resultData[index].telSubStatus ==
-                                                  "new" &&
-                                              Singleton.instance.usertype ==
-                                                  Constants.telecaller
-                                          ? Container(
-                                              width: 55,
-                                              height: 19,
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorD5344C,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              child: Center(
-                                                child: CustomText(
-                                                  Languages.of(context)!.new_,
-                                                  color:
-                                                      ColorResource.colorffffff,
-                                                  fontSize: FontSize.ten,
-                                                  lineHeight: 1,
-                                                ),
-                                              ),
-                                            )
-                                          : const SizedBox(),
+                                  // : const SizedBox(),
+                                  if (Singleton.instance.usertype ==
+                                      Constants.telecaller)
+                                    resultData[index].telSubStatus == "new"
+                                        ? CaseStatusWidget.satusTextWidget(
+                                            context,
+                                            text: Languages.of(context)!.new_,
+                                            width: 55,
+                                          )
+                                        : CaseStatusWidget.satusTextWidget(
+                                            context,
+                                            text: resultData[index]
+                                                    .telSubStatus ??
+                                                '',
+                                          ),
+                                  // : const SizedBox(),
                                 ],
                               ),
                             ),

@@ -1,3 +1,6 @@
+import '../singleton.dart';
+import '../utils/constants.dart';
+
 class PriorityCaseListModel {
   int? status;
   String? message;
@@ -90,7 +93,24 @@ class Result {
     bankName = json['bankName'] ?? '-';
     fieldfollowUpDate = json['fieldfollowUpDate'];
     sortId = json['sortId'];
-    followUpDate = json['followUpDate'];
+    // followUpDate = json['followUpDate'];
+    // Here we will check which user logged in then only set followUpDate
+    if (Singleton.instance.usertype == Constants.fieldagent) {
+      if (json['collSubStatus'] != null &&
+          json['collSubStatus'].toString().toLowerCase() == 'new') {
+        followUpDate = DateTime.now().toString();
+      } else {
+        followUpDate = json['followUpDate'];
+      }
+    } else {
+      if (json['telSubStatus'] != null &&
+          json['telSubStatus'].toString().toLowerCase() == 'new') {
+        followUpDate = DateTime.now().toString();
+      } else {
+        followUpDate = json['followUpDate'];
+      }
+    }
+
     locationType = json['locationType'];
     distanceMeters = json['distanceMeters'];
     repoStatus = json['repoStatus'];

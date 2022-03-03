@@ -10,6 +10,7 @@ class CaseDetails {
   dynamic odVal;
   String? accNo;
   String? collSubStatus;
+  String? telSubStatus;
   String? bankName;
   String? batchNo;
   String? product;
@@ -32,6 +33,7 @@ class CaseDetails {
     this.odVal,
     this.accNo,
     this.collSubStatus,
+    this.telSubStatus,
     this.bankName,
     this.batchNo,
     this.product,
@@ -55,6 +57,7 @@ class CaseDetails {
         odVal: json['odVal'],
         accNo: json['accNo'] as String?,
         collSubStatus: json['collSubStatus'] as String?,
+        telSubStatus: json['telSubStatus'] as String?,
         bankName: json['bankName'] as String?,
         batchNo: json['batchNo'] as String?,
         product: json['product'] as String?,
@@ -87,6 +90,7 @@ class CaseDetails {
         'odVal': odVal,
         'accNo': accNo,
         'collSubStatus': collSubStatus,
+        'telSubStatus': telSubStatus,
         'bankName': bankName,
         'batchNo': batchNo,
         'product': product,

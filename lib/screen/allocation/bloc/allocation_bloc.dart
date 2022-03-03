@@ -54,7 +54,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int page = 1;
 
-  // There is next page or not
+  // There is used for pagination to scroll up
   bool hasNextPage = false;
   // Show Telecaller Autocalling
   bool isAutoCalling = false;
