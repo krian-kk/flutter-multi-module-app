@@ -400,7 +400,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is UpdateNewValuesEvent) {
       resultList.asMap().forEach((index, value) {
         if (value.caseId == event.paramValue) {
-          value.collSubStatus = 'used';
+          value.collSubStatus = null;
         }
       });
       yield UpdateNewValueState();
