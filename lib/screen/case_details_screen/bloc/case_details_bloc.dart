@@ -371,8 +371,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           paramValues: event.paramValues);
     }
     if (event is ChangeIsSubmitEvent) {
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
-          event.selectedClipValue;
+      if (Singleton.instance.usertype == Constants.telecaller) {
+        caseDetailsAPIValue.result?.caseDetails?.telSubStatus =
+            event.selectedClipValue;
+      } else {
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
+            event.selectedClipValue;
+      }
       isEventSubmited = true;
       yield UpdateSuccessfullState();
     }
