@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -44,10 +48,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
   AuthenticationBloc? bloc;
+  Stream<QuerySnapshot>? _usersStream;
+  CollectionReference? users;
 
   @override
   void initState() {
     bloc = BlocProvider.of<AuthenticationBloc>(context);
+    debugPrint('user ID--> ${md5.convert(utf8.encode("CDE_26")).toString()}');
     super.initState();
   }
 
@@ -86,7 +93,14 @@ class _MyAppState extends State<MyApp> {
                   remoteConfig.getString('v1_uat_mobile_app_baseUrl')
               : HttpUrl.url =
                   remoteConfig.getString('v1_production_mobile_app_baseUrl');
+      Singleton.instance.firebaseDatabaseName =
+          remoteConfig.getString('offlineDatabaseName');
       debugPrint('URL -> ${HttpUrl.url}');
+      debugPrint('DB name -> ${Singleton.instance.firebaseDatabaseName}');
+      var userID = md5.convert(utf8.encode("CDE_26")).toString();
+      debugPrint('user ID--> $userID');
+      debugPrint('Storage name--> ${Singleton.instance.firebaseDatabaseName}');
+
     } catch (e) {
       debugPrint('Catch-> $e');
       setupRemoteConfig();
@@ -133,6 +147,17 @@ class _MyAppState extends State<MyApp> {
                     alignment: Alignment.center,
                   );
                 } else {
+                  // return Container(
+                  //   color: Colors.white,
+                  //   child: Text(
+                  //     "Document does not exist",
+                  //     style: TextStyle(
+                  //       color: Colors.blue,
+                  //       fontSize: 17,
+                  //     ),
+                  //   ),
+                  //   alignment: Alignment.center,
+                  // );
                   return addAuthBloc(
                     context,
                     const SplashScreen(),

@@ -4,15 +4,23 @@ class Constants {
   static const String pageNo = '1';
   static const String limit = '10';
   static const String help = 'Help';
+
   //Case Filter by day
   static const String today = 'TODAY';
   static const String weeklY = 'WEEKLY';
   static const String monthly = 'MONTHLY';
+
   //Distance Filter
-  static const String allDisMeters = '100000';
+  //All -> Build route
+  static const String allDisMeters = '1000000';
+
+  //Under 5-10KM -> Build route
   static const String maxDisMeters = '10000';
+
+  //Under 5KM -> Build route
   static const String minDisMeters = '5000';
   static const String approx = 'Approx';
+
   // Type of userType
   static const String fieldagent = 'FIELDAGENT';
   static const String telecaller = 'TELECALLER';
@@ -135,4 +143,5 @@ class Constants {
   static const String repaymentInfoType = 'repaymentInfo';
   static const String callTriedType = 'callTried';
   static const String receiptAcknowledgementType = 'receiptAcknowledgement';
+  static const String isOfflineStorage = 'isOfflineStorage';
 }

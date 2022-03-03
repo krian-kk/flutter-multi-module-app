@@ -27,8 +27,10 @@ class Singleton {
   String? resAddressId_0;
   String? contactId_0;
   bool? startCalling;
+  bool? isOfflineStorageFeatureEnabled = false;
+  String? firebaseDatabaseName;
 
-// Contractor All Informations
+// Contractor All Information
   ContractorAllInformationModel? contractorInformations;
 
   //store update health value

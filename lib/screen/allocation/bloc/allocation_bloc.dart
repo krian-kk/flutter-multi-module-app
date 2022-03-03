@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
+import 'package:origa/models/offline_priority_response_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
@@ -21,6 +24,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
+
 part 'allocation_state.dart';
 
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
@@ -56,10 +60,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // There is next page or not
   bool hasNextPage = false;
+
   // Show Telecaller Autocalling
   bool isAutoCalling = false;
+
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
+
   // Check which event to call for load more cases
   bool isPriorityLoadMore = false;
 
@@ -158,36 +165,79 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         starCount = 0;
 
         if (priorityListData['success']) {
-          for (var element in priorityListData['data']['result']) {
-            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-                true) {
-              starCount++;
+          var offlinePriorityResponseModel;
+          try {
+            offlinePriorityResponseModel =
+                OfflinePriorityResponseModel.fromJson(priorityListData['data']);
+          } catch (e) {
+            debugPrint(e.toString());
+          }
+          if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
+            Singleton.instance.isOfflineStorageFeatureEnabled = true;
+            yield AllocationLoadedState(
+                successResponse: Constants.isOfflineStorage);
+            FirebaseFirestore.instance
+                .collection('origaOfflineStorage')
+                .doc('d90e4d644ff84f49c9c256a4314bac7ff')
+                .set({
+              'name': 'Chinnadurai',
+              'age': 25,
+              'city': 'Kallakurichi',
+              'district': 'Kallakurichi'
+            });
+            // FirebaseFirestore.instance
+            //     .collection(Singleton.instance.firebaseDatabaseName!)
+            //     .get()
+            //     .then((QuerySnapshot<Map<String, dynamic>> value) {
+            //   for (var element in value.docs) {
+            //     debugPrint('Size of document-> ${jsonEncode(element.data())}');
+            //   }
+            // });
+
+            FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName!)
+                .snapshots()
+                .forEach((element) {
+              debugPrint('Length.-> ${element.docs.length}');
+              for (var elementOfDocument in element.docs) {
+                debugPrint(
+                    'elementOfDocument.-> ${jsonEncode(elementOfDocument.data())}');
+              }
+            });
+          } else {
+            Singleton.instance.isOfflineStorageFeatureEnabled = false;
+            for (var element in priorityListData['data']['result']) {
+              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
+                  true) {
+                starCount++;
+              }
             }
-          }
 
-          if (resultList.length >= 10) {
-            hasNextPage = true;
-          } else {
-            hasNextPage = false;
-          }
-          // Get Contractor Details and stored in Singleton
-          Map<String, dynamic> getContractorDetails =
-              await APIRepository.apiRequest(
-                  APIRequestType.get, HttpUrl.contractorDetail);
-          if (getContractorDetails[Constants.success] == true) {
-            Map<String, dynamic> jsonData = getContractorDetails['data'];
-            // check and store cloudTelephony true or false
-            Singleton.instance.cloudTelephony =
-                jsonData['result']['cloudTelephony'] ?? false;
+            if (resultList.length >= 10) {
+              hasNextPage = true;
+            } else {
+              hasNextPage = false;
+            }
+            // Get Contractor Details and stored in Singleton
+            Map<String, dynamic> getContractorDetails =
+                await APIRepository.apiRequest(
+                    APIRequestType.get, HttpUrl.contractorDetail);
+            if (getContractorDetails[Constants.success] == true) {
+              Map<String, dynamic> jsonData = getContractorDetails['data'];
+              // check and store cloudTelephony true or false
+              Singleton.instance.cloudTelephony =
+                  jsonData['result']['cloudTelephony'] ?? false;
 
-            Singleton.instance.feedbackTemplate =
-                ContractorDetailsModel.fromJson(jsonData);
-            Singleton.instance.contractorInformations =
-                ContractorAllInformationModel.fromJson(jsonData);
-          } else {
-            if (getContractorDetails['data'] != null) {
-              AppUtils.showToast(getContractorDetails['data'] ?? '');
+              Singleton.instance.feedbackTemplate =
+                  ContractorDetailsModel.fromJson(jsonData);
+              Singleton.instance.contractorInformations =
+                  ContractorAllInformationModel.fromJson(jsonData);
+            } else {
+              if (getContractorDetails['data'] != null) {
+                AppUtils.showToast(getContractorDetails['data'] ?? '');
+              }
             }
           }
         } else if (priorityListData['statusCode'] == 401 ||

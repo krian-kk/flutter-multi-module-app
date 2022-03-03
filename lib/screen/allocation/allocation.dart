@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -536,6 +537,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
           //List<Result>
           if (state.successResponse is List<Result>) {
             resultList = state.successResponse;
+          } //List<Result>
+          if (state.successResponse is String) {
+            if (state.successResponse == Constants.isOfflineStorage) {
+              resultList = [];
+            }
           }
         }
 
@@ -1030,11 +1036,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           ? Expanded(
                               child:
                                   AutoCalling.buildAutoCalling(context, bloc))
-                          : Expanded(
-                              child: isCaseDetailLoading
-                                  ? const CustomLoadingWidget()
-                                  : resultList.isEmpty
-                                      ? Column(
+                          : Singleton.instance.isOfflineStorageFeatureEnabled!
+                              ? Expanded(
+                                  child: StreamBuilder(
+                                      stream: FirebaseFirestore.instance
+                                          .collection(Singleton
+                                              .instance.firebaseDatabaseName!)
+                                          .snapshots(),
+                                      builder: (context, asyncSnapshot) {
+                                        return Column(
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -1043,16 +1053,67 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                   .buildNoCaseAvailable(),
                                             ),
                                           ],
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 0.0),
-                                          child: CustomCardList.buildListView(
-                                            bloc,
-                                            resultData: resultList,
-                                            listViewController: _controller,
-                                          ),
-                                        )),
+                                        );
+                                      }))
+                              // Expanded(
+                              //   child: resultList.isEmpty
+                              //           ? Column(
+                              //               children: [
+                              //                 Padding(
+                              //                   padding:
+                              //                       const EdgeInsets.only(
+                              //                           top: 50,
+                              //                           right: 20,
+                              //                           left: 20),
+                              //                   child: NoCaseAvailble
+                              //                       .buildNoCaseAvailable(),
+                              //                 ),
+                              //               ],
+                              //             )
+                              //           : Padding(
+                              //               padding:
+                              //                   const EdgeInsets.symmetric(
+                              //                       horizontal: 20.0,
+                              //                       vertical: 0.0),
+                              //               child:
+                              //                   CustomCardList.buildListView(
+                              //                 bloc,
+                              //                 resultData: resultList,
+                              //                 listViewController: _controller,
+                              //               ),
+                              //             ),
+                              // )
+
+                              : Expanded(
+                                  child: isCaseDetailLoading
+                                      ? const CustomLoadingWidget()
+                                      : resultList.isEmpty
+                                          ? Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 50,
+                                                          right: 20,
+                                                          left: 20),
+                                                  child: NoCaseAvailble
+                                                      .buildNoCaseAvailable(),
+                                                ),
+                                              ],
+                                            )
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20.0,
+                                                      vertical: 0.0),
+                                              child:
+                                                  CustomCardList.buildListView(
+                                                bloc,
+                                                resultData: resultList,
+                                                listViewController: _controller,
+                                              ),
+                                            ),
+                                ),
                     ],
                   ),
                   bottomNavigationBar: Visibility(
