@@ -756,8 +756,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           submitedEventType = 'Phone Unreachable';
           if (userType == Constants.telecaller) {
             isEventSubmited = true;
-            caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
-                phoneSelectedUnreadableClip;
           }
           if (isAutoCalling) {
             if (event.autoCallingStopAndSubmit) {
@@ -1108,8 +1106,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
       }
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
-          selectedClipValue;
+      if (Singleton.instance.usertype == Constants.telecaller) {
+        caseDetailsAPIValue.result?.caseDetails?.telSubStatus =
+            selectedClipValue;
+      } else {
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
+            selectedClipValue;
+      }
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
@@ -1317,8 +1320,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (userType == Constants.telecaller) {
         isEventSubmited = true;
       }
-      caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
-          selectedClipValue;
+      if (Singleton.instance.usertype == Constants.telecaller) {
+        caseDetailsAPIValue.result?.caseDetails?.telSubStatus =
+            selectedClipValue;
+      } else {
+        caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
+            selectedClipValue;
+      }
       phoneInvalidRemarksController.text = '';
       phoneSelectedInvalidClip = '';
     }

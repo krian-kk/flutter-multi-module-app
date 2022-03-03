@@ -355,7 +355,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
                       // for testing purpose using your number here
-                      // from: 'Tester Mobile Number',
+                      // from: '7904557342',
                       to: tempMobileList[state.phoneIndex!].value ?? '',
                       callerId: voiceAgencyDetails
                                   .result?.voiceAgencyData?.first.callerIds !=
@@ -496,7 +496,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 Map<String, dynamic>.from(returnValue));
 
             if (returnModelValue.isSubmit) {
-              bloc.add(UpdateNewValuesEvent(returnModelValue.caseId));
+              bloc.add(UpdateNewValuesEvent(
+                returnModelValue.caseId,
+                returnModelValue.selectedClipValue,
+              ));
             }
           } catch (e) {
             debugPrint(e.toString());
