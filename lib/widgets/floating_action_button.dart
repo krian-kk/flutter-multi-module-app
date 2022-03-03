@@ -18,7 +18,6 @@ class _CustomFloatingActionButtonState
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: SvgPicture.asset(ImageResource.search),
-      // elevation: 15,
       splashColor: ColorResource.colorEA6D48,
       foregroundColor: ColorResource.colorEA6D48,
       backgroundColor: ColorResource.colorEA6D48,

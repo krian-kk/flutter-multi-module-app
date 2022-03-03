@@ -324,13 +324,10 @@ class _ChatScreenState extends State<ChatScreen> {
           start: DateTime(DateTime.now().year - 1),
           end: DateTime.now()));
       debugPrint('The data of history--> ${result.items}');
-      print("start date ==> ${DateTime(DateTime.now().year - 1)}");
-      print("End date ==> ${DateTime.now()}");
 
       setState(() {
         result.items.forEach((element) {
           if (element.data is String) {
-            print("is String====>");
             bloc.messageHistory.insert(
               0,
               ChatHistory(
@@ -339,7 +336,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   dateTime: element.timestamp),
             );
           } else {
-            print("is ObjectData====>");
             ReceivingData receivedData =
                 ReceivingData.fromJson(jsonDecode(jsonEncode(element.data)));
             bloc.messageHistory.insert(

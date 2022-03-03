@@ -236,8 +236,6 @@ class _CallDetailsBottomSheetScreenState
                                                         SizedBox(
                                                             child: InkWell(
                                                           onTap: () {
-                                                            debugPrint(
-                                                                "call customer--->");
                                                             widget.bloc.add(ClickOpenBottomSheetEvent(
                                                                 Constants
                                                                     .callCustomer,

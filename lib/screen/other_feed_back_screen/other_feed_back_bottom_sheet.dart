@@ -610,6 +610,12 @@ class _CustomOtherFeedBackBottomSheetState
                 phoneIndex: 0,
                 isIncreaseCount: true,
               ));
+            } else {
+              if (widget.health == ConstantEventValues.healthTwo) {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
+                ));
+              }
             }
           } else {
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);
@@ -837,20 +843,39 @@ class _CustomOtherFeedBackBottomSheetState
                                                     'Email Id')
                                                 ? TextInputType.emailAddress
                                                 : TextInputType.name,
-                                        inputformaters:
-                                            (listOfContact[index].formValue ==
-                                                        'Mobile' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Office Contact No.' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Residence Contact No.')
-                                                ? [
-                                                    LengthLimitingTextInputFormatter(
-                                                        10),
-                                                  ]
-                                                : [],
+                                        inputformaters: (listOfContact[index]
+                                                        .formValue ==
+                                                    'Mobile' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Office Contact No.' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Residence Contact No.')
+                                            ? [
+                                                LengthLimitingTextInputFormatter(
+                                                    10),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly,
+                                                FilteringTextInputFormatter
+                                                    .deny(Constants.rEGEXEMOJI),
+                                                if (listOfContact[index]
+                                                    .controller
+                                                    .text
+                                                    .isEmpty)
+                                                  FilteringTextInputFormatter
+                                                      .deny(' '),
+                                              ]
+                                            : [
+                                                FilteringTextInputFormatter
+                                                    .deny(Constants.rEGEXEMOJI),
+                                                if (listOfContact[index]
+                                                    .controller
+                                                    .text
+                                                    .isEmpty)
+                                                  FilteringTextInputFormatter
+                                                      .deny(' ')
+                                              ],
                                       ),
                                     ),
                                   ],

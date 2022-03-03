@@ -17,11 +17,6 @@ class NoCaseAvailble {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // SvgPicture.asset(
-            //   ImageResource.noCaseAvailable,
-            //   height: 30,
-            //   width: 30,
-            // ),
             Image.asset(ImageResource.noCaseAvailable),
             const CustomText(
               Constants.noCasesAvailable,

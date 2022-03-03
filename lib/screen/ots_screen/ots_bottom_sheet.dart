@@ -208,6 +208,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     isLabel: true,
                                     focusNode: otsProposedAmountFocusNode,
                                     keyBoardType: TextInputType.number,
+                                    isNumberOnly: true,
                                   )),
                                   const SizedBox(height: 17),
                                   Row(
@@ -558,6 +559,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   customerIndex: widget.paramValue['customerIndex'] + 1,
                   phoneIndex: 0,
                   isIncreaseCount: true,
+                ));
+              } else {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
                 ));
               }
             } else {

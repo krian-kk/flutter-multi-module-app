@@ -420,6 +420,10 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                   phoneIndex: 0,
                   isIncreaseCount: true,
                 ));
+              } else {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
+                ));
               }
               Singleton.instance.startCalling = false;
             } else {

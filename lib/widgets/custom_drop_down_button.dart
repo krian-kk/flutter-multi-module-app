@@ -71,11 +71,15 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
             // height: 35,
             child: DropdownButton<String>(
               value: widget.selectedValue ?? widget.listOfItems[0],
-              icon: widget.icon ??
-                  SvgPicture.asset(
-                    ImageResource.downArrow,
-                    width: 16,
-                  ),
+              icon: Padding(
+                padding: const EdgeInsets.only(right: 10, bottom: 3),
+                child: widget.icon ??
+                    SvgPicture.asset(
+                      ImageResource.downArrow,
+                      width: 10,
+                      height: 16,
+                    ),
+              ),
               // iconSize: 24,
               isExpanded: widget.isExpanded,
               style: widget.style ??

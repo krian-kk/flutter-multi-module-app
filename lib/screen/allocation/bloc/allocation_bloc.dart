@@ -240,6 +240,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+    if (event is ConnectedStopAndSubmitEvent) {
+      Result val = autoCallingResultList[event.customerIndex];
+      autoCallingResultList.remove(val);
+      customerCount++;
+    }
     if (event is StartCallingEvent) {
       // if (event.isStartFromButtonClick) {
       //   tempTotalCount = autoCallingResultList.length;
@@ -248,7 +253,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
         // autoCallingResultList.add(val);
-        // autoCallingResultList.last.isCompletedSuccess = true;
         customerCount++;
         yield UpdateNewValueState();
       }
@@ -538,6 +542,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               .add(Result.fromJson(jsonDecode(jsonEncode(element))));
         }
       }
+      autoCallingResultList.clear();
+      autoCallingResultList = resultList;
       totalCount = autoCallingResultList.length;
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>

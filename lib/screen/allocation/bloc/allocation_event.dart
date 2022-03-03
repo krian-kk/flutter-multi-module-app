@@ -85,3 +85,8 @@ class AutoCallContactHealthUpdateEvent extends AllocationEvent {
 }
 
 class AutoCallingContactSortEvent extends AllocationEvent {}
+
+class ConnectedStopAndSubmitEvent extends AllocationEvent {
+  final int customerIndex;
+  ConnectedStopAndSubmitEvent({required this.customerIndex});
+}

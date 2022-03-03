@@ -18,22 +18,23 @@ class CustomText extends StatefulWidget {
   final double? letterSpacing;
   final TextStyle? style;
 
-  const CustomText(this.text,
-      {Key? key,
-      this.fontWeight = FontWeight.w400,
-      this.fontStyle = FontStyle.normal,
-      this.fontSize = FontSize.fourteen,
-      this.font = Font.latoMedium,
-      this.color = ColorResource.color1c1d22,
-      this.lineHeight = 1.5, // Line Height - 24
-      this.textAlign = TextAlign.left,
-      this.onTap,
-      this.isUnderLine = false,
-      this.isSingleLine = false,
-      this.letterSpacing,
-      this.style,
-      this.maxLines})
-      : super(key: key);
+  const CustomText(
+    this.text, {
+    Key? key,
+    this.fontWeight = FontWeight.w400,
+    this.fontStyle = FontStyle.normal,
+    this.fontSize = FontSize.fourteen,
+    this.font = Font.latoMedium,
+    this.color = ColorResource.color1c1d22,
+    this.lineHeight = 1.5,
+    this.textAlign = TextAlign.left,
+    this.onTap,
+    this.isUnderLine = false,
+    this.isSingleLine = false,
+    this.letterSpacing,
+    this.style,
+    this.maxLines,
+  }) : super(key: key);
 
   @override
   _CustomTextState createState() => _CustomTextState();

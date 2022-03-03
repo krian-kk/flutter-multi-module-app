@@ -137,8 +137,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
-      debugPrint('Print-> ${event.paramValues}');
-      debugPrint('Print-> ${event.paramValues}');
       caseDetailsContext = event.context;
       Singleton.instance.buildContext = event.context;
       caseId = event.paramValues['caseID'];

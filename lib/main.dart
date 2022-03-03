@@ -100,6 +100,10 @@ class _MyAppState extends State<MyApp> {
       themeCollection: AppThemes().getThemeCollections(),
       builder: (BuildContext context, ThemeData theme) {
         return MaterialApp(
+          builder: (context, child) => MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child!),
           locale: _locale,
           supportedLocales: const [
             Locale('en', ''),
