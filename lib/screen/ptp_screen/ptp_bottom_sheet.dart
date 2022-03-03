@@ -530,7 +530,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             );
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
               widget.bloc.add(
-                ChangeIsSubmitEvent(),
+                ChangeIsSubmitEvent(Constants.ptp),
               );
             }
 

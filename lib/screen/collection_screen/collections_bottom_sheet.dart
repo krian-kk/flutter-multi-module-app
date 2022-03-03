@@ -693,7 +693,7 @@ class _CustomCollectionsBottomSheetState
                   if (!(widget.userType == Constants.fieldagent &&
                       widget.isCall!)) {
                     widget.bloc.add(
-                      ChangeIsSubmitEvent(),
+                      ChangeIsSubmitEvent(Constants.collections),
                     );
                   }
 
