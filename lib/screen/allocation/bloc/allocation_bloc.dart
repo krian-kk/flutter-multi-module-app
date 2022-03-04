@@ -409,8 +409,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           } else {
             value.collSubStatus = event.selectedClipValue;
           }
+          // if (event.followUpDate != null) {
+          //   value.followUpDate = event.followUpDate;
+          // }
         }
       });
+      // print(
+      //     '==========================+++++============== > ${event.followUpDate}');
       yield UpdateNewValueState();
     }
     if (event is MapViewEvent) {

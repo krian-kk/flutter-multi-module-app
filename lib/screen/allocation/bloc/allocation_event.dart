@@ -61,7 +61,12 @@ class CallSuccessfullyConnectedEvent extends AllocationEvent {}
 class UpdateNewValuesEvent extends AllocationEvent {
   final String paramValue;
   final String selectedClipValue;
-  UpdateNewValuesEvent(this.paramValue, this.selectedClipValue);
+  final String? followUpDate;
+  UpdateNewValuesEvent(
+    this.paramValue,
+    this.selectedClipValue,
+    this.followUpDate,
+  );
 }
 
 class CallUnSuccessfullyConnectedEvent extends AllocationEvent {}

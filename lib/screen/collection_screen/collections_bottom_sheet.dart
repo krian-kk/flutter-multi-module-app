@@ -317,12 +317,19 @@ class _CustomCollectionsBottomSheetState
                                             isReadOnly: true,
                                             onTapped: () =>
                                                 PickDateAndTimeUtils.pickDate(
-                                                    context, (newDate) {
-                                              if (newDate != null) {
+                                                    context,
+                                                    (newDate, followUpDate) {
+                                              if (newDate != null &&
+                                                  followUpDate != null) {
                                                 setState(() {
                                                   dateControlller.text =
                                                       newDate;
                                                 });
+                                                widget.bloc.add(
+                                                  ChangeFollowUpDateEvent(
+                                                    followUpDate: followUpDate,
+                                                  ),
+                                                );
                                               }
                                             }),
                                             suffixWidget: SvgPicture.asset(
@@ -571,9 +578,6 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
-
-            print("post dta ---> $requestBodyData");
-
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -659,9 +663,6 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
-
-            print("post dta ---> ${json.encode(requestBodyData)}");
-
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -680,8 +681,6 @@ class _CustomCollectionsBottomSheetState
               okBtnText: Languages.of(context)!.submit.toUpperCase(),
               cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
               okBtnFunction: (val) async {
-                print(
-                    'check data is there or not ---> ${json.encode(postdata)}');
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);

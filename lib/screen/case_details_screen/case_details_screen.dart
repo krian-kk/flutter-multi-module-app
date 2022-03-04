@@ -83,6 +83,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     Constants.telecaller)
                 ? bloc.caseDetailsAPIValue.result?.caseDetails?.telSubStatus
                 : bloc.caseDetailsAPIValue.result?.caseDetails?.collSubStatus,
+            'followUpDate': bloc.changeFollowUpDate,
           },
         );
         return Future(() => false);
@@ -178,6 +179,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               ?.caseDetails?.telSubStatus
                                           : bloc.caseDetailsAPIValue.result
                                               ?.caseDetails?.collSubStatus,
+                                  'followUpDate': bloc.changeFollowUpDate,
                                 },
                               );
                             }

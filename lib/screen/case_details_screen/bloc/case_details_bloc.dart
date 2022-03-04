@@ -63,6 +63,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String submitedEventType = '';
   dynamic collectionAmount;
   bool isAutoCalling = false;
+  String? changeFollowUpDate;
 
   BuildContext? caseDetailsContext;
 
@@ -428,6 +429,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           callId: event.callId,
         );
       }
+    }
+    if (event is ChangeFollowUpDateEvent) {
+      changeFollowUpDate = event.followUpDate;
     }
     if (event is PostImageCapturedEvent) {
       yield DisableCaptureImageBtnState();

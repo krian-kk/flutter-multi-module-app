@@ -231,11 +231,17 @@ class _CustomOtherFeedBackBottomSheetState
                                         isReadOnly: true,
                                         onTapped: () =>
                                             PickDateAndTimeUtils.pickDate(
-                                                context, (newDate) {
-                                          if (newDate != null) {
+                                                context,
+                                                (newDate, followUpDate) {
+                                          if (newDate != null &&
+                                              followUpDate != null) {
                                             setState(() {
                                               dateControlller.text = newDate;
                                             });
+                                            widget.bloc.add(
+                                                ChangeFollowUpDateEvent(
+                                                    followUpDate:
+                                                        followUpDate));
                                           }
                                         }),
                                         suffixWidget: SvgPicture.asset(

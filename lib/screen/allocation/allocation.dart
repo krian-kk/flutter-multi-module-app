@@ -491,14 +491,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 context, AppRoutes.caseDetailsScreen,
                 arguments: CaseDetailsNaviagationModel(state.paramValues,
                     allocationBloc: bloc));
-
             RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
-
             if (returnModelValue.isSubmit) {
               bloc.add(UpdateNewValuesEvent(
                 returnModelValue.caseId,
                 returnModelValue.selectedClipValue,
+                returnModelValue.followUpDate,
               ));
             }
           } catch (e) {

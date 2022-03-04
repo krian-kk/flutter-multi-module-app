@@ -159,11 +159,14 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     isReadOnly: true,
                                     onTapped: () =>
                                         PickDateAndTimeUtils.pickDate(context,
-                                            (newDate) {
-                                      if (newDate != null) {
+                                            (newDate, followUpDate) {
+                                      if (newDate != null &&
+                                          followUpDate != null) {
                                         setState(() {
                                           dateControlller.text = newDate;
                                         });
+                                        widget.bloc.add(ChangeFollowUpDateEvent(
+                                            followUpDate: followUpDate));
                                       }
                                     }),
                                     suffixWidget: SvgPicture.asset(

@@ -4,7 +4,8 @@ import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class PickDateAndTimeUtils {
-  static Future pickDate(BuildContext context, OnChange function) async {
+  static Future pickDate(
+      BuildContext context, OnChangeForPickDate function) async {
     final newDate = await showDatePicker(
         context: context,
         initialDatePickerMode: DatePickerMode.day,
@@ -38,7 +39,7 @@ class PickDateAndTimeUtils {
 
     if (newDate == null) return null;
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    function(formattedDate);
+    function(formattedDate, newDate.toString());
   }
 
   static Future pickTime(BuildContext context, OnChange function) async {

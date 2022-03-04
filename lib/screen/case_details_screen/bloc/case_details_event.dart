@@ -141,3 +141,8 @@ class UpdateHealthStatusEvent extends CaseDetailsEvent {
   UpdateHealthStatusEvent(this.context,
       {this.selectedHealthIndex, this.tabIndex, this.currentHealth});
 }
+
+class ChangeFollowUpDateEvent extends CaseDetailsEvent {
+  final String? followUpDate;
+  ChangeFollowUpDateEvent({this.followUpDate});
+}

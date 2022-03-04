@@ -217,12 +217,18 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                             validationRules: const ['required'],
                                             onTapped: () =>
                                                 PickDateAndTimeUtils.pickDate(
-                                                    context, (newDate) {
-                                              if (newDate != null) {
+                                                    context,
+                                                    (newDate, followUpDate) {
+                                              if (newDate != null &&
+                                                  followUpDate != null) {
                                                 setState(() {
                                                   ptpDateControlller.text =
                                                       newDate;
                                                 });
+                                                widget.bloc.add(
+                                                    ChangeFollowUpDateEvent(
+                                                        followUpDate:
+                                                            followUpDate));
                                               }
                                             }),
                                             suffixWidget: SvgPicture.asset(
