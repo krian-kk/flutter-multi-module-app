@@ -40,6 +40,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/language_to_constant_convert.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -475,6 +476,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
           },
           addressSelectedCustomerNotMetClip,
+          event.context,
         );
       } else if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.doorLocked) {
@@ -496,6 +498,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             }
           ],
           addressSelectedCustomerNotMetClip,
+          event.context,
         );
       } else if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.entryRestricted) {
@@ -517,6 +520,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             }
           ],
           addressSelectedCustomerNotMetClip,
+          event.context,
         );
       }
       if (resultValue[Constants.success]) {
@@ -544,6 +548,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               agentName.toString(),
               'PTP',
               addressSelectedInvalidClip,
+              event.context,
             );
           } else if (addressSelectedInvalidClip ==
               Languages.of(event.context)!.shifted) {
@@ -556,6 +561,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               agentName.toString(),
               'REVIEW',
               addressSelectedInvalidClip,
+              event.context,
             );
           } else if (addressSelectedInvalidClip ==
               Languages.of(event.context)!.addressNotFound) {
@@ -571,6 +577,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               agentName.toString(),
               'PTP',
               addressSelectedInvalidClip,
+              event.context,
             );
           }
         } else {
@@ -611,6 +618,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   userType.toString(),
                 ),
                 phoneSelectedInvalidClip,
+                event.context,
               );
             } else if (phoneSelectedInvalidClip ==
                 Languages.of(event.context)!.incorrectNumber) {
@@ -622,6 +630,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   userType.toString(),
                 ),
                 phoneSelectedInvalidClip,
+                event.context,
               );
             } else if (phoneSelectedInvalidClip ==
                 Languages.of(event.context)!.numberNotWorking) {
@@ -633,6 +642,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   userType.toString(),
                 ),
                 phoneSelectedInvalidClip,
+                event.context,
               );
             } else if (phoneSelectedInvalidClip ==
                 Languages.of(event.context)!.notOperational) {
@@ -644,6 +654,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   userType.toString(),
                 ),
                 phoneSelectedInvalidClip,
+                event.context,
               );
             }
           } else {
@@ -706,6 +717,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               userType.toString(),
             ),
             phoneSelectedUnreadableClip,
+            event.context,
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.switchOff) {
@@ -718,6 +730,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               userType.toString(),
             ),
             phoneSelectedUnreadableClip,
+            event.context,
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.rnr) {
@@ -730,6 +743,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               userType.toString(),
             ),
             phoneSelectedUnreadableClip,
+            event.context,
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.outOfNetwork) {
@@ -742,6 +756,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               userType.toString(),
             ),
             phoneSelectedUnreadableClip,
+            event.context,
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.disConnecting) {
@@ -754,6 +769,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               userType.toString(),
             ),
             phoneSelectedUnreadableClip,
+            event.context,
           );
         }
         if (resultValue[Constants.success]) {
@@ -1066,6 +1082,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String eventCode,
     String urlString,
     String selectedClipValue,
+    BuildContext context,
   ) async {
     var requestBodyData = PhoneUnreachablePostModel(
         eventId: ConstantEventValues.phoneUnreachableEventId,
@@ -1113,7 +1130,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (Singleton.instance.usertype == Constants.telecaller) {
         caseDetailsAPIValue.result?.caseDetails?.telSubStatus =
-            selectedClipValue;
+            ConvertString.convertLanguageToConstant(selectedClipValue, context);
       } else {
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
             selectedClipValue;
@@ -1133,6 +1150,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String followUpPriority,
     dynamic contact,
     String selectedClipValue,
+    BuildContext context,
   ) async {
     Position position = Position(
       longitude: 0,
@@ -1190,7 +1208,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
-          selectedClipValue;
+          ConvertString.convertLanguageToConstant(selectedClipValue, context);
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.text = '';
@@ -1208,6 +1226,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String agrRef,
     String followUpPriority,
     String selectedClipValue,
+    BuildContext context,
   ) async {
     Position position = Position(
       longitude: 0,
@@ -1271,7 +1290,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isSubmitedForMyVisits = true;
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
-          selectedClipValue;
+          ConvertString.convertLanguageToConstant(selectedClipValue, context);
       addressInvalidRemarksController.text = '';
       addressSelectedInvalidClip = '';
     }
@@ -1283,6 +1302,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String caseId,
     String urlString,
     String selectedClipValue,
+    BuildContext context,
   ) async {
     var requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
@@ -1327,7 +1347,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (Singleton.instance.usertype == Constants.telecaller) {
         caseDetailsAPIValue.result?.caseDetails?.telSubStatus =
-            selectedClipValue;
+            ConvertString.convertLanguageToConstant(selectedClipValue, context);
       } else {
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
             selectedClipValue;
