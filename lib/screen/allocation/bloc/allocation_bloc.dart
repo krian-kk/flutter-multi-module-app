@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +22,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
+
 part 'allocation_state.dart';
 
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
@@ -56,10 +58,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // There is used for pagination to scroll up
   bool hasNextPage = false;
+
   // Show Telecaller Autocalling
   bool isAutoCalling = false;
+
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
+
   // Check which event to call for load more cases
   bool isPriorityLoadMore = false;
 
