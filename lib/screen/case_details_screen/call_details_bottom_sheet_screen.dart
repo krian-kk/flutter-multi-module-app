@@ -107,7 +107,19 @@ class _CallDetailsBottomSheetScreenState
                             shrinkWrap: true,
                             itemCount:
                                 widget.bloc.listOfCallDetails?.length ?? 0,
+                            // itemCount: widget.bloc.listOfCallDetails!
+                            //     .where((element) =>
+                            //         element['ccType'] == 'mobile' ||
+                            //         element['ccType'] == 'resNo' ||
+                            //         element['ccType'] == 'office contact no.' ||
+                            //         element['ccType'] ==
+                            //             'residence contact no.')
+                            //     .toList()
+                            //     .length,
                             itemBuilder: (context, i) {
+                              debugPrint(
+                                  '$this ---> address number index ${widget.bloc.listOfCallDetails?[i]['value']}');
+                              // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
                                           "mobile" ||
@@ -236,6 +248,15 @@ class _CallDetailsBottomSheetScreenState
                                                         SizedBox(
                                                             child: InkWell(
                                                           onTap: () {
+                                                            debugPrint(
+                                                                '$this ---> index before bloc $i ');
+                                                            widget.bloc
+                                                                .indexValue = i;
+
+                                                            debugPrint(
+                                                                '$this ---> index after bloc ${widget.bloc.indexValue} ');
+                                                            debugPrint(
+                                                                'seleectedContactNumber ---> ${widget.bloc.listOfCallDetails?[i]['value']}');
                                                             widget.bloc.add(ClickOpenBottomSheetEvent(
                                                                 Constants
                                                                     .callCustomer,

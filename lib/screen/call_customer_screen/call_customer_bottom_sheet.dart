@@ -94,10 +94,14 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
             setState(() {
               agentContactNoControlller.text =
                   bloc.voiceAgencyDetails.result?.agentAgencyContact ?? '';
+              //For hot-code testing
+              // agentContactNoControlller.text = '9585313659';
             });
           }
           if (state is NavigationPhoneBottomSheetState) {
             Navigator.pop(context);
+            debugPrint(
+                '$this ---> index in call customer screen ${widget.caseDetailsBloc.indexValue} ');
             widget.caseDetailsBloc.add(ClickMainCallBottomSheetEvent(
               widget.caseDetailsBloc.indexValue ?? 0,
               isCallFromCaseDetails: true,
@@ -169,18 +173,21 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     )),
                                     const SizedBox(width: 5),
                                     Flexible(
-                                        child: CustomDropDownButton(
-                                      Languages.of(context)!.customerContactNo,
-                                      customerContactNoDropdownList,
-                                      selectedValue:
-                                          customerContactNoDropDownValue,
-                                      onChanged: (newValue) => setState(() =>
+                                      child: CustomDropDownButton(
+                                        Languages.of(context)!
+                                            .customerContactNo,
+                                        customerContactNoDropdownList,
+                                        selectedValue:
+                                            customerContactNoDropDownValue,
+                                        onChanged: (newValue) => setState(() {
                                           customerContactNoDropDownValue =
-                                              newValue.toString()),
-                                      icon: SvgPicture.asset(
-                                        ImageResource.downShape,
+                                              newValue.toString();
+                                        }),
+                                        icon: SvgPicture.asset(
+                                          ImageResource.downShape,
+                                        ),
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 15),
@@ -275,8 +282,11 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 if (Singleton.instance.cloudTelephony! &&
                                     Singleton.instance.callingID != null) {
                                   var requestBodyData = CallCustomerModel(
+                                    //Mobile user number as Agent contact number
                                     from: agentContactNoControlller.text,
+                                    //Customer mobile number
                                     to: customerContactNoDropDownValue,
+                                    // to: '7904557342',
                                     callerId:
                                         Singleton.instance.callingID ?? '',
                                     aRef: Singleton.instance.agentRef ?? '',

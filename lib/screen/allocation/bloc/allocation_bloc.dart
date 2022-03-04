@@ -583,7 +583,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield UpdateStaredCaseState(
           caseId: event.caseID,
-          isStared: resultList[event.selectedStarIndex].starredCase);
+          isStared: resultList[event.selectedStarIndex].starredCase,
+          selectedIndex: event.selectedStarIndex);
     }
     if (event is AutoCallContactHealthUpdateEvent) {
       yield AutoCallContactHealthUpdateState(

@@ -57,7 +57,8 @@ class _PhoneScreenState extends State<PhoneScreen>
   @override
   void initState() {
     super.initState();
-
+    debugPrint(
+        '$this ---> index from call customer bottom screen ${widget.index}');
     widget.bloc.add(PhoneBottomSheetInitialEvent(
       context: context,
       isCallFromCaseDetails: widget.isCallFromCaseDetails,
