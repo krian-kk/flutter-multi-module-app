@@ -24,6 +24,12 @@ class CustomCardList {
         itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
           int listCount = index + 1;
+          String? distanceValues;
+          if (resultData[index].distanceMeters != null) {
+            distanceValues = resultData[index].distanceMeters < 1000
+                ? '${resultData[index].distanceMeters.toStringAsFixed(2)} Meters'
+                : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -63,13 +69,7 @@ class CustomCardList {
                             ),
                             CustomText(
                               resultData[index].distanceMeters != null
-                                  ? Constants.approx +
-                                      " " +
-                                      double.parse(resultData[index]
-                                              .distanceMeters
-                                              .toStringAsFixed(2))
-                                          .toString() +
-                                      " Meters"
+                                  ? Constants.approx + " " + distanceValues!
                                   : '-',
                               fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w400,
