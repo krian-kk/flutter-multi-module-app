@@ -48,13 +48,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
   AuthenticationBloc? bloc;
-  Stream<QuerySnapshot>? _usersStream;
-  CollectionReference? users;
 
   @override
   void initState() {
     bloc = BlocProvider.of<AuthenticationBloc>(context);
-    debugPrint('user ID--> ${md5.convert(utf8.encode("CDE_26")).toString()}');
     super.initState();
   }
 
@@ -99,7 +96,6 @@ class _MyAppState extends State<MyApp> {
       debugPrint('DB name -> ${Singleton.instance.firebaseDatabaseName}');
       var userID = md5.convert(utf8.encode("CDE_26")).toString();
       debugPrint('user ID--> $userID');
-      debugPrint('Storage name--> ${Singleton.instance.firebaseDatabaseName}');
 
     } catch (e) {
       debugPrint('Catch-> $e');

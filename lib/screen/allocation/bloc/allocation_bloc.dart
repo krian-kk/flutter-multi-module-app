@@ -176,15 +176,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             Singleton.instance.isOfflineStorageFeatureEnabled = true;
             yield AllocationLoadedState(
                 successResponse: Constants.isOfflineStorage);
-            FirebaseFirestore.instance
-                .collection('origaOfflineStorage')
-                .doc('d90e4d644ff84f49c9c256a4314bac7ff')
-                .set({
-              'name': 'Chinnadurai',
-              'age': 25,
-              'city': 'Kallakurichi',
-              'district': 'Kallakurichi'
-            });
+            // FirebaseFirestore.instance
+            //     .collection('origaOfflineStorage')
+            //     .doc('d90e4d644ff84f49c9c256a4314bac7ff')
+            //     .set({
+            //   'name': 'Chinnadurai',
+            //   'age': 25,
+            //   'city': 'Kallakurichi',
+            //   'district': 'Kallakurichi'
+            // });
             // FirebaseFirestore.instance
             //     .collection(Singleton.instance.firebaseDatabaseName!)
             //     .get()
@@ -193,17 +193,17 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             //     debugPrint('Size of document-> ${jsonEncode(element.data())}');
             //   }
             // });
-
-            FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName!)
-                .snapshots()
-                .forEach((element) {
-              debugPrint('Length.-> ${element.docs.length}');
-              for (var elementOfDocument in element.docs) {
-                debugPrint(
-                    'elementOfDocument.-> ${jsonEncode(elementOfDocument.data())}');
-              }
-            });
+            //
+            // FirebaseFirestore.instance
+            //     .collection(Singleton.instance.firebaseDatabaseName!)
+            //     .snapshots()
+            //     .forEach((element) {
+            //   debugPrint('Length.-> ${element.docs.length}');
+            //   for (var elementOfDocument in element.docs) {
+            //     debugPrint(
+            //         'elementOfDocument.-> ${jsonEncode(elementOfDocument.data())}');
+            //   }
+            // });
           } else {
             Singleton.instance.isOfflineStorageFeatureEnabled = false;
             for (var element in priorityListData['data']['result']) {

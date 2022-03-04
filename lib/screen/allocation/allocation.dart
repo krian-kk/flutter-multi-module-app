@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -1038,23 +1037,25 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   AutoCalling.buildAutoCalling(context, bloc))
                           : Singleton.instance.isOfflineStorageFeatureEnabled!
                               ? Expanded(
-                                  child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance
-                                          .collection(Singleton
-                                              .instance.firebaseDatabaseName!)
-                                          .snapshots(),
-                                      builder: (context, asyncSnapshot) {
-                                        return Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 50, right: 20, left: 20),
-                                              child: NoCaseAvailble
-                                                  .buildNoCaseAvailable(),
-                                            ),
-                                          ],
-                                        );
-                                      }))
+                                  // child: StreamBuilder(
+                                  //     stream: FirebaseFirestore.instance
+                                  //         .collection(Singleton
+                                  //             .instance.firebaseDatabaseName!)
+                                  //         .snapshots(),
+                                  //     builder: (context, asyncSnapshot) {
+                                  //       return Column(
+                                  //         children: [
+                                  //           Padding(
+                                  //             padding: const EdgeInsets.only(
+                                  //                 top: 50, right: 20, left: 20),
+                                  //             child: NoCaseAvailble
+                                  //                 .buildNoCaseAvailable(),
+                                  //           ),
+                                  //         ],
+                                  //       );
+                                  //     }),
+                                  child: NoCaseAvailble.buildNoCaseAvailable(),
+                                )
                               // Expanded(
                               //   child: resultList.isEmpty
                               //           ? Column(
