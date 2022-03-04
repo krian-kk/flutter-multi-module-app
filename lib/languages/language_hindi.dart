@@ -818,4 +818,8 @@ class LanguageHi extends Languages {
 
   @override
   String get loading => 'लोड हो रहा है...';
+
+  @override
+  String get reciptsAlertMesg =>
+      'सुनिश्चित करें कि एकत्रित राशि/चेक 24 घंटे के भीतर बैंक में जमा कर दिया गया है';
 }

@@ -114,7 +114,9 @@ class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 
 class ChangeIsSubmitEvent extends CaseDetailsEvent {
   final String selectedClipValue;
-  ChangeIsSubmitEvent(this.selectedClipValue);
+  final String? chageFollowUpDate;
+  ChangeIsSubmitEvent(
+      {required this.selectedClipValue, this.chageFollowUpDate});
 }
 
 class ChangeHealthStatusEvent extends CaseDetailsEvent {}

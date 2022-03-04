@@ -35,6 +35,14 @@ class ConvertString {
       constantValue = Constants.shifted;
     } else if (text == Languages.of(context)!.addressNotFound) {
       constantValue = Constants.addressNotFound;
+    } else if (text == Languages.of(context)!.cheque) {
+      constantValue = Constants.cheque;
+    } else if (text == Languages.of(context)!.selfPay) {
+      constantValue = Constants.selfPay;
+    } else if (text == Languages.of(context)!.cash) {
+      constantValue = Constants.cash;
+    } else if (text == Languages.of(context)!.digital) {
+      constantValue = Constants.digital;
     }
     return constantValue;
   }

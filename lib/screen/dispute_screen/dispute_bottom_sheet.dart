@@ -406,7 +406,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
               if (!(widget.userType == Constants.fieldagent &&
                   widget.isCall!)) {
                 widget.bloc.add(
-                  ChangeIsSubmitEvent(Constants.dispute),
+                  ChangeIsSubmitEvent(
+                      selectedClipValue: Constants.disputeCaseStatus),
                 );
               }
 

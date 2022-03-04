@@ -429,8 +429,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       Constants.repo,
                                     ),
                                   );
-                                  widget.bloc
-                                      .add(ChangeIsSubmitEvent(Constants.repo));
+                                  widget.bloc.add(ChangeIsSubmitEvent(
+                                      selectedClipValue: Constants.repo));
 
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);

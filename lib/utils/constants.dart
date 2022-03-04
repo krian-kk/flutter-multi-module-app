@@ -144,4 +144,12 @@ class Constants {
   static const String repaymentInfoType = 'repaymentInfo';
   static const String callTriedType = 'callTried';
   static const String receiptAcknowledgementType = 'receiptAcknowledgement';
+
+  static const String denialCaseStatus = 'Denial';
+  static const String disputeCaseStatus = 'Dispute';
+  static const String receiptCaseStatus = 'Receipt';
+  static const String cheque = 'CHEQUE';
+  static const String selfPay = 'SELF PAY';
+  static const String cash = 'CASH';
+  static const String digital = 'DIGITAL';
 }

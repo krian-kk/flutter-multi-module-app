@@ -36,6 +36,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/language_to_constant_convert.dart';
+
 class CustomOtsBottomSheet extends StatefulWidget {
   const CustomOtsBottomSheet(
     this.cardTitle, {
@@ -494,7 +496,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               remarkOts: remarksControlller.text,
               amntOts: otsProposedAmountControlller.text,
               appStatus: 'OTS',
-              mode: selectedPaymentModeButton,
+              mode: ConvertString.convertLanguageToConstant(
+                  selectedPaymentModeButton, context),
               altitude: position.altitude,
               accuracy: position.accuracy,
               heading: position.heading,
@@ -543,7 +546,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               ),
             );
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(ChangeIsSubmitEvent(Constants.ots));
+              widget.bloc
+                  .add(ChangeIsSubmitEvent(selectedClipValue: Constants.ots));
             }
 
             widget.bloc.add(

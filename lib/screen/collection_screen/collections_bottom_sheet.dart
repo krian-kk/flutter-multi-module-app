@@ -37,6 +37,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/language_to_constant_convert.dart';
+
 class CustomCollectionsBottomSheet extends StatefulWidget {
   const CustomCollectionsBottomSheet(
     this.cardTitle, {
@@ -545,7 +547,8 @@ class _CustomCollectionsBottomSheetState
                   chequeRefNo: chequeControlller.text,
                   date: selectedDate,
                   remarks: remarksControlller.text,
-                  mode: selectedPaymentModeButton,
+                  mode: ConvertString.convertLanguageToConstant(
+                      selectedPaymentModeButton, context),
                   customerName: widget.custName!,
                   followUpPriority: 'REVIEW',
                   imageLocation: [''],
@@ -568,6 +571,8 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
+
+            print("post dta ---> $requestBodyData");
 
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
@@ -630,7 +635,8 @@ class _CustomCollectionsBottomSheetState
                   chequeRefNo: chequeControlller.text,
                   date: selectedDate,
                   remarks: remarksControlller.text,
-                  mode: selectedPaymentModeButton,
+                  mode: ConvertString.convertLanguageToConstant(
+                      selectedPaymentModeButton, context),
                   customerName: widget.custName!,
                   followUpPriority: 'REVIEW',
                   imageLocation: [''],
@@ -654,6 +660,8 @@ class _CustomCollectionsBottomSheetState
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
 
+            print("post dta ---> ${json.encode(requestBodyData)}");
+
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -667,11 +675,13 @@ class _CustomCollectionsBottomSheetState
             setState(() => isSubmit = true);
             DialogUtils.showDialog(
               buildContext: context,
-              title: Constants.reciptsAlertMesg,
+              title: Languages.of(context)!.reciptsAlertMesg,
               description: '',
               okBtnText: Languages.of(context)!.submit.toUpperCase(),
               cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
               okBtnFunction: (val) async {
+                print(
+                    'check data is there or not ---> ${json.encode(postdata)}');
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);
@@ -693,7 +703,8 @@ class _CustomCollectionsBottomSheetState
                   if (!(widget.userType == Constants.fieldagent &&
                       widget.isCall!)) {
                     widget.bloc.add(
-                      ChangeIsSubmitEvent(Constants.collections),
+                      ChangeIsSubmitEvent(
+                          selectedClipValue: Constants.receiptCaseStatus),
                     );
                   }
 
@@ -703,8 +714,9 @@ class _CustomCollectionsBottomSheetState
                     Singleton.instance.startCalling = false;
                     if (!stopValue) {
                       widget.allocationBloc!.add(StartCallingEvent(
-                        customerIndex: widget.paramValue['customerIndex'] + 1,
-                        phoneIndex: 0,
+                        customerIndex: widget.paramValue['customerIndex'] +
+                            1, // CASE DETAILS
+                        phoneIndex: 0, // LIST OF PHONE NUMBER
                         isIncreaseCount: true,
                       ));
                     } else {
@@ -714,7 +726,7 @@ class _CustomCollectionsBottomSheetState
                     }
                   } else {
                     AppUtils.topSnackBar(
-                        context, "Event updated successfully.");
+                        context, Constants.successfullySubmitted);
                     Navigator.pop(context);
                   }
 

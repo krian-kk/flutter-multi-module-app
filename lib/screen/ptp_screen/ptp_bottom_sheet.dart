@@ -30,6 +30,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/language_to_constant_convert.dart';
+
 class CustomPtpBottomSheet extends StatefulWidget {
   const CustomPtpBottomSheet(
     this.cardTitle, {
@@ -485,7 +487,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               remarks: remarksControlller.text,
               ptpAmount: int.parse(ptpAmountControlller.text),
               reference: referenceControlller.text,
-              mode: selectedPaymentModeButton,
+              mode: ConvertString.convertLanguageToConstant(
+                  selectedPaymentModeButton, context),
               followUpPriority: 'PTP',
               longitude: position.longitude,
               latitude: position.latitude,
@@ -530,7 +533,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             );
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
               widget.bloc.add(
-                ChangeIsSubmitEvent(Constants.ptp),
+                ChangeIsSubmitEvent(
+                  selectedClipValue: Constants.ptp,
+                  chageFollowUpDate: ptpDateControlller.text,
+                ),
               );
             }
 

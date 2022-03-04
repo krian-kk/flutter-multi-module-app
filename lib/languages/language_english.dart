@@ -816,4 +816,8 @@ class LanguageEn extends Languages {
 
   @override
   String get loading => 'Loading...';
+
+  @override
+  String get reciptsAlertMesg =>
+      'Ensure the collected amount/cheque is deposited in the bank within 24 hours';
 }
