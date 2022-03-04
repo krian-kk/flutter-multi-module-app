@@ -402,20 +402,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield BuildRouteLoadMoreState(successResponse: resultList);
     }
     if (event is UpdateNewValuesEvent) {
-      resultList.asMap().forEach((index, value) {
-        if (value.caseId == event.paramValue) {
-          if (Singleton.instance.usertype == Constants.telecaller) {
-            value.telSubStatus = event.selectedClipValue;
-            // print("followupdate value ==> ${value.followUpDate}");
-            // print("telSubStatus value ==> ${value.telSubStatus}");
-            value.followUpDate = event.followUpDate;
-          } else {
-            value.collSubStatus = event.selectedClipValue;
-            value.followUpDate = event.followUpDate;
-          }
-        }
-      });
-      yield UpdateNewValueState();
+      // resultList.asMap().forEach((index, value) {
+      //   if (value.caseId == event.paramValue) {
+      //     if (Singleton.instance.usertype == Constants.telecaller) {
+      //       value.telSubStatus = event.selectedClipValue;
+      //     } else {
+      //       value.collSubStatus = event.selectedClipValue;
+      //     }
+      //     if (event.selectedClipValue != null && event.followUpDate != null) {
+      //       value.followUpDate = event.followUpDate;
+      //     }
+      //   }
+      // });
+      yield UpdateNewValueState(
+          selectedEventValue: event.selectedClipValue,
+          updateFollowUpdate: event.followUpDate,
+          paramValue: event.paramValue);
     }
     if (event is MapViewEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
