@@ -827,7 +827,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
         }
       } else {
-        AppUtils.showErrorToast("SMS is not activated");
+        AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
       }
     }
     if (event is UpdateHealthStatusEvent) {

@@ -822,4 +822,7 @@ class LanguageHi extends Languages {
   @override
   String get reciptsAlertMesg =>
       'सुनिश्चित करें कि एकत्रित राशि/चेक 24 घंटे के भीतर बैंक में जमा कर दिया गया है';
+
+  @override
+  String get sendSMSerror => 'SMS सक्रिय नहीं है';
 }

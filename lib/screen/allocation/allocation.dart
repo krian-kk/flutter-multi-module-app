@@ -486,7 +486,21 @@ class _AllocationScreenState extends State<AllocationScreen> {
           }
         }
         if (state is UpdateNewValueState) {
-          setState(() {});
+          setState(() {
+            bloc.resultList.asMap().forEach((index, value) {
+              if (value.caseId == state.paramValue) {
+                if (Singleton.instance.usertype == Constants.telecaller) {
+                  value.telSubStatus = state.selectedEventValue;
+                } else {
+                  value.collSubStatus = state.selectedEventValue;
+                }
+                if (state.selectedEventValue != null &&
+                    state.updateFollowUpdate != null) {
+                  value.followUpDate = state.updateFollowUpdate;
+                }
+              }
+            });
+          });
         }
 
         if (state is NavigateCaseDetailState) {

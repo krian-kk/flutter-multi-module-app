@@ -603,6 +603,37 @@ class _CustomCollectionsBottomSheetState
                 AppUtils.showErrorToast(postResult['data']['result']['error']);
               } else {
                 AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                widget.bloc.add(
+                  ChangeHealthStatusEvent(),
+                );
+                // Send SMS Notification
+                if (Singleton
+                        .instance.contractorInformations!.result!.sendSms! &&
+                    Singleton.instance.usertype == Constants.fieldagent) {
+                  var requestBodyData = ReceiptSendSMS(
+                    agrRef: Singleton.instance.agrRef,
+                    agentRef: Singleton.instance.agentRef,
+                    borrowerMobile: Singleton.instance.customerContactNo ?? "0",
+                    type: Constants.receiptAcknowledgementType,
+                    receiptAmount: int.parse(amountCollectedControlller.text),
+                    receiptDate: selectedDate,
+                    paymentMode: selectedPaymentModeButton,
+                    messageBody: 'message',
+                  );
+                  Map<String, dynamic> postResult =
+                      await APIRepository.apiRequest(
+                    APIRequestType.post,
+                    HttpUrl.sendSMSurl,
+                    requestBodydata: jsonEncode(requestBodyData),
+                  );
+                  if (postResult[Constants.success]) {
+                    AppUtils.showToast(
+                      Languages.of(context)!.successfullySMSsend,
+                    );
+                  }
+                } else {
+                  AppUtils.showErrorToast(Languages.of(context)!.sendSMSerror);
+                }
                 Navigator.pop(context);
               }
             }
@@ -708,13 +739,13 @@ class _CustomCollectionsBottomSheetState
                           double.parse(amountCollectedControlller.text),
                     ),
                   );
-                  if (!(widget.userType == Constants.fieldagent &&
-                      widget.isCall!)) {
-                    widget.bloc.add(
-                      ChangeIsSubmitEvent(
-                          selectedClipValue: Constants.receiptCaseStatus),
-                    );
-                  }
+                  // if (!(widget.userType == Constants.fieldagent &&
+                  //     widget.isCall!)) {
+                  //   widget.bloc.add(
+                  //     ChangeIsSubmitEvent(
+                  //         selectedClipValue: Constants.receiptCaseStatus),
+                  //   );
+                  // }
 
                   if (widget.isAutoCalling) {
                     Navigator.pop(widget.paramValue['context']);
@@ -740,41 +771,42 @@ class _CustomCollectionsBottomSheetState
                     } else {
                       AppUtils.topSnackBar(
                           context, Constants.successfullySubmitted);
+                      widget.bloc.add(
+                        ChangeHealthStatusEvent(),
+                      );
+                      // Send SMS Notification
+                      if (Singleton.instance.contractorInformations!.result!
+                              .sendSms! &&
+                          Singleton.instance.usertype == Constants.fieldagent) {
+                        var requestBodyData = ReceiptSendSMS(
+                          agrRef: Singleton.instance.agrRef,
+                          agentRef: Singleton.instance.agentRef,
+                          borrowerMobile:
+                              Singleton.instance.customerContactNo ?? "0",
+                          type: Constants.receiptAcknowledgementType,
+                          receiptAmount:
+                              int.parse(amountCollectedControlller.text),
+                          receiptDate: selectedDate,
+                          paymentMode: selectedPaymentModeButton,
+                          messageBody: 'message',
+                        );
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(
+                          APIRequestType.post,
+                          HttpUrl.sendSMSurl,
+                          requestBodydata: jsonEncode(requestBodyData),
+                        );
+                        if (postResult[Constants.success]) {
+                          AppUtils.showToast(
+                            Languages.of(context)!.successfullySMSsend,
+                          );
+                        }
+                      } else {
+                        AppUtils.showErrorToast(
+                            Languages.of(context)!.sendSMSerror);
+                      }
                       Navigator.pop(context);
                     }
-                  }
-
-                  widget.bloc.add(
-                    ChangeHealthStatusEvent(),
-                  );
-
-                  if (Singleton
-                          .instance.contractorInformations!.result!.sendSms! &&
-                      Singleton.instance.usertype == Constants.fieldagent) {
-                    var requestBodyData = ReceiptSendSMS(
-                      agrRef: Singleton.instance.agrRef,
-                      agentRef: Singleton.instance.agentRef,
-                      borrowerMobile:
-                          Singleton.instance.customerContactNo ?? "0",
-                      type: Constants.receiptAcknowledgementType,
-                      receiptAmount: int.parse(amountCollectedControlller.text),
-                      receiptDate: selectedDate,
-                      paymentMode: selectedPaymentModeButton,
-                      messageBody: 'message',
-                    );
-                    Map<String, dynamic> postResult =
-                        await APIRepository.apiRequest(
-                      APIRequestType.post,
-                      HttpUrl.sendSMSurl,
-                      requestBodydata: jsonEncode(requestBodyData),
-                    );
-                    if (postResult[Constants.success]) {
-                      AppUtils.showToast(
-                        Languages.of(context)!.successfullySMSsend,
-                      );
-                    }
-                  } else {
-                    AppUtils.showErrorToast("SMS is not activated");
                   }
                 } else {
                   setState(() => isSubmit = true);

@@ -28,7 +28,17 @@ class FilterSelectOptionState extends AllocationState {}
 
 class TapAreYouAtOfficeOptionsState extends AllocationState {}
 
-class UpdateNewValueState extends AllocationState {}
+class UpdateNewValueState extends AllocationState {
+  final String? selectedEventValue;
+  final String? updateFollowUpdate;
+  final dynamic paramValue;
+  final dynamic value;
+  UpdateNewValueState(
+      {this.selectedEventValue,
+      this.updateFollowUpdate,
+      this.value,
+      this.paramValue});
+}
 
 class AutoCallingLoadingState extends AllocationState {}
 

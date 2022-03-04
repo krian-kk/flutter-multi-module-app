@@ -543,4 +543,6 @@ abstract class Languages {
   String get loading;
 
   String get reciptsAlertMesg;
+
+  String get sendSMSerror;
 }
