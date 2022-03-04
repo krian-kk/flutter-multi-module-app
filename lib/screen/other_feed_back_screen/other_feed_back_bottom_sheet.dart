@@ -130,6 +130,9 @@ class _CustomOtherFeedBackBottomSheetState
     setState(() {
       dateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
+      widget.bloc.add(ChangeFollowUpDateEvent(
+          followUpDate:
+              DateTime.now().add(const Duration(days: 1)).toString()));
     });
     super.initState();
   }

@@ -406,16 +406,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         if (value.caseId == event.paramValue) {
           if (Singleton.instance.usertype == Constants.telecaller) {
             value.telSubStatus = event.selectedClipValue;
+            // print("followupdate value ==> ${value.followUpDate}");
+            // print("telSubStatus value ==> ${value.telSubStatus}");
+            value.followUpDate = event.followUpDate;
           } else {
             value.collSubStatus = event.selectedClipValue;
+            value.followUpDate = event.followUpDate;
           }
-          // if (event.followUpDate != null) {
-          //   value.followUpDate = event.followUpDate;
-          // }
         }
       });
-      // print(
-      //     '==========================+++++============== > ${event.followUpDate}');
       yield UpdateNewValueState();
     }
     if (event is MapViewEvent) {

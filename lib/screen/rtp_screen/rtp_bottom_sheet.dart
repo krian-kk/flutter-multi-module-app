@@ -84,6 +84,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     setState(() {
       nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 7)));
+      widget.bloc.add(ChangeFollowUpDateEvent(
+          followUpDate:
+              DateTime.now().add(const Duration(days: 7)).toString()));
     });
   }
 

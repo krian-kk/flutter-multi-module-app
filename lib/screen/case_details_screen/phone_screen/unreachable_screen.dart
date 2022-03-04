@@ -39,6 +39,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.add(ChangeFollowUpDateEvent(
+        followUpDate: DateTime.now().add(const Duration(days: 1)).toString()));
   }
 
   @override

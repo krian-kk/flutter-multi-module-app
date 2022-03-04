@@ -35,6 +35,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.add(ChangeFollowUpDateEvent(
+        followUpDate: DateTime.now().add(const Duration(days: 3)).toString()));
   }
 
   @override

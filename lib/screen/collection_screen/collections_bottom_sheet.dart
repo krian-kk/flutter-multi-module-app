@@ -120,6 +120,8 @@ class _CustomCollectionsBottomSheetState
       selectedDate = DateTime.now().toString();
 
       dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      widget.bloc.add(
+          ChangeFollowUpDateEvent(followUpDate: DateTime.now().toString()));
     });
   }
 
@@ -596,8 +598,13 @@ class _CustomCollectionsBottomSheetState
             );
 
             if (postResult[Constants.success]) {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              Navigator.pop(context);
+              if (postResult['data']['result']['error'] != null) {
+                setState(() => isSubmit = true);
+                AppUtils.showErrorToast(postResult['data']['result']['error']);
+              } else {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                Navigator.pop(context);
+              }
             }
           } else {
             setState(() => isSubmit = false);
@@ -684,6 +691,7 @@ class _CustomCollectionsBottomSheetState
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);
+                debugPrint(json.encode(postdata));
                 Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                   APIRequestType.upload,
@@ -691,6 +699,7 @@ class _CustomCollectionsBottomSheetState
                   formDatas: FormData.fromMap(postdata),
                 );
 
+                //postResult[success]
                 if (postResult[Constants.success]) {
                   widget.bloc.add(
                     ChangeIsSubmitForMyVisitEvent(
@@ -724,9 +733,15 @@ class _CustomCollectionsBottomSheetState
                       ));
                     }
                   } else {
-                    AppUtils.topSnackBar(
-                        context, Constants.successfullySubmitted);
-                    Navigator.pop(context);
+                    if (postResult['data']['result']['error'] != null) {
+                      setState(() => isSubmit = true);
+                      AppUtils.showErrorToast(
+                          postResult['data']['result']['error']);
+                    } else {
+                      AppUtils.topSnackBar(
+                          context, Constants.successfullySubmitted);
+                      Navigator.pop(context);
+                    }
                   }
 
                   widget.bloc.add(
