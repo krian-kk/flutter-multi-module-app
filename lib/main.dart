@@ -17,7 +17,6 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
 
-
 void main() {
   Bloc.observer = EchoBlocDelegate();
   runApp(
@@ -72,26 +71,26 @@ class _MyAppState extends State<MyApp> {
   Future<FirebaseRemoteConfig> setupRemoteConfig() async {
     await Firebase.initializeApp();
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    remoteConfig.fetchAndActivate();
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: const Duration(hours: 1),
+      minimumFetchInterval: const Duration(seconds: 5),
     ));
-    remoteConfig.fetchAndActivate();
     //development = 1, uat = 2, production = 3
-    try {
-      HttpUrl.url = Singleton.instance.serverPointingType == 1
-          ? HttpUrl.url =
-              remoteConfig.getString('v1_development_mobile_app_baseUrl')
-          : Singleton.instance.serverPointingType == 2
-              ? HttpUrl.url =
-                  remoteConfig.getString('v1_uat_mobile_app_baseUrl')
-              : HttpUrl.url =
-                  remoteConfig.getString('v1_production_mobile_app_baseUrl');
-      debugPrint('URL -> ${HttpUrl.url}');
-    } catch (e) {
-      debugPrint('Catch-> $e');
-      setupRemoteConfig();
-    }
+    // try {
+    //   HttpUrl.url = Singleton.instance.serverPointingType == 1
+    //       ? HttpUrl.url =
+    //           remoteConfig.getString('v1_development_mobile_app_baseUrl')
+    //       : Singleton.instance.serverPointingType == 2
+    //           ? HttpUrl.url =
+    //               remoteConfig.getString('v1_uat_mobile_app_baseUrl')
+    //           : HttpUrl.url =
+    //               remoteConfig.getString('v1_production_mobile_app_baseUrl');
+    //   debugPrint('URL -> ${HttpUrl.url}');
+    // } catch (e) {
+    //   debugPrint('Catch-> $e');
+    //   setupRemoteConfig();
+    // }
     return remoteConfig;
   }
 
@@ -132,8 +131,9 @@ class _MyAppState extends State<MyApp> {
           home: FutureBuilder(
               future: setupRemoteConfig(),
               builder: (context, snapshot) {
-                if (snapshot.hasError && HttpUrl.url != '') {
+                if (snapshot.hasError || HttpUrl.url.isEmpty) {
                   return Container(
+                    color: Colors.white,
                     child: const CustomLoadingWidget(),
                     alignment: Alignment.center,
                   );

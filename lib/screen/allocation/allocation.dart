@@ -136,27 +136,29 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   messageShowBottomSheet() {
     showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (BuildContext buildContext, StateSetter setState) =>
+            WillPopScope(
+          onWillPop: () async => true,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.86,
+            child: const SizedBox(),
+            // child: const MessageChatRoomScreen(),
           ),
         ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                WillPopScope(
-                  onWillPop: () async => true,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.86,
-                    child: const SizedBox(),
-                    // child: const MessageChatRoomScreen(),
-                  ),
-                )));
+      ),
+    );
   }
 
   // This function will be triggered whenver the user scroll
@@ -354,9 +356,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      // for testing purpose using your number here
-                      // from: '7904557342',
+                      // For hot_code testing
+                      // from: '9585313659',
                       to: tempMobileList[state.phoneIndex!].value ?? '',
+                      // For hot_code testing
+                      // to: '7904557342',
                       callerId: voiceAgencyDetails
                                   .result?.voiceAgencyData?.first.callerIds !=
                               []
@@ -482,7 +486,21 @@ class _AllocationScreenState extends State<AllocationScreen> {
           }
         }
         if (state is UpdateNewValueState) {
-          setState(() {});
+          setState(() {
+            bloc.resultList.asMap().forEach((index, value) {
+              if (value.caseId == state.paramValue) {
+                if (Singleton.instance.usertype == Constants.telecaller) {
+                  value.telSubStatus = state.selectedEventValue;
+                } else {
+                  value.collSubStatus = state.selectedEventValue;
+                }
+                if (state.selectedEventValue != null &&
+                    state.updateFollowUpdate != null) {
+                  value.followUpDate = state.updateFollowUpdate;
+                }
+              }
+            });
+          });
         }
 
         if (state is NavigateCaseDetailState) {
@@ -491,14 +509,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 context, AppRoutes.caseDetailsScreen,
                 arguments: CaseDetailsNaviagationModel(state.paramValues,
                     allocationBloc: bloc));
-
             RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
-
+            print(
+                "return value case detail ==> ${returnModelValue.followUpDate}");
             if (returnModelValue.isSubmit) {
               bloc.add(UpdateNewValuesEvent(
                 returnModelValue.caseId,
                 returnModelValue.selectedClipValue,
+                returnModelValue.followUpDate,
               ));
             }
           } catch (e) {
@@ -591,6 +610,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
+
+            var removedItem = bloc.resultList[state.selectedIndex];
+            bloc.resultList.removeAt(state.selectedIndex);
+            setState(() {
+              bloc.resultList.insert(0, removedItem);
+            });
           } else {
             setState(() {
               bloc.starCount--;
@@ -602,6 +627,16 @@ class _AllocationScreenState extends State<AllocationScreen> {
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
+
+            var removedItem = bloc.resultList[state.selectedIndex];
+            bloc.resultList.removeAt(state.selectedIndex);
+            // To pick and add next starred false case
+            var firstWhereIndex =
+                bloc.resultList.indexWhere((note) => !note.starredCase);
+            debugPrint('firstWhereIndex $firstWhereIndex');
+            setState(() {
+              bloc.resultList.insert(firstWhereIndex, removedItem);
+            });
           }
         }
 

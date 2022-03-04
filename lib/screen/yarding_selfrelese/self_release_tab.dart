@@ -176,7 +176,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                   isLabel: true,
                                   isReadOnly: true,
                                   onTapped: () => PickDateAndTimeUtils.pickDate(
-                                      context, (newDate) {
+                                      context, (newDate, followUpDate) {
                                     if (newDate != null) {
                                       setState(() {
                                         dateController.text = newDate;

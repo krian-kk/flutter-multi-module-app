@@ -114,7 +114,9 @@ class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 
 class ChangeIsSubmitEvent extends CaseDetailsEvent {
   final String selectedClipValue;
-  ChangeIsSubmitEvent(this.selectedClipValue);
+  final String? chageFollowUpDate;
+  ChangeIsSubmitEvent(
+      {required this.selectedClipValue, this.chageFollowUpDate});
 }
 
 class ChangeHealthStatusEvent extends CaseDetailsEvent {}
@@ -138,4 +140,9 @@ class UpdateHealthStatusEvent extends CaseDetailsEvent {
   final dynamic currentHealth;
   UpdateHealthStatusEvent(this.context,
       {this.selectedHealthIndex, this.tabIndex, this.currentHealth});
+}
+
+class ChangeFollowUpDateEvent extends CaseDetailsEvent {
+  final String? followUpDate;
+  ChangeFollowUpDateEvent({this.followUpDate});
 }

@@ -189,7 +189,7 @@ class _YardingTabState extends State<YardingTab> {
                                   isLabel: true,
                                   isReadOnly: true,
                                   onTapped: () => PickDateAndTimeUtils.pickDate(
-                                      context, (newDate) {
+                                      context, (newDate, followUpDate) {
                                     if (newDate != null) {
                                       setState(() {
                                         dateController.text = newDate;

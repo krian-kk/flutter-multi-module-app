@@ -820,4 +820,11 @@ class LanguageTa extends Languages {
 
   @override
   String get loading => 'ஏற்றுகிறது...';
+
+  @override
+  String get reciptsAlertMesg =>
+      'சேகரிக்கப்பட்ட தொகை/காசோலை 24 மணி நேரத்திற்குள் வங்கியில் டெபாசிட் செய்யப்படுவதை உறுதிசெய்யவும்';
+
+  @override
+  String get sendSMSerror => 'SMS இயக்கப்படவில்லை';
 }

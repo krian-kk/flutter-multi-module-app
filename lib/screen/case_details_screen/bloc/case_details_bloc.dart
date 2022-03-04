@@ -63,6 +63,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String submitedEventType = '';
   dynamic collectionAmount;
   bool isAutoCalling = false;
+  String? changeFollowUpDate;
 
   BuildContext? caseDetailsContext;
 
@@ -270,7 +271,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;
         indexValue = allocationBloc.indexValue;
-        yield ClickMainCallBottomSheetState(0);
+        // yield ClickMainCallBottomSheetState(0);
         yield PhoneBottomSheetSuccessState();
       }
     }
@@ -354,7 +355,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield ClickMainAddressBottomSheetState(event.index);
     }
     if (event is ClickMainCallBottomSheetEvent) {
+      debugPrint('$this ---> ClickMainCallBottomSheetEvent ${event.index}');
       indexValue = event.index;
+      debugPrint('$this ---> bloc indexValue $indexValue');
       yield ClickMainCallBottomSheetState(
         event.index,
         isCallFromCaseDetails: event.isCallFromCaseDetails,
@@ -418,6 +421,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
+        debugPrint(
+            '$this ---> seleectedContactNumber ${event.seleectedContactNumber}');
         yield ClickOpenBottomSheetState(
           event.title,
           event.list!,
@@ -428,6 +433,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           callId: event.callId,
         );
       }
+    }
+    if (event is ChangeFollowUpDateEvent) {
+      changeFollowUpDate = event.followUpDate;
     }
     if (event is PostImageCapturedEvent) {
       yield DisableCaptureImageBtnState();
@@ -819,7 +827,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
         }
       } else {
-        AppUtils.showErrorToast("SMS is not activated");
+        AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
       }
     }
     if (event is UpdateHealthStatusEvent) {
@@ -1036,11 +1044,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsAPIValue.result?.callDetails?.forEach((element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
+                  debugPrint('$this ---> Mobile ${element['value']}');
                   s1.add(element['value']);
                 }
               } else {}
             });
-
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',

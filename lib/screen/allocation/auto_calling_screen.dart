@@ -9,8 +9,10 @@ import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart'
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
@@ -114,7 +116,11 @@ class AutoCalling {
                                 primary: false,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: bloc.autoCallingResultList.length,
-                                itemBuilder: (context, indexs) {
+                                itemBuilder:
+                                    (BuildContext context, int indexs) {
+                                  debugPrint(
+                                      'Due amount-> ${bloc.autoCallingResultList[indexs].due}');
+                                  debugPrint('Index-> $indexs');
                                   return Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 20.0),
@@ -180,8 +186,14 @@ class AutoCalling {
                                                   children: [
                                                     CustomText(
                                                       bloc.resultList[indexs]
-                                                          .due
-                                                          .toString(),
+                                                                  .due !=
+                                                              null
+                                                          ? bloc
+                                                              .resultList[
+                                                                  indexs]
+                                                              .due
+                                                              .toString()
+                                                          : '',
                                                       fontSize:
                                                           FontSize.eighteen,
                                                       color: ColorResource
@@ -214,33 +226,57 @@ class AutoCalling {
                                                 const Spacer(),
                                                 // bloc.allocationList[index].newlyAdded!
                                                 // ?
-                                                bloc.autoCallingResultList[indexs]
-                                                            .telSubStatus ==
-                                                        "new"
-                                                    ? Container(
-                                                        width: 55,
-                                                        height: 19,
-                                                        decoration: BoxDecoration(
-                                                            color: ColorResource
-                                                                .colorD5344C,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30)),
-                                                        child: Center(
-                                                          child: CustomText(
-                                                            Languages.of(
-                                                                    context)!
-                                                                .new_,
-                                                            color: ColorResource
-                                                                .colorffffff,
-                                                            fontSize:
-                                                                FontSize.ten,
-                                                            lineHeight: 1,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : const SizedBox(),
+                                                // bloc.autoCallingResultList[indexs]
+                                                //             .telSubStatus ==
+                                                //         "new"
+                                                //     ? Container(
+                                                //         width: 55,
+                                                //         height: 19,
+                                                //         decoration: BoxDecoration(
+                                                //             color: ColorResource
+                                                //                 .colorD5344C,
+                                                //             borderRadius:
+                                                //                 BorderRadius
+                                                //                     .circular(
+                                                //                         30)),
+                                                //         child: Center(
+                                                //           child: CustomText(
+                                                //             Languages.of(
+                                                //                     context)!
+                                                //                 .new_,
+                                                //             color: ColorResource
+                                                //                 .colorffffff,
+                                                //             fontSize:
+                                                //                 FontSize.ten,
+                                                //             lineHeight: 1,
+                                                //           ),
+                                                //         ),
+                                                //       )
+                                                //     : const SizedBox(),
+
+                                                if (Singleton
+                                                        .instance.usertype ==
+                                                    Constants.telecaller)
+                                                  bloc
+                                                              .autoCallingResultList[
+                                                                  indexs]
+                                                              .telSubStatus ==
+                                                          'new'
+                                                      ? CaseStatusWidget
+                                                          .satusTextWidget(
+                                                          context,
+                                                          text: Languages.of(
+                                                                  context)!
+                                                              .new_,
+                                                          width: 55,
+                                                        )
+                                                      : CaseStatusWidget
+                                                          .satusTextWidget(
+                                                              context,
+                                                              text: bloc
+                                                                  .autoCallingResultList[
+                                                                      indexs]
+                                                                  .telSubStatus)
                                                 // : const SizedBox(),
                                               ],
                                             ),

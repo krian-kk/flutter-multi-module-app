@@ -130,6 +130,9 @@ class _CustomOtherFeedBackBottomSheetState
     setState(() {
       dateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
+      widget.bloc.add(ChangeFollowUpDateEvent(
+          followUpDate:
+              DateTime.now().add(const Duration(days: 1)).toString()));
     });
     super.initState();
   }
@@ -231,11 +234,17 @@ class _CustomOtherFeedBackBottomSheetState
                                         isReadOnly: true,
                                         onTapped: () =>
                                             PickDateAndTimeUtils.pickDate(
-                                                context, (newDate) {
-                                          if (newDate != null) {
+                                                context,
+                                                (newDate, followUpDate) {
+                                          if (newDate != null &&
+                                              followUpDate != null) {
                                             setState(() {
                                               dateControlller.text = newDate;
                                             });
+                                            widget.bloc.add(
+                                                ChangeFollowUpDateEvent(
+                                                    followUpDate:
+                                                        followUpDate));
                                           }
                                         }),
                                         suffixWidget: SvgPicture.asset(
@@ -579,7 +588,7 @@ class _CustomOtherFeedBackBottomSheetState
           );
           if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
             widget.bloc.add(
-              ChangeIsSubmitEvent(Constants.otherFeedback),
+              ChangeIsSubmitEvent(selectedClipValue: Constants.otherFeedback),
             );
           }
 

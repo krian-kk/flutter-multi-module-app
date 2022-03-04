@@ -541,4 +541,8 @@ abstract class Languages {
   String get invalidAddress;
 
   String get loading;
+
+  String get reciptsAlertMesg;
+
+  String get sendSMSerror;
 }

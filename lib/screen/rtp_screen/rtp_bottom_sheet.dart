@@ -84,6 +84,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
     setState(() {
       nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 7)));
+      widget.bloc.add(ChangeFollowUpDateEvent(
+          followUpDate:
+              DateTime.now().add(const Duration(days: 7)).toString()));
     });
   }
 
@@ -185,12 +188,18 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                             _formKey.currentState!.validate(),
                                         onTapped: () =>
                                             PickDateAndTimeUtils.pickDate(
-                                                context, (newDate) {
-                                          if (newDate != null) {
+                                                context,
+                                                (newDate, followUpDate) {
+                                          if (newDate != null &&
+                                              followUpDate != null) {
                                             setState(() {
                                               nextActionDateControlller.text =
                                                   newDate;
                                             });
+                                            widget.bloc.add(
+                                                ChangeFollowUpDateEvent(
+                                                    followUpDate:
+                                                        followUpDate));
                                           }
                                         }),
                                         suffixWidget: SvgPicture.asset(
@@ -404,7 +413,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
           if (postResult[Constants.success]) {
             widget.bloc.add(ChangeIsSubmitForMyVisitEvent(Constants.rtp));
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(ChangeIsSubmitEvent(Constants.rtp));
+              widget.bloc.add(ChangeIsSubmitEvent(
+                  selectedClipValue: Constants.denialCaseStatus));
             }
 
             widget.bloc.add(

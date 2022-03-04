@@ -178,12 +178,18 @@ class _CustomRemainderBottomSheetState
                                           isLabel: true,
                                           onTapped: () =>
                                               PickDateAndTimeUtils.pickDate(
-                                                  context, (newDate) {
-                                            if (newDate != null) {
+                                                  context,
+                                                  (newDate, followUpDate) {
+                                            if (newDate != null &&
+                                                followUpDate != null) {
                                               setState(() {
                                                 nextActionDateControlller.text =
                                                     newDate;
                                               });
+                                              widget.bloc.add(
+                                                  ChangeFollowUpDateEvent(
+                                                      followUpDate:
+                                                          followUpDate));
                                             }
                                           }),
                                           suffixWidget: SvgPicture.asset(
@@ -420,7 +426,7 @@ class _CustomRemainderBottomSheetState
           );
           if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
             widget.bloc.add(
-              ChangeIsSubmitEvent(Constants.remainder),
+              ChangeIsSubmitEvent(selectedClipValue: Constants.remainder),
             );
           }
 
