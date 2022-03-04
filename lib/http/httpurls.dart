@@ -2,6 +2,7 @@ class HttpUrl {
   // 1st - Customer will be reject ->
   // static String url = 'https://collect.origa.ai';
   static String url = 'https://uat-collect.origa.ai';
+
   // static String url = 'https://collect.instalmint.com';
   // static String? url = '';
 
@@ -22,9 +23,8 @@ class HttpUrl {
 
   //Get API
   // For AutoCalling API
-  static final String autoCallingURL = baseUrl +
-      fieldAgent +
-      'case-details/priority?pageNo=1&limit=10&forAutocalling=true';
+  static final String autoCallingURL =
+      baseUrl + fieldAgent + 'case-details/priority?forAutocalling=true';
 
   static final String dashboardUrl =
       baseUrl + fieldAgent + 'profile/dashboard?';
