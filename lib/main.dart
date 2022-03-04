@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
       fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(hours: 1),
     ));
-    await remoteConfig.fetchAndActivate();
+    remoteConfig.fetchAndActivate();
     //development = 1, uat = 2, production = 3
     try {
       HttpUrl.url = Singleton.instance.serverPointingType == 1

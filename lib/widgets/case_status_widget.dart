@@ -19,11 +19,11 @@ class CaseStatusWidget {
         // height: height ?? 19,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
         decoration: BoxDecoration(
-            color: getStatusColor(text),
+            color: getStatusColor(text!),
             borderRadius: BorderRadius.circular(radius ?? 30)),
         child: Center(
           child: CustomText(
-            text!,
+            text,
             color: ColorResource.colorffffff,
             fontSize: fontSize ?? FontSize.ten,
             lineHeight: 1,
@@ -62,11 +62,11 @@ class CaseStatusWidget {
     Constants.addressNotFound.toLowerCase(),
   ];
 
-  static Color getStatusColor(String? text) {
-    Color? color;
-    if (health_1.contains(text?.toLowerCase())) {
+  static Color getStatusColor(String text) {
+    Color color = ColorResource.green;
+    if (health_1.contains(text.toLowerCase())) {
       color = ColorResource.orange;
-    } else if (health_0.contains(text?.toLowerCase())) {
+    } else if (health_0.contains(text.toLowerCase())) {
       color = ColorResource.red;
     } else {
       color = ColorResource.green;

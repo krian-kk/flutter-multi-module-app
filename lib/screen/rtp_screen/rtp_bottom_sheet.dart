@@ -404,7 +404,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
           if (postResult[Constants.success]) {
             widget.bloc.add(ChangeIsSubmitForMyVisitEvent(Constants.rtp));
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(ChangeIsSubmitEvent());
+              widget.bloc.add(ChangeIsSubmitEvent(Constants.rtp));
             }
 
             widget.bloc.add(

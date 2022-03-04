@@ -112,7 +112,10 @@ class AddedNewAddressListEvent extends CaseDetailsEvent {}
 
 class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 
-class ChangeIsSubmitEvent extends CaseDetailsEvent {}
+class ChangeIsSubmitEvent extends CaseDetailsEvent {
+  final String selectedClipValue;
+  ChangeIsSubmitEvent(this.selectedClipValue);
+}
 
 class ChangeHealthStatusEvent extends CaseDetailsEvent {}
 

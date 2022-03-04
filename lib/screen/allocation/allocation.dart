@@ -496,7 +496,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 Map<String, dynamic>.from(returnValue));
 
             if (returnModelValue.isSubmit) {
-              bloc.add(UpdateNewValuesEvent(returnModelValue.caseId));
+              bloc.add(UpdateNewValuesEvent(
+                returnModelValue.caseId,
+                returnModelValue.selectedClipValue,
+              ));
             }
           } catch (e) {
             debugPrint(e.toString());
@@ -817,7 +820,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                           .no
                                                           .length ==
                                                       2
-                                                  ? 80
+                                                  ? 75
                                                   : 64,
                                               height: 40,
                                               child: CustomButton(
@@ -836,7 +839,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                               )),
                                           Languages.of(context)!.no.length == 2
                                               ? SizedBox(
-                                                  width: 80,
+                                                  width: 74,
                                                   height: 40,
                                                   child: CustomButton(
                                                     Languages.of(context)!.no,

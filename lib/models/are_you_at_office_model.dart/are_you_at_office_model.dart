@@ -7,9 +7,9 @@ class AreYouAtOfficeModel {
   late String agentName;
   late String eventModule;
   late String contractor;
-  late double roleLevel;
-  late String version;
-  late bool tokenVerified;
+  // late double roleLevel;
+  // late String version;
+  // late bool tokenVerified;
 
   AreYouAtOfficeModel({
     required this.eventId,
@@ -20,9 +20,9 @@ class AreYouAtOfficeModel {
     required this.agentName,
     required this.eventModule,
     required this.contractor,
-    this.roleLevel = 0,
-    this.version = '',
-    this.tokenVerified = true,
+    // this.roleLevel = 0,
+    // this.version = '',
+    // this.tokenVerified = true,
   });
 
   AreYouAtOfficeModel.fromJson(Map<String, dynamic> json) {
@@ -34,9 +34,9 @@ class AreYouAtOfficeModel {
     agentName = json['agentName'];
     eventModule = json['eventModule'];
     contractor = json['contractor'];
-    roleLevel = json['roleLevel'];
-    version = json['version'];
-    tokenVerified = json['tokenVerified'];
+    // roleLevel = json['roleLevel'];
+    // version = json['version'];
+    // tokenVerified = json['tokenVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,9 +49,9 @@ class AreYouAtOfficeModel {
     data['agentName'] = agentName;
     data['eventModule'] = eventModule;
     data['contractor'] = contractor;
-    data['roleLevel'] = roleLevel;
-    data['version'] = version;
-    data['tokenVerified'] = tokenVerified;
+    // data['roleLevel'] = roleLevel;
+    // data['version'] = version;
+    // data['tokenVerified'] = tokenVerified;
     return data;
   }
 }

@@ -79,6 +79,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             'returnCaseAmount':
                 bloc.caseDetailsAPIValue.result?.caseDetails?.due,
             'returnCollectionAmount': bloc.collectionAmount,
+            'selectedClipValue': (Singleton.instance.usertype ==
+                    Constants.telecaller)
+                ? bloc.caseDetailsAPIValue.result?.caseDetails?.telSubStatus
+                : bloc.caseDetailsAPIValue.result?.caseDetails?.collSubStatus,
           },
         );
         return Future(() => false);
@@ -167,6 +171,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       .result?.caseDetails?.due,
                                   'returnCollectionAmount':
                                       bloc.collectionAmount,
+                                  'selectedClipValue':
+                                      (Singleton.instance.usertype ==
+                                              Constants.telecaller)
+                                          ? bloc.caseDetailsAPIValue.result
+                                              ?.caseDetails?.telSubStatus
+                                          : bloc.caseDetailsAPIValue.result
+                                              ?.caseDetails?.collSubStatus,
                                 },
                               );
                             }

@@ -579,7 +579,7 @@ class _CustomOtherFeedBackBottomSheetState
           );
           if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
             widget.bloc.add(
-              ChangeIsSubmitEvent(),
+              ChangeIsSubmitEvent(Constants.otherFeedback),
             );
           }
 

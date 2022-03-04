@@ -404,7 +404,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is UpdateNewValuesEvent) {
       resultList.asMap().forEach((index, value) {
         if (value.caseId == event.paramValue) {
-          value.collSubStatus = null;
+          if (Singleton.instance.usertype == Constants.telecaller) {
+            value.telSubStatus = event.selectedClipValue;
+          } else {
+            value.collSubStatus = event.selectedClipValue;
+          }
         }
       });
       yield UpdateNewValueState();

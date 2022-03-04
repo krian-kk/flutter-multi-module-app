@@ -543,7 +543,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               ),
             );
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(ChangeIsSubmitEvent());
+              widget.bloc.add(ChangeIsSubmitEvent(Constants.ots));
             }
 
             widget.bloc.add(

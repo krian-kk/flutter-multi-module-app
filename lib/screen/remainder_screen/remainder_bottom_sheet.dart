@@ -420,7 +420,7 @@ class _CustomRemainderBottomSheetState
           );
           if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
             widget.bloc.add(
-              ChangeIsSubmitEvent(),
+              ChangeIsSubmitEvent(Constants.remainder),
             );
           }
 
