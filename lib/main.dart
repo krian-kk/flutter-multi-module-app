@@ -17,6 +17,7 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
 
+
 void main() {
   Bloc.observer = EchoBlocDelegate();
   runApp(

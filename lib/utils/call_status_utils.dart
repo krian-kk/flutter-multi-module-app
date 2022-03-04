@@ -7,6 +7,7 @@ import 'package:origa/utils/constants.dart';
 
 class CallCustomerStatus {
   CallCustomerStatus._();
+
   static Future<bool> callStatusCheck(
       {required String callId, required BuildContext context}) async {
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
@@ -35,6 +36,22 @@ class CallCustomerStatus {
           return true;
         }
       }
+    } else {
+      return false;
+    }
+  }
+
+  /* if agent doesn't get the call from VOIP -> after 30 seconds it'll
+    move next index of number (maybe next case or nex number of current case)  */
+  static Future<bool> callStatusCheckForAutoJump(
+      {required String callId, required BuildContext context}) async {
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.post,
+      HttpUrl.callCustomerStatusGetUrl,
+      requestBodydata: {'id': callId},
+    );
+    if (postResult[Constants.success]) {
+      return (postResult['data']['result'] as List).isEmpty;
     } else {
       return false;
     }
