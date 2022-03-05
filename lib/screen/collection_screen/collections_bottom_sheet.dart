@@ -81,7 +81,6 @@ class _CustomCollectionsBottomSheetState
   late TextEditingController dateControlller;
   late TextEditingController chequeControlller;
   late TextEditingController remarksControlller;
-  String selectedDate = '';
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -117,7 +116,7 @@ class _CustomCollectionsBottomSheetState
     chequeFocusNode = FocusNode();
     remarksFocusNode = FocusNode();
     setState(() {
-      selectedDate = DateTime.now().toString();
+      //selectedDate = DateTime.now().toString();
 
       dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
       widget.bloc.add(
@@ -554,7 +553,7 @@ class _CustomCollectionsBottomSheetState
                 eventAttr: EventAttr(
                   amountCollected: amountCollectedControlller.text,
                   chequeRefNo: chequeControlller.text,
-                  date: selectedDate,
+                  date: dateControlller.text,
                   remarks: remarksControlller.text,
                   mode: ConvertString.convertLanguageToConstant(
                       selectedPaymentModeButton, context),
@@ -616,7 +615,7 @@ class _CustomCollectionsBottomSheetState
                     borrowerMobile: Singleton.instance.customerContactNo ?? "0",
                     type: Constants.receiptAcknowledgementType,
                     receiptAmount: int.parse(amountCollectedControlller.text),
-                    receiptDate: selectedDate,
+                    receiptDate: dateControlller.text,
                     paymentMode: selectedPaymentModeButton,
                     messageBody: 'message',
                   );
@@ -675,7 +674,7 @@ class _CustomCollectionsBottomSheetState
                 eventAttr: EventAttr(
                   amountCollected: amountCollectedControlller.text,
                   chequeRefNo: chequeControlller.text,
-                  date: selectedDate,
+                  date: dateControlller.text,
                   remarks: remarksControlller.text,
                   mode: ConvertString.convertLanguageToConstant(
                       selectedPaymentModeButton, context),
@@ -786,7 +785,7 @@ class _CustomCollectionsBottomSheetState
                           type: Constants.receiptAcknowledgementType,
                           receiptAmount:
                               int.parse(amountCollectedControlller.text),
-                          receiptDate: selectedDate,
+                          receiptDate: dateControlller.text,
                           paymentMode: selectedPaymentModeButton,
                           messageBody: 'message',
                         );

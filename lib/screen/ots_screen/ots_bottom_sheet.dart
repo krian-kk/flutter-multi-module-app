@@ -331,6 +331,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                           FontStyle.normal,
                                                       fontWeight:
                                                           FontWeight.w700,
+                                                      lineHeight: 1,
                                                     )
                                                   ],
                                                 ),
@@ -343,7 +344,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   fontSize: FontSize.twelve,
                                                   fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
-                                                )
+                                                ),
+                                                const SizedBox(height: 5),
                                               ],
                                             ),
                                           ),
@@ -538,6 +540,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           postdata.addAll({
             'files': value,
           });
+
+          print('OTS post data ----> $postdata');
 
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.upload,

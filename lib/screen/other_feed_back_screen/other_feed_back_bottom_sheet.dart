@@ -586,11 +586,12 @@ class _CustomOtherFeedBackBottomSheetState
               Constants.otherFeedback,
             ),
           );
-          if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-            widget.bloc.add(
-              ChangeIsSubmitEvent(selectedClipValue: Constants.otherFeedback),
-            );
-          }
+          // Here call update case status
+          // if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+          //   widget.bloc.add(
+          //     ChangeIsSubmitEvent(selectedClipValue: Constants.otherFeedback),
+          //   );
+          // }
 
           widget.bloc.add(
             ChangeHealthStatusEvent(),
