@@ -771,6 +771,7 @@ class LanguageTa extends Languages {
 
   @override
   String get uploadAudioFile => 'ஆடியோ கோப்பை பதிவேற்றவும்';
+
   @override
   String get autoCalling => 'தானியங்கி அழைப்பு';
 
@@ -827,4 +828,10 @@ class LanguageTa extends Languages {
 
   @override
   String get sendSMSerror => 'SMS இயக்கப்படவில்லை';
+
+  @override
+  String get logiginDeifferentSucessMessage =>'அழிக்கப்பட்டது';
+
+  @override
+  String get logiginDeifferentFailMessage => 'அழிப்பதற்கு மேலே நற்சான்றிதழ் இல்லை';
 }
