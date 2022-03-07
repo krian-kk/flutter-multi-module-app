@@ -537,40 +537,46 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const SizedBox(
                                           height: 30,
                                         ),
-                                        CustomButton(
-                                          Languages.of(context)!
-                                              .loginViaDifferentUser,
-                                          onTap: bloc.isSubmit
-                                              ? () {
-                                                  if (userId.text != '' ||
-                                                      password.text != '') {
-                                                    setState(() {
-                                                      userId.clear();
-                                                      password.clear();
-                                                      _isChecked = false;
-                                                      // Signin submit button activities
-                                                    });AppUtils.showToast(
-                                                        Languages.of(context)!.logiginDeifferentSucessMessage);
-                                                  } else {
-                                                    AppUtils.showToast(
-                                                        Languages.of(context)!.logiginDeifferentFailMessage);
+                                        if (userId.text != '' ||
+                                            password.text != '')
+                                          CustomButton(
+                                            Languages.of(context)!
+                                                .loginViaDifferentUser,
+                                            onTap: bloc.isSubmit
+                                                ? () {
+                                                    if (userId.text != '' ||
+                                                        password.text != '') {
+                                                      setState(() {
+                                                        userId.clear();
+                                                        password.clear();
+                                                        _isChecked = false;
+                                                        // Signin submit button activities
+                                                      });
+                                                      AppUtils.showToast(Languages
+                                                              .of(context)!
+                                                          .logiginDeifferentSucessMessage);
+                                                    } else {
+                                                      AppUtils.showToast(Languages
+                                                              .of(context)!
+                                                          .logiginDeifferentFailMessage);
+                                                    }
                                                   }
-                                                }
-                                              : () {
-                                                  AppUtils.showToast(
-                                                    Languages.of(context)!
-                                                        .pleaseWait,
-                                                  );
-                                                },
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          cardShape: 90,
-                                          fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w600,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                        ),
+                                                : () {
+                                                    AppUtils.showToast(
+                                                      Languages.of(context)!
+                                                          .pleaseWait,
+                                                    );
+                                                  },
+                                            borderColor:
+                                                ColorResource.color23375A,
+                                            cardShape: 90,
+                                            fontSize: FontSize.sixteen,
+                                            fontWeight: FontWeight.w600,
+                                            textColor:
+                                                ColorResource.color23375A,
+                                            buttonBackgroundColor:
+                                                ColorResource.colorffffff,
+                                          ),
                                       ],
                                     ),
                                   ),
