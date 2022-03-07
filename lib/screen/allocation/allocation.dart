@@ -541,8 +541,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
           } //List<Result>
           if (state.successResponse is String) {
             if (state.successResponse == Constants.isOfflineStorage) {
-             resultList = [];
-
+              resultList = [];
             }
           }
         }
@@ -1039,35 +1038,29 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               child:
                                   AutoCalling.buildAutoCalling(context, bloc))
                           : Expanded(
-                                  child: isCaseDetailLoading
-                                      ? const CustomLoadingWidget()
-                                      : resultList.isEmpty
-                                          ? Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 50,
-                                                          right: 20,
-                                                          left: 20),
-                                                  child: NoCaseAvailble
-                                                      .buildNoCaseAvailable(),
-                                                ),
-                                              ],
-                                            )
-                                          : Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20.0,
-                                                      vertical: 0.0),
-                                              child:
-                                                  CustomCardList.buildListView(
-                                                bloc,
-                                                resultData: resultList,
-                                                listViewController: _controller,
-                                              ),
+                              child: isCaseDetailLoading
+                                  ? const CustomLoadingWidget()
+                                  : resultList.isEmpty
+                                      ? Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 50, right: 20, left: 20),
+                                              child: NoCaseAvailble
+                                                  .buildNoCaseAvailable(),
                                             ),
-                                ),
+                                          ],
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 0.0),
+                                          child: CustomCardList.buildListView(
+                                            bloc,
+                                            resultData: resultList,
+                                            listViewController: _controller,
+                                          ),
+                                        ),
+                            ),
                     ],
                   ),
                   bottomNavigationBar: Visibility(

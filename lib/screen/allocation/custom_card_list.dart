@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -119,12 +123,24 @@ class CustomCardList {
                         ? const EdgeInsets.only(bottom: 20)
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
-                      onTap: () {
-                        bloc.add(NavigateCaseDetailEvent(paramValues: {
-                          'caseID': resultData[index].caseId!,
-                        }));
+                      onTap: () async {
                         Singleton.instance.agrRef =
                             resultData[index].agrRef ?? '';
+                        log('Data clicked-> ${resultData[index]}');
+                        if (ConnectivityResult.none ==
+                            await Connectivity().checkConnectivity()) {
+                          /*var caseDetails = CaseDetailsResultModel.fromJson();*/
+                          Map<String, dynamic> toJson =
+                              resultData[index] as Map<String, dynamic>;
+                          log('Data clicked-> $toJson');
+                        } else {
+                          // bloc.add(NavigateCaseDetailEvent(paramValues: {
+                          //   'caseID': resultData[index].caseId!,
+                          // }));
+                          Result toJson = resultData[index];
+
+                          log('Data clicked-> $toJson');
+                        }
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
