@@ -321,7 +321,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 const SizedBox(height: 21),
                                 CustomReadOnlyTextField(
-                                    Languages.of(context)!.reference,
+                                    Languages.of(context)!.reference.substring(
+                                        0,
+                                        Languages.of(context)!
+                                                .reference
+                                                .length -
+                                            1),
                                     referenceControlller,
                                     focusNode: ptpReferenceFocusNode,
                                     isLabel: true,

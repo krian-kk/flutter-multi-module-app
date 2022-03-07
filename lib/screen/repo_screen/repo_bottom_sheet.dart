@@ -204,7 +204,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                             (newTime) {
                                       if (newTime != null) {
                                         setState(() {
-                                          timeControlller.text = newTime;
+                                          timeControlller.text = newTime.trim();
                                         });
                                       }
                                     }),
@@ -392,9 +392,10 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       repo: Repo(
                                         status: 'pending',
                                       ),
-                                      date: dateControlller.text +
-                                          ", " +
-                                          timeControlller.text,
+                                      date: dateControlller.text.trim() +
+                                          'T' +
+                                          timeControlller.text.trim() +
+                                          ':00.000Z',
                                       imageLocation: [''],
                                       customerName:
                                           Singleton.instance.caseCustomerName ??
@@ -406,6 +407,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       heading: position.heading,
                                       speed: position.speed,
                                     ));
+
+                                print(
+                                    "REPO post data -----> ${json.encode(requestBodyData)}");
 
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
@@ -432,8 +436,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       Constants.repo,
                                     ),
                                   );
-                                  widget.bloc.add(ChangeIsSubmitEvent(
-                                      selectedClipValue: Constants.repo));
+                                  // Here trigger case status update
+                                  // widget.bloc.add(ChangeIsSubmitEvent(
+                                  //     selectedClipValue: Constants.repo));
 
                                   AppUtils.topSnackBar(
                                       context, Constants.successfullySubmitted);

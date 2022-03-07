@@ -106,9 +106,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
-          // StringResource.priority,
-          // StringResource.buildRoute,
-          // StringResource.mapView,
           Languages.of(event.context)!.priority,
           Languages.of(event.context)!.buildRoute,
           Languages.of(event.context)!.mapView,
@@ -117,8 +114,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         selectOptions = [
           Languages.of(event.context)!.priority,
           Languages.of(event.context)!.autoCalling,
-          // StringResource.priority,
-          // StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
