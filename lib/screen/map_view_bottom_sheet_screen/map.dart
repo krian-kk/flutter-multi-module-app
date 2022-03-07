@@ -5,7 +5,6 @@ import 'package:flutter/material.dart'; // Stores the Google Maps API Key
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 // import 'dart:math' show cos, sqrt, asin;
 
 import 'package:origa/languages/app_languages.dart';
@@ -22,7 +21,9 @@ import 'package:origa/widgets/custom_dialog.dart';
 
 class MapNavigation extends StatefulWidget {
   final List<dynamic>? multipleLatLong;
+
   const MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
+
   @override
   _MapNavigationState createState() => _MapNavigationState();
 }
@@ -53,6 +54,7 @@ class _MapNavigationState extends State<MapNavigation> {
   late BitmapDescriptor customIcon;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     // make sure to initialize before map loading
@@ -102,7 +104,7 @@ class _MapNavigationState extends State<MapNavigation> {
         markerId: MarkerId(startCoordinatesString),
         anchor: const Offset(0.5, 1.0),
         position: LatLng(startLatitude, startLongitude),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
         infoWindow: const InfoWindow(
           title: 'My Location',
           // snippet: "My Location",
@@ -110,92 +112,7 @@ class _MapNavigationState extends State<MapNavigation> {
       );
       // Adding the markers to the list
       markers.add(startMarker);
-
-      // if (widget.multipleLatLong!.length == 1 &&
-      //     widget.multipleLatLong!.isNotEmpty) {
-      //   double destinationLatitude = 0.0;
-      //   double destinationLongitude = 0.0;
-      //   var result = jsonDecode(jsonEncode(widget.multipleLatLong!));
-      //   setState(() {
-      //     destinationLatitude = result[0]['latitude'];
-      //     destinationLongitude = result[0]['longitude'];
-      //   });
-
-      //   String destinationCoordinatesString =
-      //       '($destinationLatitude, $destinationLongitude)';
-      //   // Destination Location Marker
-      //   Marker destinationMarker = Marker(
-      //     markerId: MarkerId(destinationCoordinatesString),
-      //     position: LatLng(destinationLatitude, destinationLongitude),
-      //     onTap: () {
-      //       DialogUtils.showDialog(
-      //           buildContext: context,
-      //           title: result[0]['name'] ?? "",
-      //           titleTextAlign: TextAlign.start,
-      //           titleTextStyle: const TextStyle(
-      //               fontSize: FontSize.seventeen,
-      //               fontWeight: FontWeight.w700,
-      //               color: ColorResource.color23375A),
-      //           description: result[0]['address'] ?? "",
-      //           descriptionTextStyle: const TextStyle(
-      //               fontSize: FontSize.fourteen,
-      //               fontWeight: FontWeight.w400,
-      //               color: ColorResource.color101010),
-      //           descriptionTextAlign: TextAlign.start,
-      //           okBtnText: Languages.of(context)!.cancel.toUpperCase(),
-      //           // cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
-      //           okBtnFunction: (val) async {
-      //             Navigator.pop(context);
-      //           });
-      //     },
-      //     icon: customIcon,
-      //   );
-
-      //   markers.add(destinationMarker);
-
-      //   // Calculating to check that the position relative
-      //   // to the frame, and pan & zoom the camera accordingly.
-      //   double miny = (startLatitude <= destinationLatitude)
-      //       ? startLatitude
-      //       : destinationLatitude;
-      //   double minx = (startLongitude <= destinationLongitude)
-      //       ? startLongitude
-      //       : destinationLongitude;
-      //   double maxy = (startLatitude <= destinationLatitude)
-      //       ? destinationLatitude
-      //       : startLatitude;
-      //   double maxx = (startLongitude <= destinationLongitude)
-      //       ? destinationLongitude
-      //       : startLongitude;
-
-      //   double southWestLatitude = miny;
-      //   double southWestLongitude = minx;
-
-      //   double northEastLatitude = maxy;
-      //   double northEastLongitude = maxx;
-
-      //   // Accommodate the two locations within the
-      //   // camera view of the map
-      //   final GoogleMapController controller = await mapController.future;
-      //   controller.animateCamera(
-      //     CameraUpdate.newLatLngBounds(
-      //       LatLngBounds(
-      //         northeast: LatLng(northEastLatitude, northEastLongitude),
-      //         southwest: LatLng(southWestLatitude, southWestLongitude),
-      //       ),
-      //       100.0,
-      //     ),
-      //   );
-      //   setState(() {
-      //     id = PolylineId(
-      //         destinationLatitude.toString() + destinationLongitude.toString());
-      //   });
-      //   // await _createPolylines(startLatitude, startLongitude,
-      //   //     destinationLatitude, destinationLongitude);
-      // } else {
       var result = jsonDecode(jsonEncode(widget.multipleLatLong!));
-      // print(jsonEncode(widget.multipleLatLong!));
-      // mapResult = MapMarkerModel.fromJson(result[0]);
       for (var element in result) {
         markers.add(Marker(
           markerId: MarkerId(element['latitude'].toString() +
