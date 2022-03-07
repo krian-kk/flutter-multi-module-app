@@ -823,4 +823,10 @@ class LanguageEn extends Languages {
 
   @override
   String get sendSMSerror => 'SMS is not activated';
+
+  @override
+  String get logiginDeifferentSucessMessage => 'Cleared';
+
+  @override
+  String get logiginDeifferentFailMessage => 'No credential above to clear';
 }

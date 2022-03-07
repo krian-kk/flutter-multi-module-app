@@ -542,12 +542,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                               .loginViaDifferentUser,
                                           onTap: bloc.isSubmit
                                               ? () {
-                                                  setState(() {
-                                                    userId.clear();
-                                                    password.clear();
-                                                    _isChecked = false;
-                                                    // Signin submit button activities
-                                                  });
+                                                  if (userId.text != '' ||
+                                                      password.text != '') {
+                                                    setState(() {
+                                                      userId.clear();
+                                                      password.clear();
+                                                      _isChecked = false;
+                                                      // Signin submit button activities
+                                                    });AppUtils.showToast(
+                                                        Languages.of(context)!.logiginDeifferentSucessMessage);
+                                                  } else {
+                                                    AppUtils.showToast(
+                                                        Languages.of(context)!.logiginDeifferentFailMessage);
+                                                  }
                                                 }
                                               : () {
                                                   AppUtils.showToast(
@@ -627,93 +634,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
   }
 
-  // Future<void> getAgentDetails() async {
-  //   try {
-  //     http.Response response = await http.get(
-  //         Uri.parse(
-  //             'https://uat-collect.origa.ai/node/field-allocation/agents/HAR_fos1'),
-  //         headers: {
-  //           "access-token":
-  //               "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVOVo5S0VDMXRqb3o4azE4ZGR6UkZqeTFxOHlRbmJSa1dRUlMwSU9tc3ljIn0.eyJleHAiOjE2Mzk2Njc5NDQsImlhdCI6MTYzOTY2NjE0NCwianRpIjoiNWU4M2RhMmItMDkwOS00YjNjLTgxMGMtZjc1YzNhZmYyZDY1IiwiaXNzIjoiaHR0cDovLzEwLjIyMS4xMC4yNDg6ODA4MC9hdXRoL3JlYWxtcy9vcmlnYS11YXQiLCJzdWIiOiI1NGI3YjExYy1iMGE0LTQ0NjMtYjEyZS02NTQ1MTY5NGQyYmQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZG1pbi1jbGkiLCJzZXNzaW9uX3N0YXRlIjoiOTZjYmRhOTQtZWViOC00OGVlLTgwYmItNTkwN2MzY2Q0NzdmIiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZPUzEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoYXJfZm9zMSIsImdpdmVuX25hbWUiOiJGT1MxIn0.GAzi2BUUyuFs5Tkd8rtxzTpS5oAXJYiJaYbGtyKb0dcEIfpMLTSAlBu3h61R07kMt5GZN884BEis3UtGA739O0QIrN-OM519qrcBGW48Dk0_a6jNMRTMH82_L3XbIneDZ9d6DveFFG1QJIGaZ-34AhbNawrZJhIX7_gfVPVJ2CQP-4Yykv5Oe5XRB8AOew4spIQ25RMZl3a9YtpN3hFATJSwfg8ndd7H9C6VyGPCZdLSzoAnpSJOekC02R7OkxqFg2fqyz25B-4uA_Mu_oVlVIAoljaqC1jlk9o_NCkqJ0GOgrCwGx2lHWdP3tyDNCkrRkkQRQYv_xEctwqq6MNScQ",
-  //           "refresh-token":
-  //               "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyNDUxZGRkNS00MGE3LTQ3N2UtOWM1OS0xOTBkNDcxMWM3NzkifQ.eyJleHAiOjE2Mzk3NTI1NDQsImlhdCI6MTYzOTY2NjE0NCwianRpIjoiNzc1M2I0N2QtYmU3Zi00MTdkLWJiY2YtZDQ3MzMyNWM0NzQ0IiwiaXNzIjoiaHR0cDovLzEwLjIyMS4xMC4yNDg6ODA4MC9hdXRoL3JlYWxtcy9vcmlnYS11YXQiLCJhdWQiOiJodHRwOi8vMTAuMjIxLjEwLjI0ODo4MDgwL2F1dGgvcmVhbG1zL29yaWdhLXVhdCIsInN1YiI6IjU0YjdiMTFjLWIwYTQtNDQ2My1iMTJlLTY1NDUxNjk0ZDJiZCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJhZG1pbi1jbGkiLCJzZXNzaW9uX3N0YXRlIjoiOTZjYmRhOTQtZWViOC00OGVlLTgwYmItNTkwN2MzY2Q0NzdmIiwic2NvcGUiOiJlbWFpbCBwcm9maWxlIn0.8eAy-szmnpvnFI5C5izv17t3RGkDPh66D4jPLX-GTfI",
-  //           "Authorization":
-  //               "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVOVo5S0VDMXRqb3o4azE4ZGR6UkZqeTFxOHlRbmJSa1dRUlMwSU9tc3ljIn0.eyJleHAiOjE2Mzk2Njc5NDQsImlhdCI6MTYzOTY2NjE0NCwianRpIjoiNWU4M2RhMmItMDkwOS00YjNjLTgxMGMtZjc1YzNhZmYyZDY1IiwiaXNzIjoiaHR0cDovLzEwLjIyMS4xMC4yNDg6ODA4MC9hdXRoL3JlYWxtcy9vcmlnYS11YXQiLCJzdWIiOiI1NGI3YjExYy1iMGE0LTQ0NjMtYjEyZS02NTQ1MTY5NGQyYmQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZG1pbi1jbGkiLCJzZXNzaW9uX3N0YXRlIjoiOTZjYmRhOTQtZWViOC00OGVlLTgwYmItNTkwN2MzY2Q0NzdmIiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZPUzEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoYXJfZm9zMSIsImdpdmVuX25hbWUiOiJGT1MxIn0.GAzi2BUUyuFs5Tkd8rtxzTpS5oAXJYiJaYbGtyKb0dcEIfpMLTSAlBu3h61R07kMt5GZN884BEis3UtGA739O0QIrN-OM519qrcBGW48Dk0_a6jNMRTMH82_L3XbIneDZ9d6DveFFG1QJIGaZ-34AhbNawrZJhIX7_gfVPVJ2CQP-4Yykv5Oe5XRB8AOew4spIQ25RMZl3a9YtpN3hFATJSwfg8ndd7H9C6VyGPCZdLSzoAnpSJOekC02R7OkxqFg2fqyz25B-4uA_Mu_oVlVIAoljaqC1jlk9o_NCkqJ0GOgrCwGx2lHWdP3tyDNCkrRkkQRQYv_xEctwqq6MNScQ",
-  //           "session-id": "96cbda94-eeb8-48ee-80bb-5907c3cd477f",
-  //           "aRef": "HAR_fos1",
-  //         });
-  //     if (response.statusCode == 200) {
-  //       print(jsonDecode(response.body));
-  //     } else {
-  //       print(response.reasonPhrase);
-  //     }
-  //   } on Exception catch (exception) {
-  //     print(exception.toString());
-  //   } catch (error) {
-  //     print(error.toString());
-  //   }
-  // }
-
-  // LoginResponseModel loginResponse =
-  //     LoginResponseModel();
-
-  // Future<void> keyCloak() async {
-  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
-
-  //     var params =
-  //     {
-  //     "userId": userId.text,
-  //     "agentRef": userId.text,
-  //     "password": password.text
-  //     };
-  //       print('---------before execute----------');
-
-  //         Map<String, dynamic> response = await APIRepository.apiRequest(
-  //         APIRequestType.post,
-  //         HttpUrl.loginUrl,
-  //         requestBodydata: params);
-
-  //         if (response['success']) {
-  //           loginResponse = LoginResponseModel.fromJson(response['data']);
-  //           _prefs.setString('accessToken', loginResponse.data!.accessToken!);
-  //           _prefs.setInt('accessTokenExpireTime', loginResponse.data!.expiresIn!);
-  //           _prefs.setString('refreshToken', loginResponse.data!.refreshToken!);
-  //           _prefs.setInt('refreshTokenExpireTime', loginResponse.data!.refreshExpiresIn!);
-  //           _prefs.setString('keycloakId', loginResponse.data!.keycloakId!);
-
-  //         }
-
-  //       // var params =  {
-  //     //         "username": "YES_suvodeepcollector",
-  //     //         "password": "Agent1234",
-  //     //         "grant_type": "password",
-  //     //         "client_id": "admin-cli",
-  //     //       };
-
-  //         // Response response = await _dio.post(
-  //         //   "http://10.221.10.248:8080/auth/realms/origa-dev/protocol/openid-connect/token",
-  //         //   options: Options(headers: {
-  //         //     HttpHeaders.contentTypeHeader: "application/x-www-form-urlencoded",
-  //         //   }),
-  //         //   data: jsonEncode(params),
-  //         // );
-  //         // print(params);
-
-  //       // var response = await http.post(
-  //       //     Uri.parse(HttpUrl.login_keycloak),
-  //       //     headers: <String, String>{
-  //       //       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  //       //     },
-  //       //     body: params,
-  //       //   );
-  //       //   print('---------After execute----------');
-  //       //   print(response.statusCode.toString());
-  //       //   print(response.body);
-
-  //         // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginResponse(response.body.toString())));
-
-  // }
-
   // If isSubmit = true : show Normal submit button
   Widget loginButton({String? fcmToken}) => GestureDetector(
         onTap: () {
@@ -724,10 +644,6 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 50,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(90.0),
-            // boxShadow: const [
-            //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.12), spreadRadius: 2),
-            //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.24), spreadRadius: 2),
-            // ],
             gradient: const LinearGradient(
               colors: [
                 ColorResource.colorFFC23B,
@@ -748,22 +664,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-
-  // This is custom Widget to show rounded container
-  // Here is state is submitting, we are showing loading indicator on container then.
-  // If it completed then showing a Icon.
-  //     CustomButton(
-  //       StringResource.signIn.toUpperCase(),
-  //       buttonBackgroundColor: ColorResource.colorEA8A38,
-  //       borderColor: ColorResource.colorEA8A38,
-  //       onTap: () {
-  //         _signIn(fcmToken: fcmToken);
-  //       },
-  //       cardShape: 85,
-  //       fontSize: FontSize.sixteen,
-  //       fontWeight: FontWeight.w600,
-  //   textColor: ColorResource.color23375A,
-  //     );
 
   // this is custom Widget to show rounded container
   // here is state is submitting, we are showing loading indicator on container then.
