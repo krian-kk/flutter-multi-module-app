@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -163,6 +164,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
+          log('message $jsonData');
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
               .result?.callDetails

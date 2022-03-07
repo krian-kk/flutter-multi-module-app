@@ -98,8 +98,7 @@ class Result {
     if (json['fieldfollowUpDate'] != null &&
         json['fieldfollowUpDate'] is Timestamp) {
       fieldfollowUpDate = json['fieldfollowUpDate'].toString();
-      print('json--> ${json['fieldfollowUpDate']}');
-    }else{
+    } else {
       fieldfollowUpDate = json['fieldfollowUpDate'];
     }
     // fieldfollowUpDate = '-';

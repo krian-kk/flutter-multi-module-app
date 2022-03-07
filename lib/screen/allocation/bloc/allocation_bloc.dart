@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -185,10 +186,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .forEach((element) {
               for (var docs in element.docs) {
                 Map<String, dynamic>? data = docs.data();
+                // log('message $data');
                 resultList.add(Result.fromJson(data));
-                // if (Result.fromJson(data).starredCase == true) {
-                //   starCount++;
-                // }
+                if (Result.fromJson(data).starredCase == true) {
+                  starCount++;
+                }
               }
             });
             hasNextPage = false;
@@ -196,7 +198,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           } else {
             Singleton.instance.isOfflineStorageFeatureEnabled = false;
             for (var element in priorityListData['data']['result']) {
-              print('element-- ${element['fieldfollowUpDate']}');
+              log('message $element');
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
               if (Result.fromJson(jsonDecode(jsonEncode(element)))
                       .starredCase ==

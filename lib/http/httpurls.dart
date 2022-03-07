@@ -42,12 +42,11 @@ class HttpUrl {
       baseUrl + fieldAgent + 'case-details-events/eventDetails?caseId=$caseId';
 
   //for offline storage
+  // static final String priorityCaseList =
+  //     baseUrl + fieldAgent + 'case-details/priority?';
 
   static final String priorityCaseList =
-      baseUrl + fieldAgent + 'case-details/priority?';
-
-  // static final String priorityCaseList =
-  //     '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
+      '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
 
   static final String updateStaredCase =
       baseUrl + fieldAgent + 'case-details/update_starredCase';
