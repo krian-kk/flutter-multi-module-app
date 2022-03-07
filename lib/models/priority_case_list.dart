@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PriorityCaseListModel {
   int? status;
   String? message;
@@ -88,7 +90,19 @@ class Result {
     caseId = json['caseId'];
     agrRef = json['agrRef'] ?? '-';
     bankName = json['bankName'] ?? '-';
-    fieldfollowUpDate = json['fieldfollowUpDate'];
+    // if (json['fieldfollowUpDate'] is Timestamp) {
+    //   fieldfollowUpDate = json['fieldfollowUpDate'];
+    // } else {
+    //   fieldfollowUpDate = json['fieldfollowUpDate'].toString();
+    // }
+    if (json['fieldfollowUpDate'] != null &&
+        json['fieldfollowUpDate'] is Timestamp) {
+      fieldfollowUpDate = json['fieldfollowUpDate'].toString();
+      print('json--> ${json['fieldfollowUpDate']}');
+    }else{
+      fieldfollowUpDate = json['fieldfollowUpDate'];
+    }
+    // fieldfollowUpDate = '-';
     sortId = json['sortId'];
     followUpDate = json['followUpDate'];
     locationType = json['locationType'];
@@ -110,8 +124,9 @@ class Result {
         address?.add(Address.fromJson(v));
       });
     }
-    location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
+    if (json['location'] != null && json['location'] is! String) {
+      location = Location.fromJson(json['location']);
+    }
   }
 
   Map<String, dynamic> toJson() {

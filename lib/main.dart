@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -16,7 +12,9 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
@@ -90,13 +88,11 @@ class _MyAppState extends State<MyApp> {
                   remoteConfig.getString('v1_uat_mobile_app_baseUrl')
               : HttpUrl.url =
                   remoteConfig.getString('v1_production_mobile_app_baseUrl');
-      Singleton.instance.firebaseDatabaseName =
-          remoteConfig.getString('offlineDatabaseName');
-      debugPrint('URL -> ${HttpUrl.url}');
-      debugPrint('DB name -> ${Singleton.instance.firebaseDatabaseName}');
-      var userID = md5.convert(utf8.encode("CDE_26")).toString();
-      debugPrint('user ID--> $userID');
-
+      // debugPrint('URL -> ${HttpUrl.url}');
+      // var userID = md5.convert(utf8.encode("CDE_26")).toString();
+      // debugPrint('user ID--> $userID');
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
     } catch (e) {
       debugPrint('Catch-> $e');
       setupRemoteConfig();
@@ -143,6 +139,27 @@ class _MyAppState extends State<MyApp> {
                     alignment: Alignment.center,
                   );
                 } else {
+                  //md5.convert(utf8.encode("CDE_26")).toString()
+                  // return Expanded(
+                  //   child: StreamBuilder(
+                  //       stream: FirebaseFirestore.instance
+                  //           .collection(
+                  //               Singleton.instance.firebaseDatabaseName!)
+                  //           .doc('${md5.convert(utf8.encode("CDE_26"))}')
+                  //           .snapshots(),
+                  //       builder: (context, asyncSnapshot) {
+                  //         return Column(
+                  //           children: [
+                  //             Padding(
+                  //               padding: const EdgeInsets.only(
+                  //                   top: 50, right: 20, left: 20),
+                  //               child: NoCaseAvailble.buildNoCaseAvailable(),
+                  //             ),
+                  //           ],
+                  //         );
+                  //       }),
+                  //   // child: NoCaseAvailble.buildNoCaseAvailable(),
+                  // );
                   // return Container(
                   //   color: Colors.white,
                   //   child: Text(

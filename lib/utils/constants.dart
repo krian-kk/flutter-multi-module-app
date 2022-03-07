@@ -1,4 +1,5 @@
 class Constants {
+  static const String firebaseCase = 'cases';
   static const String inr = '₹ ';
   static const String home = 'home';
   static const String pageNo = '1';

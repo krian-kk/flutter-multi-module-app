@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -174,39 +175,28 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
             Singleton.instance.isOfflineStorageFeatureEnabled = true;
-            yield AllocationLoadedState(
-                successResponse: Constants.isOfflineStorage);
-            // FirebaseFirestore.instance
-            //     .collection('origaOfflineStorage')
-            //     .doc('d90e4d644ff84f49c9c256a4314bac7ff')
-            //     .set({
-            //   'name': 'Chinnadurai',
-            //   'age': 25,
-            //   'city': 'Kallakurichi',
-            //   'district': 'Kallakurichi'
-            // });
-            // FirebaseFirestore.instance
-            //     .collection(Singleton.instance.firebaseDatabaseName!)
-            //     .get()
-            //     .then((QuerySnapshot<Map<String, dynamic>> value) {
-            //   for (var element in value.docs) {
-            //     debugPrint('Size of document-> ${jsonEncode(element.data())}');
-            //   }
-            // });
-            //
-            // FirebaseFirestore.instance
-            //     .collection(Singleton.instance.firebaseDatabaseName!)
-            //     .snapshots()
-            //     .forEach((element) {
-            //   debugPrint('Length.-> ${element.docs.length}');
-            //   for (var elementOfDocument in element.docs) {
-            //     debugPrint(
-            //         'elementOfDocument.-> ${jsonEncode(elementOfDocument.data())}');
-            //   }
-            // });
+            starCount = 0;
+            FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName)
+                .doc(
+                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+                .collection(Constants.firebaseCase)
+                .snapshots()
+                .forEach((element) {
+              for (var docs in element.docs) {
+                Map<String, dynamic>? data = docs.data();
+                resultList.add(Result.fromJson(data));
+                // if (Result.fromJson(data).starredCase == true) {
+                //   starCount++;
+                // }
+              }
+            });
+            hasNextPage = false;
+            yield AllocationLoadedState(successResponse: resultList);
           } else {
             Singleton.instance.isOfflineStorageFeatureEnabled = false;
             for (var element in priorityListData['data']['result']) {
+              print('element-- ${element['fieldfollowUpDate']}');
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
               if (Result.fromJson(jsonDecode(jsonEncode(element)))
                       .starredCase ==
@@ -214,7 +204,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 starCount++;
               }
             }
-
             if (resultList.length >= 10) {
               hasNextPage = true;
             } else {

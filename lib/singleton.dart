@@ -28,7 +28,7 @@ class Singleton {
   String? contactId_0;
   bool? startCalling;
   bool? isOfflineStorageFeatureEnabled = false;
-  String? firebaseDatabaseName;
+  String firebaseDatabaseName = 'origaOfflineStorage';
 
 // Contractor All Information
   ContractorAllInformationModel? contractorInformations;

@@ -155,7 +155,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
           Singleton.instance.sessionID = loginResponse.data!.sessionState!;
           Singleton.instance.agentRef = event.userId!;
-
+          Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
           if (loginResponse.data!.accessToken != null) {
             // Execute agent detail URl to get Agent details
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
