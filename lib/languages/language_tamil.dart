@@ -152,6 +152,9 @@ class LanguageTa extends Languages {
   String get enterDepositionDetails => 'டெபாசிஷன் விவரங்களை உள்ளிடவும்';
 
   @override
+  String get enterRepoDetails => 'ரெப்போ விவரங்களை உள்ளிடவும்';
+
+  @override
   String get depositionMode => 'டெபாசிஷன் முறை';
 
   @override
@@ -830,8 +833,9 @@ class LanguageTa extends Languages {
   String get sendSMSerror => 'SMS இயக்கப்படவில்லை';
 
   @override
-  String get logiginDeifferentSucessMessage =>'அழிக்கப்பட்டது';
+  String get logiginDeifferentSucessMessage => 'அழிக்கப்பட்டது';
 
   @override
-  String get logiginDeifferentFailMessage => 'அழிப்பதற்கு மேலே நற்சான்றிதழ் இல்லை';
+  String get logiginDeifferentFailMessage =>
+      'அழிப்பதற்கு மேலே நற்சான்றிதழ் இல்லை';
 }
