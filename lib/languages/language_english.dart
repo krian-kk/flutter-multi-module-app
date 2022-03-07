@@ -152,6 +152,9 @@ class LanguageEn extends Languages {
   String get enterDepositionDetails => 'ENTER DEPOSITION DETAILS';
 
   @override
+  String get enterRepoDetails => 'ENTER REPO DETAILS';
+
+  @override
   String get depositionMode => 'DEPOSITION MODE';
 
   @override

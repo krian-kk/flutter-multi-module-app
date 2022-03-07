@@ -152,6 +152,9 @@ class LanguageHi extends Languages {
   String get enterDepositionDetails => 'बयान के विवरण दर्ज करें';
 
   @override
+  String get enterRepoDetails => 'रेपो विवरण दर्ज करें';
+
+  @override
   String get depositionMode => 'बयान का तरीका';
 
   @override
@@ -826,11 +829,10 @@ class LanguageHi extends Languages {
   @override
   String get sendSMSerror => 'SMS सक्रिय नहीं है';
 
-
-
   @override
   String get logiginDeifferentSucessMessage => 'को मंजूरी दे दी';
 
   @override
-  String get logiginDeifferentFailMessage => 'साफ़ करने के लिए ऊपर कोई क्रेडेंशियल नहीं है';
+  String get logiginDeifferentFailMessage =>
+      'साफ़ करने के लिए ऊपर कोई क्रेडेंशियल नहीं है';
 }

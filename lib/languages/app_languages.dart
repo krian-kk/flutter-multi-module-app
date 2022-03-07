@@ -99,6 +99,8 @@ abstract class Languages {
 
   String get enterDepositionDetails;
 
+  String get enterRepoDetails;
+
   String get bank;
 
   String get companybranch;

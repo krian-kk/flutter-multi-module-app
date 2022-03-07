@@ -90,7 +90,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
                           child: CustomButton(
-                            Languages.of(context)!.enterDepositionDetails,
+                            Languages.of(context)!.enterRepoDetails,
                             fontSize: FontSize.sixteen,
                             fontWeight: FontWeight.w600,
                             onTap: () {
