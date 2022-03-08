@@ -61,9 +61,9 @@ class ConstantEventValues {
   static const String phoneUnreachableHealth = '1';
   static const String lineBusyEvenCode = 'TELEVT007';
   static const String switchOffEvenCode = 'TELEVT007';
-  static const String rnrEvenCode = 'TELEVT011';
+  static const String rnrEvenCode = 'TELEVT007';
   static const String outOfNetworkEvenCode = 'TELEVT007';
-  static const String disConnectingEvenCode = 'TELEVT011';
+  static const String disConnectingEvenCode = 'TELEVT007';
 
   // PhoneInvalid Post Event
   static const int phoneInvalidEventId = 24;

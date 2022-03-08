@@ -57,12 +57,6 @@ class _MapNavigationState extends State<MapNavigation> {
 
   @override
   void initState() {
-    // make sure to initialize before map loading
-    // BitmapDescriptor.fromAssetImage(
-    //         const ImageConfiguration(size: Size(20, 20)), 'assets/marker.png')
-    //     .then((d) {
-    //   customIcon = d;
-    // });
     super.initState();
     _getCurrentLocation();
   }
@@ -104,7 +98,8 @@ class _MapNavigationState extends State<MapNavigation> {
         markerId: MarkerId(startCoordinatesString),
         anchor: const Offset(0.5, 1.0),
         position: LatLng(startLatitude, startLongitude),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
+        icon:
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
         infoWindow: const InfoWindow(
           title: 'My Location',
           // snippet: "My Location",
@@ -153,29 +148,6 @@ class _MapNavigationState extends State<MapNavigation> {
       controller.animateCamera(
         CameraUpdate.newLatLngZoom(LatLng(startLatitude, startLongitude), 13),
       );
-      // }
-
-      // print(
-      //   'START COORDINATES: ($startLatitude, $startLongitude)',
-      // );
-
-      // double totalDistance = 0.0;
-
-      // // Calculating the total distance by adding the distance
-      // // between small segments
-      // for (int i = 0; i < polylineCoordinates.length - 1; i++) {
-      //   totalDistance += _coordinateDistance(
-      //     polylineCoordinates[i].latitude,
-      //     polylineCoordinates[i].longitude,
-      //     polylineCoordinates[i + 1].latitude,
-      //     polylineCoordinates[i + 1].longitude,
-      //   );
-      // }
-
-      // setState(() {
-      //   _placeDistance = totalDistance.toStringAsFixed(2);
-      //   print('DISTANCE: $_placeDistance km');
-      // });
 
       return true;
     } catch (e) {
@@ -183,72 +155,6 @@ class _MapNavigationState extends State<MapNavigation> {
     }
     return false;
   }
-
-  // Formula for calculating distance between two coordinates
-  // // https://stackoverflow.com/a/54138876/11910277
-  // double _coordinateDistance(lat1, lon1, lat2, lon2) {
-  //   var p = 0.017453292519943295;
-  //   var c = cos;
-  //   var a = 0.5 -
-  //       c((lat2 - lat1) * p) / 2 +
-  //       c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-  //   return 12742 * asin(sqrt(a));
-  // }
-
-  // // Create the polylines for showing the route between two places
-  // _createPolylines(
-  //   double startLatitude,
-  //   double startLongitude,
-  //   double destinationLatitude,
-  //   double destinationLongitude,
-  // ) async {
-  //   polylinePoints = PolylinePoints();
-  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //     Env.googleMapAPI, // Google Maps API Key
-  //     PointLatLng(startLatitude, startLongitude),
-  //     PointLatLng(destinationLatitude, destinationLongitude),
-  //     travelMode: TravelMode.transit,
-  //   );
-  //   print("poly line result------>");
-  //   print(result.points);
-  //   print(result.errorMessage);
-  //   print(result.status);
-
-  //   // String polyLineApi =
-  //   //     "https://maps.googleapis.com/maps/api/directions/json?";
-
-  //   // Map<String, dynamic> polylineData = await APIRepository.apiRequest(
-  //   //     APIRequestType.get,
-  //   //     polyLineApi +
-  //   //         "origin=$startLatitude,$startLongitude&" +
-  //   //         "destination=$destinationLatitude,$destinationLongitude&" +
-  //   //         "mode=transit&" +
-  //   //         "avoidHighways=false&" +
-  //   //         "avoidFerries=true&" +
-  //   //         "avoidTolls=false&" +
-  //   //         "key=$googleMapAPI");
-
-  //   // print("--------------NK-------------");
-  //   // print(polylineData);
-
-  //   // Here clear the previous polyline then added newly selected LatLng polyline
-  //   polylineCoordinates.clear();
-  //   if (result.points.isNotEmpty) {
-  //     for (var point in result.points) {
-  //       setState(() {
-  //         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //       });
-  //     }
-  //   }
-
-  //   Polyline polyline = Polyline(
-  //       polylineId: id!,
-  //       color: Colors.blue,
-  //       points: polylineCoordinates,
-  //       width: 5,
-  //       jointType: JointType.round);
-  //   polylines[id!] = polyline;
-  // }
 
   @override
   Widget build(BuildContext context) {
