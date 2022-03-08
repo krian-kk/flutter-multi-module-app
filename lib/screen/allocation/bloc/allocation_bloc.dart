@@ -175,8 +175,26 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             debugPrint(e.toString());
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
-            Singleton.instance.isOfflineStorageFeatureEnabled = true;
-            starCount = 0;
+            // Singleton.instance.isOfflineStorageFeatureEnabled = true;
+            // starCount = 0;
+            // FirebaseFirestore.instance
+            //     .collection(Singleton.instance.firebaseDatabaseName)
+            //     .doc(
+            //         '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            //     .collection(Constants.firebaseCase)
+            //     .snapshots()
+            //     .forEach((element) {
+            //   for (var docs in element.docs) {
+            //     Map<String, dynamic>? data = docs.data();
+            //     // log('message $data');
+            //     resultList.add(Result.fromJson(data));
+            //     if (Result.fromJson(data).starredCase == true) {
+            //       starCount++;
+            //     }
+            //   }
+            // });
+            //
+
             FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(
@@ -184,6 +202,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .collection(Constants.firebaseCase)
                 .snapshots()
                 .forEach((element) {
+              starCount == 0;
               for (var docs in element.docs) {
                 Map<String, dynamic>? data = docs.data();
                 // log('message $data');
@@ -191,8 +210,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 if (Result.fromJson(data).starredCase == true) {
                   starCount++;
                 }
+                debugPrint('resultList.length -. ${resultList.length}');
               }
             });
+            debugPrint('After catch -. ${resultList.length}');
             hasNextPage = false;
             yield AllocationLoadedState(successResponse: resultList);
           } else {
@@ -230,15 +251,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 AppUtils.showToast(getContractorDetails['data'] ?? '');
               }
             }
+            yield AllocationLoadedState(successResponse: resultList);
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||
             priorityListData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           isNoInternetAndServerErrorMsg = priorityListData['data'];
+          yield AllocationLoadedState(successResponse: resultList);
         }
       }
-      yield AllocationLoadedState(successResponse: resultList);
     }
     if (event is TapPriorityEvent) {
       yield CaseListViewLoadingState();

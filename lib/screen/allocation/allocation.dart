@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -493,12 +491,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 context, AppRoutes.caseDetailsScreen,
                 arguments: CaseDetailsNaviagationModel(state.paramValues,
                     allocationBloc: bloc));
-
-            RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
-                Map<String, dynamic>.from(returnValue));
-
-            if (returnModelValue.isSubmit) {
-              bloc.add(UpdateNewValuesEvent(returnModelValue.caseId));
+            // If user will be offline data stored into firebase -> so there is no need to update while back
+            if (state.paramValues['isOffline'] != null &&
+                state.paramValues['isOffline'] == false) {
+              RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
+                  Map<String, dynamic>.from(returnValue));
+              if (returnModelValue.isSubmit) {
+                bloc.add(UpdateNewValuesEvent(returnModelValue.caseId));
+              }
             }
           } catch (e) {
             debugPrint(e.toString());
@@ -539,11 +539,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
           if (state.successResponse is List<Result>) {
             resultList = state.successResponse;
           } //List<Result>
-          if (state.successResponse is String) {
-            if (state.successResponse == Constants.isOfflineStorage) {
-              resultList = [];
-            }
-          }
         }
 
         if (state is TapPriorityState) {

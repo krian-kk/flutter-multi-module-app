@@ -153,7 +153,10 @@ class PageBuilder {
     CaseDetailsNaviagationModel caseDetailsNaviagationValue;
     caseDetailsNaviagationValue =
         settings.arguments as CaseDetailsNaviagationModel;
-    debugPrint('buildCaseDetailsPage Arg-> ${settings.arguments}');
+    if (caseDetailsNaviagationValue.paramValue['isOffline'] != null) {
+      debugPrint(
+          'isOffline--> ${caseDetailsNaviagationValue.paramValue['isOffline']}');
+    }
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)

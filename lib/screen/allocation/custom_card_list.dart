@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -126,20 +122,22 @@ class CustomCardList {
                       onTap: () async {
                         Singleton.instance.agrRef =
                             resultData[index].agrRef ?? '';
-                        log('Data clicked-> ${resultData[index]}');
-                        if (ConnectivityResult.none ==
-                            await Connectivity().checkConnectivity()) {
-                          /*var caseDetails = CaseDetailsResultModel.fromJson();*/
-                          Map<String, dynamic> toJson =
-                              resultData[index] as Map<String, dynamic>;
-                          log('Data clicked-> $toJson');
-                        } else {
-                          // bloc.add(NavigateCaseDetailEvent(paramValues: {
-                          //   'caseID': resultData[index].caseId!,
-                          // }));
-                          Result toJson = resultData[index];
-                          log('Data clicked-> $toJson');
-                        }
+                        // if (ConnectivityResult.none ==
+                        //     await Connectivity().checkConnectivity()) {
+                        //Case id(paramValues as _id) -> Firebase reference number
+                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
+                        //     'caseID': resultData[index].sId,
+                        //     'isOffline': true
+                        //   }));
+                        // } else {
+                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
+                        //     'caseID': resultData[index].caseId!,
+                        //   }));
+                        // }
+                        bloc.add(NavigateCaseDetailEvent(paramValues: {
+                          'caseID': resultData[index].sId,
+                          'isOffline': true
+                        }));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

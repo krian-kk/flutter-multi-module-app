@@ -4,11 +4,13 @@ class AllocationEvent extends BaseEquatable {}
 
 class AllocationInitialEvent extends AllocationEvent {
   final BuildContext context;
+
   AllocationInitialEvent(this.context);
 }
 
 class MapViewEvent extends AllocationEvent {
   final dynamic paramValues;
+
   MapViewEvent({this.paramValues});
 }
 
@@ -18,6 +20,7 @@ class NavigateSearchPageEvent extends AllocationEvent {}
 
 class NavigateCaseDetailEvent extends AllocationEvent {
   final dynamic paramValues;
+
   NavigateCaseDetailEvent({this.paramValues});
 }
 
@@ -29,11 +32,13 @@ class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
 
 class TapBuildRouteEvent extends AllocationEvent {
   final dynamic paramValues;
+
   TapBuildRouteEvent({this.paramValues});
 }
 
 class SearchReturnDataEvent extends AllocationEvent {
   final dynamic returnValue;
+
   SearchReturnDataEvent({this.returnValue});
 }
 
@@ -41,6 +46,7 @@ class PriorityLoadMoreEvent extends AllocationEvent {}
 
 class BuildRouteLoadMoreEvent extends AllocationEvent {
   final dynamic paramValues;
+
   BuildRouteLoadMoreEvent({this.paramValues});
 }
 
@@ -50,6 +56,7 @@ class UpdateStaredCaseEvent extends AllocationEvent {
   final int selectedStarIndex;
   final String caseID;
   final BuildContext context;
+
   UpdateStaredCaseEvent(
       {required this.selectedStarIndex,
       required this.caseID,
@@ -60,6 +67,7 @@ class CallSuccessfullyConnectedEvent extends AllocationEvent {}
 
 class UpdateNewValuesEvent extends AllocationEvent {
   final String paramValue;
+
   UpdateNewValuesEvent(this.paramValue);
 }
 
@@ -70,6 +78,7 @@ class StartCallingEvent extends AllocationEvent {
   final int? phoneIndex;
   final Result? customerList;
   final bool isIncreaseCount;
+
   StartCallingEvent({
     this.customerIndex,
     this.phoneIndex,
@@ -81,6 +90,7 @@ class StartCallingEvent extends AllocationEvent {
 class AutoCallContactHealthUpdateEvent extends AllocationEvent {
   final int? contactIndex;
   final int? caseIndex;
+
   AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
 }
 

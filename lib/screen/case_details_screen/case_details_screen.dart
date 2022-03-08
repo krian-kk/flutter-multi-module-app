@@ -89,6 +89,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }
+            if (state is CaseDetailsLoadedState) {
+              setState(() {});
+            }
             if (state is UpdateSuccessfullState) {
               setState(() {});
             }
@@ -651,10 +654,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
                                               itemCount: bloc
-                                                  .caseDetailsAPIValue
-                                                  .result
-                                                  ?.otherLoanDetails
-                                                  ?.length ?? 0,
+                                                      .caseDetailsAPIValue
+                                                      .result
+                                                      ?.otherLoanDetails
+                                                      ?.length ??
+                                                  0,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {

@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,7 +13,9 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
+import 'package:origa/models/case_details_api_model/case_details.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
+import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
@@ -138,49 +141,84 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
-      debugPrint('Print-> ${event.paramValues}');
-      debugPrint('Print-> ${event.paramValues}');
       caseDetailsContext = event.context;
       Singleton.instance.buildContext = event.context;
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
       listOfAddress = event.paramValues['mobileList'];
-
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
 
-      //check internet
-      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-        isNoInternetAndServerError = true;
-        noInternetAndServerErrorMsg =
-            Languages.of(event.context!)!.noInternetConnection;
-        yield CDNoInternetState();
-      } else {
-        isNoInternetAndServerError = false;
-        Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
-            isPop: true);
-
-        if (caseDetailsData[Constants.success] == true) {
-          Map<String, dynamic> jsonData = caseDetailsData['data'];
-          log('message $jsonData');
-          caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
-          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-              .result?.callDetails
-              ?.where((element) => (element['cType'] == 'mobile'))
-              .toList();
-          caseDetailsAPIValue.result?.callDetails?.sort(
-              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
-          Singleton.instance.caseCustomerName =
-              caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-        } else if (caseDetailsData['statusCode'] == 401 ||
-            caseDetailsData['statusCode'] == 502) {
-          isNoInternetAndServerError = true;
-          noInternetAndServerErrorMsg = caseDetailsData['data'];
-        }
-      }
-
+      // check internet
+      // if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      //   /*For firebase purpose hiding here*/
+      //   // isNoInternetAndServerError = true;
+      //   // noInternetAndServerErrorMsg =
+      //   //     Languages.of(event.context!)!.noInternetConnection;
+      //   // yield CDNoInternetState();
+      //   FirebaseFirestore.instance
+      //       .collection(Singleton.instance.firebaseDatabaseName)
+      //       .doc(
+      //           '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+      //       .collection(Constants.firebaseCase)
+      //       .doc('${event.paramValues['caseID']}')
+      //       .get()
+      //       .then((value) {
+      //     Map<String, dynamic>? jsonData = value.data();
+      //     log('From firebasejsonData--> $jsonData');
+      //     CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+      //     caseDetailsAPIValue.result =
+      //         CaseDetailsResultModel.fromJson(jsonData);
+      //     caseDetailsAPIValue.result?.caseDetails = caseDetails;
+      //     caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+      //         .result?.callDetails
+      //         ?.where((element) => (element['cType'] == 'mobile'))
+      //         .toList();
+      //     Singleton.instance.caseCustomerName =
+      //         caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+      //     var mapValues = caseDetailsAPIValue.result?.toJson();
+      //   });
+      // } else {
+      //   isNoInternetAndServerError = false;
+      //   Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
+      //       APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
+      //       isPop: true);
+      //   if (caseDetailsData[Constants.success] == true) {
+      //     Map<String, dynamic> jsonData = caseDetailsData['data'];
+      //     caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+      //     caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+      //         .result?.callDetails
+      //         ?.where((element) => (element['cType'] == 'mobile'))
+      //         .toList();
+      //     caseDetailsAPIValue.result?.callDetails?.sort(
+      //         (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+      //     Singleton.instance.caseCustomerName =
+      //         caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+      //   } else if (caseDetailsData['statusCode'] == 401 ||
+      //       caseDetailsData['statusCode'] == 502) {
+      //     isNoInternetAndServerError = true;
+      //     noInternetAndServerErrorMsg = caseDetailsData['data'];
+      //   }
+      // }
+      await FirebaseFirestore.instance
+          .collection(Singleton.instance.firebaseDatabaseName)
+          .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+          .collection(Constants.firebaseCase)
+          .doc('${event.paramValues['caseID']}')
+          .get()
+          .then((value) {
+        Map<String, dynamic>? jsonData = value.data();
+        CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+        caseDetailsAPIValue.result = CaseDetailsResultModel.fromJson(jsonData);
+        caseDetailsAPIValue.result?.caseDetails = caseDetails;
+        caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+            .result?.callDetails
+            ?.where((element) => (element['cType'] == 'mobile'))
+            .toList();
+        Singleton.instance.caseCustomerName =
+            caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+      });
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
       Singleton.instance.agrRef =
@@ -268,7 +306,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       // Unreachable Next Action Date is = Current Date + 1 days
       phoneUnreachableNextActionDateController.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
-
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;

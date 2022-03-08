@@ -19,7 +19,7 @@ class CaseDetails {
   dynamic loanAmt;
   String? pincode;
   List<Contact>? contact;
-  List<List<Attr>>? attr;
+  List<Attr>? attr;
   RepaymentInfo? repaymentInfo;
   String? caseId;
   String? agrRef;
@@ -67,9 +67,7 @@ class CaseDetails {
             ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
             .toList(),
         attr: (json['attr'] as List<dynamic>?)
-            ?.map((e) => (e as List<dynamic>)
-                .map((e) => Attr.fromJson(e as Map<String, dynamic>))
-                .toList())
+            ?.map((e) => Attr.fromJson(e as Map<String, dynamic>))
             .toList(),
         repaymentInfo: json['repaymentInfo'] == null
             ? null
@@ -96,7 +94,7 @@ class CaseDetails {
         'loanAmt': loanAmt,
         'pincode': pincode,
         'contact': contact?.map((e) => e.toJson()).toList(),
-        'attr': attr?.map((e) => e.map((e) => e.toJson()).toList()).toList(),
+        'attr': attr?.map((e) => e.toJson()).toList().toList(),
         'repaymentInfo': repaymentInfo?.toJson(),
         'caseId': caseId,
         'agrRef': agrRef,
