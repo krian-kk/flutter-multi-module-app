@@ -138,7 +138,6 @@ class CustomCardList {
                           //   'caseID': resultData[index].caseId!,
                           // }));
                           Result toJson = resultData[index];
-
                           log('Data clicked-> $toJson');
                         }
                       },
