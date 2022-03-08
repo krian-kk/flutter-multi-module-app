@@ -194,24 +194,44 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             //   }
             // });
             //
+            Singleton.instance.isOfflineStorageFeatureEnabled = true;
+            // FirebaseFirestore.instance
+            //     .collection(Singleton.instance.firebaseDatabaseName)
+            //     .doc(
+            //         '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            //     .collection(Constants.firebaseCase)
+            //     .snapshots()
+            //     .forEach((element) {
+            //   starCount == 0;
+            //   resultList.clear();
+            //   for (var docs in element.docs) {
+            //     Map<String, dynamic>? data = docs.data();
+            //     // log('message $data');
+            //     resultList.add(Result.fromJson(data));
+            //     if (Result.fromJson(data).starredCase == true) {
+            //       starCount++;
+            //     }
+            //     debugPrint('resultList.length -. ${resultList.length}');
+            //   }
+            // });
 
-            FirebaseFirestore.instance
+            await FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(
                     '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
                 .collection(Constants.firebaseCase)
-                .snapshots()
-                .forEach((element) {
+                .get()
+                .then((value) {
               starCount == 0;
-              for (var docs in element.docs) {
-                Map<String, dynamic>? data = docs.data();
-                // log('message $data');
+              resultList.clear();
+              value.docs.forEach((element) {
+                Map<String, dynamic>? data = element.data();
                 resultList.add(Result.fromJson(data));
                 if (Result.fromJson(data).starredCase == true) {
                   starCount++;
                 }
                 debugPrint('resultList.length -. ${resultList.length}');
-              }
+              });
             });
             debugPrint('After catch -. ${resultList.length}');
             hasNextPage = false;
