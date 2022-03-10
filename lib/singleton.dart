@@ -4,7 +4,7 @@ import 'package:origa/models/contractor_information_model.dart';
 
 class Singleton {
   //development = 1, uat = 2, production = 3
-  int? serverPointingType = 2;
+  int? serverPointingType = 3;
   String baseUrl = '';
   String? accessToken;
   String? refreshToken;
