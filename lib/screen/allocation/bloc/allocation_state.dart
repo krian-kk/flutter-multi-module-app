@@ -11,6 +11,11 @@ class AllocationLoadedState extends AllocationState {
   AllocationLoadedState({this.successResponse});
 }
 
+class AllocationOfflineState extends AllocationState {
+  final dynamic successResponse;
+  AllocationOfflineState({this.successResponse});
+}
+
 class MapViewState extends AllocationState {}
 
 class MessageState extends AllocationState {}

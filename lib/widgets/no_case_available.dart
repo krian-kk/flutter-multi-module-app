@@ -6,7 +6,8 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class NoCaseAvailble {
-  static Widget buildNoCaseAvailable() {
+  static Widget buildNoCaseAvailable(
+      {String messageContent = Constants.noCasesAvailable}) {
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -23,8 +24,8 @@ class NoCaseAvailble {
             //   width: 30,
             // ),
             Image.asset(ImageResource.noCaseAvailable),
-            const CustomText(
-              Constants.noCasesAvailable,
+            CustomText(
+              messageContent,
               fontSize: FontSize.sixteen,
               color: ColorResource.color000000,
             ),

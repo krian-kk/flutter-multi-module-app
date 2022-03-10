@@ -135,7 +135,7 @@ class CustomCardList {
                         //   }));
                         // }
                         bloc.add(NavigateCaseDetailEvent(paramValues: {
-                          'caseID': resultData[index].sId,
+                          'caseID': resultData[index].caseId,
                           'isOffline': true
                         }));
                       },

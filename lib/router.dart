@@ -178,7 +178,7 @@ class PageBuilder {
 Widget addAuthBloc(BuildContext context, Widget widget) {
   return BlocListener(
     bloc: BlocProvider.of<AuthenticationBloc>(context),
-    listener: (BuildContext context, Object? state) {
+    listener: (BuildContext context, Object? state) async {
       if (state is AuthenticationAuthenticated) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
@@ -193,6 +193,9 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
       }
 
+      if (state is OfflineState) {
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+      }
       if (state is SplashScreenState) {
         Navigator.pushNamed(context, AppRoutes.splashScreen);
       }

@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -511,45 +514,68 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               contactId0: Singleton.instance.contactId_0 ?? '',
             ),
           );
-
-          Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.post,
-            HttpUrl.ptpPostUrl(
-              'ptp',
-              widget.userType,
-            ),
-            requestBodydata: jsonEncode(requestBodyData),
-          );
-          if (postResult[Constants.success]) {
-            widget.bloc.add(
-              ChangeIsSubmitForMyVisitEvent(
-                Constants.ptp,
-              ),
-            );
-            if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(
-                ChangeIsSubmitEvent(),
-              );
-            }
-
-            widget.bloc.add(
-              ChangeHealthStatusEvent(),
-            );
-
-            if (widget.isAutoCalling) {
-              Navigator.pop(widget.paramValue['context']);
-              Navigator.pop(widget.paramValue['context']);
-              Singleton.instance.startCalling = false;
-              if (!stopValue) {
-                widget.allocationBloc!.add(StartCallingEvent(
-                  customerIndex: widget.paramValue['customerIndex'] + 1,
-                  phoneIndex: 0,
-                  isIncreaseCount: true,
-                ));
+          if (ConnectivityResult.none ==
+              await Connectivity().checkConnectivity()) {
+          /*  FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName)
+                .doc(
+                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+                .set({
+              "${Constants.firebaseEvent}": {
+                "${widget.caseId}": jsonEncode(requestBodyData)
               }
-            } else {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              Navigator.pop(context);
+            });*/
+            FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName)
+                .doc(
+                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+                .collection(Constants.firebaseEvent)
+                .doc(widget.callId)
+                .set(requestBodyData.toJson())
+                .then((value) {
+              AppUtils.showToast("Submitted successfully");
+            });
+          } else {
+            Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              APIRequestType.post,
+              HttpUrl.ptpPostUrl(
+                'ptp',
+                widget.userType,
+              ),
+              requestBodydata: jsonEncode(requestBodyData),
+            );
+            if (postResult[Constants.success]) {
+              widget.bloc.add(
+                ChangeIsSubmitForMyVisitEvent(
+                  Constants.ptp,
+                ),
+              );
+              if (!(widget.userType == Constants.fieldagent &&
+                  widget.isCall!)) {
+                widget.bloc.add(
+                  ChangeIsSubmitEvent(),
+                );
+              }
+
+              widget.bloc.add(
+                ChangeHealthStatusEvent(),
+              );
+
+              if (widget.isAutoCalling) {
+                Navigator.pop(widget.paramValue['context']);
+                Navigator.pop(widget.paramValue['context']);
+                Singleton.instance.startCalling = false;
+                if (!stopValue) {
+                  widget.allocationBloc!.add(StartCallingEvent(
+                    customerIndex: widget.paramValue['customerIndex'] + 1,
+                    phoneIndex: 0,
+                    isIncreaseCount: true,
+                  ));
+                }
+              } else {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                Navigator.pop(context);
+              }
             }
           }
         }

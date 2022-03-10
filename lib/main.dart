@@ -139,38 +139,6 @@ class _MyAppState extends State<MyApp> {
                     alignment: Alignment.center,
                   );
                 } else {
-                  //md5.convert(utf8.encode("CDE_26")).toString()
-                  // return Expanded(
-                  //   child: StreamBuilder(
-                  //       stream: FirebaseFirestore.instance
-                  //           .collection(
-                  //               Singleton.instance.firebaseDatabaseName!)
-                  //           .doc('${md5.convert(utf8.encode("CDE_26"))}')
-                  //           .snapshots(),
-                  //       builder: (context, asyncSnapshot) {
-                  //         return Column(
-                  //           children: [
-                  //             Padding(
-                  //               padding: const EdgeInsets.only(
-                  //                   top: 50, right: 20, left: 20),
-                  //               child: NoCaseAvailble.buildNoCaseAvailable(),
-                  //             ),
-                  //           ],
-                  //         );
-                  //       }),
-                  //   // child: NoCaseAvailble.buildNoCaseAvailable(),
-                  // );
-                  // return Container(
-                  //   color: Colors.white,
-                  //   child: Text(
-                  //     "Document does not exist",
-                  //     style: TextStyle(
-                  //       color: Colors.blue,
-                  //       fontSize: 17,
-                  //     ),
-                  //   ),
-                  //   alignment: Alignment.center,
-                  // );
                   return addAuthBloc(
                     context,
                     const SplashScreen(),
