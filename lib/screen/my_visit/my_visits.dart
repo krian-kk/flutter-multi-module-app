@@ -649,19 +649,57 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       ),
                                       Row(
                                         children: [
-                                          CustomText(
-                                            caseLists.cases![index]
-                                                        .followUpDate !=
-                                                    '-'
-                                                ? DateFormateUtils
-                                                    .followUpDateFormate(
-                                                        caseLists.cases![index]
-                                                            .followUpDate!)
-                                                : '-',
-                                            fontSize: FontSize.fourteen,
-                                            color: ColorResource.color101010,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                          if (Singleton.instance.usertype ==
+                                              Constants.fieldagent)
+                                            CustomText(
+                                              caseLists.cases![index]
+                                                              .fieldfollowUpDate !=
+                                                          null &&
+                                                      caseLists.cases![index]
+                                                              .fieldfollowUpDate !=
+                                                          '-'
+                                                  ? DateFormateUtils
+                                                      .followUpDateFormate(
+                                                          caseLists
+                                                              .cases![index]
+                                                              .fieldfollowUpDate!)
+                                                  : '-',
+                                              fontSize: FontSize.fourteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          if (Singleton.instance.usertype ==
+                                              Constants.telecaller)
+                                            CustomText(
+                                              caseLists.cases![index]
+                                                              .followUpDate !=
+                                                          null &&
+                                                      caseLists.cases![index]
+                                                              .followUpDate !=
+                                                          '-'
+                                                  ? DateFormateUtils
+                                                      .followUpDateFormate(
+                                                          caseLists
+                                                              .cases![index]
+                                                              .followUpDate!)
+                                                  : '-',
+                                              fontSize: FontSize.fourteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          // CustomText(
+                                          //   caseLists.cases![index]
+                                          //               .followUpDate !=
+                                          //           '-'
+                                          //       ? DateFormateUtils
+                                          //           .followUpDateFormate(
+                                          //               caseLists.cases![index]
+                                          //                   .followUpDate!)
+                                          //       : '-',
+                                          //   fontSize: FontSize.fourteen,
+                                          //   color: ColorResource.color101010,
+                                          //   fontWeight: FontWeight.w700,
+                                          // ),
                                           const Spacer(),
                                           Row(
                                             children: [

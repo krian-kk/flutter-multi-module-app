@@ -318,24 +318,63 @@ class CustomCardList {
                                   ),
                                   Row(
                                     children: [
-                                      CustomText(
-                                        resultData[index].fieldfollowUpDate !=
-                                                null
-                                            ? DateFormateUtils
-                                                .followUpDateFormate(
-                                                    resultData[index]
-                                                        .fieldfollowUpDate!)
-                                            : resultData[index].followUpDate !=
-                                                    null
-                                                ? DateFormateUtils
-                                                    .followUpDateFormate(
-                                                        resultData[index]
-                                                            .followUpDate!)
-                                                : '-',
-                                        fontSize: FontSize.fourteen,
-                                        color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                      if (Singleton.instance.usertype ==
+                                          Constants.fieldagent)
+                                        // resultData[index]
+                                        //             .collSubStatus!
+                                        //             .toLowerCase() ==
+                                        //         "new"
+                                        //     ? CustomText(
+                                        //         DateFormateUtils
+                                        //             .followUpDateFormate(
+                                        //                 DateTime.now()
+                                        //                     .toString()),
+                                        //         fontSize: FontSize.fourteen,
+                                        //         color:
+                                        //             ColorResource.color101010,
+                                        //         fontWeight: FontWeight.w700,
+                                        //       )
+                                        //     :
+                                        CustomText(
+                                          resultData[index].fieldfollowUpDate !=
+                                                  null
+                                              ? DateFormateUtils
+                                                  .followUpDateFormate(
+                                                      resultData[index]
+                                                          .fieldfollowUpDate!)
+                                              : '-',
+                                          fontSize: FontSize.fourteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      if (Singleton.instance.usertype ==
+                                          Constants.telecaller)
+                                        // resultData[index]
+                                        //             .telSubStatus!
+                                        //             .toLowerCase() ==
+                                        //         "new"
+                                        //     ? CustomText(
+                                        //         DateFormateUtils
+                                        //             .followUpDateFormate(
+                                        //                 DateTime.now()
+                                        //                     .toString()),
+                                        //         fontSize: FontSize.fourteen,
+                                        //         color:
+                                        //             ColorResource.color101010,
+                                        //         fontWeight: FontWeight.w700,
+                                        //       )
+                                        //     :
+                                        CustomText(
+                                          resultData[index].followUpDate != null
+                                              ? DateFormateUtils
+                                                  .followUpDateFormate(
+                                                      resultData[index]
+                                                          .followUpDate!)
+                                              : '-',
+                                          fontSize: FontSize.fourteen,
+                                          color: ColorResource.color101010,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       const Spacer(),
                                       Row(
                                         children: [

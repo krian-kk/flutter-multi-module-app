@@ -91,21 +91,29 @@ class Result {
     caseId = json['caseId'];
     agrRef = json['agrRef'] ?? '-';
     bankName = json['bankName'] ?? '-';
-    fieldfollowUpDate = json['fieldfollowUpDate'];
+
     sortId = json['sortId'];
     // followUpDate = json['followUpDate'];
     // Here we will check which user logged in then only set followUpDate
     if (Singleton.instance.usertype == Constants.fieldagent) {
       if (json['collSubStatus'] != null &&
           json['collSubStatus'].toString().toLowerCase() == 'new') {
-        followUpDate = DateTime.now().toString();
+        if (json['fieldfollowUpDate'] != null) {
+          fieldfollowUpDate = DateTime.now().toString();
+        } else {
+          fieldfollowUpDate = json['fieldfollowUpDate'];
+        }
       } else {
-        followUpDate = json['followUpDate'];
+        fieldfollowUpDate = json['fieldfollowUpDate'];
       }
     } else {
       if (json['telSubStatus'] != null &&
           json['telSubStatus'].toString().toLowerCase() == 'new') {
-        followUpDate = DateTime.now().toString();
+        if (json['followUpDate'] != null) {
+          followUpDate = DateTime.now().toString();
+        } else {
+          followUpDate = json['followUpDate'];
+        }
       } else {
         followUpDate = json['followUpDate'];
       }

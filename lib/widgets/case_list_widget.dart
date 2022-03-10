@@ -357,11 +357,9 @@ class CaseLists {
                                           if (Singleton.instance.usertype ==
                                               Constants.fieldagent)
                                             listData.result!.cases![index]
-                                                            .collSubStatus ==
-                                                        "new" &&
-                                                    Singleton.instance
-                                                            .usertype ==
-                                                        Constants.fieldagent
+                                                        .collSubStatus!
+                                                        .toLowerCase() ==
+                                                    "new"
                                                 ? CustomText(
                                                     DateFormateUtils
                                                         .followUpDateFormate(
@@ -376,7 +374,7 @@ class CaseLists {
                                                     listData
                                                                 .result!
                                                                 .cases![index]
-                                                                .followUpDate !=
+                                                                .fieldfollowUpDate !=
                                                             '-'
                                                         ? DateFormateUtils
                                                             .followUpDateFormate(
@@ -384,7 +382,7 @@ class CaseLists {
                                                                     .result!
                                                                     .cases![
                                                                         index]
-                                                                    .followUpDate!)
+                                                                    .fieldfollowUpDate!)
                                                         : '-',
                                                     fontSize: FontSize.fourteen,
                                                     color: ColorResource
@@ -395,11 +393,9 @@ class CaseLists {
                                           if (Singleton.instance.usertype ==
                                               Constants.telecaller)
                                             listData.result!.cases![index]
-                                                            .telSubStatus ==
-                                                        "new" &&
-                                                    Singleton.instance
-                                                            .usertype ==
-                                                        Constants.telecaller
+                                                        .telSubStatus!
+                                                        .toLowerCase() ==
+                                                    "new"
                                                 ? CustomText(
                                                     DateFormateUtils
                                                         .followUpDateFormate(
