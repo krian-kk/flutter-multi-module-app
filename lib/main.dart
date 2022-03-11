@@ -79,24 +79,24 @@ class _MyAppState extends State<MyApp> {
       minimumFetchInterval: const Duration(seconds: 5),
     ));
     //development = 1, uat = 2, production = 3
-    try {
-      HttpUrl.url = Singleton.instance.serverPointingType == 1
-          ? HttpUrl.url =
-              remoteConfig.getString('v1_development_mobile_app_baseUrl')
-          : Singleton.instance.serverPointingType == 2
-              ? HttpUrl.url =
-                  remoteConfig.getString('v1_uat_mobile_app_baseUrl')
-              : HttpUrl.url =
-                  remoteConfig.getString('v1_production_mobile_app_baseUrl');
-      // debugPrint('URL -> ${HttpUrl.url}');
-      // var userID = md5.convert(utf8.encode("CDE_26")).toString();
-      // debugPrint('user ID--> $userID');
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
-    } catch (e) {
-      debugPrint('Catch-> $e');
-      setupRemoteConfig();
-    }
+    // try {
+    //   HttpUrl.url = Singleton.instance.serverPointingType == 1
+    //       ? HttpUrl.url =
+    //           remoteConfig.getString('v1_development_mobile_app_baseUrl')
+    //       : Singleton.instance.serverPointingType == 2
+    //           ? HttpUrl.url =
+    //               remoteConfig.getString('v1_uat_mobile_app_baseUrl')
+    //           : HttpUrl.url =
+    //               remoteConfig.getString('v1_production_mobile_app_baseUrl');
+    //   // debugPrint('URL -> ${HttpUrl.url}');
+    //   // var userID = md5.convert(utf8.encode("CDE_26")).toString();
+    //   // debugPrint('user ID--> $userID');
+    //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+    //   Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
+    // } catch (e) {
+    //   debugPrint('Catch-> $e');
+    //   setupRemoteConfig();
+    // }
     return remoteConfig;
   }
 

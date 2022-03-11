@@ -530,17 +530,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               contactId0: Singleton.instance.contactId_0 ?? '',
             ),
           );
+
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-          /*  FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(
-                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-                .set({
-              "${Constants.firebaseEvent}": {
-                "${widget.caseId}": jsonEncode(requestBodyData)
-              }
-            });*/
             FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(
@@ -569,7 +561,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               if (!(widget.userType == Constants.fieldagent &&
                   widget.isCall!)) {
                 widget.bloc.add(
-                  ChangeIsSubmitEvent(),
+                  ChangeIsSubmitEvent(
+                    selectedClipValue: Constants.ptp,
+                    chageFollowUpDate: ptpDateControlller.text,
+                  ),
                 );
               }
 
@@ -577,24 +572,25 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 ChangeHealthStatusEvent(),
               );
 
-            if (widget.isAutoCalling) {
-              Navigator.pop(widget.paramValue['context']);
-              Navigator.pop(widget.paramValue['context']);
-              Singleton.instance.startCalling = false;
-              if (!stopValue) {
-                widget.allocationBloc!.add(StartCallingEvent(
-                  customerIndex: widget.paramValue['customerIndex'] + 1,
-                  phoneIndex: 0,
-                  isIncreaseCount: true,
-                ));
+              if (widget.isAutoCalling) {
+                Navigator.pop(widget.paramValue['context']);
+                Navigator.pop(widget.paramValue['context']);
+                Singleton.instance.startCalling = false;
+                if (!stopValue) {
+                  widget.allocationBloc!.add(StartCallingEvent(
+                    customerIndex: widget.paramValue['customerIndex'] + 1,
+                    phoneIndex: 0,
+                    isIncreaseCount: true,
+                  ));
+                } else {
+                  widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                    customerIndex: widget.paramValue['customerIndex'],
+                  ));
+                }
               } else {
-                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                  customerIndex: widget.paramValue['customerIndex'],
-                ));
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                Navigator.pop(context);
               }
-            } else {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              Navigator.pop(context);
             }
           }
         }
