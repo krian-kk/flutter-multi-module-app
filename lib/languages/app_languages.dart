@@ -552,4 +552,10 @@ abstract class Languages {
   String get logiginDeifferentFailMessage;
 
   String get logiginDeifferentSucessMessage;
+
+  String get disputeWithCharges;
+
+  String get loanCleared;
+
+  String get dropDownDispute;
 }
