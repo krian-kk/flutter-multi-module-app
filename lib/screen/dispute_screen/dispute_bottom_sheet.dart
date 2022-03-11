@@ -162,7 +162,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CustomText(
-                                    Languages.of(context)!.nextActionTime,
+                                    Languages.of(context)!.nextActionDate,
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w400,
                                     color: ColorResource.color666666,
