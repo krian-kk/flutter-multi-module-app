@@ -37,6 +37,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/language_to_constant_convert.dart';
+
 class CustomCollectionsBottomSheet extends StatefulWidget {
   const CustomCollectionsBottomSheet(
     this.cardTitle, {
@@ -79,7 +81,6 @@ class _CustomCollectionsBottomSheetState
   late TextEditingController dateControlller;
   late TextEditingController chequeControlller;
   late TextEditingController remarksControlller;
-  String selectedDate = '';
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -115,9 +116,11 @@ class _CustomCollectionsBottomSheetState
     chequeFocusNode = FocusNode();
     remarksFocusNode = FocusNode();
     setState(() {
-      selectedDate = DateTime.now().toString();
+      //selectedDate = DateTime.now().toString();
 
       dateControlller.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      widget.bloc.add(
+          ChangeFollowUpDateEvent(followUpDate: DateTime.now().toString()));
     });
   }
 
@@ -315,12 +318,19 @@ class _CustomCollectionsBottomSheetState
                                             isReadOnly: true,
                                             onTapped: () =>
                                                 PickDateAndTimeUtils.pickDate(
-                                                    context, (newDate) {
-                                              if (newDate != null) {
+                                                    context,
+                                                    (newDate, followUpDate) {
+                                              if (newDate != null &&
+                                                  followUpDate != null) {
                                                 setState(() {
                                                   dateControlller.text =
                                                       newDate;
                                                 });
+                                                widget.bloc.add(
+                                                  ChangeFollowUpDateEvent(
+                                                    followUpDate: followUpDate,
+                                                  ),
+                                                );
                                               }
                                             }),
                                             suffixWidget: SvgPicture.asset(
@@ -543,9 +553,10 @@ class _CustomCollectionsBottomSheetState
                 eventAttr: EventAttr(
                   amountCollected: amountCollectedControlller.text,
                   chequeRefNo: chequeControlller.text,
-                  date: selectedDate,
+                  date: dateControlller.text,
                   remarks: remarksControlller.text,
-                  mode: selectedPaymentModeButton,
+                  mode: ConvertString.convertLanguageToConstant(
+                      selectedPaymentModeButton, context),
                   customerName: widget.custName!,
                   followUpPriority: 'REVIEW',
                   imageLocation: [''],
@@ -568,7 +579,6 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
-
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -587,8 +597,44 @@ class _CustomCollectionsBottomSheetState
             );
 
             if (postResult[Constants.success]) {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              Navigator.pop(context);
+              if (postResult['data']['result']['error'] != null) {
+                setState(() => isSubmit = true);
+                AppUtils.showErrorToast(postResult['data']['result']['error']);
+              } else {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                widget.bloc.add(
+                  ChangeHealthStatusEvent(),
+                );
+                // Send SMS Notification
+                if (Singleton
+                        .instance.contractorInformations!.result!.sendSms! &&
+                    Singleton.instance.usertype == Constants.fieldagent) {
+                  var requestBodyData = ReceiptSendSMS(
+                    agrRef: Singleton.instance.agrRef,
+                    agentRef: Singleton.instance.agentRef,
+                    borrowerMobile: Singleton.instance.customerContactNo ?? "0",
+                    type: Constants.receiptAcknowledgementType,
+                    receiptAmount: int.parse(amountCollectedControlller.text),
+                    receiptDate: dateControlller.text,
+                    paymentMode: selectedPaymentModeButton,
+                    messageBody: 'message',
+                  );
+                  Map<String, dynamic> postResult =
+                      await APIRepository.apiRequest(
+                    APIRequestType.post,
+                    HttpUrl.sendSMSurl,
+                    requestBodydata: jsonEncode(requestBodyData),
+                  );
+                  if (postResult[Constants.success]) {
+                    AppUtils.showToast(
+                      Languages.of(context)!.successfullySMSsend,
+                    );
+                  }
+                } else {
+                  AppUtils.showErrorToast(Languages.of(context)!.sendSMSerror);
+                }
+                Navigator.pop(context);
+              }
             }
           } else {
             setState(() => isSubmit = false);
@@ -628,9 +674,10 @@ class _CustomCollectionsBottomSheetState
                 eventAttr: EventAttr(
                   amountCollected: amountCollectedControlller.text,
                   chequeRefNo: chequeControlller.text,
-                  date: selectedDate,
+                  date: dateControlller.text,
                   remarks: remarksControlller.text,
-                  mode: selectedPaymentModeButton,
+                  mode: ConvertString.convertLanguageToConstant(
+                      selectedPaymentModeButton, context),
                   customerName: widget.custName!,
                   followUpPriority: 'REVIEW',
                   imageLocation: [''],
@@ -653,7 +700,6 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
-
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -667,7 +713,7 @@ class _CustomCollectionsBottomSheetState
             setState(() => isSubmit = true);
             DialogUtils.showDialog(
               buildContext: context,
-              title: Constants.reciptsAlertMesg,
+              title: Languages.of(context)!.reciptsAlertMesg,
               description: '',
               okBtnText: Languages.of(context)!.submit.toUpperCase(),
               cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
@@ -675,6 +721,7 @@ class _CustomCollectionsBottomSheetState
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);
+                debugPrint(json.encode(postdata));
                 Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                   APIRequestType.upload,
@@ -682,6 +729,7 @@ class _CustomCollectionsBottomSheetState
                   formDatas: FormData.fromMap(postdata),
                 );
 
+                //postResult[success]
                 if (postResult[Constants.success]) {
                   widget.bloc.add(
                     ChangeIsSubmitForMyVisitEvent(
@@ -690,12 +738,13 @@ class _CustomCollectionsBottomSheetState
                           double.parse(amountCollectedControlller.text),
                     ),
                   );
-                  if (!(widget.userType == Constants.fieldagent &&
-                      widget.isCall!)) {
-                    widget.bloc.add(
-                      ChangeIsSubmitEvent(),
-                    );
-                  }
+                  // if (!(widget.userType == Constants.fieldagent &&
+                  //     widget.isCall!)) {
+                  //   widget.bloc.add(
+                  //     ChangeIsSubmitEvent(
+                  //         selectedClipValue: Constants.receiptCaseStatus),
+                  //   );
+                  // }
 
                   if (widget.isAutoCalling) {
                     Navigator.pop(widget.paramValue['context']);
@@ -703,48 +752,60 @@ class _CustomCollectionsBottomSheetState
                     Singleton.instance.startCalling = false;
                     if (!stopValue) {
                       widget.allocationBloc!.add(StartCallingEvent(
-                        customerIndex: widget.paramValue['customerIndex'] + 1,
-                        phoneIndex: 0,
+                        customerIndex: widget.paramValue['customerIndex'] +
+                            1, // CASE DETAILS
+                        phoneIndex: 0, // LIST OF PHONE NUMBER
                         isIncreaseCount: true,
+                      ));
+                    } else {
+                      widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                        customerIndex: widget.paramValue['customerIndex'],
                       ));
                     }
                   } else {
-                    AppUtils.topSnackBar(
-                        context, "Event updated successfully.");
-                    Navigator.pop(context);
-                  }
-
-                  widget.bloc.add(
-                    ChangeHealthStatusEvent(),
-                  );
-
-                  if (Singleton
-                          .instance.contractorInformations!.result!.sendSms! &&
-                      Singleton.instance.usertype == Constants.fieldagent) {
-                    var requestBodyData = ReceiptSendSMS(
-                      agrRef: Singleton.instance.agrRef,
-                      agentRef: Singleton.instance.agentRef,
-                      borrowerMobile:
-                          Singleton.instance.customerContactNo ?? "0",
-                      type: Constants.receiptAcknowledgementType,
-                      receiptAmount: int.parse(amountCollectedControlller.text),
-                      receiptDate: selectedDate,
-                      paymentMode: selectedPaymentModeButton,
-                      messageBody: 'message',
-                    );
-                    Map<String, dynamic> postResult =
-                        await APIRepository.apiRequest(
-                      APIRequestType.post,
-                      HttpUrl.sendSMSurl,
-                      requestBodydata: jsonEncode(requestBodyData),
-                    );
-                    if (postResult[Constants.success]) {
-                      AppUtils.showToast(
-                        Languages.of(context)!.successfullySMSsend,
+                    if (postResult['data']['result']['error'] != null) {
+                      setState(() => isSubmit = true);
+                      AppUtils.showErrorToast(
+                          postResult['data']['result']['error']);
+                    } else {
+                      AppUtils.topSnackBar(
+                          context, Constants.successfullySubmitted);
+                      widget.bloc.add(
+                        ChangeHealthStatusEvent(),
                       );
+                      // Send SMS Notification
+                      if (Singleton.instance.contractorInformations!.result!
+                              .sendSms! &&
+                          Singleton.instance.usertype == Constants.fieldagent) {
+                        var requestBodyData = ReceiptSendSMS(
+                          agrRef: Singleton.instance.agrRef,
+                          agentRef: Singleton.instance.agentRef,
+                          borrowerMobile:
+                              Singleton.instance.customerContactNo ?? "0",
+                          type: Constants.receiptAcknowledgementType,
+                          receiptAmount:
+                              int.parse(amountCollectedControlller.text),
+                          receiptDate: dateControlller.text,
+                          paymentMode: selectedPaymentModeButton,
+                          messageBody: 'message',
+                        );
+                        Map<String, dynamic> postResult =
+                            await APIRepository.apiRequest(
+                          APIRequestType.post,
+                          HttpUrl.sendSMSurl,
+                          requestBodydata: jsonEncode(requestBodyData),
+                        );
+                        if (postResult[Constants.success]) {
+                          AppUtils.showToast(
+                            Languages.of(context)!.successfullySMSsend,
+                          );
+                        }
+                      } else {
+                        AppUtils.showErrorToast(
+                            Languages.of(context)!.sendSMSerror);
+                      }
+                      Navigator.pop(context);
                     }
-                  } else {
-                    AppUtils.showErrorToast("SMS is not activated");
                   }
                 } else {
                   setState(() => isSubmit = true);

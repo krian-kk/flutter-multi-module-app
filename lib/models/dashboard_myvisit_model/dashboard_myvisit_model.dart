@@ -1,3 +1,6 @@
+import '../../singleton.dart';
+import '../../utils/constants.dart';
+
 class MyVisitsCaseModel {
   int? status;
   String? message;
@@ -147,8 +150,42 @@ class Cases {
     collSubStatus = json['collSubStatus'];
     fieldfollowUpPriority = json['fieldfollowUpPriority'];
     telSubStatus = json['telSubStatus'];
-    followUpDate = json['followUpDate'] ?? '-';
-    fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
+    // followUpDate = json['followUpDate'] ?? '-';
+    // Here we will check which user logged in then only set followUpDate
+    // if (Singleton.instance.usertype == Constants.fieldagent) {
+    //   if (json['collSubStatus'] != null &&
+    //       json['collSubStatus'].toString().toLowerCase() == 'new') {
+    //     followUpDate = DateTime.now().toString();
+    //   } else {
+    //     followUpDate = json['followUpDate'] ?? '-';
+    //   }
+    // }
+    if (Singleton.instance.usertype == Constants.telecaller) {
+      if (json['telSubStatus'] != null &&
+          json['telSubStatus'].toString().toLowerCase() == 'new') {
+        if (json['followUpDate'] != null) {
+          followUpDate = DateTime.now().toString();
+        } else {
+          followUpDate = json['followUpDate'] ?? '-';
+        }
+      } else {
+        followUpDate = json['followUpDate'] ?? '-';
+      }
+    }
+
+    if (Singleton.instance.usertype == Constants.fieldagent) {
+      if (json['collSubStatus'] != null &&
+          json['collSubStatus'].toString().toLowerCase() == 'new') {
+        if (json['fieldfollowUpDate'] != null) {
+          fieldfollowUpDate = DateTime.now().toString();
+        } else {
+          fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
+        }
+      } else {
+        fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
+      }
+    }
+
     bankName = json['bankName'];
     aRef = json['aRef'];
     if (json['contact'] != null) {

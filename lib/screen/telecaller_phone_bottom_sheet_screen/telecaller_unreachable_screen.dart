@@ -93,8 +93,8 @@ class _TelecallerPhoneUnreachableScreenState
                             isReadOnly: true,
                             validationRules: const ['required'],
                             onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate) {
-                              if (newDate != null) {
+                                context, (newDate, followUpDate) {
+                              if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
                                       .bloc

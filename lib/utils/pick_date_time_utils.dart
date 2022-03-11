@@ -4,7 +4,8 @@ import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class PickDateAndTimeUtils {
-  static Future pickDate(BuildContext context, OnChange function) async {
+  static Future pickDate(
+      BuildContext context, OnChangeForPickDate function) async {
     final newDate = await showDatePicker(
         context: context,
         initialDatePickerMode: DatePickerMode.day,
@@ -15,8 +16,11 @@ class PickDateAndTimeUtils {
           return Theme(
             data: Theme.of(context).copyWith(
               textTheme: const TextTheme(
-                subtitle1: TextStyle(fontSize: 10.0),
-                headline1: TextStyle(fontSize: 8.0),
+                subtitle1: TextStyle(
+                  fontSize: 25.0,
+                  color: ColorResource.color000000,
+                ),
+                headline1: TextStyle(fontSize: 20.0),
               ),
               colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
@@ -35,7 +39,7 @@ class PickDateAndTimeUtils {
 
     if (newDate == null) return null;
     String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
-    function(formattedDate);
+    function(formattedDate, newDate.toString());
   }
 
   static Future pickTime(BuildContext context, OnChange function) async {
@@ -65,7 +69,9 @@ class PickDateAndTimeUtils {
         });
     if (newTime == null) return;
 
-    final time = newTime.format(context).toString();
-    function(time);
+    // final time = newTime.format(context).toString();
+    final hours = newTime.hour.toString().padLeft(2, '0');
+    final minites = newTime.minute.toString().padLeft(2, '0');
+    function('$hours:$minites');
   }
 }

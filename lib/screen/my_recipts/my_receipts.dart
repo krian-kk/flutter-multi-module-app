@@ -18,6 +18,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
+import '../../widgets/case_status_widget.dart';
+
 class MyReceiptsBottomSheet extends StatefulWidget {
   final DashboardBloc bloc;
   const MyReceiptsBottomSheet(this.bloc, {Key? key}) : super(key: key);
@@ -493,60 +495,43 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                           ],
                                         ),
                                       ),
+                                      if (Singleton.instance.usertype ==
+                                          Constants.fieldagent)
+                                        caseLists.cases![index].collSubStatus ==
+                                                "new"
+                                            ? CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text:
+                                                    Languages.of(context)!.new_,
+                                                width: 55,
+                                              )
+                                            : CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text: caseLists.cases![index]
+                                                        .collSubStatus ??
+                                                    '',
+                                              ),
+                                      // : const SizedBox(),
+                                      if (Singleton.instance.usertype ==
+                                          Constants.telecaller)
+                                        caseLists.cases![index].telSubStatus ==
+                                                "new"
+                                            ? CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text:
+                                                    Languages.of(context)!.new_,
+                                                width: 55,
+                                              )
+                                            : CaseStatusWidget.satusTextWidget(
+                                                context,
+                                                text: caseLists.cases![index]
+                                                        .telSubStatus ??
+                                                    '',
+                                              ),
+                                      // : const SizedBox(),
                                       // const Spacer(),
                                       // if (resultValue[index].collSubStatus ==
                                       //     'new')
-                                      caseLists.cases![index].collSubStatus ==
-                                                  "new" &&
-                                              Singleton.instance.usertype ==
-                                                  Constants.fieldagent
-                                          ? Container(
-                                              width: 55,
-                                              height: 19,
-                                              // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorD5344C,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              child: Center(
-                                                child: CustomText(
-                                                  Languages.of(context)!.new_,
-                                                  color:
-                                                      ColorResource.colorffffff,
-                                                  fontSize: FontSize.ten,
-                                                  lineHeight: 1,
-                                                ),
-                                              ),
-                                            )
-                                          : caseLists.cases![index]
-                                                          .telSubStatus ==
-                                                      "new" &&
-                                                  Singleton.instance.usertype ==
-                                                      Constants.telecaller
-                                              ? Container(
-                                                  width: 55,
-                                                  height: 19,
-                                                  // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                                  decoration: BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorD5344C,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30)),
-                                                  child: Center(
-                                                    child: CustomText(
-                                                      Languages.of(context)!
-                                                          .new_,
-                                                      color: ColorResource
-                                                          .colorffffff,
-                                                      fontSize: FontSize.ten,
-                                                      lineHeight: 1,
-                                                    ),
-                                                  ),
-                                                )
-                                              : const SizedBox(),
                                     ],
                                   ),
                                 ),
@@ -635,19 +620,57 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                       ),
                                       Row(
                                         children: [
-                                          CustomText(
-                                            caseLists.cases![index]
-                                                        .followUpDate !=
-                                                    '-'
-                                                ? DateFormateUtils
-                                                    .followUpDateFormate(
-                                                        caseLists.cases![index]
-                                                            .followUpDate!)
-                                                : '-',
-                                            fontSize: FontSize.fourteen,
-                                            color: ColorResource.color101010,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                          if (Singleton.instance.usertype ==
+                                              Constants.fieldagent)
+                                            CustomText(
+                                              caseLists.cases![index]
+                                                              .fieldfollowUpDate !=
+                                                          null &&
+                                                      caseLists.cases![index]
+                                                              .fieldfollowUpDate !=
+                                                          '-'
+                                                  ? DateFormateUtils
+                                                      .followUpDateFormate(
+                                                          caseLists
+                                                              .cases![index]
+                                                              .fieldfollowUpDate!)
+                                                  : '-',
+                                              fontSize: FontSize.fourteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          if (Singleton.instance.usertype ==
+                                              Constants.telecaller)
+                                            CustomText(
+                                              caseLists.cases![index]
+                                                              .followUpDate !=
+                                                          null &&
+                                                      caseLists.cases![index]
+                                                              .followUpDate !=
+                                                          '-'
+                                                  ? DateFormateUtils
+                                                      .followUpDateFormate(
+                                                          caseLists
+                                                              .cases![index]
+                                                              .followUpDate!)
+                                                  : '-',
+                                              fontSize: FontSize.fourteen,
+                                              color: ColorResource.color101010,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          // CustomText(
+                                          //   caseLists.cases![index]
+                                          //               .followUpDate !=
+                                          //           '-'
+                                          //       ? DateFormateUtils
+                                          //           .followUpDateFormate(
+                                          //               caseLists.cases![index]
+                                          //                   .followUpDate!)
+                                          //       : '-',
+                                          //   fontSize: FontSize.fourteen,
+                                          //   color: ColorResource.color101010,
+                                          //   fontWeight: FontWeight.w700,
+                                          // ),
                                           const Spacer(),
                                           Row(
                                             children: [

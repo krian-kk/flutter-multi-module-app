@@ -5,6 +5,8 @@ class RetrunValueModel {
   late String eventType;
   late dynamic returnCaseAmount;
   late dynamic returnCollectionAmount;
+  late String selectedClipValue;
+  late String? followUpDate;
   RetrunValueModel(
     this.isSubmit,
     this.caseId,
@@ -12,6 +14,8 @@ class RetrunValueModel {
     this.eventType,
     this.returnCaseAmount,
     this.returnCollectionAmount,
+    this.selectedClipValue,
+    this.followUpDate,
   );
   RetrunValueModel.fromJson(Map<String, dynamic> json) {
     isSubmit = json['isSubmit'];
@@ -20,6 +24,8 @@ class RetrunValueModel {
     eventType = json['eventType'];
     returnCaseAmount = json['returnCaseAmount'];
     returnCollectionAmount = json['returnCollectionAmount'];
+    selectedClipValue = json['selectedClipValue'];
+    followUpDate = json['followUpDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +36,8 @@ class RetrunValueModel {
     data['eventType'] = eventType;
     data['returnCaseAmount'] = returnCaseAmount;
     data['returnCollectionAmount'] = returnCollectionAmount;
+    data['selectedClipValue'] = selectedClipValue;
+    data['followUpDate'] = followUpDate;
     return data;
   }
 }

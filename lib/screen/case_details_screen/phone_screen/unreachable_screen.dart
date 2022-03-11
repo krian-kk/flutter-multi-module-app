@@ -39,6 +39,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.add(ChangeFollowUpDateEvent(
+        followUpDate: DateTime.now().add(const Duration(days: 1)).toString()));
   }
 
   @override
@@ -97,14 +99,16 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             isReadOnly: true,
                             validationRules: const ['required'],
                             onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate) {
-                              if (newDate != null) {
+                                context, (newDate, followUpDate) {
+                              if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
                                       .bloc
                                       .phoneUnreachableNextActionDateController
                                       .text = newDate;
                                 });
+                                widget.bloc.add(ChangeFollowUpDateEvent(
+                                    followUpDate: followUpDate));
                               }
                             }),
                             suffixWidget: SvgPicture.asset(

@@ -33,6 +33,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/language_to_constant_convert.dart';
+
 class CustomPtpBottomSheet extends StatefulWidget {
   const CustomPtpBottomSheet(
     this.cardTitle, {
@@ -218,12 +220,18 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                             validationRules: const ['required'],
                                             onTapped: () =>
                                                 PickDateAndTimeUtils.pickDate(
-                                                    context, (newDate) {
-                                              if (newDate != null) {
+                                                    context,
+                                                    (newDate, followUpDate) {
+                                              if (newDate != null &&
+                                                  followUpDate != null) {
                                                 setState(() {
                                                   ptpDateControlller.text =
                                                       newDate;
                                                 });
+                                                widget.bloc.add(
+                                                    ChangeFollowUpDateEvent(
+                                                        followUpDate:
+                                                            followUpDate));
                                               }
                                             }),
                                             suffixWidget: SvgPicture.asset(
@@ -293,8 +301,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   keyBoardType: TextInputType.number,
                                   validationRules: const ['required'],
                                   isLabel: true,
+                                  isNumberOnly: true,
                                   onEditing: () {
                                     ptpReferenceFocusNode.requestFocus();
+                                    _formKey.currentState!.validate();
                                   },
                                 )),
                                 const SizedBox(height: 15),
@@ -314,26 +324,31 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 const SizedBox(height: 21),
                                 CustomReadOnlyTextField(
-                                  Languages.of(context)!.reference,
-                                  referenceControlller,
-                                  focusNode: ptpReferenceFocusNode,
-                                  isLabel: true,
-                                  validatorCallBack: () {},
-                                  onEditing: () =>
-                                      ptpRemarksFocusNode.requestFocus(),
-                                ),
+                                    Languages.of(context)!.reference.substring(
+                                        0,
+                                        Languages.of(context)!
+                                                .reference
+                                                .length -
+                                            1),
+                                    referenceControlller,
+                                    focusNode: ptpReferenceFocusNode,
+                                    isLabel: true,
+                                    validatorCallBack: () {}, onEditing: () {
+                                  ptpRemarksFocusNode.requestFocus();
+                                  _formKey.currentState!.validate();
+                                }),
                                 const SizedBox(height: 20),
                                 CustomReadOnlyTextField(
-                                  Languages.of(context)!.remarks,
-                                  remarksControlller,
-                                  focusNode: ptpRemarksFocusNode,
-                                  validationRules: const ['required'],
-                                  isLabel: true,
-                                  // suffixWidget: VoiceRecodingWidget(),
-                                  validatorCallBack: () {},
-                                  onEditing: () =>
-                                      ptpRemarksFocusNode.unfocus(),
-                                ),
+                                    Languages.of(context)!.remarks,
+                                    remarksControlller,
+                                    focusNode: ptpRemarksFocusNode,
+                                    validationRules: const ['required'],
+                                    isLabel: true,
+                                    // suffixWidget: VoiceRecodingWidget(),
+                                    validatorCallBack: () {}, onEditing: () {
+                                  ptpRemarksFocusNode.unfocus();
+                                  _formKey.currentState!.validate();
+                                }),
                                 const SizedBox(height: 15)
                               ],
                             ),
@@ -486,7 +501,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               remarks: remarksControlller.text,
               ptpAmount: int.parse(ptpAmountControlller.text),
               reference: referenceControlller.text,
-              mode: selectedPaymentModeButton,
+              mode: ConvertString.convertLanguageToConstant(
+                  selectedPaymentModeButton, context),
               followUpPriority: 'PTP',
               longitude: position.longitude,
               latitude: position.latitude,
@@ -561,21 +577,24 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 ChangeHealthStatusEvent(),
               );
 
-              if (widget.isAutoCalling) {
-                Navigator.pop(widget.paramValue['context']);
-                Navigator.pop(widget.paramValue['context']);
-                Singleton.instance.startCalling = false;
-                if (!stopValue) {
-                  widget.allocationBloc!.add(StartCallingEvent(
-                    customerIndex: widget.paramValue['customerIndex'] + 1,
-                    phoneIndex: 0,
-                    isIncreaseCount: true,
-                  ));
-                }
+            if (widget.isAutoCalling) {
+              Navigator.pop(widget.paramValue['context']);
+              Navigator.pop(widget.paramValue['context']);
+              Singleton.instance.startCalling = false;
+              if (!stopValue) {
+                widget.allocationBloc!.add(StartCallingEvent(
+                  customerIndex: widget.paramValue['customerIndex'] + 1,
+                  phoneIndex: 0,
+                  isIncreaseCount: true,
+                ));
               } else {
-                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-                Navigator.pop(context);
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
+                ));
               }
+            } else {
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              Navigator.pop(context);
             }
           }
         }

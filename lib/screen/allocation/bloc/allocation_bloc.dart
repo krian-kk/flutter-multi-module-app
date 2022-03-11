@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,15 +59,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int page = 1;
 
-  // There is next page or not
+  // There is used for pagination to scroll up
   bool hasNextPage = false;
-
   // Show Telecaller Autocalling
   bool isAutoCalling = false;
-
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
-
   // Check which event to call for load more cases
   bool isPriorityLoadMore = false;
 
@@ -108,9 +106,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
-          // StringResource.priority,
-          // StringResource.buildRoute,
-          // StringResource.mapView,
           Languages.of(event.context)!.priority,
           Languages.of(event.context)!.buildRoute,
           Languages.of(event.context)!.mapView,
@@ -119,8 +114,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         selectOptions = [
           Languages.of(event.context)!.priority,
           Languages.of(event.context)!.autoCalling,
-          // StringResource.priority,
-          // StringResource.autoCalling,
         ];
         areyouatOffice = false;
       }
@@ -224,6 +217,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // Enable the search and hide autocalling screen
       isAutoCalling = false;
       isShowSearchFloatingButton = true;
+      Singleton.instance.startCalling = false;
       // Now set priority case is a load more event
       isPriorityLoadMore = true;
 
@@ -256,16 +250,21 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       yield TapPriorityState(successResponse: resultList);
     }
+    if (event is ConnectedStopAndSubmitEvent) {
+      Result val = autoCallingResultList[event.customerIndex];
+      autoCallingResultList.remove(val);
+      customerCount++;
+    }
     if (event is StartCallingEvent) {
       // if (event.isStartFromButtonClick) {
       //   tempTotalCount = autoCallingResultList.length;
       // }
-      if (event.isIncreaseCount && event.customerIndex! < totalCount) {
+      if (event.isIncreaseCount && event.customerIndex! <= totalCount) {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
         // autoCallingResultList.add(val);
-        autoCallingResultList.last.isCompletedSuccess = true;
         customerCount++;
+        yield UpdateNewValueState();
       }
       Singleton.instance.startCalling = true;
 
@@ -413,12 +412,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield BuildRouteLoadMoreState(successResponse: resultList);
     }
     if (event is UpdateNewValuesEvent) {
-      resultList.asMap().forEach((index, value) {
-        if (value.caseId == event.paramValue) {
-          value.collSubStatus = 'used';
-        }
-      });
-      yield UpdateNewValueState();
+      // resultList.asMap().forEach((index, value) {
+      //   if (value.caseId == event.paramValue) {
+      //     if (Singleton.instance.usertype == Constants.telecaller) {
+      //       value.telSubStatus = event.selectedClipValue;
+      //     } else {
+      //       value.collSubStatus = event.selectedClipValue;
+      //     }
+      //     if (event.selectedClipValue != null && event.followUpDate != null) {
+      //       value.followUpDate = event.followUpDate;
+      //     }
+      //   }
+      // });
+      yield UpdateNewValueState(
+          selectedEventValue: event.selectedClipValue,
+          updateFollowUpdate: event.followUpDate,
+          paramValue: event.paramValue);
     }
     if (event is MapViewEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -553,6 +562,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               .add(Result.fromJson(jsonDecode(jsonEncode(element))));
         }
       }
+      // autoCallingResultList.clear();
+      // autoCallingResultList = resultList;
       totalCount = autoCallingResultList.length;
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>
@@ -563,10 +574,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallingLoadedState();
     }
     if (event is AutoCallingContactSortEvent) {
-      for (var element in autoCallingResultList) {
-        element.address
-            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
-      }
+      // for (var element in autoCallingResultList) {
+      //   element.address
+      //       ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+      // }
       yield AutoCallingContactSortState();
     }
     if (event is UpdateStaredCaseEvent) {
@@ -579,7 +590,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
       yield UpdateStaredCaseState(
           caseId: event.caseID,
-          isStared: resultList[event.selectedStarIndex].starredCase);
+          isStared: resultList[event.selectedStarIndex].starredCase,
+          selectedIndex: event.selectedStarIndex);
     }
     if (event is AutoCallContactHealthUpdateEvent) {
       yield AutoCallContactHealthUpdateState(

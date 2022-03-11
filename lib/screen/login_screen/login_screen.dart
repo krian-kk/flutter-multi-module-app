@@ -539,33 +539,46 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const SizedBox(
                                           height: 30,
                                         ),
-                                        CustomButton(
-                                          Languages.of(context)!
-                                              .loginViaDifferentUser,
-                                          onTap: bloc.isSubmit
-                                              ? () {
-                                                  setState(() {
-                                                    userId.clear();
-                                                    password.clear();
-                                                    _isChecked = false;
-                                                    // Signin submit button activities
-                                                  });
-                                                }
-                                              : () {
-                                                  AppUtils.showToast(
-                                                    Languages.of(context)!
-                                                        .pleaseWait,
-                                                  );
-                                                },
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          cardShape: 90,
-                                          fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w600,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                        ),
+                                        if (userId.text != '' ||
+                                            password.text != '')
+                                          CustomButton(
+                                            Languages.of(context)!
+                                                .loginViaDifferentUser,
+                                            onTap: bloc.isSubmit
+                                                ? () {
+                                                    if (userId.text != '' ||
+                                                        password.text != '') {
+                                                      setState(() {
+                                                        userId.clear();
+                                                        password.clear();
+                                                        _isChecked = false;
+                                                        // Signin submit button activities
+                                                      });
+                                                      AppUtils.showToast(Languages
+                                                              .of(context)!
+                                                          .logiginDeifferentSucessMessage);
+                                                    } else {
+                                                      AppUtils.showToast(Languages
+                                                              .of(context)!
+                                                          .logiginDeifferentFailMessage);
+                                                    }
+                                                  }
+                                                : () {
+                                                    AppUtils.showToast(
+                                                      Languages.of(context)!
+                                                          .pleaseWait,
+                                                    );
+                                                  },
+                                            borderColor:
+                                                ColorResource.color23375A,
+                                            cardShape: 90,
+                                            fontSize: FontSize.sixteen,
+                                            fontWeight: FontWeight.w600,
+                                            textColor:
+                                                ColorResource.color23375A,
+                                            buttonBackgroundColor:
+                                                ColorResource.colorffffff,
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -639,10 +652,6 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 50,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(90.0),
-            // boxShadow: const [
-            //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.12), spreadRadius: 2),
-            //   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.24), spreadRadius: 2),
-            // ],
             gradient: const LinearGradient(
               colors: [
                 ColorResource.colorFFC23B,

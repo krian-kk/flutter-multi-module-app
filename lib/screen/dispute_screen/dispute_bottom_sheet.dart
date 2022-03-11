@@ -82,6 +82,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
     setState(() {
       nextActionDateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 7)));
+      widget.bloc.add(ChangeFollowUpDateEvent(
+          followUpDate:
+              DateTime.now().add(const Duration(days: 7)).toString()));
     });
   }
 
@@ -176,12 +179,16 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       isReadOnly: true,
                                       onTapped: () =>
                                           PickDateAndTimeUtils.pickDate(context,
-                                              (newDate) {
-                                        if (newDate != null) {
+                                              (newDate, followUpDate) {
+                                        if (newDate != null &&
+                                            followUpDate != null) {
                                           setState(() {
                                             nextActionDateControlller.text =
                                                 newDate;
                                           });
+                                          widget.bloc.add(
+                                              ChangeFollowUpDateEvent(
+                                                  followUpDate: followUpDate));
                                         }
                                       }),
                                       suffixWidget: SvgPicture.asset(
@@ -406,7 +413,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
               if (!(widget.userType == Constants.fieldagent &&
                   widget.isCall!)) {
                 widget.bloc.add(
-                  ChangeIsSubmitEvent(),
+                  ChangeIsSubmitEvent(
+                      selectedClipValue: Constants.disputeCaseStatus),
                 );
               }
 
@@ -423,6 +431,10 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     customerIndex: widget.paramValue['customerIndex'] + 1,
                     phoneIndex: 0,
                     isIncreaseCount: true,
+                  ));
+                } else {
+                  widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                    customerIndex: widget.paramValue['customerIndex'],
                   ));
                 }
               } else {

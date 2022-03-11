@@ -39,6 +39,8 @@ import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
+import '../../widgets/case_status_widget.dart';
+
 class CaseDetailsScreen extends StatefulWidget {
   final dynamic paramValues;
   final AllocationBloc allocationBloc;
@@ -77,6 +79,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             'returnCaseAmount':
                 bloc.caseDetailsAPIValue.result?.caseDetails?.due,
             'returnCollectionAmount': bloc.collectionAmount,
+            'selectedClipValue': (Singleton.instance.usertype ==
+                    Constants.telecaller)
+                ? bloc.caseDetailsAPIValue.result?.caseDetails?.telSubStatus
+                : bloc.caseDetailsAPIValue.result?.caseDetails?.collSubStatus,
+            'followUpDate': bloc.changeFollowUpDate,
           },
         );
         return Future(() => false);
@@ -99,6 +106,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               addressBottomSheet(context, bloc, state.i);
             }
             if (state is ClickMainCallBottomSheetState) {
+              debugPrint('$this ---> index in CaseDetailsScreen ${state.i} ');
               phoneBottomSheet(
                 context,
                 bloc,
@@ -108,6 +116,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is ClickOpenBottomSheetState) {
+              debugPrint(
+                  '$this ---> seleectedContactNumber ${state.selectedContactNumber}');
               openBottomSheet(
                 context,
                 state.title,
@@ -168,6 +178,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       .result?.caseDetails?.due,
                                   'returnCollectionAmount':
                                       bloc.collectionAmount,
+                                  'selectedClipValue':
+                                      (Singleton.instance.usertype ==
+                                              Constants.telecaller)
+                                          ? bloc.caseDetailsAPIValue.result
+                                              ?.caseDetails?.telSubStatus
+                                          : bloc.caseDetailsAPIValue.result
+                                              ?.caseDetails?.collSubStatus,
+                                  'followUpDate': bloc.changeFollowUpDate,
                                 },
                               );
                             }
@@ -239,37 +257,52 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   marginTop: 10,
                                                 ),
                                               ),
-                                              if (bloc
-                                                      .caseDetailsAPIValue
-                                                      .result
-                                                      ?.caseDetails
-                                                      ?.collSubStatus ==
-                                                  'new')
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 12),
-                                                  width: 55,
-                                                  height: 18,
-                                                  decoration: const BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorD5344C,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  30.0))),
-                                                  child: Center(
-                                                    child: CustomText(
-                                                      Languages.of(context)!
-                                                          .new_,
-                                                      color: ColorResource
-                                                          .colorFFFFFF,
-                                                      lineHeight: 1,
-                                                      fontSize: FontSize.ten,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                )
+                                              // Here check userType base on show case status
+                                              if (Singleton.instance.usertype ==
+                                                  Constants.fieldagent)
+                                                bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.collSubStatus ==
+                                                        'new'
+                                                    ? CaseStatusWidget
+                                                        .satusTextWidget(
+                                                        context,
+                                                        text: Languages.of(
+                                                                context)!
+                                                            .new_,
+                                                        width: 55,
+                                                      )
+                                                    : caseStatusWidget(
+                                                        text: bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.collSubStatus),
+
+                                              if (Singleton.instance.usertype ==
+                                                  Constants.telecaller)
+                                                bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.telSubStatus ==
+                                                        'new'
+                                                    ? CaseStatusWidget
+                                                        .satusTextWidget(
+                                                        context,
+                                                        text: Languages.of(
+                                                                context)!
+                                                            .new_,
+                                                        width: 55,
+                                                      )
+                                                    : caseStatusWidget(
+                                                        text: bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.caseDetails
+                                                            ?.telSubStatus),
                                             ],
                                           ),
                                           const SizedBox(height: 16),
@@ -1015,6 +1048,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,
       bool isCallFromCaseDetails,
       {String? callId}) {
+    debugPrint('$this ---> index $i ');
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
@@ -1258,6 +1292,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 }
               } else {}
             });
+            debugPrint('Index values--> ${bloc.indexValue}');
             return CallCustomerBottomSheet(
               caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(
@@ -1307,5 +1342,27 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         }
       },
     );
+  }
+
+  Widget caseStatusWidget({String? text}) {
+    return text != null
+        ? Card(
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            color: CaseStatusWidget.getStatusColor(text),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 3.3),
+              child: CustomText(
+                text,
+                color: ColorResource.colorFFFFFF,
+                lineHeight: 1,
+                fontSize: FontSize.ten,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          )
+        : const SizedBox();
   }
 }

@@ -178,12 +178,18 @@ class _CustomRemainderBottomSheetState
                                           isLabel: true,
                                           onTapped: () =>
                                               PickDateAndTimeUtils.pickDate(
-                                                  context, (newDate) {
-                                            if (newDate != null) {
+                                                  context,
+                                                  (newDate, followUpDate) {
+                                            if (newDate != null &&
+                                                followUpDate != null) {
                                               setState(() {
                                                 nextActionDateControlller.text =
                                                     newDate;
                                               });
+                                              widget.bloc.add(
+                                                  ChangeFollowUpDateEvent(
+                                                      followUpDate:
+                                                          followUpDate));
                                             }
                                           }),
                                           suffixWidget: SvgPicture.asset(
@@ -407,6 +413,7 @@ class _CustomRemainderBottomSheetState
           callID: Singleton.instance.callID,
           callingID: Singleton.instance.callingID,
         );
+        print('Reminder post data ---> $requestBodyData');
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.post,
           HttpUrl.reminderPostUrl('reminder', widget.userType),
@@ -420,7 +427,7 @@ class _CustomRemainderBottomSheetState
           );
           if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
             widget.bloc.add(
-              ChangeIsSubmitEvent(),
+              ChangeIsSubmitEvent(selectedClipValue: Constants.remainder),
             );
           }
 
@@ -437,6 +444,10 @@ class _CustomRemainderBottomSheetState
                 customerIndex: widget.paramValue['customerIndex'] + 1,
                 phoneIndex: 0,
                 isIncreaseCount: true,
+              ));
+            } else {
+              widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                customerIndex: widget.paramValue['customerIndex'],
               ));
             }
           } else {

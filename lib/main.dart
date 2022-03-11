@@ -73,11 +73,11 @@ class _MyAppState extends State<MyApp> {
   Future<FirebaseRemoteConfig> setupRemoteConfig() async {
     await Firebase.initializeApp();
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    remoteConfig.fetchAndActivate();
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: const Duration(hours: 1),
+      minimumFetchInterval: const Duration(seconds: 5),
     ));
-    await remoteConfig.fetchAndActivate();
     //development = 1, uat = 2, production = 3
     try {
       HttpUrl.url = Singleton.instance.serverPointingType == 1
@@ -106,6 +106,10 @@ class _MyAppState extends State<MyApp> {
       themeCollection: AppThemes().getThemeCollections(),
       builder: (BuildContext context, ThemeData theme) {
         return MaterialApp(
+          builder: (context, child) => MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child!),
           locale: _locale,
           supportedLocales: const [
             Locale('en', ''),
@@ -133,8 +137,9 @@ class _MyAppState extends State<MyApp> {
           home: FutureBuilder(
               future: setupRemoteConfig(),
               builder: (context, snapshot) {
-                if (snapshot.hasError && HttpUrl.url != '') {
+                if (snapshot.hasError || HttpUrl.url.isEmpty) {
                   return Container(
+                    color: Colors.white,
                     child: const CustomLoadingWidget(),
                     alignment: Alignment.center,
                   );

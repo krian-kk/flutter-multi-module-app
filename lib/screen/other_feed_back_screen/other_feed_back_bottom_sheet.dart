@@ -130,6 +130,9 @@ class _CustomOtherFeedBackBottomSheetState
     setState(() {
       dateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
+      widget.bloc.add(ChangeFollowUpDateEvent(
+          followUpDate:
+              DateTime.now().add(const Duration(days: 1)).toString()));
     });
     super.initState();
   }
@@ -231,11 +234,17 @@ class _CustomOtherFeedBackBottomSheetState
                                         isReadOnly: true,
                                         onTapped: () =>
                                             PickDateAndTimeUtils.pickDate(
-                                                context, (newDate) {
-                                          if (newDate != null) {
+                                                context,
+                                                (newDate, followUpDate) {
+                                          if (newDate != null &&
+                                              followUpDate != null) {
                                             setState(() {
                                               dateControlller.text = newDate;
                                             });
+                                            widget.bloc.add(
+                                                ChangeFollowUpDateEvent(
+                                                    followUpDate:
+                                                        followUpDate));
                                           }
                                         }),
                                         suffixWidget: SvgPicture.asset(
@@ -577,11 +586,12 @@ class _CustomOtherFeedBackBottomSheetState
               Constants.otherFeedback,
             ),
           );
-          if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-            widget.bloc.add(
-              ChangeIsSubmitEvent(),
-            );
-          }
+          // Here call update case status
+          // if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+          //   widget.bloc.add(
+          //     ChangeIsSubmitEvent(selectedClipValue: Constants.otherFeedback),
+          //   );
+          // }
 
           widget.bloc.add(
             ChangeHealthStatusEvent(),
@@ -610,6 +620,12 @@ class _CustomOtherFeedBackBottomSheetState
                 phoneIndex: 0,
                 isIncreaseCount: true,
               ));
+            } else {
+              if (widget.health == ConstantEventValues.healthTwo) {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
+                ));
+              }
             }
           } else {
             AppUtils.topSnackBar(context, Constants.successfullySubmitted);
@@ -837,20 +853,39 @@ class _CustomOtherFeedBackBottomSheetState
                                                     'Email Id')
                                                 ? TextInputType.emailAddress
                                                 : TextInputType.name,
-                                        inputformaters:
-                                            (listOfContact[index].formValue ==
-                                                        'Mobile' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Office Contact No.' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Residence Contact No.')
-                                                ? [
-                                                    LengthLimitingTextInputFormatter(
-                                                        10),
-                                                  ]
-                                                : [],
+                                        inputformaters: (listOfContact[index]
+                                                        .formValue ==
+                                                    'Mobile' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Office Contact No.' ||
+                                                listOfContact[index]
+                                                        .formValue ==
+                                                    'Residence Contact No.')
+                                            ? [
+                                                LengthLimitingTextInputFormatter(
+                                                    10),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly,
+                                                FilteringTextInputFormatter
+                                                    .deny(Constants.rEGEXEMOJI),
+                                                if (listOfContact[index]
+                                                    .controller
+                                                    .text
+                                                    .isEmpty)
+                                                  FilteringTextInputFormatter
+                                                      .deny(' '),
+                                              ]
+                                            : [
+                                                FilteringTextInputFormatter
+                                                    .deny(Constants.rEGEXEMOJI),
+                                                if (listOfContact[index]
+                                                    .controller
+                                                    .text
+                                                    .isEmpty)
+                                                  FilteringTextInputFormatter
+                                                      .deny(' ')
+                                              ],
                                       ),
                                     ),
                                   ],

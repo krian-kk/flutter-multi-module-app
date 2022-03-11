@@ -83,7 +83,7 @@ class LanguageEn extends Languages {
   String get under5km => 'Under 5Km';
 
   @override
-  String get more5km => '5Km-10Km';
+  String get more5km => 'Under 10Km';
 
   @override
   String get mtdResolutionProgress => 'MTD RESOLUTION PROGRESS';
@@ -150,6 +150,9 @@ class LanguageEn extends Languages {
 
   @override
   String get enterDepositionDetails => 'ENTER DEPOSITION DETAILS';
+
+  @override
+  String get enterRepoDetails => 'ENTER REPO DETAILS';
 
   @override
   String get depositionMode => 'DEPOSITION MODE';
@@ -816,4 +819,17 @@ class LanguageEn extends Languages {
 
   @override
   String get loading => 'Loading...';
+
+  @override
+  String get reciptsAlertMesg =>
+      'Ensure the collected amount/cheque is deposited in the bank within 24 hours';
+
+  @override
+  String get sendSMSerror => 'SMS is not activated';
+
+  @override
+  String get logiginDeifferentSucessMessage => 'Cleared';
+
+  @override
+  String get logiginDeifferentFailMessage => 'No credential above to clear';
 }

@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../singleton.dart';
+import '../utils/constants.dart';
+
 class PriorityCaseListModel {
   int? status;
   String? message;
@@ -90,20 +93,34 @@ class Result {
     caseId = json['caseId'];
     agrRef = json['agrRef'] ?? '-';
     bankName = json['bankName'] ?? '-';
-    // if (json['fieldfollowUpDate'] is Timestamp) {
-    //   fieldfollowUpDate = json['fieldfollowUpDate'];
-    // } else {
-    //   fieldfollowUpDate = json['fieldfollowUpDate'].toString();
-    // }
-    if (json['fieldfollowUpDate'] != null &&
-        json['fieldfollowUpDate'] is Timestamp) {
-      fieldfollowUpDate = json['fieldfollowUpDate'].toString();
-    } else {
-      fieldfollowUpDate = json['fieldfollowUpDate'];
-    }
-    // fieldfollowUpDate = '-';
+
     sortId = json['sortId'];
-    followUpDate = json['followUpDate'];
+    // followUpDate = json['followUpDate'];
+    // Here we will check which user logged in then only set followUpDate
+    if (Singleton.instance.usertype == Constants.fieldagent) {
+      if (json['collSubStatus'] != null &&
+          json['collSubStatus'].toString().toLowerCase() == 'new') {
+        if (json['fieldfollowUpDate'] != null) {
+          fieldfollowUpDate = DateTime.now().toString();
+        } else {
+          fieldfollowUpDate = json['fieldfollowUpDate'];
+        }
+      } else {
+        fieldfollowUpDate = json['fieldfollowUpDate'];
+      }
+    } else {
+      if (json['telSubStatus'] != null &&
+          json['telSubStatus'].toString().toLowerCase() == 'new') {
+        if (json['followUpDate'] != null) {
+          followUpDate = DateTime.now().toString();
+        } else {
+          followUpDate = json['followUpDate'];
+        }
+      } else {
+        followUpDate = json['followUpDate'];
+      }
+    }
+
     locationType = json['locationType'];
     distanceMeters = json['distanceMeters'];
     repoStatus = json['repoStatus'];

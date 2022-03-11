@@ -99,6 +99,8 @@ abstract class Languages {
 
   String get enterDepositionDetails;
 
+  String get enterRepoDetails;
+
   String get bank;
 
   String get companybranch;
@@ -512,6 +514,7 @@ abstract class Languages {
   String get addMoreContact;
 
   String get uploadAudioFile;
+
   String get autoCalling;
 
   String get callConnectedPleaseWait;
@@ -541,4 +544,12 @@ abstract class Languages {
   String get invalidAddress;
 
   String get loading;
+
+  String get reciptsAlertMesg;
+
+  String get sendSMSerror;
+
+  String get logiginDeifferentFailMessage;
+
+  String get logiginDeifferentSucessMessage;
 }

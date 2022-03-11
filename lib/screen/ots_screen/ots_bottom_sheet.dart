@@ -36,6 +36,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/language_to_constant_convert.dart';
+
 class CustomOtsBottomSheet extends StatefulWidget {
   const CustomOtsBottomSheet(
     this.cardTitle, {
@@ -208,6 +210,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     isLabel: true,
                                     focusNode: otsProposedAmountFocusNode,
                                     keyBoardType: TextInputType.number,
+                                    isNumberOnly: true,
                                   )),
                                   const SizedBox(height: 17),
                                   Row(
@@ -242,12 +245,18 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                               isReadOnly: true,
                                               onTapped: () =>
                                                   PickDateAndTimeUtils.pickDate(
-                                                      context, (newDate) {
-                                                if (newDate != null) {
+                                                      context,
+                                                      (newDate, followUpDate) {
+                                                if (newDate != null &&
+                                                    followUpDate != null) {
                                                   setState(() {
                                                     otsPaymentDateControlller
                                                         .text = newDate;
                                                   });
+                                                  widget.bloc.add(
+                                                      ChangeFollowUpDateEvent(
+                                                          followUpDate:
+                                                              followUpDate));
                                                 }
                                               }),
                                               suffixWidget: SvgPicture.asset(
@@ -322,6 +331,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                           FontStyle.normal,
                                                       fontWeight:
                                                           FontWeight.w700,
+                                                      lineHeight: 1,
                                                     )
                                                   ],
                                                 ),
@@ -334,7 +344,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   fontSize: FontSize.twelve,
                                                   fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
-                                                )
+                                                ),
+                                                const SizedBox(height: 5),
                                               ],
                                             ),
                                           ),
@@ -493,7 +504,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               remarkOts: remarksControlller.text,
               amntOts: otsProposedAmountControlller.text,
               appStatus: 'OTS',
-              mode: selectedPaymentModeButton,
+              mode: ConvertString.convertLanguageToConstant(
+                  selectedPaymentModeButton, context),
               altitude: position.altitude,
               accuracy: position.accuracy,
               heading: position.heading,
@@ -529,6 +541,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             'files': value,
           });
 
+          print('OTS post data ----> $postdata');
+
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.upload,
             HttpUrl.otsPostUrl,
@@ -542,7 +556,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               ),
             );
             if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(ChangeIsSubmitEvent());
+              widget.bloc
+                  .add(ChangeIsSubmitEvent(selectedClipValue: Constants.ots));
             }
 
             widget.bloc.add(
@@ -558,6 +573,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   customerIndex: widget.paramValue['customerIndex'] + 1,
                   phoneIndex: 0,
                   isIncreaseCount: true,
+                ));
+              } else {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
                 ));
               }
             } else {

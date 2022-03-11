@@ -83,7 +83,7 @@ class LanguageTa extends Languages {
   String get under5km => '5கிமீ கீழ்';
 
   @override
-  String get more5km => '5கிமீ-10கிமீ';
+  String get more5km => '10கிமீ கீழ்';
 
   @override
   String get mtdResolutionProgress => 'MTD தீர்மானம் முன்னேற்றம்';
@@ -150,6 +150,9 @@ class LanguageTa extends Languages {
 
   @override
   String get enterDepositionDetails => 'டெபாசிஷன் விவரங்களை உள்ளிடவும்';
+
+  @override
+  String get enterRepoDetails => 'ரெப்போ விவரங்களை உள்ளிடவும்';
 
   @override
   String get depositionMode => 'டெபாசிஷன் முறை';
@@ -239,7 +242,8 @@ class LanguageTa extends Languages {
   String get showOnlyStar => 'நட்சத்திரத்தை மட்டும் காட்டு (அதிக முன்னுரிமை)';
 
   @override
-  String get new_ => 'புதியது';
+  // String get new_ => 'புதியது';
+  String get new_ => 'NEW';
 
   @override
   String get overdueAmount => 'தாமதமான தொகை';
@@ -770,6 +774,7 @@ class LanguageTa extends Languages {
 
   @override
   String get uploadAudioFile => 'ஆடியோ கோப்பை பதிவேற்றவும்';
+
   @override
   String get autoCalling => 'தானியங்கி அழைப்பு';
 
@@ -819,4 +824,18 @@ class LanguageTa extends Languages {
 
   @override
   String get loading => 'ஏற்றுகிறது...';
+
+  @override
+  String get reciptsAlertMesg =>
+      'சேகரிக்கப்பட்ட தொகை/காசோலை 24 மணி நேரத்திற்குள் வங்கியில் டெபாசிட் செய்யப்படுவதை உறுதிசெய்யவும்';
+
+  @override
+  String get sendSMSerror => 'SMS இயக்கப்படவில்லை';
+
+  @override
+  String get logiginDeifferentSucessMessage => 'அழிக்கப்பட்டது';
+
+  @override
+  String get logiginDeifferentFailMessage =>
+      'அழிப்பதற்கு மேலே நற்சான்றிதழ் இல்லை';
 }

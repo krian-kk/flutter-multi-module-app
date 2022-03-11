@@ -27,6 +27,7 @@ class PhoneScreen extends StatefulWidget {
   final bool isCallFromCaseDetails;
   final int index;
   final String? callId;
+
   const PhoneScreen(
       {Key? key,
       required this.bloc,
@@ -56,7 +57,8 @@ class _PhoneScreenState extends State<PhoneScreen>
   @override
   void initState() {
     super.initState();
-
+    debugPrint(
+        '$this ---> index from call customer bottom screen ${widget.index}');
     widget.bloc.add(PhoneBottomSheetInitialEvent(
       context: context,
       isCallFromCaseDetails: widget.isCallFromCaseDetails,
@@ -73,6 +75,30 @@ class _PhoneScreenState extends State<PhoneScreen>
         tabIndex: _controller.index,
         currentHealth: widget.bloc.caseDetailsAPIValue.result
             ?.callDetails![widget.index]['health']));
+    /* if agent doesn't get the call from VOIP -> after 30 seconds it'll
+    move next index of number (maybe next case or nex number of current case)  */
+    if (widget.bloc.isAutoCalling) {
+      debugPrint('Is auto calling--> ');
+      Future.delayed(const Duration(seconds: 30), () {
+        debugPrint('Is auto calling after 30 sec--> ');
+        autoCallingTriggering();
+      });
+    }
+  }
+
+  Future<void> autoCallingTriggering() async {
+    if (await CallCustomerStatus.callStatusCheckForAutoJump(
+        callId: widget.bloc.paramValue['callId'], context: context)) {
+      widget.bloc.allocationBloc.add(StartCallingEvent(
+        customerIndex: widget.bloc.paramValue['customerIndex'] + 1,
+        phoneIndex: 0,
+        isIncreaseCount: true,
+      ));
+      AppUtils.showToast(
+        'Call will connect next customer/next number',
+      );
+      Navigator.pop(context);
+    }
   }
 
   Future<bool> willPopCallback() async {

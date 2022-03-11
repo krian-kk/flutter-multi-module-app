@@ -83,7 +83,7 @@ class LanguageHi extends Languages {
   String get under5km => '5 किमी से कम';
 
   @override
-  String get more5km => '5 किमी-10 किमी';
+  String get more5km => '10 किमी से कम';
 
   @override
   String get mtdResolutionProgress => 'MTD प्रस्ताव की प्रगति';
@@ -150,6 +150,9 @@ class LanguageHi extends Languages {
 
   @override
   String get enterDepositionDetails => 'बयान के विवरण दर्ज करें';
+
+  @override
+  String get enterRepoDetails => 'रेपो विवरण दर्ज करें';
 
   @override
   String get depositionMode => 'बयान का तरीका';
@@ -239,7 +242,8 @@ class LanguageHi extends Languages {
   String get showOnlyStar => 'केवल स्टार दिखाएं (उच्च प्राथमिकता)';
 
   @override
-  String get new_ => 'नया';
+  // String get new_ => 'नया';
+  String get new_ => 'NEW';
 
   @override
   String get overdueAmount => 'अतिदेय राशि';
@@ -817,4 +821,18 @@ class LanguageHi extends Languages {
 
   @override
   String get loading => 'लोड हो रहा है...';
+
+  @override
+  String get reciptsAlertMesg =>
+      'सुनिश्चित करें कि एकत्रित राशि/चेक 24 घंटे के भीतर बैंक में जमा कर दिया गया है';
+
+  @override
+  String get sendSMSerror => 'SMS सक्रिय नहीं है';
+
+  @override
+  String get logiginDeifferentSucessMessage => 'को मंजूरी दे दी';
+
+  @override
+  String get logiginDeifferentFailMessage =>
+      'साफ़ करने के लिए ऊपर कोई क्रेडेंशियल नहीं है';
 }

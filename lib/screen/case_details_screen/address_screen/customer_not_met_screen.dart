@@ -35,6 +35,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.add(ChangeFollowUpDateEvent(
+        followUpDate: DateTime.now().add(const Duration(days: 3)).toString()));
   }
 
   @override
@@ -97,14 +99,16 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             isReadOnly: true,
                             validationRules: const ['required'],
                             onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate) {
-                              if (newDate != null) {
+                                context, (newDate, followUpDate) {
+                              if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
                                       .bloc
                                       .addressCustomerNotMetNextActionDateController
                                       .text = newDate;
                                 });
+                                widget.bloc.add(ChangeFollowUpDateEvent(
+                                    followUpDate: followUpDate));
                               }
                             }),
                             suffixWidget: SvgPicture.asset(
