@@ -514,7 +514,8 @@ class _CustomCollectionsBottomSheetState
           });
         }
         if (isNotAutoCalling) {
-          if (selectedPaymentModeButton == "DIGITAL") {
+          if (selectedPaymentModeButton == "DIGITAL" ||
+              Singleton.instance.usertype == Constants.telecaller) {
             setState(() => isSubmit = false);
 
             Position position = Position(
@@ -579,6 +580,9 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
+
+            print(
+                'Collection Requestbody data ----> ${jsonEncode(requestBodyData)}');
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
