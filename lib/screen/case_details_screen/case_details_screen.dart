@@ -263,20 +263,30 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             ?.caseDetails
                                                             ?.collSubStatus ==
                                                         'new'
-                                                    ? CaseStatusWidget
-                                                        .satusTextWidget(
-                                                        context,
-                                                        text: Languages.of(
-                                                                context)!
-                                                            .new_,
-                                                        width: 55,
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: CaseStatusWidget
+                                                            .satusTextWidget(
+                                                          context,
+                                                          text: Languages.of(
+                                                                  context)!
+                                                              .new_,
+                                                          width: 55,
+                                                        ),
                                                       )
-                                                    : caseStatusWidget(
-                                                        text: bloc
-                                                            .caseDetailsAPIValue
-                                                            .result
-                                                            ?.caseDetails
-                                                            ?.collSubStatus),
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: caseStatusWidget(
+                                                            text: bloc
+                                                                .caseDetailsAPIValue
+                                                                .result
+                                                                ?.caseDetails
+                                                                ?.collSubStatus),
+                                                      ),
 
                                               if (Singleton.instance.usertype ==
                                                   Constants.telecaller)
@@ -286,20 +296,30 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             ?.caseDetails
                                                             ?.telSubStatus ==
                                                         'new'
-                                                    ? CaseStatusWidget
-                                                        .satusTextWidget(
-                                                        context,
-                                                        text: Languages.of(
-                                                                context)!
-                                                            .new_,
-                                                        width: 55,
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: CaseStatusWidget
+                                                            .satusTextWidget(
+                                                          context,
+                                                          text: Languages.of(
+                                                                  context)!
+                                                              .new_,
+                                                          width: 55,
+                                                        ),
                                                       )
-                                                    : caseStatusWidget(
-                                                        text: bloc
-                                                            .caseDetailsAPIValue
-                                                            .result
-                                                            ?.caseDetails
-                                                            ?.telSubStatus),
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: caseStatusWidget(
+                                                            text: bloc
+                                                                .caseDetailsAPIValue
+                                                                .result
+                                                                ?.caseDetails
+                                                                ?.telSubStatus),
+                                                      ),
                                             ],
                                           ),
                                           const SizedBox(height: 16),

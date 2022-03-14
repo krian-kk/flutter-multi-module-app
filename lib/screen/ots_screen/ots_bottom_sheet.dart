@@ -627,13 +627,15 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   ),
                 ),
                 const SizedBox(width: 5),
-                CustomText(
-                  element.title,
-                  color: ColorResource.colorFFFFFF,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
+                Flexible(
+                  child: CustomText(
+                    element.title,
+                    color: ColorResource.colorFFFFFF,
+                    fontWeight: FontWeight.w700,
+                    lineHeight: 1,
+                    fontSize: FontSize.sixteen,
+                    fontStyle: FontStyle.normal,
+                  ),
                 )
               ],
             ),

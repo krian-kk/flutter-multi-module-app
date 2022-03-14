@@ -519,10 +519,10 @@ class LanguageTa extends Languages {
   String get callCustomer => 'வாடிக்கையாளரை அழைக்கவும்';
 
   @override
-  String get agentContactNo => 'பணியாளர் தொடர்பு எண்*';
+  String get agentContactNo => 'பணியாளர் தொடர்பு \n எண்*';
 
   @override
-  String get customerContactNo => 'வாடிக்கையாளர் தொடர்பு எண்*';
+  String get customerContactNo => 'வாடிக்கையாளர் தொடர்பு \n எண்*';
 
   @override
   String get serviceProvidersList => 'சேவை வழங்குநரின் பட்டியல்';
