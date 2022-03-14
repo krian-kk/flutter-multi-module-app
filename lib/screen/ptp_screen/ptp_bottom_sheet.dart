@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,6 +20,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -531,18 +530,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             ),
           );
 
-          if (ConnectivityResult.none ==
+         /* if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(
-                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-                .collection(Constants.firebaseEvent)
-                .doc(widget.callId)
-                .set(requestBodyData.toJson())
-                .then((value) {
-              AppUtils.showToast("Submitted successfully");
-            });
+            FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
           } else {
             Map<String, dynamic> postResult = await APIRepository.apiRequest(
               APIRequestType.post,
@@ -592,7 +583,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 Navigator.pop(context);
               }
             }
-          }
+          }*/
+          FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
         }
       } else {
         AppUtils.showToast(Languages.of(context)!.pleaseSelectPaymentMode);

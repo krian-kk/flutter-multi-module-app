@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
   Future<FirebaseRemoteConfig> setupRemoteConfig() async {
     await Firebase.initializeApp();
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    remoteConfig.fetchAndActivate();
+    // remoteConfig.fetchAndActivate();
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(seconds: 5),

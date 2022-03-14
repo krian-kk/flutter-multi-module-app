@@ -20,6 +20,7 @@ import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
+import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
@@ -275,29 +276,29 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       addressCustomerMetGridList.addAll([
         CustomerMetGridModel(
             ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.ptp,
+            onTap: () => add(EventDetailsEvent(Constants.ptp,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(
             ImageResource.rtp, Languages.of(event.context!)!.rtp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.rtp,
+            onTap: () => add(EventDetailsEvent(Constants.rtp,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.dispute,
             Languages.of(event.context!)!.dispute.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.dispute,
+            onTap: () => add(EventDetailsEvent(Constants.dispute,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(
             ImageResource.remainder,
             (Languages.of(event.context!)!.remainderCb.toUpperCase())
                 .toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.remainder,
+            onTap: () => add(EventDetailsEvent(Constants.remainder,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(ImageResource.collections,
             Languages.of(event.context!)!.collections.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.collections,
+            onTap: () => add(EventDetailsEvent(Constants.collections,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
         CustomerMetGridModel(
             ImageResource.ots, Languages.of(event.context!)!.ots.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(Constants.ots,
+            onTap: () => add(EventDetailsEvent(Constants.ots,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
       ]);
 
@@ -322,7 +323,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       phoneCustomerMetGridList.addAll([
         CustomerMetGridModel(
             ImageResource.ptp, Languages.of(event.context)!.ptp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
+            onTap: () => add(EventDetailsEvent(
                   Constants.ptp,
                   caseDetailsAPIValue.result?.callDetails!,
                   true,
@@ -332,7 +333,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             isCall: true),
         CustomerMetGridModel(
             ImageResource.rtp, Languages.of(event.context)!.rtp.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
+            onTap: () => add(EventDetailsEvent(
                   Constants.rtp,
                   caseDetailsAPIValue.result?.callDetails!,
                   true,
@@ -342,7 +343,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             isCall: true),
         CustomerMetGridModel(ImageResource.dispute,
             Languages.of(event.context)!.dispute.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
+            onTap: () => add(EventDetailsEvent(
                   Constants.dispute,
                   caseDetailsAPIValue.result?.callDetails!,
                   true,
@@ -355,7 +356,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             (Languages.of(event.context)!.remainderCb.toUpperCase())
                 .toUpperCase()
                 .toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
+            onTap: () => add(EventDetailsEvent(
                   Constants.remainder,
                   caseDetailsAPIValue.result?.callDetails!,
                   true,
@@ -365,7 +366,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             isCall: true),
         CustomerMetGridModel(ImageResource.collections,
             Languages.of(event.context)!.collections.toUpperCase(),
-            onTap: () => add(ClickOpenBottomSheetEvent(
+            onTap: () => add(EventDetailsEvent(
                   Constants.collections,
                   caseDetailsAPIValue.result?.callDetails!,
                   true,
@@ -374,7 +375,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 )),
             isCall: true),
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
-            onTap: () => add(ClickOpenBottomSheetEvent(
+            onTap: () => add(EventDetailsEvent(
                   Languages.of(event.context)!.ots.toUpperCase(),
                   caseDetailsAPIValue.result?.callDetails!,
                   true,
@@ -434,12 +435,33 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       yield UpdateSuccessfullState();
     }
-    if (event is ClickOpenBottomSheetEvent) {
+    if (event is EventDetailsEvent) {
       switch (event.title) {
         case Constants.eventDetails:
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            yield CDNoInternetState();
+            // yield CDNoInternetState();
+
+
+
+            //Getting event details from firebase databse
+            // FirebaseFirestore.instance
+            //     .collection(Singleton.instance.firebaseDatabaseName)
+            //     .doc(
+            //         '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            //     .collection(Constants.firebaseEvent)
+            //     .doc(caseId)
+            //     .collection(Constants.firebaseEvents)
+            //     .snapshots()
+            //     .forEach((element) {
+            //       expandEvent.map((e) {
+            //         eventDetailsAPIValue.result!.add(EventDetailsResultModel.fromJson());
+            //       });
+            //   for (var element in element.docs) {
+            //     debugPrint('Values 1st agentName---> ${element['agentName']}');
+            //     eventDetailsAPIValue.result!.add(EventDetailsResultModel.fromJson(element));
+            //   }
+            // });
           } else {
             Map<String, dynamic> getEventDetailsData =
                 await APIRepository.apiRequest(
@@ -462,8 +484,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
-        debugPrint(
-            '$this ---> seleectedContactNumber ${event.seleectedContactNumber}');
         yield ClickOpenBottomSheetState(
           event.title,
           event.list!,

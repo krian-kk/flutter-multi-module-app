@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
 
@@ -22,5 +23,18 @@ class FirebaseUtils {
       }
     });
     return resultList;
+  }
+
+  static Future<bool> storeEvents(
+      {dynamic eventsDetails, dynamic caseId}) async {
+    debugPrint('Event stored received in local');
+    FirebaseFirestore.instance
+        .collection(Singleton.instance.firebaseDatabaseName)
+        .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+        .collection(Constants.firebaseEvent)
+        .doc(caseId)
+        .collection('events')
+        .add(eventsDetails);
+    return true;
   }
 }

@@ -905,7 +905,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       bloc.userType == 'FIELDAGENT'
                                           ? GestureDetector(
                                               onTap: () => bloc.add(
-                                                  ClickOpenBottomSheetEvent(
+                                                  EventDetailsEvent(
                                                       Constants.addressDetails,
                                                       const [],
                                                       false)),
@@ -975,7 +975,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               : 0),
                                       GestureDetector(
                                         onTap: () => bloc.add(
-                                            ClickOpenBottomSheetEvent(
+                                            EventDetailsEvent(
                                                 Constants.callDetails,
                                                 const [],
                                                 true)),
