@@ -153,20 +153,28 @@ class Cases {
     if (Singleton.instance.usertype == Constants.fieldagent) {
       if (json['collSubStatus'] != null &&
           json['collSubStatus'].toString().toLowerCase() == 'new') {
-        followUpDate = DateTime.now().toString();
+        if (json['fieldfollowUpDate'] == null) {
+          fieldfollowUpDate = DateTime.now().toString();
+        } else {
+          fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
+        }
       } else {
-        followUpDate = json['followUpDate'] ?? '-';
+        fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
       }
     } else {
       if (json['telSubStatus'] != null &&
           json['telSubStatus'].toString().toLowerCase() == 'new') {
-        followUpDate = DateTime.now().toString();
+        if (json['followUpDate'] == null) {
+          followUpDate = DateTime.now().toString();
+        } else {
+          followUpDate = json['followUpDate'] ?? '-';
+        }
       } else {
         followUpDate = json['followUpDate'] ?? '-';
       }
     }
 
-    fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
+    // fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
     bankName = json['bankName'];
     aRef = json['aRef'];
     if (json['contact'] != null) {

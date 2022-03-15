@@ -23,6 +23,8 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/searching_data_model.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
@@ -55,7 +57,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   List<Result> searchResultList = [];
   bool isShowSearchResult = false;
 
-// Dashboard card onclick loading 
+// Dashboard card onclick loading
   bool isClickToCardLoading = false;
 
   // It's manage the Refresh the page basaed on Internet connection
@@ -332,7 +334,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is PriorityFollowEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
       // Here we clear and flase the search resulte
       searchResultList.clear();
@@ -350,12 +352,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield PriorityFollowState();
         }
       }
-      // Disabled loading 
+      // Disabled loading
       yield ClickToCardLoadingState();
     }
 
     if (event is UntouchedCasesEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
       // Here we clear and flase the search resulte
       searchResultList.clear();
@@ -373,12 +375,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield UntouchedCasesState();
         }
       }
-      //disabled loading 
+      //disabled loading
       yield ClickToCardLoadingState();
     }
 
     if (event is BrokenPTPEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
       // Here we clear and flase the search resulte
       searchResultList.clear();
@@ -393,12 +395,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield BrokenPTPState();
         }
       }
-     // Disabled loading 
+      // Disabled loading
       yield ClickToCardLoadingState();
     }
 
     if (event is MyReceiptsEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
       // Here we clear and false the search resulte
       searchResultList.clear();
@@ -416,7 +418,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield MyReceiptsState();
         }
       }
-      // Disabled loading 
+      // Disabled loading
       yield ClickToCardLoadingState();
     }
 
@@ -439,7 +441,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyVisitsEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
       // Here we clear and false the search resulte
       searchResultList.clear();
@@ -462,7 +464,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield MyVisitsState();
         }
       }
-      // Disabled loading 
+      // Disabled loading
       yield ClickToCardLoadingState();
     }
 
@@ -494,7 +496,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is MyDeposistsEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -511,7 +513,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           yield MyDeposistsState();
         }
       }
-      // Disabled loading 
+      // Disabled loading
       yield ClickToCardLoadingState();
     }
 
@@ -530,7 +532,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     if (event is YardingAndSelfReleaseEvent) {
-      //If you click dashboard card Enabled loading 
+      //If you click dashboard card Enabled loading
       yield ClickToCardLoadingState();
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -546,7 +548,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
       }
 
-      // Disabled loading 
+      // Disabled loading
       yield ClickToCardLoadingState();
     }
 
@@ -741,26 +743,67 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getSearchResultData =
-            await APIRepository.apiRequest(
-                APIRequestType.get,
-                HttpUrl.searchUrl +
-                    "starredOnly=${event.returnValue.isStarCases}&" +
-                    "recentActivity=${event.returnValue.isMyRecentActivity}&" +
-                    "accNo=${event.returnValue.accountNumber}&" +
-                    "cust=${event.returnValue.customerName}&" +
-                    "dpdStr=${event.returnValue.dpdBucket}&" +
-                    "customerId=${event.returnValue.customerID}&" +
-                    "pincode=${event.returnValue.pincode}&" +
-                    "collSubStatus=${event.returnValue.status}");
+        var data = event.returnValue as SearchingDataModel;
+        Map<String, dynamic> getSearchResultData;
+        if (data.isStarCases! && data.isMyRecentActivity!) {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.get,
+              HttpUrl.searchUrl +
+                  "starredOnly=${data.isStarCases}&" +
+                  "recentActivity=${data.isMyRecentActivity}&" +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        } else if (data.isStarCases!) {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.get,
+              HttpUrl.searchUrl +
+                  "starredOnly=${data.isStarCases}&" +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        } else if (data.isMyRecentActivity!) {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.get,
+              HttpUrl.searchUrl +
+                  "recentActivity=${data.isMyRecentActivity}&" +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        } else {
+          getSearchResultData = await APIRepository.apiRequest(
+              APIRequestType.get,
+              HttpUrl.searchUrl +
+                  "accNo=${data.accountNumber}&" +
+                  "cust=${data.customerName}&" +
+                  "dpdStr=${data.dpdBucket}&" +
+                  "customerId=${data.customerID}&" +
+                  "pincode=${data.pincode}&" +
+                  "collSubStatus=${data.status}");
+        }
 
-        //         Map<String, dynamic> getSearchResultData =
-        // await APIRepository.apiRequest(
-        //     APIRequestType.get,
-        //     HttpUrl.priorityCaseList +
-        //         'pageNo=${Constants.pageNo}' +
-        //         '&limit=${Constants.limit}');
-        // if get search result is show true
+        // Map<String, dynamic> getSearchResultData =
+        //     await APIRepository.apiRequest(
+        //         APIRequestType.get,
+        //         HttpUrl.searchUrl +
+        //             "starredOnly=${event.returnValue.isStarCases}&" +
+        //             "recentActivity=${event.returnValue.isMyRecentActivity}&" +
+        //             "accNo=${event.returnValue.accountNumber}&" +
+        //             "cust=${event.returnValue.customerName}&" +
+        //             "dpdStr=${event.returnValue.dpdBucket}&" +
+        //             "customerId=${event.returnValue.customerID}&" +
+        //             "pincode=${event.returnValue.pincode}&" +
+        //             "collSubStatus=${event.returnValue.status}");
+
         searchResultList.clear();
         isShowSearchResult = true;
 

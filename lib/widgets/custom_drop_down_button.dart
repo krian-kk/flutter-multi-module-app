@@ -16,6 +16,7 @@ class CustomDropDownButton extends StatefulWidget {
   final Widget? underline;
   final bool isExpanded;
   final TextStyle? style;
+  final TextStyle? valueTextStyle;
   final Color? focusColor;
   final Color? underlineColor;
   final FocusNode? focusNode;
@@ -30,6 +31,7 @@ class CustomDropDownButton extends StatefulWidget {
       this.underline,
       this.isExpanded = true,
       this.style,
+      this.valueTextStyle,
       this.focusNode,
       this.underlineColor = ColorResource.colorE5EAF6,
       this.autoFocus = false,
@@ -113,7 +115,8 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
                   value: value,
                   child: Text(
                     value,
-                    style: const TextStyle(overflow: TextOverflow.ellipsis),
+                    style: widget.valueTextStyle ??
+                        const TextStyle(overflow: TextOverflow.ellipsis),
                   ),
                 );
               }).toList(),

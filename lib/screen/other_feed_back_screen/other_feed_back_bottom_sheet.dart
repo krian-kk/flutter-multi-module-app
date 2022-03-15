@@ -717,6 +717,7 @@ class _CustomOtherFeedBackBottomSheetState
                       onChanged: (newValue) => setState(
                           () => collectorFeedBackValue = newValue.toString()),
                       icon: SvgPicture.asset(ImageResource.downShape),
+                      valueTextStyle: const TextStyle(height: 1),
                     ),
                   if (list[index].data![0].name == 'actionproposed')
                     CustomDropDownButton(

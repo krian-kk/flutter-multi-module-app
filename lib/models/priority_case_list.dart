@@ -98,7 +98,8 @@ class Result {
     if (Singleton.instance.usertype == Constants.fieldagent) {
       if (json['collSubStatus'] != null &&
           json['collSubStatus'].toString().toLowerCase() == 'new') {
-        if (json['fieldfollowUpDate'] != null) {
+        if (json['fieldfollowUpDate'] == null ||
+            json['fieldfollowUpDate'] != '') {
           fieldfollowUpDate = DateTime.now().toString();
         } else {
           fieldfollowUpDate = json['fieldfollowUpDate'];
@@ -109,7 +110,7 @@ class Result {
     } else {
       if (json['telSubStatus'] != null &&
           json['telSubStatus'].toString().toLowerCase() == 'new') {
-        if (json['followUpDate'] != null) {
+        if (json['followUpDate'] == null || json['followUpDate'] != '') {
           followUpDate = DateTime.now().toString();
         } else {
           followUpDate = json['followUpDate'];
