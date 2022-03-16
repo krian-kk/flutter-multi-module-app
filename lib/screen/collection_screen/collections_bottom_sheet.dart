@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +9,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
+import 'package:origa/models/receipt_sendsms_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/models/receipt_sendsms_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -24,6 +26,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -34,7 +37,6 @@ import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/language_to_constant_convert.dart';
@@ -721,94 +723,119 @@ class _CustomCollectionsBottomSheetState
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);
-                debugPrint(json.encode(postdata));
-                Map<String, dynamic> postResult =
-                    await APIRepository.apiRequest(
-                  APIRequestType.upload,
-                  HttpUrl.collectionPostUrl('collection', widget.userType),
-                  formDatas: FormData.fromMap(postdata),
-                );
+                Map<String, dynamic> firebaseObject =
+                    jsonDecode(jsonEncode(requestBodyData.toJson()));
+                try {
+                  firebaseObject.addAll(
+                      await FirebaseUtils.toPrepareFileStoringModel(
+                          uploadFileLists));
+                } catch (e) {
+                  debugPrint(
+                      'Exception while converting base64 ${e.toString()}');
+                }
+                if (ConnectivityResult.none ==
+                    await Connectivity().checkConnectivity()) {
+                  await FirebaseUtils.storeEvents(
+                      eventsDetails: firebaseObject, caseId: widget.caseId);
 
-                //postResult[success]
-                if (postResult[Constants.success]) {
-                  widget.bloc.add(
-                    ChangeIsSubmitForMyVisitEvent(
-                      Constants.collections,
-                      collectionAmount:
-                          double.parse(amountCollectedControlller.text),
-                    ),
+                  setState(() => isSubmit = true);
+                } else {
+                  // For local storage purpose storing while online
+                  await FirebaseUtils.storeEvents(
+                      eventsDetails: firebaseObject, caseId: widget.caseId);
+
+                  Map<String, dynamic> postResult =
+                      await APIRepository.apiRequest(
+                    APIRequestType.upload,
+                    HttpUrl.collectionPostUrl('collection', widget.userType),
+                    formDatas: FormData.fromMap(postdata),
                   );
-                  // if (!(widget.userType == Constants.fieldagent &&
-                  //     widget.isCall!)) {
-                  //   widget.bloc.add(
-                  //     ChangeIsSubmitEvent(
-                  //         selectedClipValue: Constants.receiptCaseStatus),
-                  //   );
-                  // }
-
-                  if (widget.isAutoCalling) {
-                    Navigator.pop(widget.paramValue['context']);
-                    Navigator.pop(widget.paramValue['context']);
-                    Singleton.instance.startCalling = false;
-                    if (!stopValue) {
-                      widget.allocationBloc!.add(StartCallingEvent(
-                        customerIndex: widget.paramValue['customerIndex'] +
-                            1, // CASE DETAILS
-                        phoneIndex: 0, // LIST OF PHONE NUMBER
-                        isIncreaseCount: true,
-                      ));
+                  //postResult[success]
+                  if (postResult[Constants.success]) {
+                    widget.bloc.add(
+                      ChangeIsSubmitForMyVisitEvent(
+                        Constants.collections,
+                        collectionAmount:
+                            double.parse(amountCollectedControlller.text),
+                      ),
+                    );
+                    if (widget.isAutoCalling) {
+                      Navigator.pop(widget.paramValue['context']);
+                      Navigator.pop(widget.paramValue['context']);
+                      Singleton.instance.startCalling = false;
+                      if (!stopValue) {
+                        widget.allocationBloc!.add(StartCallingEvent(
+                          customerIndex: widget.paramValue['customerIndex'] +
+                              1, // CASE DETAILS
+                          phoneIndex: 0, // LIST OF PHONE NUMBER
+                          isIncreaseCount: true,
+                        ));
+                      } else {
+                        widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                          customerIndex: widget.paramValue['customerIndex'],
+                        ));
+                      }
                     } else {
-                      widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                        customerIndex: widget.paramValue['customerIndex'],
-                      ));
+                      if (postResult['data']['result']['error'] != null) {
+                        setState(() => isSubmit = true);
+                        AppUtils.showErrorToast(
+                            postResult['data']['result']['error']);
+                      } else {
+                        AppUtils.topSnackBar(
+                            context, Constants.successfullySubmitted);
+                        widget.bloc.add(
+                          ChangeHealthStatusEvent(),
+                        );
+                        // Send SMS Notification
+                        if (Singleton.instance.contractorInformations?.result
+                                ?.sendSms ??
+                            false &&
+                                Singleton.instance.usertype ==
+                                    Constants.fieldagent) {
+                          var requestBodyData = ReceiptSendSMS(
+                            agrRef: Singleton.instance.agrRef,
+                            agentRef: Singleton.instance.agentRef,
+                            borrowerMobile:
+                                Singleton.instance.customerContactNo ?? "0",
+                            type: Constants.receiptAcknowledgementType,
+                            receiptAmount:
+                                int.parse(amountCollectedControlller.text),
+                            receiptDate: dateControlller.text,
+                            paymentMode: selectedPaymentModeButton,
+                            messageBody: 'message',
+                          );
+                          if (ConnectivityResult.none ==
+                              await Connectivity().checkConnectivity()) {
+                            FirebaseUtils.storeEvents(
+                                eventsDetails: requestBodyData.toJson(),
+                                caseId: widget.caseId);
+                          } else {
+                            // For local storage purpose storing while online
+                            await FirebaseUtils.storeEvents(
+                                eventsDetails: requestBodyData.toJson(),
+                                caseId: widget.caseId);
+                            Map<String, dynamic> postResult =
+                                await APIRepository.apiRequest(
+                              APIRequestType.post,
+                              HttpUrl.sendSMSurl,
+                              requestBodydata: jsonEncode(requestBodyData),
+                            );
+                            if (postResult[Constants.success]) {
+                              AppUtils.showToast(
+                                Languages.of(context)!.successfullySMSsend,
+                              );
+                            }
+                          }
+                        } else {
+                          AppUtils.showErrorToast(
+                              Languages.of(context)!.sendSMSerror);
+                        }
+                        Navigator.pop(context);
+                      }
                     }
                   } else {
-                    if (postResult['data']['result']['error'] != null) {
-                      setState(() => isSubmit = true);
-                      AppUtils.showErrorToast(
-                          postResult['data']['result']['error']);
-                    } else {
-                      AppUtils.topSnackBar(
-                          context, Constants.successfullySubmitted);
-                      widget.bloc.add(
-                        ChangeHealthStatusEvent(),
-                      );
-                      // Send SMS Notification
-                      if (Singleton.instance.contractorInformations!.result!
-                              .sendSms! &&
-                          Singleton.instance.usertype == Constants.fieldagent) {
-                        var requestBodyData = ReceiptSendSMS(
-                          agrRef: Singleton.instance.agrRef,
-                          agentRef: Singleton.instance.agentRef,
-                          borrowerMobile:
-                              Singleton.instance.customerContactNo ?? "0",
-                          type: Constants.receiptAcknowledgementType,
-                          receiptAmount:
-                              int.parse(amountCollectedControlller.text),
-                          receiptDate: dateControlller.text,
-                          paymentMode: selectedPaymentModeButton,
-                          messageBody: 'message',
-                        );
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.post,
-                          HttpUrl.sendSMSurl,
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
-                        if (postResult[Constants.success]) {
-                          AppUtils.showToast(
-                            Languages.of(context)!.successfullySMSsend,
-                          );
-                        }
-                      } else {
-                        AppUtils.showErrorToast(
-                            Languages.of(context)!.sendSMSerror);
-                      }
-                      Navigator.pop(context);
-                    }
+                    setState(() => isSubmit = true);
                   }
-                } else {
-                  setState(() => isSubmit = true);
                 }
               },
             );

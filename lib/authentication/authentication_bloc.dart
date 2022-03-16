@@ -29,9 +29,10 @@ class AuthenticationBloc
       // _pref.setBool(Constants.appDataLoadedFromFirebase, true);
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
+          Singleton.instance.usertype = _pref.getString(Constants.userType);
           yield OfflineState();
         } else {
-          // yield AuthenticationUnAuthenticated();
+          yield AuthenticationUnAuthenticated();
         }
         // AppUtils.showErrorToast('No Internet Connection');
       } else {

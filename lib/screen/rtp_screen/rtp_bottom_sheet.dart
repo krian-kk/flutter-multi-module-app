@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -18,6 +20,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -28,7 +31,6 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomRtpBottomSheet extends StatefulWidget {
@@ -406,39 +408,49 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
             callerServiceID: Singleton.instance.callerServiceID ?? '',
             callingID: Singleton.instance.callingID,
           );
-          Map<String, dynamic> postResult = await APIRepository.apiRequest(
-              APIRequestType.post,
-              HttpUrl.denialPostUrl('denial', widget.userType),
-              requestBodydata: jsonEncode(requestBodyData));
-          if (postResult[Constants.success]) {
-            widget.bloc.add(ChangeIsSubmitForMyVisitEvent(Constants.rtp));
-            if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-              widget.bloc.add(ChangeIsSubmitEvent(
-                  selectedClipValue: Constants.denialCaseStatus));
-            }
-
-            widget.bloc.add(
-              ChangeHealthStatusEvent(),
-            );
-
-            if (widget.isAutoCalling) {
-              Navigator.pop(widget.paramValue['context']);
-              Navigator.pop(widget.paramValue['context']);
-              if (!stopValue) {
-                widget.allocationBloc!.add(StartCallingEvent(
-                  customerIndex: widget.paramValue['customerIndex'] + 1,
-                  phoneIndex: 0,
-                  isIncreaseCount: true,
-                ));
-              } else {
-                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                  customerIndex: widget.paramValue['customerIndex'],
-                ));
+          if (ConnectivityResult.none ==
+              await Connectivity().checkConnectivity()) {
+            FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
+          } else {
+            // For local storage purpose storing while online
+            await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
+            Map<String, dynamic> postResult = await APIRepository.apiRequest(
+                APIRequestType.post,
+                HttpUrl.denialPostUrl('denial', widget.userType),
+                requestBodydata: jsonEncode(requestBodyData));
+            if (postResult[Constants.success]) {
+              widget.bloc.add(ChangeIsSubmitForMyVisitEvent(Constants.rtp));
+              if (!(widget.userType == Constants.fieldagent &&
+                  widget.isCall!)) {
+                widget.bloc.add(ChangeIsSubmitEvent(
+                    selectedClipValue: Constants.denialCaseStatus));
               }
-              Singleton.instance.startCalling = false;
-            } else {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              Navigator.pop(context);
+
+              widget.bloc.add(
+                ChangeHealthStatusEvent(),
+              );
+
+              if (widget.isAutoCalling) {
+                Navigator.pop(widget.paramValue['context']);
+                Navigator.pop(widget.paramValue['context']);
+                if (!stopValue) {
+                  widget.allocationBloc!.add(StartCallingEvent(
+                    customerIndex: widget.paramValue['customerIndex'] + 1,
+                    phoneIndex: 0,
+                    isIncreaseCount: true,
+                  ));
+                } else {
+                  widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                    customerIndex: widget.paramValue['customerIndex'],
+                  ));
+                }
+                Singleton.instance.startCalling = false;
+              } else {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                Navigator.pop(context);
+              }
             }
           }
         }

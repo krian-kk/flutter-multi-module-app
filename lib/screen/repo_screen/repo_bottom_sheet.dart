@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -424,28 +427,46 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   'files': value,
                                 });
 
-                                Map<String, dynamic> postResult =
-                                    await APIRepository.apiRequest(
-                                  APIRequestType.upload,
-                                  HttpUrl.repoPostUrl('repo', widget.userType),
-                                  formDatas: FormData.fromMap(postdata),
-                                );
-                                if (postResult[Constants.success]) {
-                                  widget.bloc.add(
-                                    ChangeIsSubmitForMyVisitEvent(
-                                      Constants.repo,
-                                    ),
+                                Map<String, dynamic> firebaseObject =
+                                    requestBodyData.toJson();
+                                try {
+                                  firebaseObject.addAll(await FirebaseUtils
+                                      .toPrepareFileStoringModel(
+                                          uploadFileLists));
+                                } catch (e) {
+                                  debugPrint(
+                                      'Exception while converting base64 ${e.toString()}');
+                                }
+                                if (ConnectivityResult.none ==
+                                    await Connectivity().checkConnectivity()) {
+                                  FirebaseUtils.storeEvents(
+                                      eventsDetails: firebaseObject,
+                                      caseId: widget.caseId);
+                                } else {
+                                  // For local storage purpose storing while online
+                                  await FirebaseUtils.storeEvents(
+                                      eventsDetails: firebaseObject,
+                                      caseId: widget.caseId);
+                                  Map<String, dynamic> postResult =
+                                      await APIRepository.apiRequest(
+                                    APIRequestType.upload,
+                                    HttpUrl.repoPostUrl(
+                                        'repo', widget.userType),
+                                    formDatas: FormData.fromMap(postdata),
                                   );
-                                  // Here trigger case status update
-                                  // widget.bloc.add(ChangeIsSubmitEvent(
-                                  //     selectedClipValue: Constants.repo));
-
-                                  AppUtils.topSnackBar(
-                                      context, Constants.successfullySubmitted);
-                                  widget.bloc.add(
-                                    ChangeHealthStatusEvent(),
-                                  );
-                                  Navigator.pop(context);
+                                  if (postResult[Constants.success]) {
+                                    widget.bloc.add(
+                                      ChangeIsSubmitForMyVisitEvent(
+                                        Constants.repo,
+                                      ),
+                                    );
+                                    AppUtils.topSnackBar(context,
+                                        Constants.successfullySubmitted);
+                                    widget.bloc.add(
+                                      ChangeHealthStatusEvent(),
+                                    );
+                                    Navigator.pop(context);
+                                  }
                                 }
                               }
                             }

@@ -3,7 +3,7 @@ import 'result.dart';
 class EventDetailsApiModel {
   int? status;
   String? message;
-  List<EventDetailsResultModel>? result;
+  List<EventDetailsResultModel>? result = [];
 
   EventDetailsApiModel({this.status, this.message, this.result});
 

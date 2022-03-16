@@ -44,6 +44,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/language_to_constant_convert.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -436,32 +437,41 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield UpdateSuccessfullState();
     }
     if (event is EventDetailsEvent) {
+      yield CaseDetailsLoadingState();
       switch (event.title) {
         case Constants.eventDetails:
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
             // yield CDNoInternetState();
-
-
-
             //Getting event details from firebase databse
-            // FirebaseFirestore.instance
-            //     .collection(Singleton.instance.firebaseDatabaseName)
-            //     .doc(
-            //         '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-            //     .collection(Constants.firebaseEvent)
-            //     .doc(caseId)
-            //     .collection(Constants.firebaseEvents)
-            //     .snapshots()
-            //     .forEach((element) {
-            //       expandEvent.map((e) {
-            //         eventDetailsAPIValue.result!.add(EventDetailsResultModel.fromJson());
-            //       });
-            //   for (var element in element.docs) {
-            //     debugPrint('Values 1st agentName---> ${element['agentName']}');
-            //     eventDetailsAPIValue.result!.add(EventDetailsResultModel.fromJson(element));
-            //   }
-            // });
+            await FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName)
+                .doc(
+                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+                .collection(Constants
+                    .firebaseEvent) // To get the events from event collection
+                .where(Constants.caseId,
+                    isEqualTo:
+                        caseId) //To find respective events of case details
+                .limit(5) // Need to show the last five events only
+                .get()
+                .then((QuerySnapshot<Map<String, dynamic>> value) {
+              if (value.docs.isNotEmpty) {
+                //temporaryList for events list
+                List<EventDetailsResultModel>? result = [];
+                for (var element in value.docs) {
+                  try {
+                    result
+                        .add(EventDetailsResultModel.fromJson(element.data()));
+                  } catch (e) {
+                    debugPrint(e.toString());
+                  }
+                }
+                eventDetailsAPIValue.result = result;
+              } else {
+                eventDetailsAPIValue.result = [];
+              }
+            });
           } else {
             Map<String, dynamic> getEventDetailsData =
                 await APIRepository.apiRequest(
@@ -471,7 +481,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
             if (getEventDetailsData[Constants.success] == true) {
               Map<String, dynamic> jsonData = getEventDetailsData['data'];
-
               eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
             } else {
               AppUtils.showToast(getEventDetailsData['data']['message']);
@@ -484,6 +493,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
+        try {
+          debugPrint(
+              'eventDetailsAPIValue size--> ${eventDetailsAPIValue.result?.length}');
+        } catch (e) {
+          debugPrint(e.toString());
+        }
         yield ClickOpenBottomSheetState(
           event.title,
           event.list!,
@@ -510,14 +525,30 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       postdata.addAll({
         'files': value,
       });
-
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.upload,
-        HttpUrl.imageCaptured + "userType=$userType",
-        formDatas: FormData.fromMap(postdata),
-      );
-      if (postResult[Constants.success]) {
+      //do do do do
+      Map<String, dynamic> firebaseObject = event.postData!.toJson();
+      try {
+        firebaseObject.addAll(
+            await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
+      } catch (e) {
+        debugPrint('Exception while converting base64 ${e.toString()}');
+      }
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        await FirebaseUtils.storeEvents(
+            eventsDetails: firebaseObject, caseId: caseId);
         yield PostDataApiSuccessState();
+      } else {
+        // For local storage purpose storing while online
+        await FirebaseUtils.storeEvents(
+            eventsDetails: firebaseObject, caseId: caseId);
+        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.upload,
+          HttpUrl.imageCaptured + "userType=$userType",
+          formDatas: FormData.fromMap(postdata),
+        );
+        if (postResult[Constants.success]) {
+          yield PostDataApiSuccessState();
+        }
       }
       yield EnableCaptureImageBtnState();
     }
@@ -1208,7 +1239,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.text = '';
       phoneSelectedUnreadableClip = '';
-    } else {}
+    }
     return postResult;
   }
 
@@ -1265,13 +1296,24 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           heading: position.heading,
           speed: position.speed,
         ));
-
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.post,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
-
+    Map<String, dynamic> postResult = {'success': false};
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(), caseId: caseId)
+          .then((value) {
+        //For navigation purpose - back screen
+        postResult = {'success': true};
+      });
+    } else {
+      // For local storage purpose storing while online
+      await FirebaseUtils.storeEvents(
+          eventsDetails: requestBodyData.toJson(), caseId: caseId);
+      postResult = await APIRepository.apiRequest(
+        APIRequestType.post,
+        urlString,
+        requestBodydata: jsonEncode(requestBodyData),
+      );
+    }
     if (await postResult[Constants.success]) {
       submitedEventType = 'Customer Not Met';
       isSubmitedForMyVisits = true;
@@ -1286,6 +1328,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     return postResult;
   }
 
+  //user via from address details -> only for collector
   Future<Map<String, dynamic>> addressInvalidButtonClick(
     String eventType,
     String caseId,
@@ -1348,12 +1391,24 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resAddressId_0: Singleton.instance.resAddressId_0 ?? '',
           )
         ]);
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.post,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
-
+    Map<String, dynamic> postResult = {'success': false};
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(), caseId: caseId)
+          .then((value) {
+        //For navigation purpose - back screen
+        postResult = {'success': true};
+      });
+    } else {
+      // For local storage purpose storing while online
+      await FirebaseUtils.storeEvents(
+          eventsDetails: requestBodyData.toJson(), caseId: caseId);
+      postResult = await APIRepository.apiRequest(
+        APIRequestType.post,
+        urlString,
+        requestBodydata: jsonEncode(requestBodyData),
+      );
+    }
     if (await postResult[Constants.success]) {
       submitedEventType = 'Address Invalid';
       isSubmitedForMyVisits = true;
@@ -1366,6 +1421,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     return postResult;
   }
 
+  // user via from call details
   Future<Map<String, dynamic>> phoneInvalidButtonClick(
     String eventType,
     String caseId,

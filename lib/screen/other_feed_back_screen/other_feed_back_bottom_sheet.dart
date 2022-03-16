@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -26,6 +28,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -36,11 +39,11 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
+
   const CustomOtherFeedBackBottomSheet(
     this.cardTitle,
     this.bloc, {
@@ -574,88 +577,79 @@ class _CustomOtherFeedBackBottomSheetState
           'files': value,
         });
 
-        Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.upload,
-          HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
-          formDatas: FormData.fromMap(postdata),
-        );
+        Map<String, dynamic> firebaseObject = requestBodyData.toJson();
+        try {
+          firebaseObject.addAll(
+              await FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+        } catch (e) {
+          debugPrint('Exception while converting base64 ${e.toString()}');
+        }
 
-        if (postResult[Constants.success]) {
-          widget.bloc.add(
-            ChangeIsSubmitForMyVisitEvent(
-              Constants.otherFeedback,
-            ),
+        if (ConnectivityResult.none ==
+            await Connectivity().checkConnectivity()) {
+          FirebaseUtils.storeEvents(
+              eventsDetails: firebaseObject, caseId: widget.caseId);
+        } else {
+          // For local storage purpose storing while online
+          await FirebaseUtils.storeEvents(
+              eventsDetails: firebaseObject, caseId: widget.caseId);
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            APIRequestType.upload,
+            HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
+            formDatas: FormData.fromMap(postdata),
           );
-          // Here call update case status
-          // if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
-          //   widget.bloc.add(
-          //     ChangeIsSubmitEvent(selectedClipValue: Constants.otherFeedback),
-          //   );
-          // }
+          if (postResult[Constants.success]) {
+            widget.bloc.add(
+              ChangeIsSubmitForMyVisitEvent(
+                Constants.otherFeedback,
+              ),
+            );
+            widget.bloc.add(
+              ChangeHealthStatusEvent(),
+            );
 
-          widget.bloc.add(
-            ChangeHealthStatusEvent(),
-          );
-
-          if (widget.isAutoCalling) {
-            Navigator.pop(widget.paramValue['context']);
-            Navigator.pop(widget.paramValue['context']);
-            Singleton.instance.startCalling = false;
-            // if (widget.health == 'jones') {
-            // } else {
-            //   print(
-            //       'Health Value is ================= > ${widget.health}');
-            // widget.allocationBloc!
-            //     .add(StartCallingEvent(
-            //   customerIndex: widget
-            //           .paramValue['customerIndex'] +
-            //       1,
-            //   phoneIndex: 0,
-            //   isIncreaseCount: true,
-            // ));
-            // }
-            if (!stopValue) {
-              widget.allocationBloc!.add(StartCallingEvent(
-                customerIndex: widget.paramValue['customerIndex'] + 1,
-                phoneIndex: 0,
-                isIncreaseCount: true,
-              ));
-            } else {
-              if (widget.health == ConstantEventValues.healthTwo) {
-                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                  customerIndex: widget.paramValue['customerIndex'],
+            if (widget.isAutoCalling) {
+              Navigator.pop(widget.paramValue['context']);
+              Navigator.pop(widget.paramValue['context']);
+              Singleton.instance.startCalling = false;
+              if (!stopValue) {
+                widget.allocationBloc!.add(StartCallingEvent(
+                  customerIndex: widget.paramValue['customerIndex'] + 1,
+                  phoneIndex: 0,
+                  isIncreaseCount: true,
                 ));
+              } else {
+                if (widget.health == ConstantEventValues.healthTwo) {
+                  widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                    customerIndex: widget.paramValue['customerIndex'],
+                  ));
+                }
               }
-            }
-          } else {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            if (widget.isCall!) {
-              setState(() {
-                for (int i = 0; i < (otherFeedbackContact.length); i++) {
-                  widget.bloc.listOfCallDetails
-                      ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
-                }
-              });
-              widget.bloc.add(AddedNewCallContactListEvent());
-              // print(widget.bloc.listOfCallDetails);
             } else {
-              setState(() {
-                for (int i = 0; i < (otherFeedbackContact.length); i++) {
-                  // if (widget.bloc.listOfAddressDetails!
-                  //     .contains(otherFeedbackContact[i])) {
-                  widget.bloc.listOfAddressDetails
-                      ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
-                }
-                // }
-              });
-              widget.bloc.add(AddedNewAddressListEvent());
-              // print(widget.bloc.listOfAddressDetails);
-            }
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              if (widget.isCall!) {
+                setState(() {
+                  for (int i = 0; i < (otherFeedbackContact.length); i++) {
+                    widget.bloc.listOfCallDetails
+                        ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
+                  }
+                });
+                widget.bloc.add(AddedNewCallContactListEvent());
+              } else {
+                setState(() {
+                  for (int i = 0; i < (otherFeedbackContact.length); i++) {
+                    widget.bloc.listOfAddressDetails
+                        ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
+                  }
+                  // }
+                });
+                widget.bloc.add(AddedNewAddressListEvent());
+              }
 
-            Navigator.pop(context);
+              Navigator.pop(context);
+            }
           }
-        } else {}
-        // }
+        }
       }
     }
     setState(() => isSubmit = true);

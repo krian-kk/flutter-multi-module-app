@@ -529,12 +529,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               contactId0: Singleton.instance.contactId_0 ?? '',
             ),
           );
-
-         /* if (ConnectivityResult.none ==
+          if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
             FirebaseUtils.storeEvents(
                 eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
           } else {
+            // For local storage purpose storing while online
+            await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
             Map<String, dynamic> postResult = await APIRepository.apiRequest(
               APIRequestType.post,
               HttpUrl.ptpPostUrl(
@@ -583,9 +585,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 Navigator.pop(context);
               }
             }
-          }*/
-          FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
+          }
         }
       } else {
         AppUtils.showToast(Languages.of(context)!.pleaseSelectPaymentMode);

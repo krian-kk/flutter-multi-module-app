@@ -1129,6 +1129,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     bloc.starCount++;
                                   }
                                 }
+                                resultList.sort((a, b) {
+                                  return b.starredCase ? 1 : -1;
+                                });
                               }
                               return resultList.isEmpty
                                   ? Column(
