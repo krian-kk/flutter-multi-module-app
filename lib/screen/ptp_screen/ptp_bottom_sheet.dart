@@ -341,6 +341,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     focusNode: ptpRemarksFocusNode,
                                     validationRules: const ['required'],
                                     isLabel: true,
+                                    isVoiceRecordWidget: true,
                                     // suffixWidget: VoiceRecodingWidget(),
                                     validatorCallBack: () {}, onEditing: () {
                                   ptpRemarksFocusNode.unfocus();

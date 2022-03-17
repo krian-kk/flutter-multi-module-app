@@ -74,6 +74,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                           widget.bloc.phoneInvalidRemarksController,
                           validationRules: const ['required'],
                           isLabel: true,
+                          isVoiceRecordWidget: true,
                           // suffixWidget: VoiceRecodingWidget(),
                         )),
                         const SizedBox(height: 19),

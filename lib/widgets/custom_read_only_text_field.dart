@@ -1,9 +1,23 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/languages/app_languages.dart';
+import 'package:origa/listener/item_selected_listener.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/validator.dart';
+import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_cancel_button.dart';
+import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/custom_textfield.dart';
+import 'package:origa/widgets/voice_record_widget.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../singleton.dart';
 
 class CustomReadOnlyTextField extends StatefulWidget {
   final String hintText;
@@ -39,6 +53,8 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final bool isVoiceRecordWidget;
   final bool isNumberOnly;
   final String? caseId;
+  final String? agrRef;
+  final OnChange? remarkFunction;
 
   const CustomReadOnlyTextField(
     this.hintText,
@@ -75,6 +91,8 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.isVoiceRecordWidget = false,
     this.caseId = 'case_id',
     this.isNumberOnly = false,
+    this.agrRef,
+    this.remarkFunction,
   }) : super(key: key);
 
   @override
@@ -83,16 +101,106 @@ class CustomReadOnlyTextField extends StatefulWidget {
 }
 
 class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
+  String filePath = '';
+  bool isPlaying = false;
+  bool isPaused = false;
+  bool isActiveSpeaker = false;
+  TextEditingController translateTextController =
+      TextEditingController(text: '');
+  bool isEdit = false;
+  late AudioPlayer audioPlayer;
+  static const platform = MethodChannel('recordAudioChannel');
+  FocusNode? focus = FocusNode();
+
   @override
   void initState() {
-    // if (widget.focusNode != null) {
-    //   widget.focusNode!.addListener(() {
-    //     setState(() {
-    //       FocusScope.of(context).requestFocus(widget.focusNode);
-    //     });
-    //   });
-    // }
+    if (widget.isVoiceRecordWidget) {
+      // getPermission();
+
+      // filePath = createFilename.replaceAll(':', '-');
+      audioPlayer = AudioPlayer();
+      // getPermission();
+      // filePath =
+      //     '/sdcard/Download/djkdjkdjkdj${widget.agrRef}_${(DateTime.now().toIso8601String()).split('.').first.toString()}.wav';
+
+      // filePath = '/sdcard/Download/tempAudio.wav';
+      // print('File Patyh is ======================= > ${filePath}');
+      audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+        if (state == PlayerState.PLAYING) {
+          setState(() {
+            isPlaying = true;
+          });
+        }
+        if (state == PlayerState.STOPPED) {
+          setState(() {
+            isPlaying = false;
+            isPaused = false;
+          });
+        }
+        if (state == PlayerState.COMPLETED) {
+          setState(() {
+            isPlaying = false;
+            isPaused = false;
+          });
+        }
+        if (state == PlayerState.PAUSED) {
+          setState(() {
+            isPaused = true;
+          });
+        }
+      });
+      getFileDirectory();
+    }
+
     super.initState();
+  }
+
+  getFileDirectory() async {
+    String dir = ((await getApplicationDocumentsDirectory()).path) +
+        '/${Singleton.instance.agrRef}_${((DateTime.now().toIso8601String()).split('.').first.toString()).replaceAll(':', '-')}.wav';
+    setState(() {
+      filePath = dir;
+      // filePath = '/sdcard/Download/ta01.wav';
+    });
+  }
+
+  playAudio() async {
+    int result = await audioPlayer.play(filePath, isLocal: true);
+    if (result == 1) {
+      setState(() {});
+    }
+  }
+
+  stopAudio() async {
+    int result = await audioPlayer.stop();
+    if (result == 1) {
+      setState(() {});
+    }
+  }
+
+  pauseAudio() async {
+    int result = await audioPlayer.pause();
+    if (result == 1) {
+      setState(() {});
+    }
+  }
+
+  resumeAudio() async {
+    int result = await audioPlayer.resume();
+    if (result == 1) {
+      setState(() {
+        isPaused = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    isActiveSpeaker = false;
+    filePath = '';
+    translateTextController.text = '';
+    translateTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -188,7 +296,25 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   contentPadding: widget.contentPadding ??
                       const EdgeInsets.fromLTRB(0, 10, 0, 9),
                   errorMaxLines: 1,
-                  suffixIcon: widget.suffixWidget,
+                  suffixIcon: widget.isVoiceRecordWidget
+                      ? (filePath != '')
+                          ? VoiceRecodingWidget(
+                              filePath: filePath,
+                              recording: (values) {
+                                if (values is bool) {
+                                  //Click action true/false
+                                } else if (values is String) {
+                                  //API response
+                                  setState(() {
+                                    translateTextController.text = values;
+                                    isActiveSpeaker = true;
+                                  });
+                                }
+                              },
+                              caseId: widget.caseId,
+                            )
+                          : const SizedBox()
+                      : widget.suffixWidget,
                   errorStyle: const TextStyle(
                       color: Colors.red,
                       height: 0.7,
@@ -236,6 +362,162 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             ),
           ),
         ),
+        if (widget.isVoiceRecordWidget && isActiveSpeaker)
+          const SizedBox(height: 13),
+        if (widget.isVoiceRecordWidget &&
+            isActiveSpeaker &&
+            translateTextController.text != '')
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
+                decoration: const BoxDecoration(
+                    color: ColorResource.colorF7F8FA,
+                    borderRadius: BorderRadius.all(Radius.circular(60.0))),
+                child: CustomText(
+                  Languages.of(context)!.remarksRecording,
+                  lineHeight: 1,
+                  color: ColorResource.color000000,
+                  fontSize: FontSize.fourteen,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(width: 5),
+              GestureDetector(
+                onTap: () {
+                  isPlaying ? stopAudio() : playAudio();
+                },
+                child: CircleAvatar(
+                  backgroundColor: ColorResource.color23375A,
+                  radius: 15,
+                  child: Center(
+                    child: Icon(
+                      isPlaying ? Icons.stop : Icons.play_arrow,
+                      color: ColorResource.colorFFFFFF,
+                    ),
+                  ),
+                ),
+              ),
+              if (isPlaying) const SizedBox(width: 5),
+              if (isPlaying)
+                GestureDetector(
+                  onTap: () {
+                    isPaused ? resumeAudio() : pauseAudio();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: ColorResource.color23375A,
+                    radius: 15,
+                    child: Center(
+                      child: Icon(
+                        isPaused ? Icons.play_arrow : Icons.pause,
+                        color: ColorResource.colorFFFFFF,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+          const SizedBox(height: 6),
+        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
+            decoration: const BoxDecoration(
+                color: ColorResource.colorF7F8FA,
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            child: isEdit
+                ? TextField(
+                    controller: translateTextController,
+                    textInputAction: TextInputAction.newline,
+                    maxLines: 5,
+                    minLines: 1,
+                    focusNode: focus,
+                    onEditingComplete: () {
+                      setState(() {
+                        isEdit = false;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                  )
+                : CustomText(
+                    translateTextController.text,
+                    color: ColorResource.color000000,
+                    fontSize: FontSize.fourteen,
+                    fontWeight: FontWeight.w400,
+                  ),
+          ),
+        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+          const SizedBox(height: 8),
+        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  child: CustomButton(
+                    Languages.of(context)!.edit.toUpperCase(),
+                    cardElevation: 0.5,
+                    cardShape: 5.0,
+                    onTap: () {
+                      setState(() {
+                        isEdit = true;
+                        focus?.requestFocus();
+                      });
+                    },
+                    buttonBackgroundColor: ColorResource.colorFFFFFF,
+                    borderColor: ColorResource.colorDADADA,
+                    textColor: ColorResource.color23375A,
+                    fontSize: FontSize.twelve,
+                    padding: 1,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  child: CustomButton(
+                    Languages.of(context)!.okay.toUpperCase(),
+                    cardElevation: 2.0,
+                    cardShape: 5.0,
+                    onTap: () {
+                      widget.controller.text = translateTextController.text;
+                      setState(() {
+                        translateTextController.text = '';
+                        isActiveSpeaker = false;
+                      });
+                    },
+                    fontSize: FontSize.twelve,
+                    padding: 1,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: CustomCancelButton.cancelButton(
+                  context,
+                  fontsize: FontSize.twelve,
+                  function: () {
+                    setState(() {
+                      translateTextController.text = '';
+                      isActiveSpeaker = false;
+                    });
+                  },
+                ),
+              ),
+            ],
+          )
       ],
     );
   }
@@ -249,10 +531,5 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
       }
     }
     return null;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

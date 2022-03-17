@@ -33,6 +33,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
   bool isProfileImageUpdating = false;
   File? image;
+// customer language preference data
+  List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList = [];
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
@@ -84,6 +86,44 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ClickChangeLaunguageEvent) {
       yield ClickChangeLaunguageState();
     }
+
+    if (event is CustomerLaunguagePrefrerenceEvent) {
+      customerLanguagePreferenceList = [
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.tamilLang,
+            languageCode: Constants.tamilLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.hindiLang,
+            languageCode: Constants.hindiLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.kannadaLang,
+            languageCode: Constants.kannadaLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.teluguLang,
+            languageCode: Constants.teluguLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.malayalamLang,
+            languageCode: Constants.malayalamLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.bengaliLang,
+            languageCode: Constants.bengaliLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.gujaratiLang,
+            languageCode: Constants.gujaratiLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.panjabiLang,
+            languageCode: Constants.panjabiLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.marathiLang,
+            languageCode: Constants.marathiLangCode),
+        CustomerLanguagePreferenceModel(
+            language: Languages.of(event.context)!.urduLang,
+            languageCode: Constants.urduLangCode),
+      ];
+
+      yield CustomerLaunguagePrefrerenceState();
+    }
+
     if (event is ClickChangePassswordEvent) {
       yield ClickChangePasswordState();
     }

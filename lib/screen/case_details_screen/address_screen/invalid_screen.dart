@@ -76,6 +76,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         widget.bloc.addressInvalidRemarksController,
                         validationRules: const ['required'],
                         isLabel: true,
+                        isVoiceRecordWidget: true,
                         // suffixWidget: VoiceRecodingWidget(),
                       )),
                       const SizedBox(height: 19),

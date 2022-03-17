@@ -152,4 +152,27 @@ class Constants {
   static const String selfPay = 'SELF PAY';
   static const String cash = 'CASH';
   static const String digital = 'DIGITAL';
+  static const String s2tLangcode = 's2tLangcode';
+  static const String s2tLangSelectedIndex = 's2tLangSelectedIndex';
+
+  // Customer Preference Language Code
+  static const String tamilLangCode = 'ta-IN';
+
+  static const String hindiLangCode = 'hi-IN';
+
+  static const String bengaliLangCode = 'bn-IN';
+
+  static const String gujaratiLangCode = 'gu-IN';
+
+  static const String kannadaLangCode = 'kn-IN';
+
+  static const String urduLangCode = 'ur-IN';
+
+  static const String malayalamLangCode = 'ml-IN';
+
+  static const String marathiLangCode = 'mr-IN';
+
+  static const String panjabiLangCode = 'pa-Guru-IN';
+
+  static const String teluguLangCode = 'te-IN';
 }

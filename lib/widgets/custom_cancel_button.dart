@@ -5,15 +5,16 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_button.dart';
 
 class CustomCancelButton {
-  static Widget cancelButton(context) {
+  static Widget cancelButton(context,
+      {Function()? function, double? fontsize}) {
     return CustomButton(
       Languages.of(context!)!.cancel.toUpperCase(),
-      fontSize: FontSize.eighteen,
+      fontSize: fontsize ?? FontSize.eighteen,
       fontWeight: FontWeight.w600,
       buttonBackgroundColor: Colors.white,
       borderColor: Colors.white,
       textColor: ColorResource.colorEA6D48,
-      onTap: () => Navigator.pop(context),
+      onTap: function ?? () => Navigator.pop(context),
       cardShape: 5,
     );
   }

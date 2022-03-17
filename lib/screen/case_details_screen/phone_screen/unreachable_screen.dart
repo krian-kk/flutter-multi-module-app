@@ -133,6 +133,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           widget.bloc.phoneUnreachableRemarksController,
                           validationRules: const ['required'],
                           isLabel: true,
+                          isVoiceRecordWidget: true,
                           // suffixWidget: VoiceRecodingWidget(),
                         )),
                         const SizedBox(height: 20),

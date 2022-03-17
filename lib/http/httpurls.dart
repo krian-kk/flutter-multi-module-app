@@ -1,8 +1,8 @@
 class HttpUrl {
   // 1st - Customer will be reject ->
-  static String url = 'https://collect.origa.ai';
+  // static String url = 'https://collect.origa.ai';
 
-  // static String url = 'https://uat-collect.origa.ai';
+  static String url = 'https://uat-collect.origa.ai';
 
   // static String url = 'https://collect.instalmint.com';
   // static String? url = '';
@@ -223,4 +223,8 @@ class HttpUrl {
   static final String chatTokenRequest = baseUrl + 'chat/tokenRequest';
 
   static final String chatHistory = baseUrl + 'chat/history';
+
+  // Convert Voice to Text Post API
+  static final String audioRemarksURL =
+      baseUrl + fieldAgent + 'case-details-events/audioRemarks_upload';
 }

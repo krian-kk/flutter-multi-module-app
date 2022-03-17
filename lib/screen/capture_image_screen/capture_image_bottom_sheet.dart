@@ -144,6 +144,7 @@ class _CustomCaptureImageBottomSheetState
                                     remarksControlller,
                                     validationRules: const ['required'],
                                     isLabel: true,
+                                    isVoiceRecordWidget: true,
                                     // suffixWidget: VoiceRecodingWidget(),
                                   ),
                                 ],

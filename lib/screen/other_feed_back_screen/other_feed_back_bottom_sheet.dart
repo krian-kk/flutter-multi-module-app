@@ -289,6 +289,7 @@ class _CustomOtherFeedBackBottomSheetState
                                     validationRules: const ['required'],
                                     isLabel: true,
                                     isEnable: true,
+                                    isVoiceRecordWidget: true,
                                   ),
                                 ),
                                 const SizedBox(height: 25),

@@ -36,6 +36,7 @@ class SelectPaymentModeButtonWidget {
               fontWeight: FontWeight.w700,
               fontSize: FontSize.thirteen,
               fontStyle: FontStyle.normal,
+              lineHeight: 1.35,
             ),
           ),
         ),

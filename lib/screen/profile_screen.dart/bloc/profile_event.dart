@@ -11,6 +11,11 @@ class ClickNotificationEvent extends ProfileEvent {}
 
 class ClickChangeLaunguageEvent extends ProfileEvent {}
 
+class CustomerLaunguagePrefrerenceEvent extends ProfileEvent {
+  final BuildContext context;
+  CustomerLaunguagePrefrerenceEvent(this.context);
+}
+
 class ClickChangePassswordEvent extends ProfileEvent {}
 
 class ClickChangeSecurityPinEvent extends ProfileEvent {}

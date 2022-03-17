@@ -376,6 +376,7 @@ class _CustomCollectionsBottomSheetState
                                   validationRules: const ['required'],
                                   isLabel: true,
                                   onEditing: () => remarksFocusNode.unfocus(),
+                                  isVoiceRecordWidget: true,
                                   // suffixWidget: VoiceRecodingWidget(),
                                 ),
                                 const SizedBox(height: 15),

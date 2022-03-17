@@ -131,6 +131,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           widget.bloc.addressCustomerNotMetRemarksController,
                           validationRules: const ['required'],
                           isLabel: true,
+                          isVoiceRecordWidget: true,
                           // suffixWidget: VoiceRecodingWidget(),
                         )),
                         // Align(

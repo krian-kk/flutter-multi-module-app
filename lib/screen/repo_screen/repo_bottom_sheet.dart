@@ -270,6 +270,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           Languages.of(context)!.remarks,
                           remarksControlller,
                           validationRules: const ['required'],
+                          isVoiceRecordWidget: true,
                           // suffixWidget: VoiceRecodingWidget(),
                           isLabel: true,
                         )),

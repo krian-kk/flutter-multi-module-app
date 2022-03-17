@@ -542,7 +542,10 @@ class LanguageEn extends Languages {
   String get writeYourRemarksHere => 'Write your remarks here';
 
   @override
-  String get selectLanguage => 'SELECT LANGUAGE';
+  String get selectAppLanguage => 'SELECT APP LANGUAGE';
+
+  @override
+  String get customerLanguagePreference => 'Customer Language Preference';
 
   @override
   String get doesNotExist => 'DOES NOT EXIST';
@@ -841,4 +844,52 @@ class LanguageEn extends Languages {
 
   @override
   String get loanCleared => 'Loan Cleared';
+
+  @override
+  String get edit => 'EDIT';
+
+  @override
+  String get remarksRecording => 'Remarks Recording';
+
+  @override
+  String get chooseLanguage => 'Choose Language';
+
+  @override
+  String get selectedLanguage => 'Selected Language';
+
+  @override
+  String get errorMsgS2TlangCode =>
+      'Please select Customer Language Preference from Profile';
+
+  // Customer Preference Languages
+
+  @override
+  String get tamilLang => 'Tamil';
+
+  @override
+  String get hindiLang => 'Hindi';
+
+  @override
+  String get bengaliLang => 'Bengali';
+
+  @override
+  String get gujaratiLang => 'Gujarati';
+
+  @override
+  String get kannadaLang => 'Kannada';
+
+  @override
+  String get urduLang => 'Urdu';
+
+  @override
+  String get malayalamLang => 'Malayalam';
+
+  @override
+  String get marathiLang => 'Marathi';
+
+  @override
+  String get panjabiLang => 'Punjabi (Gurmukhi)';
+
+  @override
+  String get teluguLang => 'Telugu';
 }
