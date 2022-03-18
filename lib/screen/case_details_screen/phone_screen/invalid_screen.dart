@@ -55,55 +55,59 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
             children: [
               Flexible(
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: _buildSelectedClip(selectedClipList),
-                        ),
-                        const SizedBox(height: 15),
-                        Flexible(
-                            child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
-                          widget.bloc.phoneInvalidRemarksController,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                          isVoiceRecordWidget: true,
-                          // suffixWidget: VoiceRecodingWidget(),
-                        )),
-                        const SizedBox(height: 19),
-                        Wrap(
-                          spacing: 15,
-                          runSpacing: 8,
-                          children: SelectPaymentModeButtonWidget
-                              .buildOptionBottomSheetOpenButton(
-                            optionBottomSheetButtonList,
-                            context,
-                            (element) {
-                              setState(() {
-                                selectedOptionBottomSheetButton = element.title;
-                              });
-                              widget.bloc.add(ClickOpenBottomSheetEvent(
-                                element.stringResourceValue,
-                                widget.bloc.caseDetailsAPIValue.result
-                                    ?.callDetails,
-                                true,
-                                health: ConstantEventValues.healthZero,
-                                isCallFromCallDetails:
-                                    widget.isCallFromCaseDetails,
-                                callId: widget.callId,
-                              ));
-                            },
-                            selectedOptionBottomSheetButton,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _buildSelectedClip(selectedClipList),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 15),
+                          Flexible(
+                              child: CustomReadOnlyTextField(
+                            Languages.of(context)!.remarks,
+                            widget.bloc.phoneInvalidRemarksController,
+                            validationRules: const ['required'],
+                            isLabel: true,
+                            isVoiceRecordWidget: true,
+                            // suffixWidget: VoiceRecodingWidget(),
+                          )),
+                          const SizedBox(height: 19),
+                          Wrap(
+                            spacing: 15,
+                            runSpacing: 8,
+                            children: SelectPaymentModeButtonWidget
+                                .buildOptionBottomSheetOpenButton(
+                              optionBottomSheetButtonList,
+                              context,
+                              (element) {
+                                setState(() {
+                                  selectedOptionBottomSheetButton =
+                                      element.title;
+                                });
+                                widget.bloc.add(ClickOpenBottomSheetEvent(
+                                  element.stringResourceValue,
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.callDetails,
+                                  true,
+                                  health: ConstantEventValues.healthZero,
+                                  isCallFromCallDetails:
+                                      widget.isCallFromCaseDetails,
+                                  callId: widget.callId,
+                                ));
+                              },
+                              selectedOptionBottomSheetButton,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

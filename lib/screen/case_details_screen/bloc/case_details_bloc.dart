@@ -135,6 +135,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   List<dynamic>? listOfCallDetails = [];
   List<Address>? listOfAddress;
 
+// Repayment info send sms loading
+  bool isSendSMSloading = false;
+
   @override
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is CaseDetailsInitialEvent) {
@@ -812,6 +815,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield EnableUnreachableBtnState();
     }
     if (event is SendSMSEvent) {
+      yield SendSMSloadState();
+      await Future.delayed(const Duration(seconds: 3));
       if (Singleton.instance.contractorInformations!.result!.sendSms!) {
         var requestBodyData = SendSMS(
           agentRef: Singleton.instance.agentRef,
@@ -829,6 +834,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       } else {
         AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
       }
+      yield SendSMSloadState();
     }
     if (event is UpdateHealthStatusEvent) {
       Singleton.instance.updateHealthStatus = {

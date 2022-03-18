@@ -68,150 +68,155 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
                 body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: _buildSelectedClip(selectedClipList),
-                        ),
-                        const SizedBox(height: 25),
-                        CustomText(
-                          Languages.of(context)!.nextActionDate.toUpperCase(),
-                          color: ColorResource.color666666,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
-                        SizedBox(
-                          width: (MediaQuery.of(context).size.width - 62) / 2,
-                          child: CustomReadOnlyTextField(
-                            '',
-                            widget.bloc
-                                .addressCustomerNotMetNextActionDateController,
-                            focusNode:
-                                widget.bloc.addressInvalidRemarksFocusNode,
-                            isReadOnly: true,
-                            validationRules: const ['required'],
-                            onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate, followUpDate) {
-                              if (newDate != null && followUpDate != null) {
-                                setState(() {
-                                  widget
-                                      .bloc
-                                      .addressCustomerNotMetNextActionDateController
-                                      .text = newDate;
-                                });
-                                widget.bloc.add(ChangeFollowUpDateEvent(
-                                    followUpDate: followUpDate));
-                              }
-                            }),
-                            suffixWidget: SvgPicture.asset(
-                              ImageResource.calendar,
-                              fit: BoxFit.scaleDown,
-                            ),
-                            onEditing: () {
-                              widget.bloc
-                                  .addressCustomerNotMetNextActionDateFocusNode
-                                  .unfocus();
-                              widget.bloc.addressCustomerNotMetRemarksFocusNode
-                                  .requestFocus();
-                            },
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _buildSelectedClip(selectedClipList),
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        Flexible(
+                          const SizedBox(height: 25),
+                          CustomText(
+                            Languages.of(context)!.nextActionDate.toUpperCase(),
+                            color: ColorResource.color666666,
+                            fontSize: FontSize.twelve,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                          SizedBox(
+                            width: (MediaQuery.of(context).size.width - 62) / 2,
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
-                          widget.bloc.addressCustomerNotMetRemarksController,
-                          validationRules: const ['required'],
-                          isLabel: true,
-                          isVoiceRecordWidget: true,
-                          // suffixWidget: VoiceRecodingWidget(),
-                        )),
-                        // Align(
-                        //     alignment: Alignment.bottomLeft,
-                        //     child: CustomText(
-                        //       Languages.of(context)!.remarks.toUpperCase(),
-                        //       color: ColorResource.color666666,
-                        //       fontSize: FontSize.twelve,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontStyle: FontStyle.normal,
-                        //     )),
-                        // SizedBox(
-                        //   width: double.infinity,
-                        //   child: TextFormField(
-                        //     controller: widget
-                        //         .bloc.addressCustomerNotMetRemarksController,
-                        //     focusNode: widget
-                        //         .bloc.addressCustomerNotMetRemarksFocusNode,
-                        //     validator: (value) {
-                        //       if (value == null || value.isEmpty) {
-                        //         return 'Please enter some text';
-                        //       }
-                        //       return null;
-                        //     },
-                        //     decoration: InputDecoration(
-                        //         hintText:
-                        //             Languages.of(context)!.writeYourRemarksHere,
-                        //         focusColor: ColorResource.colorE5EAF6,
-                        //         labelStyle:
-                        //             const TextStyle(color: Color(0xFF424242))),
-                        //   ),
-                        // ),
-                        const SizedBox(height: 19),
-                        CustomButton(
-                          Languages.of(context)!.captureImage.toUpperCase(),
-                          cardShape: 75.0,
-                          textColor: ColorResource.color23375A,
-                          fontSize: FontSize.sixteen,
-                          onTap: () =>
-                              widget.bloc.add(ClickOpenBottomSheetEvent(
-                            Constants.captureImage,
-                            widget.bloc.caseDetailsAPIValue.result
-                                ?.addressDetails,
-                            false,
-                            health: ConstantEventValues.healthOne,
-                          )),
-                          fontWeight: FontWeight.w700,
-                          padding: 15.0,
-                          borderColor: ColorResource.colorBEC4CF,
-                          buttonBackgroundColor: ColorResource.colorBEC4CF,
-                          isLeading: true,
-                          trailingWidget:
-                              SvgPicture.asset(ImageResource.captureImage),
-                        ),
-                        const SizedBox(height: 20),
-                        Wrap(
-                          spacing: 15,
-                          runSpacing: 8,
-                          children: SelectPaymentModeButtonWidget
-                              .buildOptionBottomSheetOpenButton(
-                            optionBottomSheetButtonList,
-                            context,
-                            (element) {
-                              setState(() {
-                                selectedOptionBottomSheetButton = element.title;
-                              });
-                              widget.bloc.add(
-                                ClickOpenBottomSheetEvent(
-                                  element.stringResourceValue,
-                                  widget.bloc.caseDetailsAPIValue.result
-                                      ?.addressDetails,
-                                  false,
-                                  health: ConstantEventValues.healthOne,
-                                ),
-                              );
-                            },
-                            selectedOptionBottomSheetButton,
+                              '',
+                              widget.bloc
+                                  .addressCustomerNotMetNextActionDateController,
+                              focusNode:
+                                  widget.bloc.addressInvalidRemarksFocusNode,
+                              isReadOnly: true,
+                              validationRules: const ['required'],
+                              onTapped: () => PickDateAndTimeUtils.pickDate(
+                                  context, (newDate, followUpDate) {
+                                if (newDate != null && followUpDate != null) {
+                                  setState(() {
+                                    widget
+                                        .bloc
+                                        .addressCustomerNotMetNextActionDateController
+                                        .text = newDate;
+                                  });
+                                  widget.bloc.add(ChangeFollowUpDateEvent(
+                                      followUpDate: followUpDate));
+                                }
+                              }),
+                              suffixWidget: SvgPicture.asset(
+                                ImageResource.calendar,
+                                fit: BoxFit.scaleDown,
+                              ),
+                              onEditing: () {
+                                widget.bloc
+                                    .addressCustomerNotMetNextActionDateFocusNode
+                                    .unfocus();
+                                widget
+                                    .bloc.addressCustomerNotMetRemarksFocusNode
+                                    .requestFocus();
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 15),
+                          Flexible(
+                              child: CustomReadOnlyTextField(
+                            Languages.of(context)!.remarks,
+                            widget.bloc.addressCustomerNotMetRemarksController,
+                            validationRules: const ['required'],
+                            isLabel: true,
+                            isVoiceRecordWidget: true,
+                            // suffixWidget: VoiceRecodingWidget(),
+                          )),
+                          // Align(
+                          //     alignment: Alignment.bottomLeft,
+                          //     child: CustomText(
+                          //       Languages.of(context)!.remarks.toUpperCase(),
+                          //       color: ColorResource.color666666,
+                          //       fontSize: FontSize.twelve,
+                          //       fontWeight: FontWeight.w400,
+                          //       fontStyle: FontStyle.normal,
+                          //     )),
+                          // SizedBox(
+                          //   width: double.infinity,
+                          //   child: TextFormField(
+                          //     controller: widget
+                          //         .bloc.addressCustomerNotMetRemarksController,
+                          //     focusNode: widget
+                          //         .bloc.addressCustomerNotMetRemarksFocusNode,
+                          //     validator: (value) {
+                          //       if (value == null || value.isEmpty) {
+                          //         return 'Please enter some text';
+                          //       }
+                          //       return null;
+                          //     },
+                          //     decoration: InputDecoration(
+                          //         hintText:
+                          //             Languages.of(context)!.writeYourRemarksHere,
+                          //         focusColor: ColorResource.colorE5EAF6,
+                          //         labelStyle:
+                          //             const TextStyle(color: Color(0xFF424242))),
+                          //   ),
+                          // ),
+                          const SizedBox(height: 19),
+                          CustomButton(
+                            Languages.of(context)!.captureImage.toUpperCase(),
+                            cardShape: 75.0,
+                            textColor: ColorResource.color23375A,
+                            fontSize: FontSize.sixteen,
+                            onTap: () =>
+                                widget.bloc.add(ClickOpenBottomSheetEvent(
+                              Constants.captureImage,
+                              widget.bloc.caseDetailsAPIValue.result
+                                  ?.addressDetails,
+                              false,
+                              health: ConstantEventValues.healthOne,
+                            )),
+                            fontWeight: FontWeight.w700,
+                            padding: 15.0,
+                            borderColor: ColorResource.colorBEC4CF,
+                            buttonBackgroundColor: ColorResource.colorBEC4CF,
+                            isLeading: true,
+                            trailingWidget:
+                                SvgPicture.asset(ImageResource.captureImage),
+                          ),
+                          const SizedBox(height: 20),
+                          Wrap(
+                            spacing: 15,
+                            runSpacing: 8,
+                            children: SelectPaymentModeButtonWidget
+                                .buildOptionBottomSheetOpenButton(
+                              optionBottomSheetButtonList,
+                              context,
+                              (element) {
+                                setState(() {
+                                  selectedOptionBottomSheetButton =
+                                      element.title;
+                                });
+                                widget.bloc.add(
+                                  ClickOpenBottomSheetEvent(
+                                    element.stringResourceValue,
+                                    widget.bloc.caseDetailsAPIValue.result
+                                        ?.addressDetails,
+                                    false,
+                                    health: ConstantEventValues.healthOne,
+                                  ),
+                                );
+                              },
+                              selectedOptionBottomSheetButton,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

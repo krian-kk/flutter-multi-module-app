@@ -144,6 +144,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     allocationBloc: widget.allocationBloc,
                   ));
             }
+
+            if (state is SendSMSloadState) {
+              bloc.isSendSMSloading = !bloc.isSendSMSloading;
+            }
           },
           child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
             bloc: bloc,
@@ -655,29 +659,23 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                           width:
                                                                               1.0),
                                                                     ),
-                                                                    child: Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        SvgPicture.asset(
-                                                                            ImageResource.sms),
-                                                                        const SizedBox(
-                                                                            width:
-                                                                                7),
-                                                                        CustomText(
-                                                                            Languages.of(context)!
-                                                                                .sendSMS,
-                                                                            fontSize: FontSize
-                                                                                .twelve,
-                                                                            fontWeight: FontWeight
-                                                                                .w700,
-                                                                            lineHeight:
-                                                                                1.0,
-                                                                            color:
-                                                                                ColorResource.colorffffff),
-                                                                      ],
-                                                                    ),
+                                                                    child: bloc
+                                                                            .isSendSMSloading
+                                                                        ? const CustomLoadingWidget(
+                                                                            radius:
+                                                                                12,
+                                                                            strokeWidth:
+                                                                                2,
+                                                                          )
+                                                                        : Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            children: [
+                                                                              SvgPicture.asset(ImageResource.sms),
+                                                                              const SizedBox(width: 7),
+                                                                              CustomText(Languages.of(context)!.sendSMS, fontSize: FontSize.twelve, fontWeight: FontWeight.w700, lineHeight: 1.0, color: ColorResource.colorffffff),
+                                                                            ],
+                                                                          ),
                                                                   ),
                                                                 ),
                                                           const SizedBox(

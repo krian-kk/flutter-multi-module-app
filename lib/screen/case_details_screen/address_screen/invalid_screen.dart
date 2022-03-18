@@ -57,71 +57,75 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           children: [
             Flexible(
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Wrap(
-                        runSpacing: 10,
-                        spacing: 10,
-                        children: _buildSelectedClip(selectedClipList),
-                      ),
-                      const SizedBox(height: 15),
-                      Flexible(
-                          child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
-                        widget.bloc.addressInvalidRemarksController,
-                        validationRules: const ['required'],
-                        isLabel: true,
-                        isVoiceRecordWidget: true,
-                        // suffixWidget: VoiceRecodingWidget(),
-                      )),
-                      const SizedBox(height: 19),
-                      CustomButton(
-                        Languages.of(context)!.captureImage.toUpperCase(),
-                        cardShape: 75.0,
-                        textColor: ColorResource.color23375A,
-                        fontSize: FontSize.sixteen,
-                        fontWeight: FontWeight.w700,
-                        padding: 15.0,
-                        borderColor: ColorResource.colorBEC4CF,
-                        buttonBackgroundColor: ColorResource.colorBEC4CF,
-                        isLeading: true,
-                        onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-                            Constants.captureImage,
-                            widget.bloc.caseDetailsAPIValue.result
-                                ?.addressDetails,
-                            false,
-                            health: '0')),
-                        trailingWidget:
-                            SvgPicture.asset(ImageResource.captureImage),
-                      ),
-                      const SizedBox(height: 20),
-                      Wrap(
-                        spacing: 15,
-                        runSpacing: 8,
-                        children: SelectPaymentModeButtonWidget
-                            .buildOptionBottomSheetOpenButton(
-                          optionBottomSheetButtonList,
-                          context,
-                          (element) {
-                            setState(() {
-                              selectedOptionBottomSheetButton = element.title;
-                            });
-                            widget.bloc.add(ClickOpenBottomSheetEvent(
-                                element.stringResourceValue,
-                                widget.bloc.caseDetailsAPIValue.result
-                                    ?.addressDetails,
-                                false,
-                                health: ConstantEventValues.healthZero));
-                          },
-                          selectedOptionBottomSheetButton,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Wrap(
+                          runSpacing: 10,
+                          spacing: 10,
+                          children: _buildSelectedClip(selectedClipList),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 15),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.remarks,
+                          widget.bloc.addressInvalidRemarksController,
+                          validationRules: const ['required'],
+                          isLabel: true,
+                          isVoiceRecordWidget: true,
+                          // suffixWidget: VoiceRecodingWidget(),
+                        )),
+                        const SizedBox(height: 19),
+                        CustomButton(
+                          Languages.of(context)!.captureImage.toUpperCase(),
+                          cardShape: 75.0,
+                          textColor: ColorResource.color23375A,
+                          fontSize: FontSize.sixteen,
+                          fontWeight: FontWeight.w700,
+                          padding: 15.0,
+                          borderColor: ColorResource.colorBEC4CF,
+                          buttonBackgroundColor: ColorResource.colorBEC4CF,
+                          isLeading: true,
+                          onTap: () => widget.bloc.add(
+                              ClickOpenBottomSheetEvent(
+                                  Constants.captureImage,
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails,
+                                  false,
+                                  health: '0')),
+                          trailingWidget:
+                              SvgPicture.asset(ImageResource.captureImage),
+                        ),
+                        const SizedBox(height: 20),
+                        Wrap(
+                          spacing: 15,
+                          runSpacing: 8,
+                          children: SelectPaymentModeButtonWidget
+                              .buildOptionBottomSheetOpenButton(
+                            optionBottomSheetButtonList,
+                            context,
+                            (element) {
+                              setState(() {
+                                selectedOptionBottomSheetButton = element.title;
+                              });
+                              widget.bloc.add(ClickOpenBottomSheetEvent(
+                                  element.stringResourceValue,
+                                  widget.bloc.caseDetailsAPIValue.result
+                                      ?.addressDetails,
+                                  false,
+                                  health: ConstantEventValues.healthZero));
+                            },
+                            selectedOptionBottomSheetButton,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

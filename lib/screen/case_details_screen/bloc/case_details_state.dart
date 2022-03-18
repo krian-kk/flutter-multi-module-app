@@ -92,6 +92,8 @@ class PhoneBottomSheetSuccessState extends CaseDetailsState {}
 
 class UpdateSuccessfullState extends CaseDetailsState {}
 
+class SendSMSloadState extends CaseDetailsState {}
+
 class UpdateHealthStatusState extends CaseDetailsState {
   UpdateHealthStatusState();
 }
