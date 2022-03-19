@@ -36,6 +36,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
 
 class CustomOtsBottomSheet extends StatefulWidget {
@@ -83,6 +84,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   bool isSubmit = true;
   List<File> uploadFileLists = [];
+
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   @override
   void initState() {
@@ -276,7 +280,20 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     remarksControlller,
                                     validationRules: const ['required'],
                                     isLabel: true,
-                                    isVoiceRecordWidget: true,
+                                    isVoiceRecordWidget:
+                                        Singleton.instance.usertype ==
+                                                    Constants.fieldagent &&
+                                                widget.isCall! == false
+                                            ? true
+                                            : false,
+                                    returnS2Tresponse: (val) {
+                                      if (val is Speech2TextModel) {
+                                        setState(() {
+                                          returnS2Tdata = val;
+                                        });
+                                      }
+                                    },
+
                                     // suffixWidget: VoiceRecodingWidget(),
                                   )),
                                   const SizedBox(height: 15),
@@ -513,6 +530,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               speed: position.speed,
               latitude: position.latitude,
               longitude: position.longitude,
+              reginal_text: returnS2Tdata.result?.reginalText,
+              translated_text: returnS2Tdata.result?.translatedText,
+              audioS3Path: returnS2Tdata.result?.audioS3Path,
             ),
             eventCode: ConstantEventValues.otsEvenCode,
             createdBy: Singleton.instance.agentRef ?? '',

@@ -31,11 +31,11 @@ const theSource = AudioSource.microphone;
 
 class VoiceRecodingWidget extends StatefulWidget {
   final String filePath;
-  Function? recording;
+  Function? recordingData;
   final String? caseId;
 
   VoiceRecodingWidget(
-      {Key? key, this.recording, this.caseId, required this.filePath})
+      {Key? key, this.recordingData, this.caseId, required this.filePath})
       : super(key: key);
 
   @override
@@ -117,7 +117,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       openTheRecorder();
     }
     //remove play button
-    widget.recording!('');
+    widget.recordingData!('');
     _mRecorder!
         .startRecorder(
       toFile: widget.filePath,
@@ -194,7 +194,8 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     if (postResult[Constants.success]) {
       getTranslatedData = Speech2TextModel.fromJson(postResult['data']);
       // print('postResult ===> ${postResult}');
-      widget.recording!(getTranslatedData.result!.translatedText);
+      // widget.recordingData!(getTranslatedData.result!.translatedText);
+      widget.recordingData!(getTranslatedData);
     } else {
       // print('postdata error');
     }
@@ -268,7 +269,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
                 }
               });
             }
-            widget.recording!(isRecordOn);
+            widget.recordingData!(isRecordOn);
           } else {
             DialogUtils.showDialog(
                 buildContext: context,

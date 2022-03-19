@@ -11,6 +11,11 @@ class OTSEventAttr {
   double speed;
   double latitude;
   double longitude;
+  // ignore: non_constant_identifier_names
+  late String? reginal_text;
+  // ignore: non_constant_identifier_names
+  late String? translated_text;
+  late String? audioS3Path;
 
   OTSEventAttr({
     required this.date,
@@ -25,6 +30,11 @@ class OTSEventAttr {
     required this.speed,
     required this.latitude,
     required this.longitude,
+    // ignore: non_constant_identifier_names
+    this.reginal_text,
+    // ignore: non_constant_identifier_names
+    this.translated_text,
+    this.audioS3Path,
   });
 
   factory OTSEventAttr.fromJson(Map<String, dynamic> json) => OTSEventAttr(
@@ -40,20 +50,42 @@ class OTSEventAttr {
         speed: json['speed'] as dynamic,
         latitude: (json['Latitude'] as num).toDouble(),
         longitude: (json['Longitude'] as num).toDouble(),
+        reginal_text: json['reginal_text'],
+        translated_text: json['translated_text'],
+        audioS3Path: json['audioS3Path'],
       );
 
-  Map<String, dynamic> toJson() => {
-        'date': date,
-        'remarkOts': remarkOts,
-        'amntOts': amntOts,
-        'appStatus': appStatus,
-        'mode': mode,
-        'altitude': altitude,
-        'accuracy': accuracy,
-        'altitudeAccuracy': altitudeAccuracy,
-        'heading': heading,
-        'speed': speed,
-        'Latitude': latitude,
-        'Longitude': longitude,
-      };
+  Map<String, dynamic> toJson() =>
+      reginal_text != null && translated_text != null && audioS3Path != null
+          ? {
+              'date': date,
+              'remarkOts': remarkOts,
+              'amntOts': amntOts,
+              'appStatus': appStatus,
+              'mode': mode,
+              'altitude': altitude,
+              'accuracy': accuracy,
+              'altitudeAccuracy': altitudeAccuracy,
+              'heading': heading,
+              'speed': speed,
+              'Latitude': latitude,
+              'Longitude': longitude,
+              'audioS3Path': audioS3Path,
+              'translated_text': translated_text,
+              'reginal_text': reginal_text,
+            }
+          : {
+              'date': date,
+              'remarkOts': remarkOts,
+              'amntOts': amntOts,
+              'appStatus': appStatus,
+              'mode': mode,
+              'altitude': altitude,
+              'accuracy': accuracy,
+              'altitudeAccuracy': altitudeAccuracy,
+              'heading': heading,
+              'speed': speed,
+              'Latitude': latitude,
+              'Longitude': longitude,
+            };
 }

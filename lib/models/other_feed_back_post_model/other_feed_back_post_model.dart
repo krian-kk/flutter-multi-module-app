@@ -92,6 +92,11 @@ class EventAttr {
   late double latitude;
   late double longitude;
   late List? contact;
+  // ignore: non_constant_identifier_names
+  late String? reginal_text;
+  // ignore: non_constant_identifier_names
+  late String? translated_text;
+  late String? audioS3Path;
 
   EventAttr({
     required this.vehicleavailable,
@@ -109,6 +114,11 @@ class EventAttr {
     required this.latitude,
     required this.longitude,
     required this.contact,
+    // ignore: non_constant_identifier_names
+    this.reginal_text,
+    // ignore: non_constant_identifier_names
+    this.translated_text,
+    this.audioS3Path,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -129,6 +139,9 @@ class EventAttr {
     contact = json['contact'].forEach((v) {
       contact?.add(v);
     });
+    reginal_text = json['reginal_text'];
+    translated_text = json['translated_text'];
+    audioS3Path = json['audioS3Path'];
   }
 
   Map<String, dynamic> toJson() {
@@ -148,6 +161,13 @@ class EventAttr {
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     data['contact'] = contact?.map((v) => v.toJson()).toList();
+    if (reginal_text != null &&
+        translated_text != null &&
+        audioS3Path != null) {
+      data['reginal_text'] = reginal_text;
+      data['translated_text'] = translated_text;
+      data['audioS3Path'] = audioS3Path;
+    }
     return data;
   }
 }

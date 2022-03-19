@@ -39,6 +39,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
+
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
   const CustomOtherFeedBackBottomSheet(
@@ -97,6 +99,9 @@ class _CustomOtherFeedBackBottomSheetState
 
   List<String> actionproposedDropdownValue = [];
   String? actionproposedValue;
+
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
@@ -289,7 +294,19 @@ class _CustomOtherFeedBackBottomSheetState
                                     validationRules: const ['required'],
                                     isLabel: true,
                                     isEnable: true,
-                                    isVoiceRecordWidget: true,
+                                    isVoiceRecordWidget:
+                                        Singleton.instance.usertype ==
+                                                    Constants.fieldagent &&
+                                                widget.isCall! == false
+                                            ? true
+                                            : false,
+                                    returnS2Tresponse: (val) {
+                                      if (val is Speech2TextModel) {
+                                        setState(() {
+                                          returnS2Tdata = val;
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
                                 const SizedBox(height: 25),
@@ -555,6 +572,9 @@ class _CustomOtherFeedBackBottomSheetState
             // agentLocation: AgentLocation(),
             contact:
                 otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
+            reginal_text: returnS2Tdata.result?.reginalText,
+            translated_text: returnS2Tdata.result?.translatedText,
+            audioS3Path: returnS2Tdata.result?.audioS3Path,
           ),
           contact: OtherFeedBackContact(
             cType: widget.postValue['cType'],

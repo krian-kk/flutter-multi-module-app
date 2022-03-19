@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/listener/item_selected_listener.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -44,6 +45,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final List<String> validationRules;
   final EdgeInsetsGeometry? contentPadding;
   final Function? onEditing;
+  final Function? returnS2Tresponse;
   final bool isBorder;
   final bool isFill;
   final Color cursorColor;
@@ -80,6 +82,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.descriptionText,
     this.validatorCallBack,
     this.onEditing,
+    this.returnS2Tresponse,
     this.inputformaters,
     this.isLabel = false,
     this.isBorder = true,
@@ -111,6 +114,9 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   late AudioPlayer audioPlayer;
   static const platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
+
+  //Speech 2 Text return data model
+  Speech2TextModel getTranslatedData = Speech2TextModel();
 
   @override
   void initState() {
@@ -300,13 +306,15 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                       ? (filePath != '')
                           ? VoiceRecodingWidget(
                               filePath: filePath,
-                              recording: (values) {
+                              recordingData: (values) {
                                 if (values is bool) {
                                   //Click action true/false
-                                } else if (values is String) {
+                                } else if (values is Speech2TextModel) {
                                   //API response
                                   setState(() {
-                                    translateTextController.text = values;
+                                    getTranslatedData = values;
+                                    translateTextController.text =
+                                        values.result!.translatedText!;
                                     isActiveSpeaker = true;
                                   });
                                 }
@@ -495,6 +503,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                         translateTextController.text = '';
                         isActiveSpeaker = false;
                       });
+                      // Here vreturn the value for S2T API respose
+                      widget.returnS2Tresponse!(getTranslatedData);
                     },
                     fontSize: FontSize.twelve,
                     padding: 1,

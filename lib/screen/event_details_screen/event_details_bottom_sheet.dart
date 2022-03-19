@@ -3,11 +3,13 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
@@ -24,9 +26,46 @@ class CustomEventDetailsBottomSheet extends StatefulWidget {
 
 class _CustomEventDetailsBottomSheetState
     extends State<CustomEventDetailsBottomSheet> {
+  bool isPlaying = false;
+  bool isPaused = false;
+  late AudioPlayer audioPlayer;
+
   @override
   void initState() {
     super.initState();
+    audioPlayer = AudioPlayer();
+  }
+
+  playAudio() async {
+    int result = await audioPlayer.play(
+        '/data/user/0/com.mcollect.origa.ai/app_flutter/TFJ_MH3028CD0045094_2022-03-10T11-49-47.wav',
+        isLocal: true);
+    if (result == 1) {
+      setState(() {});
+    }
+  }
+
+  stopAudio() async {
+    int result = await audioPlayer.stop();
+    if (result == 1) {
+      setState(() {});
+    }
+  }
+
+  pauseAudio() async {
+    int result = await audioPlayer.pause();
+    if (result == 1) {
+      setState(() {});
+    }
+  }
+
+  resumeAudio() async {
+    int result = await audioPlayer.resume();
+    if (result == 1) {
+      setState(() {
+        isPaused = false;
+      });
+    }
   }
 
   @override
@@ -212,9 +251,128 @@ class _CustomEventDetailsBottomSheetState
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
+                  if (expandedList[index].reginal_text != null &&
+                      expandedList[index].translated_text != null &&
+                      expandedList[index].audioS3Path != null)
+                    remarkS2TaudioWidget(
+                        reginalText: expandedList[index].reginal_text,
+                        translatedText: expandedList[index].translated_text,
+                        audioPath: expandedList[index].audioS3Path),
                 ],
               ),
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  remarkS2TaudioWidget(
+      {String? reginalText, String? translatedText, String? audioPath}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 9),
+        Row(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                  color: ColorResource.color23375A,
+                  borderRadius: BorderRadius.all(Radius.circular(60.0))),
+              height: 40,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 11,
+                  ),
+                  child: CustomText(
+                    Languages.of(context)!.remarksRecording,
+                    fontSize: FontSize.fourteen,
+                    fontWeight: FontWeight.w400,
+                    color: ColorResource.colorFFFFFF,
+                    lineHeight: 1,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                isPlaying ? stopAudio() : playAudio();
+              },
+              child: CircleAvatar(
+                backgroundColor: ColorResource.color23375A,
+                radius: 20,
+                child: Center(
+                  child: Icon(
+                    isPlaying ? Icons.stop : Icons.play_arrow,
+                    color: ColorResource.colorFFFFFF,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            if (isPlaying)
+              GestureDetector(
+                onTap: () {
+                  isPaused ? resumeAudio() : pauseAudio();
+                },
+                child: CircleAvatar(
+                  backgroundColor: ColorResource.color23375A,
+                  radius: 20,
+                  child: Center(
+                    child: Icon(
+                      isPaused ? Icons.play_arrow : Icons.pause,
+                      color: ColorResource.colorFFFFFF,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        const CustomText(
+          Constants.reginalText,
+          fontSize: FontSize.fourteen,
+          fontWeight: FontWeight.w700,
+          color: ColorResource.color000000,
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+          decoration: const BoxDecoration(
+              color: ColorResource.colorF7F8FA,
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          child: CustomText(
+            reginalText!,
+            color: ColorResource.color000000,
+            fontSize: FontSize.fourteen,
+            fontWeight: FontWeight.w400,
+            lineHeight: 1,
+          ),
+        ),
+        const SizedBox(height: 12),
+        const CustomText(
+          Constants.translatedText,
+          fontSize: FontSize.fourteen,
+          fontWeight: FontWeight.w700,
+          color: ColorResource.color000000,
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+          decoration: const BoxDecoration(
+              color: ColorResource.colorF7F8FA,
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          child: CustomText(
+            translatedText!,
+            color: ColorResource.color000000,
+            fontSize: FontSize.fourteen,
+            fontWeight: FontWeight.w400,
+            lineHeight: 1,
           ),
         ),
       ],
