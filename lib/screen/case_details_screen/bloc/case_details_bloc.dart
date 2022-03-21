@@ -160,7 +160,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
             .doc('${event.paramValues['caseID']}')
-            .get(const GetOptions(source: Source.serverAndCache))
+            .get(const GetOptions(source: Source.cache))
             .then((value) {
           Map<String, dynamic>? jsonData = value.data();
           CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
