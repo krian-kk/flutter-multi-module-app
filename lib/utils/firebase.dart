@@ -29,7 +29,10 @@ class FirebaseUtils {
 
   // to get the events history using case id
   static Future<bool> storeEvents(
-      {dynamic eventsDetails, dynamic caseId}) async {
+      {dynamic eventsDetails,
+      dynamic caseId,
+      String? selectedClipValue,
+      String? selectedFollowUpDate}) async {
     bool returnValues = false;
     if (Singleton.instance.usertype == Constants.fieldagent) {
       await FirebaseFirestore.instance
@@ -37,6 +40,27 @@ class FirebaseUtils {
           .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
           .collection(Constants.firebaseEvent)
           .add(eventsDetails);
+
+      if (selectedClipValue != Constants.collections) {
+        debugPrint('Before updated the events-->');
+        await FirebaseFirestore.instance
+            .collection(Singleton.instance.firebaseDatabaseName)
+            .doc(
+                '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            .collection(Constants.firebaseCase)
+            .doc(caseId)
+            .update(
+              selectedFollowUpDate == null
+                  ? {'collSubStatus': selectedClipValue}
+                  : {
+                      'fieldfollowUpDate': selectedFollowUpDate,
+                      'collSubStatus': selectedClipValue
+                    },
+            )
+            .then((value) {
+          debugPrint('After updated the events-->');
+        });
+      }
       returnValues = true;
     } else {
       returnValues = false;

@@ -153,76 +153,53 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
-
       // check internet
-      // if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-      //   /*For firebase purpose hiding here*/
-      //   // isNoInternetAndServerError = true;
-      //   // noInternetAndServerErrorMsg =
-      //   //     Languages.of(event.context!)!.noInternetConnection;
-      //   // yield CDNoInternetState();
-      //   FirebaseFirestore.instance
-      //       .collection(Singleton.instance.firebaseDatabaseName)
-      //       .doc(
-      //           '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-      //       .collection(Constants.firebaseCase)
-      //       .doc('${event.paramValues['caseID']}')
-      //       .get()
-      //       .then((value) {
-      //     Map<String, dynamic>? jsonData = value.data();
-      //     log('From firebasejsonData--> $jsonData');
-      //     CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
-      //     caseDetailsAPIValue.result =
-      //         CaseDetailsResultModel.fromJson(jsonData);
-      //     caseDetailsAPIValue.result?.caseDetails = caseDetails;
-      //     caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-      //         .result?.callDetails
-      //         ?.where((element) => (element['cType'] == 'mobile'))
-      //         .toList();
-      //     Singleton.instance.caseCustomerName =
-      //         caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-      //     var mapValues = caseDetailsAPIValue.result?.toJson();
-      //   });
-      // } else {
-      //   isNoInternetAndServerError = false;
-      //   Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-      //       APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
-      //       isPop: true);
-      //   if (caseDetailsData[Constants.success] == true) {
-      //     Map<String, dynamic> jsonData = caseDetailsData['data'];
-      //     caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
-      //     caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-      //         .result?.callDetails
-      //         ?.where((element) => (element['cType'] == 'mobile'))
-      //         .toList();
-      //     caseDetailsAPIValue.result?.callDetails?.sort(
-      //         (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
-      //     Singleton.instance.caseCustomerName =
-      //         caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-      //   } else if (caseDetailsData['statusCode'] == 401 ||
-      //       caseDetailsData['statusCode'] == 502) {
-      //     isNoInternetAndServerError = true;
-      //     noInternetAndServerErrorMsg = caseDetailsData['data'];
-      //   }
-      // }
-      await FirebaseFirestore.instance
-          .collection(Singleton.instance.firebaseDatabaseName)
-          .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-          .collection(Constants.firebaseCase)
-          .doc('${event.paramValues['caseID']}')
-          .get()
-          .then((value) {
-        Map<String, dynamic>? jsonData = value.data();
-        CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
-        caseDetailsAPIValue.result = CaseDetailsResultModel.fromJson(jsonData);
-        caseDetailsAPIValue.result?.caseDetails = caseDetails;
-        caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-            .result?.callDetails
-            ?.where((element) => (element['cType'] == 'mobile'))
-            .toList();
-        Singleton.instance.caseCustomerName =
-            caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-      });
+      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+        await FirebaseFirestore.instance
+            .collection(Singleton.instance.firebaseDatabaseName)
+            .doc(
+                '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            .collection(Constants.firebaseCase)
+            .doc('${event.paramValues['caseID']}')
+            .get(const GetOptions(source: Source.serverAndCache))
+            .then((value) {
+          Map<String, dynamic>? jsonData = value.data();
+          CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+          caseDetailsAPIValue.result =
+              CaseDetailsResultModel.fromJson(jsonData);
+          caseDetailsAPIValue.result?.caseDetails = caseDetails;
+          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+              .result?.callDetails
+              ?.where((element) => (element['cType'] == 'mobile'))
+              .toList();
+          caseDetailsAPIValue.result?.callDetails?.sort(
+              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+          Singleton.instance.caseCustomerName =
+              caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+        });
+      } else {
+        isNoInternetAndServerError = false;
+        Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
+            APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
+            isPop: true);
+        if (caseDetailsData[Constants.success] == true) {
+          Map<String, dynamic> jsonData = caseDetailsData['data'];
+          caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
+          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+              .result?.callDetails
+              ?.where((element) => (element['cType'] == 'mobile'))
+              .toList();
+          caseDetailsAPIValue.result?.callDetails?.sort(
+              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+          Singleton.instance.caseCustomerName =
+              caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+        } else if (caseDetailsData['statusCode'] == 401 ||
+            caseDetailsData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          noInternetAndServerErrorMsg = caseDetailsData['data'];
+        }
+      }
+
       Singleton.instance.overDueAmount =
           caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
       Singleton.instance.agrRef =
@@ -429,6 +406,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield UpdateSuccessfullState();
     }
     if (event is ChangeIsSubmitForMyVisitEvent) {
+      // null -> ptp
       submitedEventType = event.eventType;
       isSubmitedForMyVisits = true;
       if (event.eventType == Constants.collections) {
@@ -1217,11 +1195,31 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           health: ConstantEventValues.phoneUnreachableHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.post,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
+
+    Map<String, dynamic> postResult = {'success': false};
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: caseId,
+              selectedClipValue: ConvertString.convertLanguageToConstant(
+                  selectedClipValue, context))
+          .then((value) {
+        postResult = {'success': true};
+      });
+    } else {
+      // For local storage purpose storing while online
+      await FirebaseUtils.storeEvents(
+          eventsDetails: requestBodyData.toJson(),
+          caseId: caseId,
+          selectedClipValue: ConvertString.convertLanguageToConstant(
+              selectedClipValue, context));
+      postResult = await APIRepository.apiRequest(
+        APIRequestType.post,
+        urlString,
+        requestBodydata: jsonEncode(requestBodyData),
+      );
+    }
+
     if (await postResult[Constants.success]) {
       isSubmitedForMyVisits = true;
       submitedEventType = 'Unreachable';
@@ -1297,17 +1295,29 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           speed: position.speed,
         ));
     Map<String, dynamic> postResult = {'success': false};
+
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-      FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(), caseId: caseId)
+      await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: caseId,
+              selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+                  ? addressCustomerNotMetSelectedDate
+                  : addressCustomerNotMetNextActionDateController.text,
+              selectedClipValue: ConvertString.convertLanguageToConstant(
+                  selectedClipValue, context))
           .then((value) {
         //For navigation purpose - back screen
         postResult = {'success': true};
       });
     } else {
-      // For local storage purpose storing while online
       await FirebaseUtils.storeEvents(
-          eventsDetails: requestBodyData.toJson(), caseId: caseId);
+          eventsDetails: requestBodyData.toJson(),
+          caseId: caseId,
+          selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+              ? addressCustomerNotMetSelectedDate
+              : addressCustomerNotMetNextActionDateController.text,
+          selectedClipValue: ConvertString.convertLanguageToConstant(
+              selectedClipValue, context));
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1393,16 +1403,21 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         ]);
     Map<String, dynamic> postResult = {'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-      FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(), caseId: caseId)
+      await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: caseId,
+              selectedClipValue: ConvertString.convertLanguageToConstant(
+                  selectedClipValue, context))
           .then((value) {
-        //For navigation purpose - back screen
         postResult = {'success': true};
       });
     } else {
       // For local storage purpose storing while online
       await FirebaseUtils.storeEvents(
-          eventsDetails: requestBodyData.toJson(), caseId: caseId);
+          eventsDetails: requestBodyData.toJson(),
+          caseId: caseId,
+          selectedClipValue: ConvertString.convertLanguageToConstant(
+              selectedClipValue, context));
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1459,11 +1474,31 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           health: ConstantEventValues.phoneInvalidHealth,
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
-      APIRequestType.post,
-      urlString,
-      requestBodydata: jsonEncode(requestBodyData),
-    );
+
+    Map<String, dynamic> postResult = {'success': false};
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: caseId,
+              selectedClipValue: ConvertString.convertLanguageToConstant(
+                  selectedClipValue, context))
+          .then((value) {
+        postResult = {'success': true};
+      });
+    } else {
+      // For local storage purpose storing while online
+      await FirebaseUtils.storeEvents(
+          eventsDetails: requestBodyData.toJson(),
+          caseId: caseId,
+          selectedClipValue: ConvertString.convertLanguageToConstant(
+              selectedClipValue, context));
+      postResult = await APIRepository.apiRequest(
+        APIRequestType.post,
+        urlString,
+        requestBodydata: jsonEncode(requestBodyData),
+      );
+    }
+
     if (await postResult[Constants.success]) {
       isSubmitedForMyVisits = true;
       submitedEventType = 'Phone Invalid';

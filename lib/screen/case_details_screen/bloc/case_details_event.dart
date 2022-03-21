@@ -146,3 +146,4 @@ class ChangeFollowUpDateEvent extends CaseDetailsEvent {
   final String? followUpDate;
   ChangeFollowUpDateEvent({this.followUpDate});
 }
+

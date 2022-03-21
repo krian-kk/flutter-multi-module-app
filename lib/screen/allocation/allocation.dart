@@ -62,7 +62,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
   String? currentAddress;
   bool isCaseDetailLoading = false;
   bool isOffline = false;
-  Stream<QuerySnapshot>? _usersStream;
   late MapBloc mapBloc;
   Position position = Position(
     longitude: 0,
@@ -310,11 +309,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var firebaseData = FirebaseFirestore.instance
-        .collection(Singleton.instance.firebaseDatabaseName)
-        .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-        .collection(Constants.firebaseCase)
-        .snapshots();
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return BlocListener<AllocationBloc, AllocationState>(
@@ -607,12 +601,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
           } //List<Result>
           if (state.successResponse is String) {
             if (state.successResponse == 'offlineData') {
-              await FirebaseFirestore.instance
+              FirebaseFirestore.instance
                   .collection(Singleton.instance.firebaseDatabaseName)
                   .doc(
                       '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
                   .collection(Constants.firebaseCase)
-                  .get()
+                  .get(const GetOptions(source: Source.serverAndCache))
                   .then((value) {
                 bloc.starCount == 0;
                 bloc.resultList.clear();
@@ -624,7 +618,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     bloc.starCount++;
                   }
                 }
-              });
+              }).asStream();
               bloc.hasNextPage = false;
             }
           }
@@ -802,14 +796,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
         builder: (BuildContext context, AllocationState state) {
           if (state is AllocationLoadingState) {
             return const CustomLoadingWidget();
-          }
-          if (isOffline) {
-            _usersStream = FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(
-                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-                .collection(Constants.firebaseCase)
-                .snapshots();
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,

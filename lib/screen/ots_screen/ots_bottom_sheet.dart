@@ -545,20 +545,18 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           Map<String, dynamic> firebaseObject = requestBodyData.toJson();
           try {
             firebaseObject.addAll(
-                await FirebaseUtils.toPrepareFileStoringModel(
-                    uploadFileLists));
+                await FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
           } catch (e) {
-            debugPrint(
-                'Exception while converting base64 ${e.toString()}');
+            debugPrint('Exception while converting base64 ${e.toString()}');
           }
+          await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: widget.caseId,
+              selectedFollowUpDate: otsPaymentDateControlller.text,
+              selectedClipValue: Constants.ots);
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            FirebaseUtils.storeEvents(
-                eventsDetails: firebaseObject, caseId: widget.caseId);
           } else {
-            // For local storage purpose storing while online
-            await FirebaseUtils.storeEvents(
-                eventsDetails: firebaseObject, caseId: widget.caseId);
             Map<String, dynamic> postResult = await APIRepository.apiRequest(
               APIRequestType.upload,
               HttpUrl.otsPostUrl,

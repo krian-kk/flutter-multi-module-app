@@ -585,14 +585,15 @@ class _CustomOtherFeedBackBottomSheetState
           debugPrint('Exception while converting base64 ${e.toString()}');
         }
 
+        await FirebaseUtils.storeEvents(
+            eventsDetails: requestBodyData.toJson(),
+            caseId: widget.caseId,
+            selectedFollowUpDate: dateControlller.text,
+            selectedClipValue: Constants.otherFeedback);
+
         if (ConnectivityResult.none ==
             await Connectivity().checkConnectivity()) {
-          FirebaseUtils.storeEvents(
-              eventsDetails: firebaseObject, caseId: widget.caseId);
         } else {
-          // For local storage purpose storing while online
-          await FirebaseUtils.storeEvents(
-              eventsDetails: firebaseObject, caseId: widget.caseId);
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.upload,
             HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),

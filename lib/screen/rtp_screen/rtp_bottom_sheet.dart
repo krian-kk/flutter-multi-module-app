@@ -408,14 +408,16 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
             callerServiceID: Singleton.instance.callerServiceID ?? '',
             callingID: Singleton.instance.callingID,
           );
+
+          await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: widget.caseId,
+              selectedFollowUpDate: nextActionDateControlller.text,
+              selectedClipValue: Constants.rtp);
+
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
           } else {
-            // For local storage purpose storing while online
-            await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
             Map<String, dynamic> postResult = await APIRepository.apiRequest(
                 APIRequestType.post,
                 HttpUrl.denialPostUrl('denial', widget.userType),

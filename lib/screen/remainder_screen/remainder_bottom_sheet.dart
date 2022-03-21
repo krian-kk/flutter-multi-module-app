@@ -415,14 +415,14 @@ class _CustomRemainderBottomSheetState
           callID: Singleton.instance.callID,
           callingID: Singleton.instance.callingID,
         );
+        await FirebaseUtils.storeEvents(
+            eventsDetails: requestBodyData.toJson(),
+            caseId: widget.caseId,
+            selectedFollowUpDate: nextActionDateControlller.text,
+            selectedClipValue: Constants.remainder);
         if (ConnectivityResult.none ==
             await Connectivity().checkConnectivity()) {
-          FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
         } else {
-          // For local storage purpose storing while online
-          await FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(), caseId: widget.caseId);
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.post,
             HttpUrl.reminderPostUrl('reminder', widget.userType),

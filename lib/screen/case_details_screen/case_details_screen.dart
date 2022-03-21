@@ -116,8 +116,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is ClickOpenBottomSheetState) {
-              debugPrint(
-                  '$this ---> seleectedContactNumber ${state.selectedContactNumber}');
               openBottomSheet(
                 context,
                 state.title,
