@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mime/mime.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
@@ -43,13 +44,33 @@ class FirebaseUtils {
     return returnValues;
   }
 
+  // to update the case detail starred cases or not
+  static Future<bool> updateStarred({dynamic isStarred, dynamic caseId}) async {
+    bool returnValues = false;
+    if (Singleton.instance.usertype == Constants.fieldagent) {
+      await FirebaseFirestore.instance
+          .collection(Singleton.instance.firebaseDatabaseName)
+          .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+          .collection(Constants.firebaseCase)
+          .doc(caseId)
+          .update({'starredCase': isStarred});
+
+
+      /* await FirebaseUtils.updateStarred(
+          isStarred: resultList[event.selectedStarIndex].starredCase,
+          caseId: resultList[event.selectedStarIndex].caseId); */
+      returnValues = true;
+    } else {
+      returnValues = false;
+    }
+    return returnValues;
+  }
+
   //For offline purpose -> it'll storing inside of all event submission if files added
   static Map<String, dynamic> toPrepareFileStoringModel(List<File> files) {
     List<Map<String, dynamic>> returnResult = [];
     for (var element in files) {
-      //Filename, base64 and mime type
       returnResult.add({
-        //var filePath = element.path.replaceAll("/$fileName", '');
         'fileName': element.path.split('/').last,
         'base64String': base64Encode(element.readAsBytesSync()),
         'mimeType': lookupMimeType(element.path)
