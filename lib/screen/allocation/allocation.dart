@@ -519,17 +519,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     allocationBloc: bloc));
             RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
-            print(
-                "return value case detail followUpDate ==> ${returnModelValue.followUpDate}");
-            print(
-                "return value case detail selectedClipValue ==> ${returnModelValue.selectedClipValue}");
             if (returnModelValue.isSubmit) {
-              // bloc.add(UpdateNewValuesEvent(
-              //   returnModelValue.caseId,
-              //   returnModelValue.selectedClipValue,
-              //   returnModelValue.followUpDate,
-              // ));
-              // Due to page reload when data is submitted from case details
               bloc.add(TapPriorityEvent());
             }
           } catch (e) {

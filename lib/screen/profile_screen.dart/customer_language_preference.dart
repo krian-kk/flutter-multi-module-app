@@ -48,9 +48,7 @@ class _CustomerLanguagePreferenceState
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: widget.bloc,
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: widget.bloc,
         builder: (context, state) {

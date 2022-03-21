@@ -62,7 +62,8 @@ class _ChatScreenState extends State<ChatScreen> {
     messageController.text = '';
     clientIDFromARef = widget.fromARefId ?? Singleton.instance.agentRef;
     toARef = widget.toARefId;
-    print('FromID--> ${widget.fromARefId} and ToID --> ${widget.toARefId}');
+    debugPrint(
+        'FromID--> ${widget.fromARefId} and ToID --> ${widget.toARefId}');
     createAblyRealtimeInstance();
     super.initState();
     // bloc = ChatScreenBloc()..add(ChatInitialEvent());
@@ -276,7 +277,7 @@ class _ChatScreenState extends State<ChatScreen> {
       // });
 
       chatChannel.subscribe(name: clientIDFromARef).listen((event) {
-        print('New Message arrived from $clientIDFromARef ${event.data}');
+        debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
 
         // if (event.data is String) {
         //   debugPrint("event data is String");
@@ -300,7 +301,7 @@ class _ChatScreenState extends State<ChatScreen> {
           );
         });
       }).onData((data) {
-        print('New daTA arrived from $clientIDFromARef ${data.data}');
+        debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
 
         setState(() {
           ReceivingData receivedData =
@@ -326,7 +327,7 @@ class _ChatScreenState extends State<ChatScreen> {
       debugPrint('The data of history--> ${result.items}');
 
       setState(() {
-        result.items.forEach((element) {
+        for (var element in result.items) {
           if (element.data is String) {
             bloc.messageHistory.insert(
               0,
@@ -346,7 +347,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   dateTime: element.timestamp),
             );
           }
-        });
+        }
       });
     } catch (error) {
       debugPrint(error.toString());

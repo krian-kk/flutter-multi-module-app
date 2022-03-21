@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/models/speech2text_model.dart';
@@ -9,12 +8,10 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/validator.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:origa/widgets/custom_textfield.dart';
 import 'package:origa/widgets/voice_record_widget.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -171,33 +168,73 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   playAudio() async {
-    int result = await audioPlayer.play(filePath, isLocal: true);
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform
+        .invokeMethod('playRecordAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() => isPlaying = true);
+      }
+    });
+    await platform.invokeMethod(
+        'completeRecordAudio', {'filePath': filePath}).then((value) {
+      if (value != null) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
+    // int result = await audioPlayer.play(filePath, isLocal: true);
+    // if (result == 1) {
+    //   setState(() {});
+    // }
   }
 
   stopAudio() async {
-    int result = await audioPlayer.stop();
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform
+        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
+    // int result = await audioPlayer.stop();
+    // if (result == 1) {
+    //   setState(() {});
+    // }
   }
 
   pauseAudio() async {
-    int result = await audioPlayer.pause();
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform.invokeMethod(
+        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPaused = true;
+        });
+      }
+    });
+    // int result = await audioPlayer.pause();
+    // if (result == 1) {
+    //   setState(() {});
+    // }
   }
 
   resumeAudio() async {
-    int result = await audioPlayer.resume();
-    if (result == 1) {
-      setState(() {
-        isPaused = false;
-      });
-    }
+    await platform.invokeMethod(
+        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPaused = false;
+        });
+      }
+    });
+    // int result = await audioPlayer.resume();
+    // if (result == 1) {
+    //   setState(() {
+    //     isPaused = false;
+    //   });
+    // }
   }
 
   @override

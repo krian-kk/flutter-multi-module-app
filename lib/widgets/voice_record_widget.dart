@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../languages/app_languages.dart';
 import '../utils/constants.dart';
 
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 
@@ -31,10 +31,10 @@ const theSource = AudioSource.microphone;
 
 class VoiceRecodingWidget extends StatefulWidget {
   final String filePath;
-  Function? recordingData;
+  final Function? recordingData;
   final String? caseId;
 
-  VoiceRecodingWidget(
+  const VoiceRecodingWidget(
       {Key? key, this.recordingData, this.caseId, required this.filePath})
       : super(key: key);
 
@@ -54,12 +54,14 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   bool isStartLoading = false;
   List<File> uploadFileLists = [];
 
-  final Codec _codec = Codec.pcm16WAV;
+  // final Codec _codec = Codec.pcm16WAV;
   // final String _mPath = '/sdcard/Download/taNew.wav';
   // FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool recorderIsInited = false;
   Speech2TextModel getTranslatedData = Speech2TextModel();
+
+  static const platform = MethodChannel('recordAudioChannel');
 
   @override
   void initState() {
@@ -82,10 +84,10 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   Future<void> openTheRecorder() async {
     // await Permission.microphone.request();
     await Permission.storage.request();
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
-    }
+    await Permission.microphone.request();
+    // if (status != PermissionStatus.granted) {
+    //   throw RecordingPermissionException('Microphone permission not granted');
+    // }
 
     await _mRecorder!.openRecorder();
 
@@ -94,32 +96,56 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   // ----------------------  Here is the code for recording  -------
 
-  void startRecord() {
-    if (!recorderIsInited) {
-      openTheRecorder();
-    }
-    //remove play button
-    widget.recordingData!('');
-    _mRecorder!
-        .startRecorder(
-      toFile: widget.filePath,
-      codec: _codec,
-      audioSource: theSource,
-    )
-        .then((value) {
-      setState(() {});
+  Future<bool> startRecord() async {
+    await Permission.microphone.request();
+    await Permission.storage.request();
+    bool result = false;
+    await platform.invokeMethod(
+        'startRecordAudio', {'filePath': widget.filePath}).then((value) {
+      setState(() => result = value);
+    });
+    return result;
+  }
+
+  // void startRecord() {
+  //   if (!recorderIsInited) {
+  //     openTheRecorder();
+  //   }
+  //   //remove play button
+  //   widget.recordingData!('');
+  //   _mRecorder!
+  //       .startRecorder(
+  //     toFile: widget.filePath,
+  //     codec: _codec,
+  //     audioSource: theSource,
+  //   )
+  //       .then((value) {
+  //     setState(() {});
+  //   });
+  // }
+
+  stopRecorder() async {
+    await platform.invokeMethod(
+        'stopRecordAudio', {'filePath': widget.filePath}).then((value) {
+      if (value) {
+        // startAPICall();
+        apiCall();
+        setState(() => isStartLoading = true);
+      } else {
+        AppUtils.showToast('Audio Record Has Some Issue.');
+      }
     });
   }
 
-  void stopRecorder() async {
-    await _mRecorder!.stopRecorder().then((value) {
-      apiCall();
-      // getFiles();
-      setState(() {
-        isStartLoading = true;
-      });
-    });
-  }
+  // void stopRecorder() async {
+  //   await _mRecorder!.stopRecorder().then((value) {
+  //     apiCall();
+  //     // getFiles();
+  //     setState(() {
+  //       isStartLoading = true;
+  //     });
+  //   });
+  // }
 
   apiCall() async {
     setState(() {

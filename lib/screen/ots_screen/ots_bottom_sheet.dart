@@ -562,8 +562,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             'files': value,
           });
 
-          print('OTS post data ----> $postdata');
-
           Map<String, dynamic> postResult = await APIRepository.apiRequest(
             APIRequestType.upload,
             HttpUrl.otsPostUrl,

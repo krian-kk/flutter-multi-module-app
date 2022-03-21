@@ -427,9 +427,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           returnS2Tdata.result?.audioS3Path,
                                     ));
 
-                                print(
-                                    "REPO post data -----> ${json.encode(requestBodyData)}");
-
                                 final Map<String, dynamic> postdata =
                                     jsonDecode(jsonEncode(
                                             requestBodyData.toJson()))

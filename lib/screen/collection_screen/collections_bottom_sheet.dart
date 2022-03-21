@@ -600,8 +600,7 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
-
-            print(
+            debugPrint(
                 'Collection Requestbody data ----> ${jsonEncode(requestBodyData)}');
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
