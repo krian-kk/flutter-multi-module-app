@@ -227,4 +227,8 @@ class HttpUrl {
   // Convert Voice to Text Post API
   static final String audioRemarksURL =
       baseUrl + fieldAgent + 'case-details-events/audioRemarks_upload';
+
+  // Convert Voice to Text Post API
+  static final String getAudioFile =
+      baseUrl + fieldAgent + 'case-details-events/get_audioFile';
 }

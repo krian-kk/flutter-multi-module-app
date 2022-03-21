@@ -174,16 +174,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //     }),
       ProfileNavigation(
           title: Languages.of(context)!.selectAppLanguage,
+          isEnable: true,
           onTap: () {
             bloc.add(ClickChangeLaunguageEvent());
           }),
       ProfileNavigation(
           title: Languages.of(context)!.customerLanguagePreference,
+          isEnable: Singleton.instance.usertype == Constants.fieldagent
+              ? true
+              : false,
           onTap: () {
             bloc.add(CustomerLaunguagePrefrerenceEvent(context));
           }),
       ProfileNavigation(
           title: Languages.of(context)!.changePassword,
+          isEnable: true,
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
@@ -467,50 +472,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         itemCount: profileNavigationList.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return GestureDetector(
-                                            onTap: profileNavigationList[index]
-                                                .onTap,
-                                            child: Container(
-                                              width: double.infinity,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0),
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 4),
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: ListTile(
-                                                title: SizedBox(
-                                                  // width: 260,
-                                                  child: CustomText(
-                                                    profileNavigationList[index]
-                                                        .title
-                                                        .toUpperCase(),
-                                                    lineHeight: 1.4,
-                                                    fontSize: FontSize.sixteen,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color23375A,
+                                          return profileNavigationList[index]
+                                                  .isEnable
+                                              ? GestureDetector(
+                                                  onTap: profileNavigationList[
+                                                          index]
+                                                      .onTap,
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    margin: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4),
+                                                    decoration: const BoxDecoration(
+                                                        color: ColorResource
+                                                            .colorF8F9FB,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10.0))),
+                                                    child: ListTile(
+                                                      title: SizedBox(
+                                                        // width: 260,
+                                                        child: CustomText(
+                                                          profileNavigationList[
+                                                                  index]
+                                                              .title
+                                                              .toUpperCase(),
+                                                          lineHeight: 1.4,
+                                                          fontSize:
+                                                              FontSize.sixteen,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          color: ColorResource
+                                                              .color23375A,
+                                                        ),
+                                                      ),
+                                                      trailing: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              ImageResource
+                                                                  .forwardArrow),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                trailing: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                        ImageResource
-                                                            .forwardArrow),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
+                                                )
+                                              : const SizedBox();
                                         }),
                                   ],
                                 ),

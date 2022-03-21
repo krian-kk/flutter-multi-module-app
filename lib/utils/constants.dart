@@ -154,7 +154,7 @@ class Constants {
   static const String digital = 'DIGITAL';
   static const String s2tLangcode = 's2tLangcode';
   static const String s2tLangSelectedIndex = 's2tLangSelectedIndex';
-  static const String reginalText = 'Reginal Text:';
+  static const String reginalText = 'Regional Text:';
   static const String translatedText = 'Translated Text:';
 
   // Customer Preference Language Code

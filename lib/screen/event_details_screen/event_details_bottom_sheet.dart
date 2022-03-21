@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
@@ -7,9 +13,15 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
+
+import '../../http/api_repository.dart';
+import '../../http/httpurls.dart';
+import '../../models/audio_convertion_model.dart';
+import '../../utils/app_utils.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
@@ -29,20 +41,82 @@ class _CustomEventDetailsBottomSheetState
   bool isPlaying = false;
   bool isPaused = false;
   late AudioPlayer audioPlayer;
+  bool loadingAudio = false;
+  AudioConvertModel audioConvertyData = AudioConvertModel();
 
   @override
   void initState() {
     super.initState();
     audioPlayer = AudioPlayer();
+    audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      if (state == PlayerState.PLAYING) {
+        setState(() {
+          isPlaying = true;
+        });
+      }
+      if (state == PlayerState.STOPPED) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+      if (state == PlayerState.COMPLETED) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+      if (state == PlayerState.PAUSED) {
+        setState(() {
+          isPaused = true;
+        });
+      }
+    });
   }
 
-  playAudio() async {
-    int result = await audioPlayer.play(
-        '/data/user/0/com.mcollect.origa.ai/app_flutter/TFJ_MH3028CD0045094_2022-03-10T11-49-47.wav',
-        isLocal: true);
-    if (result == 1) {
-      setState(() {});
+  // List<File> uploadFileLists = [];
+  // getFiles() async {
+  //   FilePickerResult? result12 = await FilePicker.platform
+  //       .pickFiles(allowMultiple: false, type: FileType.audio);
+  //   if (result12 != null) {
+  //     setState(() {
+  //       uploadFileLists = result12.paths.map((path) => File(path!)).toList();
+  //     });
+  //     int result =
+  //         await audioPlayer.play(uploadFileLists.first.path, isLocal: true);
+  //     if (result == 1) {
+  //       setState(() {});
+  //     }
+  //   } else {
+  //     AppUtils.showToast(
+  //       Languages.of(context)!.canceled,
+  //     );
+  //   }
+  // }
+
+  playAudio(String? audioPath) async {
+    setState(() {
+      loadingAudio = true;
+    });
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.post,
+      HttpUrl.getAudioFile,
+      requestBodydata: {"pathOfFile": audioPath},
+    );
+
+    if (postResult[Constants.success]) {
+      audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
+      var base64 = const Base64Encoder()
+          .convert(List<int>.from(audioConvertyData.result!.body!.data!));
+      Uint8List audioBytes = const Base64Codec().decode(base64);
+      int result = await audioPlayer.playBytes(audioBytes);
+      if (result == 1) {
+        setState(() {});
+      }
+    } else {
+      AppUtils.showErrorToast("Didn't get audio file");
     }
+    setState(() => loadingAudio = false);
   }
 
   stopAudio() async {
@@ -299,16 +373,26 @@ class _CustomEventDetailsBottomSheetState
             const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
-                isPlaying ? stopAudio() : playAudio();
+                isPlaying ? stopAudio() : playAudio(audioPath);
+                // isPlaying ? stopAudio() : getFiles();
               },
               child: CircleAvatar(
                 backgroundColor: ColorResource.color23375A,
                 radius: 20,
                 child: Center(
-                  child: Icon(
-                    isPlaying ? Icons.stop : Icons.play_arrow,
-                    color: ColorResource.colorFFFFFF,
-                  ),
+                  child: loadingAudio
+                      ? CustomLoadingWidget(
+                          radius: 11,
+                          strokeWidth: 3.0,
+                          gradientColors: [
+                            ColorResource.colorFFFFFF,
+                            ColorResource.colorFFFFFF.withOpacity(0.7),
+                          ],
+                        )
+                      : Icon(
+                          isPlaying ? Icons.stop : Icons.play_arrow,
+                          color: ColorResource.colorFFFFFF,
+                        ),
                 ),
               ),
             ),
