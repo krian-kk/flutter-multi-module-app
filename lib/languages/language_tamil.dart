@@ -315,6 +315,9 @@ class LanguageTa extends Languages {
   String get dispute => 'சர்ச்சை';
 
   @override
+  String get dropDownDispute => 'சர்ச்சை';
+
+  @override
   String get remainderCb => 'நினைவூட்டல்/CB';
 
   @override
@@ -838,4 +841,10 @@ class LanguageTa extends Languages {
   @override
   String get logiginDeifferentFailMessage =>
       'அழிப்பதற்கு மேலே நற்சான்றிதழ் இல்லை';
+
+  @override
+  String get disputeWithCharges => 'குற்றச்சாட்டுகளுடன் தகராறு';
+
+  @override
+  String get loanCleared => 'கடன் அழிக்கப்பட்டது';
 }

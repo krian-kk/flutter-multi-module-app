@@ -516,7 +516,8 @@ class _CustomCollectionsBottomSheetState
           });
         }
         if (isNotAutoCalling) {
-          if (selectedPaymentModeButton == "DIGITAL") {
+          if (selectedPaymentModeButton == "DIGITAL" ||
+              Singleton.instance.usertype == Constants.telecaller) {
             setState(() => isSubmit = false);
 
             Position position = Position(

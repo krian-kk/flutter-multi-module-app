@@ -315,6 +315,9 @@ class LanguageHi extends Languages {
   String get dispute => 'विवाद';
 
   @override
+  String get dropDownDispute => 'विवाद';
+
+  @override
   String get remainderCb => 'रिमाइंडर/CB';
 
   @override
@@ -835,4 +838,10 @@ class LanguageHi extends Languages {
   @override
   String get logiginDeifferentFailMessage =>
       'साफ़ करने के लिए ऊपर कोई क्रेडेंशियल नहीं है';
+
+  @override
+  String get disputeWithCharges => 'शुल्क के साथ विवाद';
+
+  @override
+  String get loanCleared => 'ऋण मंजूरी';
 }

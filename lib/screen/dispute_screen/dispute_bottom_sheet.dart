@@ -164,7 +164,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CustomText(
-                                    Languages.of(context)!.nextActionTime,
+                                    Languages.of(context)!.nextActionDate,
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w400,
                                     color: ColorResource.color666666,
@@ -217,17 +217,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                   Languages.of(context)!.disputeReason,
                                   [
                                     'select',
-                                    Languages.of(context)!.businessLoss,
-                                    Languages.of(context)!.covidImpacted,
-                                    Languages.of(context)!.dispute,
-                                    Languages.of(context)!.financialReason,
-                                    Languages.of(context)!
-                                        .incomeLossInTheFamily,
-                                    Languages.of(context)!.intention,
-                                    Languages.of(context)!.jobLoss,
-                                    Languages.of(context)!.jobUncertaintly,
-                                    Languages.of(context)!.medicalIssue,
-                                    Languages.of(context)!.salaryIssue,
+                                    Languages.of(context)!.disputeWithCharges,
+                                    Languages.of(context)!.loanCleared,
                                   ],
                                   menuMaxHeight: 200,
                                   selectedValue: disputeDropDownValue,

@@ -54,11 +54,6 @@ class FirebaseUtils {
           .collection(Constants.firebaseCase)
           .doc(caseId)
           .update({'starredCase': isStarred});
-
-
-      /* await FirebaseUtils.updateStarred(
-          isStarred: resultList[event.selectedStarIndex].starredCase,
-          caseId: resultList[event.selectedStarIndex].caseId); */
       returnValues = true;
     } else {
       returnValues = false;

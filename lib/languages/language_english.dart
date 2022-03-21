@@ -314,6 +314,9 @@ class LanguageEn extends Languages {
   String get dispute => 'DISPUTE';
 
   @override
+  String get dropDownDispute => 'Dispute';
+
+  @override
   String get remainderCb => 'REMINDER/CB';
 
   @override
@@ -832,4 +835,10 @@ class LanguageEn extends Languages {
 
   @override
   String get logiginDeifferentFailMessage => 'No credential above to clear';
+
+  @override
+  String get disputeWithCharges => 'Dispute With Charges';
+
+  @override
+  String get loanCleared => 'Loan Cleared';
 }

@@ -35,6 +35,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
@@ -133,10 +134,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
           return MapNavigation(
             multipleLatLong: bloc.multipleLatLong,
           );
-          // MapViewBottomSheetScreen(
-          //   title: Languages.of(context)!.viewMap,
-          //   listOfAgentLocation: bloc.priorityCaseAddressList,
-          // );
         });
   }
 
@@ -343,6 +340,33 @@ class _AllocationScreenState extends State<AllocationScreen> {
           mapView(context);
           bloc.isShowSearchPincode = false;
         }
+
+        if (state is UpdateNewValueState) {
+          bloc.resultList.asMap().forEach((index, value) {
+            if (value.caseId == state.paramValue) {
+              setState(() {
+                if (Singleton.instance.usertype == Constants.telecaller) {
+                  value.telSubStatus = state.selectedEventValue;
+                } else {
+                  value.collSubStatus = state.selectedEventValue;
+                }
+                if (state.selectedEventValue != null &&
+                    state.updateFollowUpdate != null) {
+                  value.fieldfollowUpDate = state.updateFollowUpdate;
+                  value.followUpDate = state.updateFollowUpdate;
+                }
+              });
+            }
+          });
+          /*if (state.selectedEventValue == Constants.remainder) {
+            var tempCaseDetails = bloc.resultList[bloc.resultList
+                .indexWhere((element) => element.caseId == state.paramValue)];
+            bloc.resultList
+                .removeWhere((element) => elsement.caseId == state.paramValue);
+            bloc.resultList.add(tempCaseDetails);
+          }*/
+        }
+
         if (state is AutoCallingContactSortState) {
           setState(() {});
         }
@@ -532,11 +556,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
               RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
                   Map<String, dynamic>.from(returnValue));
               if (returnModelValue.isSubmit) {
-                bloc.add(UpdateNewValuesEvent(
-                  returnModelValue.caseId,
-                  returnModelValue.selectedClipValue,
-                  returnModelValue.followUpDate,
-                ));
+                // bloc.add(UpdateNewValuesEvent(
+                //   returnModelValue.caseId,
+                //   returnModelValue.selectedClipValue,
+                //   returnModelValue.followUpDate,
+                // ));
+                // Due to page reload when data is submitted from case details
+                bloc.add(TapPriorityEvent());
               }
             }
           } catch (e) {
@@ -648,22 +674,40 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
+            await FirebaseUtils.updateStarred(
+                isStarred: true, caseId: state.caseId);
             await APIRepository.apiRequest(
               APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
+            var removedItem = bloc.resultList[state.selectedIndex];
+            bloc.resultList.removeAt(state.selectedIndex);
+            setState(() {
+              bloc.resultList.insert(0, removedItem);
+            });
           } else {
             setState(() {
               bloc.starCount--;
             });
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
+            await FirebaseUtils.updateStarred(
+                isStarred: false, caseId: state.caseId);
+
             await APIRepository.apiRequest(
               APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
+            var removedItem = bloc.resultList[state.selectedIndex];
+            bloc.resultList.removeAt(state.selectedIndex);
+            // To pick and add next starred false case
+            var firstWhereIndex =
+                bloc.resultList.indexWhere((note) => !note.starredCase);
+            setState(() {
+              bloc.resultList.insert(firstWhereIndex, removedItem);
+            });
           }
         }
 
