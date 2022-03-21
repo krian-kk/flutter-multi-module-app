@@ -211,12 +211,12 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 remarksControlller,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isVoiceRecordWidget: true,
-                                // Singleton.instance.usertype ==
-                                //             Constants.fieldagent &&
-                                //         widget.isCall! == false
-                                //     ? true
-                                //     : false,
+                                isVoiceRecordWidget:
+                                    Singleton.instance.usertype ==
+                                                Constants.fieldagent &&
+                                            widget.isCall! == false
+                                        ? true
+                                        : false,
                                 returnS2Tresponse: (val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {

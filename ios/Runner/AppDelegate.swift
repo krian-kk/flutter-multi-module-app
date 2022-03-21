@@ -85,6 +85,7 @@ import AVFoundation
                     audioRecord.isMeteringEnabled = true
                     audioRecord.prepareToRecord()
                     if(!(audioRecord.isRecording)) {
+                        print("Record Start")
                         audioRecord.record()
                         result(true)
                     }
@@ -96,6 +97,7 @@ import AVFoundation
                 if(audioRecord == nil ) {
                     result(false)
                 } else {
+                    print("Record Stop")
                     audioRecord.stop()
                     self!.convertAudio( URL(fileURLWithPath: mPath), outputURL: URL(fileURLWithPath: filePath))
                     result(true)
@@ -106,13 +108,14 @@ import AVFoundation
                     audioPlayer.prepareToPlay()
                     audioPlayer.delegate = self
                     audioPlayer.play()
+                    print("Play Audio")
                     result(true)
                 } catch let error {
                     result(false)
                     print(error)
                 }
             } else if(call.method == "stopPlayingAudio") {
-                print("Stop")
+                print("Stop Audio")
                 if(audioRecord == nil ) {
                     result(false)
                 } else {
@@ -120,7 +123,7 @@ import AVFoundation
                     result(true)
                 }
             } else if(call.method == "pausePlayingAudio") {
-                print("Pause")
+                print("Pause Audio")
                 if(audioRecord == nil ) {
                     result(false)
                 } else {
@@ -128,7 +131,7 @@ import AVFoundation
                     result(true)
                 }
             } else if(call.method == "resumePlayingAudio") {
-                print("Resume")
+                print("Resume Audio")
                 if(audioRecord == nil ) {
                     result(false)
                 } else {

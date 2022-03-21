@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -12,7 +15,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../http/api_repository.dart';
 import '../../http/httpurls.dart';
 import '../../utils/app_utils.dart';
@@ -33,57 +36,26 @@ class _CustomEventDetailsBottomSheetState
     extends State<CustomEventDetailsBottomSheet> {
   bool isPlaying = false;
   bool isPaused = false;
-  late AudioPlayer audioPlayer;
   bool loadingAudio = false;
+  String filePath = '';
+
+  static const platform = MethodChannel('recordAudioChannel');
+
   @override
   void initState() {
     super.initState();
-    audioPlayer = AudioPlayer();
-    audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-      if (state == PlayerState.PLAYING) {
-        setState(() {
-          isPlaying = true;
-        });
-      }
-      if (state == PlayerState.STOPPED) {
-        setState(() {
-          isPlaying = false;
-          isPaused = false;
-        });
-      }
-      if (state == PlayerState.COMPLETED) {
-        setState(() {
-          isPlaying = false;
-          isPaused = false;
-        });
-      }
-      if (state == PlayerState.PAUSED) {
-        setState(() {
-          isPaused = true;
-        });
-      }
+
+    getFileDirectory();
+  }
+
+  getFileDirectory() async {
+    String dir = ((await getApplicationDocumentsDirectory()).path) +
+        '/${Singleton.instance.agrRef}_${((DateTime.now().toIso8601String()).split('.').first.toString()).replaceAll(':', '-')}.wav';
+    setState(() {
+      filePath = dir;
     });
   }
 
-  // List<File> uploadFileLists = [];
-  // getFiles() async {
-  //   FilePickerResult? result12 = await FilePicker.platform
-  //       .pickFiles(allowMultiple: false, type: FileType.audio);
-  //   if (result12 != null) {
-  //     setState(() {
-  //       uploadFileLists = result12.paths.map((path) => File(path!)).toList();
-  //     });
-  //     int result =
-  //         await audioPlayer.play(uploadFileLists.first.path, isLocal: true);
-  //     if (result == 1) {
-  //       setState(() {});
-  //     }
-  //   } else {
-  //     AppUtils.showToast(
-  //       Languages.of(context)!.canceled,
-  //     );
-  //   }
-  // }
   playAudio(String? audioPath) async {
     setState(() {
       loadingAudio = true;
@@ -98,10 +70,23 @@ class _CustomEventDetailsBottomSheetState
       var base64 = const Base64Encoder().convert(
           List<int>.from(postResult['data']['result']['Body']['data']));
       Uint8List audioBytes = const Base64Codec().decode(base64);
-      int result = await audioPlayer.playBytes(audioBytes);
-      if (result == 1) {
-        setState(() {});
-      }
+      await File(filePath).writeAsBytes(audioBytes);
+      await platform.invokeMethod(
+          'playRecordAudio', {'filePath': filePath}).then((value) {
+        if (value) {
+          setState(() => isPlaying = true);
+          setState(() => loadingAudio = false);
+        }
+      });
+      await platform.invokeMethod(
+          'completeRecordAudio', {'filePath': filePath}).then((value) {
+        if (value != null) {
+          setState(() {
+            isPlaying = false;
+            isPaused = false;
+          });
+        }
+      });
     } else {
       AppUtils.showErrorToast("Did't get audio file");
     }
@@ -109,26 +94,37 @@ class _CustomEventDetailsBottomSheetState
   }
 
   stopAudio() async {
-    int result = await audioPlayer.stop();
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform
+        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
   }
 
   pauseAudio() async {
-    int result = await audioPlayer.pause();
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform.invokeMethod(
+        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPaused = true;
+        });
+      }
+    });
   }
 
   resumeAudio() async {
-    int result = await audioPlayer.resume();
-    if (result == 1) {
-      setState(() {
-        isPaused = false;
-      });
-    }
+    await platform.invokeMethod(
+        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPaused = false;
+        });
+      }
+    });
   }
 
   @override

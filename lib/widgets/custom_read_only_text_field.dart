@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -108,7 +107,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   TextEditingController translateTextController =
       TextEditingController(text: '');
   bool isEdit = false;
-  late AudioPlayer audioPlayer;
   static const platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
 
@@ -118,40 +116,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   @override
   void initState() {
     if (widget.isVoiceRecordWidget) {
-      // getPermission();
-
-      // filePath = createFilename.replaceAll(':', '-');
-      audioPlayer = AudioPlayer();
-      // getPermission();
-      // filePath =
-      //     '/sdcard/Download/djkdjkdjkdj${widget.agrRef}_${(DateTime.now().toIso8601String()).split('.').first.toString()}.wav';
-
-      // filePath = '/sdcard/Download/tempAudio.wav';
-      // print('File Patyh is ======================= > ${filePath}');
-      audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-        if (state == PlayerState.PLAYING) {
-          setState(() {
-            isPlaying = true;
-          });
-        }
-        if (state == PlayerState.STOPPED) {
-          setState(() {
-            isPlaying = false;
-            isPaused = false;
-          });
-        }
-        if (state == PlayerState.COMPLETED) {
-          setState(() {
-            isPlaying = false;
-            isPaused = false;
-          });
-        }
-        if (state == PlayerState.PAUSED) {
-          setState(() {
-            isPaused = true;
-          });
-        }
-      });
       getFileDirectory();
     }
 
@@ -183,10 +147,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
         });
       }
     });
-    // int result = await audioPlayer.play(filePath, isLocal: true);
-    // if (result == 1) {
-    //   setState(() {});
-    // }
   }
 
   stopAudio() async {
