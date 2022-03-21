@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,6 +77,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   String? searchBasedOnValue;
   String version = "";
   late Timer _timer;
+  String? internetAvailability;
 
   // The controller for the ListView
   late ScrollController _controller;
@@ -92,29 +93,45 @@ class _AllocationScreenState extends State<AllocationScreen> {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent(context));
     _controller = ScrollController()..addListener(_loadMore);
+    internetChecking();
     getCurrentLocation();
+  }
+
+  Future<void> internetChecking() async {
+    await Connectivity().checkConnectivity().then((value) {
+      setState(() {
+        internetAvailability = value.name;
+      });
+    });
+     Connectivity().onConnectivityChanged.listen((event) {
+      setState(() {
+        internetAvailability = event.name;
+      });
+    });
   }
 
   //get current location lat, alng and address
   void getCurrentLocation() async {
-    Position result = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    if (mounted) {
-      setState(() {
-        position = result;
-      });
-    }
+    if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
+      Position result = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      if (mounted) {
+        setState(() {
+          position = result;
+        });
+      }
 
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(result.latitude, result.longitude);
-    if (mounted) {
-      setState(() {
-        currentAddress = placemarks.toList().first.street.toString() +
-            ', ' +
-            placemarks.toList().first.subLocality.toString() +
-            ', ' +
-            placemarks.toList().first.postalCode.toString();
-      });
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(result.latitude, result.longitude);
+      if (mounted) {
+        setState(() {
+          currentAddress = placemarks.toList().first.street.toString() +
+              ', ' +
+              placemarks.toList().first.subLocality.toString() +
+              ', ' +
+              placemarks.toList().first.postalCode.toString();
+        });
+      }
     }
   }
 
@@ -322,6 +339,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         // }
         if (state is AllocationOfflineState) {
           isOffline = true;
+          debugPrint('Offline state in bloc $isOffline');
         }
         if (state is NoInternetConnectionState) {
           isOffline = true;
@@ -544,18 +562,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 context, AppRoutes.caseDetailsScreen,
                 arguments: CaseDetailsNaviagationModel(state.paramValues,
                     allocationBloc: bloc));
-            // If user will be offline data stored into firebase -> so there is no need to update while back
+            // If user will be offline data stored into firebase ->
+            // so there is no need to update while back
             if (state.paramValues['isOffline'] != null &&
                 state.paramValues['isOffline'] == false) {
               RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
                   Map<String, dynamic>.from(returnValue));
               if (returnModelValue.isSubmit) {
-                // bloc.add(UpdateNewValuesEvent(
-                //   returnModelValue.caseId,
-                //   returnModelValue.selectedClipValue,
-                //   returnModelValue.followUpDate,
-                // ));
-                // Due to page reload when data is submitted from case details
                 bloc.add(TapPriorityEvent());
               }
             }
@@ -603,8 +616,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             if (state.successResponse == 'offlineData') {
               FirebaseFirestore.instance
                   .collection(Singleton.instance.firebaseDatabaseName)
-                  .doc(
-                      '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+                  .doc(Singleton.instance.agentRef)
                   .collection(Constants.firebaseCase)
                   .get(const GetOptions(source: Source.serverAndCache))
                   .then((value) {
@@ -799,64 +811,66 @@ class _AllocationScreenState extends State<AllocationScreen> {
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
-            floatingActionButton: Visibility(
-              visible: bloc.isShowSearchFloatingButton,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Visibility(
-                        visible: bloc.isMessageThere,
-                        child: SizedBox(
-                          width: 175,
-                          child: CustomButton(
-                            Languages.of(context)!.message,
-                            alignment: MainAxisAlignment.end,
-                            cardShape: 50,
-                            isTrailing: true,
-                            leadingWidget: Padding(
-                              padding: const EdgeInsets.all(8.0),
+            floatingActionButton: internetAvailability != 'none'
+                ? Visibility(
+                    visible: bloc.isShowSearchFloatingButton,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: Visibility(
+                              visible: bloc.isMessageThere,
                               child: SizedBox(
-                                width: 40,
-                                child: Container(
-                                  height: 26,
-                                  width: 26,
-                                  decoration: const BoxDecoration(
-                                    color: ColorResource.colorFFFFFF,
-                                    shape: BoxShape.circle,
+                                width: 175,
+                                child: CustomButton(
+                                  Languages.of(context)!.message,
+                                  alignment: MainAxisAlignment.end,
+                                  cardShape: 50,
+                                  isTrailing: true,
+                                  leadingWidget: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      width: 40,
+                                      child: Container(
+                                        height: 26,
+                                        width: 26,
+                                        decoration: const BoxDecoration(
+                                          color: ColorResource.colorFFFFFF,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                            child: CustomText(
+                                          bloc.messageCount.toString(),
+                                          color: ColorResource.colorEA6D48,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          lineHeight: 1,
+                                        )),
+                                      ),
+                                    ),
                                   ),
-                                  child: Center(
-                                      child: CustomText(
-                                    bloc.messageCount.toString(),
-                                    color: ColorResource.colorEA6D48,
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w700,
-                                    lineHeight: 1,
-                                  )),
+                                  onTap: () {
+                                    bloc.add(MessageEvent());
+                                    AppUtils.showToast(
+                                        Languages.of(context)!.message);
+                                  },
                                 ),
                               ),
                             ),
-                            onTap: () {
-                              bloc.add(MessageEvent());
-                              AppUtils.showToast(
-                                  Languages.of(context)!.message);
+                          ),
+                          const Spacer(),
+                          CustomFloatingActionButton(
+                            onTap: () async {
+                              bloc.add(NavigateSearchPageEvent());
                             },
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                    const Spacer(),
-                    CustomFloatingActionButton(
-                      onTap: () async {
-                        bloc.add(NavigateSearchPageEvent());
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : const SizedBox(),
             body: Column(
               children: [
                 Padding(
@@ -870,120 +884,125 @@ class _AllocationScreenState extends State<AllocationScreen> {
                       ),
                       Visibility(
                         visible: bloc.areyouatOffice,
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 5.0),
-                          decoration: BoxDecoration(
-                            color: ColorResource.colorffffff,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: ColorResource.colorECECEC, width: 1.0),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(ImageResource.location),
-                                    const SizedBox(width: 8),
-                                    Flexible(
-                                      child: CustomText(
-                                        Languages.of(context)!.areYouAtOffice,
-                                        fontSize: FontSize.twelve,
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorResource.color000000,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: isSubmitRUOffice
-                                    ? const Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(6.0),
-                                          child: CustomLoadingWidget(
-                                            radius: 14,
-                                            strokeWidth: 3,
-                                          ),
+                        child: Visibility(
+                          visible:
+                              internetAvailability != 'none' ? true : false,
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 5.0),
+                            decoration: BoxDecoration(
+                              color: ColorResource.colorffffff,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: ColorResource.colorECECEC, width: 1.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(ImageResource.location),
+                                      const SizedBox(width: 8),
+                                      Flexible(
+                                        child: CustomText(
+                                          Languages.of(context)!.areYouAtOffice,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          color: ColorResource.color000000,
                                         ),
-                                      )
-                                    : Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                              width: Languages.of(context)!
-                                                          .no
-                                                          .length ==
-                                                      2
-                                                  ? 75
-                                                  : 64,
-                                              height: 40,
-                                              child: CustomButton(
-                                                Languages.of(context)!.yes,
-                                                fontSize: FontSize.twelve,
-                                                borderColor:
-                                                    ColorResource.colorEA6D48,
-                                                buttonBackgroundColor:
-                                                    ColorResource.colorEA6D48,
-                                                cardShape: 5,
-                                                isRemoveExtraPadding: true,
-                                                onTap: () {
-                                                  bloc.add(
-                                                      TapAreYouAtOfficeOptionsEvent());
-                                                },
-                                              )),
-                                          Languages.of(context)!.no.length == 2
-                                              ? SizedBox(
-                                                  width: 74,
-                                                  height: 40,
-                                                  child: CustomButton(
-                                                    Languages.of(context)!.no,
-                                                    fontSize: FontSize.twelve,
-                                                    borderColor: ColorResource
-                                                        .color23375A,
-                                                    textColor: ColorResource
-                                                        .color23375A,
-                                                    buttonBackgroundColor:
-                                                        ColorResource
-                                                            .colorffffff,
-                                                    cardShape: 5,
-                                                    onTap: () {
-                                                      bloc.add(
-                                                          TapAreYouAtOfficeOptionsEvent());
-                                                    },
-                                                  ))
-                                              : Expanded(
-                                                  child: SizedBox(
-// width: 85,
-                                                      height: 40,
-                                                      child: CustomButton(
-                                                        Languages.of(context)!
-                                                            .no,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        borderColor:
-                                                            ColorResource
-                                                                .color23375A,
-                                                        textColor: ColorResource
-                                                            .color23375A,
-                                                        buttonBackgroundColor:
-                                                            ColorResource
-                                                                .colorffffff,
-                                                        cardShape: 5,
-                                                        onTap: () {
-                                                          bloc.add(
-                                                              TapAreYouAtOfficeOptionsEvent());
-                                                        },
-                                                      )),
-                                                ),
-                                        ],
                                       ),
-                              )
-                            ],
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: isSubmitRUOffice
+                                      ? const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(6.0),
+                                            child: CustomLoadingWidget(
+                                              radius: 14,
+                                              strokeWidth: 3,
+                                            ),
+                                          ),
+                                        )
+                                      : Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(
+                                                width: Languages.of(context)!
+                                                            .no
+                                                            .length ==
+                                                        2
+                                                    ? 75
+                                                    : 64,
+                                                height: 40,
+                                                child: CustomButton(
+                                                  Languages.of(context)!.yes,
+                                                  fontSize: FontSize.twelve,
+                                                  borderColor:
+                                                      ColorResource.colorEA6D48,
+                                                  buttonBackgroundColor:
+                                                      ColorResource.colorEA6D48,
+                                                  cardShape: 5,
+                                                  isRemoveExtraPadding: true,
+                                                  onTap: () {
+                                                    bloc.add(
+                                                        TapAreYouAtOfficeOptionsEvent());
+                                                  },
+                                                )),
+                                            Languages.of(context)!.no.length ==
+                                                    2
+                                                ? SizedBox(
+                                                    width: 74,
+                                                    height: 40,
+                                                    child: CustomButton(
+                                                      Languages.of(context)!.no,
+                                                      fontSize: FontSize.twelve,
+                                                      borderColor: ColorResource
+                                                          .color23375A,
+                                                      textColor: ColorResource
+                                                          .color23375A,
+                                                      buttonBackgroundColor:
+                                                          ColorResource
+                                                              .colorffffff,
+                                                      cardShape: 5,
+                                                      onTap: () {
+                                                        bloc.add(
+                                                            TapAreYouAtOfficeOptionsEvent());
+                                                      },
+                                                    ))
+                                                : Expanded(
+                                                    child: SizedBox(
+                                                        height: 40,
+                                                        child: CustomButton(
+                                                          Languages.of(context)!
+                                                              .no,
+                                                          fontSize:
+                                                              FontSize.twelve,
+                                                          borderColor:
+                                                              ColorResource
+                                                                  .color23375A,
+                                                          textColor:
+                                                              ColorResource
+                                                                  .color23375A,
+                                                          buttonBackgroundColor:
+                                                              ColorResource
+                                                                  .colorffffff,
+                                                          cardShape: 5,
+                                                          onTap: () {
+                                                            bloc.add(
+                                                                TapAreYouAtOfficeOptionsEvent());
+                                                          },
+                                                        )),
+                                                  ),
+                                          ],
+                                        ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -1028,80 +1047,87 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           spacing: 10,
                           children:
                               List.generate(bloc.selectOptions.length, (index) {
-                            return ChoiceChip(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(5),
-                                      topLeft: Radius.circular(5),
-                                      bottomLeft: Radius.circular(5),
-                                      bottomRight: Radius.circular(5)),
-                                  side: BorderSide(
-                                      color: ColorResource.color23375A,
-                                      width: 0.5)),
-                              labelPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 2),
-                              label: CustomText(
-                                bloc.selectOptions[index],
-                                fontSize: FontSize.twelve,
-                                lineHeight: 1,
-                                fontWeight: FontWeight.w700,
-                                color: index == bloc.selectedOption
-                                    ? Colors.white
-                                    : ColorResource.color000000,
-                              ),
-                              selected: bloc.selectedOption == index,
-                              selectedColor: ColorResource.color23375A,
-                              onSelected: (value) {
-                                setState(() {
-                                  bloc.selectedOption =
-                                      value ? index : bloc.selectedOption;
-                                });
-                                switch (index) {
-                                  case 0:
-                                    setState(() {
-                                      bloc.showFilterDistance = false;
-                                      bloc.add(TapPriorityEvent());
-                                    });
-                                    break;
-                                  case 1:
-                                    if (bloc.userType == Constants.fieldagent) {
+                            return internetAvailability != 'none'
+                                ? ChoiceChip(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5)),
+                                        side: BorderSide(
+                                            color: ColorResource.color23375A,
+                                            width: 0.5)),
+                                    labelPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    label: CustomText(
+                                      bloc.selectOptions[index],
+                                      fontSize: FontSize.twelve,
+                                      lineHeight: 1,
+                                      fontWeight: FontWeight.w700,
+                                      color: index == bloc.selectedOption
+                                          ? Colors.white
+                                          : ColorResource.color000000,
+                                    ),
+                                    selected: bloc.selectedOption == index,
+                                    selectedColor: ColorResource.color23375A,
+                                    onSelected: (value) {
                                       setState(() {
-                                        bloc.add(TapBuildRouteEvent(
-                                            paramValues: BuildRouteDataModel(
-                                                lat: position.latitude
-                                                    .toString(),
-                                                long: position.longitude
-                                                    .toString(),
-                                                maxDistMeters:
-                                                    Constants.allDisMeters)));
-                                        bloc.showFilterDistance = true;
+                                        bloc.selectedOption =
+                                            value ? index : bloc.selectedOption;
                                       });
-                                    } else {
-                                      bloc.add(ShowAutoCallingEvent());
-                                    }
-                                    break;
-                                  case 2:
-                                    bloc.add(MapViewEvent(
-                                        paramValues: BuildRouteDataModel(
-                                            lat: position.latitude.toString(),
-                                            long: position.longitude.toString(),
-                                            maxDistMeters:
-                                                Constants.allDisMeters)));
-                                    setState(() {
-                                      bloc.showFilterDistance = false;
-                                    });
-                                    break;
-                                  default:
-                                    setState(() {
-                                      bloc.showFilterDistance = false;
-                                    });
-                                }
-                              },
-                              backgroundColor: Colors.white,
-                              elevation: 0,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                            );
+                                      switch (index) {
+                                        case 0:
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                            bloc.add(TapPriorityEvent());
+                                          });
+                                          break;
+                                        case 1:
+                                          if (bloc.userType ==
+                                              Constants.fieldagent) {
+                                            setState(() {
+                                              bloc.add(TapBuildRouteEvent(
+                                                  paramValues:
+                                                      BuildRouteDataModel(
+                                                          lat: position.latitude
+                                                              .toString(),
+                                                          long: position
+                                                              .longitude
+                                                              .toString(),
+                                                          maxDistMeters: Constants
+                                                              .allDisMeters)));
+                                              bloc.showFilterDistance = true;
+                                            });
+                                          } else {
+                                            bloc.add(ShowAutoCallingEvent());
+                                          }
+                                          break;
+                                        case 2:
+                                          bloc.add(MapViewEvent(
+                                              paramValues: BuildRouteDataModel(
+                                                  lat: position.latitude
+                                                      .toString(),
+                                                  long: position.longitude
+                                                      .toString(),
+                                                  maxDistMeters:
+                                                      Constants.allDisMeters)));
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                          });
+                                          break;
+                                        default:
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                          });
+                                      }
+                                    },
+                                    backgroundColor: Colors.white,
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                  )
+                                : const SizedBox();
                           }),
                         ),
                       ),
@@ -1122,12 +1148,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             stream: FirebaseFirestore.instance
                                 .collection(
                                     Singleton.instance.firebaseDatabaseName)
-                                .doc(
-                                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+                                .doc(Singleton.instance.agentRef)
                                 .collection(Constants.firebaseCase)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                              debugPrint(
+                                  'Offline state in screen ->streambuilder');
                               if (snapshot.hasError) {
                                 return Column(
                                   children: [

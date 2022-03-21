@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -10,11 +12,8 @@ import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';

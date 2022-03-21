@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mime/mime.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
@@ -15,7 +13,7 @@ class FirebaseUtils {
     List<Result> resultList = [];
     FirebaseFirestore.instance
         .collection(Singleton.instance.firebaseDatabaseName)
-        .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+        .doc(Singleton.instance.agentRef)
         .collection(Constants.firebaseCase)
         .snapshots()
         .forEach((element) {
@@ -37,16 +35,13 @@ class FirebaseUtils {
     if (Singleton.instance.usertype == Constants.fieldagent) {
       await FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
-          .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+          .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseEvent)
           .add(eventsDetails);
-
       if (selectedClipValue != Constants.collections) {
-        debugPrint('Before updated the events-->');
         await FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
-            .doc(
-                '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
             .doc(caseId)
             .update(
@@ -57,9 +52,7 @@ class FirebaseUtils {
                       'collSubStatus': selectedClipValue
                     },
             )
-            .then((value) {
-          debugPrint('After updated the events-->');
-        });
+            .then((value) {});
       }
       returnValues = true;
     } else {
@@ -74,7 +67,7 @@ class FirebaseUtils {
     if (Singleton.instance.usertype == Constants.fieldagent) {
       await FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
-          .doc('${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+          .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseCase)
           .doc(caseId)
           .update({'starredCase': isStarred});

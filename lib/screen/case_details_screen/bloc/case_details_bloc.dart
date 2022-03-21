@@ -157,8 +157,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
         await FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
-            .doc(
-                '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
+            .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
             .doc('${event.paramValues['caseID']}')
             .get(const GetOptions(source: Source.serverAndCache))

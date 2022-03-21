@@ -30,6 +30,7 @@ class AuthenticationBloc
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
           Singleton.instance.usertype = _pref.getString(Constants.userType);
+          Singleton.instance.agentRef = _pref.getString(Constants.agentRef);
           yield OfflineState();
         } else {
           yield AuthenticationUnAuthenticated();

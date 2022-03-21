@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -25,7 +23,6 @@ import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
-
 part 'allocation_state.dart';
 
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
@@ -61,10 +58,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // There is used for pagination to scroll up
   bool hasNextPage = false;
+
   // Show Telecaller Autocalling
   bool isAutoCalling = false;
+
   // Enable or Disable the search floating button
   bool isShowSearchFloatingButton = true;
+
   // Check which event to call for load more cases
   bool isPriorityLoadMore = false;
 
@@ -127,10 +127,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isNoInternetAndServerError = true;
         isNoInternetAndServerErrorMsg =
             Languages.of(event.context)!.noInternetConnection;
-        yield NoInternetConnectionState();
+        // yield NoInternetConnectionState();
+        debugPrint('Values--> in off withoutinternet');
+        yield AllocationOfflineState(successResponse: "offlineData");
+
       } else {
         SharedPreferences _pref = await SharedPreferences.getInstance();
         if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
+          debugPrint('Values--> in off initiateState');
           yield AllocationOfflineState(successResponse: "offlineData");
         } else {
           isNoInternetAndServerError = false;
@@ -158,13 +162,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
               Singleton.instance.isOfflineStorageFeatureEnabled = true;
               hasNextPage = false;
-
               _pref.setBool(Constants.appDataLoadedFromFirebase, true);
+              _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+                  DateTime.now().toString());
               yield AllocationOfflineState(successResponse: "offlineData");
             } else {
               Singleton.instance.isOfflineStorageFeatureEnabled = false;
               for (var element in priorityListData['data']['result']) {
-                log('message $element');
                 resultList
                     .add(Result.fromJson(jsonDecode(jsonEncode(element))));
                 if (Result.fromJson(jsonDecode(jsonEncode(element)))
