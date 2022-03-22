@@ -616,6 +616,9 @@ class LanguageTa extends Languages {
   String get resendOTP => 'OTP ஐ மீண்டும் அனுப்பவா?';
 
   @override
+  String get submitOTP => 'OTPயைச் சமர்ப்பிக்கவா?';
+
+  @override
   String get sendOTP => 'OTP அனுப்பவும்';
 
   @override

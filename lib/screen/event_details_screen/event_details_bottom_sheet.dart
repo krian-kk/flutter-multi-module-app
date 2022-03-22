@@ -20,6 +20,17 @@ import '../../http/api_repository.dart';
 import '../../http/httpurls.dart';
 import '../../utils/app_utils.dart';
 
+// class EventDetailsPlayAudioModel {
+//   final bool isPlaying;
+//   final bool isPaused;
+//   bool loadingAudio;
+//   EventDetailsPlayAudioModel({
+//     this.isPlaying = false,
+//     this.isPaused = false,
+//     this.loadingAudio = false,
+//   });
+// }
+
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
   const CustomEventDetailsBottomSheet(this.cardTitle, this.bloc,

@@ -16,6 +16,9 @@ class HttpUrl {
   static final String loginUrl = '$url/node/api/user/loginWeb';
   static final String agentDetailUrl = '$url/node/field-allocation/agents/';
 
+  // Get Agent Secure Pin Code
+  static final String agentSecurePinUrl = '$baseUrl/profile/userDetailsAPI';
+
   // Get agent detail for Reset password screen
   static String resetPasswordCheckUrl(String agentName) =>
       '$url/node/field-allocation/agents/info/$agentName';

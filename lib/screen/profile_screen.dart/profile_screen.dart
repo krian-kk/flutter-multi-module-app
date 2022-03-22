@@ -79,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> showSecurePinDialogBox() async {
-    TextEditingController pinCodeContoller = TextEditingController();
+    TextEditingController securePinCodeContoller = TextEditingController();
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -94,35 +94,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(
+                      Expanded(
                         child: CustomText(
-                          Languages.of(context)!.changeYourSecureDigitPIN,
-                          fontSize: FontSize.sixteen,
+                          Languages.of(context)!
+                              .secureYourAccountByCreatingAFourDigitPin,
+                          fontSize: FontSize.eighteen,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       InkWell(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
                           child: Container(
                             padding: const EdgeInsets.all(2),
                             child: SvgPicture.asset(ImageResource.close),
                           ))
                     ]),
                 const SizedBox(height: 10),
-                CustomText(
-                  Languages.of(context)!.newPin,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w700,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: PinCodeTextField(
                     appContext: context,
-                    controller: pinCodeContoller,
+                    controller: securePinCodeContoller,
                     length: 4,
                     mainAxisAlignment: MainAxisAlignment.center,
                     obscureText: false,
@@ -135,6 +133,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: ColorResource.color23375A,
                     ),
                     keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
+                      FilteringTextInputFormatter.deny(' '),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     pinTheme: PinTheme(
                       fieldOuterPadding: const EdgeInsets.all(8),
                       activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
@@ -151,10 +154,354 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Languages.of(context)!.save,
                   fontSize: FontSize.sixteen,
                   onTap: () {
-                    Navigator.pop(context);
+                    // showComformSecurePinDialogBox(securePinCodeContoller.text);
                   },
                 ),
               ],
+            ),
+          );
+        });
+  }
+
+  Future<void> showComformSecurePinDialogBox(String newPin) async {
+    TextEditingController securePinCodeContoller = TextEditingController();
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: SizedBox(
+              width: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomText(
+                            Languages.of(context)!.enterYourSecureFourdDigitPin,
+                            fontSize: FontSize.eighteen,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              child: SvgPicture.asset(ImageResource.close),
+                            ))
+                      ]),
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: PinCodeTextField(
+                      appContext: context,
+                      controller: securePinCodeContoller,
+                      length: 4,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      obscureText: false,
+                      animationType: AnimationType.scale,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      textStyle: const TextStyle(
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color23375A,
+                      ),
+                      keyboardType: TextInputType.number,
+                      pinTheme: PinTheme(
+                        fieldOuterPadding: const EdgeInsets.all(8),
+                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                        selectedColor:
+                            ColorResource.color23375A.withOpacity(0.3),
+                        inactiveColor:
+                            ColorResource.color232222.withOpacity(0.3),
+                        fieldHeight: 46,
+                        fieldWidth: 40,
+                        borderWidth: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 60),
+                  GestureDetector(
+                    onTap: () {
+                      showForgorSecurePinDialogBox();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      child: CustomText(
+                        Languages.of(context)!.forgotPin,
+                        color: ColorResource.color23375A,
+                        fontSize: FontSize.sixteen,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<void> showForgorSecurePinDialogBox() async {
+    TextEditingController forgotSecurePinCodeContoller =
+        TextEditingController();
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: SizedBox(
+              width: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomText(
+                            Languages.of(context)!
+                                .forgotPin
+                                .replaceAll('?', ''),
+                            fontSize: FontSize.eighteen,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              child: SvgPicture.asset(ImageResource.close),
+                            ))
+                      ]),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomText(
+                      'Enter your account password to edit 4-digit PIN for Jack’s account.',
+                      fontSize: FontSize.sixteen,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: PinCodeTextField(
+                      appContext: context,
+                      controller: forgotSecurePinCodeContoller,
+                      length: 4,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      obscureText: false,
+                      animationType: AnimationType.scale,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      textStyle: const TextStyle(
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color23375A,
+                      ),
+                      keyboardType: TextInputType.number,
+                      pinTheme: PinTheme(
+                        fieldOuterPadding: const EdgeInsets.all(8),
+                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                        selectedColor:
+                            ColorResource.color23375A.withOpacity(0.3),
+                        inactiveColor:
+                            ColorResource.color232222.withOpacity(0.3),
+                        fieldHeight: 46,
+                        fieldWidth: 40,
+                        borderWidth: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  CustomButton(
+                    Languages.of(context)!.submitOTP.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    onTap: () {
+                      Navigator.pop(context);
+                      showNewMpinDialogBox();
+                      // Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      child: CustomText(
+                        Languages.of(context)!.resendOTP,
+                        color: ColorResource.color23375A,
+                        fontSize: FontSize.sixteen,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600,
+                        isUnderLine: true,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<void> showNewMpinDialogBox() async {
+    TextEditingController newMPinContoller = TextEditingController();
+    TextEditingController conformMPinContoller = TextEditingController();
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: SizedBox(
+              width: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomText(
+                            Languages.of(context)!
+                                .forgotPin
+                                .replaceAll('?', ''),
+                            fontSize: FontSize.eighteen,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              child: SvgPicture.asset(ImageResource.close),
+                            ))
+                      ]),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: CustomText(
+                      'Enter your account password to edit 4-digit PIN for Jack’s account.',
+                      fontSize: FontSize.sixteen,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CustomText(
+                      Languages.of(context)!.newPin.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: PinCodeTextField(
+                      appContext: context,
+                      controller: newMPinContoller,
+                      length: 4,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      obscureText: false,
+                      animationType: AnimationType.scale,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      textStyle: const TextStyle(
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color23375A,
+                      ),
+                      keyboardType: TextInputType.number,
+                      pinTheme: PinTheme(
+                        fieldOuterPadding: const EdgeInsets.all(8),
+                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                        selectedColor:
+                            ColorResource.color23375A.withOpacity(0.3),
+                        inactiveColor:
+                            ColorResource.color232222.withOpacity(0.3),
+                        fieldHeight: 46,
+                        fieldWidth: 40,
+                        borderWidth: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CustomText(
+                      Languages.of(context)!.newPin.toUpperCase(),
+                      fontSize: FontSize.sixteen,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: PinCodeTextField(
+                      appContext: context,
+                      controller: conformMPinContoller,
+                      length: 4,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      obscureText: false,
+                      animationType: AnimationType.scale,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      textStyle: const TextStyle(
+                        fontSize: FontSize.fourteen,
+                        color: ColorResource.color23375A,
+                      ),
+                      keyboardType: TextInputType.number,
+                      pinTheme: PinTheme(
+                        fieldOuterPadding: const EdgeInsets.all(8),
+                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
+                        selectedColor:
+                            ColorResource.color23375A.withOpacity(0.3),
+                        inactiveColor:
+                            ColorResource.color232222.withOpacity(0.3),
+                        fieldHeight: 46,
+                        fieldWidth: 40,
+                        borderWidth: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  CustomButton(
+                    Languages.of(context)!.submit.toUpperCase(),
+                    fontSize: FontSize.sixteen,
+                    onTap: () {
+                      // Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         });

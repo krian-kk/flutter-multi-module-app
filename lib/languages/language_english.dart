@@ -615,6 +615,9 @@ class LanguageEn extends Languages {
   String get resendOTP => 'Resend OTP?';
 
   @override
+  String get submitOTP => 'Submit OTP?';
+
+  @override
   String get sendOTP => 'SEND OTP';
 
   @override

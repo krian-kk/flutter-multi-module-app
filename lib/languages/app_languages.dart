@@ -415,6 +415,8 @@ abstract class Languages {
 
   String get sendOTP;
 
+  String get submitOTP;
+
   String get businessLoss;
 
   String get covidImpacted;
