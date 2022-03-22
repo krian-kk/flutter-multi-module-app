@@ -1,8 +1,8 @@
 class HttpUrl {
   // 1st - Customer will be reject ->
-  static String url = 'https://collect.origa.ai';
+  // static String url = 'https://collect.origa.ai';
 
-  // static String url = 'https://uat-collect.origa.ai';
+  static String url = 'https://uat-collect.origa.ai';
 
   // static String url = 'https://collect.instalmint.com';
   // static String? url = '';
@@ -40,8 +40,14 @@ class HttpUrl {
 
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl + fieldAgent + 'case-details-events/eventDetails?caseId=$caseId';
+
+  //for offline storage
+  // static final String priorityCaseList =
+  //     baseUrl + fieldAgent + 'case-details/priority?';
+
   static final String priorityCaseList =
-      baseUrl + fieldAgent + 'case-details/priority?';
+      '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
+
   static final String updateStaredCase =
       baseUrl + fieldAgent + 'case-details/update_starredCase';
   static final String buildRouteCaseList =

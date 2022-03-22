@@ -76,6 +76,7 @@ class StartCallingEvent extends AllocationEvent {
   final int? phoneIndex;
   final Result? customerList;
   final bool isIncreaseCount;
+
   StartCallingEvent({
     this.customerIndex,
     this.phoneIndex,
@@ -87,6 +88,7 @@ class StartCallingEvent extends AllocationEvent {
 class AutoCallContactHealthUpdateEvent extends AllocationEvent {
   final int? contactIndex;
   final int? caseIndex;
+
   AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
 }
 

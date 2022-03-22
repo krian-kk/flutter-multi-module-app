@@ -96,6 +96,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }
+            if (state is CaseDetailsLoadedState) {
+              setState(() {});
+            }
             if (state is UpdateSuccessfullState) {
               setState(() {});
             }
@@ -113,8 +116,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is ClickOpenBottomSheetState) {
-              debugPrint(
-                  '$this ---> seleectedContactNumber ${state.selectedContactNumber}');
               openBottomSheet(
                 context,
                 state.title,
@@ -902,7 +903,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       bloc.userType == 'FIELDAGENT'
                                           ? GestureDetector(
                                               onTap: () => bloc.add(
-                                                  ClickOpenBottomSheetEvent(
+                                                  EventDetailsEvent(
                                                       Constants.addressDetails,
                                                       const [],
                                                       false)),
@@ -972,7 +973,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               : 0),
                                       GestureDetector(
                                         onTap: () => bloc.add(
-                                            ClickOpenBottomSheetEvent(
+                                            EventDetailsEvent(
                                                 Constants.callDetails,
                                                 const [],
                                                 true)),

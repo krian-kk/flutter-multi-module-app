@@ -257,7 +257,7 @@ class _CallDetailsBottomSheetScreenState
                                                                 '$this ---> index after bloc ${widget.bloc.indexValue} ');
                                                             debugPrint(
                                                                 'seleectedContactNumber ---> ${widget.bloc.listOfCallDetails?[i]['value']}');
-                                                            widget.bloc.add(ClickOpenBottomSheetEvent(
+                                                            widget.bloc.add(EventDetailsEvent(
                                                                 Constants
                                                                     .callCustomer,
                                                                 widget
