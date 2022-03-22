@@ -901,4 +901,7 @@ class LanguageTa extends Languages {
 
   @override
   String get teluguLang => 'தெலுங்கு';
+
+  @override
+  String get accountPassword => 'கணக்கு கடவுச்சொல்';
 }

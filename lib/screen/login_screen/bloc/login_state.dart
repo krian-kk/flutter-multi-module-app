@@ -19,5 +19,6 @@ class ResendOTPState extends LoginState {}
 
 class EnterSecurePinState extends LoginState {
   final int? securePin;
-  EnterSecurePinState({this.securePin});
+  final String? userName;
+  EnterSecurePinState({this.securePin, this.userName});
 }

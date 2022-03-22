@@ -4,9 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -61,7 +61,7 @@ class _CustomEventDetailsBottomSheetState
 
   getFileDirectory() async {
     String dir = ((await getApplicationDocumentsDirectory()).path) +
-        '/${Singleton.instance.agrRef}_${((DateTime.now().toIso8601String()).split('.').first.toString()).replaceAll(':', '-')}.wav';
+        '/TemporaryAudioFile.wav';
     setState(() {
       filePath = dir;
     });
@@ -78,8 +78,10 @@ class _CustomEventDetailsBottomSheetState
     );
     if (postResult[Constants.success]) {
       // print(postResult['data']['result']['Body']['data']);
-      var base64 = const Base64Encoder().convert(
-          List<int>.from(postResult['data']['result']['Body']['data']));
+      var audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
+      var base64 = const Base64Encoder()
+          .convert(List<int>.from(audioConvertyData.result!.body!.data!));
+
       Uint8List audioBytes = const Base64Codec().decode(base64);
       await File(filePath).writeAsBytes(audioBytes);
       await platform.invokeMethod(

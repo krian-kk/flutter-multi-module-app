@@ -310,18 +310,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   Map<String, dynamic> getProfileData =
                       await APIRepository.apiRequest(
                           APIRequestType.get, HttpUrl.profileUrl);
-                  print(
-                      '=========================== ============== > ${getProfileData}');
 
                   if (getProfileData['success']) {
                     Map<String, dynamic> jsonData = getProfileData['data'];
                     var profileAPIValue = ProfileApiModel.fromJson(jsonData);
                     yield EnterSecurePinState(
                       securePin: profileAPIValue.result?.first.mPin,
+                      userName: profileAPIValue.result?.first.aRef,
                     );
                   }
 
-                  yield HomeTabState();
+                  // yield HomeTabState();
                 }
               } else {
                 yield SignInLoadedState();
@@ -341,6 +340,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is ResendOTPEvent) {
       yield ResendOTPState();
+    }
+
+    if (event is TriggeredHomeTabEvent) {
+      yield HomeTabState();
     }
 
     if (event is NoInternetConnectionEvent) {

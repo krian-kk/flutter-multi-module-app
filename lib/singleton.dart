@@ -14,6 +14,7 @@ class Singleton {
   String? agrRef;
   String? contractor;
   String? usertype;
+  String? password;
   String? caseCustomerName;
   BuildContext? buildContext;
   ContractorDetailsModel? feedbackTemplate;

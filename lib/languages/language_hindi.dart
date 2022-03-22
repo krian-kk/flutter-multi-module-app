@@ -898,4 +898,7 @@ class LanguageHi extends Languages {
 
   @override
   String get teluguLang => 'तेलुगू';
+
+  @override
+  String get accountPassword => 'खाते का पासवर्ड';
 }

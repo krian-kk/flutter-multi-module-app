@@ -14,6 +14,10 @@ import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
+import 'package:origa/screen/mpin_screens/account_password_mpin_screen.dart';
+import 'package:origa/screen/mpin_screens/conform_mpin_screen.dart';
+import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
+import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/customer_language_preference.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
@@ -29,7 +33,6 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -78,93 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> showSecurePinDialogBox() async {
-    TextEditingController securePinCodeContoller = TextEditingController();
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            contentPadding: const EdgeInsets.all(20),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: CustomText(
-                          Languages.of(context)!
-                              .secureYourAccountByCreatingAFourDigitPin,
-                          fontSize: FontSize.eighteen,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            child: SvgPicture.asset(ImageResource.close),
-                          ))
-                    ]),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: PinCodeTextField(
-                    appContext: context,
-                    controller: securePinCodeContoller,
-                    length: 4,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    obscureText: false,
-                    animationType: AnimationType.scale,
-                    onChanged: (value) {
-                      setState(() {});
-                    },
-                    textStyle: const TextStyle(
-                      fontSize: FontSize.fourteen,
-                      color: ColorResource.color23375A,
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
-                      FilteringTextInputFormatter.deny(' '),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    pinTheme: PinTheme(
-                      fieldOuterPadding: const EdgeInsets.all(8),
-                      activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
-                      selectedColor: ColorResource.color23375A.withOpacity(0.3),
-                      inactiveColor: ColorResource.color232222.withOpacity(0.3),
-                      fieldHeight: 46,
-                      fieldWidth: 40,
-                      borderWidth: 1,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                CustomButton(
-                  Languages.of(context)!.save,
-                  fontSize: FontSize.sixteen,
-                  onTap: () {
-                    // showComformSecurePinDialogBox(securePinCodeContoller.text);
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
   Future<void> showComformSecurePinDialogBox(String newPin) async {
-    TextEditingController securePinCodeContoller = TextEditingController();
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -175,87 +92,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             contentPadding: const EdgeInsets.all(20),
-            content: SizedBox(
-              width: 400,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomText(
-                            Languages.of(context)!.enterYourSecureFourdDigitPin,
-                            fontSize: FontSize.eighteen,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: Container(
-                              padding: const EdgeInsets.all(2),
-                              child: SvgPicture.asset(ImageResource.close),
-                            ))
-                      ]),
-                  const SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      controller: securePinCodeContoller,
-                      length: 4,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      obscureText: false,
-                      animationType: AnimationType.scale,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      textStyle: const TextStyle(
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color23375A,
-                      ),
-                      keyboardType: TextInputType.number,
-                      pinTheme: PinTheme(
-                        fieldOuterPadding: const EdgeInsets.all(8),
-                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
-                        selectedColor:
-                            ColorResource.color23375A.withOpacity(0.3),
-                        inactiveColor:
-                            ColorResource.color232222.withOpacity(0.3),
-                        fieldHeight: 46,
-                        fieldWidth: 40,
-                        borderWidth: 1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 60),
-                  GestureDetector(
-                    onTap: () {
-                      showForgorSecurePinDialogBox();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      child: CustomText(
-                        Languages.of(context)!.forgotPin,
-                        color: ColorResource.color23375A,
-                        fontSize: FontSize.sixteen,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            content: ConformMpinScreen(
+              successFunction: () => debugPrint("Success"),
+              // successFunction: () => bloc.add(TriggeredHomeTabEvent()),
+              forgotPinFunction: () => showForgorSecurePinDialogBox(),
             ),
           );
         });
   }
 
   Future<void> showForgorSecurePinDialogBox() async {
-    TextEditingController forgotSecurePinCodeContoller =
-        TextEditingController();
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -266,107 +112,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             contentPadding: const EdgeInsets.all(20),
-            content: SizedBox(
-              width: 400,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomText(
-                            Languages.of(context)!
-                                .forgotPin
-                                .replaceAll('?', ''),
-                            fontSize: FontSize.eighteen,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: Container(
-                              padding: const EdgeInsets.all(2),
-                              child: SvgPicture.asset(ImageResource.close),
-                            ))
-                      ]),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(
-                      'Enter your account password to edit 4-digit PIN for Jack’s account.',
-                      fontSize: FontSize.sixteen,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      controller: forgotSecurePinCodeContoller,
-                      length: 4,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      obscureText: false,
-                      animationType: AnimationType.scale,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      textStyle: const TextStyle(
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color23375A,
-                      ),
-                      keyboardType: TextInputType.number,
-                      pinTheme: PinTheme(
-                        fieldOuterPadding: const EdgeInsets.all(8),
-                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
-                        selectedColor:
-                            ColorResource.color23375A.withOpacity(0.3),
-                        inactiveColor:
-                            ColorResource.color232222.withOpacity(0.3),
-                        fieldHeight: 46,
-                        fieldWidth: 40,
-                        borderWidth: 1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  CustomButton(
-                    Languages.of(context)!.submitOTP.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    onTap: () {
-                      Navigator.pop(context);
-                      showNewMpinDialogBox();
-                      // Navigator.pop(context);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      child: CustomText(
-                        Languages.of(context)!.resendOTP,
-                        color: ColorResource.color23375A,
-                        fontSize: FontSize.sixteen,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w600,
-                        isUnderLine: true,
-                      ),
-                    ),
-                  )
-                ],
+            content: ForgotMpinScreen(
+              submitOtpFunction: () => showAccountPasswordMpinDialogBox(
+                bloc.profileAPIValue.result!.first.aRef.toString(),
               ),
+              userName: bloc.profileAPIValue.result!.first.aRef.toString(),
+            ),
+          );
+        });
+  }
+
+  Future<void> showAccountPasswordMpinDialogBox(String userName) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: AccountPasswordMpinScreen(
+              submitBtnFunction: () {
+                Navigator.pop(context);
+                showNewMpinDialogBox();
+              },
+              password: 'Origa123',
+              userName: userName,
             ),
           );
         });
   }
 
   Future<void> showNewMpinDialogBox() async {
-    TextEditingController newMPinContoller = TextEditingController();
-    TextEditingController conformMPinContoller = TextEditingController();
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -377,131 +156,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             contentPadding: const EdgeInsets.all(20),
-            content: SizedBox(
-              width: 400,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomText(
-                            Languages.of(context)!
-                                .forgotPin
-                                .replaceAll('?', ''),
-                            fontSize: FontSize.eighteen,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: Container(
-                              padding: const EdgeInsets.all(2),
-                              child: SvgPicture.asset(ImageResource.close),
-                            ))
-                      ]),
-                  const Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      'Enter your account password to edit 4-digit PIN for Jack’s account.',
-                      fontSize: FontSize.sixteen,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      Languages.of(context)!.newPin.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      controller: newMPinContoller,
-                      length: 4,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      obscureText: false,
-                      animationType: AnimationType.scale,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      textStyle: const TextStyle(
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color23375A,
-                      ),
-                      keyboardType: TextInputType.number,
-                      pinTheme: PinTheme(
-                        fieldOuterPadding: const EdgeInsets.all(8),
-                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
-                        selectedColor:
-                            ColorResource.color23375A.withOpacity(0.3),
-                        inactiveColor:
-                            ColorResource.color232222.withOpacity(0.3),
-                        fieldHeight: 46,
-                        fieldWidth: 40,
-                        borderWidth: 1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      Languages.of(context)!.newPin.toUpperCase(),
-                      fontSize: FontSize.sixteen,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      controller: conformMPinContoller,
-                      length: 4,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      obscureText: false,
-                      animationType: AnimationType.scale,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      textStyle: const TextStyle(
-                        fontSize: FontSize.fourteen,
-                        color: ColorResource.color23375A,
-                      ),
-                      keyboardType: TextInputType.number,
-                      pinTheme: PinTheme(
-                        fieldOuterPadding: const EdgeInsets.all(8),
-                        activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
-                        selectedColor:
-                            ColorResource.color23375A.withOpacity(0.3),
-                        inactiveColor:
-                            ColorResource.color232222.withOpacity(0.3),
-                        fieldHeight: 46,
-                        fieldWidth: 40,
-                        borderWidth: 1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  CustomButton(
-                    Languages.of(context)!.submit.toUpperCase(),
-                    fontSize: FontSize.sixteen,
-                    onTap: () {
-                      // Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
+            content: NewMpinScreen(
+              saveFuction: () {
+                Navigator.pop(context);
+              },
             ),
           );
         });
@@ -520,24 +178,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //     }),
       ProfileNavigation(
           title: Languages.of(context)!.selectAppLanguage,
+          isEnable: true,
           onTap: () {
             bloc.add(ClickChangeLaunguageEvent());
           }),
       ProfileNavigation(
           title: Languages.of(context)!.customerLanguagePreference,
+          isEnable: Singleton.instance.usertype == Constants.fieldagent
+              ? true
+              : false,
           onTap: () {
             bloc.add(CustomerLaunguagePrefrerenceEvent(context));
           }),
       ProfileNavigation(
           title: Languages.of(context)!.changePassword,
+          isEnable: true,
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
       ProfileNavigation(
-          title: Languages.of(context)!.changeSecurePIN,
-          onTap: () {
-            bloc.add(ClickChangeSecurityPinEvent());
-          })
+        title: Languages.of(context)!.changeSecurePIN,
+        onTap: () {
+          bloc.add(ClickChangeSecurityPinEvent());
+        },
+        isEnable: true,
+      )
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -577,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context, AppRoutes.loginScreen, (route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
-          showSecurePinDialogBox();
+          showForgorSecurePinDialogBox();
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -813,50 +478,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         itemCount: profileNavigationList.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return GestureDetector(
-                                            onTap: profileNavigationList[index]
-                                                .onTap,
-                                            child: Container(
-                                              width: double.infinity,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0),
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 4),
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: ListTile(
-                                                title: SizedBox(
-                                                  // width: 260,
-                                                  child: CustomText(
-                                                    profileNavigationList[index]
-                                                        .title
-                                                        .toUpperCase(),
-                                                    lineHeight: 1.4,
-                                                    fontSize: FontSize.sixteen,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color23375A,
+                                          return profileNavigationList[index]
+                                                  .isEnable
+                                              ? GestureDetector(
+                                                  onTap: profileNavigationList[
+                                                          index]
+                                                      .onTap,
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    margin: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4),
+                                                    decoration: const BoxDecoration(
+                                                        color: ColorResource
+                                                            .colorF8F9FB,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10.0))),
+                                                    child: ListTile(
+                                                      title: SizedBox(
+                                                        // width: 260,
+                                                        child: CustomText(
+                                                          profileNavigationList[
+                                                                  index]
+                                                              .title
+                                                              .toUpperCase(),
+                                                          lineHeight: 1.4,
+                                                          fontSize:
+                                                              FontSize.sixteen,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          color: ColorResource
+                                                              .color23375A,
+                                                        ),
+                                                      ),
+                                                      trailing: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              ImageResource
+                                                                  .forwardArrow),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                trailing: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                        ImageResource
-                                                            .forwardArrow),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
+                                                )
+                                              : const SizedBox();
                                         }),
                                   ],
                                 ),

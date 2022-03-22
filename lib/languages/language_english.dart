@@ -895,4 +895,7 @@ class LanguageEn extends Languages {
 
   @override
   String get teluguLang => 'Telugu';
+
+  @override
+  String get accountPassword => 'Account Password';
 }
