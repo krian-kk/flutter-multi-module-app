@@ -96,8 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 250,
+                      Flexible(
                         child: CustomText(
                           Languages.of(context)!.changeYourSecureDigitPIN,
                           fontSize: FontSize.sixteen,
@@ -187,11 +186,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      // ProfileNavigation(
-      //     title: Languages.of(context)!.changeSecurePIN,
-      //     onTap: () {
-      //       bloc.add(ClickChangeSecurityPinEvent());
-      //     })
+      ProfileNavigation(
+          title: Languages.of(context)!.changeSecurePIN,
+          onTap: () {
+            bloc.add(ClickChangeSecurityPinEvent());
+          })
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -745,7 +744,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-    // MessageChatRoomScreen(bloc)
   }
 
   notificationShowBottomSheet(BuildContext context) {
