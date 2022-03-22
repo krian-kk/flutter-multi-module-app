@@ -84,8 +84,10 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   Future<void> openTheRecorder() async {
     await Permission.storage.request();
     var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
+    if (Platform.isAndroid) {
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
     }
     await _mRecorder!.openRecorder();
     recorderIsInited = true;

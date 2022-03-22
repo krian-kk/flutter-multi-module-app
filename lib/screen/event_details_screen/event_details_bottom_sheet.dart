@@ -125,6 +125,15 @@ class _CustomEventDetailsBottomSheetState
         });
       }
     });
+    await platform.invokeMethod(
+        'completeRecordAudio', {'filePath': filePath}).then((value) {
+      if (value != null) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
   }
 
   @override

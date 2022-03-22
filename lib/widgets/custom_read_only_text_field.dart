@@ -159,10 +159,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
         });
       }
     });
-    // int result = await audioPlayer.stop();
-    // if (result == 1) {
-    //   setState(() {});
-    // }
   }
 
   pauseAudio() async {
@@ -174,10 +170,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
         });
       }
     });
-    // int result = await audioPlayer.pause();
-    // if (result == 1) {
-    //   setState(() {});
-    // }
   }
 
   resumeAudio() async {
@@ -189,12 +181,15 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
         });
       }
     });
-    // int result = await audioPlayer.resume();
-    // if (result == 1) {
-    //   setState(() {
-    //     isPaused = false;
-    //   });
-    // }
+    await platform.invokeMethod(
+        'completeRecordAudio', {'filePath': filePath}).then((value) {
+      if (value != null) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
   }
 
   @override
