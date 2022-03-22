@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -111,7 +111,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   TextEditingController translateTextController =
       TextEditingController(text: '');
   bool isEdit = false;
-  late AudioPlayer audioPlayer;
+  // late AudioPlayer audioPlayer;
   static const platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
 
@@ -124,37 +124,37 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
       // getPermission();
 
       // filePath = createFilename.replaceAll(':', '-');
-      audioPlayer = AudioPlayer();
+      // audioPlayer = AudioPlayer();
       // getPermission();
       // filePath =
       //     '/sdcard/Download/djkdjkdjkdj${widget.agrRef}_${(DateTime.now().toIso8601String()).split('.').first.toString()}.wav';
 
       // filePath = '/sdcard/Download/tempAudio.wav';
       // print('File Patyh is ======================= > ${filePath}');
-      audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-        if (state == PlayerState.PLAYING) {
-          setState(() {
-            isPlaying = true;
-          });
-        }
-        if (state == PlayerState.STOPPED) {
-          setState(() {
-            isPlaying = false;
-            isPaused = false;
-          });
-        }
-        if (state == PlayerState.COMPLETED) {
-          setState(() {
-            isPlaying = false;
-            isPaused = false;
-          });
-        }
-        if (state == PlayerState.PAUSED) {
-          setState(() {
-            isPaused = true;
-          });
-        }
-      });
+      // audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      //   if (state == PlayerState.PLAYING) {
+      //     setState(() {
+      //       isPlaying = true;
+      //     });
+      //   }
+      //   if (state == PlayerState.STOPPED) {
+      //     setState(() {
+      //       isPlaying = false;
+      //       isPaused = false;
+      //     });
+      //   }
+      //   if (state == PlayerState.COMPLETED) {
+      //     setState(() {
+      //       isPlaying = false;
+      //       isPaused = false;
+      //     });
+      //   }
+      //   if (state == PlayerState.PAUSED) {
+      //     setState(() {
+      //       isPaused = true;
+      //     });
+      //   }
+      // });
       getFileDirectory();
     }
 
@@ -171,33 +171,64 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   playAudio() async {
-    int result = await audioPlayer.play(filePath, isLocal: true);
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform
+        .invokeMethod('playRecordAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() => isPlaying = true);
+      }
+    });
+    await platform.invokeMethod(
+        'completeRecordAudio', {'filePath': filePath}).then((value) {
+      if (value != null) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
   }
 
   stopAudio() async {
-    int result = await audioPlayer.stop();
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform
+        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
   }
 
   pauseAudio() async {
-    int result = await audioPlayer.pause();
-    if (result == 1) {
-      setState(() {});
-    }
+    await platform.invokeMethod(
+        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPaused = true;
+        });
+      }
+    });
   }
 
   resumeAudio() async {
-    int result = await audioPlayer.resume();
-    if (result == 1) {
-      setState(() {
-        isPaused = false;
-      });
-    }
+    await platform.invokeMethod(
+        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+      if (value) {
+        setState(() {
+          isPaused = false;
+        });
+      }
+    });
+    await platform.invokeMethod(
+        'completeRecordAudio', {'filePath': filePath}).then((value) {
+      if (value != null) {
+        setState(() {
+          isPlaying = false;
+          isPaused = false;
+        });
+      }
+    });
   }
 
   @override
