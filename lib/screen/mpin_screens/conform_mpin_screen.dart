@@ -12,12 +12,14 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class ConformMpinScreen extends StatefulWidget {
   final GestureTapCallback successFunction;
   final GestureTapCallback forgotPinFunction;
+  final String mPin;
 
-  const ConformMpinScreen(
-      {Key? key,
-      required this.successFunction,
-      required this.forgotPinFunction})
-      : super(key: key);
+  const ConformMpinScreen({
+    Key? key,
+    required this.successFunction,
+    required this.forgotPinFunction,
+    required this.mPin,
+  }) : super(key: key);
 
   @override
   State<ConformMpinScreen> createState() => _ConformMpinScreenState();
@@ -72,7 +74,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                 setState(() => isError = false);
               },
               onCompleted: (value) {
-                if (contoller.text == '1111') {
+                if (contoller.text == widget.mPin) {
                   Navigator.pop(context);
                   widget.successFunction();
                 } else {

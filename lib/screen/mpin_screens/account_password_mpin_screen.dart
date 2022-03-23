@@ -14,12 +14,14 @@ class AccountPasswordMpinScreen extends StatefulWidget {
   final GestureTapCallback submitBtnFunction;
   final String password;
   final String userName;
-  const AccountPasswordMpinScreen(
-      {Key? key,
-      required this.submitBtnFunction,
-      required this.password,
-      required this.userName})
-      : super(key: key);
+  final GestureTapCallback forgotPasswordFunction;
+  const AccountPasswordMpinScreen({
+    Key? key,
+    required this.submitBtnFunction,
+    required this.password,
+    required this.userName,
+    required this.forgotPasswordFunction,
+  }) : super(key: key);
 
   @override
   State<AccountPasswordMpinScreen> createState() =>
@@ -94,13 +96,17 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validatorCallBack: (bool values) {},
             ),
+            const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerLeft,
-              child: CustomText(
-                Languages.of(context)!.forgotPin.toUpperCase(),
-                fontSize: FontSize.sixteen,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
+              child: GestureDetector(
+                onTap: () => widget.forgotPasswordFunction(),
+                child: CustomText(
+                  Languages.of(context)!.forgotPin.toUpperCase(),
+                  fontSize: FontSize.sixteen,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             const SizedBox(height: 10),

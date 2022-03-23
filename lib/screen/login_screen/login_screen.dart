@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/mpin_screens/account_password_mpin_screen.dart';
@@ -66,24 +68,64 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  Future<bool> requestOTP(String aRef) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.post,
+      HttpUrl.requestOTPUrl(),
+      requestBodydata: {
+        "aRef": aRef,
+      },
+    );
+    if (await postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      AppUtils.showToast('Some Issue in OTP Send, Please Try Again Later');
+    }
+    return returnValue;
+  }
+
+  Future<bool> verifyOTP(String? aRef, String? otp) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.post, HttpUrl.verifyOTP(),
+        requestBodydata: {
+          "aRef": aRef,
+          "otp": otp,
+        });
+    if (postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      setState(() => returnValue = false);
+      // AppUtils.showErrorToast("OTP does't match");
+    }
+    return returnValue;
+  }
+
   Future<void> showCreateMPinDialogBox() async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const AlertDialog(
-            shape: RoundedRectangleBorder(
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
               side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
-            contentPadding: EdgeInsets.all(20),
-            content: CreateMpinScreen(),
+            contentPadding: const EdgeInsets.all(20),
+            content: CreateMpinScreen(
+              saveFunction: () {
+                // Create Secure Mpin APi
+                Navigator.pop(context);
+                bloc.add(TriggeredHomeTabEvent());
+              },
+            ),
           );
         });
   }
 
   Future<void> showComformSecurePinDialogBox(
-      String newPin, String userName) async {
+      String mPin, String userName) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -96,7 +138,12 @@ class _LoginScreenState extends State<LoginScreen> {
             contentPadding: const EdgeInsets.all(20),
             content: ConformMpinScreen(
               successFunction: () => bloc.add(TriggeredHomeTabEvent()),
-              forgotPinFunction: () => showForgorSecurePinDialogBox(userName),
+              forgotPinFunction: () async {
+                if (await requestOTP(userName)) {
+                  showForgorSecurePinDialogBox(userName);
+                }
+              },
+              mPin: mPin,
             ),
           );
         });
@@ -114,8 +161,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: ForgotMpinScreen(
-              submitOtpFunction: () =>
-                  showAccountPasswordMpinDialogBox(userName),
+              submitOtpFunction: (otp, isError, function) async {
+                bool result = await verifyOTP(userName, otp);
+                if (result) {
+                  Navigator.pop(context);
+                  showAccountPasswordMpinDialogBox(userName);
+                } else {
+                  function;
+                }
+              },
+              resendOtpFunction: () => requestOTP(userName),
               userName: userName,
             ),
           );
@@ -138,6 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.pop(context);
                 showNewMpinDialogBox();
               },
+              forgotPasswordFunction: () => resendOTPBottomSheet(context),
               password: password.text,
               userName: userName,
             ),
@@ -158,8 +214,11 @@ class _LoginScreenState extends State<LoginScreen> {
             contentPadding: const EdgeInsets.all(20),
             content: NewMpinScreen(
               saveFuction: () {
+                // New Pin Create Api in this
+
                 Navigator.pop(context);
                 Navigator.pop(context);
+                bloc.add(TriggeredHomeTabEvent());
               },
             ),
           );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -11,11 +12,15 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ForgotMpinScreen extends StatefulWidget {
-  final GestureTapCallback submitOtpFunction;
+  final OnChangeBoolFuction submitOtpFunction;
+  final GestureTapCallback resendOtpFunction;
   final String userName;
-  const ForgotMpinScreen(
-      {Key? key, required this.submitOtpFunction, required this.userName})
-      : super(key: key);
+  const ForgotMpinScreen({
+    Key? key,
+    required this.submitOtpFunction,
+    required this.userName,
+    required this.resendOtpFunction,
+  }) : super(key: key);
 
   @override
   State<ForgotMpinScreen> createState() => _ForgotMpinScreenState();
@@ -60,13 +65,13 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           Align(
             alignment: Alignment.centerLeft,
             child: CustomText(
-              'Enter your account password to edit 4-digit PIN for ${widget.userName}’s account.',
+              Languages.of(context)!.enterOTP,
               fontSize: FontSize.sixteen,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w400,
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: PinCodeTextField(
@@ -80,9 +85,9 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 setState(() => isError = false);
               },
               onCompleted: (value) {
-                if (!(contoller.text == "1111")) {
-                  setState(() => isError = true);
-                }
+                // if (!(contoller.text == "1111")) {
+                //   setState(() => isError = true);
+                // }
               },
               textStyle: const TextStyle(
                 fontSize: FontSize.fourteen,
@@ -115,18 +120,17 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           CustomButton(
             Languages.of(context)!.submitOTP.toUpperCase(),
             fontSize: FontSize.sixteen,
-            isEnabled:
-                (contoller.text == "1111") && (contoller.text.length > 3),
+            isEnabled: (contoller.text.length > 3),
             onTap: () {
-              Navigator.pop(context);
-              widget.submitOtpFunction();
+              widget.submitOtpFunction(
+                  contoller.text, isError, changeIsError());
               // showNewMpinDialogBox();
               // Navigator.pop(context);
             },
           ),
           const SizedBox(height: 10),
           GestureDetector(
-            onTap: () {},
+            onTap: widget.resendOtpFunction,
             child: Container(
               padding: const EdgeInsets.all(2),
               child: CustomText(
@@ -142,5 +146,9 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
         ],
       ),
     );
+  }
+
+  changeIsError() {
+    setState(() => isError = true);
   }
 }

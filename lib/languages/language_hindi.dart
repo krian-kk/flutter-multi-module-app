@@ -901,4 +901,7 @@ class LanguageHi extends Languages {
 
   @override
   String get accountPassword => 'खाते का पासवर्ड';
+
+  @override
+  String get enterOTP => 'कृपया ओटीपी दर्ज करें';
 }

@@ -9,13 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
-import 'package:origa/screen/mpin_screens/account_password_mpin_screen.dart';
-import 'package:origa/screen/mpin_screens/conform_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
@@ -81,27 +81,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> showComformSecurePinDialogBox(String newPin) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            contentPadding: const EdgeInsets.all(20),
-            content: ConformMpinScreen(
-              successFunction: () => debugPrint("Success"),
-              // successFunction: () => bloc.add(TriggeredHomeTabEvent()),
-              forgotPinFunction: () => showForgorSecurePinDialogBox(),
-            ),
-          );
-        });
+  Future<bool> requestOTP(String aRef) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.post,
+      HttpUrl.requestOTPUrl(),
+      requestBodydata: {
+        "aRef": aRef,
+      },
+    );
+    if (await postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      AppUtils.showToast('Some Issue in OTP Send, Please Try Again Later');
+    }
+    return returnValue;
   }
 
-  Future<void> showForgorSecurePinDialogBox() async {
+  Future<bool> verifyOTP(String? aRef, String? otp) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.post, HttpUrl.verifyOTP(),
+        requestBodydata: {
+          "aRef": aRef,
+          "otp": otp,
+        });
+    if (postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      setState(() => returnValue = false);
+      // AppUtils.showErrorToast("OTP does't match");
+    }
+    return returnValue;
+  }
+
+  Future<void> showForgorSecurePinDialogBox(String userName) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -113,32 +127,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: ForgotMpinScreen(
-              submitOtpFunction: () => showAccountPasswordMpinDialogBox(
-                bloc.profileAPIValue.result!.first.aRef.toString(),
-              ),
-              userName: bloc.profileAPIValue.result!.first.aRef.toString(),
-            ),
-          );
-        });
-  }
-
-  Future<void> showAccountPasswordMpinDialogBox(String userName) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            contentPadding: const EdgeInsets.all(20),
-            content: AccountPasswordMpinScreen(
-              submitBtnFunction: () {
-                Navigator.pop(context);
-                showNewMpinDialogBox();
+              submitOtpFunction: (otp, isError, function) async {
+                bool result = await verifyOTP(userName, otp);
+                if (result) {
+                  Navigator.pop(context);
+                  showNewMpinDialogBox();
+                } else {
+                  function;
+                }
               },
-              password: 'Origa123',
+              resendOtpFunction: () => requestOTP(userName),
               userName: userName,
             ),
           );
@@ -158,6 +156,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             contentPadding: const EdgeInsets.all(20),
             content: NewMpinScreen(
               saveFuction: () {
+                // New Pin Create Api in this
+
                 Navigator.pop(context);
               },
             ),
@@ -242,7 +242,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context, AppRoutes.loginScreen, (route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
-          showForgorSecurePinDialogBox();
+          showForgorSecurePinDialogBox(
+            bloc.profileAPIValue.result!.first.aRef.toString(),
+          );
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(

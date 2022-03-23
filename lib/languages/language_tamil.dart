@@ -904,4 +904,7 @@ class LanguageTa extends Languages {
 
   @override
   String get accountPassword => 'கணக்கு கடவுச்சொல்';
+
+  @override
+  String get enterOTP => 'OTP ஐ உள்ளிடவும்';
 }

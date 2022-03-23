@@ -595,4 +595,6 @@ abstract class Languages {
   String get teluguLang;
 
   String get accountPassword;
+
+  String get enterOTP;
 }

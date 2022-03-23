@@ -11,21 +11,21 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class CreateMpinScreen extends StatefulWidget {
-  const CreateMpinScreen({
-    Key? key,
-  }) : super(key: key);
+  final GestureTapCallback saveFunction;
+  const CreateMpinScreen({Key? key, required this.saveFunction})
+      : super(key: key);
 
   @override
   State<CreateMpinScreen> createState() => _CreateMpinScreenState();
 }
 
 class _CreateMpinScreenState extends State<CreateMpinScreen> {
-  late TextEditingController securePinCodeContoller;
+  late TextEditingController contoller;
 
   bool isError = false;
   @override
   void initState() {
-    securePinCodeContoller = TextEditingController();
+    contoller = TextEditingController();
     super.initState();
   }
 
@@ -63,7 +63,7 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: PinCodeTextField(
             appContext: context,
-            controller: securePinCodeContoller,
+            controller: contoller,
             length: 4,
             mainAxisAlignment: MainAxisAlignment.center,
             obscureText: false,
@@ -102,9 +102,8 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
         CustomButton(
           Languages.of(context)!.save,
           fontSize: FontSize.sixteen,
-          onTap: () {
-            // showComformSecurePinDialogBox(securePinCodeContoller.text);
-          },
+          isEnabled: (contoller.text.length > 3),
+          onTap: widget.saveFunction,
         ),
       ],
     );

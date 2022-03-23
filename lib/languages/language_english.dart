@@ -898,4 +898,7 @@ class LanguageEn extends Languages {
 
   @override
   String get accountPassword => 'Account Password';
+
+  @override
+  String get enterOTP => 'Please Enter OTP';
 }
