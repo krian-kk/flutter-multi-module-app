@@ -841,4 +841,7 @@ class LanguageEn extends Languages {
 
   @override
   String get loanCleared => 'Loan Cleared';
+
+  @override
+  String get youAreInOffline => 'You are in offline';
 }

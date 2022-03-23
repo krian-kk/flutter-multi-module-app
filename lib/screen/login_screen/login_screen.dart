@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     userId.text = 'CDE_atc';
-    password.text = 'Asd@123';
+    password.text = 'Origa123';
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();

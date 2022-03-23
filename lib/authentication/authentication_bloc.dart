@@ -28,10 +28,14 @@ class AuthenticationBloc
       SharedPreferences _pref = await SharedPreferences.getInstance();
       // _pref.setBool(Constants.appDataLoadedFromFirebase, true);
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
-          Singleton.instance.usertype = _pref.getString(Constants.userType);
-          Singleton.instance.agentRef = _pref.getString(Constants.agentRef);
-          yield OfflineState();
+        if (_pref.getString(Constants.userType) == Constants.fieldagent) {
+          if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
+            Singleton.instance.usertype = _pref.getString(Constants.userType);
+            Singleton.instance.agentRef = _pref.getString(Constants.agentRef);
+            yield OfflineState();
+          } else {
+            yield AuthenticationUnAuthenticated();
+          }
         } else {
           yield AuthenticationUnAuthenticated();
         }
