@@ -18,6 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../http/api_repository.dart';
 import '../../http/httpurls.dart';
+
+import '../../models/audio_convertion_model.dart';
 import '../../utils/app_utils.dart';
 
 // class EventDetailsPlayAudioModel {
@@ -49,6 +51,7 @@ class _CustomEventDetailsBottomSheetState
   bool isPaused = false;
   bool loadingAudio = false;
   String filePath = '';
+  AudioConvertModel audioConvertyData = AudioConvertModel();
 
   static const platform = MethodChannel('recordAudioChannel');
 

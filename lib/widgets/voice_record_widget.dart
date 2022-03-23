@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -125,23 +123,6 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     return result;
   }
 
-  // void startRecord() {
-  //   if (!recorderIsInited) {
-  //     openTheRecorder();
-  //   }
-  //   //remove play button
-  //   widget.recordingData!('');
-  //   _mRecorder!
-  //       .startRecorder(
-  //     toFile: widget.filePath,
-  //     codec: _codec,
-  //     audioSource: theSource,
-  //   )
-  //       .then((value) {
-  //     setState(() {});
-  //   });
-  // }
-
   stopRecorder() async {
     if (Platform.isIOS) {
       await platform.invokeMethod(
@@ -165,16 +146,6 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     }
   }
 
-  // void stopRecorder() async {
-  //   await _mRecorder!.stopRecorder().then((value) {
-  //     apiCall();
-  //     // getFiles();
-  //     setState(() {
-  //       isStartLoading = true;
-  //     });
-  //   });
-  // }
-
   apiCall() async {
     setState(() {
       uploadFileLists = [File(widget.filePath)];
@@ -182,21 +153,21 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     await audioTranslateAPI();
   }
 
-  getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: false, type: FileType.audio);
-    if (result != null) {
-      setState(() {
-        uploadFileLists = result.paths.map((path) => File(path!)).toList();
-      });
-      await audioTranslateAPI();
-    } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
-    }
-  }
+  // getFiles() async {
+  //   FilePickerResult? result = await FilePicker.platform
+  //       .pickFiles(allowMultiple: false, type: FileType.audio);
+  //   if (result != null) {
+  //     setState(() {
+  //       uploadFileLists = result.paths.map((path) => File(path!)).toList();
+  //     });
+  //     await audioTranslateAPI();
+  //   } else {
+  //     AppUtils.showToast(
+  //       Languages.of(context)!.canceled,
+  //       gravity: ToastGravity.CENTER,
+  //     );
+  //   }
+  // }
 
   audioTranslateAPI() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -12,31 +12,20 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
-
 class MainActivity : FlutterActivity() {
     private val recordChannel = "recordAudioChannel"
-
-
     //recordAudioChannel
     private var mediaRecorder: MediaRecorder? = MediaRecorder()
     private var mediaPlayer: MediaPlayer? = null
     private var output: String? = null
     private var length: Int = 0
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+     
     }
-
     @SuppressLint("NewApi")
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-
         GeneratedPluginRegistrant.registerWith(flutterEngine)
-
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             recordChannel
@@ -45,13 +34,11 @@ class MainActivity : FlutterActivity() {
                 "startRecordAudio" -> {
                     try{
                         print("Start")
-
                         mediaRecorder = MediaRecorder( )
                         output = call.argument<String>("filePath")
                         mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
                         mediaRecorder?.setOutputFormat(OutputFormat.THREE_GPP)
                         mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC)
-//                        mediaRecorder?.se
                         mediaRecorder?.setAudioEncodingBitRate(128000)
                         mediaRecorder?.setAudioSamplingRate(48000)
                         mediaRecorder?.setOutputFile(output)
@@ -98,7 +85,6 @@ class MainActivity : FlutterActivity() {
                         print("Resume")
                         mediaPlayer?.seekTo(length);
                         mediaPlayer?.start()
-
                         result.success(true)
                     } catch (e : Exception){
                         result.success(false)
@@ -121,7 +107,6 @@ class MainActivity : FlutterActivity() {
                     mediaPlayer?.release()
                     mediaPlayer = null
                 }
-
                 "disposeRecordAudio" -> {
                     result.success(true)
                 }
@@ -132,4 +117,3 @@ class MainActivity : FlutterActivity() {
         }
     }
 }
-

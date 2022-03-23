@@ -110,7 +110,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   static const platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
 
-  //Speech 2 Text return data model
   Speech2TextModel getTranslatedData = Speech2TextModel();
 
   @override
