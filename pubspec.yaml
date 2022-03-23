@@ -55,7 +55,6 @@ dependencies:
   firebase_remote_config: ^2.0.0
   crypto: ^3.0.1
   mime: ^1.0.1
-  flutter_countdown_timer: ^4.1.0
 
 dev_dependencies:
   build_runner: ^2.1.4
