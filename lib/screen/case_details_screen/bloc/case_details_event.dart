@@ -146,3 +146,18 @@ class ChangeFollowUpDateEvent extends CaseDetailsEvent {
   final String? followUpDate;
   ChangeFollowUpDateEvent({this.followUpDate});
 }
+
+// class GetPaymentConfigurationEvent extends CaseDetailsEvent {
+//   final String caseID;
+//   GetPaymentConfigurationEvent({required this.caseID});
+// }
+
+class GeneratePaymenLinktEvent extends CaseDetailsEvent {
+  final String caseID;
+  GeneratePaymenLinktEvent({required this.caseID});
+}
+
+class GenerateQRcodeEvent extends CaseDetailsEvent {
+  final String caseID;
+  GenerateQRcodeEvent({required this.caseID});
+}

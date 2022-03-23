@@ -34,12 +34,14 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_appbar.dart';
+import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import '../../widgets/case_status_widget.dart';
+import '../../widgets/custom_dialog.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   final dynamic paramValues;
@@ -147,6 +149,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
             if (state is SendSMSloadState) {
               bloc.isSendSMSloading = !bloc.isSendSMSloading;
+              // Navigator.pop(context);
+            }
+
+            if (state is UpdateRefUrlState) {
+              bloc.isGeneratePaymentLinkLoading = false;
+              bloc.caseDetailsAPIValue.result?.caseDetails?.repaymentInfo
+                  ?.refUrl = state.refUrl;
             }
           },
           child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -631,55 +640,155 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                       ?.hideSendRepaymentInfo ??
                                                                   false
                                                               ? const SizedBox()
-                                                              : GestureDetector(
-                                                                  onTap: () {
-                                                                    bloc.add(SendSMSEvent(
-                                                                        context,
-                                                                        type: Constants
-                                                                            .repaymentInfoType));
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    padding: const EdgeInsets
-                                                                            .symmetric(
-                                                                        horizontal:
-                                                                            15,
-                                                                        vertical:
-                                                                            10),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: ColorResource
-                                                                          .color23375A,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      border: Border.all(
+                                                              : bloc.isSendSMSloading
+                                                                  ? Container(
+                                                                      margin: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              50),
+                                                                      height:
+                                                                          37,
+                                                                      width: 37,
+                                                                      decoration: BoxDecoration(
                                                                           color: ColorResource
-                                                                              .colorECECEC,
-                                                                          width:
-                                                                              1.0),
+                                                                              .color23375A,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(25)),
+                                                                      child:
+                                                                          const CustomLoadingWidget(
+                                                                        radius:
+                                                                            11,
+                                                                        strokeWidth:
+                                                                            2,
+                                                                      ),
+                                                                    )
+                                                                  : GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        if (!bloc
+                                                                            .isSendSMSloading) {
+                                                                          bloc.add(SendSMSEvent(
+                                                                              context,
+                                                                              type: Constants.repaymentInfoType));
+                                                                        }
+                                                                        // DialogUtils.showDialog(
+                                                                        //     buildContext: context,
+                                                                        //     title: Languages.of(context)!.reciptsAlertMesg,
+                                                                        //     description: '',
+                                                                        //     okBtnText: Languages.of(context)!.submit.toUpperCase(),
+                                                                        //     cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
+                                                                        //     okBtnFunction: (val) async {
+                                                                        //       //  bloc
+                                                                        //       //     .isSendSMSloading
+                                                                        //       // ? const CustomLoadingWidget(
+                                                                        //       //     radius:
+                                                                        //       //         12,
+                                                                        //       //     strokeWidth:
+                                                                        //       //         2,
+                                                                        //       //   )
+                                                                        //       // :
+                                                                        //       if (!bloc
+                                                                        //           .isSendSMSloading) {
+                                                                        //         bloc.add(SendSMSEvent(context,
+                                                                        //             type: Constants.repaymentInfoType));
+                                                                        //       }
+                                                                        //     });
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        padding: const EdgeInsets.symmetric(
+                                                                            horizontal:
+                                                                                15,
+                                                                            vertical:
+                                                                                11.2),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              ColorResource.color23375A,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8),
+                                                                          border: Border.all(
+                                                                              color: ColorResource.colorECECEC,
+                                                                              width: 1.0),
+                                                                        ),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children: [
+                                                                            SvgPicture.asset(ImageResource.sms),
+                                                                            const SizedBox(width: 7),
+                                                                            CustomText(Languages.of(context)!.sendSMS,
+                                                                                fontSize: FontSize.twelve,
+                                                                                fontWeight: FontWeight.w700,
+                                                                                lineHeight: 1.0,
+                                                                                color: ColorResource.colorffffff),
+                                                                          ],
+                                                                        ),
+                                                                      ),
                                                                     ),
-                                                                    child: bloc
-                                                                            .isSendSMSloading
-                                                                        ? const CustomLoadingWidget(
-                                                                            radius:
-                                                                                12,
-                                                                            strokeWidth:
-                                                                                2,
-                                                                          )
-                                                                        : Row(
-                                                                            mainAxisSize:
-                                                                                MainAxisSize.min,
-                                                                            children: [
-                                                                              SvgPicture.asset(ImageResource.sms),
-                                                                              const SizedBox(width: 7),
-                                                                              CustomText(Languages.of(context)!.sendSMS, fontSize: FontSize.twelve, fontWeight: FontWeight.w700, lineHeight: 1.0, color: ColorResource.colorffffff),
-                                                                            ],
-                                                                          ),
-                                                                  ),
-                                                                ),
                                                           const SizedBox(
                                                               width: 10),
+                                                          bloc.isGeneratePaymentLink
+                                                              ? bloc.isGeneratePaymentLinkLoading
+                                                                  ? Container(
+                                                                      margin: const EdgeInsets
+                                                                              .only(
+                                                                          right:
+                                                                              50),
+                                                                      height:
+                                                                          37,
+                                                                      width: 37,
+                                                                      decoration: BoxDecoration(
+                                                                          color: ColorResource
+                                                                              .color23375A,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(25)),
+                                                                      child:
+                                                                          const CustomLoadingWidget(
+                                                                        radius:
+                                                                            11,
+                                                                        strokeWidth:
+                                                                            2,
+                                                                      ),
+                                                                    )
+                                                                  : Flexible(
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            bloc.isGeneratePaymentLinkLoading =
+                                                                                true;
+                                                                          });
+                                                                          bloc.add(
+                                                                              GeneratePaymenLinktEvent(caseID: bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!));
+                                                                        },
+                                                                        child:
+                                                                            Container(
+                                                                          padding: const EdgeInsets.symmetric(
+                                                                              horizontal: 15,
+                                                                              vertical: 13),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                ColorResource.color23375A,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8),
+                                                                            border:
+                                                                                Border.all(color: ColorResource.colorECECEC, width: 1.0),
+                                                                          ),
+                                                                          child: CustomText(
+                                                                              Languages.of(context)!.generatePaymentLink,
+                                                                              fontSize: FontSize.twelve,
+                                                                              fontWeight: FontWeight.w700,
+                                                                              lineHeight: 1.0,
+                                                                              color: ColorResource.colorffffff),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                              : const SizedBox(),
                                                         ],
                                                       )
                                                     ],

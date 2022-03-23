@@ -571,6 +571,12 @@ abstract class Languages {
 
   String get errorMsgS2TlangCode;
 
+  String get generatePaymentLink;
+
+  String get showQRcode;
+
+  String get close;
+
 // Customer Preference Languages
   String get tamilLang;
 

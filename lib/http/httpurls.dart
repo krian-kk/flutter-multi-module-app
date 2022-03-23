@@ -228,7 +228,15 @@ class HttpUrl {
   static final String audioRemarksURL =
       baseUrl + fieldAgent + 'case-details-events/audioRemarks_upload';
 
-  // Convert Voice to Text Post API
+  // Get audio file from API
   static final String getAudioFile =
       baseUrl + fieldAgent + 'case-details-events/get_audioFile';
+
+  // Get Payment Configuration Detail
+  static final String getPaymentConfiguration =
+      baseUrl + 'payment/getPaymentConfigurations';
+
+  // Generate Dyanamic Payment Link & QR
+  static final String generateDyanamicPaymentLink =
+      baseUrl + 'payment/generateDyanamicPaymentLink';
 }

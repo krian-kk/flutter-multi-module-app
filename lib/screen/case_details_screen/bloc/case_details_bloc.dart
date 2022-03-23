@@ -47,6 +47,9 @@ import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/generate_payment_link_model.dart';
+import '../../../models/get_payment_configuration_model.dart';
+
 part 'case_details_event.dart';
 
 part 'case_details_state.dart';
@@ -137,6 +140,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
 // Repayment info send sms loading
   bool isSendSMSloading = false;
+
+// its used to show QR button in Customer met screen
+  bool isShowQRcode = false;
+  bool isQRcodeBtnLoading = false;
+// its used to GeneratePaymentLink button in Case detail screen
+  bool isGeneratePaymentLink = false;
+  bool isGeneratePaymentLinkLoading = false;
 
   @override
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
@@ -269,6 +279,22 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       // Unreachable Next Action Date is = Current Date + 1 days
       phoneUnreachableNextActionDateController.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
+
+      // Check Payment Configuartion Details and store the value of dynamicLink [isGeneratePaymentLink] and qrCode [isShowQRcode]
+      PaymentConfigurationModel paymentCofigurationData =
+          PaymentConfigurationModel();
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.get,
+        HttpUrl.getPaymentConfiguration,
+      );
+      if (postResult[Constants.success]) {
+        paymentCofigurationData =
+            PaymentConfigurationModel.fromJson(postResult['data']);
+
+        isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
+        isGeneratePaymentLink =
+            paymentCofigurationData.data![0].payment![0].dynamicLink!;
+      }
 
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
@@ -816,7 +842,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is SendSMSEvent) {
       yield SendSMSloadState();
-      await Future.delayed(const Duration(seconds: 3));
       if (Singleton.instance.contractorInformations!.result!.sendSms!) {
         var requestBodyData = SendSMS(
           agentRef: Singleton.instance.agentRef,
@@ -836,6 +861,71 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       yield SendSMSloadState();
     }
+
+    // if (event is GetPaymentConfigurationEvent) {
+    //   PaymentConfigurationModel paymentCofigurationData =
+    //       PaymentConfigurationModel();
+    //   Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    //     APIRequestType.get,
+    //     HttpUrl.getPaymentConfiguration,
+    //   );
+    //   if (postResult[Constants.success]) {
+    //     paymentCofigurationData =
+    //         PaymentConfigurationModel.fromJson(postResult['data']);
+    //     isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
+    //     isGeneratePaymentLink =
+    //         paymentCofigurationData.data![0].payment![0].dynamicLink!;
+    //   }
+    // }
+
+    if (event is GeneratePaymenLinktEvent) {
+      isGeneratePaymentLinkLoading = true;
+
+      GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
+      var requestBodyData = GeneratePaymentLinkPost(
+        caseId: event.caseID,
+        dynamic_link: true,
+      );
+      // if dynamic_link is true means creating a Ref URL and false means creating QR code
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.post,
+        HttpUrl.generateDyanamicPaymentLink,
+        requestBodydata: jsonEncode(requestBodyData),
+      );
+      if (postResult[Constants.success]) {
+        generatePaymentLink =
+            GeneratePaymentLinkModel.fromJson(postResult['data']);
+
+        yield UpdateRefUrlState(
+            refUrl: generatePaymentLink.data!.data!.paymentLink);
+      } else {
+        AppUtils.showToast('Error while generating Payment Link');
+      }
+    }
+
+    if (event is GenerateQRcodeEvent) {
+      GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
+      var requestBodyData = GeneratePaymentLinkPost(
+        caseId: event.caseID,
+        dynamic_link: false,
+      );
+      // if dynamic_link is true means creating a Ref URL and false means creating QR code
+      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.post,
+        HttpUrl.generateDyanamicPaymentLink,
+        requestBodydata: jsonEncode(requestBodyData),
+      );
+      if (postResult[Constants.success]) {
+        print(postResult);
+        generatePaymentLink =
+            GeneratePaymentLinkModel.fromJson(postResult['data']);
+        yield GenerateQRcodeState(
+            qrUrl: generatePaymentLink.data!.data!.qrLink);
+      } else {
+        AppUtils.showToast('Error while generating QR coxde');
+      }
+    }
+
     if (event is UpdateHealthStatusEvent) {
       Singleton.instance.updateHealthStatus = {
         'selectedHealthIndex': event.selectedHealthIndex!,
