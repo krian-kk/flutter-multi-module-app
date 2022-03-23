@@ -15,7 +15,6 @@ import 'package:origa/models/case_details_api_model/case_details_api_model.dart'
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
-import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
@@ -75,7 +74,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
-  EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -358,9 +356,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield ClickMainAddressBottomSheetState(event.index);
     }
     if (event is ClickMainCallBottomSheetEvent) {
-      debugPrint('$this ---> ClickMainCallBottomSheetEvent ${event.index}');
       indexValue = event.index;
-      debugPrint('$this ---> bloc indexValue $indexValue');
       yield ClickMainCallBottomSheetState(
         event.index,
         isCallFromCaseDetails: event.isCallFromCaseDetails,
@@ -397,35 +393,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield UpdateSuccessfullState();
     }
     if (event is ClickOpenBottomSheetEvent) {
-      switch (event.title) {
-        case Constants.eventDetails:
-          if (ConnectivityResult.none ==
-              await Connectivity().checkConnectivity()) {
-            yield CDNoInternetState();
-          } else {
-            Map<String, dynamic> getEventDetailsData =
-                await APIRepository.apiRequest(
-                    APIRequestType.get,
-                    HttpUrl.eventDetailsUrl(
-                        caseId: caseId, userType: userType));
-
-            if (getEventDetailsData[Constants.success] == true) {
-              Map<String, dynamic> jsonData = getEventDetailsData['data'];
-
-              eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
-            } else {
-              AppUtils.showToast(getEventDetailsData['data']['message']);
-            }
-          }
-          break;
-        default:
-      }
       if (isAutoCalling || paramValue['contactIndex'] != null) {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
-        debugPrint(
-            '$this ---> seleectedContactNumber ${event.seleectedContactNumber}');
         yield ClickOpenBottomSheetState(
           event.title,
           event.list!,
@@ -1050,7 +1021,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsAPIValue.result?.callDetails?.forEach((element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
-                  debugPrint('$this ---> Mobile ${element['value']}');
                   s1.add(element['value']);
                 }
               } else {}

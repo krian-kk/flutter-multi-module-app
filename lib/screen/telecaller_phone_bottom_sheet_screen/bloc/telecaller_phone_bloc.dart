@@ -206,7 +206,6 @@ class TelecallerPhoneBloc
 
           // update autocalling screen case list of contact health
           // if (paramValue['contactIndex'] != null) {
-          //   print("update autocalling screen case list of contact health");
           //   allocationBloc.add(AutoCallContactHealthUpdateEvent(
           //     contactIndex: paramValue['contactIndex'],
           //     caseIndex: paramValue['caseIndex'],
@@ -292,7 +291,6 @@ class TelecallerPhoneBloc
           // emit.call( UpdateHealthStatusState());
 
           // if (paramValue['contactIndex'] != null) {
-          //   print("update autocalling screen case list of contact health");
           //   allocationBloc.add(AutoCallContactHealthUpdateEvent(
           //     contactIndex: paramValue['contactIndex'],
           //     caseIndex: paramValue['caseIndex'],

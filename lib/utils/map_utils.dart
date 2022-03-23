@@ -59,7 +59,6 @@ class MapUtils {
       addressToLatlngValue =
           getLocationLatLng.results!.first.geometry!.location;
     } catch (e) {
-      // print(e);
       AppUtils.showToast(Languages.of(context)!.invalidAddress);
     }
 
@@ -73,7 +72,6 @@ class MapUtils {
     AppUtils.showToast(Languages.of(context)!.loading);
 
     if (permission.toString() == LocationPermission.whileInUse.toString()) {
-      // print('Permission Granted');
       currentLocation = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
     } else if (permission.toString() == LocationPermission.denied.toString()) {
@@ -133,9 +131,7 @@ class MapUtils {
   //         ', ' +
   //         placemarks.toList().first.postalCode.toString();
   //   } catch (e) {
-  //     print(e);
   //   }
-  //   // print(currentAddress);
   //   return currentAddress;
   // }
 }

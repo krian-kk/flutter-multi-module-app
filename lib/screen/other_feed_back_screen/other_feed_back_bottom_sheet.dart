@@ -624,8 +624,6 @@ class _CustomOtherFeedBackBottomSheetState
             Singleton.instance.startCalling = false;
             // if (widget.health == 'jones') {
             // } else {
-            //   print(
-            //       'Health Value is ================= > ${widget.health}');
             // widget.allocationBloc!
             //     .add(StartCallingEvent(
             //   customerIndex: widget
@@ -658,7 +656,6 @@ class _CustomOtherFeedBackBottomSheetState
                 }
               });
               widget.bloc.add(AddedNewCallContactListEvent());
-              // print(widget.bloc.listOfCallDetails);
             } else {
               setState(() {
                 for (int i = 0; i < (otherFeedbackContact.length); i++) {
@@ -670,7 +667,6 @@ class _CustomOtherFeedBackBottomSheetState
                 // }
               });
               widget.bloc.add(AddedNewAddressListEvent());
-              // print(widget.bloc.listOfAddressDetails);
             }
 
             Navigator.pop(context);
@@ -683,7 +679,6 @@ class _CustomOtherFeedBackBottomSheetState
   }
 
   expandList(List<FeedbackTemplate> list, int index) {
-    // print('List => ${jsonEncode(list[0])}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -835,7 +830,6 @@ class _CustomOtherFeedBackBottomSheetState
                                                 .pleaseSelectCustomerContactType,
                                           );
                                         }
-                                        // print('object');
                                       },
                                       child: CustomReadOnlyTextField(
                                         (listOfContact[index].formValue == '')

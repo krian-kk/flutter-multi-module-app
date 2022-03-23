@@ -108,8 +108,6 @@
 //         }
 
 //         // if (state is UpdateHealthStatusState) {
-//         //   print(
-//         //       "data of new health ==> ${Singleton.instance.updateHealthStatus}");
 //         //   UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
 //         //       Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 

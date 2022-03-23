@@ -747,7 +747,6 @@ class _CustomCollectionsBottomSheetState
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);
-                // debugPrint(json.encode(postdata));
                 Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                   APIRequestType.upload,

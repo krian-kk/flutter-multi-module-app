@@ -186,7 +186,6 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     postdata.addAll({
       'files': value,
     });
-    // print(postdata);
 
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.upload,
@@ -200,12 +199,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
     if (postResult[Constants.success]) {
       getTranslatedData = Speech2TextModel.fromJson(postResult['data']);
-      // print('postResult ===> ${postResult}');
       // widget.recordingData!(getTranslatedData.result!.translatedText);
       widget.recordingData!(getTranslatedData);
-    } else {
-      // print('postdata error');
-    }
+    } else {}
   }
 
   // @override

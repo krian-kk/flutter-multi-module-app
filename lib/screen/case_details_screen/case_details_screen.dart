@@ -103,7 +103,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               addressBottomSheet(context, bloc, state.i);
             }
             if (state is ClickMainCallBottomSheetState) {
-              debugPrint('$this ---> index in CaseDetailsScreen ${state.i} ');
               phoneBottomSheet(
                 context,
                 bloc,
@@ -113,8 +112,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is ClickOpenBottomSheetState) {
-              debugPrint(
-                  '$this ---> seleectedContactNumber ${state.selectedContactNumber}');
               openBottomSheet(
                 context,
                 state.title,
@@ -1063,7 +1060,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,
       bool isCallFromCaseDetails,
       {String? callId}) {
-    debugPrint('$this ---> index $i ');
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
@@ -1307,7 +1303,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 }
               } else {}
             });
-            debugPrint('Index values--> ${bloc.indexValue}');
             return CallCustomerBottomSheet(
               caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(

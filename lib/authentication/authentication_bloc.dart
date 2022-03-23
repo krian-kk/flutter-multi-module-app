@@ -59,7 +59,6 @@ class AuthenticationBloc
                 APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
 
             if (agentDetail[Constants.success] == false) {
-              // print(agentDetail['data']);
               yield AuthenticationUnAuthenticated();
 
               if (agentDetail['data'] is String) {

@@ -371,8 +371,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
 
                                                     // widget.bloc.listOfIndex
                                                     //     .removeAt(index);
-                                                    // print(
-                                                    //     "Removed selected index ==> ${widget.bloc.listOfIndex}");
                                                   } else {
                                                     receiptAmount =
                                                         receiptAmount +
@@ -384,18 +382,13 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
 
                                                     // widget.bloc.listOfIndex
                                                     //     .add(index);
-                                                    // print(
-                                                    //     "Addded selected index ==> ${widget.bloc.listOfIndex}");
                                                   }
-                                                  // print("----Selected Amount");
-                                                  // print(receiptAmount);
                                                 });
                                                 ids.clear();
 
                                                 for (var element
                                                     in selectedValue) {
                                                   if (element.isSelected) {
-                                                    // print(element._id);
                                                     ids.add(element._id);
                                                   }
                                                 }

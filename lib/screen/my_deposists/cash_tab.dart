@@ -247,7 +247,6 @@
 //                                             cardElevation: 3.0,
 //                                             onTap: (){
 //                                               _onSelected(index);
-//                                               print(index);
 //                                             },
 //                                           ),
 //                                         )

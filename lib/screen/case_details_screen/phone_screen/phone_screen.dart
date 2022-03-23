@@ -57,8 +57,6 @@ class _PhoneScreenState extends State<PhoneScreen>
   @override
   void initState() {
     super.initState();
-    debugPrint(
-        '$this ---> index from call customer bottom screen ${widget.index}');
     widget.bloc.add(PhoneBottomSheetInitialEvent(
       context: context,
       isCallFromCaseDetails: widget.isCallFromCaseDetails,
@@ -78,9 +76,8 @@ class _PhoneScreenState extends State<PhoneScreen>
     /* if agent doesn't get the call from VOIP -> after 30 seconds it'll
     move next index of number (maybe next case or nex number of current case)  */
     if (widget.bloc.isAutoCalling) {
-      debugPrint('Is auto calling--> ');
       Future.delayed(const Duration(seconds: 30), () {
-        debugPrint('Is auto calling after 30 sec--> ');
+        debugPrint('Screen Navigate after 30 sec--> ');
         autoCallingTriggering();
       });
     }

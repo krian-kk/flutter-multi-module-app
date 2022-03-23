@@ -420,8 +420,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                           .result![
                                                                               index]
                                                                           .sId!;
-                                                                      // print(
-                                                                      //     caseID);
                                                                       custName = widget
                                                                               .bloc
                                                                               .yardingAndSelfReleaseData

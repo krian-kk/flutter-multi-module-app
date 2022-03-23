@@ -197,7 +197,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         //         APIRequestType.get, HttpUrl.dashboardEventCountUrl);
 
         // if (getDashboardEventCountValue['success']) {
-        //   print("Today Activities ==> ${getDashboardEventCountValue['data']}");
         //   Map<String, dynamic> jsonData = getDashboardEventCountValue['data'];
         //   dashboardEventCountValue =
         //       DashboardEventCountModel.fromJson(jsonData);
@@ -214,8 +213,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         //       // element.eventType! == "REPO" ||
         //       // element.eventType! == "Feedback" ||
         //       element.eventType! == Constants.ots) {
-        //     // print("customerMetCountValue=========");
-        //     // print(element.eventType!);
         //     customerMetCountValue.add(element.eventType!);
         //   }
         // }
@@ -299,7 +296,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         // });
 
         // tempReceiptWeekly.forEach((element) {
-        //   print('Element Value is => ${element.caseId}');
         // });
       }
 // caseList.clear();
@@ -347,7 +343,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                 APIRequestType.get, HttpUrl.dashboardPriorityFollowUpUrl);
         priortyFollowUpData =
             DashboardAllModels.fromJson(getPriorityFollowUpData['data']);
-        // print(getPriorityFollowUpData['data']);
         if (getPriorityFollowUpData[Constants.success]) {
           yield PriorityFollowState();
         }
@@ -370,7 +365,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                 APIRequestType.get, HttpUrl.dashboardUntouchedCasesUrl);
         untouchedCasesData =
             DashboardAllModels.fromJson(getUntouchedCasesData['data']);
-        // print(getUntouchedCasesData['data']);
         if (getUntouchedCasesData[Constants.success]) {
           yield UntouchedCasesState();
         }
@@ -413,7 +407,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=' + selectedFilter!);
         myReceiptsData =
             MyReceiptsCaseModel.fromJson(getMyReceiptsData['data']);
-        // print(getMyReceiptsData['data']);
         if (getMyReceiptsData[Constants.success]) {
           yield MyReceiptsState();
         }
@@ -459,7 +452,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
 
         myVisitsData = MyVisitsCaseModel.fromJson(getMyVisitsData['data']);
-        // print(getMyVisitsData['data']);
         if (getMyVisitsData[Constants.success]) {
           yield MyVisitsState();
         }
@@ -506,7 +498,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             APIRequestType.get,
             HttpUrl.dashboardMyDeposistsUrl + 'timePeriod=' + selectedFilter!);
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
-        // print(getMyDepositsData['data']);
         if (getMyDepositsData[Constants.success]) {
           // yield SelectedTimeperiodDataLoadedState();
 

@@ -642,7 +642,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                       newPassword:
                                                           newPasswordController
                                                               .text);
-                                              // print(requestBodyData);
                                               Map<String, dynamic> postResult =
                                                   await APIRepository.apiRequest(
                                                       APIRequestType.post,

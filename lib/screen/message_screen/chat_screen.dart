@@ -260,16 +260,12 @@ class _ChatScreenState extends State<ChatScreen> {
       // presenceChannel!.presence
       //     .subscribe(action: PresenceAction.enter)
       //     .listen((ably.PresenceMessage event) async {
-      //   debugPrint('Who are all in online--> ${event.clientId}');
-      //   debugPrint('New message arrived ${event.data}');
       //   if (toARef == event.clientId) {
       //     //Post messages
       //     // await chatChannel.publish(messages: [
       //     //   ably.Message(name: clientIDFromARef, data: 'Sai'),
       //     // ]).then((value) {
-      //     //   debugPrint('Success state-->');
       //     // }).catchError((error) {
-      //     //   debugPrint('Error state--> ${error.toString()}');
       //     // });
       //   } else {
       //     // Have to integrate with FCM after that message
@@ -280,7 +276,6 @@ class _ChatScreenState extends State<ChatScreen> {
         debugPrint('New Message arrived from $clientIDFromARef ${event.data}');
 
         // if (event.data is String) {
-        //   debugPrint("event data is String");
         //   bloc.messageHistory.insert(
         //     0,
         //     ChatHistory(
@@ -306,8 +301,6 @@ class _ChatScreenState extends State<ChatScreen> {
         setState(() {
           ReceivingData receivedData =
               ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
-          debugPrint(receivedData.dateSent);
-          debugPrint("received data2 value ==> ${receivedData.message}");
           bloc.messageHistory.insert(
             0,
             ChatHistory(
@@ -486,7 +479,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                 name: toARef,
                                 data: messageController.text.trim()),
                           ]).then((value) {
-                            debugPrint('Success state-->111');
                             setState(() {
                               bloc.messageHistory.insert(
                                 0,
@@ -539,7 +531,6 @@ class _ChatScreenState extends State<ChatScreen> {
               //                 name: toARef,
               //                 data: messageController.text.trim()),
               //           ]).then((value) {
-              //             debugPrint('Success state-->111');
               //             setState(() {
               //               bloc.messageHistory.insert(
               //                 0,
@@ -551,11 +542,9 @@ class _ChatScreenState extends State<ChatScreen> {
               //             });
               //             messageController.clear();
               //           }).catchError((error) {
-              //             debugPrint('Error state--> ${error.toString()}');
               //             messageController.clear();
               //           });
               //         } else {
-              //           debugPrint("space removed");
               //         }
               //       },
               //       child: Container(

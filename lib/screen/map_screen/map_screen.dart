@@ -84,7 +84,6 @@
 //       });
 //       await createMarker();
 //     }).catchError((e) {
-//       print(e);
 //     });
 //   }
 
@@ -244,9 +243,6 @@
 //         );
 //       }
 
-//       print(
-//         'START COORDINATES: ($startLatitude, $startLongitude)',
-//       );
 
 //       double totalDistance = 0.0;
 
@@ -263,12 +259,10 @@
 
 //       setState(() {
 //         _placeDistance = totalDistance.toStringAsFixed(2);
-//         print('DISTANCE: $_placeDistance km');
 //       });
 
 //       return true;
 //     } catch (e) {
-//       print(e);
 //     }
 //     return false;
 //   }
@@ -309,8 +303,6 @@
 //     //         "key=" +
 //     //         Env.googleMapAPI);
 
-//     // print("--------------NK-------------");
-//     // print(polylineData);
 
 //     // // Here clear the previous polyline then added newly selected LatLng polyline
 //     polylineCoordinates.clear();
