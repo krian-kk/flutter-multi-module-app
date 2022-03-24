@@ -11,8 +11,8 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/mpin_screens/account_password_mpin_screen.dart';
-import 'package:origa/screen/mpin_screens/create_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/conform_mpin_screen.dart';
+import 'package:origa/screen/mpin_screens/create_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
             content: AccountPasswordMpinScreen(
               submitBtnFunction: () {
                 Navigator.pop(context);
-                showNewMpinDialogBox();
+                showCreatemPinDialogBox();
               },
               forgotPasswordFunction: () => resendOTPBottomSheet(context),
               password: password.text,
@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
-  Future<void> showNewMpinDialogBox() async {
+  Future<void> showCreatemPinDialogBox() async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -235,12 +235,12 @@ class _LoginScreenState extends State<LoginScreen> {
               saveFuction: (mPin) async {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
-                  PreferenceHelper.setPreference('mPin', mPin);
+                  PreferenceHelper.setPreference(Constants.mPin, mPin);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   bloc.add(TriggeredHomeTabEvent());
                 } else {
-                  AppUtils.showToast('Change Mpin has some Issue');
+                  AppUtils.showToast('Change mPin has some Issue');
                 }
               },
             ),
