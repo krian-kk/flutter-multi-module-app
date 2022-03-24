@@ -358,7 +358,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                           index]
                                                                       .eventAttr!
                                                                       .date!)
-                                                                  : '',
+                                                                  : '-',
                                                               fontSize: FontSize
                                                                   .fourteen,
                                                               color: ColorResource

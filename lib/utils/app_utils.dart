@@ -134,6 +134,8 @@ class AppUtils {
     );
   }
 
-  // Pick Date Function
-
+  static String getLanguageCode(context) {
+    Locale myLocale = Localizations.localeOf(context);
+    return myLocale.languageCode;
+  }
 }

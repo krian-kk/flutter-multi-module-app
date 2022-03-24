@@ -89,18 +89,29 @@ class EventAttr {
   late double latitude;
   late double longitude;
   late AgentLocation? agentLocation;
+  // ignore: non_constant_identifier_names
+  late String? reginal_text;
+  // ignore: non_constant_identifier_names
+  late String? translated_text;
+  late String? audioS3Path;
 
-  EventAttr(
-      {required this.remarks,
-      required this.imageLocation,
-      this.altitude = 0.0,
-      this.accuracy = 0.0,
-      this.altitudeAccuracy = 0.0,
-      this.heading = 0.0,
-      this.speed = 0.0,
-      this.latitude = 0.0,
-      this.longitude = 0.0,
-      this.agentLocation});
+  EventAttr({
+    required this.remarks,
+    required this.imageLocation,
+    this.altitude = 0.0,
+    this.accuracy = 0.0,
+    this.altitudeAccuracy = 0.0,
+    this.heading = 0.0,
+    this.speed = 0.0,
+    this.latitude = 0.0,
+    this.longitude = 0.0,
+    this.agentLocation,
+    // ignore: non_constant_identifier_names
+    this.reginal_text,
+    // ignore: non_constant_identifier_names
+    this.translated_text,
+    this.audioS3Path,
+  });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
@@ -115,6 +126,9 @@ class EventAttr {
     agentLocation = json['agentLocation'] != null
         ? AgentLocation.fromJson(json['agentLocation'])
         : null;
+    reginal_text = json['reginal_text'];
+    translated_text = json['translated_text'];
+    audioS3Path = json['audioS3Path'];
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +145,14 @@ class EventAttr {
     if (agentLocation != null) {
       data['agentLocation'] = agentLocation!.toJson();
     }
+    if (reginal_text != null &&
+        translated_text != null &&
+        audioS3Path != null) {
+      data['reginal_text'] = reginal_text;
+      data['translated_text'] = translated_text;
+      data['audioS3Path'] = audioS3Path;
+    }
+
     return data;
   }
 }

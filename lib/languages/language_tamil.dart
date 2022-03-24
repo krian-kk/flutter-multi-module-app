@@ -519,10 +519,10 @@ class LanguageTa extends Languages {
   String get callCustomer => 'வாடிக்கையாளரை அழைக்கவும்';
 
   @override
-  String get agentContactNo => 'பணியாளர் தொடர்பு எண்*';
+  String get agentContactNo => 'பணியாளர் தொடர்பு \n எண்*';
 
   @override
-  String get customerContactNo => 'வாடிக்கையாளர் தொடர்பு எண்*';
+  String get customerContactNo => 'வாடிக்கையாளர் தொடர்பு \n எண்*';
 
   @override
   String get serviceProvidersList => 'சேவை வழங்குநரின் பட்டியல்';
@@ -543,7 +543,10 @@ class LanguageTa extends Languages {
   String get writeYourRemarksHere => 'உங்கள் குறிப்புகளை இங்கே எழுதுங்கள்';
 
   @override
-  String get selectLanguage => 'மொழியை தேர்ந்தெடுங்கள்';
+  String get selectAppLanguage => 'பயன்பாட்டு மொழியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get customerLanguagePreference => 'வாடிக்கையாளர் மொழி விருப்பம்';
 
   @override
   String get doesNotExist => 'எண் இல்லை';
@@ -847,6 +850,63 @@ class LanguageTa extends Languages {
 
   @override
   String get loanCleared => 'கடன் அழிக்கப்பட்டது';
+
+  @override
+  String get edit => 'திருத்து';
+
+  @override
+  String get remarksRecording => 'குறிப்புகள் பதிவு';
+
+  @override
+  String get chooseLanguage => 'மொழியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get selectedLanguage => 'தேர்ந்தெடுக்கப்பட்ட மொழி';
+
+  @override
+  String get errorMsgS2TlangCode =>
+      'சுயவிவரத்திலிருந்து வாடிக்கையாளர் மொழி விருப்பத்தைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get generatePaymentLink => 'கட்டண இணைப்பை உருவாக்கவும்';
+
+  @override
+  String get showQRcode => 'QR குறியீட்டைக் காட்டு';
+
+  @override
+  String get close => 'மூடப்பட்டது';
+
+  // Customer Preference Languages
+
+  @override
+  String get tamilLang => 'தமிழ்';
+
+  @override
+  String get hindiLang => 'ஹிந்தி';
+
+  @override
+  String get bengaliLang => 'பெங்காலி';
+
+  @override
+  String get gujaratiLang => 'குஜராத்தி';
+
+  @override
+  String get kannadaLang => 'கன்னடம்';
+
+  @override
+  String get urduLang => 'உருது';
+
+  @override
+  String get malayalamLang => 'மலையாளம்';
+
+  @override
+  String get marathiLang => 'மராத்தி';
+
+  @override
+  String get panjabiLang => 'பஞ்சாபி (குர்முகி)';
+
+  @override
+  String get teluguLang => 'தெலுங்கு';
 
   @override
   String get youAreInOffline => 'இணைய வசதி இல்லை';

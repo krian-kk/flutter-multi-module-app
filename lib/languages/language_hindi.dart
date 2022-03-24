@@ -543,7 +543,10 @@ class LanguageHi extends Languages {
   String get writeYourRemarksHere => 'अपनी टिप्पणी यहाँ लिखें';
 
   @override
-  String get selectLanguage => 'भाषा का चयन करें';
+  String get selectAppLanguage => 'ऐप की भाषा चुनें';
+
+  @override
+  String get customerLanguagePreference => 'ग्राहक भाषा वरीयता';
 
   @override
   String get doesNotExist => 'मौजूद नहीं होना';
@@ -844,6 +847,63 @@ class LanguageHi extends Languages {
 
   @override
   String get loanCleared => 'ऋण मंजूरी';
+
+  @override
+  String get edit => 'संपादित करें';
+
+  @override
+  String get remarksRecording => 'रिमार्क्स रिकॉर्डिंग';
+
+  @override
+  String get chooseLanguage => 'भाषा चुनें';
+
+  @override
+  String get selectedLanguage => 'चयनित भाषा';
+
+  @override
+  String get errorMsgS2TlangCode =>
+      'कृपया प्रोफ़ाइल से ग्राहक भाषा वरीयता चुनें';
+
+  @override
+  String get generatePaymentLink => 'भुगतान लिंक उत्पन्न करें';
+
+  @override
+  String get showQRcode => 'QR कोड दिखाएं';
+
+  @override
+  String get close => 'बंद किया हुआ';
+
+  // Customer Preference Languages
+
+  @override
+  String get tamilLang => 'तामिल';
+
+  @override
+  String get hindiLang => 'हिन्दी';
+
+  @override
+  String get bengaliLang => 'बंगाली';
+
+  @override
+  String get gujaratiLang => 'गुजराती';
+
+  @override
+  String get kannadaLang => 'कन्नड़';
+
+  @override
+  String get urduLang => 'उर्दू';
+
+  @override
+  String get malayalamLang => 'मलयालम';
+
+  @override
+  String get marathiLang => 'मराठी';
+
+  @override
+  String get panjabiLang => 'पंजाबी (गुरुमुखी)';
+
+  @override
+  String get teluguLang => 'तेलुगू';
 
   @override
   String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';

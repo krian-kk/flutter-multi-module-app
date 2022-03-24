@@ -84,6 +84,11 @@ class EventAttr {
   late String followUpPriority;
   late double latitude;
   late double longitude;
+  // ignore: non_constant_identifier_names
+  late String? reginal_text;
+  // ignore: non_constant_identifier_names
+  late String? translated_text;
+  late String? audioS3Path;
 
   EventAttr({
     required this.actionDate,
@@ -93,6 +98,11 @@ class EventAttr {
     this.followUpPriority = 'REVIEW',
     this.latitude = 0,
     this.longitude = 0,
+    // ignore: non_constant_identifier_names
+    this.reginal_text,
+    // ignore: non_constant_identifier_names
+    this.translated_text,
+    this.audioS3Path,
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -103,6 +113,9 @@ class EventAttr {
     followUpPriority = json['followUpPriority'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
+    reginal_text = json['reginal_text'];
+    translated_text = json['translated_text'];
+    audioS3Path = json['audioS3Path'];
   }
 
   Map<String, dynamic> toJson() {
@@ -114,6 +127,13 @@ class EventAttr {
     data['followUpPriority'] = followUpPriority;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
+    if (reginal_text != null &&
+        translated_text != null &&
+        audioS3Path != null) {
+      data['reginal_text'] = reginal_text;
+      data['translated_text'] = translated_text;
+      data['audioS3Path'] = audioS3Path;
+    }
     return data;
   }
 }

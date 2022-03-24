@@ -11,6 +11,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -84,6 +85,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   String selectedPaymentModeButton = '';
 
   final _formKey = GlobalKey<FormState>();
+
+//Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   @override
   void initState() {
@@ -343,11 +347,25 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     focusNode: ptpRemarksFocusNode,
                                     validationRules: const ['required'],
                                     isLabel: true,
+                                    isVoiceRecordWidget:
+                                        Singleton.instance.usertype ==
+                                                    Constants.fieldagent &&
+                                                widget.isCall! == false
+                                            ? true
+                                            : false,
+                                    returnS2Tresponse: (val) {
+                                      if (val is Speech2TextModel) {
+                                        setState(() {
+                                          returnS2Tdata = val;
+                                        });
+                                      }
+                                    },
                                     // suffixWidget: VoiceRecodingWidget(),
-                                    validatorCallBack: () {}, onEditing: () {
-                                  ptpRemarksFocusNode.unfocus();
-                                  _formKey.currentState!.validate();
-                                }),
+                                    validatorCallBack: () {},
+                                    onEditing: () {
+                                      ptpRemarksFocusNode.unfocus();
+                                      _formKey.currentState!.validate();
+                                    }),
                                 const SizedBox(height: 15)
                               ],
                             ),
@@ -509,6 +527,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               altitude: position.altitude,
               heading: position.heading,
               speed: position.speed,
+              reginal_text: returnS2Tdata.result?.reginalText,
+              translated_text: returnS2Tdata.result?.translatedText,
+              audioS3Path: returnS2Tdata.result?.audioS3Path,
             ),
             callID: Singleton.instance.callID ?? " ",
             callingID: Singleton.instance.callingID ?? " ",

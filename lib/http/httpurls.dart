@@ -229,4 +229,20 @@ class HttpUrl {
   static final String chatTokenRequest = baseUrl + 'chat/tokenRequest';
 
   static final String chatHistory = baseUrl + 'chat/history';
+
+  // Convert Voice to Text Post API
+  static final String audioRemarksURL =
+      baseUrl + fieldAgent + 'case-details-events/audioRemarks_upload';
+
+  // Get audio file from API
+  static final String getAudioFile =
+      baseUrl + fieldAgent + 'case-details-events/get_audioFile';
+
+  // Get Payment Configuration Detail
+  static final String getPaymentConfiguration =
+      baseUrl + 'payment/getPaymentConfigurations';
+
+  // Generate Dyanamic Payment Link & QR
+  static final String generateDyanamicPaymentLink =
+      baseUrl + 'payment/generateDyanamicPaymentLink';
 }

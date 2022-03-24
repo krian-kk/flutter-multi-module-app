@@ -33,6 +33,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
+
 class CustomRtpBottomSheet extends StatefulWidget {
   const CustomRtpBottomSheet(
     this.cardTitle, {
@@ -76,6 +78,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   bool isSubmit = true;
 
   late String selectedDropdownValue = 'select';
+
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   @override
   void initState() {
@@ -219,6 +224,19 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
                                 validationRules: const ['required'],
+                                isVoiceRecordWidget:
+                                    Singleton.instance.usertype ==
+                                                Constants.fieldagent &&
+                                            widget.isCall! == false
+                                        ? true
+                                        : false,
+                                returnS2Tresponse: (val) {
+                                  if (val is Speech2TextModel) {
+                                    setState(() {
+                                      returnS2Tdata = val;
+                                    });
+                                  }
+                                },
                                 // suffixWidget: VoiceRecodingWidget(),
                                 isLabel: true,
                               )),
@@ -395,6 +413,9 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
               longitude: latLng.longitude,
               latitude: latLng.latitude,
               amountDenied: Singleton.instance.overDueAmount ?? '',
+              reginal_text: returnS2Tdata.result?.reginalText,
+              translated_text: returnS2Tdata.result?.translatedText,
+              audioS3Path: returnS2Tdata.result?.audioS3Path,
             ),
             eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
             contact: Contact(

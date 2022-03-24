@@ -10,6 +10,10 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
+import '../../singleton.dart';
+import '../../utils/date_formate_utils.dart';
+import '../../widgets/case_status_widget.dart';
+
 class SearchCaseList {
   static Widget buildListView(
     DashboardBloc bloc, {
@@ -57,13 +61,25 @@ class SearchCaseList {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 2),
+                              horizontal: 22, vertical: 2),
                           child: CustomText(
-                            resultData[index].caseId!,
+                            resultData[index].bankName! +
+                                ' / ' +
+                                resultData[index].agrRef!,
                             fontSize: FontSize.twelve,
+                            fontWeight: FontWeight.w500,
                             color: ColorResource.color101010,
                           ),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 24, vertical: 2),
+                        //   child: CustomText(
+                        //     resultData[index].caseId!,
+                        //     fontSize: FontSize.twelve,
+                        //     color: ColorResource.color101010,
+                        //   ),
+                        // ),
                         AppUtils.showDivider(),
                         // const SizedBox(height: 6.0,),
                         Padding(
@@ -71,45 +87,74 @@ class SearchCaseList {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    Constants.inr +
-                                        resultData[index].due.toString(),
-                                    fontSize: FontSize.eighteen,
-                                    color: ColorResource.color101010,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  const SizedBox(
-                                    height: 3.0,
-                                  ),
-                                  CustomText(
-                                    resultData[index].cust!,
-                                    fontSize: FontSize.sixteen,
-                                    color: ColorResource.color101010,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              if (resultData[index].collSubStatus == "new")
-                                Container(
-                                  width: 55,
-                                  height: 19,
-                                  // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                  decoration: BoxDecoration(
-                                      color: ColorResource.colorD5344C,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: Center(
-                                    child: CustomText(
-                                      Languages.of(context)!.new_,
-                                      color: ColorResource.colorffffff,
-                                      fontSize: FontSize.ten,
-                                      lineHeight: 1,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      Constants.inr +
+                                          resultData[index].due.toString(),
+                                      fontSize: FontSize.eighteen,
+                                      color: ColorResource.color101010,
+                                      fontWeight: FontWeight.w700,
                                     ),
-                                  ),
+                                    const SizedBox(
+                                      height: 3.0,
+                                    ),
+                                    CustomText(
+                                      resultData[index].cust!,
+                                      fontSize: FontSize.sixteen,
+                                      color: ColorResource.color101010,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
                                 ),
+                              ),
+                              if (Singleton.instance.usertype ==
+                                  Constants.fieldagent)
+                                resultData[index].collSubStatus == "new"
+                                    ? CaseStatusWidget.satusTextWidget(
+                                        context,
+                                        text: Languages.of(context)!.new_,
+                                        width: 55,
+                                      )
+                                    : CaseStatusWidget.satusTextWidget(
+                                        context,
+                                        text: resultData[index].collSubStatus ??
+                                            '',
+                                      ),
+                              // : const SizedBox(),
+                              if (Singleton.instance.usertype ==
+                                  Constants.telecaller)
+                                resultData[index].telSubStatus == "new"
+                                    ? CaseStatusWidget.satusTextWidget(
+                                        context,
+                                        text: Languages.of(context)!.new_,
+                                        width: 55,
+                                      )
+                                    : CaseStatusWidget.satusTextWidget(
+                                        context,
+                                        text: resultData[index].telSubStatus ??
+                                            '',
+                                      ),
+                              // const Spacer(),
+                              // if (resultData[index].collSubStatus == "new")
+                              //   Container(
+                              //     width: 55,
+                              //     height: 19,
+                              //     // padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                              //     decoration: BoxDecoration(
+                              //         color: ColorResource.colorD5344C,
+                              //         borderRadius: BorderRadius.circular(30)),
+                              //     child: Center(
+                              //       child: CustomText(
+                              //         Languages.of(context)!.new_,
+                              //         color: ColorResource.colorffffff,
+                              //         fontSize: FontSize.ten,
+                              //         lineHeight: 1,
+                              //       ),
+                              //     ),
+                              //   ),
                             ],
                           ),
                         ),
@@ -117,7 +162,7 @@ class SearchCaseList {
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 6),
-                          child: bloc.userType == Constants.userType
+                          child: bloc.userType == Constants.fieldagent
                               ? Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding:
@@ -196,14 +241,41 @@ class SearchCaseList {
                               ),
                               Row(
                                 children: [
-                                  CustomText(
-                                    resultData[index].fieldfollowUpDate ??
-                                        resultData[index].followUpDate ??
-                                        '-',
-                                    fontSize: FontSize.fourteen,
-                                    color: ColorResource.color101010,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                  if (Singleton.instance.usertype ==
+                                      Constants.fieldagent)
+                                    CustomText(
+                                      resultData[index].fieldfollowUpDate !=
+                                              null
+                                          ? DateFormateUtils
+                                              .followUpDateFormate(
+                                                  resultData[index]
+                                                      .fieldfollowUpDate!)
+                                          : '-',
+                                      fontSize: FontSize.fourteen,
+                                      color: ColorResource.color101010,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  if (Singleton.instance.usertype ==
+                                      Constants.telecaller)
+                                    CustomText(
+                                      resultData[index].followUpDate != null
+                                          ? DateFormateUtils
+                                              .followUpDateFormate(
+                                                  resultData[index]
+                                                      .followUpDate!)
+                                          : '-',
+                                      fontSize: FontSize.fourteen,
+                                      color: ColorResource.color101010,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  // CustomText(
+                                  //   resultData[index].fieldfollowUpDate ??
+                                  //       resultData[index].followUpDate ??
+                                  //       '-',
+                                  //   fontSize: FontSize.fourteen,
+                                  //   color: ColorResource.color101010,
+                                  //   fontWeight: FontWeight.w700,
+                                  // ),
                                   const Spacer(),
                                   Row(
                                     children: [

@@ -365,7 +365,9 @@ abstract class Languages {
 
   String get writeYourRemarksHere;
 
-  String get selectLanguage;
+  String get selectAppLanguage;
+
+  String get customerLanguagePreference;
 
   String get doesNotExist;
 
@@ -558,6 +560,43 @@ abstract class Languages {
   String get loanCleared;
 
   String get dropDownDispute;
+
+  String get edit;
+
+  String get remarksRecording;
+
+  String get chooseLanguage;
+
+  String get selectedLanguage;
+
+  String get errorMsgS2TlangCode;
+
+  String get generatePaymentLink;
+
+  String get showQRcode;
+
+  String get close;
+
+// Customer Preference Languages
+  String get tamilLang;
+
+  String get hindiLang;
+
+  String get bengaliLang;
+
+  String get gujaratiLang;
+
+  String get kannadaLang;
+
+  String get urduLang;
+
+  String get malayalamLang;
+
+  String get marathiLang;
+
+  String get panjabiLang;
+
+  String get teluguLang;
 
   String get youAreInOffline;
 }

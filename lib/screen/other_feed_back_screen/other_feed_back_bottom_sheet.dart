@@ -41,6 +41,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
+
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
 
@@ -101,9 +103,12 @@ class _CustomOtherFeedBackBottomSheetState
   List<String> actionproposedDropdownValue = [];
   String? actionproposedValue;
 
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
+
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.image);
+        .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
@@ -292,6 +297,19 @@ class _CustomOtherFeedBackBottomSheetState
                                     validationRules: const ['required'],
                                     isLabel: true,
                                     isEnable: true,
+                                    isVoiceRecordWidget:
+                                        Singleton.instance.usertype ==
+                                                    Constants.fieldagent &&
+                                                widget.isCall! == false
+                                            ? true
+                                            : false,
+                                    returnS2Tresponse: (val) {
+                                      if (val is Speech2TextModel) {
+                                        setState(() {
+                                          returnS2Tdata = val;
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
                                 const SizedBox(height: 25),
@@ -557,6 +575,9 @@ class _CustomOtherFeedBackBottomSheetState
             // agentLocation: AgentLocation(),
             contact:
                 otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
+            reginal_text: returnS2Tdata.result?.reginalText,
+            translated_text: returnS2Tdata.result?.translatedText,
+            audioS3Path: returnS2Tdata.result?.audioS3Path,
           ),
           contact: OtherFeedBackContact(
             cType: widget.postValue['cType'],
@@ -712,6 +733,7 @@ class _CustomOtherFeedBackBottomSheetState
                       onChanged: (newValue) => setState(
                           () => collectorFeedBackValue = newValue.toString()),
                       icon: SvgPicture.asset(ImageResource.downShape),
+                      valueTextStyle: const TextStyle(height: 1),
                     ),
                   if (list[index].data![0].name == 'actionproposed')
                     CustomDropDownButton(

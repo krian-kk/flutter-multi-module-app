@@ -38,6 +38,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
 
 class CustomOtsBottomSheet extends StatefulWidget {
@@ -86,6 +87,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   bool isSubmit = true;
   List<File> uploadFileLists = [];
 
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
+
   @override
   void initState() {
     otsProposedAmountControlller = TextEditingController();
@@ -106,7 +110,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.image);
+        .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
@@ -278,6 +282,20 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     remarksControlller,
                                     validationRules: const ['required'],
                                     isLabel: true,
+                                    isVoiceRecordWidget:
+                                        Singleton.instance.usertype ==
+                                                    Constants.fieldagent &&
+                                                widget.isCall! == false
+                                            ? true
+                                            : false,
+                                    returnS2Tresponse: (val) {
+                                      if (val is Speech2TextModel) {
+                                        setState(() {
+                                          returnS2Tdata = val;
+                                        });
+                                      }
+                                    },
+
                                     // suffixWidget: VoiceRecodingWidget(),
                                   )),
                                   const SizedBox(height: 15),
@@ -514,6 +532,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               speed: position.speed,
               latitude: position.latitude,
               longitude: position.longitude,
+              reginal_text: returnS2Tdata.result?.reginalText,
+              translated_text: returnS2Tdata.result?.translatedText,
+              audioS3Path: returnS2Tdata.result?.audioS3Path,
             ),
             eventCode: ConstantEventValues.otsEvenCode,
             createdBy: Singleton.instance.agentRef ?? '',
@@ -642,13 +663,15 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   ),
                 ),
                 const SizedBox(width: 5),
-                CustomText(
-                  element.title,
-                  color: ColorResource.colorFFFFFF,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
+                Flexible(
+                  child: CustomText(
+                    element.title,
+                    color: ColorResource.colorFFFFFF,
+                    fontWeight: FontWeight.w700,
+                    lineHeight: 1,
+                    fontSize: FontSize.sixteen,
+                    fontStyle: FontStyle.normal,
+                  ),
                 )
               ],
             ),

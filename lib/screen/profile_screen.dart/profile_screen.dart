@@ -15,6 +15,7 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
+import 'package:origa/screen/profile_screen.dart/customer_language_preference.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
 import 'package:origa/screen/profile_screen.dart/notification_bottom_sheet_screen.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
@@ -172,12 +173,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //       bloc.add(ClickNotificationEvent());
       //     }),
       ProfileNavigation(
-          title: Languages.of(context)!.selectLanguage,
+          title: Languages.of(context)!.selectAppLanguage,
+          isEnable: true,
           onTap: () {
             bloc.add(ClickChangeLaunguageEvent());
           }),
       ProfileNavigation(
+          title: Languages.of(context)!.customerLanguagePreference,
+          isEnable: Singleton.instance.usertype == Constants.fieldagent
+              ? true
+              : false,
+          onTap: () {
+            bloc.add(CustomerLaunguagePrefrerenceEvent(context));
+          }),
+      ProfileNavigation(
           title: Languages.of(context)!.changePassword,
+          isEnable: true,
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
@@ -198,6 +209,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         if (state is ClickChangeLaunguageState) {
           languageBottomSheet();
+        }
+
+        if (state is CustomerLaunguagePrefrerenceState) {
+          customerSupportLanguageBottomSheet();
         }
         if (state is ClickMessageState) {
           // Navigator.push(
@@ -457,48 +472,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         itemCount: profileNavigationList.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return GestureDetector(
-                                            onTap: profileNavigationList[index]
-                                                .onTap,
-                                            child: Container(
-                                              width: double.infinity,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0),
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: ListTile(
-                                                title: SizedBox(
-                                                  // width: 260,
-                                                  child: CustomText(
-                                                    profileNavigationList[index]
-                                                        .title
-                                                        .toUpperCase(),
-                                                    lineHeight: 1,
-                                                    fontSize: FontSize.sixteen,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: ColorResource
-                                                        .color23375A,
+                                          return profileNavigationList[index]
+                                                  .isEnable
+                                              ? GestureDetector(
+                                                  onTap: profileNavigationList[
+                                                          index]
+                                                      .onTap,
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    margin: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4),
+                                                    decoration: const BoxDecoration(
+                                                        color: ColorResource
+                                                            .colorF8F9FB,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10.0))),
+                                                    child: ListTile(
+                                                      title: SizedBox(
+                                                        // width: 260,
+                                                        child: CustomText(
+                                                          profileNavigationList[
+                                                                  index]
+                                                              .title
+                                                              .toUpperCase(),
+                                                          lineHeight: 1.4,
+                                                          fontSize:
+                                                              FontSize.sixteen,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          color: ColorResource
+                                                              .color23375A,
+                                                        ),
+                                                      ),
+                                                      trailing: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              ImageResource
+                                                                  .forwardArrow),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                trailing: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                        ImageResource
-                                                            .forwardArrow),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
+                                                )
+                                              : const SizedBox();
                                         }),
                                   ],
                                 ),
@@ -688,6 +714,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 LanguageBottomSheetScreen(bloc: bloc)));
+  }
+
+  customerSupportLanguageBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                CustomerLanguagePreference(bloc: bloc)));
   }
 
   messageShowBottomSheet({String? fromID, String? toID}) {

@@ -30,6 +30,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
+
 class CustomRepoBottomSheet extends StatefulWidget {
   const CustomRepoBottomSheet(
     this.cardTitle, {
@@ -71,6 +73,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   late FocusNode registraionNoFocusNode;
   late FocusNode chassisNoFocusNode;
 
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
+
   @override
   void initState() {
     dateControlller = TextEditingController();
@@ -101,7 +106,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.image);
+        .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -273,6 +278,14 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           Languages.of(context)!.remarks,
                           remarksControlller,
                           validationRules: const ['required'],
+                          isVoiceRecordWidget: true,
+                          returnS2Tresponse: (val) {
+                            if (val is Speech2TextModel) {
+                              setState(() {
+                                returnS2Tdata = val;
+                              });
+                            }
+                          },
                           // suffixWidget: VoiceRecodingWidget(),
                           isLabel: true,
                         )),
@@ -409,6 +422,12 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       altitude: position.altitude,
                                       heading: position.heading,
                                       speed: position.speed,
+                                      reginal_text:
+                                          returnS2Tdata.result?.reginalText,
+                                      translated_text:
+                                          returnS2Tdata.result?.translatedText,
+                                      audioS3Path:
+                                          returnS2Tdata.result?.audioS3Path,
                                     ));
 
                                 print(

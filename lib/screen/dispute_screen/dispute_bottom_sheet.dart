@@ -33,6 +33,8 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
+
 class CustomDisputeBottomSheet extends StatefulWidget {
   const CustomDisputeBottomSheet(
     this.cardTitle, {
@@ -75,6 +77,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   bool isSubmit = true;
 
   final _formKey = GlobalKey<FormState>();
+
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   @override
   void initState() {
@@ -208,7 +213,19 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 remarksControlller,
                                 validationRules: const ['required'],
                                 isLabel: true,
-                                isVoiceRecordWidget: true,
+                                isVoiceRecordWidget:
+                                    Singleton.instance.usertype ==
+                                                Constants.fieldagent &&
+                                            widget.isCall! == false
+                                        ? true
+                                        : false,
+                                returnS2Tresponse: (val) {
+                                  if (val is Speech2TextModel) {
+                                    setState(() {
+                                      returnS2Tdata = val;
+                                    });
+                                  }
+                                },
                                 caseId: widget.bloc.caseId,
                               )),
                               const SizedBox(height: 15),
@@ -381,6 +398,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     : '',
                 longitude: latLng.longitude,
                 latitude: latLng.latitude,
+                reginal_text: returnS2Tdata.result?.reginalText,
+                translated_text: returnS2Tdata.result?.translatedText,
+                audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
               contact: Contact(
                 cType: widget.postValue['cType'],

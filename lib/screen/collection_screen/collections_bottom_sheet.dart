@@ -39,6 +39,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
@@ -94,9 +95,12 @@ class _CustomCollectionsBottomSheetState
   late FocusNode chequeFocusNode;
   late FocusNode remarksFocusNode;
 
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
+
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.image);
+        .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -378,6 +382,19 @@ class _CustomCollectionsBottomSheetState
                                   validationRules: const ['required'],
                                   isLabel: true,
                                   onEditing: () => remarksFocusNode.unfocus(),
+                                  isVoiceRecordWidget:
+                                      Singleton.instance.usertype ==
+                                                  Constants.fieldagent &&
+                                              widget.isCall! == false
+                                          ? true
+                                          : false,
+                                  returnS2Tresponse: (val) {
+                                    if (val is Speech2TextModel) {
+                                      setState(() {
+                                        returnS2Tdata = val;
+                                      });
+                                    }
+                                  },
                                   // suffixWidget: VoiceRecodingWidget(),
                                 ),
                                 const SizedBox(height: 15),
@@ -570,6 +587,9 @@ class _CustomCollectionsBottomSheetState
                   heading: position.heading,
                   speed: position.speed,
                   deposition: CollectionsDeposition(status: "pending"),
+                  reginal_text: returnS2Tdata.result?.reginalText,
+                  translated_text: returnS2Tdata.result?.translatedText,
+                  audioS3Path: returnS2Tdata.result?.audioS3Path,
                 ),
                 callID: Singleton.instance.callID ?? '0',
                 callingID: Singleton.instance.callingID ?? '0',
@@ -691,6 +711,9 @@ class _CustomCollectionsBottomSheetState
                   heading: position.heading,
                   speed: position.speed,
                   deposition: CollectionsDeposition(status: "pending"),
+                  reginal_text: returnS2Tdata.result?.reginalText,
+                  translated_text: returnS2Tdata.result?.translatedText,
+                  audioS3Path: returnS2Tdata.result?.audioS3Path,
                 ),
                 callID: Singleton.instance.callID ?? '0',
                 callingID: Singleton.instance.callingID ?? '0',
@@ -879,13 +902,15 @@ class _CustomCollectionsBottomSheetState
                   ),
                 ),
                 const SizedBox(width: 5),
-                CustomText(
-                  element.title,
-                  color: ColorResource.colorFFFFFF,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
+                Flexible(
+                  child: CustomText(
+                    element.title,
+                    color: ColorResource.colorFFFFFF,
+                    fontWeight: FontWeight.w700,
+                    lineHeight: 1,
+                    fontSize: FontSize.sixteen,
+                    fontStyle: FontStyle.normal,
+                  ),
                 )
               ],
             ),

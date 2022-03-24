@@ -12,6 +12,8 @@ class ClickNotificationState extends ProfileState {}
 
 class ClickChangeLaunguageState extends ProfileState {}
 
+class CustomerLaunguagePrefrerenceState extends ProfileState {}
+
 class ClickChangePasswordState extends ProfileState {}
 
 class ClickChangeSecurityPinState extends ProfileState {}

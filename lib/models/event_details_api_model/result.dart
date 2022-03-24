@@ -11,6 +11,9 @@ class EventDetailsResultModel {
   String chassisNo;
   String customerName;
   String otsAmt;
+  String? reginal_text;
+  String? translated_text;
+  String? audioS3Path;
 
   EventDetailsResultModel({
     this.id,
@@ -25,6 +28,9 @@ class EventDetailsResultModel {
     this.chassisNo = '-',
     this.customerName = '-',
     this.otsAmt = '-',
+    this.reginal_text,
+    this.translated_text,
+    this.audioS3Path,
   });
 
   factory EventDetailsResultModel.fromJson(Map<String, dynamic> json) =>
@@ -43,6 +49,9 @@ class EventDetailsResultModel {
         chassisNo: json['eventAttr']['chassisNo'] ?? '-',
         customerName: json['eventAttr']['customerName'] ?? '-',
         otsAmt: json['eventAttr']['amntOts'] ?? '-',
+        reginal_text: json['eventAttr']['reginal_text'],
+        translated_text: json['eventAttr']['translated_text'],
+        audioS3Path: json['eventAttr']['audioS3Path'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,5 +67,8 @@ class EventDetailsResultModel {
         'chassisNo': chassisNo,
         'customerName': customerName,
         'otsAmt': otsAmt,
+        'reginal_text': reginal_text,
+        'translated_text': translated_text,
+        'audioS3Path': audioS3Path,
       };
 }

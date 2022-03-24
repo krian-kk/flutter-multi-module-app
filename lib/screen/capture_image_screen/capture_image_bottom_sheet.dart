@@ -23,6 +23,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../models/speech2text_model.dart';
+
 class CustomCaptureImageBottomSheet extends StatefulWidget {
   const CustomCaptureImageBottomSheet(
     this.cardTitle, {
@@ -48,6 +50,9 @@ class _CustomCaptureImageBottomSheetState
 
   bool isSubmit = true;
 
+  //Returned speech to text AAPI data
+  Speech2TextModel returnS2Tdata = Speech2TextModel();
+
   @override
   void initState() {
     remarksControlller = TextEditingController();
@@ -62,7 +67,7 @@ class _CustomCaptureImageBottomSheetState
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.image);
+        .pickFiles(allowMultiple: true, type: FileType.any);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -144,6 +149,15 @@ class _CustomCaptureImageBottomSheetState
                                     remarksControlller,
                                     validationRules: const ['required'],
                                     isLabel: true,
+                                    isVoiceRecordWidget: true,
+                                    returnS2Tresponse: (val) {
+                                      if (val is Speech2TextModel) {
+                                        setState(() {
+                                          returnS2Tdata = val;
+                                        });
+                                      }
+                                    },
+
                                     // suffixWidget: VoiceRecodingWidget(),
                                   ),
                                 ],
@@ -269,6 +283,12 @@ class _CustomCaptureImageBottomSheetState
                                                 altitude: position.altitude,
                                                 heading: position.heading,
                                                 speed: position.speed,
+                                                reginal_text: returnS2Tdata
+                                                    .result?.reginalText,
+                                                translated_text: returnS2Tdata
+                                                    .result?.translatedText,
+                                                audioS3Path: returnS2Tdata
+                                                    .result?.audioS3Path,
                                               ));
                                       widget.bloc.add(PostImageCapturedEvent(
                                           postData: requestBodyData,

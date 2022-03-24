@@ -108,6 +108,7 @@ class _CustomButtonState extends State<CustomButton> {
                         widget.text.toString(),
                         textAlign: widget.textAlign,
                         style: Theme.of(context).textTheme.button!.copyWith(
+                                // fontSize: widget.fontSize,
                                 color: widget.textColor.withOpacity(
                               widget.isEnabled ? 1 : 0.3,
                             )),

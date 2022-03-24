@@ -163,7 +163,7 @@ class Cases {
     if (Singleton.instance.usertype == Constants.telecaller) {
       if (json['telSubStatus'] != null &&
           json['telSubStatus'].toString().toLowerCase() == 'new') {
-        if (json['followUpDate'] != null) {
+        if (json['followUpDate'] == null) {
           followUpDate = DateTime.now().toString();
         } else {
           followUpDate = json['followUpDate'] ?? '-';
@@ -176,7 +176,7 @@ class Cases {
     if (Singleton.instance.usertype == Constants.fieldagent) {
       if (json['collSubStatus'] != null &&
           json['collSubStatus'].toString().toLowerCase() == 'new') {
-        if (json['fieldfollowUpDate'] != null) {
+        if (json['fieldfollowUpDate'] == null) {
           fieldfollowUpDate = DateTime.now().toString();
         } else {
           fieldfollowUpDate = json['fieldfollowUpDate'] ?? '-';
