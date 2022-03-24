@@ -16,6 +16,9 @@ class HttpUrl {
   static final String loginUrl = '$url/node/api/user/loginWeb';
   static final String agentDetailUrl = '$url/node/field-allocation/agents/';
 
+  // Get Agent Secure Pin Code
+  static final String agentSecurePinUrl = '$baseUrl/profile/userDetailsAPI';
+
   // Get agent detail for Reset password screen
   static String resetPasswordCheckUrl(String agentName) =>
       '$url/node/field-allocation/agents/info/$agentName';
@@ -92,11 +95,13 @@ class HttpUrl {
   static String homeAddressUrl() =>
       baseUrl + fieldAgent + 'profile/homeAddress';
 
-  static String resendOTPUrl() => '$url/$apiType' 'public/requestOtp';
+  static String resendOTPUrl() => '$url/${apiType}public/requestOtp';
 
-  static String resetPasswordUrl() => '$url/$apiType' 'public/resetPassword';
+  static String resetPasswordUrl() => '$url/${apiType}public/resetPassword';
 
-  static String verifyOTP() => '$url/$apiType' 'public/verifyOtp';
+  static String verifyOTP() => '$url/${apiType}public/verifyOtp';
+
+  static final String createMpin = '$baseUrl${fieldAgent}profile/updateMPIN';
 
   static String denialPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +

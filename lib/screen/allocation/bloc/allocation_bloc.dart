@@ -152,7 +152,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           starCount = 0;
 
           if (priorityListData['success']) {
-            var offlinePriorityResponseModel;
+            dynamic offlinePriorityResponseModel;
             try {
               offlinePriorityResponseModel =
                   OfflinePriorityResponseModel.fromJson(
@@ -291,7 +291,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '&limit=${Constants.limit}');
         PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(priorityListData['data']);
-        // print("load more data length ---> ${listOfdata.result!.length}");
         if (priorityListData['data']['result'] != null) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));

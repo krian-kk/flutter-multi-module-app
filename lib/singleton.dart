@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
@@ -16,6 +14,7 @@ class Singleton {
   String? agrRef;
   String? contractor;
   String? usertype;
+  String? password;
   String? caseCustomerName;
   BuildContext? buildContext;
   ContractorDetailsModel? feedbackTemplate;

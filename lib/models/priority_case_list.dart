@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../singleton.dart';
-import '../utils/constants.dart';
+import 'package:origa/singleton.dart';
+import 'package:origa/utils/constants.dart';
 
 class PriorityCaseListModel {
   int? status;

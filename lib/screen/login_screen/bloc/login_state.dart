@@ -16,3 +16,9 @@ class SignInLoadedState extends LoginState {}
 class SignInCompletedState extends LoginState {}
 
 class ResendOTPState extends LoginState {}
+
+class EnterSecurePinState extends LoginState {
+  final int? securePin;
+  final String? userName;
+  EnterSecurePinState({this.securePin, this.userName});
+}

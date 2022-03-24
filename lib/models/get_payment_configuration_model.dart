@@ -11,15 +11,15 @@ class PaymentConfigurationModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['msg'] = this.msg;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['msg'] = msg;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -38,16 +38,16 @@ class Data {
     if (json['payment'] != null) {
       payment = <Payment>[];
       json['payment'].forEach((v) {
-        payment!.add(new Payment.fromJson(v));
+        payment!.add(Payment.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.payment != null) {
-      data['payment'] = this.payment!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (payment != null) {
+      data['payment'] = payment!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -78,7 +78,7 @@ class Payment {
       this.expire});
 
   Payment.fromJson(Map<String, dynamic> json) {
-    audit = json['audit'] != null ? new Audit.fromJson(json['audit']) : null;
+    audit = json['audit'] != null ? Audit.fromJson(json['audit']) : null;
     sId = json['_id'];
     paymentGateway = json['payment_gateway'];
     keyId = json['key_id'];
@@ -91,19 +91,19 @@ class Payment {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.audit != null) {
-      data['audit'] = this.audit!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (audit != null) {
+      data['audit'] = audit!.toJson();
     }
-    data['_id'] = this.sId;
-    data['payment_gateway'] = this.paymentGateway;
-    data['key_id'] = this.keyId;
-    data['key_secret'] = this.keySecret;
-    data['active'] = this.active;
-    data['partial_payment'] = this.partialPayment;
-    data['dynamic_link'] = this.dynamicLink;
-    data['qr_code'] = this.qrCode;
-    data['expire'] = this.expire;
+    data['_id'] = sId;
+    data['payment_gateway'] = paymentGateway;
+    data['key_id'] = keyId;
+    data['key_secret'] = keySecret;
+    data['active'] = active;
+    data['partial_payment'] = partialPayment;
+    data['dynamic_link'] = dynamicLink;
+    data['qr_code'] = qrCode;
+    data['expire'] = expire;
     return data;
   }
 }
@@ -120,9 +120,9 @@ class Audit {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['crAt'] = this.crAt;
-    data['upAt'] = this.upAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['crAt'] = crAt;
+    data['upAt'] = upAt;
     return data;
   }
 }

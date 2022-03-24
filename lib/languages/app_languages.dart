@@ -415,6 +415,8 @@ abstract class Languages {
 
   String get sendOTP;
 
+  String get submitOTP;
+
   String get businessLoss;
 
   String get covidImpacted;
@@ -597,6 +599,10 @@ abstract class Languages {
   String get panjabiLang;
 
   String get teluguLang;
+
+  String get accountPassword;
+
+  String get enterOTP;
 
   String get youAreInOffline;
 }

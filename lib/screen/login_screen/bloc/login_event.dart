@@ -17,3 +17,5 @@ class SignInEvent extends LoginEvent {
 class NoInternetConnectionEvent extends LoginEvent {}
 
 class ResendOTPEvent extends LoginEvent {}
+
+class TriggeredHomeTabEvent extends LoginEvent {}

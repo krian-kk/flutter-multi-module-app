@@ -16,6 +16,7 @@ import 'package:origa/models/device_info_model/android_device_info.dart';
 import 'package:origa/models/device_info_model/ios_device_model.dart';
 import 'package:origa/models/login_error_model.dart';
 import 'package:origa/models/login_response.dart';
+import 'package:origa/models/profile_api_result_model/profile_api_result_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -161,7 +162,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
                 APIRequestType.get, HttpUrl.agentDetailUrl + event.userId!);
 
-
             if (agentDetail['success'] == false) {
               // Here facing error so close the loading
               yield SignInLoadedState();
@@ -177,7 +177,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             } else {
               // getting Agent Details
               var agentDetails =
-              AgentDetailsModel.fromJson(agentDetail['data']);
+                  AgentDetailsModel.fromJson(agentDetail['data']);
               // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
               if (agentDetails.status == 200) {
                 if (agentDetails.data!.first.agentType == 'COLLECTOR') {
@@ -192,24 +192,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 // here storing all agent details in local storage
                 if (agentDetails.data!.first.agentType != null) {
                   Singleton.instance.agentName =
-                  agentDetails.data!.first.agentName!;
+                      agentDetails.data!.first.agentName!;
                   await _prefs.setString(
                       Constants.agentName, agentDetails.data!.first.agentName!);
                   await _prefs.setString(
                       Constants.mobileNo, agentDetails.data!.first.mobNo!);
                   await _prefs.setString(
                       Constants.email, agentDetails.data!.first.email!);
-                  await _prefs.setString(
-                      Constants.contractor, agentDetails.data!.first.contractor!);
+                  await _prefs.setString(Constants.contractor,
+                      agentDetails.data!.first.contractor!);
                   Singleton.instance.contractor =
-                  agentDetails.data!.first.contractor!;
+                      agentDetails.data!.first.contractor!;
                   await _prefs.setString(
                       Constants.status, agentDetails.data!.first.status!);
                   await _prefs.setString(Constants.code, agentDetails.code!);
                   await _prefs.setBool(
                       Constants.userAdmin, agentDetails.data!.first.userAdmin!);
 
+                  Map<String, dynamic> getProfileData =
+                      await APIRepository.apiRequest(
+                          APIRequestType.get, HttpUrl.profileUrl);
+
                   yield SignInCompletedState();
+
+                  if (getProfileData['success']) {
+                    Map<String, dynamic> jsonData = getProfileData['data'];
+                    var profileAPIValue = ProfileApiModel.fromJson(jsonData);
+
+                    yield EnterSecurePinState(
+                      securePin: profileAPIValue.result?.first.mPin,
+                      userName: profileAPIValue.result?.first.aRef,
+                    );
+                  }
 
                   // Here call share device info api
                   Map<String, dynamic> deviceData = <String, dynamic>{};
@@ -251,14 +265,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                           tags: _deviceData['tags'],
                           type: _deviceData['type'],
                           isPhysicalDevice:
-                          _deviceData['isPhysicalDevice'] as bool,
+                              _deviceData['isPhysicalDevice'] as bool,
                           androidId: _deviceData['androidId'],
                           systemFeatures: [],
                           version: Version(
                             securityPatch: _deviceData['version.securityPatch'],
                             sdkInt: _deviceData['version.sdkInt'].toString(),
                             previewSdkInt:
-                            _deviceData['version.previewSdkInt'].toString(),
+                                _deviceData['version.previewSdkInt'].toString(),
                             codename: _deviceData['version.codename'],
                             release: _deviceData['version.release'],
                             incremental: _deviceData['version.incremental'],
@@ -277,7 +291,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                           systemVersion: _deviceData['systemVersion'],
                           model: _deviceData['model'],
                           localizedModel: _deviceData['localizedModel'],
-                          identifierForVendor: _deviceData['identifierForVendor'],
+                          identifierForVendor:
+                              _deviceData['identifierForVendor'],
                           isPhysicalDevice: _deviceData['isPhysicalDevice'],
                           utsname: Utsname(
                             sysname: _deviceData['utsname.sysname:'],
@@ -304,9 +319,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
                   await Future.delayed(const Duration(milliseconds: 100));
 
-                  yield HomeTabState();
+                  // For Secure Pin Flow API Call
+                  // Get the Secure Pin
+
+                  // yield HomeTabState();
                 }
-              }else{
+              } else {
                 yield SignInLoadedState();
                 AppUtils.showToast(agentDetails.msg!,
                     backgroundColor: Colors.red);
@@ -324,6 +342,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is ResendOTPEvent) {
       yield ResendOTPState();
+    }
+
+    if (event is TriggeredHomeTabEvent) {
+      yield HomeTabState();
     }
 
     if (event is NoInternetConnectionEvent) {

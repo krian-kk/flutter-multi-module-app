@@ -600,8 +600,8 @@ class _CustomOtherFeedBackBottomSheetState
 
         Map<String, dynamic> firebaseObject = requestBodyData.toJson();
         try {
-          firebaseObject.addAll(
-              await FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+          firebaseObject
+              .addAll(FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
         } catch (e) {
           debugPrint('Exception while converting base64 ${e.toString()}');
         }
@@ -678,7 +678,6 @@ class _CustomOtherFeedBackBottomSheetState
   }
 
   expandList(List<FeedbackTemplate> list, int index) {
-    // print('List => ${jsonEncode(list[0])}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -830,7 +829,6 @@ class _CustomOtherFeedBackBottomSheetState
                                                 .pleaseSelectCustomerContactType,
                                           );
                                         }
-                                        // print('object');
                                       },
                                       child: CustomReadOnlyTextField(
                                         (listOfContact[index].formValue == '')

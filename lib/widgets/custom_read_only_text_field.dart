@@ -1,7 +1,5 @@
-// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/models/speech2text_model.dart';
@@ -9,12 +7,10 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/validator.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:origa/widgets/custom_textfield.dart';
 import 'package:origa/widgets/voice_record_widget.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -111,50 +107,14 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   TextEditingController translateTextController =
       TextEditingController(text: '');
   bool isEdit = false;
-  // late AudioPlayer audioPlayer;
   static const platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
 
-  //Speech 2 Text return data model
   Speech2TextModel getTranslatedData = Speech2TextModel();
 
   @override
   void initState() {
     if (widget.isVoiceRecordWidget) {
-      // getPermission();
-
-      // filePath = createFilename.replaceAll(':', '-');
-      // audioPlayer = AudioPlayer();
-      // getPermission();
-      // filePath =
-      //     '/sdcard/Download/djkdjkdjkdj${widget.agrRef}_${(DateTime.now().toIso8601String()).split('.').first.toString()}.wav';
-
-      // filePath = '/sdcard/Download/tempAudio.wav';
-      // print('File Patyh is ======================= > ${filePath}');
-      // audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-      //   if (state == PlayerState.PLAYING) {
-      //     setState(() {
-      //       isPlaying = true;
-      //     });
-      //   }
-      //   if (state == PlayerState.STOPPED) {
-      //     setState(() {
-      //       isPlaying = false;
-      //       isPaused = false;
-      //     });
-      //   }
-      //   if (state == PlayerState.COMPLETED) {
-      //     setState(() {
-      //       isPlaying = false;
-      //       isPaused = false;
-      //     });
-      //   }
-      //   if (state == PlayerState.PAUSED) {
-      //     setState(() {
-      //       isPaused = true;
-      //     });
-      //   }
-      // });
       getFileDirectory();
     }
 
@@ -166,7 +126,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
         '/${Singleton.instance.agrRef}_${((DateTime.now().toIso8601String()).split('.').first.toString()).replaceAll(':', '-')}.wav';
     setState(() {
       filePath = dir;
-      // filePath = '/sdcard/Download/ta01.wav';
     });
   }
 

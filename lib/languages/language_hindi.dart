@@ -616,6 +616,9 @@ class LanguageHi extends Languages {
   String get resendOTP => 'ओटीपी पुनः भेजें?';
 
   @override
+  String get submitOTP => 'ओटीपी सबमिट करें?';
+
+  @override
   String get sendOTP => 'OTP भेजें';
 
   @override
@@ -904,6 +907,12 @@ class LanguageHi extends Languages {
 
   @override
   String get teluguLang => 'तेलुगू';
+
+  @override
+  String get accountPassword => 'खाते का पासवर्ड';
+
+  @override
+  String get enterOTP => 'कृपया ओटीपी दर्ज करें';
 
   @override
   String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';

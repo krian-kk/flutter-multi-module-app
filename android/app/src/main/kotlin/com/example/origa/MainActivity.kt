@@ -1,4 +1,5 @@
 package com.example.origa
+
 import android.annotation.SuppressLint
 import android.media.AudioRecord
 import android.media.MediaPlayer
@@ -20,7 +21,6 @@ class MainActivity : FlutterActivity() {
     private var length: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 //        this.window.setFlags(
 //            WindowManager.LayoutParams.FLAG_SECURE,
 //            WindowManager.LayoutParams.FLAG_SECURE
@@ -42,7 +42,6 @@ class MainActivity : FlutterActivity() {
                         mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
                         mediaRecorder?.setOutputFormat(OutputFormat.THREE_GPP)
                         mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC)
-//                        mediaRecorder?.se
                         mediaRecorder?.setAudioEncodingBitRate(128000)
                         mediaRecorder?.setAudioSamplingRate(48000)
                         mediaRecorder?.setOutputFile(output)

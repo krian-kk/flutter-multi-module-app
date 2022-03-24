@@ -178,7 +178,6 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                 fontSize: FontSize.sixteen,
                 fontWeight: FontWeight.w600,
                 onTap: () async {
-                  // print('Tap Address => ${placemark}');
                   if (widget.onClose != null) {
                     // var requestBodyData;
                     // if (tabLatLng.latitude != null) {

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,7 +22,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../languages/app_languages.dart';
 import '../utils/constants.dart';
 
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 
@@ -32,10 +29,10 @@ const theSource = AudioSource.microphone;
 
 class VoiceRecodingWidget extends StatefulWidget {
   final String filePath;
-  Function? recordingData;
+  final Function? recordingData;
   final String? caseId;
 
-  VoiceRecodingWidget(
+  const VoiceRecodingWidget(
       {Key? key, this.recordingData, this.caseId, required this.filePath})
       : super(key: key);
 
@@ -83,33 +80,14 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   }
 
   Future<void> openTheRecorder() async {
-    // await Permission.microphone.request();
     await Permission.storage.request();
     var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
+    if (Platform.isAndroid) {
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
     }
-
     await _mRecorder!.openRecorder();
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-
     recorderIsInited = true;
   }
 
@@ -168,33 +146,6 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     }
   }
 
-  // void startRecord() {
-  //   if (!recorderIsInited) {
-  //     openTheRecorder();
-  //   }
-  //   //remove play button
-  //   widget.recordingData!('');
-  //   _mRecorder!
-  //       .startRecorder(
-  //     toFile: widget.filePath,
-  //     codec: _codec,
-  //     audioSource: theSource,
-  //   )
-  //       .then((value) {
-  //     setState(() {});
-  //   });
-  // }
-
-  // void stopRecorder() async {
-  //   await _mRecorder!.stopRecorder().then((value) {
-  //     apiCall();
-  //     // getFiles();
-  //     setState(() {
-  //       isStartLoading = true;
-  //     });
-  //   });
-  // }
-
   apiCall() async {
     setState(() {
       uploadFileLists = [File(widget.filePath)];
@@ -235,7 +186,6 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     postdata.addAll({
       'files': value,
     });
-    // print(postdata);
 
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.upload,
@@ -249,12 +199,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
     if (postResult[Constants.success]) {
       getTranslatedData = Speech2TextModel.fromJson(postResult['data']);
-      // print('postResult ===> ${postResult}');
       // widget.recordingData!(getTranslatedData.result!.translatedText);
       widget.recordingData!(getTranslatedData);
-    } else {
-      // print('postdata error');
-    }
+    } else {}
   }
 
   // @override

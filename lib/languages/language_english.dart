@@ -615,6 +615,9 @@ class LanguageEn extends Languages {
   String get resendOTP => 'Resend OTP?';
 
   @override
+  String get submitOTP => 'Submit OTP?';
+
+  @override
   String get sendOTP => 'SEND OTP';
 
   @override
@@ -901,6 +904,12 @@ class LanguageEn extends Languages {
 
   @override
   String get teluguLang => 'Telugu';
+
+  @override
+  String get accountPassword => 'Account Password';
+
+  @override
+  String get enterOTP => 'Please Enter OTP';
 
   @override
   String get youAreInOffline => 'You are in offline';

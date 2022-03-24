@@ -1,14 +1,14 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -18,23 +18,22 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-// import 'package:audioplayers/audioplayers.dart';
-
 import '../../http/api_repository.dart';
 import '../../http/httpurls.dart';
+
 import '../../models/audio_convertion_model.dart';
-import '../../singleton.dart';
 import '../../utils/app_utils.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
-  const CustomEventDetailsBottomSheet(this.cardTitle, this.bloc,
-      {Key? key, required this.customeLoanUserWidget})
-      : super(key: key);
+  const CustomEventDetailsBottomSheet(
+    this.cardTitle,
+    this.bloc, {
+    Key? key,
+    required this.customeLoanUserWidget,
+  }) : super(key: key);
   final String cardTitle;
   final Widget customeLoanUserWidget;
-  static const platform = MethodChannel('recordAudioChannel');
-
   @override
   State<CustomEventDetailsBottomSheet> createState() =>
       _CustomEventDetailsBottomSheetState();
@@ -42,102 +41,34 @@ class CustomEventDetailsBottomSheet extends StatefulWidget {
 
 class _CustomEventDetailsBottomSheetState
     extends State<CustomEventDetailsBottomSheet> {
-  bool isPlaying = false;
-  bool isPaused = false;
-  // late AudioPlayer audioPlayer;
-  bool loadingAudio = false;
-  AudioConvertModel audioConvertyData = AudioConvertModel();
-  static const platform = MethodChannel('recordAudioChannel');
   String filePath = '';
+  AudioConvertModel audioConvertyData = AudioConvertModel();
+  late EventDetailsBloc bloc;
+
+  static const platform = MethodChannel('recordAudioChannel');
 
   @override
   void initState() {
     super.initState();
+    bloc = EventDetailsBloc()
+      ..add(EventDetailsInitialEvent(
+        widget.bloc.caseId.toString(),
+        widget.bloc.userType.toString(),
+      ));
     getFileDirectory();
-    // audioPlayer = AudioPlayer();
-    // audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-    //   if (state == PlayerState.PLAYING) {
-    //     setState(() {
-    //       isPlaying = true;
-    //     });
-    //   }
-    //   if (state == PlayerState.STOPPED) {
-    //     setState(() {
-    //       isPlaying = false;
-    //       isPaused = false;
-    //     });
-    //   }
-    //   if (state == PlayerState.COMPLETED) {
-    //     setState(() {
-    //       isPlaying = false;
-    //       isPaused = false;
-    //     });
-    //   }
-    //   if (state == PlayerState.PAUSED) {
-    //     setState(() {
-    //       isPaused = true;
-    //     });
-    //   }
-    // });
   }
 
-  // List<File> uploadFileLists = [];
-  // getFiles() async {
-  //   FilePickerResult? result12 = await FilePicker.platform
-  //       .pickFiles(allowMultiple: false, type: FileType.audio);
-  //   if (result12 != null) {
-  //     setState(() {
-  //       uploadFileLists = result12.paths.map((path) => File(path!)).toList();
-  //     });
-  //     int result =
-  //         await audioPlayer.play(uploadFileLists.first.path, isLocal: true);
-  //     if (result == 1) {
-  //       setState(() {});
-  //     }
-  //   } else {
-  //     AppUtils.showToast(
-  //       Languages.of(context)!.canceled,
-  //     );
-  //   }
-  // }
-
-  // playAudio(String? audioPath) async {
-  //   setState(() {
-  //     loadingAudio = true;
-  //   });
-  //   Map<String, dynamic> postResult = await APIRepository.apiRequest(
-  //     APIRequestType.post,
-  //     HttpUrl.getAudioFile,
-  //     requestBodydata: {"pathOfFile": audioPath},
-  //   );
-
-  //   if (postResult[Constants.success]) {
-  //     audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
-  //     var base64 = const Base64Encoder()
-  //         .convert(List<int>.from(audioConvertyData.result!.body!.data!));
-  //     Uint8List audioBytes = const Base64Codec().decode(base64);
-  //     int result = await audioPlayer.playBytes(audioBytes);
-  //     if (result == 1) {
-  //       setState(() {});
-  //     }
-  //   } else {
-  //     AppUtils.showErrorToast("Didn't get audio file");
-  //   }
-  //   setState(() => loadingAudio = false);
-  // }
-
   getFileDirectory() async {
-    String dir =
-        ((await getApplicationDocumentsDirectory()).path) + '/playAudio.wav';
+    String dir = ((await getApplicationDocumentsDirectory()).path) +
+        '/TemporaryAudioFile.wav';
     setState(() {
       filePath = dir;
-      // filePath = '/sdcard/Download/ta01.wav';
     });
   }
 
-  playAudio(String? audioPath) async {
+  playAudio(String? audioPath, int index) async {
     setState(() {
-      loadingAudio = true;
+      bloc.eventDetailsPlayAudioModel[index].loadingAudio = true;
     });
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
@@ -145,62 +76,65 @@ class _CustomEventDetailsBottomSheetState
       requestBodydata: {"pathOfFile": audioPath},
     );
     if (postResult[Constants.success]) {
-      audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
+      var audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
       var base64 = const Base64Encoder()
           .convert(List<int>.from(audioConvertyData.result!.body!.data!));
+
       Uint8List audioBytes = const Base64Codec().decode(base64);
       await File(filePath).writeAsBytes(audioBytes);
       await platform.invokeMethod(
           'playRecordAudio', {'filePath': filePath}).then((value) {
         if (value) {
-          setState(() => isPlaying = true);
-          setState(() => loadingAudio = false);
+          setState(
+              () => bloc.eventDetailsPlayAudioModel[index].isPlaying = true);
+          setState(() =>
+              bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
         }
       });
       await platform.invokeMethod(
           'completeRecordAudio', {'filePath': filePath}).then((value) {
         if (value != null) {
           setState(() {
-            isPlaying = false;
-            isPaused = false;
+            bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
+            bloc.eventDetailsPlayAudioModel[index].isPaused = false;
           });
         }
       });
     } else {
       AppUtils.showErrorToast("Did't get audio file");
     }
-    setState(() => loadingAudio = false);
+    setState(() => bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
   }
 
-  stopAudio() async {
+  stopAudio(int index) async {
     await platform
         .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
       if (value) {
         setState(() {
-          isPlaying = false;
-          isPaused = false;
+          bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
+          bloc.eventDetailsPlayAudioModel[index].isPaused = false;
         });
       }
     });
   }
 
-  pauseAudio() async {
+  pauseAudio(int index) async {
     await platform.invokeMethod(
         'pausePlayingAudio', {'filePath': filePath}).then((value) {
       if (value) {
         setState(() {
-          isPaused = true;
+          bloc.eventDetailsPlayAudioModel[index].isPaused = true;
         });
       }
     });
   }
 
-  resumeAudio() async {
+  resumeAudio(int index) async {
     await platform.invokeMethod(
         'resumePlayingAudio', {'filePath': filePath}).then((value) {
       if (value) {
         setState(() {
-          isPaused = false;
+          bloc.eventDetailsPlayAudioModel[index].isPaused = false;
         });
       }
     });
@@ -208,8 +142,8 @@ class _CustomEventDetailsBottomSheetState
         'completeRecordAudio', {'filePath': filePath}).then((value) {
       if (value != null) {
         setState(() {
-          isPlaying = false;
-          isPaused = false;
+          bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
+          bloc.eventDetailsPlayAudioModel[index].isPaused = false;
         });
       }
     });
@@ -235,16 +169,33 @@ class _CustomEventDetailsBottomSheetState
               child: widget.customeLoanUserWidget,
             ),
             const SizedBox(height: 10),
-            Expanded(
-                child: ListView.builder(
-                    itemCount:
-                        widget.bloc.eventDetailsAPIValue.result?.length ?? 0,
-                    itemBuilder: (context, int index) {
-                      dynamic listVal = widget
-                          .bloc.eventDetailsAPIValue.result!.reversed
-                          .toList();
-                      return expandList(listVal, index);
-                    })),
+            BlocListener<EventDetailsBloc, EventDetailsState>(
+              bloc: bloc,
+              listener: (context, state) {},
+              child: BlocBuilder<EventDetailsBloc, EventDetailsState>(
+                bloc: bloc,
+                builder: (context, state) {
+                  if (state is EventDetailsLoadingState) {
+                    return const Expanded(
+                      child: Center(
+                        child: CustomLoadingWidget(),
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                        child: ListView.builder(
+                            itemCount:
+                                bloc.eventDetailsAPIValue.result?.length ?? 0,
+                            itemBuilder: (context, int index) {
+                              dynamic listVal = bloc
+                                  .eventDetailsAPIValue.result!.reversed
+                                  .toList();
+                              return expandList(listVal, index);
+                            }));
+                  }
+                },
+              ),
+            ),
           ],
         ),
         bottomNavigationBar: Container(
@@ -398,13 +349,15 @@ class _CustomEventDetailsBottomSheetState
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-                  if (expandedList[index].reginal_text != null &&
-                      expandedList[index].translated_text != null &&
+                  if (expandedList[index].reginalText != null &&
+                      expandedList[index].translatedText != null &&
                       expandedList[index].audioS3Path != null)
                     remarkS2TaudioWidget(
-                        reginalText: expandedList[index].reginal_text,
-                        translatedText: expandedList[index].translated_text,
-                        audioPath: expandedList[index].audioS3Path),
+                      reginalText: expandedList[index].reginalText,
+                      translatedText: expandedList[index].translatedText,
+                      audioPath: expandedList[index].audioS3Path,
+                      index: index,
+                    ),
                 ],
               ),
             ),
@@ -414,8 +367,12 @@ class _CustomEventDetailsBottomSheetState
     );
   }
 
-  remarkS2TaudioWidget(
-      {String? reginalText, String? translatedText, String? audioPath}) {
+  remarkS2TaudioWidget({
+    String? reginalText,
+    String? translatedText,
+    String? audioPath,
+    required int index,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -446,14 +403,15 @@ class _CustomEventDetailsBottomSheetState
             const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
-                isPlaying ? stopAudio() : playAudio(audioPath);
-                // isPlaying ? stopAudio() : getFiles();
+                bloc.eventDetailsPlayAudioModel[index].isPlaying
+                    ? stopAudio(index)
+                    : playAudio(audioPath, index);
               },
               child: CircleAvatar(
                 backgroundColor: ColorResource.color23375A,
                 radius: 20,
                 child: Center(
-                  child: loadingAudio
+                  child: bloc.eventDetailsPlayAudioModel[index].loadingAudio
                       ? CustomLoadingWidget(
                           radius: 11,
                           strokeWidth: 3.0,
@@ -463,24 +421,30 @@ class _CustomEventDetailsBottomSheetState
                           ],
                         )
                       : Icon(
-                          isPlaying ? Icons.stop : Icons.play_arrow,
+                          bloc.eventDetailsPlayAudioModel[index].isPlaying
+                              ? Icons.stop
+                              : Icons.play_arrow,
                           color: ColorResource.colorFFFFFF,
                         ),
                 ),
               ),
             ),
             const SizedBox(width: 10),
-            if (isPlaying)
+            if (bloc.eventDetailsPlayAudioModel[index].isPlaying)
               GestureDetector(
                 onTap: () {
-                  isPaused ? resumeAudio() : pauseAudio();
+                  bloc.eventDetailsPlayAudioModel[index].isPaused
+                      ? resumeAudio(index)
+                      : pauseAudio(index);
                 },
                 child: CircleAvatar(
                   backgroundColor: ColorResource.color23375A,
                   radius: 20,
                   child: Center(
                     child: Icon(
-                      isPaused ? Icons.play_arrow : Icons.pause,
+                      bloc.eventDetailsPlayAudioModel[index].isPaused
+                          ? Icons.play_arrow
+                          : Icons.pause,
                       color: ColorResource.colorFFFFFF,
                     ),
                   ),

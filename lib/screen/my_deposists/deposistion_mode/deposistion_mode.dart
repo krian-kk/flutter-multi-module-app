@@ -34,13 +34,14 @@ class DepositionMode {
                   ),
                   const SizedBox(height: 7),
                   Container(
-                    // width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
                     decoration: const BoxDecoration(
                         border: Border(
                             bottom:
                                 BorderSide(color: ColorResource.colorD8D8D8))),
                     child: TabBar(
-                      isScrollable: false,
+                      isScrollable: true,
                       indicatorColor: ColorResource.colorD5344C,
                       labelStyle: const TextStyle(
                           fontWeight: FontWeight.w700,
@@ -51,7 +52,10 @@ class DepositionMode {
                       labelColor: ColorResource.color23375A,
                       unselectedLabelColor: ColorResource.colorC4C4C4,
                       tabs: [
-                        Tab(text: Languages.of(context)!.bank),
+                        SizedBox(
+                          width: 80,
+                          child: Tab(text: Languages.of(context)!.bank),
+                        ),
                         Tab(text: Languages.of(context)!.companybranch),
                       ],
                     ),

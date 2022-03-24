@@ -340,7 +340,6 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
   }
 
   static Widget buildListView(DashboardBloc bloc, ReceiptCases? caseLists) {
-    // print("my receipt case list count ---> ${caseLists!.count}");
     return bloc.selectedFilterDataLoading
         ? const CustomLoadingWidget()
         : caseLists!.cases!.isEmpty

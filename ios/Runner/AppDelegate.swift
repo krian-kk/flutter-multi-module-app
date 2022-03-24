@@ -4,20 +4,29 @@ import GoogleMaps
 import Firebase
 import FirebaseMessaging
 import AVFoundation
+
 @UIApplicationMain
+
+
 @objc class AppDelegate: FlutterAppDelegate, MessagingDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate {
+    
      var result: FlutterResult?
+    
+
     override func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
         let audioSession : AVAudioSession = AVAudioSession.sharedInstance()
         var audioPlayer : AVAudioPlayer = AVAudioPlayer()
         var audioRecord: AVAudioRecorder!
+        
 //        let settings = [  AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
 //                                  AVSampleRateKey: 12000,
 //                            AVNumberOfChannelsKey: 1,
 //                         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue ]
+        
         let settings =   [  AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                             AVSampleRateKey: 48000,
                             AVNumberOfChannelsKey: 2,
@@ -27,6 +36,8 @@ import AVFoundation
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
         let recordChannel = FlutterMethodChannel(name: "recordAudioChannel",
                                                  binaryMessenger: controller.binaryMessenger)
+    
+
         //    Messaging.messaging().delegate = self;
         FirebaseApp.configure()
         application.registerForRemoteNotifications()
@@ -34,6 +45,7 @@ import AVFoundation
         GMSServices.provideAPIKey("AIzaSyCd2C9YZHP8pHM36PANa8eOCfGU9oCyKTE")
         GeneratedPluginRegistrant.register(with: self)
         Messaging.messaging().isAutoInitEnabled = true;
+        
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
@@ -49,18 +61,23 @@ import AVFoundation
         application.registerForRemoteNotifications()
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
+        
         recordChannel.setMethodCallHandler({
             [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             // guard call.method == "initAudioRecord" else {
             //     result(FlutterMethodNotImplemented)
             //   return
             // }
+            
             self?.result = result
+            
+            
             guard let args = call.arguments as? [String : Any] else {return}
             let filePath = args["filePath"] as! String
             if call.method == "startRecordAudio" {
                 let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
                 mPath = documentsPath + "/" + String(10) + ".m4a"
+                
                 do {
                     try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
                     audioRecord = try AVAudioRecorder (url:  URL(fileURLWithPath: mPath) , settings: settings )
@@ -126,21 +143,29 @@ import AVFoundation
             }
             else {
                 print("UnReadable Method")
+               
             }
         })
+        
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+    
     func convertAudio(_ url: URL, outputURL: URL) {
         var error : OSStatus = noErr
         var destinationFile : ExtAudioFileRef? = nil
         var sourceFile : ExtAudioFileRef? = nil
+
         var srcFormat : AudioStreamBasicDescription = AudioStreamBasicDescription()
         var dstFormat : AudioStreamBasicDescription = AudioStreamBasicDescription()
+
         ExtAudioFileOpenURL(url as CFURL, &sourceFile)
+
         var thePropertySize: UInt32 = UInt32(MemoryLayout.stride(ofValue: srcFormat))
+
         ExtAudioFileGetProperty(sourceFile!,
             kExtAudioFileProperty_FileDataFormat,
             &thePropertySize, &srcFormat)
+        
         dstFormat.mSampleRate = 44100  //Set sample rate
         dstFormat.mFormatID = kAudioFormatLinearPCM
         dstFormat.mChannelsPerFrame = 1
@@ -150,6 +175,8 @@ import AVFoundation
         dstFormat.mFramesPerPacket = 1
         dstFormat.mFormatFlags = kLinearPCMFormatFlagIsPacked |
         kAudioFormatFlagIsSignedInteger
+
+
         // Create destination file
         error = ExtAudioFileCreateWithURL(
             outputURL as CFURL,
@@ -159,19 +186,23 @@ import AVFoundation
             AudioFileFlags.eraseFile.rawValue,
             &destinationFile)
         reportError(error: error)
+
         error = ExtAudioFileSetProperty(sourceFile!,
                 kExtAudioFileProperty_ClientDataFormat,
                 thePropertySize,
                 &dstFormat)
         reportError(error: error)
+
         error = ExtAudioFileSetProperty(destinationFile!,
                                          kExtAudioFileProperty_ClientDataFormat,
                                         thePropertySize,
                                         &dstFormat)
         reportError(error: error)
+
         let bufferByteSize : UInt32 = 32768
         var srcBuffer = [UInt8](repeating: 0, count: 32768)
         var sourceFrameOffset : ULONG = 0
+
         while(true){
             var fillBufList = AudioBufferList(
                 mNumberBuffers: 1,
@@ -182,28 +213,35 @@ import AVFoundation
                 )
             )
             var numFrames : UInt32 = 0
+
             if(dstFormat.mBytesPerFrame > 0){
                 numFrames = bufferByteSize / dstFormat.mBytesPerFrame
             }
+
             error = ExtAudioFileRead(sourceFile!, &numFrames, &fillBufList)
             reportError(error: error)
+
             if(numFrames == 0){
                 error = noErr;
                 break;
             }
+            
             sourceFrameOffset += numFrames
             error = ExtAudioFileWrite(destinationFile!, numFrames, &fillBufList)
             reportError(error: error)
         }
+        
         error = ExtAudioFileDispose(destinationFile!)
         reportError(error: error)
         error = ExtAudioFileDispose(sourceFile!)
         reportError(error: error)
     }
+
     func reportError(error: OSStatus) {
         // Handle error
         print(error)
     }
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.result!("On completed result is true")
     }

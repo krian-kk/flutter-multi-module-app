@@ -11,8 +11,8 @@ class EventDetailsResultModel {
   String chassisNo;
   String customerName;
   String otsAmt;
-  String? reginal_text;
-  String? translated_text;
+  String? reginalText;
+  String? translatedText;
   String? audioS3Path;
 
   EventDetailsResultModel({
@@ -28,8 +28,8 @@ class EventDetailsResultModel {
     this.chassisNo = '-',
     this.customerName = '-',
     this.otsAmt = '-',
-    this.reginal_text,
-    this.translated_text,
+    this.reginalText,
+    this.translatedText,
     this.audioS3Path,
   });
 
@@ -49,8 +49,8 @@ class EventDetailsResultModel {
         chassisNo: json['eventAttr']['chassisNo'] ?? '-',
         customerName: json['eventAttr']['customerName'] ?? '-',
         otsAmt: json['eventAttr']['amntOts'] ?? '-',
-        reginal_text: json['eventAttr']['reginal_text'],
-        translated_text: json['eventAttr']['translated_text'],
+        reginalText: json['eventAttr']['reginal_text'],
+        translatedText: json['eventAttr']['translated_text'],
         audioS3Path: json['eventAttr']['audioS3Path'],
       );
 
@@ -67,8 +67,8 @@ class EventDetailsResultModel {
         'chassisNo': chassisNo,
         'customerName': customerName,
         'otsAmt': otsAmt,
-        'reginal_text': reginal_text,
-        'translated_text': translated_text,
+        'reginal_text': reginalText,
+        'translated_text': translatedText,
         'audioS3Path': audioS3Path,
       };
 }

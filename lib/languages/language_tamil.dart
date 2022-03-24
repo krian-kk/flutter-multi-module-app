@@ -616,6 +616,9 @@ class LanguageTa extends Languages {
   String get resendOTP => 'OTP ஐ மீண்டும் அனுப்பவா?';
 
   @override
+  String get submitOTP => 'OTPயைச் சமர்ப்பிக்கவா?';
+
+  @override
   String get sendOTP => 'OTP அனுப்பவும்';
 
   @override
@@ -907,6 +910,12 @@ class LanguageTa extends Languages {
 
   @override
   String get teluguLang => 'தெலுங்கு';
+
+  @override
+  String get accountPassword => 'கணக்கு கடவுச்சொல்';
+
+  @override
+  String get enterOTP => 'OTP ஐ உள்ளிடவும்';
 
   @override
   String get youAreInOffline => 'இணைய வசதி இல்லை';

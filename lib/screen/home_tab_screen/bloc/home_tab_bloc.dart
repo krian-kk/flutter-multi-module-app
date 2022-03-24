@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
-import 'package:origa/authentication/authentication_state.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

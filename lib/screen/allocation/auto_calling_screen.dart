@@ -118,9 +118,6 @@ class AutoCalling {
                                 itemCount: bloc.autoCallingResultList.length,
                                 itemBuilder:
                                     (BuildContext context, int indexs) {
-                                  debugPrint(
-                                      'Due amount-> ${bloc.autoCallingResultList[indexs].due}');
-                                  debugPrint('Index-> $indexs');
                                   return Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 20.0),

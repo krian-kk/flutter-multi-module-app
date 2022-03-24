@@ -33,15 +33,12 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_appbar.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-
-import '../../widgets/case_status_widget.dart';
-import '../../widgets/custom_dialog.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   final dynamic paramValues;
@@ -108,7 +105,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               addressBottomSheet(context, bloc, state.i);
             }
             if (state is ClickMainCallBottomSheetState) {
-              debugPrint('$this ---> index in CaseDetailsScreen ${state.i} ');
               phoneBottomSheet(
                 context,
                 bloc,
@@ -1099,11 +1095,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               ? 20
                                               : 0),
                                       GestureDetector(
-                                        onTap: () => bloc.add(
-                                            EventDetailsEvent(
-                                                Constants.callDetails,
-                                                const [],
-                                                true)),
+                                        onTap: () => bloc.add(EventDetailsEvent(
+                                            Constants.callDetails,
+                                            const [],
+                                            true)),
                                         child: Container(
                                           height: 50,
                                           width: (MediaQuery.of(context)
@@ -1173,7 +1168,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,
       bool isCallFromCaseDetails,
       {String? callId}) {
-    debugPrint('$this ---> index $i ');
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
@@ -1417,7 +1411,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 }
               } else {}
             });
-            debugPrint('Index values--> ${bloc.indexValue}');
             return CallCustomerBottomSheet(
               caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(

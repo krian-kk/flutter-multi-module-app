@@ -100,8 +100,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
           }
           if (state is NavigationPhoneBottomSheetState) {
             Navigator.pop(context);
-            debugPrint(
-                '$this ---> index in call customer screen ${widget.caseDetailsBloc.indexValue} ');
             widget.caseDetailsBloc.add(ClickMainCallBottomSheetEvent(
               widget.caseDetailsBloc.indexValue ?? 0,
               isCallFromCaseDetails: true,

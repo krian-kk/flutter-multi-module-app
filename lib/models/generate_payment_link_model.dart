@@ -8,13 +8,13 @@ class GeneratePaymentLinkModel {
   GeneratePaymentLinkModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     msg = json['msg'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['msg'] = this.msg;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['msg'] = msg;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -30,12 +30,12 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
-    data = json['data'] != null ? new Data2.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data2.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['msg'] = this.msg;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['msg'] = msg;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -57,7 +57,7 @@ class Data2 {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['payment_id'] = paymentId;
     data['payment_link'] = paymentLink;
     data['qr_link'] = qrLink;
@@ -67,22 +67,22 @@ class Data2 {
 
 class GeneratePaymentLinkPost {
   String? caseId;
-  bool? dynamic_link;
+  bool? dynamicLink;
 
   GeneratePaymentLinkPost({
     required this.caseId,
-    required this.dynamic_link,
+    required this.dynamicLink,
   });
 
   GeneratePaymentLinkPost.fromJson(Map<String, dynamic> json) {
     caseId = json['caseId'];
-    dynamic_link = json['dynamic_link'];
+    dynamicLink = json['dynamic_link'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['caseId'] = caseId;
-    data['dynamic_link'] = dynamic_link;
+    data['dynamic_link'] = dynamicLink;
     return data;
   }
 }

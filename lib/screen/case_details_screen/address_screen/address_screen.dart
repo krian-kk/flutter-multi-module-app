@@ -275,13 +275,49 @@ class _AddressScreenState extends State<AddressScreen>
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 40),
+                                // const SizedBox(width: 30),
+                                ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    minWidth: 10,
+                                    maxWidth: 30,
+                                  ),
+                                ),
+                                // ConstrainedBox(
+                                //   constraints: const BoxConstraints(
+                                //     minWidth: 45,
+                                //   ),
+                                //   child: Container(
+                                //     height: 45,
+                                //     padding: const EdgeInsets.symmetric(
+                                //       horizontal: 5,
+                                //     ),
+                                //     decoration: BoxDecoration(
+                                //         color: ColorResource.colorFFFFFF,
+                                //         border: Border.all(
+                                //             color: ColorResource.color23375A,
+                                //             width: 0.5),
+                                //         borderRadius: const BorderRadius.all(
+                                //           Radius.circular(5.0),
+                                //         )),
+                                //     child: Center(
+                                //       child: CustomText(
+                                //         Languages.of(context)!.eventDetails,
+                                //         fontSize: FontSize.twelve,
+                                //         color: ColorResource.color23375A,
+                                //         lineHeight: 1,
+                                //         fontWeight: FontWeight.w700,
+                                //         fontStyle: FontStyle.normal,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // )
                                 Expanded(
                                     child: SizedBox(
                                   height: 45,
                                   child: CustomButton(
                                     null,
                                     isTrailing: true,
+                                    isRemoveExtraPadding: true,
                                     leadingWidget: CustomText(
                                       Languages.of(context)!.eventDetails,
                                       fontSize: FontSize.twelve,

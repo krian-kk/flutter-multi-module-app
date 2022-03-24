@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,8 +18,6 @@ import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
-import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
-import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
@@ -84,7 +81,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
-  EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -404,9 +400,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield ClickMainAddressBottomSheetState(event.index);
     }
     if (event is ClickMainCallBottomSheetEvent) {
-      debugPrint('$this ---> ClickMainCallBottomSheetEvent ${event.index}');
       indexValue = event.index;
-      debugPrint('$this ---> bloc indexValue $indexValue');
       yield ClickMainCallBottomSheetState(
         event.index,
         isCallFromCaseDetails: event.isCallFromCaseDetails,
@@ -445,67 +439,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is EventDetailsEvent) {
       yield CaseDetailsLoadingState();
-      switch (event.title) {
-        case Constants.eventDetails:
-          if (ConnectivityResult.none ==
-              await Connectivity().checkConnectivity()) {
-            // yield CDNoInternetState();
-            //Getting event details from firebase databse
-            await FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(
-                    '${md5.convert(utf8.encode('${Singleton.instance.agentRef}'))}')
-                .collection(Constants
-                    .firebaseEvent) // To get the events from event collection
-                .where(Constants.caseId,
-                    isEqualTo:
-                        caseId) //To find respective events of case details
-                .limit(5) // Need to show the last five events only
-                .get()
-                .then((QuerySnapshot<Map<String, dynamic>> value) {
-              if (value.docs.isNotEmpty) {
-                //temporaryList for events list
-                List<EventDetailsResultModel>? result = [];
-                for (var element in value.docs) {
-                  try {
-                    result
-                        .add(EventDetailsResultModel.fromJson(element.data()));
-                  } catch (e) {
-                    debugPrint(e.toString());
-                  }
-                }
-                eventDetailsAPIValue.result = result;
-              } else {
-                eventDetailsAPIValue.result = [];
-              }
-            });
-          } else {
-            Map<String, dynamic> getEventDetailsData =
-                await APIRepository.apiRequest(
-                    APIRequestType.get,
-                    HttpUrl.eventDetailsUrl(
-                        caseId: caseId, userType: userType));
-
-            if (getEventDetailsData[Constants.success] == true) {
-              Map<String, dynamic> jsonData = getEventDetailsData['data'];
-              eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
-            } else {
-              AppUtils.showToast(getEventDetailsData['data']['message']);
-            }
-          }
-          break;
-        default:
-      }
       if (isAutoCalling || paramValue['contactIndex'] != null) {
         openBottomSheet(
             caseDetailsContext!, event.title, event.list ?? [], event.isCall);
       } else {
-        try {
-          debugPrint(
-              'eventDetailsAPIValue size--> ${eventDetailsAPIValue.result?.length}');
-        } catch (e) {
-          debugPrint(e.toString());
-        }
         yield ClickOpenBottomSheetState(
           event.title,
           event.list!,
@@ -535,8 +472,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //do do do do
       Map<String, dynamic> firebaseObject = event.postData!.toJson();
       try {
-        firebaseObject.addAll(
-            await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
+        firebaseObject
+            .addAll(FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
       } catch (e) {
         debugPrint('Exception while converting base64 ${e.toString()}');
       }
@@ -954,7 +891,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
       var requestBodyData = GeneratePaymentLinkPost(
         caseId: event.caseID,
-        dynamic_link: true,
+        dynamicLink: true,
       );
       // if dynamic_link is true means creating a Ref URL and false means creating QR code
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
@@ -977,7 +914,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
       var requestBodyData = GeneratePaymentLinkPost(
         caseId: event.caseID,
-        dynamic_link: false,
+        dynamicLink: false,
       );
       // if dynamic_link is true means creating a Ref URL and false means creating QR code
       Map<String, dynamic> postResult = await APIRepository.apiRequest(
@@ -986,7 +923,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         requestBodydata: jsonEncode(requestBodyData),
       );
       if (postResult[Constants.success]) {
-        print(postResult);
         generatePaymentLink =
             GeneratePaymentLinkModel.fromJson(postResult['data']);
         yield GenerateQRcodeState(
@@ -1210,7 +1146,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             caseDetailsAPIValue.result?.callDetails?.forEach((element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
-                  debugPrint('$this ---> Mobile ${element['value']}');
                   s1.add(element['value']);
                 }
               } else {}

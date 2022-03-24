@@ -347,8 +347,6 @@ PODS:
     - abseil/meta/type_traits
   - audio_session (0.0.1):
     - Flutter
-  - audioplayers (0.0.1):
-    - Flutter
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -434,7 +432,7 @@ PODS:
     - Firebase/Storage (= 8.11.0)
     - firebase_core
     - Flutter
-  - FirebaseABTesting (8.13.0):
+  - FirebaseABTesting (8.12.0):
     - FirebaseCore (~> 8.0)
   - FirebaseCore (8.11.0):
     - FirebaseCoreDiagnostics (~> 8.0)
@@ -586,7 +584,6 @@ PODS:
 DEPENDENCIES:
   - ably_flutter (from `.symlinks/plugins/ably_flutter/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
-  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
@@ -651,8 +648,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/ably_flutter/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
-  audioplayers:
-    :path: ".symlinks/plugins/audioplayers/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   connectivity_plus:
@@ -708,7 +703,6 @@ SPEC CHECKSUMS:
   AblyDeltaCodec: 783d017270de70bbbc0a84e4235297b225d33636
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
-  audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: c6c42fe62809b7417aa3c45a6ef0c2812f7fb0d6
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
@@ -722,7 +716,7 @@ SPEC CHECKSUMS:
   firebase_messaging: 4a993bb4aa1a83349988d853c637fbb0494dab15
   firebase_remote_config: 588bafe2eff61076e53b018758ec1fa96893e3c3
   firebase_storage: 5b964cad5f351e9c35f8b0e0b878cdd095f30d09
-  FirebaseABTesting: c390fb900b9dd6e9c04888e34dda8e9e84b07195
+  FirebaseABTesting: 1b05c92327b3f0a9545cea3bab4d93e82550e29b
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
   FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
   FirebaseDatabase: ff9b4c7bee14d9f561f26c64a28ac083989f03d5

@@ -9,11 +9,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_view_bottom_sheet_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
+import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
+import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/customer_language_preference.dart';
 import 'package:origa/screen/profile_screen.dart/language_bottom_sheet_screen.dart';
@@ -25,11 +29,11 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -78,8 +82,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> showSecurePinDialogBox() async {
-    TextEditingController pinCodeContoller = TextEditingController();
+  Future<bool> requestOTP(String aRef) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.post,
+      HttpUrl.requestOTPUrl(),
+      requestBodydata: {
+        "aRef": aRef,
+      },
+    );
+    if (await postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      AppUtils.showToast('Some Issue in OTP Send, Please Try Again Later');
+    }
+    return returnValue;
+  }
+
+  Future<bool> createMpin(String? mPin) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.put, HttpUrl.createMpin,
+        requestBodydata: {
+          'mPin': mPin,
+        });
+    if (postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      setState(() => returnValue = false);
+      // AppUtils.showErrorToast("OTP does't match");
+    }
+    return returnValue;
+  }
+
+  Future<bool> verifyOTP(String? aRef, String? otp) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.post, HttpUrl.verifyOTP(),
+        requestBodydata: {
+          "aRef": aRef,
+          "otp": otp,
+        });
+    if (postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      setState(() => returnValue = false);
+      // AppUtils.showErrorToast("OTP does't match");
+    }
+    return returnValue;
+  }
+
+  Future<void> showForgorSecurePinDialogBox(String userName) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -90,72 +143,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             contentPadding: const EdgeInsets.all(20),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 250,
-                        child: CustomText(
-                          Languages.of(context)!.changeYourSecureDigitPIN,
-                          fontSize: FontSize.sixteen,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            child: SvgPicture.asset(ImageResource.close),
-                          ))
-                    ]),
-                const SizedBox(height: 10),
-                CustomText(
-                  Languages.of(context)!.newPin,
-                  fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w700,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: PinCodeTextField(
-                    appContext: context,
-                    controller: pinCodeContoller,
-                    length: 4,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    obscureText: false,
-                    animationType: AnimationType.scale,
-                    onChanged: (value) {
-                      setState(() {});
-                    },
-                    textStyle: const TextStyle(
-                      fontSize: FontSize.fourteen,
-                      color: ColorResource.color23375A,
-                    ),
-                    keyboardType: TextInputType.number,
-                    pinTheme: PinTheme(
-                      fieldOuterPadding: const EdgeInsets.all(8),
-                      activeColor: ColorResource.color7F8EA2.withOpacity(0.3),
-                      selectedColor: ColorResource.color23375A.withOpacity(0.3),
-                      inactiveColor: ColorResource.color232222.withOpacity(0.3),
-                      fieldHeight: 46,
-                      fieldWidth: 40,
-                      borderWidth: 1,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                CustomButton(
-                  Languages.of(context)!.save,
-                  fontSize: FontSize.sixteen,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
+            content: ForgotMpinScreen(
+              submitOtpFunction: (otp, isError, function) async {
+                bool result = await verifyOTP(userName, otp);
+                if (result) {
+                  Navigator.pop(context);
+                  showNewMpinDialogBox();
+                } else {
+                  function;
+                }
+              },
+              resendOtpFunction: () => requestOTP(userName),
+              userName: userName,
+            ),
+          );
+        });
+  }
+
+  Future<void> showNewMpinDialogBox() async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: NewMpinScreen(
+              saveFuction: (mPin) async {
+                // New Pin Create Api in this
+                if (await createMpin(mPin)) {
+                  AppUtils.showToast('Change MPin Successfully');
+                  PreferenceHelper.setPreference('mPin', mPin);
+                  Navigator.pop(context);
+                } else {
+                  AppUtils.showToast('Change Mpin has some Issue');
+                }
+              },
             ),
           );
         });
@@ -192,11 +218,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      // ProfileNavigation(
-      //     title: Languages.of(context)!.changeSecurePIN,
-      //     onTap: () {
-      //       bloc.add(ClickChangeSecurityPinEvent());
-      //     })
+      ProfileNavigation(
+        title: Languages.of(context)!.changeSecurePIN,
+        onTap: () {
+          bloc.add(ClickChangeSecurityPinEvent());
+        },
+        isEnable: true,
+      )
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -236,7 +264,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context, AppRoutes.loginScreen, (route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
-          showSecurePinDialogBox();
+          showForgorSecurePinDialogBox(
+            bloc.profileAPIValue.result!.first.aRef.toString(),
+          );
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -759,7 +789,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-    // MessageChatRoomScreen(bloc)
   }
 
   notificationShowBottomSheet(BuildContext context) {

@@ -751,8 +751,7 @@ class _CustomCollectionsBottomSheetState
                     jsonDecode(jsonEncode(requestBodyData.toJson()));
                 try {
                   firebaseObject.addAll(
-                      await FirebaseUtils.toPrepareFileStoringModel(
-                          uploadFileLists));
+                      FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
                 } catch (e) {
                   debugPrint(
                       'Exception while converting base64 ${e.toString()}');
@@ -809,11 +808,11 @@ class _CustomCollectionsBottomSheetState
                           ChangeHealthStatusEvent(),
                         );
                         // Send SMS Notification
-                        if (Singleton.instance.contractorInformations?.result
-                                ?.sendSms ??
-                            false &&
-                                Singleton.instance.usertype ==
-                                    Constants.fieldagent) {
+                        if ((Singleton.instance.contractorInformations?.result
+                                    ?.sendSms ??
+                                false) &&
+                            Singleton.instance.usertype ==
+                                Constants.fieldagent) {
                           var requestBodyData = ReceiptSendSMS(
                             agrRef: Singleton.instance.agrRef,
                             agentRef: Singleton.instance.agentRef,

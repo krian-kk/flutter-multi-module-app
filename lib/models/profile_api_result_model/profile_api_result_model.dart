@@ -47,6 +47,7 @@ class Result {
   int? failedLoginCounter;
   String? homeAddress;
   String? profileImgUrl;
+  int? mPin;
 
   Result({
     this.sId,
@@ -68,6 +69,7 @@ class Result {
     this.failedLoginCounter,
     this.homeAddress,
     this.profileImgUrl,
+    this.mPin,
   });
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -97,6 +99,7 @@ class Result {
     failedLoginCounter = json['failedLoginCounter'];
     homeAddress = json['homeAddress'];
     profileImgUrl = json['profileImgUrl'];
+    mPin = json['mPin'];
   }
 
   Map<String, dynamic> toJson() {
@@ -126,6 +129,7 @@ class Result {
     data['failedLoginCounter'] = failedLoginCounter;
     data['homeAddress'] = homeAddress;
     data['profileImgUrl'] = profileImgUrl;
+    data['mPin'] = mPin;
     return data;
   }
 }
