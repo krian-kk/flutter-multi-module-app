@@ -27,7 +27,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
-import 'package:origa/widgets/custom_web_view_widget.dart';
+import 'package:origa/widgets/web_view_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/login_bloc.dart';
