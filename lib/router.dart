@@ -21,6 +21,7 @@ import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -194,7 +195,19 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
+        String? agentRef =
+            await PreferenceHelper.getPreference(Constants.agentRef);
+        // await SharedPreferences.getInstance().then((value) {
+        //   String? mPin = value.getString(Constants.mPin);
+        //   String? agentRef = value.getString(Constants.agentRef);
+        //   print('Mpin ======= > ${mPin}');
+        if (mPin != null) {
+          showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        }
+        // });
       }
 
       if (state is AuthenticationUnAuthenticated) {

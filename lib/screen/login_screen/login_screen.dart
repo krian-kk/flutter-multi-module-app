@@ -132,8 +132,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: CreateMpinScreen(
-              saveFunction: () {
+              saveFunction: (mPin) async {
                 // Create Secure Mpin APi
+                SharedPreferences _prefs =
+                    await SharedPreferences.getInstance();
+                _prefs.setString(Constants.accessToken, mPin!);
                 Navigator.pop(context);
                 bloc.add(TriggeredHomeTabEvent(userId.text));
               },
@@ -155,8 +158,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: ConformMpinScreen(
-              successFunction: () =>
-                  bloc.add(TriggeredHomeTabEvent(userId.text)),
+              successFunction: () async {
+                // SharedPreferences _prefs =
+                //     await SharedPreferences.getInstance();
+                // await _prefs.setString(Constants.mPin, mPin);
+                PreferenceHelper.setPreference(Constants.mPin, mPin);
+                bloc.add(TriggeredHomeTabEvent(userId.text));
+              },
               forgotPinFunction: () async {
                 if (await requestOTP(userName)) {
                   showForgorSecurePinDialogBox(userName);
@@ -211,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
             content: AccountPasswordMpinScreen(
               submitBtnFunction: () {
                 Navigator.pop(context);
-                showCreatemPinDialogBox();
+                showCreatePinDialogBox();
               },
               forgotPasswordFunction: () => resendOTPBottomSheet(context),
               password: password.text,
@@ -221,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
-  Future<void> showCreatemPinDialogBox() async {
+  Future<void> showCreatePinDialogBox() async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -236,7 +244,9 @@ class _LoginScreenState extends State<LoginScreen> {
               saveFuction: (mPin) async {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
-                  PreferenceHelper.setPreference(Constants.mPin, mPin);
+                  SharedPreferences _prefs =
+                      await SharedPreferences.getInstance();
+                  await _prefs.setString(Constants.mPin, mPin!);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   bloc.add(TriggeredHomeTabEvent(userId.text));
