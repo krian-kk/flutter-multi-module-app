@@ -188,6 +188,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
 
     if (event is TriggeredHomeTabEvent) {
+      yield SignInLoadingState();
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       // Execute agent detail URl to get Agent details
       Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
@@ -204,6 +205,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         AppUtils.showToast(agentDetailError.msg!, backgroundColor: Colors.red);
       } else {
+        yield SignInCompletedState();
+
         // getting Agent Details
         var agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
         // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
