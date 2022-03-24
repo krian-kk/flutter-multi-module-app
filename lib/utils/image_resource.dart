@@ -22,6 +22,7 @@ class ImageResource {
   static const String whatsApp = 'assets/svg/whatsapp.svg';
   static const String uploadPhoto = 'assets/svg/upload_photo.svg';
   static const String captureImage = 'assets/svg/capture_image.svg';
+  static const String scan = 'assets/svg/Scan.svg';
   static const String location2 = 'assets/svg/location2.svg';
   static const String star = 'assets/svg/star.svg';
   static const String login = 'assets/svg/login.svg';

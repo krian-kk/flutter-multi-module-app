@@ -870,6 +870,15 @@ class LanguageTa extends Languages {
   String get errorMsgS2TlangCode =>
       'சுயவிவரத்திலிருந்து வாடிக்கையாளர் மொழி விருப்பத்தைத் தேர்ந்தெடுக்கவும்';
 
+  @override
+  String get generatePaymentLink => 'கட்டண இணைப்பை உருவாக்கவும்';
+
+  @override
+  String get showQRcode => 'QR குறியீட்டைக் காட்டு';
+
+  @override
+  String get close => 'மூடப்பட்டது';
+
   // Customer Preference Languages
 
   @override
@@ -907,4 +916,7 @@ class LanguageTa extends Languages {
 
   @override
   String get enterOTP => 'OTP ஐ உள்ளிடவும்';
+
+  @override
+  String get youAreInOffline => 'இணைய வசதி இல்லை';
 }

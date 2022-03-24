@@ -1,5 +1,5 @@
-import '../singleton.dart';
-import '../utils/constants.dart';
+import 'package:origa/singleton.dart';
+import 'package:origa/utils/constants.dart';
 
 class PriorityCaseListModel {
   int? status;
@@ -139,8 +139,9 @@ class Result {
         address?.add(Address.fromJson(v));
       });
     }
-    location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
+    if (json['location'] != null && json['location'] is! String) {
+      location = Location.fromJson(json['location']);
+    }
   }
 
   Map<String, dynamic> toJson() {

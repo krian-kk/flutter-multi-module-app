@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -600,8 +602,6 @@ class _CustomCollectionsBottomSheetState
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 invalidNumber: false);
-            debugPrint(
-                'Collection Requestbody data ----> ${jsonEncode(requestBodyData)}');
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -747,93 +747,114 @@ class _CustomCollectionsBottomSheetState
                 // pop or remove the AlertDialouge Box
                 Navigator.pop(context);
                 setState(() => isSubmit = false);
-                Map<String, dynamic> postResult =
-                    await APIRepository.apiRequest(
-                  APIRequestType.upload,
-                  HttpUrl.collectionPostUrl('collection', widget.userType),
-                  formDatas: FormData.fromMap(postdata),
-                );
-
-                //postResult[success]
-                if (postResult[Constants.success]) {
-                  widget.bloc.add(
-                    ChangeIsSubmitForMyVisitEvent(
-                      Constants.collections,
-                      collectionAmount:
-                          double.parse(amountCollectedControlller.text),
-                    ),
+                Map<String, dynamic> firebaseObject =
+                    jsonDecode(jsonEncode(requestBodyData.toJson()));
+                try {
+                  firebaseObject.addAll(
+                      FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+                } catch (e) {
+                  debugPrint(
+                      'Exception while converting base64 ${e.toString()}');
+                }
+                await FirebaseUtils.storeEvents(
+                    eventsDetails: requestBodyData.toJson(),
+                    caseId: widget.caseId,
+                    selectedFollowUpDate: dateControlller.text,
+                    selectedClipValue: Constants.collections);
+                if (ConnectivityResult.none ==
+                    await Connectivity().checkConnectivity()) {
+                  setState(() => isSubmit = true);
+                } else {
+                  Map<String, dynamic> postResult =
+                      await APIRepository.apiRequest(
+                    APIRequestType.upload,
+                    HttpUrl.collectionPostUrl('collection', widget.userType),
+                    formDatas: FormData.fromMap(postdata),
                   );
-                  // if (!(widget.userType == Constants.fieldagent &&
-                  //     widget.isCall!)) {
-                  //   widget.bloc.add(
-                  //     ChangeIsSubmitEvent(
-                  //         selectedClipValue: Constants.receiptCaseStatus),
-                  //   );
-                  // }
-
-                  if (widget.isAutoCalling) {
-                    Navigator.pop(widget.paramValue['context']);
-                    Navigator.pop(widget.paramValue['context']);
-                    Singleton.instance.startCalling = false;
-                    if (!stopValue) {
-                      widget.allocationBloc!.add(StartCallingEvent(
-                        customerIndex: widget.paramValue['customerIndex'] +
-                            1, // CASE DETAILS
-                        phoneIndex: 0, // LIST OF PHONE NUMBER
-                        isIncreaseCount: true,
-                      ));
+                  //postResult[success]
+                  if (postResult[Constants.success]) {
+                    widget.bloc.add(
+                      ChangeIsSubmitForMyVisitEvent(
+                        Constants.collections,
+                        collectionAmount:
+                            double.parse(amountCollectedControlller.text),
+                      ),
+                    );
+                    if (widget.isAutoCalling) {
+                      Navigator.pop(widget.paramValue['context']);
+                      Navigator.pop(widget.paramValue['context']);
+                      Singleton.instance.startCalling = false;
+                      if (!stopValue) {
+                        widget.allocationBloc!.add(StartCallingEvent(
+                          customerIndex: widget.paramValue['customerIndex'] +
+                              1, // CASE DETAILS
+                          phoneIndex: 0, // LIST OF PHONE NUMBER
+                          isIncreaseCount: true,
+                        ));
+                      } else {
+                        widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                          customerIndex: widget.paramValue['customerIndex'],
+                        ));
+                      }
                     } else {
-                      widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                        customerIndex: widget.paramValue['customerIndex'],
-                      ));
+                      if (postResult['data']['result']['error'] != null) {
+                        setState(() => isSubmit = true);
+                        AppUtils.showErrorToast(
+                            postResult['data']['result']['error']);
+                      } else {
+                        AppUtils.topSnackBar(
+                            context, Constants.successfullySubmitted);
+                        widget.bloc.add(
+                          ChangeHealthStatusEvent(),
+                        );
+                        // Send SMS Notification
+                        if ((Singleton.instance.contractorInformations?.result
+                                    ?.sendSms ??
+                                false) &&
+                            Singleton.instance.usertype ==
+                                Constants.fieldagent) {
+                          var requestBodyData = ReceiptSendSMS(
+                            agrRef: Singleton.instance.agrRef,
+                            agentRef: Singleton.instance.agentRef,
+                            borrowerMobile:
+                                Singleton.instance.customerContactNo ?? "0",
+                            type: Constants.receiptAcknowledgementType,
+                            receiptAmount:
+                                int.parse(amountCollectedControlller.text),
+                            receiptDate: dateControlller.text,
+                            paymentMode: selectedPaymentModeButton,
+                            messageBody: 'message',
+                          );
+                          await FirebaseUtils.storeEvents(
+                              eventsDetails: requestBodyData.toJson(),
+                              caseId: widget.caseId,
+                              selectedFollowUpDate: dateControlller.text,
+                              selectedClipValue: Constants.collections);
+                          if (ConnectivityResult.none ==
+                              await Connectivity().checkConnectivity()) {
+                          } else {
+                            Map<String, dynamic> postResult =
+                                await APIRepository.apiRequest(
+                              APIRequestType.post,
+                              HttpUrl.sendSMSurl,
+                              requestBodydata: jsonEncode(requestBodyData),
+                            );
+                            if (postResult[Constants.success]) {
+                              AppUtils.showToast(
+                                Languages.of(context)!.successfullySMSsend,
+                              );
+                            }
+                          }
+                        } else {
+                          AppUtils.showErrorToast(
+                              Languages.of(context)!.sendSMSerror);
+                        }
+                        Navigator.pop(context);
+                      }
                     }
                   } else {
-                    if (postResult['data']['result']['error'] != null) {
-                      setState(() => isSubmit = true);
-                      AppUtils.showErrorToast(
-                          postResult['data']['result']['error']);
-                    } else {
-                      AppUtils.topSnackBar(
-                          context, Constants.successfullySubmitted);
-                      widget.bloc.add(
-                        ChangeHealthStatusEvent(),
-                      );
-                      // Send SMS Notification
-                      if (Singleton.instance.contractorInformations!.result!
-                              .sendSms! &&
-                          Singleton.instance.usertype == Constants.fieldagent) {
-                        var requestBodyData = ReceiptSendSMS(
-                          agrRef: Singleton.instance.agrRef,
-                          agentRef: Singleton.instance.agentRef,
-                          borrowerMobile:
-                              Singleton.instance.customerContactNo ?? "0",
-                          type: Constants.receiptAcknowledgementType,
-                          receiptAmount:
-                              int.parse(amountCollectedControlller.text),
-                          receiptDate: dateControlller.text,
-                          paymentMode: selectedPaymentModeButton,
-                          messageBody: 'message',
-                        );
-                        Map<String, dynamic> postResult =
-                            await APIRepository.apiRequest(
-                          APIRequestType.post,
-                          HttpUrl.sendSMSurl,
-                          requestBodydata: jsonEncode(requestBodyData),
-                        );
-                        if (postResult[Constants.success]) {
-                          AppUtils.showToast(
-                            Languages.of(context)!.successfullySMSsend,
-                          );
-                        }
-                      } else {
-                        AppUtils.showErrorToast(
-                            Languages.of(context)!.sendSMSerror);
-                      }
-                      Navigator.pop(context);
-                    }
+                    setState(() => isSubmit = true);
                   }
-                } else {
-                  setState(() => isSubmit = true);
                 }
               },
             );

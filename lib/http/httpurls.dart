@@ -43,8 +43,14 @@ class HttpUrl {
 
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl + fieldAgent + 'case-details-events/eventDetails?caseId=$caseId';
+
+  //for offline storage
+  // static final String priorityCaseList =
+  //     baseUrl + fieldAgent + 'case-details/priority?';
+
   static final String priorityCaseList =
-      baseUrl + fieldAgent + 'case-details/priority?';
+      '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
+
   static final String updateStaredCase =
       baseUrl + fieldAgent + 'case-details/update_starredCase';
   static final String buildRouteCaseList =
@@ -233,7 +239,15 @@ class HttpUrl {
   static final String audioRemarksURL =
       baseUrl + fieldAgent + 'case-details-events/audioRemarks_upload';
 
-  // Convert Voice to Text Post API
+  // Get audio file from API
   static final String getAudioFile =
       baseUrl + fieldAgent + 'case-details-events/get_audioFile';
+
+  // Get Payment Configuration Detail
+  static final String getPaymentConfiguration =
+      baseUrl + 'payment/getPaymentConfigurations';
+
+  // Generate Dyanamic Payment Link & QR
+  static final String generateDyanamicPaymentLink =
+      baseUrl + 'payment/generateDyanamicPaymentLink';
 }

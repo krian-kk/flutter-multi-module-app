@@ -89,7 +89,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         borderColor: ColorResource.colorBEC4CF,
                         buttonBackgroundColor: ColorResource.colorBEC4CF,
                         isLeading: true,
-                        onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
+                        onTap: () => widget.bloc.add(EventDetailsEvent(
                             Constants.captureImage,
                             widget.bloc.caseDetailsAPIValue.result
                                 ?.addressDetails,
@@ -110,7 +110,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                             setState(() {
                               selectedOptionBottomSheetButton = element.title;
                             });
-                            widget.bloc.add(ClickOpenBottomSheetEvent(
+                            widget.bloc.add(EventDetailsEvent(
                                 element.stringResourceValue,
                                 widget.bloc.caseDetailsAPIValue.result
                                     ?.addressDetails,

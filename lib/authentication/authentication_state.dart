@@ -24,3 +24,10 @@ class AuthenticationAuthenticated extends AuthenticationState {
 }
 
 class SplashScreenState extends AuthenticationState {}
+
+class OfflineState extends AuthenticationState {
+  @override
+  String toString() {
+    return "AuthenticationUnAuthenticated";
+  }
+}

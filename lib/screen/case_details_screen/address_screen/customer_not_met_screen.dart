@@ -170,7 +170,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
                           onTap: () =>
-                              widget.bloc.add(ClickOpenBottomSheetEvent(
+                              widget.bloc.add(EventDetailsEvent(
                             Constants.captureImage,
                             widget.bloc.caseDetailsAPIValue.result
                                 ?.addressDetails,
@@ -198,7 +198,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                 selectedOptionBottomSheetButton = element.title;
                               });
                               widget.bloc.add(
-                                ClickOpenBottomSheetEvent(
+                                EventDetailsEvent(
                                   element.stringResourceValue,
                                   widget.bloc.caseDetailsAPIValue.result
                                       ?.addressDetails,

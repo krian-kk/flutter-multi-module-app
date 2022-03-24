@@ -327,7 +327,7 @@ class _AddressScreenState extends State<AddressScreen>
                                       fontStyle: FontStyle.normal,
                                     ),
                                     onTap: () => widget.bloc.add(
-                                        ClickOpenBottomSheetEvent(
+                                        EventDetailsEvent(
                                             Constants.eventDetails,
                                             widget.bloc.caseDetailsAPIValue
                                                 .result?.callDetails,

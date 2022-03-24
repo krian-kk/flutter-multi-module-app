@@ -867,6 +867,15 @@ class LanguageHi extends Languages {
   String get errorMsgS2TlangCode =>
       'कृपया प्रोफ़ाइल से ग्राहक भाषा वरीयता चुनें';
 
+  @override
+  String get generatePaymentLink => 'भुगतान लिंक उत्पन्न करें';
+
+  @override
+  String get showQRcode => 'QR कोड दिखाएं';
+
+  @override
+  String get close => 'बंद किया हुआ';
+
   // Customer Preference Languages
 
   @override
@@ -904,4 +913,7 @@ class LanguageHi extends Languages {
 
   @override
   String get enterOTP => 'कृपया ओटीपी दर्ज करें';
+
+  @override
+  String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';
 }

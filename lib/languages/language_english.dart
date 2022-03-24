@@ -864,6 +864,15 @@ class LanguageEn extends Languages {
   String get errorMsgS2TlangCode =>
       'Please select Customer Language Preference from Profile';
 
+  @override
+  String get generatePaymentLink => 'Generate Payment Link';
+
+  @override
+  String get showQRcode => 'SHOW QR CODE';
+
+  @override
+  String get close => 'Close';
+
   // Customer Preference Languages
 
   @override
@@ -901,4 +910,7 @@ class LanguageEn extends Languages {
 
   @override
   String get enterOTP => 'Please Enter OTP';
+
+  @override
+  String get youAreInOffline => 'You are in offline';
 }

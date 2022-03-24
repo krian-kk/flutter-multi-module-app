@@ -25,91 +25,103 @@ class AuthenticationBloc
 
       // if (response.isNotEmpty) {}
       Singleton.instance.buildContext = event.context;
-
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      // _pref.setBool(Constants.appDataLoadedFromFirebase, true);
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        yield AuthenticationUnAuthenticated();
+        if (_pref.getString(Constants.userType) == Constants.fieldagent) {
+          if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
+            Singleton.instance.usertype = _pref.getString(Constants.userType);
+            Singleton.instance.agentRef = _pref.getString(Constants.agentRef);
+            yield OfflineState();
+          } else {
+            yield AuthenticationUnAuthenticated();
+          }
+        } else {
+          yield AuthenticationUnAuthenticated();
+        }
         // AppUtils.showErrorToast('No Internet Connection');
-      }
-
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      String? getToken = _prefs.getString(Constants.accessToken) ?? "";
-      String? getUserName = _prefs.getString(Constants.userId);
-      String? getUserType = _prefs.getString(Constants.userType) ?? "";
-
-      if (getToken == "") {
-        yield AuthenticationUnAuthenticated();
       } else {
-        debugPrint('Token Issue is === > $getToken');
-        if (JwtDecoder.isExpired(getToken)) {
+        SharedPreferences _prefs = await SharedPreferences.getInstance();
+        String? getToken = _prefs.getString(Constants.accessToken) ?? "";
+        String? getUserName = _prefs.getString(Constants.userId);
+        String? getUserType = _prefs.getString(Constants.userType) ?? "";
+
+        if (getToken == "") {
           yield AuthenticationUnAuthenticated();
         } else {
-          if (getUserType == "") {
+          debugPrint('Token Issue is === > $getToken');
+          if (JwtDecoder.isExpired(getToken)) {
             yield AuthenticationUnAuthenticated();
           } else {
-            Singleton.instance.accessToken =
-                _prefs.getString(Constants.accessToken) ?? "";
-            Singleton.instance.refreshToken =
-                _prefs.getString(Constants.refreshToken) ?? "";
-            Singleton.instance.sessionID =
-                _prefs.getString(Constants.sessionId) ?? "";
-            Singleton.instance.agentRef =
-                _prefs.getString(Constants.agentRef) ?? "";
-
-            Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
-
-            if (agentDetail[Constants.success] == false) {
+            if (getUserType == "") {
               yield AuthenticationUnAuthenticated();
-
-              if (agentDetail['data'] is String) {
-                AppUtils.showToast(agentDetail['data'],
-                    backgroundColor: Colors.red);
-              }
-              AgentDetailErrorModel agentDetailError =
-                  AgentDetailErrorModel.fromJson(agentDetail['data']);
-              AppUtils.showToast(agentDetailError.msg!,
-                  backgroundColor: Colors.red);
             } else {
-              // if user inactivity means go to login
-              if (agentDetail['data']['status'] == 440) {
-                AgentDetailErrorModel agentInactivityError =
-                    AgentDetailErrorModel.fromJson(agentDetail['data']);
+              Singleton.instance.accessToken =
+                  _prefs.getString(Constants.accessToken) ?? "";
+              Singleton.instance.refreshToken =
+                  _prefs.getString(Constants.refreshToken) ?? "";
+              Singleton.instance.sessionID =
+                  _prefs.getString(Constants.sessionId) ?? "";
+              Singleton.instance.agentRef =
+                  _prefs.getString(Constants.agentRef) ?? "";
+
+              Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
+                  APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
+
+              if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated();
-                AppUtils.showToast(agentInactivityError.msg!,
+
+                if (agentDetail['data'] is String) {
+                  AppUtils.showToast(agentDetail['data'],
+                      backgroundColor: Colors.red);
+                }
+                AgentDetailErrorModel agentDetailError =
+                    AgentDetailErrorModel.fromJson(agentDetail['data']);
+                AppUtils.showToast(agentDetailError.msg!,
                     backgroundColor: Colors.red);
-              }
-
-              dynamic agentDetails =
-                  AgentDetailsModel.fromJson(agentDetail['data']);
-              if (agentDetails.data![0].agentType == 'COLLECTOR') {
-                await _prefs.setString(
-                    Constants.userType, Constants.fieldagent);
-                Singleton.instance.usertype = Constants.fieldagent;
               } else {
-                await _prefs.setString(
-                    Constants.userType, Constants.telecaller);
-                Singleton.instance.usertype = Constants.telecaller;
-              }
+                // if user inactivity means go to login
+                if (agentDetail['data']['status'] == 440) {
+                  AgentDetailErrorModel agentInactivityError =
+                      AgentDetailErrorModel.fromJson(agentDetail['data']);
+                  yield AuthenticationUnAuthenticated();
+                  AppUtils.showToast(agentInactivityError.msg!,
+                      backgroundColor: Colors.red);
+                }
 
-              if (agentDetails.data![0].agentType != null) {
-                Singleton.instance.agentName = agentDetails.data![0].agentName!;
-                await _prefs.setString(
-                    Constants.agentName, agentDetails.data![0].agentName!);
-                await _prefs.setString(
-                    Constants.mobileNo, agentDetails.data![0].mobNo!);
-                await _prefs.setString(
-                    Constants.email, agentDetails.data![0].email!);
-                await _prefs.setString(
-                    Constants.contractor, agentDetails.data![0].contractor!);
-                Singleton.instance.contractor =
-                    agentDetails.data![0].contractor!;
-                await _prefs.setString(
-                    Constants.status, agentDetails.data![0].status!);
-                await _prefs.setString(Constants.code, agentDetails.code!);
-                await _prefs.setBool(
-                    Constants.userAdmin, agentDetails.data![0].userAdmin!);
+                dynamic agentDetails =
+                    AgentDetailsModel.fromJson(agentDetail['data']);
+                if (agentDetails.data![0].agentType == 'COLLECTOR') {
+                  await _prefs.setString(
+                      Constants.userType, Constants.fieldagent);
+                  Singleton.instance.usertype = Constants.fieldagent;
+                } else {
+                  await _prefs.setString(
+                      Constants.userType, Constants.telecaller);
+                  Singleton.instance.usertype = Constants.telecaller;
+                }
 
-                yield AuthenticationAuthenticated();
+                if (agentDetails.data![0].agentType != null) {
+                  Singleton.instance.agentName =
+                      agentDetails.data![0].agentName!;
+                  await _prefs.setString(
+                      Constants.agentName, agentDetails.data![0].agentName!);
+                  await _prefs.setString(
+                      Constants.mobileNo, agentDetails.data![0].mobNo!);
+                  await _prefs.setString(
+                      Constants.email, agentDetails.data![0].email!);
+                  await _prefs.setString(
+                      Constants.contractor, agentDetails.data![0].contractor!);
+                  Singleton.instance.contractor =
+                      agentDetails.data![0].contractor!;
+                  await _prefs.setString(
+                      Constants.status, agentDetails.data![0].status!);
+                  await _prefs.setString(Constants.code, agentDetails.code!);
+                  await _prefs.setBool(
+                      Constants.userAdmin, agentDetails.data![0].userAdmin!);
+
+                  yield AuthenticationAuthenticated();
+                }
               }
             }
           }

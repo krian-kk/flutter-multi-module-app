@@ -248,7 +248,7 @@ class _CallDetailsBottomSheetScreenState
                                                           onTap: () {
                                                             widget.bloc
                                                                 .indexValue = i;
-                                                            widget.bloc.add(ClickOpenBottomSheetEvent(
+                                                            widget.bloc.add(EventDetailsEvent(
                                                                 Constants
                                                                     .callCustomer,
                                                                 widget
