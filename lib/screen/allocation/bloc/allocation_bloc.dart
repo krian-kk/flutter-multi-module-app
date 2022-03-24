@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -23,10 +24,13 @@ import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'allocation_event.dart';
+
 part 'allocation_state.dart';
 
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
-  AllocationBloc() : super(AllocationInitial());
+  AllocationBloc({AuthenticationBloc? authBloc}) : super(AllocationInitial());
+
+  // AllocationBloc() : super(AllocationInitial());
 
   int selectedOption = 0;
 
@@ -127,10 +131,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isNoInternetAndServerError = true;
         isNoInternetAndServerErrorMsg =
             Languages.of(event.context)!.noInternetConnection;
-        // yield NoInternetConnectionState();
-        debugPrint('Values--> in off withoutinternet');
         yield AllocationOfflineState(successResponse: "offlineData");
-
       } else {
         SharedPreferences _pref = await SharedPreferences.getInstance();
         if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
@@ -579,16 +580,18 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallingLoadedState();
     }
     if (event is AutoCallingContactSortEvent) {
-      // for (var element in autoCallingResultList) {
-      //   element.address
-      //       ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
-      // }
       yield AutoCallingContactSortState();
     }
     if (event is UpdateStaredCaseEvent) {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        yield NoInternetConnectionState();
+        SharedPreferences _pref = await SharedPreferences.getInstance();
+        if (_pref.getString(Constants.userType) == Constants.fieldagent) {
+          resultList[event.selectedStarIndex].starredCase =
+              !resultList[event.selectedStarIndex].starredCase;
+        } else {
+          yield NoInternetConnectionState();
+        }
       } else {
         resultList[event.selectedStarIndex].starredCase =
             !resultList[event.selectedStarIndex].starredCase;

@@ -847,4 +847,7 @@ class LanguageTa extends Languages {
 
   @override
   String get loanCleared => 'கடன் அழிக்கப்பட்டது';
+
+  @override
+  String get youAreInOffline => 'இணைய வசதி இல்லை';
 }

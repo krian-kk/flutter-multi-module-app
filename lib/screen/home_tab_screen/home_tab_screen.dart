@@ -4,11 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:origa/languages/app_languages.dart';
+import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -74,18 +77,45 @@ class _HomeTabScreenState extends State<HomeTabScreen>
   }
 
   Future<void> timeCalculateForOffline() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     await SharedPreferences.getInstance().then((value) {
-      DateTime tempDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(value.getString(Constants.appDataLoadedFromFirebaseTime)!);
-      final nextLoginTime = tempDate.add(const Duration(days: 1));
-      debugPrint('date tempDate--> $tempDate');
-      debugPrint('date  fiftyDaysFromNow--> $nextLoginTime');
-      if(nextLoginTime.isAfter(DateTime.now())){
-        debugPrint('yes-->');
-      }else{
-        debugPrint('no-->');
+      try {
+        var nextLoginTime = (DateFormat("yyyy-MM-dd hh:mm:ss")
+                    .parse(value
+                        .getString(Constants.appDataLoadedFromFirebaseTime)!)
+                    .add(const Duration(days: 1)))
+                .millisecondsSinceEpoch -
+            DateTime.now().millisecondsSinceEpoch;
+
+
+
+
+        if (nextLoginTime > 0) {
+          Future.delayed(
+            Duration(milliseconds: nextLoginTime),
+          ).asStream().listen((value) {
+            if (Singleton.instance.isOfflineStorageFeatureEnabled!) {
+              _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
+              Singleton.instance.isOfflineStorageFeatureEnabled = false;
+              _pref.setBool(Constants.appDataLoadedFromFirebase, false);
+              Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+            }
+          });
+        } else {
+          if (Singleton.instance.isOfflineStorageFeatureEnabled!) {
+            _pref.setBool(Constants.appDataLoadedFromFirebase, false);
+            Singleton.instance.isOfflineStorageFeatureEnabled = false;
+            _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
+            Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+          }
+        }
+      } catch (e) {
+        debugPrint(e.toString());
       }
     });
   }
+
+
 
   @override
   void dispose() {
@@ -115,10 +145,10 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                 height: 30,
                 color: Colors.red,
                 width: MediaQuery.of(context).size.width,
-                child: const CustomText(
-                  'You are in offline',
+                child:  CustomText(
+                  Languages.of(context)!.youAreInOffline,
                   color: Colors.white,
-                  style: TextStyle(
+                  style: const TextStyle(
                       overflow: TextOverflow.ellipsis, color: Colors.white),
                 ),
               ),

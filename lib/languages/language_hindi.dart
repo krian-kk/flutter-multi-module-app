@@ -844,4 +844,7 @@ class LanguageHi extends Languages {
 
   @override
   String get loanCleared => 'ऋण मंजूरी';
+
+  @override
+  String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';
 }

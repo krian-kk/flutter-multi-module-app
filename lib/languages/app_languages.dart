@@ -558,4 +558,6 @@ abstract class Languages {
   String get loanCleared;
 
   String get dropDownDispute;
+
+  String get youAreInOffline;
 }
