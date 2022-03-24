@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +19,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -434,46 +436,54 @@ class _CustomRemainderBottomSheetState
           callID: Singleton.instance.callID,
           callingID: Singleton.instance.callingID,
         );
-        print('Reminder post data ---> $requestBodyData');
-        Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.post,
-          HttpUrl.reminderPostUrl('reminder', widget.userType),
-          requestBodydata: jsonEncode(requestBodyData),
-        );
-        if (postResult[Constants.success]) {
-          widget.bloc.add(
-            ChangeIsSubmitForMyVisitEvent(
-              Constants.remainder,
-            ),
+        await FirebaseUtils.storeEvents(
+            eventsDetails: requestBodyData.toJson(),
+            caseId: widget.caseId,
+            selectedFollowUpDate: nextActionDateControlller.text,
+            selectedClipValue: Constants.remainder);
+        if (ConnectivityResult.none ==
+            await Connectivity().checkConnectivity()) {
+        } else {
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            APIRequestType.post,
+            HttpUrl.reminderPostUrl('reminder', widget.userType),
+            requestBodydata: jsonEncode(requestBodyData),
           );
-          if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+          if (postResult[Constants.success]) {
             widget.bloc.add(
-              ChangeIsSubmitEvent(selectedClipValue: Constants.remainder),
+              ChangeIsSubmitForMyVisitEvent(
+                Constants.remainder,
+              ),
             );
-          }
-
-          widget.bloc.add(
-            ChangeHealthStatusEvent(),
-          );
-
-          if (widget.isAutoCalling) {
-            Navigator.pop(widget.paramValue['context']);
-            Navigator.pop(widget.paramValue['context']);
-            Singleton.instance.startCalling = false;
-            if (!stopValue) {
-              widget.allocationBloc!.add(StartCallingEvent(
-                customerIndex: widget.paramValue['customerIndex'] + 1,
-                phoneIndex: 0,
-                isIncreaseCount: true,
-              ));
-            } else {
-              widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                customerIndex: widget.paramValue['customerIndex'],
-              ));
+            if (!(widget.userType == Constants.fieldagent && widget.isCall!)) {
+              widget.bloc.add(
+                ChangeIsSubmitEvent(selectedClipValue: Constants.remainder),
+              );
             }
-          } else {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            Navigator.pop(context);
+
+            widget.bloc.add(
+              ChangeHealthStatusEvent(),
+            );
+
+            if (widget.isAutoCalling) {
+              Navigator.pop(widget.paramValue['context']);
+              Navigator.pop(widget.paramValue['context']);
+              Singleton.instance.startCalling = false;
+              if (!stopValue) {
+                widget.allocationBloc!.add(StartCallingEvent(
+                  customerIndex: widget.paramValue['customerIndex'] + 1,
+                  phoneIndex: 0,
+                  isIncreaseCount: true,
+                ));
+              } else {
+                widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                  customerIndex: widget.paramValue['customerIndex'],
+                ));
+              }
+            } else {
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              Navigator.pop(context);
+            }
           }
         }
       }

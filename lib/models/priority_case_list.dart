@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../singleton.dart';
 import '../utils/constants.dart';
 
@@ -139,8 +141,9 @@ class Result {
         address?.add(Address.fromJson(v));
       });
     }
-    location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
+    if (json['location'] != null && json['location'] is! String) {
+      location = Location.fromJson(json['location']);
+    }
   }
 
   Map<String, dynamic> toJson() {

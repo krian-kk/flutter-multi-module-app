@@ -12,6 +12,12 @@ class AllocationLoadedState extends AllocationState {
   AllocationLoadedState({this.successResponse});
 }
 
+class AllocationOfflineState extends AllocationState {
+  final dynamic successResponse;
+
+  AllocationOfflineState({this.successResponse});
+}
+
 class MapViewState extends AllocationState {}
 
 class MessageState extends AllocationState {}
@@ -33,6 +39,7 @@ class UpdateNewValueState extends AllocationState {
   final String? updateFollowUpdate;
   final dynamic paramValue;
   final dynamic value;
+
   UpdateNewValueState(
       {this.selectedEventValue,
       this.updateFollowUpdate,
@@ -80,7 +87,9 @@ class UpdateStaredCaseState extends AllocationState {
   final int selectedIndex;
 
   UpdateStaredCaseState(
-      {required this.caseId, required this.isStared, required this.selectedIndex});
+      {required this.caseId,
+      required this.isStared,
+      required this.selectedIndex});
 }
 
 class StartCallingState extends AllocationState {
@@ -96,7 +105,6 @@ class AutoCallContactHealthUpdateState extends AllocationState {
 
   AutoCallContactHealthUpdateState({this.contactIndex, this.caseIndex});
 }
-
 
 class MapInitiateState extends AllocationState {}
 

@@ -907,4 +907,7 @@ class LanguageTa extends Languages {
 
   @override
   String get teluguLang => 'தெலுங்கு';
+
+  @override
+  String get youAreInOffline => 'இணைய வசதி இல்லை';
 }

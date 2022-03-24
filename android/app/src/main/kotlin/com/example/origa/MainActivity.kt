@@ -20,7 +20,11 @@ class MainActivity : FlutterActivity() {
     private var length: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-     
+
+//        this.window.setFlags(
+//            WindowManager.LayoutParams.FLAG_SECURE,
+//            WindowManager.LayoutParams.FLAG_SECURE
+//        )
     }
     @SuppressLint("NewApi")
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {

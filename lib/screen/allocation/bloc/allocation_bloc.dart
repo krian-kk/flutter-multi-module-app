@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -12,6 +13,7 @@ import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
+import 'package:origa/models/offline_priority_response_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
@@ -26,7 +28,9 @@ part 'allocation_event.dart';
 part 'allocation_state.dart';
 
 class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
-  AllocationBloc() : super(AllocationInitial());
+  AllocationBloc({AuthenticationBloc? authBloc}) : super(AllocationInitial());
+
+  // AllocationBloc() : super(AllocationInitial());
 
   int selectedOption = 0;
 
@@ -123,81 +127,92 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         Languages.of(event.context)!.under5km,
         Languages.of(event.context)!.more5km,
       ];
-
-      // // static Autocalling Values
-      // mobileNumberList.addAll([
-      //   AutoCallingModel(
-      //     mobileNumber: '6374578994',
-      //     callResponse: 'Declined Call',
-      //   ),
-      //   AutoCallingModel(
-      //     mobileNumber: '9342536805',
-      //   ),
-      //   AutoCallingModel(
-      //     mobileNumber: '6374578994',
-      //   ),
-      // ]);
-
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
         isNoInternetAndServerErrorMsg =
             Languages.of(event.context)!.noInternetConnection;
-        yield NoInternetConnectionState();
+        yield AllocationOfflineState(successResponse: "offlineData");
       } else {
-        isNoInternetAndServerError = false;
-        // Now set priority case is a load more event
-        isPriorityLoadMore = true;
-
-        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.priorityCaseList +
-                'pageNo=${Constants.pageNo}' +
-                '&limit=${Constants.limit}');
-
-        resultList.clear();
-        starCount = 0;
-
-        if (priorityListData['success']) {
-          for (var element in priorityListData['data']['result']) {
-            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
-                true) {
-              starCount++;
-            }
-          }
-
-          if (resultList.length >= 10) {
-            hasNextPage = true;
-          } else {
-            hasNextPage = false;
-          }
-          // Get Contractor Details and stored in Singleton
-          Map<String, dynamic> getContractorDetails =
+        SharedPreferences _pref = await SharedPreferences.getInstance();
+        if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
+          debugPrint('Values--> in off initiateState');
+          yield AllocationOfflineState(successResponse: "offlineData");
+        } else {
+          isNoInternetAndServerError = false;
+          // Now set priority case is a load more event
+          isPriorityLoadMore = true;
+          Map<String, dynamic> priorityListData =
               await APIRepository.apiRequest(
-                  APIRequestType.get, HttpUrl.contractorDetail);
-          if (getContractorDetails[Constants.success] == true) {
-            Map<String, dynamic> jsonData = getContractorDetails['data'];
-            // check and store cloudTelephony true or false
-            Singleton.instance.cloudTelephony =
-                jsonData['result']['cloudTelephony'] ?? false;
+                  APIRequestType.get,
+                  HttpUrl.priorityCaseList +
+                      'pageNo=${Constants.pageNo}' +
+                      '&limit=${Constants.limit}');
 
-            Singleton.instance.feedbackTemplate =
-                ContractorDetailsModel.fromJson(jsonData);
-            Singleton.instance.contractorInformations =
-                ContractorAllInformationModel.fromJson(jsonData);
-          } else {
-            if (getContractorDetails['data'] != null) {
-              AppUtils.showToast(getContractorDetails['data'] ?? '');
+          resultList.clear();
+          starCount = 0;
+
+          if (priorityListData['success']) {
+            var offlinePriorityResponseModel;
+            try {
+              offlinePriorityResponseModel =
+                  OfflinePriorityResponseModel.fromJson(
+                      priorityListData['data']);
+            } catch (e) {
+              debugPrint(e.toString());
             }
+            if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
+              Singleton.instance.isOfflineStorageFeatureEnabled = true;
+              hasNextPage = false;
+              _pref.setBool(Constants.appDataLoadedFromFirebase, true);
+              _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+                  DateTime.now().toString());
+              yield AllocationOfflineState(successResponse: "offlineData");
+            } else {
+              Singleton.instance.isOfflineStorageFeatureEnabled = false;
+              for (var element in priorityListData['data']['result']) {
+                resultList
+                    .add(Result.fromJson(jsonDecode(jsonEncode(element))));
+                if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                        .starredCase ==
+                    true) {
+                  starCount++;
+                }
+              }
+              if (resultList.length >= 10) {
+                hasNextPage = true;
+              } else {
+                hasNextPage = false;
+              }
+              // Get Contractor Details and stored in Singleton
+              Map<String, dynamic> getContractorDetails =
+                  await APIRepository.apiRequest(
+                      APIRequestType.get, HttpUrl.contractorDetail);
+              if (getContractorDetails[Constants.success] == true) {
+                Map<String, dynamic> jsonData = getContractorDetails['data'];
+                // check and store cloudTelephony true or false
+                Singleton.instance.cloudTelephony =
+                    jsonData['result']['cloudTelephony'] ?? false;
+
+                Singleton.instance.feedbackTemplate =
+                    ContractorDetailsModel.fromJson(jsonData);
+                Singleton.instance.contractorInformations =
+                    ContractorAllInformationModel.fromJson(jsonData);
+              } else {
+                if (getContractorDetails['data'] != null) {
+                  AppUtils.showToast(getContractorDetails['data'] ?? '');
+                }
+              }
+              yield AllocationLoadedState(successResponse: resultList);
+            }
+          } else if (priorityListData['statusCode'] == 401 ||
+              priorityListData['data'] == Constants.connectionTimeout ||
+              priorityListData['statusCode'] == 502) {
+            isNoInternetAndServerError = true;
+            isNoInternetAndServerErrorMsg = priorityListData['data'];
+            yield AllocationLoadedState(successResponse: resultList);
           }
-        } else if (priorityListData['statusCode'] == 401 ||
-            priorityListData['data'] == Constants.connectionTimeout ||
-            priorityListData['statusCode'] == 502) {
-          isNoInternetAndServerError = true;
-          isNoInternetAndServerErrorMsg = priorityListData['data'];
         }
       }
-      yield AllocationLoadedState(successResponse: resultList);
     }
     if (event is TapPriorityEvent) {
       yield CaseListViewLoadingState();
@@ -565,16 +580,18 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallingLoadedState();
     }
     if (event is AutoCallingContactSortEvent) {
-      // for (var element in autoCallingResultList) {
-      //   element.address
-      //       ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
-      // }
       yield AutoCallingContactSortState();
     }
     if (event is UpdateStaredCaseEvent) {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        yield NoInternetConnectionState();
+        SharedPreferences _pref = await SharedPreferences.getInstance();
+        if (_pref.getString(Constants.userType) == Constants.fieldagent) {
+          resultList[event.selectedStarIndex].starredCase =
+              !resultList[event.selectedStarIndex].starredCase;
+        } else {
+          yield NoInternetConnectionState();
+        }
       } else {
         resultList[event.selectedStarIndex].starredCase =
             !resultList[event.selectedStarIndex].starredCase;

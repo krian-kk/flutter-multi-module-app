@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
@@ -32,6 +35,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
@@ -54,8 +58,10 @@ class AllocationScreen extends StatefulWidget {
 
 class _AllocationScreenState extends State<AllocationScreen> {
   late AllocationBloc bloc;
+  bool isSubmitRUOffice = false;
   String? currentAddress;
   bool isCaseDetailLoading = false;
+  bool isOffline = false;
   late MapBloc mapBloc;
   Position position = Position(
     longitude: 0,
@@ -71,8 +77,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   String? searchBasedOnValue;
   String version = "";
   late Timer _timer;
-
-  bool isSubmitRUOffice = false;
+  String? internetAvailability;
 
   // The controller for the ListView
   late ScrollController _controller;
@@ -88,29 +93,45 @@ class _AllocationScreenState extends State<AllocationScreen> {
     super.initState();
     bloc = AllocationBloc()..add(AllocationInitialEvent(context));
     _controller = ScrollController()..addListener(_loadMore);
+    internetChecking();
     getCurrentLocation();
+  }
+
+  Future<void> internetChecking() async {
+    await Connectivity().checkConnectivity().then((value) {
+      setState(() {
+        internetAvailability = value.name;
+      });
+    });
+     Connectivity().onConnectivityChanged.listen((event) {
+      setState(() {
+        internetAvailability = event.name;
+      });
+    });
   }
 
   //get current location lat, alng and address
   void getCurrentLocation() async {
-    Position result = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    if (mounted) {
-      setState(() {
-        position = result;
-      });
-    }
+    if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
+      Position result = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      if (mounted) {
+        setState(() {
+          position = result;
+        });
+      }
 
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(result.latitude, result.longitude);
-    if (mounted) {
-      setState(() {
-        currentAddress = placemarks.toList().first.street.toString() +
-            ', ' +
-            placemarks.toList().first.subLocality.toString() +
-            ', ' +
-            placemarks.toList().first.postalCode.toString();
-      });
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(result.latitude, result.longitude);
+      if (mounted) {
+        setState(() {
+          currentAddress = placemarks.toList().first.street.toString() +
+              ', ' +
+              placemarks.toList().first.subLocality.toString() +
+              ', ' +
+              placemarks.toList().first.postalCode.toString();
+        });
+      }
     }
   }
 
@@ -134,29 +155,27 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   messageShowBottomSheet() {
     showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      isScrollControlled: true,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (BuildContext buildContext, StateSetter setState) =>
-            WillPopScope(
-          onWillPop: () async => true,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.86,
-            child: const SizedBox(),
-            // child: const MessageChatRoomScreen(),
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
           ),
         ),
-      ),
-    );
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                WillPopScope(
+                  onWillPop: () async => true,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.86,
+                    child: const SizedBox(),
+                    // child: const MessageChatRoomScreen(),
+                  ),
+                )));
   }
 
   // This function will be triggered whenver the user scroll
@@ -312,7 +331,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) async {
+        // Map<String, dynamic>? data = element.data();
+        // // log('message $data');
+        // resultList.add(Result.fromJson(data));
+        // if (Result.fromJson(data).starredCase == true) {
+        //   starCount++;
+        // }
+        if (state is AllocationOfflineState) {
+          isOffline = true;
+          debugPrint('Offline state in bloc $isOffline');
+        }
         if (state is NoInternetConnectionState) {
+          isOffline = true;
           AppUtils.noInternetSnackbar(context);
         }
         if (state is CaseListViewLoadingState) {
@@ -381,11 +411,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                   if (state.phoneIndex! < tempMobileList.length) {
                     var requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
-                      // For hot_code testing
-                      // from: '9585313659',
+                      // for testing purpose using your number here
+                      // from: 'test number',
                       to: tempMobileList[state.phoneIndex!].value ?? '',
-                      // For hot_code testing
-                      // to: '7904557342',
                       callerId: voiceAgencyDetails
                                   .result?.voiceAgencyData?.first.callerIds !=
                               []
@@ -510,27 +538,39 @@ class _AllocationScreenState extends State<AllocationScreen> {
             );
           }
         }
-
+        if (state is UpdateNewValueState) {
+          bloc.resultList.asMap().forEach((index, value) {
+            if (value.caseId == state.paramValue) {
+              setState(() {
+                if (Singleton.instance.usertype == Constants.telecaller) {
+                  value.telSubStatus = state.selectedEventValue;
+                } else {
+                  value.collSubStatus = state.selectedEventValue;
+                }
+                if (state.selectedEventValue != null &&
+                    state.updateFollowUpdate != null) {
+                  value.fieldfollowUpDate = state.updateFollowUpdate;
+                  value.followUpDate = state.updateFollowUpdate;
+                }
+              });
+            }
+          });
+        }
         if (state is NavigateCaseDetailState) {
           try {
             dynamic returnValue = await Navigator.pushNamed(
                 context, AppRoutes.caseDetailsScreen,
                 arguments: CaseDetailsNaviagationModel(state.paramValues,
                     allocationBloc: bloc));
-            RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
-                Map<String, dynamic>.from(returnValue));
-            print(
-                "return value case detail followUpDate ==> ${returnModelValue.followUpDate}");
-            print(
-                "return value case detail selectedClipValue ==> ${returnModelValue.selectedClipValue}");
-            if (returnModelValue.isSubmit) {
-              // bloc.add(UpdateNewValuesEvent(
-              //   returnModelValue.caseId,
-              //   returnModelValue.selectedClipValue,
-              //   returnModelValue.followUpDate,
-              // ));
-              // Due to page reload when data is submitted from case details
-              bloc.add(TapPriorityEvent());
+            // If user will be offline data stored into firebase ->
+            // so there is no need to update while back
+            if (state.paramValues['isOffline'] != null &&
+                state.paramValues['isOffline'] == false) {
+              RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
+                  Map<String, dynamic>.from(returnValue));
+              if (returnModelValue.isSubmit) {
+                bloc.add(TapPriorityEvent());
+              }
             }
           } catch (e) {
             debugPrint(e.toString());
@@ -570,6 +610,29 @@ class _AllocationScreenState extends State<AllocationScreen> {
           //List<Result>
           if (state.successResponse is List<Result>) {
             resultList = state.successResponse;
+            isOffline = false;
+          } //List<Result>
+          if (state.successResponse is String) {
+            if (state.successResponse == 'offlineData') {
+              FirebaseFirestore.instance
+                  .collection(Singleton.instance.firebaseDatabaseName)
+                  .doc(Singleton.instance.agentRef)
+                  .collection(Constants.firebaseCase)
+                  .get(const GetOptions(source: Source.serverAndCache))
+                  .then((value) {
+                bloc.starCount == 0;
+                bloc.resultList.clear();
+                for (var element in value.docs) {
+                  Map<String, dynamic>? data = element.data();
+                  bloc.resultList.add(Result.fromJson(data));
+                  resultList.add(Result.fromJson(data));
+                  if (Result.fromJson(data).starredCase == true) {
+                    bloc.starCount++;
+                  }
+                }
+              }).asStream();
+              bloc.hasNextPage = false;
+            }
           }
         }
 
@@ -617,12 +680,13 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
+            await FirebaseUtils.updateStarred(
+                isStarred: true, caseId: state.caseId);
             await APIRepository.apiRequest(
               APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
-
             var removedItem = bloc.resultList[state.selectedIndex];
             bloc.resultList.removeAt(state.selectedIndex);
             setState(() {
@@ -634,18 +698,19 @@ class _AllocationScreenState extends State<AllocationScreen> {
             });
             var postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
+            await FirebaseUtils.updateStarred(
+                isStarred: false, caseId: state.caseId);
+
             await APIRepository.apiRequest(
               APIRequestType.post,
               HttpUrl.updateStaredCase,
               requestBodydata: jsonEncode(postData),
             );
-
             var removedItem = bloc.resultList[state.selectedIndex];
             bloc.resultList.removeAt(state.selectedIndex);
             // To pick and add next starred false case
             var firstWhereIndex =
                 bloc.resultList.indexWhere((note) => !note.starredCase);
-            debugPrint('firstWhereIndex $firstWhereIndex');
             setState(() {
               bloc.resultList.insert(firstWhereIndex, removedItem);
             });
@@ -699,8 +764,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
           if (postResult[Constants.success]) {
             SharedPreferences _pref = await SharedPreferences.getInstance();
             setState(() {
-              bloc.areyouatOffice = false;
               isSubmitRUOffice = false;
+              bloc.areyouatOffice = false;
               _pref.setBool('areyouatOffice', false);
             });
             AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
@@ -744,101 +809,84 @@ class _AllocationScreenState extends State<AllocationScreen> {
           if (state is AllocationLoadingState) {
             return const CustomLoadingWidget();
           }
-          if (state is MapInitiateState) {
-            return const CustomLoadingWidget();
-          }
-          if (bloc.isNoInternetAndServerError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomText(bloc.isNoInternetAndServerErrorMsg!),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        bloc.add(AllocationInitialEvent(context));
-                      },
-                      icon: const Icon(Icons.refresh)),
-                ],
-              ),
-            );
-          } else {
-            return Scaffold(
-              backgroundColor: ColorResource.colorF7F8FA,
-              floatingActionButton: Visibility(
-                visible: bloc.isShowSearchFloatingButton,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Visibility(
-                          visible: bloc.isMessageThere,
-                          child: SizedBox(
-                            width: 175,
-                            child: CustomButton(
-                              Languages.of(context)!.message,
-                              alignment: MainAxisAlignment.end,
-                              cardShape: 50,
-                              isTrailing: true,
-                              leadingWidget: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  width: 40,
-                                  child: Container(
-                                    height: 26,
-                                    width: 26,
-                                    decoration: const BoxDecoration(
-                                      color: ColorResource.colorFFFFFF,
-                                      shape: BoxShape.circle,
+          return Scaffold(
+            backgroundColor: ColorResource.colorF7F8FA,
+            floatingActionButton: internetAvailability != 'none'
+                ? Visibility(
+                    visible: bloc.isShowSearchFloatingButton,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: Visibility(
+                              visible: bloc.isMessageThere,
+                              child: SizedBox(
+                                width: 175,
+                                child: CustomButton(
+                                  Languages.of(context)!.message,
+                                  alignment: MainAxisAlignment.end,
+                                  cardShape: 50,
+                                  isTrailing: true,
+                                  leadingWidget: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      width: 40,
+                                      child: Container(
+                                        height: 26,
+                                        width: 26,
+                                        decoration: const BoxDecoration(
+                                          color: ColorResource.colorFFFFFF,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                            child: CustomText(
+                                          bloc.messageCount.toString(),
+                                          color: ColorResource.colorEA6D48,
+                                          fontSize: FontSize.twelve,
+                                          fontWeight: FontWeight.w700,
+                                          lineHeight: 1,
+                                        )),
+                                      ),
                                     ),
-                                    child: Center(
-                                        child: CustomText(
-                                      bloc.messageCount.toString(),
-                                      color: ColorResource.colorEA6D48,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w700,
-                                      lineHeight: 1,
-                                    )),
                                   ),
+                                  onTap: () {
+                                    bloc.add(MessageEvent());
+                                    AppUtils.showToast(
+                                        Languages.of(context)!.message);
+                                  },
                                 ),
                               ),
-                              onTap: () {
-                                bloc.add(MessageEvent());
-                                AppUtils.showToast(
-                                    Languages.of(context)!.message);
-                              },
                             ),
                           ),
-                        ),
+                          const Spacer(),
+                          CustomFloatingActionButton(
+                            onTap: () async {
+                              bloc.add(NavigateSearchPageEvent());
+                            },
+                          ),
+                        ],
                       ),
-                      const Spacer(),
-                      CustomFloatingActionButton(
-                        onTap: () async {
-                          bloc.add(NavigateSearchPageEvent());
-                        },
+                    ),
+                  )
+                : const SizedBox(),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              body: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-
-                        Visibility(
-                          visible: bloc.areyouatOffice,
+                      Visibility(
+                        visible: bloc.areyouatOffice,
+                        child: Visibility(
+                          visible:
+                              internetAvailability != 'none' ? true : false,
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(
@@ -928,7 +976,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                     ))
                                                 : Expanded(
                                                     child: SizedBox(
-                                                        // width: 85,
                                                         height: 40,
                                                         child: CustomButton(
                                                           Languages.of(context)!
@@ -958,156 +1005,192 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Visibility(
-                          visible: bloc.isShowSearchPincode,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.only(bottom: 15),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(35, 55, 90, 0.27),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  Languages.of(context)!.searchbasedOn,
-                                  fontSize: FontSize.ten,
-                                  color: ColorResource.color000000,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                CustomText(
-                                  searchBasedOnValue ?? "",
-                                  fontSize: FontSize.fourteen,
-                                  color: ColorResource.color000000,
-                                  fontWeight: FontWeight.w700,
-                                  style: const TextStyle(
-                                      overflow: TextOverflow.ellipsis),
-                                ),
-                              ],
-                            ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Visibility(
+                        visible: bloc.isShowSearchPincode,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(bottom: 15),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(35, 55, 90, 0.27),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                Languages.of(context)!.searchbasedOn,
+                                fontSize: FontSize.ten,
+                                color: ColorResource.color000000,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              CustomText(
+                                searchBasedOnValue ?? "",
+                                fontSize: FontSize.fourteen,
+                                color: ColorResource.color000000,
+                                fontWeight: FontWeight.w700,
+                                style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ],
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Wrap(
-                            spacing: 10,
-                            children: List.generate(bloc.selectOptions.length,
-                                (index) {
-                              return ChoiceChip(
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(5),
-                                        topLeft: Radius.circular(5),
-                                        bottomLeft: Radius.circular(5),
-                                        bottomRight: Radius.circular(5)),
-                                    side: BorderSide(
-                                        color: ColorResource.color23375A,
-                                        width: 0.5)),
-                                labelPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 2),
-                                label: CustomText(
-                                  bloc.selectOptions[index],
-                                  fontSize: FontSize.twelve,
-                                  lineHeight: 1,
-                                  fontWeight: FontWeight.w700,
-                                  color: index == bloc.selectedOption
-                                      ? Colors.white
-                                      : ColorResource.color000000,
-                                ),
-                                selected: bloc.selectedOption == index,
-                                selectedColor: ColorResource.color23375A,
-                                onSelected: (value) {
-                                  setState(() {
-                                    if (index != 2) {
-                                      bloc.selectedOption =
-                                          value ? index : bloc.selectedOption;
-                                    }
-                                  });
-                                  switch (index) {
-                                    case 0:
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Wrap(
+                          spacing: 10,
+                          children:
+                              List.generate(bloc.selectOptions.length, (index) {
+                            return internetAvailability != 'none'
+                                ? ChoiceChip(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5)),
+                                        side: BorderSide(
+                                            color: ColorResource.color23375A,
+                                            width: 0.5)),
+                                    labelPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    label: CustomText(
+                                      bloc.selectOptions[index],
+                                      fontSize: FontSize.twelve,
+                                      lineHeight: 1,
+                                      fontWeight: FontWeight.w700,
+                                      color: index == bloc.selectedOption
+                                          ? Colors.white
+                                          : ColorResource.color000000,
+                                    ),
+                                    selected: bloc.selectedOption == index,
+                                    selectedColor: ColorResource.color23375A,
+                                    onSelected: (value) {
                                       setState(() {
-                                        bloc.showFilterDistance = false;
-                                        bloc.add(TapPriorityEvent());
+                                        bloc.selectedOption =
+                                            value ? index : bloc.selectedOption;
                                       });
-                                      break;
-                                    case 1:
-                                      if (bloc.userType ==
-                                          Constants.fieldagent) {
-                                        setState(() {
-                                          bloc.add(
-                                            TapBuildRouteEvent(
+                                      switch (index) {
+                                        case 0:
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                            bloc.add(TapPriorityEvent());
+                                          });
+                                          break;
+                                        case 1:
+                                          if (bloc.userType ==
+                                              Constants.fieldagent) {
+                                            setState(() {
+                                              bloc.add(TapBuildRouteEvent(
+                                                  paramValues:
+                                                      BuildRouteDataModel(
+                                                          lat: position.latitude
+                                                              .toString(),
+                                                          long: position
+                                                              .longitude
+                                                              .toString(),
+                                                          maxDistMeters: Constants
+                                                              .allDisMeters)));
+                                              bloc.showFilterDistance = true;
+                                            });
+                                          } else {
+                                            bloc.add(ShowAutoCallingEvent());
+                                          }
+                                          break;
+                                        case 2:
+                                          bloc.add(MapViewEvent(
                                               paramValues: BuildRouteDataModel(
                                                   lat: position.latitude
                                                       .toString(),
                                                   long: position.longitude
                                                       .toString(),
                                                   maxDistMeters:
-                                                      Constants.allDisMeters),
-                                            ),
-                                          );
-                                          bloc.showFilterDistance = true;
-                                        });
-                                      } else {
-                                        bloc.add(ShowAutoCallingEvent());
+                                                      Constants.allDisMeters)));
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                          });
+                                          break;
+                                        default:
+                                          setState(() {
+                                            bloc.showFilterDistance = false;
+                                          });
                                       }
-                                      break;
-                                    case 2:
-                                      bloc.add(
-                                        MapViewEvent(
-                                          paramValues: BuildRouteDataModel(
-                                              lat: position.latitude.toString(),
-                                              long:
-                                                  position.longitude.toString(),
-                                              maxDistMeters:
-                                                  Constants.allDisMeters),
-                                        ),
-                                      );
-                                      break;
-                                    default:
-                                      setState(() {
-                                        bloc.showFilterDistance = false;
-                                      });
-                                  }
-                                },
-                                backgroundColor: Colors.white,
-                                elevation: 0,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                              );
-                            }),
-                          ),
+                                    },
+                                    backgroundColor: Colors.white,
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                  )
+                                : const SizedBox();
+                          }),
                         ),
-
-                        // Align(
-                        //   alignment: Alignment.bottomLeft,
-                        //   child: Wrap(
-                        //     runSpacing: 0,
-                        //     spacing: 10,
-                        //     children: _buildFilterOptions(),
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 13.0,
-                        ),
-                        bloc.showFilterDistance
-                            ? _buildBuildRoute()
-                            : const SizedBox(),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 13.0,
+                      ),
+                      bloc.showFilterDistance
+                          ? _buildBuildRoute()
+                          : const SizedBox(),
+                    ],
                   ),
-                  bloc.isAutoCalling
-                      ? Expanded(
-                          child: AutoCalling.buildAutoCalling(context, bloc))
-                      : Expanded(
-                          child: isCaseDetailLoading
-                              ? const CustomLoadingWidget()
-                              : resultList.isEmpty
+                ),
+                bloc.isAutoCalling
+                    ? Expanded(
+                        child: AutoCalling.buildAutoCalling(context, bloc))
+                    : isOffline
+                        ? StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection(
+                                    Singleton.instance.firebaseDatabaseName)
+                                .doc(Singleton.instance.agentRef)
+                                .collection(Constants.firebaseCase)
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              debugPrint(
+                                  'Offline state in screen ->streambuilder');
+                              if (snapshot.hasError) {
+                                return Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 50, right: 20, left: 20),
+                                      child:
+                                          NoCaseAvailble.buildNoCaseAvailable(
+                                              messageContent:
+                                                  'Something went wrong'),
+                                    ),
+                                  ],
+                                );
+                              } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                const CustomLoadingWidget();
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.active) {
+                                bloc.resultList.clear();
+                                resultList.clear();
+                                bloc.starCount = 0;
+                                for (var element in snapshot.data!.docs) {
+                                  var tempResult = Result.fromJson(
+                                      element.data()! as Map<String, dynamic>);
+                                  bloc.resultList.add(tempResult);
+                                  resultList.add(tempResult);
+                                  if (tempResult.starredCase == true) {
+                                    bloc.starCount++;
+                                  }
+                                }
+                                resultList.sort((a, b) {
+                                  return b.starredCase ? 1 : -1;
+                                });
+                              }
+                              return resultList.isEmpty
                                   ? Column(
                                       children: [
                                         Padding(
@@ -1118,78 +1201,104 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                         ),
                                       ],
                                     )
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 0.0),
-                                      child: CustomCardList.buildListView(
-                                        bloc,
-                                        resultData: resultList,
-                                        listViewController: _controller,
+                                  : Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 0.0),
+                                        child: CustomCardList.buildListView(
+                                          bloc,
+                                          resultData: resultList,
+                                          listViewController: _controller,
+                                        ),
                                       ),
-                                    )),
-                ],
-              ),
-              bottomNavigationBar: Visibility(
-                visible:
-                    bloc.isAutoCalling && bloc.autoCallingResultList.isNotEmpty,
-                child: Container(
-                  height: 88,
-                  decoration: const BoxDecoration(
-                      color: ColorResource.colorffffff,
-                      border: Border(
-                          top: BorderSide(
-                              color: Color.fromRGBO(0, 0, 0, 0.13)))),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 200,
-                          child: CustomButton(
-                            null,
-                            cardShape: 5,
-                            trailingWidget: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0,
-                              ),
-                              child: SvgPicture.asset(ImageResource.vector),
-                            ),
-                            isLeading: true,
-                            isTrailing: true,
-                            leadingWidget: Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                ),
-                                child: CustomText(
-                                  Languages.of(context)!
-                                      .startCalling
-                                      .toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                  fontWeight: FontWeight.w600,
-                                  color: ColorResource.colorFFFFFF,
-                                ),
-                              ),
-                            ),
-                            onTap: () async {
-                              bloc.add(StartCallingEvent(
-                                customerIndex: 0,
-                                phoneIndex: 0,
-                                customerList: bloc.resultList.first,
-                                // isStartFromButtonClick: true,
-                              ));
+                                    );
                             },
+                          )
+                        : Expanded(
+                            child: isCaseDetailLoading
+                                ? const CustomLoadingWidget()
+                                : resultList.isEmpty
+                                    ? Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 50, right: 20, left: 20),
+                                            child: NoCaseAvailble
+                                                .buildNoCaseAvailable(),
+                                          ),
+                                        ],
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 0.0),
+                                        child: CustomCardList.buildListView(
+                                          bloc,
+                                          resultData: resultList,
+                                          listViewController: _controller,
+                                        ),
+                                      ),
                           ),
+              ],
+            ),
+            bottomNavigationBar: Visibility(
+              visible:
+                  bloc.isAutoCalling && bloc.autoCallingResultList.isNotEmpty,
+              child: Container(
+                height: 88,
+                decoration: const BoxDecoration(
+                    color: ColorResource.colorffffff,
+                    border: Border(
+                        top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.13)))),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 5, 20, 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: CustomButton(
+                          null,
+                          cardShape: 5,
+                          trailingWidget: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                            ),
+                            child: SvgPicture.asset(ImageResource.vector),
+                          ),
+                          isLeading: true,
+                          isTrailing: true,
+                          leadingWidget: Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: CustomText(
+                                Languages.of(context)!
+                                    .startCalling
+                                    .toUpperCase(),
+                                textAlign: TextAlign.center,
+                                fontWeight: FontWeight.w600,
+                                color: ColorResource.colorFFFFFF,
+                              ),
+                            ),
+                          ),
+                          onTap: () async {
+                            bloc.add(StartCallingEvent(
+                              customerIndex: 0,
+                              phoneIndex: 0,
+                              customerList: bloc.resultList.first,
+                              // isStartFromButtonClick: true,
+                            ));
+                          },
                         ),
-                        // ),
-                      ],
-                    ),
+                      ),
+                      // ),
+                    ],
                   ),
                 ),
               ),
-            );
-          }
+            ),
+          );
         },
       ),
     );

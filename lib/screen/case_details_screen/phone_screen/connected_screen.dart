@@ -168,7 +168,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                 selectedOptionBottomSheetButton = element.title;
                               });
                               widget.bloc.add(
-                                ClickOpenBottomSheetEvent(
+                                EventDetailsEvent(
                                   element.stringResourceValue,
                                   widget.bloc.caseDetailsAPIValue.result
                                       ?.callDetails,

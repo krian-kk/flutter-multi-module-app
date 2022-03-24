@@ -300,7 +300,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                             width: 10,
                                             child: InkWell(
                                               onTap: () => widget.bloc.add(
-                                                  ClickOpenBottomSheetEvent(
+                                                  EventDetailsEvent(
                                                       Constants.callCustomer,
                                                       widget
                                                           .bloc
@@ -371,7 +371,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           fontStyle: FontStyle.normal,
                                         ),
                                         onTap: () => widget.bloc.add(
-                                            ClickOpenBottomSheetEvent(
+                                            EventDetailsEvent(
                                                 Constants.eventDetails,
                                                 widget.bloc.caseDetailsAPIValue
                                                     .result?.callDetails,

@@ -4,7 +4,7 @@ import 'package:origa/utils/constants.dart';
 
 class ConvertString {
   static String convertLanguageToConstant(String text, BuildContext context) {
-    String constantValue = '';
+    String constantValue = text;
     if (text == Languages.of(context)!.lineBusy) {
       constantValue = Constants.telsubstatuslineBusy;
     } else if (text == Languages.of(context)!.switchOff) {

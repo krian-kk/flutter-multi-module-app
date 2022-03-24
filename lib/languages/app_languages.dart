@@ -597,4 +597,6 @@ abstract class Languages {
   String get panjabiLang;
 
   String get teluguLang;
+
+  String get youAreInOffline;
 }

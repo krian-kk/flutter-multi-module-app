@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -15,6 +16,8 @@ import 'package:origa/screen/message_screen/chat_screen_event.dart';
 import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
+import 'package:origa/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_state.dart';
@@ -118,8 +121,12 @@ class PageBuilder {
 
   static Widget buildHomeTabScreen() {
     return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<HomeTabBloc>(context)..add(HomeTabInitialEvent()),
+      create: (BuildContext context) {
+        final AuthenticationBloc authBloc =
+            BlocProvider.of<AuthenticationBloc>(context);
+        return BlocProvider.of<HomeTabBloc>(context)
+          ..add(HomeTabInitialEvent());
+      },
       child: const HomeTabScreen(),
     );
   }
@@ -153,6 +160,10 @@ class PageBuilder {
     CaseDetailsNaviagationModel caseDetailsNaviagationValue;
     caseDetailsNaviagationValue =
         settings.arguments as CaseDetailsNaviagationModel;
+    if (caseDetailsNaviagationValue.paramValue['isOffline'] != null) {
+      debugPrint(
+          'isOffline--> ${caseDetailsNaviagationValue.paramValue['isOffline']}');
+    }
     return BlocProvider(
       create: (BuildContext context) =>
           BlocProvider.of<CaseDetailsBloc>(context)
@@ -174,7 +185,7 @@ class PageBuilder {
 Widget addAuthBloc(BuildContext context, Widget widget) {
   return BlocListener(
     bloc: BlocProvider.of<AuthenticationBloc>(context),
-    listener: (BuildContext context, Object? state) {
+    listener: (BuildContext context, Object? state) async {
       if (state is AuthenticationAuthenticated) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
@@ -189,6 +200,9 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
       }
 
+      if (state is OfflineState) {
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+      }
       if (state is SplashScreenState) {
         Navigator.pushNamed(context, AppRoutes.splashScreen);
       }

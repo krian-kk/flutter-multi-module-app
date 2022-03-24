@@ -901,4 +901,7 @@ class LanguageEn extends Languages {
 
   @override
   String get teluguLang => 'Telugu';
+
+  @override
+  String get youAreInOffline => 'You are in offline';
 }

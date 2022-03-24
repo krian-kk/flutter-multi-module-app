@@ -124,12 +124,25 @@ class CustomCardList {
                         ? const EdgeInsets.only(bottom: 20)
                         : const EdgeInsets.only(bottom: 10, top: 19),
                     child: InkWell(
-                      onTap: () {
-                        bloc.add(NavigateCaseDetailEvent(paramValues: {
-                          'caseID': resultData[index].caseId!,
-                        }));
+                      onTap: () async {
                         Singleton.instance.agrRef =
                             resultData[index].agrRef ?? '';
+                        // if (ConnectivityResult.none ==
+                        //     await Connectivity().checkConnectivity()) {
+                        //Case id(paramValues as _id) -> Firebase reference number
+                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
+                        //     'caseID': resultData[index].sId,
+                        //     'isOffline': true
+                        //   }));
+                        // } else {
+                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
+                        //     'caseID': resultData[index].caseId!,
+                        //   }));
+                        // }
+                        bloc.add(NavigateCaseDetailEvent(paramValues: {
+                          'caseID': resultData[index].caseId,
+                          'isOffline': true
+                        }));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

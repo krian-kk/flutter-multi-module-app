@@ -10,7 +10,6 @@ import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 
@@ -71,7 +70,7 @@ class _MyAppState extends State<MyApp> {
   Future<FirebaseRemoteConfig> setupRemoteConfig() async {
     await Firebase.initializeApp();
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    remoteConfig.fetchAndActivate();
+    // remoteConfig.fetchAndActivate();
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(seconds: 5),
@@ -86,7 +85,11 @@ class _MyAppState extends State<MyApp> {
     //               remoteConfig.getString('v1_uat_mobile_app_baseUrl')
     //           : HttpUrl.url =
     //               remoteConfig.getString('v1_production_mobile_app_baseUrl');
-    //   debugPrint('URL -> ${HttpUrl.url}');
+    //   // debugPrint('URL -> ${HttpUrl.url}');
+    //   // var userID = md5.convert(utf8.encode("CDE_26")).toString();
+    //   // debugPrint('user ID--> $userID');
+    //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+    //   Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
     // } catch (e) {
     //   debugPrint('Catch-> $e');
     //   setupRemoteConfig();

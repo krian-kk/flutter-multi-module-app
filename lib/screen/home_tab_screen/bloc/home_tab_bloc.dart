@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/authentication/authentication_bloc.dart';
+import 'package:origa/authentication/authentication_state.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,7 +9,10 @@ import 'home_tab_event.dart';
 import 'home_tab_state.dart';
 
 class HomeTabBloc extends Bloc<HomeTabEvent, HomeTabState> {
-  HomeTabBloc() : super(HomeTabInitialState());
+  // final AuthenticationBloc authBloc =
+  // BlocProvider.of<AuthenticationBloc>(context);
+  // HomeTabBloc() : super(HomeTabInitialState());
+  HomeTabBloc({AuthenticationBloc? authBloc}) : super(HomeTabInitialState());
 
   int? notificationCount = 0;
   String? userType;

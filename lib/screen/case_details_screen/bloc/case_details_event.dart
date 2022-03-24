@@ -81,7 +81,7 @@ class ClickPushAndPOPCaseDetailsEvent extends CaseDetailsEvent {
   ClickPushAndPOPCaseDetailsEvent({this.paramValues});
 }
 
-class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
+class EventDetailsEvent extends CaseDetailsEvent {
   final String title;
   final List? list;
   final bool? isCall;
@@ -90,7 +90,7 @@ class ClickOpenBottomSheetEvent extends CaseDetailsEvent {
   final String? seleectedContactNumber;
   final bool isCallFromCallDetails;
   final String? callId;
-  ClickOpenBottomSheetEvent(
+  EventDetailsEvent(
     this.title,
     this.list,
     this.isCall, {
@@ -147,10 +147,6 @@ class ChangeFollowUpDateEvent extends CaseDetailsEvent {
   ChangeFollowUpDateEvent({this.followUpDate});
 }
 
-// class GetPaymentConfigurationEvent extends CaseDetailsEvent {
-//   final String caseID;
-//   GetPaymentConfigurationEvent({required this.caseID});
-// }
 
 class GeneratePaymenLinktEvent extends CaseDetailsEvent {
   final String caseID;
@@ -161,3 +157,5 @@ class GenerateQRcodeEvent extends CaseDetailsEvent {
   final String caseID;
   GenerateQRcodeEvent({required this.caseID});
 }
+
+

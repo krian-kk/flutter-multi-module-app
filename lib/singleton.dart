@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
@@ -27,8 +29,10 @@ class Singleton {
   String? resAddressId_0;
   String? contactId_0;
   bool? startCalling;
+  bool? isOfflineStorageFeatureEnabled = false;
+  String firebaseDatabaseName = 'origaOfflineStorage';
 
-// Contractor All Informations
+// Contractor All Information
   ContractorAllInformationModel? contractorInformations;
 
   //store update health value
