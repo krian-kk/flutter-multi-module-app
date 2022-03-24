@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
               saveFunction: () {
                 // Create Secure Mpin APi
                 Navigator.pop(context);
-                bloc.add(TriggeredHomeTabEvent());
+                bloc.add(TriggeredHomeTabEvent(userId.text));
               },
             ),
           );
@@ -155,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: ConformMpinScreen(
-              successFunction: () => bloc.add(TriggeredHomeTabEvent()),
+              successFunction: () =>
+                  bloc.add(TriggeredHomeTabEvent(userId.text)),
               forgotPinFunction: () async {
                 if (await requestOTP(userName)) {
                   showForgorSecurePinDialogBox(userName);
@@ -238,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   PreferenceHelper.setPreference(Constants.mPin, mPin);
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  bloc.add(TriggeredHomeTabEvent());
+                  bloc.add(TriggeredHomeTabEvent(userId.text));
                 } else {
                   AppUtils.showToast('Change mPin has some Issue');
                 }
