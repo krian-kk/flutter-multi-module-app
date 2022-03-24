@@ -29,6 +29,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -98,6 +99,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return returnValue;
   }
 
+  Future<bool> createMpin(String? mPin) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.put, HttpUrl.createMpin,
+        requestBodydata: {
+          'mPin': mPin,
+        });
+    if (postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      setState(() => returnValue = false);
+      // AppUtils.showErrorToast("OTP does't match");
+    }
+    return returnValue;
+  }
+
   Future<bool> verifyOTP(String? aRef, String? otp) async {
     bool returnValue = false;
     Map<String, dynamic> postResult = await APIRepository.apiRequest(
@@ -155,10 +172,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: NewMpinScreen(
-              saveFuction: () {
+              saveFuction: (mPin) async {
                 // New Pin Create Api in this
-
-                Navigator.pop(context);
+                if (await createMpin(mPin)) {
+                  AppUtils.showToast('Change MPin Successfully');
+                  PreferenceHelper.setPreference('mPin', mPin);
+                  Navigator.pop(context);
+                } else {
+                  AppUtils.showToast('Change Mpin has some Issue');
+                }
               },
             ),
           );

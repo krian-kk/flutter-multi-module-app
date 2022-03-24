@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -11,7 +12,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class NewMpinScreen extends StatefulWidget {
-  final GestureTapCallback saveFuction;
+  final OnChange saveFuction;
   const NewMpinScreen({Key? key, required this.saveFuction}) : super(key: key);
 
   @override
@@ -36,6 +37,7 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: CustomText(
@@ -101,7 +103,7 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
             Languages.of(context)!.save.toUpperCase(),
             fontSize: FontSize.sixteen,
             isEnabled: (contoller.text.length > 3),
-            onTap: widget.saveFuction,
+            onTap: () => widget.saveFuction(contoller.text),
           ),
         ],
       ),

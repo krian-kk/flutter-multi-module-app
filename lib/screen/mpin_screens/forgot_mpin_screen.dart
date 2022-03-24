@@ -46,6 +46,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: CustomText(

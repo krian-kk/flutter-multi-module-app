@@ -21,6 +21,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -102,6 +103,21 @@ class _LoginScreenState extends State<LoginScreen> {
     return returnValue;
   }
 
+  Future<bool> createMpin(String? mPin) async {
+    bool returnValue = false;
+    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        APIRequestType.put, HttpUrl.createMpin,
+        requestBodydata: {
+          'mPin': mPin,
+        });
+    if (postResult[Constants.success]) {
+      setState(() => returnValue = true);
+    } else {
+      setState(() => returnValue = false);
+    }
+    return returnValue;
+  }
+
   Future<void> showCreateMPinDialogBox() async {
     return showDialog<void>(
         context: context,
@@ -143,6 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   showForgorSecurePinDialogBox(userName);
                 }
               },
+              popFunction: () {},
               mPin: mPin,
             ),
           );
@@ -213,12 +230,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: NewMpinScreen(
-              saveFuction: () {
+              saveFuction: (mPin) async {
                 // New Pin Create Api in this
-
-                Navigator.pop(context);
-                Navigator.pop(context);
-                bloc.add(TriggeredHomeTabEvent());
+                if (await createMpin(mPin)) {
+                  PreferenceHelper.setPreference('mPin', mPin);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  bloc.add(TriggeredHomeTabEvent());
+                } else {
+                  AppUtils.showToast('Change Mpin has some Issue');
+                }
               },
             ),
           );
@@ -241,6 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppUtils.noInternetSnackbar(context);
                       }
                       if (state is EnterSecurePinState) {
+                        setState(() {
+                          bloc.isSubmit = true;
+                          bloc.isLoading = false;
+                          bloc.isLoaded = false;
+                        });
                         if (state.securePin == null) {
                           showCreateMPinDialogBox();
                         } else {

@@ -352,7 +352,13 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     ],
                                                   )),
                                             ))),
-                                    const SizedBox(width: 30),
+                                    // const SizedBox(width: 30),
+                                    ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 10,
+                                        maxWidth: 30,
+                                      ),
+                                    ),
                                     Expanded(
                                         child: SizedBox(
                                       height: 45,

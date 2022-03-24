@@ -209,7 +209,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   await _prefs.setBool(
                       Constants.userAdmin, agentDetails.data!.first.userAdmin!);
 
+                  Map<String, dynamic> getProfileData =
+                      await APIRepository.apiRequest(
+                          APIRequestType.get, HttpUrl.profileUrl);
+
                   yield SignInCompletedState();
+
+                  if (getProfileData['success']) {
+                    Map<String, dynamic> jsonData = getProfileData['data'];
+                    var profileAPIValue = ProfileApiModel.fromJson(jsonData);
+
+                    yield EnterSecurePinState(
+                      securePin: profileAPIValue.result?.first.mPin,
+                      userName: profileAPIValue.result?.first.aRef,
+                    );
+                  }
 
                   // Here call share device info api
                   Map<String, dynamic> deviceData = <String, dynamic>{};
@@ -307,18 +321,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
                   // For Secure Pin Flow API Call
                   // Get the Secure Pin
-                  Map<String, dynamic> getProfileData =
-                      await APIRepository.apiRequest(
-                          APIRequestType.get, HttpUrl.profileUrl);
-
-                  if (getProfileData['success']) {
-                    Map<String, dynamic> jsonData = getProfileData['data'];
-                    var profileAPIValue = ProfileApiModel.fromJson(jsonData);
-                    yield EnterSecurePinState(
-                      securePin: profileAPIValue.result?.first.mPin,
-                      userName: profileAPIValue.result?.first.aRef,
-                    );
-                  }
 
                   // yield HomeTabState();
                 }

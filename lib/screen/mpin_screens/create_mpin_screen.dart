@@ -37,6 +37,7 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
         Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: CustomText(
@@ -98,7 +99,7 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 30),
         CustomButton(
           Languages.of(context)!.save,
           fontSize: FontSize.sixteen,

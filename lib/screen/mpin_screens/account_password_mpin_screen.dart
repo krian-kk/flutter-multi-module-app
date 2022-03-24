@@ -52,6 +52,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
             Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: CustomText(

@@ -12,6 +12,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class ConformMpinScreen extends StatefulWidget {
   final GestureTapCallback successFunction;
   final GestureTapCallback forgotPinFunction;
+  final GestureTapCallback popFunction;
   final String mPin;
 
   const ConformMpinScreen({
@@ -19,6 +20,7 @@ class ConformMpinScreen extends StatefulWidget {
     required this.successFunction,
     required this.forgotPinFunction,
     required this.mPin,
+    required this.popFunction,
   }) : super(key: key);
 
   @override
@@ -44,6 +46,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: CustomText(
@@ -54,13 +57,16 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                   ),
                 ),
                 InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      widget.popFunction();
+                      Navigator.pop(context);
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(2),
                       child: SvgPicture.asset(ImageResource.close),
                     ))
               ]),
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: PinCodeTextField(
@@ -109,7 +115,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 60),
+          const SizedBox(height: 40),
           GestureDetector(
             onTap: widget.forgotPinFunction,
             child: Container(
