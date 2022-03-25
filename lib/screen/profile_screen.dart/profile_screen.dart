@@ -176,7 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
                   AppUtils.showToast('Change MPin Successfully');
-                  PreferenceHelper.setPreference('mPin', mPin);
+                  PreferenceHelper.setPreference(Constants.mPin, mPin);
                   Navigator.pop(context);
                 } else {
                   AppUtils.showToast('Change Mpin has some Issue');

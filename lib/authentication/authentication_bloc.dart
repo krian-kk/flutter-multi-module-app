@@ -22,7 +22,6 @@ class AuthenticationBloc
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
       await Future.delayed(const Duration(seconds: 2));
-
       // if (response.isNotEmpty) {}
       Singleton.instance.buildContext = event.context;
       SharedPreferences _pref = await SharedPreferences.getInstance();

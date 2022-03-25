@@ -1,5 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -12,9 +14,15 @@ import 'package:origa/screen/login_screen/login_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen_bloc.dart';
 import 'package:origa/screen/message_screen/chat_screen_event.dart';
+import 'package:origa/screen/mpin_screens/conform_mpin_screen.dart';
 import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
+import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/preference_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_state.dart';
@@ -187,7 +195,19 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
+        String? agentRef =
+            await PreferenceHelper.getPreference(Constants.agentRef);
+        // await SharedPreferences.getInstance().then((value) {
+        //   String? mPin = value.getString(Constants.mPin);
+        //   String? agentRef = value.getString(Constants.agentRef);
+        //   print('Mpin ======= > ${mPin}');
+        if (mPin != null) {
+          showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        }
+        // });
       }
 
       if (state is AuthenticationUnAuthenticated) {
@@ -198,7 +218,12 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
       }
 
       if (state is OfflineState) {
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        await SharedPreferences.getInstance().then((value) {
+          String mPin = value.getString(Constants.mPin).toString();
+          String agentRef = value.getString(Constants.agentRef).toString();
+          showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+        });
+        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
       if (state is SplashScreenState) {
         Navigator.pushNamed(context, AppRoutes.splashScreen);
@@ -211,4 +236,34 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
       },
     ),
   );
+}
+
+Future<void> showMPinDialog(
+    {String? mPin, String? userName, BuildContext? buildContext}) async {
+  return showDialog<void>(
+      context: buildContext!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          contentPadding: const EdgeInsets.all(20),
+          content: ConformMpinScreen(
+            successFunction: () => Navigator.pushReplacementNamed(
+                context, AppRoutes.homeTabScreen),
+            forgotPinFunction: () async {
+              if (ConnectivityResult.none ==
+                  await Connectivity().checkConnectivity()) {
+                AppUtils.showErrorToast(
+                    Languages.of(context)!.noInternetConnection);
+              } else {
+                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+              }
+            },
+            mPin: mPin!,
+          ),
+        );
+      });
 }

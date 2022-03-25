@@ -12,16 +12,18 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class ConformMpinScreen extends StatefulWidget {
   final GestureTapCallback successFunction;
   final GestureTapCallback forgotPinFunction;
-  final GestureTapCallback popFunction;
+  final GestureTapCallback? popFunction;
   final String mPin;
+  final bool canPopWidget;
 
-  const ConformMpinScreen({
-    Key? key,
-    required this.successFunction,
-    required this.forgotPinFunction,
-    required this.mPin,
-    required this.popFunction,
-  }) : super(key: key);
+  const ConformMpinScreen(
+      {Key? key,
+      required this.successFunction,
+      required this.forgotPinFunction,
+      required this.mPin,
+      this.popFunction,
+      this.canPopWidget = false})
+      : super(key: key);
 
   @override
   State<ConformMpinScreen> createState() => _ConformMpinScreenState();
@@ -30,6 +32,7 @@ class ConformMpinScreen extends StatefulWidget {
 class _ConformMpinScreenState extends State<ConformMpinScreen> {
   late TextEditingController contoller;
   bool isError = false;
+
   @override
   void initState() {
     contoller = TextEditingController();
@@ -56,15 +59,16 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                InkWell(
-                    onTap: () {
-                      widget.popFunction();
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      child: SvgPicture.asset(ImageResource.close),
-                    ))
+                if (widget.canPopWidget)
+                  InkWell(
+                      onTap: () {
+                        widget.popFunction!();
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        child: SvgPicture.asset(ImageResource.close),
+                      ))
               ]),
           const SizedBox(height: 20),
           Padding(
