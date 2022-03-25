@@ -167,6 +167,5 @@ The navigation delegate is set to block navigation to the youtube website.
     controller.loadUrl(Uri.dataFromString(htmlContents,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
-    // controller.loadFile('/assets/temp_html.html');
   }
 }
