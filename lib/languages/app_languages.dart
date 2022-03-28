@@ -605,4 +605,8 @@ abstract class Languages {
   String get enterOTP;
 
   String get youAreInOffline;
+
+  String get disposition;
+
+  String get visit;
 }

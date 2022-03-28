@@ -409,7 +409,7 @@ class AutoCalling {
                                                                   CustomText(
                                                                     Languages.of(
                                                                             context)!
-                                                                        .view,
+                                                                        .disposition,
                                                                     fontSize:
                                                                         FontSize
                                                                             .fourteen,

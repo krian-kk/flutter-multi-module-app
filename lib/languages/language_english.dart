@@ -913,4 +913,10 @@ class LanguageEn extends Languages {
 
   @override
   String get youAreInOffline => 'You are in offline';
+
+  @override
+  String get disposition => 'Disposition';
+
+  @override
+  String get visit => 'Visit';
 }

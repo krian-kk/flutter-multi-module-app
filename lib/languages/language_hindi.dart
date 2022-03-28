@@ -916,4 +916,10 @@ class LanguageHi extends Languages {
 
   @override
   String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';
+
+  @override
+  String get disposition => 'स्वभाव';
+
+  @override
+  String get visit => 'मुलाकात';
 }

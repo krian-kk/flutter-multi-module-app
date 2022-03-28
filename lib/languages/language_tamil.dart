@@ -919,4 +919,10 @@ class LanguageTa extends Languages {
 
   @override
   String get youAreInOffline => 'இணைய வசதி இல்லை';
+
+  @override
+  String get disposition => 'இயல்புநிலை';
+
+  @override
+  String get visit => 'வருகை';
 }

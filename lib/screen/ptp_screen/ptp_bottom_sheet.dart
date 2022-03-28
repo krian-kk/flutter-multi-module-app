@@ -120,7 +120,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   @override
   Widget build(BuildContext context) {
     List<PaymentModeButtonModel> paymentModeButtonList = [
-      PaymentModeButtonModel(Languages.of(context)!.cheque),
+      PaymentModeButtonModel(Languages.of(context)!.pickUp),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
 
@@ -551,7 +551,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             ),
           );
 
-         await FirebaseUtils.storeEvents(
+          await FirebaseUtils.storeEvents(
               eventsDetails: requestBodyData.toJson(),
               caseId: widget.caseId,
               selectedFollowUpDate: ptpDateControlller.text,
