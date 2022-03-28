@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/allocation.dart';
+import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
@@ -21,10 +24,14 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/notification_data_model.dart';
+import '../../utils/app_utils.dart';
+import '../notification_navigate_screen.dart';
 import 'bloc/home_tab_event.dart';
 
 class HomeTabScreen extends StatefulWidget {
-  const HomeTabScreen({Key? key}) : super(key: key);
+  final dynamic notificationData;
+  const HomeTabScreen({Key? key, this.notificationData}) : super(key: key);
 
   @override
   _HomeTabScreenState createState() => _HomeTabScreenState();
@@ -36,12 +43,16 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
   String? title = StringResource.allocation.toUpperCase();
   String? internetAvailability;
-  TabController? _controller;
+  late final TabController? _controller;
+  String navigationErrorMsg = 'Bad network connection';
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(vsync: this, length: 3);
+    _controller = TabController(
+      length: 3,
+      vsync: this,
+    );
     _controller!.addListener(() {
       if (internetAvailability == 'none') {
         if (_controller!.index != 0) {
@@ -52,7 +63,9 @@ class _HomeTabScreenState extends State<HomeTabScreen>
       }
     });
     internetChecking();
-    bloc = HomeTabBloc()..add(HomeTabInitialEvent());
+    bloc = HomeTabBloc()
+      ..add(HomeTabInitialEvent(
+          context: context, notificationData: widget.notificationData));
   }
 
   Future<void> internetChecking() async {
@@ -87,9 +100,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                 .millisecondsSinceEpoch -
             DateTime.now().millisecondsSinceEpoch;
 
-
-
-
         if (nextLoginTime > 0) {
           Future.delayed(
             Duration(milliseconds: nextLoginTime),
@@ -115,8 +125,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
     });
   }
 
-
-
   @override
   void dispose() {
     super.dispose();
@@ -129,7 +137,92 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
     return BlocListener<HomeTabBloc, HomeTabState>(
       bloc: bloc,
-      listener: (context, state) {},
+      listener: (context, state) async {
+        if (state is NavigateTabState) {
+          const CustomLoadingWidget();
+          print(
+              "Returned Data for notification ----> ${state.notificationData!}");
+          // NotificationDataModel notificationData =
+          //     NotificationDataModel.fromJson(
+          //         jsonDecode(state.notificationData!));
+          switch (state.notificationData!) {
+            case '0':
+              //{Tab index = 0 == Allocation}
+              setState(() {
+                _controller!.index = int.parse(state.notificationData!);
+              });
+              break;
+            case '1':
+              //{Tab index = 1 == Dashboard}
+              setState(() {
+                _controller!.index = int.parse(state.notificationData!);
+              });
+              break;
+            case '2':
+              //{Tab index = 2 == Profile}
+              setState(() {
+                _controller!.index = int.parse(state.notificationData!);
+              });
+              break;
+            case '3':
+              // Navigate Chat Screen
+              OnclickNotificationNavigateScreen().messageScreenBottomSheet(
+                  context,
+                  fromID: Singleton.instance.agentRef,
+                  toID: state.notificationData!);
+              break;
+            case '4':
+              // Initiate Dashboard bloc
+              DashboardBloc dashboardbloc = DashboardBloc();
+              //Navigate MyVisit and MyCalls Screen
+              dashboardbloc.add(MyVisitsEvent());
+
+              await Future.delayed(const Duration(milliseconds: 10000));
+              if (dashboardbloc.myVisitsData.result != null) {
+                OnclickNotificationNavigateScreen()
+                    .myVisitsSheet(context, dashboardbloc);
+              } else {
+                AppUtils.showErrorToast(navigationErrorMsg);
+              }
+              break;
+            case '5':
+              // Initiate Dashboard bloc
+              DashboardBloc dashboardbloc = DashboardBloc();
+              //Navigate MyDeposists Screen
+              dashboardbloc.add(MyDeposistsEvent());
+              await Future.delayed(const Duration(milliseconds: 1000));
+              if (dashboardbloc.myDeposistsData.result != null) {
+                OnclickNotificationNavigateScreen()
+                    .myDeposistsSheet(context, dashboardbloc);
+              } else {
+                AppUtils.showErrorToast(navigationErrorMsg);
+              }
+              break;
+            case '6':
+              // Initiate Dashboard bloc
+              DashboardBloc dashboardbloc = DashboardBloc();
+              //Navigate MyReceipts Screen
+              dashboardbloc.add(MyReceiptsEvent());
+              await Future.delayed(const Duration(milliseconds: 1000));
+              if (dashboardbloc.myReceiptsData.result != null) {
+                OnclickNotificationNavigateScreen()
+                    .myReceiptsSheet(context, dashboardbloc);
+              } else {
+                AppUtils.showErrorToast(navigationErrorMsg);
+              }
+              break;
+            case '7':
+              //Navigate Case Detail Screen
+              Navigator.pushNamed(
+                context,
+                AppRoutes.caseDetailsScreen,
+                arguments: {'caseID': state.notificationData!},
+              );
+              break;
+            default:
+          }
+        }
+      },
       child: BlocBuilder<HomeTabBloc, HomeTabState>(
         bloc: bloc,
         builder: (context, state) {
@@ -145,7 +238,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                 height: 30,
                 color: Colors.red,
                 width: MediaQuery.of(context).size.width,
-                child:  CustomText(
+                child: CustomText(
                   Languages.of(context)!.youAreInOffline,
                   color: Colors.white,
                   style: const TextStyle(

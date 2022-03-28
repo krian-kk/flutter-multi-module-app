@@ -23,6 +23,7 @@ import '../../http/httpurls.dart';
 
 import '../../models/audio_convertion_model.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/date_formate_utils.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
@@ -260,11 +261,8 @@ class _CustomEventDetailsBottomSheetState
                   children: [
                     if (expandedList[index].date != null)
                       CustomText(
-                        DateFormat('dd MMMM yyyy')
-                            .format(DateTime.parse(
-                                expandedList[index].date.toString()))
-                            .toString()
-                            .toUpperCase(),
+                        DateFormateUtils.followUpDateFormate(
+                            expandedList[index].date.toString()),
                         fontSize: FontSize.seventeen,
                         fontWeight: FontWeight.w700,
                         color: ColorResource.color000000,
@@ -288,20 +286,52 @@ class _CustomEventDetailsBottomSheetState
                           color: ColorResource.color000000,
                         )
                       : const SizedBox(),
+                  if (expandedList[index].eventType == 'RECEIPT')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          expandedList[index].customerName,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        CustomText(
+                          "Receipt Amount : " +
+                              Constants.inr +
+                              expandedList[index].amountCollected!,
+                          fontSize: FontSize.fourteen,
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                        expandedList[index].chequeRefNo != null &&
+                                expandedList[index].chequeRefNo != '-'
+                            ? CustomText(
+                                "Cheque RefNo : " +
+                                    expandedList[index].chequeRefNo!,
+                                fontSize: FontSize.fourteen,
+                                fontWeight: FontWeight.w700,
+                                color: ColorResource.color000000,
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
                   if (expandedList[index].mode != null)
                     CustomText(
-                      Languages.of(context)!.mode.toString().toUpperCase(),
+                      Languages.of(context)!.mode.toString().toUpperCase() +
+                          ' : ' +
+                          expandedList[index].mode.toString().toUpperCase(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  if (expandedList[index].mode != null)
-                    CustomText(
-                      expandedList[index].mode.toString().toUpperCase(),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
+                  // if (expandedList[index].mode != null)
+                  //   CustomText(
+                  //     expandedList[index].mode.toString().toUpperCase(),
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   const SizedBox(height: 8),
                   if (expandedList[index].eventType == 'REPO')
                     Column(

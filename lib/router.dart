@@ -67,7 +67,10 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
 
     // final AuthenticationBloc authBloc =
     //     BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildHomeTabScreen());
+    return addAuthBloc(
+        context,
+        PageBuilder.buildHomeTabScreen(
+            notificationData: settings.arguments as dynamic));
   });
 }
 
@@ -81,7 +84,10 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildLoginScreen(authBloc));
+    return addAuthBloc(
+        context,
+        PageBuilder.buildLoginScreen(authBloc,
+            notificationData: settings.arguments as dynamic));
   });
 }
 
@@ -116,23 +122,25 @@ class PageBuilder {
     );
   }
 
-  static Widget buildHomeTabScreen() {
+  static Widget buildHomeTabScreen({dynamic notificationData}) {
     return BlocProvider(
       create: (BuildContext context) {
         // final AuthenticationBloc authBloc =
         //     BlocProvider.of<AuthenticationBloc>(context);
         return BlocProvider.of<HomeTabBloc>(context)
-          ..add(HomeTabInitialEvent());
+          ..add(HomeTabInitialEvent(
+              context: context, notificationData: notificationData));
       },
-      child: const HomeTabScreen(),
+      child: HomeTabScreen(notificationData: notificationData),
     );
   }
 
-  static Widget buildLoginScreen(AuthenticationBloc authBloc) {
+  static Widget buildLoginScreen(AuthenticationBloc authBloc,
+      {dynamic notificationData}) {
     return BlocProvider(
       create: (BuildContext context) => BlocProvider.of<LoginBloc>(context)
         ..add(LoginInitialEvent(context: context)),
-      child: LoginScreen(authBloc),
+      child: LoginScreen(authBloc, notificationData: notificationData),
     );
   }
 
@@ -187,14 +195,22 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        print(
+            "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
+
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+            arguments: state.notificationData);
       }
 
       if (state is AuthenticationUnAuthenticated) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        print(
+            "Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}");
+
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+            arguments: state.notificationData);
       }
 
       if (state is OfflineState) {

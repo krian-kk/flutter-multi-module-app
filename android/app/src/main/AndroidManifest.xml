@@ -26,6 +26,8 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
             tools:targetApi="cupcake">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -63,7 +65,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="com.mcollect.origa.ai" />
+            android:value="com_mcollect_origa_ai" />
     </application>
     <!-- Provide required visibility configuration for API level 30 and above -->
     <queries>
