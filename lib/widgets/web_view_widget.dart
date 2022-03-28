@@ -121,23 +121,24 @@ The navigation delegate is set to block navigation to the youtube website.
         child: const Icon(Icons.add_a_photo),
         onPressed: () {
           debugPrint("dkldj");
-          controller.runJavascript('''<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=2">
-    <script>
-        window.fwSettings={
-        'widget_id':81000001329,
-        'locale': 'en'
-        };
-        !function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}()
-        </script>
-        <script type='text/javascript' src='https://ind-widget.freshworks.com/widgets/81000001329.js' async defer></script>
-</head>
-<body>
-    <p>Hello from Flutter</p>
-    <p id="result"></p>
-</body>
-</html>''');
+          // controller.runJavascript('function()');
+//           controller.runJavascript('''<html>
+// <head>
+//     <meta name="viewport" content="width=device-width, initial-scale=2">
+//     <script>
+//         window.fwSettings={
+//         'widget_id':81000001329,
+//         'locale': 'en'
+//         };
+//         !function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}()
+//         </script>
+//         <script type='text/javascript' src='https://ind-widget.freshworks.com/widgets/81000001329.js' async defer></script>
+// </head>
+// <body>
+//     <p>Hello from Flutter</p>
+//     <p id="result"></p>
+// </body>
+// </html>''');
           // flutterWebviewPlugin.evalJavascript('alert("I am an alert box!");');
           // controller
           //     .runJavascript('<script>alert("I am an alert box!");</script>');
@@ -167,5 +168,6 @@ The navigation delegate is set to block navigation to the youtube website.
     controller.loadUrl(Uri.dataFromString(htmlContents,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
+    // controller.loadFile('/assets/temp_html.html');
   }
 }
