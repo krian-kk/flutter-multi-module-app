@@ -17,12 +17,14 @@ import 'package:origa/utils/preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_event.dart';
+
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial());
 
   ProfileApiModel profileAPIValue = ProfileApiModel();
+
   // it's manage the Refresh the page basaed on Internet connection
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
@@ -33,6 +35,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
   bool isProfileImageUpdating = false;
   File? image;
+
 // customer language preference data
   List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList = [];
 
@@ -148,7 +151,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await _prefs.setString(Constants.userType, "");
       await _prefs.setString('addressValue', "");
       await _prefs.setBool('areyouatOffice', true);
-      // await _prefs.setBool(Constants.rememberMe, false);
+      await _prefs.setBool(Constants.appDataLoadedFromFirebase, false);
+      Singleton.instance.isOfflineStorageFeatureEnabled = false;
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {
