@@ -303,6 +303,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   validatorCallBack: () {},
                                   keyBoardType: TextInputType.number,
                                   validationRules: const ['required'],
+                                  lableStyle: const TextStyle(
+                                      color: ColorResource.color666666,
+                                      fontFamily: 'Lato',
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: FontSize.fifteen),
                                   isLabel: true,
                                   isNumberOnly: true,
                                   onEditing: () {

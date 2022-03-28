@@ -53,6 +53,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? caseId;
   final String? agrRef;
   final OnChange? remarkFunction;
+  final TextStyle? lableStyle;
 
   const CustomReadOnlyTextField(
     this.hintText,
@@ -92,6 +93,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.isNumberOnly = false,
     this.agrRef,
     this.remarkFunction,
+    this.lableStyle,
   }) : super(key: key);
 
   @override
@@ -327,11 +329,12 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                       fontStyle: FontStyle.normal,
                       fontSize: 14),
                   // errorText: validatePassword(widget.controller.text.trim()),
-                  labelStyle: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: FontSize.twelve,
-                      color: ColorResource.color666666),
+                  labelStyle: widget.lableStyle ??
+                      const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: FontSize.twelve,
+                          color: ColorResource.color23375A),
 
                   // Theme.of(context).textTheme.subtitle1!.copyWith(
                   //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
