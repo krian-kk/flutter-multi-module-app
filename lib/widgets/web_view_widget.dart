@@ -45,9 +45,11 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                 JavascriptChannel(
                   name: 'messageHandler',
                   onMessageReceived: (JavascriptMessage message) {
-                    final script = "document.getElementById('value').innerText=\"${message.message}\"";
-                    controller.evaluateJavascript(script);
-                    print("message from the web view=\"${message.message}\"");
+                    final script =
+                        "document.getElementById('value').innerText=\"${message.message}\"";
+                    controller.runJavascript(script);
+                    debugPrint(
+                        "message from the web view=\"${message.message}\"");
                   },
                 )
               },
@@ -60,7 +62,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                         mimeType: 'text/html',
                         encoding: Encoding.getByName('utf-8'))
                     .toString());
-                },
+              },
               onPageStarted: (val) {
                 // print("Page Started $val");
                 //_loadHTML(controller: controller);
