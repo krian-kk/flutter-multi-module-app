@@ -609,4 +609,6 @@ abstract class Languages {
   String get disposition;
 
   String get visit;
+
+  String get selectSpeechToTextLanguage;
 }

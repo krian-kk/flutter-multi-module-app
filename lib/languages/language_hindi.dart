@@ -865,7 +865,7 @@ class LanguageHi extends Languages {
 
   @override
   String get errorMsgS2TlangCode =>
-      'कृपया प्रोफ़ाइल से ग्राहक भाषा वरीयता चुनें';
+      'कृपया प्रोफ़ाइल से वाक् से पाठ भाषा का चयन करें';
 
   @override
   String get generatePaymentLink => 'भुगतान लिंक उत्पन्न करें';
@@ -922,4 +922,7 @@ class LanguageHi extends Languages {
 
   @override
   String get visit => 'मुलाकात';
+
+  @override
+  String get selectSpeechToTextLanguage => 'भाषण से पाठ भाषा का चयन करें';
 }
