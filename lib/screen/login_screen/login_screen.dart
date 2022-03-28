@@ -27,6 +27,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
+import 'package:origa/widgets/web_view_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/login_bloc.dart';
@@ -56,8 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
-    userId.text = 'CDE_atc';
-    password.text = 'Origa123';
+    // userId.text = 'CDE_46';
+    // password.text = 'Origa123';
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
@@ -103,6 +104,32 @@ class _LoginScreenState extends State<LoginScreen> {
       // AppUtils.showErrorToast("OTP does't match");
     }
     return returnValue;
+  }
+
+  webViewScreen(BuildContext context, {required String urlAddress}) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      context: context,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async {
+            return false;
+          },
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: WebViewWidget(urlAddress: urlAddress),
+          ),
+        );
+      },
+    );
   }
 
   Future<bool> createMpin(String? mPin) async {
@@ -466,9 +493,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             color: ColorResource.color23375A,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
+                                        const SizedBox(height: 30),
                                         if (userId.text != '' ||
                                             password.text != '')
                                           CustomButton(
@@ -509,6 +534,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                             buttonBackgroundColor:
                                                 ColorResource.colorffffff,
                                           ),
+                                        const SizedBox(height: 10),
+                                        CustomButton(
+                                          Languages.of(context)!.help,
+                                          onTap: () => webViewScreen(
+                                            context,
+                                            urlAddress:
+                                                'https://www.google.com/?client=safari',
+                                          ),
+                                          borderColor:
+                                              ColorResource.color23375A,
+                                          cardShape: 90,
+                                          fontSize: FontSize.sixteen,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorResource.color23375A,
+                                          buttonBackgroundColor:
+                                              ColorResource.colorffffff,
+                                        ),
                                       ],
                                     ),
                                   ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/models/audio_remarks_post_model.dart';
 import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/singleton.dart';
@@ -31,10 +32,15 @@ class VoiceRecodingWidget extends StatefulWidget {
   final String filePath;
   final Function? recordingData;
   final String? caseId;
+  final OnChange? checkRecord;
 
-  const VoiceRecodingWidget(
-      {Key? key, this.recordingData, this.caseId, required this.filePath})
-      : super(key: key);
+  const VoiceRecodingWidget({
+    Key? key,
+    this.recordingData,
+    this.caseId,
+    required this.filePath,
+    this.checkRecord,
+  }) : super(key: key);
 
   @override
   State<VoiceRecodingWidget> createState() => _VoiceRecodingWidgetState();
@@ -120,6 +126,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         setState(() => result = true);
       });
     }
+    if (result) {
+      widget.checkRecord!(Constants.process);
+    }
     return result;
   }
 
@@ -144,6 +153,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         });
       });
     }
+    widget.checkRecord!(Constants.stop);
   }
 
   apiCall() async {
@@ -201,7 +211,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       getTranslatedData = Speech2TextModel.fromJson(postResult['data']);
       // widget.recordingData!(getTranslatedData.result!.translatedText);
       widget.recordingData!(getTranslatedData);
-    } else {}
+    } else {
+      widget.checkRecord!(Constants.none);
+    }
   }
 
   // @override

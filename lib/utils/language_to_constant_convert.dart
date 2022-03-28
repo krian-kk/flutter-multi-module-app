@@ -43,6 +43,8 @@ class ConvertString {
       constantValue = Constants.cash;
     } else if (text == Languages.of(context)!.digital) {
       constantValue = Constants.digital;
+    } else if (text == Languages.of(context)!.pickUp) {
+      constantValue = Constants.cheque;
     }
     return constantValue;
   }

@@ -337,7 +337,7 @@ class _AddressDetailsBottomSheetScreenState
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!
-                                                                  .view,
+                                                                  .disposition,
                                                               lineHeight: 1,
                                                               color: ColorResource
                                                                   .color23375A,
