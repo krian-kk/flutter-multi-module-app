@@ -54,6 +54,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? agrRef;
   final OnChange? remarkFunction;
   final TextStyle? lableStyle;
+  final OnChange? checkRecord;
 
   const CustomReadOnlyTextField(
     this.hintText,
@@ -94,6 +95,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.agrRef,
     this.remarkFunction,
     this.lableStyle,
+    this.checkRecord,
   }) : super(key: key);
 
   @override
@@ -312,6 +314,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                 }
                               },
                               caseId: widget.caseId,
+                              checkRecord: widget.checkRecord,
                             )
                           : const SizedBox()
                       : widget.suffixWidget,
@@ -496,6 +499,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                         translateTextController.text = '';
                         isActiveSpeaker = false;
                       });
+                      widget.checkRecord!(Constants.submit);
                       // Here vreturn the value for S2T API respose
                       widget.returnS2Tresponse!(getTranslatedData);
                     },

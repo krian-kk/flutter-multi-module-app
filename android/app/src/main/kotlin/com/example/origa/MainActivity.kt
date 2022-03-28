@@ -19,6 +19,7 @@ class MainActivity : FlutterActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var output: String? = null
     private var length: Int = 0
+    private var isRecord: Boolean? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        this.window.setFlags(
@@ -47,6 +48,7 @@ class MainActivity : FlutterActivity() {
                         mediaRecorder?.setOutputFile(output)
                         mediaRecorder?.prepare();
                         mediaRecorder?.start()
+                        isRecord = true
                         result.success(true)
                     }catch (e : Exception){
                         e.printStackTrace()
@@ -59,9 +61,14 @@ class MainActivity : FlutterActivity() {
                         Log.d("2","success")
                         mediaRecorder?.stop()
                         length = 0
+                        isRecord = false
                         result.success(true)
                     }
                     Log.d("3","success")
+                }
+                "isRecord" -> {
+                    Log.d("djkdjd", "${isRecord}")
+                    result.success(isRecord)
                 }
                 "playRecordAudio" -> {
                     print("Recording")

@@ -50,6 +50,8 @@ class _CustomCaptureImageBottomSheetState
 
   bool isSubmit = true;
 
+  String? isRecord;
+
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
 
@@ -157,6 +159,11 @@ class _CustomCaptureImageBottomSheetState
                                         });
                                       }
                                     },
+                                    checkRecord: (isRecord) {
+                                      setState(() {
+                                        this.isRecord = isRecord;
+                                      });
+                                    },
 
                                     // suffixWidget: VoiceRecodingWidget(),
                                   ),
@@ -211,93 +218,103 @@ class _CustomCaptureImageBottomSheetState
                           fontWeight: FontWeight.w600,
                           onTap: isSubmit
                               ? () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (uploadFileLists.isNotEmpty) {
-                                      setState(() => isSubmit = false);
-                                      Position position = Position(
-                                        longitude: 0,
-                                        latitude: 0,
-                                        timestamp: DateTime.now(),
-                                        accuracy: 0,
-                                        altitude: 0,
-                                        heading: 0,
-                                        speed: 0,
-                                        speedAccuracy: 0,
-                                      );
-                                      if (Geolocator.checkPermission()
-                                              .toString() !=
-                                          PermissionStatus.granted.toString()) {
-                                        Position res =
-                                            await Geolocator.getCurrentPosition(
-                                                desiredAccuracy:
-                                                    LocationAccuracy.best);
-                                        setState(() {
-                                          position = res;
-                                        });
+                                  if (isRecord == Constants.process) {
+                                    AppUtils.showToast(
+                                        'Stop the Record then Submit');
+                                  } else if (isRecord == Constants.stop) {
+                                    AppUtils.showToast(
+                                        'Please wait audio is converting');
+                                  } else {
+                                    if (_formKey.currentState!.validate()) {
+                                      if (uploadFileLists.isNotEmpty) {
+                                        setState(() => isSubmit = false);
+                                        Position position = Position(
+                                          longitude: 0,
+                                          latitude: 0,
+                                          timestamp: DateTime.now(),
+                                          accuracy: 0,
+                                          altitude: 0,
+                                          heading: 0,
+                                          speed: 0,
+                                          speedAccuracy: 0,
+                                        );
+                                        if (Geolocator.checkPermission()
+                                                .toString() !=
+                                            PermissionStatus.granted
+                                                .toString()) {
+                                          Position res = await Geolocator
+                                              .getCurrentPosition(
+                                                  desiredAccuracy:
+                                                      LocationAccuracy.best);
+                                          setState(() {
+                                            position = res;
+                                          });
+                                        }
+                                        var requestBodyData =
+                                            PostImageCapturedModel(
+                                                eventId: ConstantEventValues
+                                                    .captureImageEventId,
+                                                eventCode: ConstantEventValues
+                                                    .captureImageEvenCode,
+                                                caseId: widget.bloc.caseId
+                                                    .toString(),
+                                                contractor: Singleton.instance.contractor ??
+                                                    '',
+                                                voiceCallEventCode: ConstantEventValues
+                                                    .voiceCallEventCode,
+                                                createdBy:
+                                                    Singleton.instance.agentRef ??
+                                                        '',
+                                                agentName: Singleton
+                                                        .instance.agentName ??
+                                                    '',
+                                                agrRef:
+                                                    Singleton.instance.agrRef ??
+                                                        '',
+                                                callerServiceID: Singleton
+                                                        .instance
+                                                        .callerServiceID ??
+                                                    '',
+                                                callID: Singleton
+                                                        .instance.callID ??
+                                                    '0',
+                                                callingID:
+                                                    Singleton.instance
+                                                            .callingID ??
+                                                        ' 0',
+                                                invalidNumber: false,
+                                                eventType: 'IMAGE CAPTURED',
+                                                eventModule: (widget
+                                                            .bloc.userType ==
+                                                        Constants.telecaller)
+                                                    ? 'Telecalling'
+                                                    : 'Field Allocation',
+                                                eventAttr: EventAttr(
+                                                  remarks:
+                                                      remarksControlller.text,
+                                                  imageLocation: [''],
+                                                  longitude: position.longitude,
+                                                  latitude: position.latitude,
+                                                  accuracy: position.accuracy,
+                                                  altitude: position.altitude,
+                                                  heading: position.heading,
+                                                  speed: position.speed,
+                                                  reginal_text: returnS2Tdata
+                                                      .result?.reginalText,
+                                                  translated_text: returnS2Tdata
+                                                      .result?.translatedText,
+                                                  audioS3Path: returnS2Tdata
+                                                      .result?.audioS3Path,
+                                                ));
+                                        widget.bloc.add(PostImageCapturedEvent(
+                                            postData: requestBodyData,
+                                            fileData: uploadFileLists));
+                                      } else {
+                                        AppUtils.showToast(
+                                          Languages.of(context)!.uploadImage,
+                                          gravity: ToastGravity.CENTER,
+                                        );
                                       }
-                                      var requestBodyData =
-                                          PostImageCapturedModel(
-                                              eventId: ConstantEventValues
-                                                  .captureImageEventId,
-                                              eventCode: ConstantEventValues
-                                                  .captureImageEvenCode,
-                                              caseId: widget.bloc.caseId
-                                                  .toString(),
-                                              contractor: Singleton
-                                                      .instance.contractor ??
-                                                  '',
-                                              voiceCallEventCode: ConstantEventValues
-                                                  .voiceCallEventCode,
-                                              createdBy:
-                                                  Singleton.instance.agentRef ??
-                                                      '',
-                                              agentName: Singleton
-                                                      .instance.agentName ??
-                                                  '',
-                                              agrRef: Singleton.instance.agrRef ??
-                                                  '',
-                                              callerServiceID: Singleton.instance
-                                                      .callerServiceID ??
-                                                  '',
-                                              callID:
-                                                  Singleton
-                                                          .instance.callID ??
-                                                      '0',
-                                              callingID: Singleton
-                                                      .instance.callingID ??
-                                                  ' 0',
-                                              invalidNumber: false,
-                                              eventType: 'IMAGE CAPTURED',
-                                              eventModule:
-                                                  (widget.bloc.userType ==
-                                                          Constants.telecaller)
-                                                      ? 'Telecalling'
-                                                      : 'Field Allocation',
-                                              eventAttr: EventAttr(
-                                                remarks:
-                                                    remarksControlller.text,
-                                                imageLocation: [''],
-                                                longitude: position.longitude,
-                                                latitude: position.latitude,
-                                                accuracy: position.accuracy,
-                                                altitude: position.altitude,
-                                                heading: position.heading,
-                                                speed: position.speed,
-                                                reginal_text: returnS2Tdata
-                                                    .result?.reginalText,
-                                                translated_text: returnS2Tdata
-                                                    .result?.translatedText,
-                                                audioS3Path: returnS2Tdata
-                                                    .result?.audioS3Path,
-                                              ));
-                                      widget.bloc.add(PostImageCapturedEvent(
-                                          postData: requestBodyData,
-                                          fileData: uploadFileLists));
-                                    } else {
-                                      AppUtils.showToast(
-                                        Languages.of(context)!.uploadImage,
-                                        gravity: ToastGravity.CENTER,
-                                      );
                                     }
                                   }
                                 }
