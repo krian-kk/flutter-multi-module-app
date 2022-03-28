@@ -868,7 +868,7 @@ class LanguageTa extends Languages {
 
   @override
   String get errorMsgS2TlangCode =>
-      'சுயவிவரத்திலிருந்து வாடிக்கையாளர் மொழி விருப்பத்தைத் தேர்ந்தெடுக்கவும்';
+      'சுயவிவரத்திலிருந்து பேச்சு முதல் உரை மொழியைத் தேர்ந்தெடுக்கவும்';
 
   @override
   String get generatePaymentLink => 'கட்டண இணைப்பை உருவாக்கவும்';
@@ -919,4 +919,14 @@ class LanguageTa extends Languages {
 
   @override
   String get youAreInOffline => 'இணைய வசதி இல்லை';
+
+  @override
+  String get disposition => 'இயல்புநிலை';
+
+  @override
+  String get visit => 'வருகை';
+
+  @override
+  String get selectSpeechToTextLanguage =>
+      'பேச்சு முதல் உரை மொழியைத் தேர்ந்தெடுக்கவும்';
 }

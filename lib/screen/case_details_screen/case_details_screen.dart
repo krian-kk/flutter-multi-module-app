@@ -969,7 +969,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                     children: [
                                                                       CustomText(
                                                                         Languages.of(context)!
-                                                                            .view,
+                                                                            .disposition,
                                                                         color: ColorResource
                                                                             .color23375A,
                                                                         fontSize:
@@ -1066,17 +1066,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                           ),
                                                         ),
                                                       ),
-                                                      const SizedBox(width: 8),
+                                                      const SizedBox(width: 10),
                                                       Expanded(
                                                           child: CustomText(
                                                         Languages.of(context)!
-                                                            .addressDetails
+                                                            .visit
                                                             .toString()
-                                                            .toUpperCase()
-                                                            .replaceAll(
-                                                                ' ', '\n'),
+                                                            .toUpperCase(),
                                                         fontSize:
                                                             FontSize.twelve,
+                                                        lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         fontStyle:
@@ -1130,16 +1129,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 8),
+                                                const SizedBox(width: 10),
                                                 Expanded(
                                                     child: CustomText(
                                                   Languages.of(context)!
-                                                      .callDetails
-                                                      .toUpperCase()
-                                                      .toString()
-                                                      .replaceAll(' ', ' \n'),
+                                                      .call
+                                                      .toUpperCase(),
                                                   fontSize: FontSize.twelve,
                                                   fontWeight: FontWeight.w700,
+                                                  lineHeight: 1,
                                                   fontStyle: FontStyle.normal,
                                                   color:
                                                       ColorResource.color23375A,
