@@ -205,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             bloc.add(ClickChangeLaunguageEvent());
           }),
       ProfileNavigation(
-          title: Languages.of(context)!.customerLanguagePreference,
+          title: Languages.of(context)!.selectSpeechToTextLanguage,
           isEnable: Singleton.instance.usertype == Constants.fieldagent
               ? true
               : false,
@@ -428,17 +428,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ? Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              CustomText(
-                                                Languages.of(context)!
-                                                    .homeAddress
-                                                    .toUpperCase(),
-                                                fontSize: FontSize.fourteen,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    ColorResource.color101010,
-                                              ),
+                                              const Spacer(),
+                                              // CustomText(
+                                              //   Languages.of(context)!
+                                              //       .homeAddress
+                                              //       .toUpperCase(),
+                                              //   fontSize: FontSize.fourteen,
+                                              //   fontStyle: FontStyle.normal,
+                                              //   fontWeight: FontWeight.w700,
+                                              //   color:
+                                              //       ColorResource.color101010,
+                                              // ),
                                               GestureDetector(
                                                 onTap: () => bloc.add(
                                                     ClickMarkAsHomeEvent()),
@@ -476,21 +478,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 horizontal: 20,
                                                 vertical: 16.0,
                                               ),
-                                              child: CustomText(
-                                                addressValue != ''
-                                                    ? addressValue
-                                                    : bloc
-                                                            .profileAPIValue
-                                                            .result
-                                                            ?.first
-                                                            .homeAddress ??
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      CustomText(
                                                         Languages.of(context)!
-                                                            .homeAddressNotAvailable,
-                                                fontSize: FontSize.fourteen,
-                                                fontWeight: FontWeight.w400,
-                                                fontStyle: FontStyle.normal,
-                                                color:
-                                                    ColorResource.color484848,
+                                                            .homeAddress
+                                                            .toUpperCase(),
+                                                        fontSize:
+                                                            FontSize.fourteen,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: ColorResource
+                                                            .color101010,
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      SvgPicture.asset(
+                                                          ImageResource
+                                                              .location),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CustomText(
+                                                    addressValue != ''
+                                                        ? addressValue
+                                                        : bloc
+                                                                .profileAPIValue
+                                                                .result
+                                                                ?.first
+                                                                .homeAddress ??
+                                                            Languages.of(
+                                                                    context)!
+                                                                .homeAddressNotAvailable,
+                                                    fontSize: FontSize.fourteen,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: ColorResource
+                                                        .color484848,
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           )

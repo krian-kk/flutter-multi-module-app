@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -70,6 +72,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
                   APIRequestType.get,
                   HttpUrl.eventDetailsUrl(
                       caseId: event.caseId, userType: event.userType));
+          log('=========== > ${getEventDetailsData}');
 
           if (getEventDetailsData[Constants.success] == true) {
             Map<String, dynamic> jsonData = getEventDetailsData['data'];

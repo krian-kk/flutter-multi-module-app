@@ -190,6 +190,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
             APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
             isPop: true);
+        print(caseDetailsData);
         if (caseDetailsData[Constants.success] == true) {
           Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);

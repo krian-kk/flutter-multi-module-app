@@ -327,7 +327,7 @@ class _CallDetailsBottomSheetScreenState
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!
-                                                                  .view,
+                                                                  .disposition,
                                                               lineHeight: 1,
                                                               fontSize: FontSize
                                                                   .fourteen,
