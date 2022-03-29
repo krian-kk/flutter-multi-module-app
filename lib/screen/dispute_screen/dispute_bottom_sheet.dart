@@ -82,6 +82,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   @override
   void initState() {
@@ -228,11 +230,14 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                     });
                                   }
                                 },
-                                checkRecord: (isRecord) {
+                                checkRecord: (isRecord, text) {
                                   setState(() {
                                     this.isRecord = isRecord;
+                                    translateText = text!;
+                                    isTranslate = true;
                                   });
                                 },
+                                isSubmit: isTranslate,
                                 caseId: widget.bloc.caseId,
                               )),
                               const SizedBox(height: 15),
@@ -360,6 +365,10 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
       } else if (isRecord == Constants.stop) {
         AppUtils.showToast('Please wait audio is converting');
       } else {
+        if (isRecord == Constants.submit) {
+          setState(() => remarksControlller.text = translateText);
+          setState(() => isTranslate = false);
+        }
         if (_formKey.currentState!.validate()) {
           if (disputeDropDownValue != 'select') {
             setState(() => isSubmit = false);

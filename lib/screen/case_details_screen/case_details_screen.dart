@@ -968,7 +968,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                     children: [
                                                                       CustomText(
                                                                         Languages.of(context)!
-                                                                            .disposition,
+                                                                            .view,
                                                                         color: ColorResource
                                                                             .color23375A,
                                                                         fontSize:

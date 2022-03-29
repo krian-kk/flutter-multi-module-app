@@ -77,6 +77,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   late TextEditingController loanDurationController;
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   late FocusNode ptpAmountFocusNode;
   late FocusNode ptpReferenceFocusNode;
@@ -361,11 +363,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                                 widget.isCall! == false
                                             ? true
                                             : false,
-                                    checkRecord: (isRecord) {
+                                    checkRecord: (isRecord, text) {
                                       setState(() {
                                         this.isRecord = isRecord;
+                                        translateText = text!;
+                                        isTranslate = true;
                                       });
                                     },
+                                    isSubmit: isTranslate,
                                     returnS2Tresponse: (val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
@@ -486,6 +491,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     } else if (isRecord == Constants.stop) {
       AppUtils.showToast('Please wait audio is converting');
     } else {
+      if (isRecord == Constants.submit) {
+        setState(() => remarksControlller.text = translateText);
+        setState(() => isTranslate = false);
+      }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton != '') {
           setState(() => isSubmit = false);

@@ -392,7 +392,7 @@ class CustomCardList {
                                       Row(
                                         children: [
                                           CustomText(
-                                            Languages.of(context)!.disposition,
+                                            Languages.of(context)!.view,
                                             fontSize: FontSize.fourteen,
                                             color: ColorResource.color23375A,
                                             fontWeight: FontWeight.w700,
@@ -427,8 +427,16 @@ class CustomCardList {
                               context: context));
                         },
                         child: resultData[index].starredCase
-                            ? SvgPicture.asset(ImageResource.star)
-                            : SvgPicture.asset(ImageResource.unStar),
+                            ? SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: SvgPicture.asset(ImageResource.star),
+                              )
+                            : SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: SvgPicture.asset(ImageResource.unStar),
+                              ),
                       ),
                     ),
                 ],
