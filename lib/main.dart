@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatefulWidget {
   State<StatefulWidget> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Locale? _locale;
   AuthenticationBloc? bloc;
 
@@ -64,6 +65,21 @@ class _MyAppState extends State<MyApp> {
       });
     });
     super.didChangeDependencies();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    try {
+      if (state != AppLifecycleState.resumed) {
+        FirebaseFirestore.instance.disableNetwork();
+      } else {
+        FirebaseFirestore.instance.enableNetwork();
+      }
+    } catch (error) {
+      print('LifecycleManager | didChangeAppLifecycleState | ' +
+          error.toString());
+    }
   }
 
   //Getting firebase remote data for app URL
