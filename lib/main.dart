@@ -77,8 +77,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         FirebaseFirestore.instance.enableNetwork();
       }
     } catch (error) {
-      print('LifecycleManager | didChangeAppLifecycleState | ' +
-          error.toString());
+      debugPrint(
+        'LifecycleManager | didChangeAppLifecycleState | ' + error.toString(),
+      );
     }
   }
 
