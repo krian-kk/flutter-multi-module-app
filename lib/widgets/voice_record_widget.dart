@@ -32,7 +32,8 @@ class VoiceRecodingWidget extends StatefulWidget {
   final String filePath;
   final Function? recordingData;
   final String? caseId;
-  final OnChange? checkRecord;
+  final OnChangeForPickDate? checkRecord;
+  final Function onRecordStart;
 
   const VoiceRecodingWidget({
     Key? key,
@@ -40,6 +41,7 @@ class VoiceRecodingWidget extends StatefulWidget {
     this.caseId,
     required this.filePath,
     this.checkRecord,
+    required this.onRecordStart,
   }) : super(key: key);
 
   @override
@@ -101,6 +103,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   Future<bool> startRecord() async {
     bool result = false;
+    widget.onRecordStart();
     if (Platform.isIOS) {
       await Permission.microphone.request();
       await Permission.storage.request();
@@ -127,7 +130,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       });
     }
     if (result) {
-      widget.checkRecord!(Constants.process);
+      widget.checkRecord!(Constants.process, '');
     }
     return result;
   }
@@ -153,7 +156,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         });
       });
     }
-    widget.checkRecord!(Constants.stop);
+    widget.checkRecord!(Constants.stop, '');
   }
 
   apiCall() async {
@@ -211,8 +214,12 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       getTranslatedData = Speech2TextModel.fromJson(postResult['data']);
       // widget.recordingData!(getTranslatedData.result!.translatedText);
       widget.recordingData!(getTranslatedData);
+      widget.checkRecord!(
+        Constants.submit,
+        getTranslatedData.result?.translatedText,
+      );
     } else {
-      widget.checkRecord!(Constants.none);
+      widget.checkRecord!(Constants.none, '');
     }
   }
 

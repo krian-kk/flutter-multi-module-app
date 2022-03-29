@@ -234,11 +234,27 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               .replaceAll('null', '-') ??
           '_';
       emiStartDateController.text =
-          caseDetailsAPIValue.result?.caseDetails!.emiStartDate
-                  .toString()
-                  // .replaceAll('-', '/')
-                  .replaceAll('null', '-') ??
-              '_';
+          (caseDetailsAPIValue.result?.caseDetails!.emiStartDate.toString() ==
+                  null)
+              ? '-'
+              : ((caseDetailsAPIValue
+                              .result?.caseDetails!.emiStartDate
+                              .toString()
+                              .length ??
+                          0) >
+                      11)
+                  ? DateFormat('dd/MM/yyyy')
+                      .format(DateTime.parse(caseDetailsAPIValue
+                              .result?.caseDetails!.emiStartDate
+                              .toString() ??
+                          ''))
+                      .toString()
+                      .toUpperCase()
+                  : caseDetailsAPIValue.result?.caseDetails!.emiStartDate
+                          .toString()
+                          .replaceAll('-', '/')
+                          .replaceAll('null', '-') ??
+                      '_';
       bankNameController.text = caseDetailsAPIValue
               .result?.caseDetails!.bankName
               .toString()

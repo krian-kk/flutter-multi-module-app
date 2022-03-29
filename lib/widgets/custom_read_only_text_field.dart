@@ -54,7 +54,8 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? agrRef;
   final OnChange? remarkFunction;
   final TextStyle? lableStyle;
-  final OnChange? checkRecord;
+  final OnChangeForPickDate? checkRecord;
+  final bool isSubmit;
 
   const CustomReadOnlyTextField(
     this.hintText,
@@ -96,6 +97,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.remarkFunction,
     this.lableStyle,
     this.checkRecord,
+    this.isSubmit = true,
   }) : super(key: key);
 
   @override
@@ -313,6 +315,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                   });
                                 }
                               },
+                              onRecordStart: () {
+                                widget.controller.text =
+                                    translateTextController.text;
+                                setState(() {
+                                  translateTextController.text = '';
+                                  isActiveSpeaker = false;
+                                });
+                                widget.checkRecord!(Constants.none, '');
+                                widget.returnS2Tresponse!(getTranslatedData);
+                              },
                               caseId: widget.caseId,
                               checkRecord: widget.checkRecord,
                             )
@@ -366,11 +378,12 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             ),
           ),
         ),
-        if (widget.isVoiceRecordWidget && isActiveSpeaker)
+        if (widget.isVoiceRecordWidget && isActiveSpeaker && widget.isSubmit)
           const SizedBox(height: 13),
         if (widget.isVoiceRecordWidget &&
             isActiveSpeaker &&
-            translateTextController.text != '')
+            translateTextController.text != '' &&
+            widget.isSubmit)
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -423,9 +436,13 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                 ),
             ],
           ),
-        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+        if (widget.isVoiceRecordWidget &&
+            translateTextController.text != '' &&
+            widget.isSubmit)
           const SizedBox(height: 6),
-        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+        if (widget.isVoiceRecordWidget &&
+            translateTextController.text != '' &&
+            widget.isSubmit)
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
@@ -455,9 +472,13 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                     fontWeight: FontWeight.w400,
                   ),
           ),
-        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+        if (widget.isVoiceRecordWidget &&
+            translateTextController.text != '' &&
+            widget.isSubmit)
           const SizedBox(height: 8),
-        if (widget.isVoiceRecordWidget && translateTextController.text != '')
+        if (widget.isVoiceRecordWidget &&
+            translateTextController.text != '' &&
+            widget.isSubmit)
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -499,7 +520,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                         translateTextController.text = '';
                         isActiveSpeaker = false;
                       });
-                      widget.checkRecord!(Constants.submit);
+                      widget.checkRecord!(Constants.none, '');
                       // Here vreturn the value for S2T API respose
                       widget.returnS2Tresponse!(getTranslatedData);
                     },
@@ -519,6 +540,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                     setState(() {
                       translateTextController.text = '';
                       isActiveSpeaker = false;
+                      widget.checkRecord!(Constants.none, '');
                     });
                   },
                 ),
