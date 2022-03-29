@@ -1188,6 +1188,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 resultList.sort((a, b) {
                                   return b.starredCase ? 1 : -1;
                                 });
+
+                                debugPrint(
+                                    'Total list length--> ${bloc.resultList.length}');
                               }
                               return resultList.isEmpty
                                   ? Column(
