@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mime/mime.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
@@ -32,14 +33,17 @@ class FirebaseUtils {
       String? selectedClipValue,
       String? selectedFollowUpDate}) async {
     bool returnValues = false;
+    debugPrint('Stored event--> ');
     if (Singleton.instance.usertype == Constants.fieldagent) {
-      await FirebaseFirestore.instance
+      debugPrint('Stored event--> Yes fieldagent');
+      FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseEvent)
           .add(eventsDetails);
+      debugPrint('Stored event--> after stored event');
       if (selectedClipValue != Constants.collections) {
-        await FirebaseFirestore.instance
+        FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
@@ -51,8 +55,8 @@ class FirebaseUtils {
                       'fieldfollowUpDate': selectedFollowUpDate,
                       'collSubStatus': selectedClipValue
                     },
-            )
-            .then((value) {});
+            );
+        debugPrint('Stored event--> After update event');
       }
       returnValues = true;
     } else {

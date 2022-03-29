@@ -146,6 +146,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 // its used to show QR button in Customer met screen
   bool isShowQRcode = false;
   bool isQRcodeBtnLoading = false;
+
 // its used to GeneratePaymentLink button in Case detail screen
   bool isGeneratePaymentLink = false;
   bool isGeneratePaymentLinkLoading = false;
@@ -314,21 +315,22 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           .format(DateTime.now().add(const Duration(days: 1)));
 
       // Check Payment Configuartion Details and store the value of dynamicLink [isGeneratePaymentLink] and qrCode [isShowQRcode]
-      PaymentConfigurationModel paymentCofigurationData =
-          PaymentConfigurationModel();
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.get,
-        HttpUrl.getPaymentConfiguration,
-      );
-      if (postResult[Constants.success]) {
-        paymentCofigurationData =
-            PaymentConfigurationModel.fromJson(postResult['data']);
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        PaymentConfigurationModel paymentCofigurationData =
+            PaymentConfigurationModel();
+        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.get,
+          HttpUrl.getPaymentConfiguration,
+        );
+        if (postResult[Constants.success]) {
+          paymentCofigurationData =
+              PaymentConfigurationModel.fromJson(postResult['data']);
 
-        isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
-        isGeneratePaymentLink =
-            paymentCofigurationData.data![0].payment![0].dynamicLink!;
+          isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
+          isGeneratePaymentLink =
+              paymentCofigurationData.data![0].payment![0].dynamicLink!;
+        }
       }
-
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;
@@ -866,22 +868,26 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is SendSMSEvent) {
       yield SendSMSloadState();
-      if (Singleton.instance.contractorInformations!.result!.sendSms!) {
-        var requestBodyData = SendSMS(
-          agentRef: Singleton.instance.agentRef,
-          agrRef: Singleton.instance.agrRef,
-          type: event.type,
-        );
-        Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.post,
-          HttpUrl.sendSMSurl,
-          requestBodydata: jsonEncode(requestBodyData),
-        );
-        if (postResult[Constants.success]) {
-          AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        if (Singleton.instance.contractorInformations!.result!.sendSms!) {
+          var requestBodyData = SendSMS(
+            agentRef: Singleton.instance.agentRef,
+            agrRef: Singleton.instance.agrRef,
+            type: event.type,
+          );
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            APIRequestType.post,
+            HttpUrl.sendSMSurl,
+            requestBodydata: jsonEncode(requestBodyData),
+          );
+          if (postResult[Constants.success]) {
+            AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
+          }
+        }else {
+          AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
         }
       } else {
-        AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
+        AppUtils.showErrorToast(Languages.of(event.context)!.noInternetConnection);
       }
       yield SendSMSloadState();
     }

@@ -386,6 +386,7 @@ class CustomCardList {
                                           CustomText(
                                             Languages.of(context)!.view,
                                             fontSize: FontSize.fourteen,
+                                            lineHeight: 1,
                                             color: ColorResource.color23375A,
                                             fontWeight: FontWeight.w700,
                                           ),

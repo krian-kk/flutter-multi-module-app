@@ -30,6 +30,12 @@ class _WebViewWidgetState extends State<WebViewWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          controller.evaluateJavascript('add(30, 10)');
+        },
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -41,18 +47,6 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           Expanded(
             child: WebView(
               javascriptMode: JavascriptMode.unrestricted,
-              javascriptChannels: <JavascriptChannel>{
-                JavascriptChannel(
-                  name: 'messageHandler',
-                  onMessageReceived: (JavascriptMessage message) {
-                    final script =
-                        "document.getElementById('value').innerText=\"${message.message}\"";
-                    controller.runJavascript(script);
-                    debugPrint(
-                        "message from the web view=\"${message.message}\"");
-                  },
-                )
-              },
               initialUrl: '',
               onWebViewCreated: (webViewController) async {
                 controller = webViewController;
