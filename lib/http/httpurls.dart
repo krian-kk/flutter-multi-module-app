@@ -49,7 +49,7 @@ class HttpUrl {
   //     baseUrl + fieldAgent + 'case-details/priority?';
 
   static final String priorityCaseList =
-      '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
+      '$url/$apiType' 'v1/' + fieldAgent + 'case-details/priority?';
 
   static final String updateStaredCase =
       baseUrl + fieldAgent + 'case-details/update_starredCase';
