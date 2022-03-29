@@ -427,8 +427,16 @@ class CustomCardList {
                               context: context));
                         },
                         child: resultData[index].starredCase
-                            ? SvgPicture.asset(ImageResource.star)
-                            : SvgPicture.asset(ImageResource.unStar),
+                            ? SizedBox(
+                                height: 35,
+                                width: 35,
+                                child: SvgPicture.asset(ImageResource.star),
+                              )
+                            : SizedBox(
+                                height: 35,
+                                width: 35,
+                                child: SvgPicture.asset(ImageResource.unStar),
+                              ),
                       ),
                     ),
                 ],
