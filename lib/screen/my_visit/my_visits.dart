@@ -704,8 +704,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                           Row(
                                             children: [
                                               CustomText(
-                                                Languages.of(context)!
-                                                    .disposition,
+                                                Languages.of(context)!.view,
                                                 fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color23375A,

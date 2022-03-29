@@ -51,6 +51,8 @@ class _CustomCaptureImageBottomSheetState
   bool isSubmit = true;
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
@@ -159,13 +161,14 @@ class _CustomCaptureImageBottomSheetState
                                         });
                                       }
                                     },
-                                    checkRecord: (isRecord) {
+                                    checkRecord: (isRecord, text) {
                                       setState(() {
                                         this.isRecord = isRecord;
+                                        translateText = text!;
+                                        isTranslate = true;
                                       });
                                     },
-
-                                    // suffixWidget: VoiceRecodingWidget(),
+                                    isSubmit: isTranslate,
                                   ),
                                 ],
                               )),
@@ -225,6 +228,11 @@ class _CustomCaptureImageBottomSheetState
                                     AppUtils.showToast(
                                         'Please wait audio is converting');
                                   } else {
+                                    if (isRecord == Constants.submit) {
+                                      setState(() => remarksControlller.text =
+                                          translateText);
+                                      setState(() => isTranslate = false);
+                                    }
                                     if (_formKey.currentState!.validate()) {
                                       if (uploadFileLists.isNotEmpty) {
                                         setState(() => isSubmit = false);
