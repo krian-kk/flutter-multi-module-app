@@ -232,11 +232,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               .toString()
               .replaceAll('null', '-') ??
           '_';
-      emiStartDateController.text = caseDetailsAPIValue
-              .result?.caseDetails!.emiStartDate
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
+      emiStartDateController.text =
+          caseDetailsAPIValue.result?.caseDetails!.emiStartDate
+                  .toString()
+                  // .replaceAll('-', '/')
+                  .replaceAll('null', '-') ??
+              '_';
       bankNameController.text = caseDetailsAPIValue
               .result?.caseDetails!.bankName
               .toString()
