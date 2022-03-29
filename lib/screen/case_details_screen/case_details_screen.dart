@@ -136,8 +136,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   ));
             }
             if (state is PushAndPOPNavigationCaseDetailsState) {
-              Navigator.pushReplacementNamed(
-                  context, AppRoutes.caseDetailsScreen,
+              Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
                   arguments: CaseDetailsNaviagationModel(
                     state.paramValues,
                     allocationBloc: widget.allocationBloc,
