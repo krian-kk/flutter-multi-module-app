@@ -442,6 +442,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
+        SharedPreferences _pref = await SharedPreferences.getInstance();
+        userType = _pref.getString(Constants.userType);
         Map<String, dynamic> getMyVisitsData;
         if (userType == Constants.fieldagent) {
           getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,

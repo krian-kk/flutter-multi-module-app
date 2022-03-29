@@ -69,6 +69,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
 
   List<File> uploadFileLists = [];
 
+  String? isRecord;
+
   late FocusNode modelMakeFocusNode;
   late FocusNode registraionNoFocusNode;
   late FocusNode chassisNoFocusNode;
@@ -286,6 +288,11 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               });
                             }
                           },
+                          checkRecord: (isRecord) {
+                            setState(() {
+                              this.isRecord = isRecord;
+                            });
+                          },
                           // suffixWidget: VoiceRecodingWidget(),
                           isLabel: true,
                         )),
@@ -337,149 +344,159 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                     fontWeight: FontWeight.w600,
                     onTap: isSubmit
                         ? () async {
-                            if (_formKey.currentState!.validate() &&
-                                dateControlller.text != '' &&
-                                timeControlller.text != '') {
-                              if (uploadFileLists.isEmpty) {
-                                AppUtils.showToast(
-                                  Languages.of(context)!.uploadImage,
-                                  gravity: ToastGravity.CENTER,
-                                );
-                              } else {
-                                setState(() => isSubmit = false);
-                                Position position = Position(
-                                  longitude: 0,
-                                  latitude: 0,
-                                  timestamp: DateTime.now(),
-                                  accuracy: 0,
-                                  altitude: 0,
-                                  heading: 0,
-                                  speed: 0,
-                                  speedAccuracy: 0,
-                                );
-                                if (Geolocator.checkPermission().toString() !=
-                                    PermissionStatus.granted.toString()) {
-                                  Position res =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.best);
-                                  setState(() {
-                                    position = res;
-                                  });
-                                }
-                                var requestBodyData = RepoPostModel(
-                                    eventId: ConstantEventValues.repoEventId,
-                                    eventType: Constants.repo,
-                                    caseId: widget.caseId,
-                                    eventCode: ConstantEventValues.repoEvenCode,
-                                    callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
-                                    voiceCallEventCode:
-                                        ConstantEventValues.voiceCallEventCode,
-                                    createdBy:
-                                        Singleton.instance.agentRef ?? '',
-                                    agentName:
-                                        Singleton.instance.agentName ?? '',
-                                    agrRef: Singleton.instance.agrRef ?? '',
-                                    contractor:
-                                        Singleton.instance.contractor ?? '',
-                                    eventModule: (widget.userType ==
-                                            Constants.telecaller)
-                                        ? 'Telecalling'
-                                        : 'Field Allocation',
-                                    contact: [
-                                      RepoContact(
-                                        cType: widget.postValue['cType'],
-                                        value: widget.postValue['value'],
-                                        health: widget.health,
-                                      )
-                                    ],
-                                    callID: Singleton.instance.callID ?? '0',
-                                    callingID:
-                                        Singleton.instance.callingID ?? '0',
-                                    invalidNumber: false,
-                                    eventAttr: EventAttr(
-                                      modelMake: modelMakeControlller.text,
-                                      registrationNo:
-                                          registrationNoControlller.text,
-                                      chassisNo: chassisNoControlller.text,
-                                      remarks: remarksControlller.text,
-                                      repo: Repo(
-                                        status: 'pending',
-                                      ),
-                                      date: dateControlller.text.trim() +
-                                          'T' +
-                                          timeControlller.text.trim() +
-                                          ':00.000Z',
-                                      imageLocation: [''],
-                                      customerName:
-                                          Singleton.instance.caseCustomerName ??
-                                              '',
-                                      longitude: position.longitude,
-                                      latitude: position.latitude,
-                                      accuracy: position.accuracy,
-                                      altitude: position.altitude,
-                                      heading: position.heading,
-                                      speed: position.speed,
-                                      reginal_text:
-                                          returnS2Tdata.result?.reginalText,
-                                      translated_text:
-                                          returnS2Tdata.result?.translatedText,
-                                      audioS3Path:
-                                          returnS2Tdata.result?.audioS3Path,
-                                    ));
-
-                                final Map<String, dynamic> postdata =
-                                    jsonDecode(jsonEncode(
-                                            requestBodyData.toJson()))
-                                        as Map<String, dynamic>;
-                                List<dynamic> value = [];
-                                for (var element in uploadFileLists) {
-                                  value.add(await MultipartFile.fromFile(
-                                      element.path.toString()));
-                                }
-                                postdata.addAll({
-                                  'files': value,
-                                });
-
-                                Map<String, dynamic> firebaseObject =
-                                    requestBodyData.toJson();
-                                try {
-                                  firebaseObject.addAll(
-                                      FirebaseUtils.toPrepareFileStoringModel(
-                                          uploadFileLists));
-                                } catch (e) {
-                                  debugPrint(
-                                      'Exception while converting base64 ${e.toString()}');
-                                }
-                                await FirebaseUtils.storeEvents(
-                                    eventsDetails: requestBodyData.toJson(),
-                                    caseId: widget.caseId,
-                                    selectedFollowUpDate: dateControlller.text,
-                                    selectedClipValue: Constants.repo);
-                                if (ConnectivityResult.none ==
-                                    await Connectivity().checkConnectivity()) {
-                                } else {
-                                  Map<String, dynamic> postResult =
-                                      await APIRepository.apiRequest(
-                                    APIRequestType.upload,
-                                    HttpUrl.repoPostUrl(
-                                        'repo', widget.userType),
-                                    formDatas: FormData.fromMap(postdata),
+                            if (isRecord == Constants.process) {
+                              AppUtils.showToast('Stop the Record then Submit');
+                            } else if (isRecord == Constants.stop) {
+                              AppUtils.showToast(
+                                  'Please wait audio is converting');
+                            } else {
+                              if (_formKey.currentState!.validate() &&
+                                  dateControlller.text != '' &&
+                                  timeControlller.text != '') {
+                                if (uploadFileLists.isEmpty) {
+                                  AppUtils.showToast(
+                                    Languages.of(context)!.uploadImage,
+                                    gravity: ToastGravity.CENTER,
                                   );
-                                  if (postResult[Constants.success]) {
-                                    widget.bloc.add(
-                                      ChangeIsSubmitForMyVisitEvent(
-                                        Constants.repo,
-                                      ),
+                                } else {
+                                  setState(() => isSubmit = false);
+                                  Position position = Position(
+                                    longitude: 0,
+                                    latitude: 0,
+                                    timestamp: DateTime.now(),
+                                    accuracy: 0,
+                                    altitude: 0,
+                                    heading: 0,
+                                    speed: 0,
+                                    speedAccuracy: 0,
+                                  );
+                                  if (Geolocator.checkPermission().toString() !=
+                                      PermissionStatus.granted.toString()) {
+                                    Position res =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    setState(() {
+                                      position = res;
+                                    });
+                                  }
+                                  var requestBodyData = RepoPostModel(
+                                      eventId: ConstantEventValues.repoEventId,
+                                      eventType: Constants.repo,
+                                      caseId: widget.caseId,
+                                      eventCode:
+                                          ConstantEventValues.repoEvenCode,
+                                      callerServiceID:
+                                          Singleton.instance.callerServiceID ??
+                                              '',
+                                      voiceCallEventCode: ConstantEventValues
+                                          .voiceCallEventCode,
+                                      createdBy:
+                                          Singleton.instance.agentRef ?? '',
+                                      agentName:
+                                          Singleton.instance.agentName ?? '',
+                                      agrRef: Singleton.instance.agrRef ?? '',
+                                      contractor:
+                                          Singleton.instance.contractor ?? '',
+                                      eventModule: (widget.userType ==
+                                              Constants.telecaller)
+                                          ? 'Telecalling'
+                                          : 'Field Allocation',
+                                      contact: [
+                                        RepoContact(
+                                          cType: widget.postValue['cType'],
+                                          value: widget.postValue['value'],
+                                          health: widget.health,
+                                        )
+                                      ],
+                                      callID: Singleton.instance.callID ?? '0',
+                                      callingID:
+                                          Singleton.instance.callingID ?? '0',
+                                      invalidNumber: false,
+                                      eventAttr: EventAttr(
+                                        modelMake: modelMakeControlller.text,
+                                        registrationNo:
+                                            registrationNoControlller.text,
+                                        chassisNo: chassisNoControlller.text,
+                                        remarks: remarksControlller.text,
+                                        repo: Repo(
+                                          status: 'pending',
+                                        ),
+                                        date: dateControlller.text.trim() +
+                                            'T' +
+                                            timeControlller.text.trim() +
+                                            ':00.000Z',
+                                        imageLocation: [''],
+                                        customerName: Singleton
+                                                .instance.caseCustomerName ??
+                                            '',
+                                        longitude: position.longitude,
+                                        latitude: position.latitude,
+                                        accuracy: position.accuracy,
+                                        altitude: position.altitude,
+                                        heading: position.heading,
+                                        speed: position.speed,
+                                        reginal_text:
+                                            returnS2Tdata.result?.reginalText,
+                                        translated_text: returnS2Tdata
+                                            .result?.translatedText,
+                                        audioS3Path:
+                                            returnS2Tdata.result?.audioS3Path,
+                                      ));
+
+                                  final Map<String, dynamic> postdata =
+                                      jsonDecode(jsonEncode(
+                                              requestBodyData.toJson()))
+                                          as Map<String, dynamic>;
+                                  List<dynamic> value = [];
+                                  for (var element in uploadFileLists) {
+                                    value.add(await MultipartFile.fromFile(
+                                        element.path.toString()));
+                                  }
+                                  postdata.addAll({
+                                    'files': value,
+                                  });
+
+                                  Map<String, dynamic> firebaseObject =
+                                      requestBodyData.toJson();
+                                  try {
+                                    firebaseObject.addAll(
+                                        FirebaseUtils.toPrepareFileStoringModel(
+                                            uploadFileLists));
+                                  } catch (e) {
+                                    debugPrint(
+                                        'Exception while converting base64 ${e.toString()}');
+                                  }
+                                  await FirebaseUtils.storeEvents(
+                                      eventsDetails: requestBodyData.toJson(),
+                                      caseId: widget.caseId,
+                                      selectedFollowUpDate:
+                                          dateControlller.text,
+                                      selectedClipValue: Constants.repo);
+                                  if (ConnectivityResult.none ==
+                                      await Connectivity()
+                                          .checkConnectivity()) {
+                                  } else {
+                                    Map<String, dynamic> postResult =
+                                        await APIRepository.apiRequest(
+                                      APIRequestType.upload,
+                                      HttpUrl.repoPostUrl(
+                                          'repo', widget.userType),
+                                      formDatas: FormData.fromMap(postdata),
                                     );
-                                    AppUtils.topSnackBar(context,
-                                        Constants.successfullySubmitted);
-                                    widget.bloc.add(
-                                      ChangeHealthStatusEvent(),
-                                    );
-                                    Navigator.pop(context);
+                                    if (postResult[Constants.success]) {
+                                      widget.bloc.add(
+                                        ChangeIsSubmitForMyVisitEvent(
+                                          Constants.repo,
+                                        ),
+                                      );
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                      widget.bloc.add(
+                                        ChangeHealthStatusEvent(),
+                                      );
+                                      Navigator.pop(context);
+                                    }
                                   }
                                 }
                               }

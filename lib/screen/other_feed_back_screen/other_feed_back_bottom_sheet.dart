@@ -106,6 +106,8 @@ class _CustomOtherFeedBackBottomSheetState
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
 
+  String? isRecord;
+
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(allowMultiple: true, type: FileType.any);
@@ -303,6 +305,11 @@ class _CustomOtherFeedBackBottomSheetState
                                                 widget.isCall! == false
                                             ? true
                                             : false,
+                                    checkRecord: (isRecord) {
+                                      setState(() {
+                                        this.isRecord = isRecord;
+                                      });
+                                    },
                                     returnS2Tresponse: (val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
@@ -499,176 +506,183 @@ class _CustomOtherFeedBackBottomSheetState
     }
     // SharedPreferences _pref =
     //     await SharedPreferences.getInstance();
-    if (_formKey.currentState!.validate()) {
-      // if (uploadFileLists.isEmpty) {
-      //   AppUtils.showToast(
-      //     'upload of audio file',
-      //     gravity: ToastGravity.CENTER,
-      //   );
-      // } else {
-      setState(() => isSubmit = false);
-      bool isNotAutoCalling = true;
+    if (isRecord == Constants.process) {
+      AppUtils.showToast('Stop the Record then Submit');
+    } else if (isRecord == Constants.stop) {
+      AppUtils.showToast('Please wait audio is converting');
+    } else {
+      if (_formKey.currentState!.validate()) {
+        // if (uploadFileLists.isEmpty) {
+        //   AppUtils.showToast(
+        //     'upload of audio file',
+        //     gravity: ToastGravity.CENTER,
+        //   );
+        // } else {
+        setState(() => isSubmit = false);
+        bool isNotAutoCalling = true;
 
-      if (widget.isAutoCalling ||
-          (widget.isCallFromCaseDetails && widget.callId != null)) {
-        await CallCustomerStatus.callStatusCheck(
-                callId: (widget.isCallFromCaseDetails)
-                    ? widget.callId
-                    : widget.paramValue['callId'],
-                context: context)
-            .then((value) {
-          isNotAutoCalling = value;
-        });
-      }
-      if (isNotAutoCalling) {
-        Position position = Position(
-          longitude: 0,
-          latitude: 0,
-          timestamp: DateTime.now(),
-          accuracy: 0,
-          altitude: 0,
-          heading: 0,
-          speed: 0,
-          speedAccuracy: 0,
-        );
-        if (Geolocator.checkPermission().toString() !=
-            PermissionStatus.granted.toString()) {
-          Position res = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.best);
-          if (mounted) {
-            setState(() {
-              position = res;
-            });
-          }
+        if (widget.isAutoCalling ||
+            (widget.isCallFromCaseDetails && widget.callId != null)) {
+          await CallCustomerStatus.callStatusCheck(
+                  callId: (widget.isCallFromCaseDetails)
+                      ? widget.callId
+                      : widget.paramValue['callId'],
+                  context: context)
+              .then((value) {
+            isNotAutoCalling = value;
+          });
         }
-        var requestBodyData = OtherFeedBackPostModel(
-          eventId: ConstantEventValues.otherFeedbackEventId,
-          eventType: (widget.userType == Constants.telecaller || widget.isCall!)
-              ? 'TC : FEEDBACK'
-              : 'FEEDBACK',
-          voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-          createdBy: Singleton.instance.agentRef ?? '',
-          agentName: Singleton.instance.agentName ?? '',
-          agrRef: Singleton.instance.agrRef ?? '',
-          contractor: Singleton.instance.contractor ?? '',
-          callID: Singleton.instance.callID ?? '',
-          callerServiceID: Singleton.instance.callerServiceID ?? '',
-          callingID: Singleton.instance.callingID ?? '',
-          caseId: widget.caseId,
-          eventCode: ConstantEventValues.otherFeedbackEvenCode,
-          eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
-          invalidNumber: false,
-          eventAttr: EventAttr(
-            remarks: remarksController.text,
-            vehicleavailable: isVehicleAvailable,
-            collectorfeedback: collectorFeedBackValue ?? '',
-            actionproposed: actionproposedValue ?? '',
-            actionDate: dateControlller.text,
-            imageLocation: [''],
-            longitude: position.longitude,
-            latitude: position.latitude,
-            accuracy: position.accuracy,
-            altitude: position.altitude,
-            heading: position.heading,
-            speed: position.speed,
-            altitudeAccuracy: 0,
-            // agentLocation: AgentLocation(),
-            contact:
-                otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
-            reginal_text: returnS2Tdata.result?.reginalText,
-            translated_text: returnS2Tdata.result?.translatedText,
-            audioS3Path: returnS2Tdata.result?.audioS3Path,
-          ),
-          contact: OtherFeedBackContact(
-            cType: widget.postValue['cType'],
-            health: widget.health,
-            value: widget.postValue['value'],
-            resAddressId0: widget.postValue['resAddressId_0'] ?? '',
-            contactId0: widget.postValue['contactId0'] ?? '',
-          ),
-        );
-        final Map<String, dynamic> postdata =
-            jsonDecode(jsonEncode(requestBodyData.toJson()))
-                as Map<String, dynamic>;
-        List<dynamic> value = [];
-        for (var element in uploadFileLists) {
-          value.add(await MultipartFile.fromFile(element.path.toString()));
-        }
-        postdata.addAll({
-          'files': value,
-        });
-
-        Map<String, dynamic> firebaseObject = requestBodyData.toJson();
-        try {
-          firebaseObject
-              .addAll(FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
-        } catch (e) {
-          debugPrint('Exception while converting base64 ${e.toString()}');
-        }
-
-        await FirebaseUtils.storeEvents(
-            eventsDetails: requestBodyData.toJson(),
-            caseId: widget.caseId,
-            selectedFollowUpDate: dateControlller.text,
-            selectedClipValue: Constants.otherFeedback);
-
-        if (ConnectivityResult.none ==
-            await Connectivity().checkConnectivity()) {
-        } else {
-          Map<String, dynamic> postResult = await APIRepository.apiRequest(
-            APIRequestType.upload,
-            HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
-            formDatas: FormData.fromMap(postdata),
+        if (isNotAutoCalling) {
+          Position position = Position(
+            longitude: 0,
+            latitude: 0,
+            timestamp: DateTime.now(),
+            accuracy: 0,
+            altitude: 0,
+            heading: 0,
+            speed: 0,
+            speedAccuracy: 0,
           );
-          if (postResult[Constants.success]) {
-            widget.bloc.add(
-              ChangeIsSubmitForMyVisitEvent(
-                Constants.otherFeedback,
-              ),
-            );
-            widget.bloc.add(
-              ChangeHealthStatusEvent(),
-            );
+          if (Geolocator.checkPermission().toString() !=
+              PermissionStatus.granted.toString()) {
+            Position res = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.best);
+            if (mounted) {
+              setState(() {
+                position = res;
+              });
+            }
+          }
+          var requestBodyData = OtherFeedBackPostModel(
+            eventId: ConstantEventValues.otherFeedbackEventId,
+            eventType:
+                (widget.userType == Constants.telecaller || widget.isCall!)
+                    ? 'TC : FEEDBACK'
+                    : 'FEEDBACK',
+            voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+            createdBy: Singleton.instance.agentRef ?? '',
+            agentName: Singleton.instance.agentName ?? '',
+            agrRef: Singleton.instance.agrRef ?? '',
+            contractor: Singleton.instance.contractor ?? '',
+            callID: Singleton.instance.callID ?? '',
+            callerServiceID: Singleton.instance.callerServiceID ?? '',
+            callingID: Singleton.instance.callingID ?? '',
+            caseId: widget.caseId,
+            eventCode: ConstantEventValues.otherFeedbackEvenCode,
+            eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
+            invalidNumber: false,
+            eventAttr: EventAttr(
+              remarks: remarksController.text,
+              vehicleavailable: isVehicleAvailable,
+              collectorfeedback: collectorFeedBackValue ?? '',
+              actionproposed: actionproposedValue ?? '',
+              actionDate: dateControlller.text,
+              imageLocation: [''],
+              longitude: position.longitude,
+              latitude: position.latitude,
+              accuracy: position.accuracy,
+              altitude: position.altitude,
+              heading: position.heading,
+              speed: position.speed,
+              altitudeAccuracy: 0,
+              // agentLocation: AgentLocation(),
+              contact:
+                  otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
+              reginal_text: returnS2Tdata.result?.reginalText,
+              translated_text: returnS2Tdata.result?.translatedText,
+              audioS3Path: returnS2Tdata.result?.audioS3Path,
+            ),
+            contact: OtherFeedBackContact(
+              cType: widget.postValue['cType'],
+              health: widget.health,
+              value: widget.postValue['value'],
+              resAddressId0: widget.postValue['resAddressId_0'] ?? '',
+              contactId0: widget.postValue['contactId0'] ?? '',
+            ),
+          );
+          final Map<String, dynamic> postdata =
+              jsonDecode(jsonEncode(requestBodyData.toJson()))
+                  as Map<String, dynamic>;
+          List<dynamic> value = [];
+          for (var element in uploadFileLists) {
+            value.add(await MultipartFile.fromFile(element.path.toString()));
+          }
+          postdata.addAll({
+            'files': value,
+          });
 
-            if (widget.isAutoCalling) {
-              Navigator.pop(widget.paramValue['context']);
-              Navigator.pop(widget.paramValue['context']);
-              Singleton.instance.startCalling = false;
-              if (!stopValue) {
-                widget.allocationBloc!.add(StartCallingEvent(
-                  customerIndex: widget.paramValue['customerIndex'] + 1,
-                  phoneIndex: 0,
-                  isIncreaseCount: true,
-                ));
-              } else {
-                if (widget.health == ConstantEventValues.healthTwo) {
-                  widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                    customerIndex: widget.paramValue['customerIndex'],
+          Map<String, dynamic> firebaseObject = requestBodyData.toJson();
+          try {
+            firebaseObject.addAll(
+                FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+          } catch (e) {
+            debugPrint('Exception while converting base64 ${e.toString()}');
+          }
+
+          await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: widget.caseId,
+              selectedFollowUpDate: dateControlller.text,
+              selectedClipValue: Constants.otherFeedback);
+
+          if (ConnectivityResult.none ==
+              await Connectivity().checkConnectivity()) {
+          } else {
+            Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              APIRequestType.upload,
+              HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
+              formDatas: FormData.fromMap(postdata),
+            );
+            if (postResult[Constants.success]) {
+              widget.bloc.add(
+                ChangeIsSubmitForMyVisitEvent(
+                  Constants.otherFeedback,
+                ),
+              );
+              widget.bloc.add(
+                ChangeHealthStatusEvent(),
+              );
+
+              if (widget.isAutoCalling) {
+                Navigator.pop(widget.paramValue['context']);
+                Navigator.pop(widget.paramValue['context']);
+                Singleton.instance.startCalling = false;
+                if (!stopValue) {
+                  widget.allocationBloc!.add(StartCallingEvent(
+                    customerIndex: widget.paramValue['customerIndex'] + 1,
+                    phoneIndex: 0,
+                    isIncreaseCount: true,
                   ));
+                } else {
+                  if (widget.health == ConstantEventValues.healthTwo) {
+                    widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                      customerIndex: widget.paramValue['customerIndex'],
+                    ));
+                  }
                 }
-              }
-            } else {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              if (widget.isCall!) {
-                setState(() {
-                  for (int i = 0; i < (otherFeedbackContact.length); i++) {
-                    widget.bloc.listOfCallDetails
-                        ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
-                  }
-                });
-                widget.bloc.add(AddedNewCallContactListEvent());
               } else {
-                setState(() {
-                  for (int i = 0; i < (otherFeedbackContact.length); i++) {
-                    widget.bloc.listOfAddressDetails
-                        ?.add(jsonDecode(jsonEncode(otherFeedbackContact[i])));
-                  }
-                  // }
-                });
-                widget.bloc.add(AddedNewAddressListEvent());
-              }
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+                if (widget.isCall!) {
+                  setState(() {
+                    for (int i = 0; i < (otherFeedbackContact.length); i++) {
+                      widget.bloc.listOfCallDetails?.add(
+                          jsonDecode(jsonEncode(otherFeedbackContact[i])));
+                    }
+                  });
+                  widget.bloc.add(AddedNewCallContactListEvent());
+                } else {
+                  setState(() {
+                    for (int i = 0; i < (otherFeedbackContact.length); i++) {
+                      widget.bloc.listOfAddressDetails?.add(
+                          jsonDecode(jsonEncode(otherFeedbackContact[i])));
+                    }
+                    // }
+                  });
+                  widget.bloc.add(AddedNewAddressListEvent());
+                }
 
-              Navigator.pop(context);
+                Navigator.pop(context);
+              }
             }
           }
         }

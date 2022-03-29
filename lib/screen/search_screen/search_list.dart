@@ -280,7 +280,7 @@ class SearchCaseList {
                                   Row(
                                     children: [
                                       CustomText(
-                                        Languages.of(context)!.view,
+                                        Languages.of(context)!.disposition,
                                         fontSize: FontSize.fourteen,
                                         color: ColorResource.color23375A,
                                         fontWeight: FontWeight.w700,

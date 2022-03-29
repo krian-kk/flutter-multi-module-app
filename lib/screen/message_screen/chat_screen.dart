@@ -126,62 +126,68 @@ class _ChatScreenState extends State<ChatScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 7),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: const BoxDecoration(
-                                color: ColorResource.colorF7F8FA,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 10),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    child:
-                                        SvgPicture.asset(ImageResource.profile),
-                                    width: 38,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: ColorResource.color23375A,
-                                      borderRadius: BorderRadius.circular(52.5),
+                        bloc.agentDetails.result!.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 7),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: const BoxDecoration(
+                                      color: ColorResource.colorF7F8FA,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 10),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          child: SvgPicture.asset(
+                                              ImageResource.profile),
+                                          width: 38,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: ColorResource.color23375A,
+                                            borderRadius:
+                                                BorderRadius.circular(52.5),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            CustomText(
+                                              bloc.agentDetails.result?[0]
+                                                      .name ??
+                                                  '-',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: FontSize.sixteen,
+                                              fontStyle: FontStyle.normal,
+                                              color: ColorResource.color101010,
+                                            ),
+                                            CustomText(
+                                              bloc.agentDetails.result?[0]
+                                                      .type ??
+                                                  '-',
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: FontSize.fourteen,
+                                              fontStyle: FontStyle.normal,
+                                              color: ColorResource.color333333,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 7,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CustomText(
-                                        bloc.agentDetails.result?[0].name ??
-                                            '-',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: FontSize.sixteen,
-                                        fontStyle: FontStyle.normal,
-                                        color: ColorResource.color101010,
-                                      ),
-                                      CustomText(
-                                        bloc.agentDetails.result?[0].type ??
-                                            '-',
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: FontSize.fourteen,
-                                        fontStyle: FontStyle.normal,
-                                        color: ColorResource.color333333,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                                ),
+                              )
+                            : const SizedBox(),
                         const SizedBox(height: 7),
                         Expanded(
                           child: bloc.messageHistory.isNotEmpty

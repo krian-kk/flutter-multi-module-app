@@ -862,7 +862,7 @@ class LanguageEn extends Languages {
 
   @override
   String get errorMsgS2TlangCode =>
-      'Please select Customer Language Preference from Profile';
+      'Please select Speech to Text Language from Profile';
 
   @override
   String get generatePaymentLink => 'Generate Payment Link';
@@ -913,4 +913,13 @@ class LanguageEn extends Languages {
 
   @override
   String get youAreInOffline => 'You are in offline';
+
+  @override
+  String get disposition => 'Disposition';
+
+  @override
+  String get visit => 'Visit';
+
+  @override
+  String get selectSpeechToTextLanguage => 'Select Speech to text language';
 }

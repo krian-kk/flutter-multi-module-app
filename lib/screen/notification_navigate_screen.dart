@@ -25,8 +25,8 @@ class OnclickNotificationNavigateScreen {
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext buildContext, StateSetter setState) => SizedBox(
           height: MediaQuery.of(context).size.height * 0.86,
-          child:
-              ChatScreen(fromARefId: fromID, toARefId: toID, agentImage: null),
+          child: ChatScreen(
+              fromARefId: fromID!, toARefId: toID!, agentImage: null),
         ),
       ),
     );
