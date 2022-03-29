@@ -187,4 +187,5 @@ class Constants {
   static const String panjabiLangCode = 'pa-Guru-IN';
 
   static const String teluguLangCode = 'te-IN';
+  static const String mPin = 'mPin';
 }

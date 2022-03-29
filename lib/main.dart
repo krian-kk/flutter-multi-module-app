@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dynamic_themes/dynamic_themes.dart';
@@ -30,11 +31,8 @@ void main() async {
   bloc = AuthenticationBloc();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-// Requesting Notification Permission
+// Requesting Push Notification Permission
   requestNotificationPermission();
-
-  // androidAndIOSNotification();
 
   Bloc.observer = EchoBlocDelegate();
   runApp(
@@ -49,7 +47,6 @@ void main() async {
 
 void requestNotificationPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -59,54 +56,11 @@ void requestNotificationPermission() async {
     provisional: false,
     sound: true,
   );
-
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     //User granted permission
-    // androidAndIOSNotification();
   } else {
-    //User declined or has not accepted permission
     openAppSettings();
   }
-}
-
-// void iOSNotification() async {}
-
-void androidAndIOSNotification() async {
-  channel = const AndroidNotificationChannel(
-    'com_mcollect_origa_ai', // id
-    'origa.ai', // title
-    importance: Importance.high,
-  );
-
-  var initializationSettingsAndroid =
-      const AndroidInitializationSettings('@mipmap/ic_launcher');
-  var initializationSettingsIOS = const IOSInitializationSettings();
-  var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-
-  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: selectNotification);
-
-  /// Create an Android Notification Channel.
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  /// Update the iOS foreground notification presentation options to allow
-  /// heads up notifications.
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-}
-
-Future selectNotification(String? payload) async {
-  //Handle notification tapped logic here
-  print('flutter Local Notifications Plugin payload ---> $payload');
 }
 
 class MyApp extends StatefulWidget {
@@ -127,33 +81,47 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    super.initState();
+
     bloc = BlocProvider.of<AuthenticationBloc>(context);
+    androidAndIOSNotification();
+
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
+      if (message != null) {
+        bloc!.add(AppStarted(
+            context: context, notificationData: message.notification!.body));
+        print(
+            'Get initial firebase message ----> ${message.notification!.title}');
+      }
+    });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       debugPrint('Notification print-> ${notification!.title}');
       debugPrint('notification!.body-> ${notification.body}');
-
-      // // If `onMessage` is triggered with a notification, construct our own
-      // // local notification to show to users using the created channel.
-      // if (notification != null && android != null) {
-      //   flutterLocalNotificationsPlugin.show(
-      //       notification.hashCode,
-      //       notification.title,
-      //       notification.body,
-      //       NotificationDetails(
-      //         android: AndroidNotificationDetails(
-      //           channel.id,
-      //           channel.name,
-      //           icon: android.smallIcon,
-      //           // other properties...
-      //         ),
-      //       ));
-      // }
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              icon: android.smallIcon,
+            ),
+          ),
+          payload: notification.body,
+        );
+      }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       RemoteNotification? notification = message.notification;
       print(
           'A new onMessageOpenedApp event was published!... -----> ${message.data}');
@@ -162,8 +130,57 @@ class _MyAppState extends State<MyApp> {
           AppStarted(context: context, notificationData: notification!.body));
     });
 
-    super.initState();
+    // FirebaseMessaging.onBackgroundMessage((message) async {
+    //   print("_messaging onBackgroundMessage::: $message");
+    // });
   }
+
+  void androidAndIOSNotification() async {
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      "origa.ai", // title
+      importance: Importance.high,
+    );
+
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = const IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onClickNotification);
+
+    /// Create an Android Notification Channel.
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  Future onClickNotification(String? payload) async {
+    //Handle notification tapped logic here
+    print('flutter selected Local Notifications Plugin payload ---> $payload');
+    bloc!.add(AppStarted(
+        context: context, notificationData: jsonDecode(jsonEncode(payload!))));
+  }
+
+  //   void _configureSelectNotificationSubject() {
+  //   selectNotificationSubject.stream.listen((String? payload) async {
+  //     await Navigator.pushNamed(context, '/secondPage');
+  //   });
+  // }
 
   void setLocale(Locale locale) {
     setState(() {

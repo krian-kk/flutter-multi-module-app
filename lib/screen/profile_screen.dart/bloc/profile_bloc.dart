@@ -148,6 +148,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await _prefs.setString(Constants.userType, "");
       await _prefs.setString('addressValue', "");
       await _prefs.setBool('areyouatOffice', true);
+      await _prefs.setBool(Constants.appDataLoadedFromFirebase, false);
+      Singleton.instance.isOfflineStorageFeatureEnabled = false;
       // await _prefs.setBool(Constants.rememberMe, false);
       yield LoginState();
     }
