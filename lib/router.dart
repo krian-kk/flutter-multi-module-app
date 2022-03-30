@@ -203,7 +203,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        print(
+        debugPrint(
             "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
 
         Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
@@ -232,7 +232,7 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        print(
+        debugPrint(
             "Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}");
 
         Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,

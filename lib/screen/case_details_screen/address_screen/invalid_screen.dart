@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -76,7 +77,23 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         widget.bloc.addressInvalidRemarksController,
                         validationRules: const ['required'],
                         isLabel: true,
-                        // suffixWidget: VoiceRecodingWidget(),
+                        isVoiceRecordWidget: true,
+                        returnS2Tresponse: (val) {
+                          if (val is Speech2TextModel) {
+                            setState(() =>
+                                widget.bloc.returnS2TAddressInvalid = val);
+                          }
+                        },
+                        checkRecord: (isRecord, text, returnS2T) {
+                          setState(() {
+                            widget.bloc.returnS2TAddressInvalid = returnS2T;
+                            widget.bloc.isRecordAddressInvaild = isRecord;
+                            widget.bloc.translateTextAddressInvalid = text!;
+                            widget.bloc.isTranslateAddressInvalid = true;
+                          });
+                        },
+                        isSubmit: widget.bloc.isTranslateAddressInvalid,
+                        caseId: widget.bloc.caseId,
                       )),
                       const SizedBox(height: 19),
                       CustomButton(

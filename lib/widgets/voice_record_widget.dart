@@ -32,7 +32,7 @@ class VoiceRecodingWidget extends StatefulWidget {
   final String filePath;
   final Function? recordingData;
   final String? caseId;
-  final OnChangeForPickDate? checkRecord;
+  final OnChangeCheckRecord? checkRecord;
   final Function onRecordStart;
 
   const VoiceRecodingWidget({
@@ -130,7 +130,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       });
     }
     if (result) {
-      widget.checkRecord!(Constants.process, '');
+      widget.checkRecord!(Constants.process, '', Speech2TextModel());
     }
     return result;
   }
@@ -156,7 +156,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         });
       });
     }
-    widget.checkRecord!(Constants.stop, '');
+    widget.checkRecord!(Constants.stop, '', Speech2TextModel());
   }
 
   apiCall() async {
@@ -217,9 +217,10 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       widget.checkRecord!(
         Constants.submit,
         getTranslatedData.result?.translatedText,
+        getTranslatedData,
       );
     } else {
-      widget.checkRecord!(Constants.none, '');
+      widget.checkRecord!(Constants.none, '', Speech2TextModel());
     }
   }
 

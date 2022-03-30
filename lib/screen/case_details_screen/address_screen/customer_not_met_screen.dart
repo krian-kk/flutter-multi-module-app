@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -131,46 +132,32 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           widget.bloc.addressCustomerNotMetRemarksController,
                           validationRules: const ['required'],
                           isLabel: true,
-                          // suffixWidget: VoiceRecodingWidget(),
+                          isVoiceRecordWidget: true,
+                          returnS2Tresponse: (val) {
+                            if (val is Speech2TextModel) {
+                              setState(() =>
+                                  widget.bloc.returnS2TCustomerNotMet = val);
+                            }
+                          },
+                          checkRecord: (isRecord, text, returnS2Tdata) {
+                            setState(() {
+                              widget.bloc.returnS2TCustomerNotMet =
+                                  returnS2Tdata;
+                              widget.bloc.isRecordCustomerNotMet = isRecord;
+                              widget.bloc.translateTextCustomerNotMet = text!;
+                              widget.bloc.isTranslateCustomerNotMet = true;
+                            });
+                          },
+                          isSubmit: widget.bloc.isTranslateCustomerNotMet,
+                          caseId: widget.bloc.caseId,
                         )),
-                        // Align(
-                        //     alignment: Alignment.bottomLeft,
-                        //     child: CustomText(
-                        //       Languages.of(context)!.remarks.toUpperCase(),
-                        //       color: ColorResource.color666666,
-                        //       fontSize: FontSize.twelve,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontStyle: FontStyle.normal,
-                        //     )),
-                        // SizedBox(
-                        //   width: double.infinity,
-                        //   child: TextFormField(
-                        //     controller: widget
-                        //         .bloc.addressCustomerNotMetRemarksController,
-                        //     focusNode: widget
-                        //         .bloc.addressCustomerNotMetRemarksFocusNode,
-                        //     validator: (value) {
-                        //       if (value == null || value.isEmpty) {
-                        //         return 'Please enter some text';
-                        //       }
-                        //       return null;
-                        //     },
-                        //     decoration: InputDecoration(
-                        //         hintText:
-                        //             Languages.of(context)!.writeYourRemarksHere,
-                        //         focusColor: ColorResource.colorE5EAF6,
-                        //         labelStyle:
-                        //             const TextStyle(color: Color(0xFF424242))),
-                        //   ),
-                        // ),
                         const SizedBox(height: 19),
                         CustomButton(
                           Languages.of(context)!.captureImage.toUpperCase(),
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
-                          onTap: () =>
-                              widget.bloc.add(EventDetailsEvent(
+                          onTap: () => widget.bloc.add(EventDetailsEvent(
                             Constants.captureImage,
                             widget.bloc.caseDetailsAPIValue.result
                                 ?.addressDetails,

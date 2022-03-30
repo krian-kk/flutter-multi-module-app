@@ -30,9 +30,9 @@ import 'package:permission_handler/permission_handler.dart';
 class AddressScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
   final int index;
-  dynamic addressModel;
+  final dynamic addressModel;
 
-  AddressScreen(
+  const AddressScreen(
       {Key? key, required this.bloc, required this.index, this.addressModel})
       : super(key: key);
 
@@ -499,24 +499,49 @@ class _AddressScreenState extends State<AddressScreen>
                                       fontWeight: FontWeight.w600,
                                       onTap: isSubmitFirst
                                           ? () {
-                                              if (widget
-                                                  .bloc
-                                                  .addressCustomerNotMetFormKey
-                                                  .currentState!
-                                                  .validate()) {
+                                              if (widget.bloc
+                                                      .isRecordCustomerNotMet ==
+                                                  Constants.process) {
+                                                AppUtils.showToast(
+                                                    'Stop the Record then Submit');
+                                              } else if (widget.bloc
+                                                      .isRecordCustomerNotMet ==
+                                                  Constants.stop) {
+                                                AppUtils.showToast(
+                                                    'Please wait audio is converting');
+                                              } else {
                                                 if (widget.bloc
-                                                        .addressSelectedCustomerNotMetClip !=
-                                                    '') {
-                                                  widget.bloc.add(
-                                                      ClickCustomerNotMetButtonEvent(
-                                                          context));
-                                                } else {
-                                                  AppUtils.showToast(
-                                                    Languages.of(context)!
-                                                        .pleaseSelectOptions,
-                                                  );
+                                                        .isRecordCustomerNotMet ==
+                                                    Constants.submit) {
+                                                  setState(() => widget
+                                                          .bloc
+                                                          .addressCustomerNotMetRemarksController
+                                                          .text =
+                                                      widget.bloc
+                                                          .translateTextCustomerNotMet);
+                                                  setState(() => widget.bloc
+                                                          .isTranslateCustomerNotMet =
+                                                      false);
                                                 }
-                                              } else {}
+                                                if (widget
+                                                    .bloc
+                                                    .addressCustomerNotMetFormKey
+                                                    .currentState!
+                                                    .validate()) {
+                                                  if (widget.bloc
+                                                          .addressSelectedCustomerNotMetClip !=
+                                                      '') {
+                                                    widget.bloc.add(
+                                                        ClickCustomerNotMetButtonEvent(
+                                                            context));
+                                                  } else {
+                                                    AppUtils.showToast(
+                                                      Languages.of(context)!
+                                                          .pleaseSelectOptions,
+                                                    );
+                                                  }
+                                                }
+                                              }
                                             }
                                           : () {},
                                       cardShape: 5,
@@ -539,9 +564,34 @@ class _AddressScreenState extends State<AddressScreen>
                                       fontWeight: FontWeight.w600,
                                       onTap: isSubmitSecond
                                           ? () {
-                                              widget.bloc.add(
-                                                  ClickAddressInvalidButtonEvent(
-                                                      context));
+                                              if (widget.bloc
+                                                      .isRecordAddressInvaild ==
+                                                  Constants.process) {
+                                                AppUtils.showToast(
+                                                    'Stop the Record then Submit');
+                                              } else if (widget.bloc
+                                                      .isRecordAddressInvaild ==
+                                                  Constants.stop) {
+                                                AppUtils.showToast(
+                                                    'Please wait audio is converting');
+                                              } else {
+                                                if (widget.bloc
+                                                        .isRecordAddressInvaild ==
+                                                    Constants.submit) {
+                                                  setState(() => widget
+                                                          .bloc
+                                                          .addressInvalidRemarksController
+                                                          .text =
+                                                      widget.bloc
+                                                          .translateTextAddressInvalid);
+                                                  setState(() => widget.bloc
+                                                          .isTranslateAddressInvalid =
+                                                      false);
+                                                }
+                                                widget.bloc.add(
+                                                    ClickAddressInvalidButtonEvent(
+                                                        context));
+                                              }
                                             }
                                           : () {},
                                       cardShape: 5,

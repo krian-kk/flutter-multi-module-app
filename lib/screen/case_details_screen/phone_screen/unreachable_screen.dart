@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -133,7 +134,23 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           widget.bloc.phoneUnreachableRemarksController,
                           validationRules: const ['required'],
                           isLabel: true,
-                          // suffixWidget: VoiceRecodingWidget(),
+                          isVoiceRecordWidget: true,
+                          returnS2Tresponse: (val) {
+                            if (val is Speech2TextModel) {
+                              setState(
+                                  () => widget.bloc.returnS2TUnReachable = val);
+                            }
+                          },
+                          checkRecord: (isRecord, text, returnS2Tdata) {
+                            setState(() {
+                              widget.bloc.returnS2TUnReachable = returnS2Tdata;
+                              widget.bloc.isRecordUnReachable = isRecord;
+                              widget.bloc.translateTextUnReachable = text!;
+                              widget.bloc.isTranslateUnReachable = true;
+                            });
+                          },
+                          isSubmit: widget.bloc.isTranslateUnReachable,
+                          caseId: widget.bloc.caseId,
                         )),
                         const SizedBox(height: 20),
                         Singleton.instance.contractorInformations?.result

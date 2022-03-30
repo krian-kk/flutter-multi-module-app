@@ -40,7 +40,8 @@ class PushNotificationHandlers {
     notificationEvents.setOnBackgroundMessage(_backgroundMessageHandler);
 
     notificationEvents.setOnOpenSettings(() {
-      print('The iOS user has asked to see the In-app Notification Settings');
+      debugPrint(
+          'The iOS user has asked to see the In-app Notification Settings');
     });
 
     notificationEvents.onMessage.listen((message) {
@@ -49,25 +50,25 @@ class PushNotificationHandlers {
       ably.Notification? notification = message.notification;
 
       if (notification != null && notification.body!.isNotEmpty) {
-        print('--------notification data---------');
+        debugPrint('--------notification data---------');
         flutterLocalNotificationsPlugin.show(notification.hashCode,
             notification.title, notification.body, const NotificationDetails());
       }
 
-      print('RemoteMessage received while app is in foreground:\n'
+      debugPrint('RemoteMessage received while app is in foreground:\n'
           'RemoteMessage.Notification: ${message.notification!.title}'
           'RemoteMessage.Data: ${message.notification!.body}');
     });
 
     notificationEvents.setOnShowNotificationInForeground((message) async {
-      print(
+      debugPrint(
           'Opting to show the notification when the app is in the foreground.');
       return true;
     });
 
     notificationEvents.onNotificationTap.listen((remoteMessage) {
       addMessage(remoteMessage);
-      print('Notification was tapped: $remoteMessage');
+      debugPrint('Notification was tapped: $remoteMessage');
     });
   }
 
@@ -98,7 +99,7 @@ class PushNotificationHandlers {
 
   static void selectNotification(String? payload) async {
     //Handle notification tapped logic here
-    print('flutter Local Notifications Plugin payload ---> $payload');
+    debugPrint('flutter Local Notifications Plugin payload ---> $payload');
   }
 
   /// You can get the notification which launched the app by a user tapping it.
@@ -107,8 +108,8 @@ class PushNotificationHandlers {
         .then((remoteMessage) {
       if (remoteMessage != null) {
         addMessage(remoteMessage);
-        print('The app was launched by the user by tapping the notification');
-        print(remoteMessage.data);
+        debugPrint(
+            'The app was launched by the user by tapping the notification ${remoteMessage.data}');
       }
     });
   }
@@ -120,7 +121,7 @@ class PushNotificationHandlers {
   static Future<void> _backgroundMessageHandler(
       ably.RemoteMessage message) async {
     addMessage(message);
-    print('RemoteMessage received while app is in background:\n'
+    debugPrint('RemoteMessage received while app is in background:\n'
         'RemoteMessage.Notification: ${message.notification}'
         'RemoteMessage.Data: ${message.data}');
   }
@@ -137,7 +138,7 @@ void logAndDisplayError(ably.ErrorInfo? errorInfo,
   if (errorInfo == null) {
     return;
   }
-  print(errorInfo.message);
+  debugPrint(errorInfo.message);
   Fluttertoast.showToast(
       msg: 'Error: $prefixMessage. '
           '${errorInfo.message ?? 'No error message provided'}',

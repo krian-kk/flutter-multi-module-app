@@ -161,9 +161,11 @@ class _CustomCaptureImageBottomSheetState
                                         });
                                       }
                                     },
-                                    checkRecord: (isRecord, text) {
+                                    checkRecord:
+                                        (isRecord, text, returnS2Tdata) {
                                       setState(() {
                                         this.isRecord = isRecord;
+                                        this.returnS2Tdata = returnS2Tdata;
                                         translateText = text!;
                                         isTranslate = true;
                                       });
@@ -307,9 +309,9 @@ class _CustomCaptureImageBottomSheetState
                                                   altitude: position.altitude,
                                                   heading: position.heading,
                                                   speed: position.speed,
-                                                  reginal_text: returnS2Tdata
+                                                  reginalText: returnS2Tdata
                                                       .result?.reginalText,
-                                                  translated_text: returnS2Tdata
+                                                  translatedText: returnS2Tdata
                                                       .result?.translatedText,
                                                   audioS3Path: returnS2Tdata
                                                       .result?.audioS3Path,

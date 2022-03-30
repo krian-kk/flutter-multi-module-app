@@ -80,16 +80,26 @@ class PhoneInvalidEventAttr {
   late String remarks;
   late String followUpPriority;
   late String nextActionDate;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
-  PhoneInvalidEventAttr(
-      {required this.remarks,
-      this.followUpPriority = 'AWAITING CONTACT',
-      required this.nextActionDate});
+  PhoneInvalidEventAttr({
+    required this.remarks,
+    this.followUpPriority = 'AWAITING CONTACT',
+    required this.nextActionDate,
+    this.reginalText,
+    this.translatedText,
+    this.audioS3Path,
+  });
 
   PhoneInvalidEventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
     followUpPriority = json['followUpPriority'];
     nextActionDate = json['nextActionDate'];
+    reginalText = json['reginal_text'];
+    translatedText = json['translated_text'];
+    audioS3Path = json['audioS3Path'];
   }
 
   Map<String, dynamic> toJson() {
@@ -97,6 +107,11 @@ class PhoneInvalidEventAttr {
     data['remarks'] = remarks;
     data['followUpPriority'] = followUpPriority;
     data['nextActionDate'] = nextActionDate;
+    if (reginalText != null && translatedText != null && audioS3Path != null) {
+      data['reginal_text'] = reginalText;
+      data['translated_text'] = translatedText;
+      data['audioS3Path'] = audioS3Path;
+    }
     return data;
   }
 }

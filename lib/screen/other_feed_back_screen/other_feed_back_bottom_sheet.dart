@@ -301,14 +301,11 @@ class _CustomOtherFeedBackBottomSheetState
                                     validationRules: const ['required'],
                                     isLabel: true,
                                     isEnable: true,
-                                    isVoiceRecordWidget:
-                                        Singleton.instance.usertype ==
-                                                    Constants.fieldagent &&
-                                                widget.isCall! == false
-                                            ? true
-                                            : false,
-                                    checkRecord: (isRecord, text) {
+                                    isVoiceRecordWidget: true,
+                                    checkRecord:
+                                        (isRecord, text, returnS2Tdata) {
                                       setState(() {
+                                        this.returnS2Tdata = returnS2Tdata;
                                         this.isRecord = isRecord;
                                         translateText = text!;
                                         isTranslate = true;
@@ -597,8 +594,8 @@ class _CustomOtherFeedBackBottomSheetState
               // agentLocation: AgentLocation(),
               contact:
                   otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
-              reginal_text: returnS2Tdata.result?.reginalText,
-              translated_text: returnS2Tdata.result?.translatedText,
+              reginalText: returnS2Tdata.result?.reginalText,
+              translatedText: returnS2Tdata.result?.translatedText,
               audioS3Path: returnS2Tdata.result?.audioS3Path,
             ),
             contact: OtherFeedBackContact(

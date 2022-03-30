@@ -357,14 +357,11 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     focusNode: ptpRemarksFocusNode,
                                     validationRules: const ['required'],
                                     isLabel: true,
-                                    isVoiceRecordWidget:
-                                        Singleton.instance.usertype ==
-                                                    Constants.fieldagent &&
-                                                widget.isCall! == false
-                                            ? true
-                                            : false,
-                                    checkRecord: (isRecord, text) {
+                                    isVoiceRecordWidget: true,
+                                    checkRecord:
+                                        (isRecord, text, returnS2Tdata) {
                                       setState(() {
+                                        this.returnS2Tdata = returnS2Tdata;
                                         this.isRecord = isRecord;
                                         translateText = text!;
                                         isTranslate = true;
@@ -554,8 +551,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 altitude: position.altitude,
                 heading: position.heading,
                 speed: position.speed,
-                reginal_text: returnS2Tdata.result?.reginalText,
-                translated_text: returnS2Tdata.result?.translatedText,
+                reginalText: returnS2Tdata.result?.reginalText,
+                translatedText: returnS2Tdata.result?.translatedText,
                 audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
               callID: Singleton.instance.callID ?? " ",

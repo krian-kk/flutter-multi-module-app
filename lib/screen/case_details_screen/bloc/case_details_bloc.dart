@@ -24,6 +24,7 @@ import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.d
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/send_sms_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
@@ -107,8 +108,27 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   List<OtherFeedbackExpandModel> expandOtherFeedback = [];
   List<EventExpandModel> expandEvent = [];
 
-  // Phone Details screen
+  Speech2TextModel returnS2TCustomerNotMet = Speech2TextModel();
+  String? isRecordCustomerNotMet;
+  String translateTextCustomerNotMet = '';
+  bool isTranslateCustomerNotMet = true;
 
+  Speech2TextModel returnS2TAddressInvalid = Speech2TextModel();
+  String? isRecordAddressInvaild;
+  String translateTextAddressInvalid = '';
+  bool isTranslateAddressInvalid = true;
+
+  Speech2TextModel returnS2TUnReachable = Speech2TextModel();
+  String? isRecordUnReachable;
+  String translateTextUnReachable = '';
+  bool isTranslateUnReachable = true;
+
+  Speech2TextModel returnS2TPhoneInvalid = Speech2TextModel();
+  String? isRecordPhoneInvalid;
+  String translateTextPhoneInvalid = '';
+  bool isTranslatePhoneInvalid = true;
+
+  // Phone Details screen
   String phoneSelectedUnreadableClip = '';
   String phoneSelectedInvalidClip = '';
   List<CustomerMetGridModel> phoneCustomerMetGridList = [];
@@ -937,7 +957,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         AppUtils.showToast('Error while generating Payment Link');
       }
     }
-
     if (event is GenerateQRcodeEvent) {
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
       var requestBodyData = GeneratePaymentLinkPost(
@@ -959,7 +978,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         AppUtils.showToast('Error while generating QR coxde');
       }
     }
-
     if (event is UpdateHealthStatusEvent) {
       Singleton.instance.updateHealthStatus = {
         'selectedHealthIndex': event.selectedHealthIndex!,
@@ -1236,6 +1254,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           nextActionDate: phoneUnreachableSelectedDate != ''
               ? phoneUnreachableSelectedDate
               : phoneUnreachableNextActionDateController.text,
+          reginalText: returnS2TUnReachable.result?.reginalText,
+          translatedText: returnS2TUnReachable.result?.translatedText,
+          audioS3Path: returnS2TUnReachable.result?.audioS3Path,
         ),
         eventModule: 'Telecalling',
         createdBy: Singleton.instance.agentRef ?? '',
@@ -1354,6 +1375,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           altitude: position.altitude,
           heading: position.heading,
           speed: position.speed,
+          reginalText: returnS2TCustomerNotMet.result?.reginalText,
+          translatedText: returnS2TCustomerNotMet.result?.translatedText,
+          audioS3Path: returnS2TCustomerNotMet.result?.audioS3Path,
         ));
     Map<String, dynamic> postResult = {'success': false};
 
@@ -1452,6 +1476,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           altitude: position.altitude,
           heading: position.heading,
           speed: position.speed,
+          reginalText: returnS2TAddressInvalid.result?.reginalText,
+          translatedText: returnS2TAddressInvalid.result?.translatedText,
+          audioS3Path: returnS2TAddressInvalid.result?.audioS3Path,
         ),
         eventModule: 'Field Allocation',
         contact: [
@@ -1525,6 +1552,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventAttr: PhoneInvalidEventAttr(
           remarks: phoneInvalidRemarksController.text,
           nextActionDate: DateTime.now().toString(),
+          reginalText: returnS2TPhoneInvalid.result?.reginalText,
+          translatedText: returnS2TPhoneInvalid.result?.translatedText,
+          audioS3Path: returnS2TPhoneInvalid.result?.audioS3Path,
         ),
         eventModule: 'Telecalling',
         contact: PhoneInvalidContact(

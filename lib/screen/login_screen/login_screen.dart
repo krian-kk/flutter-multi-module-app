@@ -35,7 +35,8 @@ import 'bloc/login_bloc.dart';
 class LoginScreen extends StatefulWidget {
   final AuthenticationBloc authBloc;
   final dynamic notificationData;
-  const LoginScreen(this.authBloc, {this.notificationData});
+  const LoginScreen(this.authBloc, {Key? key, this.notificationData})
+      : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

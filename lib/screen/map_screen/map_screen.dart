@@ -243,7 +243,6 @@
 //         );
 //       }
 
-
 //       double totalDistance = 0.0;
 
 //       // Calculating the total distance by adding the distance
@@ -302,7 +301,6 @@
 //     //         "destination=$destinationLatitude,$destinationLongitude&" +
 //     //         "key=" +
 //     //         Env.googleMapAPI);
-
 
 //     // // Here clear the previous polyline then added newly selected LatLng polyline
 //     polylineCoordinates.clear();

@@ -24,7 +24,7 @@ class PhoneBottomSheetInitialEvent extends CaseDetailsEvent {
 
 class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
   final int index;
-  dynamic addressModel;
+  final dynamic addressModel;
 
   ClickMainAddressBottomSheetEvent(this.index, {this.addressModel});
 }

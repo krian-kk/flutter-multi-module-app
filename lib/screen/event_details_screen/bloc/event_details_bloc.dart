@@ -1,11 +1,14 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/models/event_details_api_model/event_details_api_model.dart';
-import 'package:origa/models/event_details_api_model/result.dart';
+import 'package:origa/models/event_details_model/event_details_model.dart';
+import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -26,7 +29,8 @@ class EventDetailsPlayAudioModel {
 }
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
-  EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
+  // EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
+  EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel = [];
 
   EventDetailsBloc() : super(EventDetailsInitial()) {
@@ -51,17 +55,19 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               .then((QuerySnapshot<Map<String, dynamic>> value) {
             if (value.docs.isNotEmpty) {
               //temporaryList for events list
-              List<EventDetailsResultModel>? result = [];
+              // List<EventDetailsResultModel>? result = [];
+              List<EvnetDetailsResultsModel>? results = [];
               for (var element in value.docs) {
                 try {
-                  result.add(EventDetailsResultModel.fromJson(element.data()));
+                  results
+                      .add(EvnetDetailsResultsModel.fromJson(element.data()));
                 } catch (e) {
                   debugPrint(e.toString());
                 }
               }
-              eventDetailsAPIValue.result = result;
+              eventDetailsAPIValues.result = results;
             } else {
-              eventDetailsAPIValue.result = [];
+              eventDetailsAPIValues.result = [];
             }
           });
         } else {
@@ -73,7 +79,9 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
 
           if (getEventDetailsData[Constants.success] == true) {
             Map<String, dynamic> jsonData = getEventDetailsData['data'];
-            eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
+            // eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
+            eventDetailsAPIValues = EventDetailsModel.fromJson(jsonData);
+            log('Event Details Value ===== > ${jsonEncode(jsonData)}');
           } else {
             AppUtils.showToast(getEventDetailsData['data']['message']);
           }
@@ -98,7 +106,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
         //     AppUtils.showToast(getEventDetailsData['data']['message']);
         //   }
         // }
-        eventDetailsAPIValue.result?.forEach((element) {
+        eventDetailsAPIValues.result?.forEach((element) {
           eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
         });
         emit.call(EventDetailsLoadedState());

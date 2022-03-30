@@ -37,7 +37,9 @@ class FirebaseUtils {
       String? selectedFollowUpDate,
       required CaseDetailsBloc bloc}) async {
     bool returnValues = false;
-    if (Singleton.instance.usertype == Constants.fieldagent) {
+    if (Singleton.instance.usertype == Constants.fieldagent
+        // && Constants.appDataLoadedFromFirebase
+        ) {
       FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
@@ -81,6 +83,7 @@ class FirebaseUtils {
                 Map addressModel = Map.from(values);
                 if (selectedAddress['value'] == addressModel['value']) {
                   indexNumber = index;
+                  debugPrint(indexNumber.toString());
                 } else {
                   toUpdateValues.add(addressModel);
                 }
