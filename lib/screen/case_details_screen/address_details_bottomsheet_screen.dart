@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +8,7 @@ import 'package:origa/models/location_converter.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
@@ -238,46 +240,56 @@ class _AddressDetailsBottomSheetScreenState
                                                       children: [
                                                         GestureDetector(
                                                           onTap: () async {
-                                                            Position?
-                                                                currentLocation;
-                                                            await MapUtils
-                                                                    .getCurrentLocation(
-                                                                        context)
-                                                                .then((value) {
-                                                              setState(() {
-                                                                currentLocation =
-                                                                    value;
+                                                            if (ConnectivityResult
+                                                                    .none !=
+                                                                await Connectivity()
+                                                                    .checkConnectivity()) {
+                                                              Position?
+                                                                  currentLocation;
+                                                              await MapUtils
+                                                                      .getCurrentLocation(
+                                                                          context)
+                                                                  .then(
+                                                                      (value) {
+                                                                setState(() {
+                                                                  currentLocation =
+                                                                      value;
+                                                                });
                                                               });
-                                                            });
-                                                            Northeast?
-                                                                destinationLocation =
-                                                                await MapUtils
-                                                                    .convertAddressToLarlng(
-                                                              address: widget
-                                                                      .bloc
-                                                                      .caseDetailsAPIValue
-                                                                      .result!
-                                                                      .addressDetails![
-                                                                  i]['value'],
-                                                              context: context,
-                                                            );
-                                                            if (destinationLocation !=
-                                                                null) {
-                                                              MapUtils.openMap(
-                                                                  startLatitude:
-                                                                      currentLocation!
-                                                                          .latitude,
-                                                                  startLongitude:
-                                                                      currentLocation!
-                                                                          .longitude,
-                                                                  destinationLatitude:
-                                                                      destinationLocation
-                                                                              .lat ??
-                                                                          0.0,
-                                                                  destinationLongitude:
-                                                                      destinationLocation
-                                                                              .lng ??
-                                                                          0.0);
+                                                              Northeast?
+                                                                  destinationLocation =
+                                                                  await MapUtils
+                                                                      .convertAddressToLarlng(
+                                                                address: widget
+                                                                        .bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .addressDetails![
+                                                                    i]['value'],
+                                                                context:
+                                                                    context,
+                                                              );
+                                                              if (destinationLocation !=
+                                                                  null) {
+                                                                MapUtils.openMap(
+                                                                    startLatitude:
+                                                                        currentLocation!
+                                                                            .latitude,
+                                                                    startLongitude:
+                                                                        currentLocation!
+                                                                            .longitude,
+                                                                    destinationLatitude:
+                                                                        destinationLocation.lat ??
+                                                                            0.0,
+                                                                    destinationLongitude:
+                                                                        destinationLocation.lng ??
+                                                                            0.0);
+                                                              }
+                                                            } else {
+                                                              AppUtils.showErrorToast(
+                                                                  Languages.of(
+                                                                          context)!
+                                                                      .noInternetConnection);
                                                             }
                                                           },
                                                           child: Container(
