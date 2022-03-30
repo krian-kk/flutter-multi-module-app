@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -73,7 +75,8 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
 
           if (getEventDetailsData[Constants.success] == true) {
             Map<String, dynamic> jsonData = getEventDetailsData['data'];
-            eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
+            // eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
+            log('Event Details Value ===== > $jsonData');
           } else {
             AppUtils.showToast(getEventDetailsData['data']['message']);
           }
