@@ -24,6 +24,7 @@ import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.d
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/send_sms_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
@@ -104,8 +105,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   List<OtherFeedbackExpandModel> expandOtherFeedback = [];
   List<EventExpandModel> expandEvent = [];
 
-  // Phone Details screen
+  Speech2TextModel returnS2TCustomerNotMet = Speech2TextModel();
+  String? isRecordCustomerNotMet;
+  String translateTextCustomerNotMet = '';
+  bool isTranslateCustomerNotMet = true;
 
+  Speech2TextModel returnS2TInvalid = Speech2TextModel();
+  String? isRecordInvaild;
+  String translateTextInvalid = '';
+  bool isTranslateInvalid = true;
+
+  // Phone Details screen
   String phoneSelectedUnreadableClip = '';
   String phoneSelectedInvalidClip = '';
   List<CustomerMetGridModel> phoneCustomerMetGridList = [];
