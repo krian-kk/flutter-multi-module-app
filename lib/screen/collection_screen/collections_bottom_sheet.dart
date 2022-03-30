@@ -386,15 +386,11 @@ class _CustomCollectionsBottomSheetState
                                   validationRules: const ['required'],
                                   isLabel: true,
                                   onEditing: () => remarksFocusNode.unfocus(),
-                                  isVoiceRecordWidget:
-                                      Singleton.instance.usertype ==
-                                                  Constants.fieldagent &&
-                                              widget.isCall! == false
-                                          ? true
-                                          : false,
-                                  checkRecord: (isRecord, text) {
+                                  isVoiceRecordWidget: true,
+                                  checkRecord: (isRecord, text, returnS2Tdata) {
                                     setState(() {
                                       this.isRecord = isRecord;
+                                      this.returnS2Tdata = returnS2Tdata;
                                       translateText = text!;
                                       isTranslate = true;
                                     });

@@ -161,9 +161,11 @@ class _CustomCaptureImageBottomSheetState
                                         });
                                       }
                                     },
-                                    checkRecord: (isRecord, text) {
+                                    checkRecord:
+                                        (isRecord, text, returnS2Tdata) {
                                       setState(() {
                                         this.isRecord = isRecord;
+                                        this.returnS2Tdata = returnS2Tdata;
                                         translateText = text!;
                                         isTranslate = true;
                                       });

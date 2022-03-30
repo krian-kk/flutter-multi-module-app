@@ -262,12 +262,7 @@ class _CustomRemainderBottomSheetState
                                   child: CustomReadOnlyTextField(
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
-                                isVoiceRecordWidget:
-                                    Singleton.instance.usertype ==
-                                                Constants.fieldagent &&
-                                            widget.isCall! == false
-                                        ? true
-                                        : false,
+                                isVoiceRecordWidget: true,
                                 returnS2Tresponse: (val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {
@@ -275,8 +270,9 @@ class _CustomRemainderBottomSheetState
                                     });
                                   }
                                 },
-                                checkRecord: (isRecord, text) {
+                                checkRecord: (isRecord, text, returnS2Tdata) {
                                   setState(() {
+                                    this.returnS2Tdata = returnS2Tdata;
                                     this.isRecord = isRecord;
                                     translateText = text!;
                                     isTranslate = true;

@@ -54,7 +54,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final String? agrRef;
   final OnChange? remarkFunction;
   final TextStyle? lableStyle;
-  final OnChangeForPickDate? checkRecord;
+  final OnChangeCheckRecord? checkRecord;
   final bool isSubmit;
 
   const CustomReadOnlyTextField(
@@ -322,7 +322,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                   translateTextController.text = '';
                                   isActiveSpeaker = false;
                                 });
-                                widget.checkRecord!(Constants.none, '');
+                                widget.checkRecord!(
+                                    Constants.none, '', Speech2TextModel());
                                 widget.returnS2Tresponse!(getTranslatedData);
                               },
                               caseId: widget.caseId,
@@ -520,7 +521,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                         translateTextController.text = '';
                         isActiveSpeaker = false;
                       });
-                      widget.checkRecord!(Constants.none, '');
+                      widget.checkRecord!(
+                          Constants.none, '', Speech2TextModel());
                       // Here vreturn the value for S2T API respose
                       widget.returnS2Tresponse!(getTranslatedData);
                     },
@@ -540,7 +542,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                     setState(() {
                       translateTextController.text = '';
                       isActiveSpeaker = false;
-                      widget.checkRecord!(Constants.none, '');
+                      widget.checkRecord!(
+                          Constants.none, '', Speech2TextModel());
                     });
                   },
                 ),

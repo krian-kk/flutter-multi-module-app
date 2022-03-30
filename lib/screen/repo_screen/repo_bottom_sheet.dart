@@ -290,8 +290,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               });
                             }
                           },
-                          checkRecord: (isRecord, text) {
+                          checkRecord: (isRecord, text, returnS2Tdata) {
                             setState(() {
+                              this.returnS2Tdata = returnS2Tdata;
                               this.isRecord = isRecord;
                               translateText = text!;
                               isTranslate = true;
