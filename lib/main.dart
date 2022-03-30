@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +16,24 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_theme.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
 
-void main() {
+/// Create a [AndroidNotificationChannel] for heads up notifications
+late AndroidNotificationChannel channel;
+// local notification integration
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+late AuthenticationBloc bloc;
+
+void main() async {
+  bloc = AuthenticationBloc();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+// Requesting Push Notification Permission
+  requestNotificationPermission();
+
   Bloc.observer = EchoBlocDelegate();
   runApp(
     BlocProvider<AuthenticationBloc>(
@@ -27,6 +43,24 @@ void main() {
       child: const MyApp(),
     ),
   );
+}
+
+void requestNotificationPermission() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    //User granted permission
+  } else {
+    openAppSettings();
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -47,9 +81,107 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    bloc = BlocProvider.of<AuthenticationBloc>(context);
     super.initState();
+
+    bloc = BlocProvider.of<AuthenticationBloc>(context);
+    androidAndIOSNotification();
+
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
+      if (message != null) {
+        bloc!.add(AppStarted(
+            context: context, notificationData: message.notification!.body));
+        debugPrint(
+            'Get Initial firebase message ----> ${message.notification!.title}');
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      debugPrint('Notification print-> ${notification!.title}');
+      debugPrint('notification!.body-> ${notification.body}');
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              icon: android.smallIcon,
+            ),
+          ),
+          payload: notification.body,
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      RemoteNotification? notification = message.notification;
+      debugPrint(
+          'A new onMessageOpenedApp event was published!... -----> ${message.data}');
+
+      bloc!.add(
+          AppStarted(context: context, notificationData: notification!.body));
+    });
+
+    // FirebaseMessaging.onBackgroundMessage((message) async {
+    //   print("_messaging onBackgroundMessage::: $message");
+    // });
   }
+
+  void androidAndIOSNotification() async {
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      "origa.ai", // title
+      importance: Importance.high,
+    );
+
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = const IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onClickNotification);
+
+    /// Create an Android Notification Channel.
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  Future onClickNotification(String? payload) async {
+    //Handle notification tapped logic here
+    debugPrint(
+        'flutter selected Local Notifications Plugin payload ---> $payload');
+    bloc!.add(AppStarted(
+        context: context, notificationData: jsonDecode(jsonEncode(payload!))));
+  }
+
+  //   void _configureSelectNotificationSubject() {
+  //   selectNotificationSubject.stream.listen((String? payload) async {
+  //     await Navigator.pushNamed(context, '/secondPage');
+  //   });
+  // }
 
   void setLocale(Locale locale) {
     setState(() {

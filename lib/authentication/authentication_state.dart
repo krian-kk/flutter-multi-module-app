@@ -10,17 +10,23 @@ class AuthenticationUnInitialized extends AuthenticationState {
 }
 
 class AuthenticationUnAuthenticated extends AuthenticationState {
+  final dynamic notificationData;
   @override
   String toString() {
     return "AuthenticationUnAuthenticated";
   }
+
+  AuthenticationUnAuthenticated({this.notificationData});
 }
 
 class AuthenticationAuthenticated extends AuthenticationState {
+  final dynamic notificationData;
   @override
   String toString() {
     return "AuthenticationAuthenticated";
   }
+
+  AuthenticationAuthenticated({this.notificationData});
 }
 
 class SplashScreenState extends AuthenticationState {}
