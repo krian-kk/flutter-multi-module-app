@@ -9,6 +9,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/event_details_api_model/result.dart';
+import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -183,10 +184,10 @@ class _CustomEventDetailsBottomSheetState
                     return Expanded(
                         child: ListView.builder(
                             itemCount:
-                                bloc.eventDetailsAPIValue.result?.length ?? 0,
+                                bloc.eventDetailsAPIValues.result?.length ?? 0,
                             itemBuilder: (context, int index) {
                               dynamic listVal = bloc
-                                  .eventDetailsAPIValue.result!.reversed
+                                  .eventDetailsAPIValues.result!.reversed
                                   .toList();
                               return expandList(listVal, index);
                             }));
@@ -232,7 +233,7 @@ class _CustomEventDetailsBottomSheetState
     );
   }
 
-  expandList(List<EventDetailsResultModel> expandedList, int index) {
+  expandList(List<EvnetDetailsResultsModel> expandedList, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -256,10 +257,10 @@ class _CustomEventDetailsBottomSheetState
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (expandedList[index].date != null)
+                    if (expandedList[index].eventAttr?.date != null)
                       CustomText(
                         DateFormateUtils.followUpDateFormate(
-                            expandedList[index].date.toString()),
+                            expandedList[index].eventAttr!.date.toString()),
                         fontSize: FontSize.seventeen,
                         fontWeight: FontWeight.w700,
                         color: ColorResource.color000000,
@@ -276,36 +277,37 @@ class _CustomEventDetailsBottomSheetState
                 collapsedIconColor: ColorResource.color000000,
                 children: [
                   expandedList[index].eventType == 'OTS'
-                      ? CustomText(
-                          "OTS Amount: " + expandedList[index].otsAmt,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        )
+                      ? (expandedList[index].eventAttr?.amntOts != null)
+                          ? CustomText(
+                              'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
+                              fontSize: FontSize.fourteen,
+                              fontWeight: FontWeight.w700,
+                              color: ColorResource.color000000,
+                            )
+                          : const SizedBox()
                       : const SizedBox(),
                   if (expandedList[index].eventType == 'RECEIPT')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          expandedList[index].customerName,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
-                        CustomText(
-                          "Receipt Amount : " +
-                              Constants.inr +
-                              expandedList[index].amountCollected!,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
-                        expandedList[index].chequeRefNo != null &&
-                                expandedList[index].chequeRefNo != '-'
+                        if (expandedList[index].eventAttr?.customerName != null)
+                          CustomText(
+                            expandedList[index].eventAttr?.customerName ?? '-',
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.amountCollected !=
+                            null)
+                          CustomText(
+                            'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        (expandedList[index].eventAttr?.chequeRefNo != null)
                             ? CustomText(
-                                "Cheque RefNo : " +
-                                    expandedList[index].chequeRefNo!,
+                                'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
                                 fontSize: FontSize.fourteen,
                                 fontWeight: FontWeight.w700,
                                 color: ColorResource.color000000,
@@ -313,15 +315,22 @@ class _CustomEventDetailsBottomSheetState
                             : const SizedBox(),
                       ],
                     ),
-                  if (expandedList[index].mode != null)
+                  if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
-                      Languages.of(context)!.mode.toString().toUpperCase() +
-                          ' : ' +
-                          expandedList[index].mode.toString().toUpperCase(),
+                      '${Languages.of(context)!.mode.toString().toUpperCase()} : ${expandedList[index].eventAttr!.mode.toString().toUpperCase()}',
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
+                  // if (expandedList[index].mode != null)
+                  //   CustomText(
+                  //     Languages.of(context)!.mode.toString().toUpperCase() +
+                  //         ' : ' +
+                  //         expandedList[index].mode.toString().toUpperCase(),
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   // if (expandedList[index].mode != null)
                   //   CustomText(
                   //     expandedList[index].mode.toString().toUpperCase(),
@@ -334,31 +343,38 @@ class _CustomEventDetailsBottomSheetState
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          expandedList[index].customerName,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
-                        CustomText(
-                          "Model Make: " + expandedList[index].modelMake,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
-                        CustomText(
-                          "Registration No: " +
-                              expandedList[index].registrationNo,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
-                        CustomText(
-                          "Chassis No: " + expandedList[index].chassisNo,
-                          fontSize: FontSize.fourteen,
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
+                        if (expandedList[index].eventAttr?.customerName != null)
+                          CustomText(
+                            expandedList[index]
+                                .eventAttr!
+                                .customerName
+                                .toString(),
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.modelMake != null)
+                          CustomText(
+                            'Model Make: ${expandedList[index].eventAttr!.modelMake}',
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.registrationNo !=
+                            null)
+                          CustomText(
+                            'Registration No: ${expandedList[index].eventAttr!.registrationNo}',
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.chassisNo != null)
+                          CustomText(
+                            'Chassis No: ${expandedList[index].eventAttr!.chassisNo}',
+                            fontSize: FontSize.fourteen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
                       ],
                     ),
                   CustomText(
@@ -371,20 +387,27 @@ class _CustomEventDetailsBottomSheetState
                     color: ColorResource.color000000,
                   ),
                   CustomText(
-                    expandedList[index].remarks.toString(),
+                    (expandedList[index].eventAttr?.remarks != null)
+                        ? expandedList[index].eventAttr!.remarks.toString()
+                        : (expandedList[index].eventAttr?.remarkOts != null)
+                            ? expandedList[index]
+                                .eventAttr!
+                                .remarkOts
+                                .toString()
+                            : '_',
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-                  if (expandedList[index].reginalText != null &&
-                      expandedList[index].translatedText != null &&
-                      expandedList[index].audioS3Path != null)
-                    remarkS2TaudioWidget(
-                      reginalText: expandedList[index].reginalText,
-                      translatedText: expandedList[index].translatedText,
-                      audioPath: expandedList[index].audioS3Path,
-                      index: index,
-                    ),
+                  // if (expandedList[index].reginalText != null &&
+                  //     expandedList[index].translatedText != null &&
+                  //     expandedList[index].audioS3Path != null)
+                  //   remarkS2TaudioWidget(
+                  //     reginalText: expandedList[index].reginalText,
+                  //     translatedText: expandedList[index].translatedText,
+                  //     audioPath: expandedList[index].audioS3Path,
+                  //     index: index,
+                  //   ),
                 ],
               ),
             ),

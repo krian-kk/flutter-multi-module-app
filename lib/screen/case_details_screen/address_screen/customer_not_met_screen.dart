@@ -169,8 +169,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
-                          onTap: () =>
-                              widget.bloc.add(EventDetailsEvent(
+                          onTap: () => widget.bloc.add(EventDetailsEvent(
                             Constants.captureImage,
                             widget.bloc.caseDetailsAPIValue.result
                                 ?.addressDetails,

@@ -883,11 +883,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           if (postResult[Constants.success]) {
             AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
           }
-        }else {
+        } else {
           AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
         }
       } else {
-        AppUtils.showErrorToast(Languages.of(event.context)!.noInternetConnection);
+        AppUtils.showErrorToast(
+            Languages.of(event.context)!.noInternetConnection);
       }
       yield SendSMSloadState();
     }
