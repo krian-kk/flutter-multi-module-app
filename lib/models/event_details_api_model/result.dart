@@ -14,6 +14,8 @@ class EventDetailsResultModel {
   String? reginalText;
   String? translatedText;
   String? audioS3Path;
+  String? amountCollected;
+  String? chequeRefNo;
 
   EventDetailsResultModel({
     this.id,
@@ -31,6 +33,8 @@ class EventDetailsResultModel {
     this.reginalText,
     this.translatedText,
     this.audioS3Path,
+    this.amountCollected = '-',
+    this.chequeRefNo = '-',
   });
 
   factory EventDetailsResultModel.fromJson(Map<String, dynamic> json) =>
@@ -41,7 +45,8 @@ class EventDetailsResultModel {
         remarks: json['eventAttr']['remarks'] ??
             json['eventAttr']['remarkOts'] ??
             '-',
-        date: json['eventAttr']['date'] as String?,
+        date: json['eventAttr']['date'] ??
+            json['eventAttr']['nextActionDate'] as String?,
         mode: json['eventAttr']['mode'] as String?,
         reference: json['eventAttr']['reference'] as String?,
         modelMake: json['eventAttr']['modelMake'] ?? '-',
@@ -52,6 +57,8 @@ class EventDetailsResultModel {
         reginalText: json['eventAttr']['reginal_text'],
         translatedText: json['eventAttr']['translated_text'],
         audioS3Path: json['eventAttr']['audioS3Path'],
+        amountCollected: json['eventAttr']['amountCollected'],
+        chequeRefNo: json['eventAttr']['chequeRefNo'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,5 +77,7 @@ class EventDetailsResultModel {
         'reginal_text': reginalText,
         'translated_text': translatedText,
         'audioS3Path': audioS3Path,
+        'amountCollected': amountCollected,
+        'chequeRefNo': chequeRefNo,
       };
 }

@@ -33,10 +33,12 @@ class AuthenticationBloc
             Singleton.instance.agentRef = _pref.getString(Constants.agentRef);
             yield OfflineState();
           } else {
-            yield AuthenticationUnAuthenticated();
+            yield AuthenticationUnAuthenticated(
+                notificationData: event.notificationData);
           }
         } else {
-          yield AuthenticationUnAuthenticated();
+          yield AuthenticationUnAuthenticated(
+              notificationData: event.notificationData);
         }
         // AppUtils.showErrorToast('No Internet Connection');
       } else {
@@ -46,14 +48,17 @@ class AuthenticationBloc
         String? getUserType = _prefs.getString(Constants.userType) ?? "";
 
         if (getToken == "") {
-          yield AuthenticationUnAuthenticated();
+          yield AuthenticationUnAuthenticated(
+              notificationData: event.notificationData);
         } else {
           debugPrint('Token Issue is === > $getToken');
           if (JwtDecoder.isExpired(getToken)) {
-            yield AuthenticationUnAuthenticated();
+            yield AuthenticationUnAuthenticated(
+                notificationData: event.notificationData);
           } else {
             if (getUserType == "") {
-              yield AuthenticationUnAuthenticated();
+              yield AuthenticationUnAuthenticated(
+                  notificationData: event.notificationData);
             } else {
               Singleton.instance.accessToken =
                   _prefs.getString(Constants.accessToken) ?? "";
@@ -68,7 +73,8 @@ class AuthenticationBloc
                   APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
 
               if (agentDetail[Constants.success] == false) {
-                yield AuthenticationUnAuthenticated();
+                yield AuthenticationUnAuthenticated(
+                    notificationData: event.notificationData);
 
                 if (agentDetail['data'] is String) {
                   AppUtils.showToast(agentDetail['data'],
@@ -83,7 +89,8 @@ class AuthenticationBloc
                 if (agentDetail['data']['status'] == 440) {
                   AgentDetailErrorModel agentInactivityError =
                       AgentDetailErrorModel.fromJson(agentDetail['data']);
-                  yield AuthenticationUnAuthenticated();
+                  yield AuthenticationUnAuthenticated(
+                      notificationData: event.notificationData);
                   AppUtils.showToast(agentInactivityError.msg!,
                       backgroundColor: Colors.red);
                 }
@@ -119,7 +126,8 @@ class AuthenticationBloc
                   await _prefs.setBool(
                       Constants.userAdmin, agentDetails.data![0].userAdmin!);
 
-                  yield AuthenticationAuthenticated();
+                  yield AuthenticationAuthenticated(
+                      notificationData: event.notificationData);
                 }
               }
             }

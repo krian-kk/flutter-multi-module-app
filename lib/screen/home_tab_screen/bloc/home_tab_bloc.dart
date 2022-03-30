@@ -21,6 +21,10 @@ class HomeTabBloc extends Bloc<HomeTabEvent, HomeTabState> {
     if (event is HomeTabInitialEvent) {
       yield HomeTabLoadingState();
 
+      if (event.notificationData != null) {
+        yield NavigateTabState(notificationData: event.notificationData);
+      }
+
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       userType = _prefs.getString(Constants.userType);
 

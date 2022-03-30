@@ -34,8 +34,8 @@ import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   final AuthenticationBloc authBloc;
-
-  const LoginScreen(this.authBloc, {Key? key}) : super(key: key);
+  final dynamic notificationData;
+  const LoginScreen(this.authBloc, {this.notificationData});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -318,7 +318,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       if (state is HomeTabState) {
                         Navigator.pushReplacementNamed(
-                            context, AppRoutes.homeTabScreen);
+                            context, AppRoutes.homeTabScreen,
+                            arguments: widget.notificationData);
                       }
                       if (state is ResendOTPState) {
                         resendOTPBottomSheet(context);

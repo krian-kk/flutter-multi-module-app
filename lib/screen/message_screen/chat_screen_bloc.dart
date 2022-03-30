@@ -8,8 +8,10 @@ import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/models/chat_history.dart';
 import 'package:origa/screen/message_screen/chat_model/message_model.dart';
 import 'package:origa/screen/message_screen/chat_screen_event.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 
+import '../../models/profile_api_result_model/profile_api_result_model.dart';
 import 'chat_screen_state.dart';
 
 class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
@@ -18,6 +20,8 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
   AgentInformation agentDetails = AgentInformation();
   ChatHistoryModel chatHistoryData = ChatHistoryModel();
   List<ChatHistory> messageHistory = [];
+
+  ProfileApiModel profileAPIValue = ProfileApiModel();
 
   @override
   Stream<ChatScreenState> mapEventToState(ChatScreenEvent event) async* {
@@ -50,9 +54,25 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
               "Chat History  from instalmint API == > ${chatHistory['data']}");
         } else {}
 
+        // Get toAref from profile detail API
+        if (event.toAref == null) {
+          Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
+              APIRequestType.get, HttpUrl.profileUrl);
+
+          if (getProfileData['success']) {
+            Map<String, dynamic> jsonData = getProfileData['data'];
+            profileAPIValue = ProfileApiModel.fromJson(jsonData);
+          } else if (getProfileData['statusCode'] == 401 ||
+              getProfileData['data'] == Constants.connectionTimeout ||
+              getProfileData['statusCode'] == 502) {
+            AppUtils.showErrorToast(getProfileData['data'].toString());
+          }
+        }
+
         Map<String, dynamic> agentInformation = await APIRepository.apiRequest(
             APIRequestType.get,
-            HttpUrl.agentInformation + 'aRef=${event.toAref}');
+            HttpUrl.agentInformation +
+                'aRef=${event.toAref ?? profileAPIValue.result![0].parent}');
 
         if (agentInformation[Constants.success]) {
           Map<String, dynamic> jsonData = agentInformation['data'];

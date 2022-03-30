@@ -442,6 +442,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
+        SharedPreferences _pref = await SharedPreferences.getInstance();
+        userType = _pref.getString(Constants.userType);
         Map<String, dynamic> getMyVisitsData;
         if (userType == Constants.fieldagent) {
           getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
@@ -726,6 +728,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     if (event is HelpEvent) {
       yield HelpState();
+    }
+
+    if (event is AddFilterTimeperiodFromNotification) {
+      filterOption.addAll([
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.today, value: '0'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.weekly, value: '1'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.monthly, value: '2'),
+      ]);
     }
 
     if (event is SearchReturnDataEvent) {

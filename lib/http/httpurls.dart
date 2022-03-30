@@ -64,7 +64,6 @@ class HttpUrl {
   static final String mobileInfoUrl =
       baseUrl + fieldAgent + 'profile/mobileInfo';
 
-  // Post API ===================================================
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
       baseUrl +

@@ -75,7 +75,10 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
 
     // final AuthenticationBloc authBloc =
     //     BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildHomeTabScreen());
+    return addAuthBloc(
+        context,
+        PageBuilder.buildHomeTabScreen(
+            notificationData: settings.arguments as dynamic));
   });
 }
 
@@ -89,7 +92,10 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
-    return addAuthBloc(context, PageBuilder.buildLoginScreen(authBloc));
+    return addAuthBloc(
+        context,
+        PageBuilder.buildLoginScreen(authBloc,
+            notificationData: settings.arguments as dynamic));
   });
 }
 
@@ -124,23 +130,25 @@ class PageBuilder {
     );
   }
 
-  static Widget buildHomeTabScreen() {
+  static Widget buildHomeTabScreen({dynamic notificationData}) {
     return BlocProvider(
       create: (BuildContext context) {
         // final AuthenticationBloc authBloc =
         //     BlocProvider.of<AuthenticationBloc>(context);
         return BlocProvider.of<HomeTabBloc>(context)
-          ..add(HomeTabInitialEvent());
+          ..add(HomeTabInitialEvent(
+              context: context, notificationData: notificationData));
       },
-      child: const HomeTabScreen(),
+      child: HomeTabScreen(notificationData: notificationData),
     );
   }
 
-  static Widget buildLoginScreen(AuthenticationBloc authBloc) {
+  static Widget buildLoginScreen(AuthenticationBloc authBloc,
+      {dynamic notificationData}) {
     return BlocProvider(
       create: (BuildContext context) => BlocProvider.of<LoginBloc>(context)
         ..add(LoginInitialEvent(context: context)),
-      child: LoginScreen(authBloc),
+      child: LoginScreen(authBloc, notificationData: notificationData),
     );
   }
 
@@ -195,6 +203,11 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
+        print(
+            "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
+
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+            arguments: state.notificationData);
         String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
         String? agentRef =
             await PreferenceHelper.getPreference(Constants.agentRef);
@@ -203,9 +216,14 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         //   String? agentRef = value.getString(Constants.agentRef);
         //   print('Mpin ======= > ${mPin}');
         if (mPin != null) {
-          showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+          showMPinDialog(
+              mPin: mPin,
+              buildContext: context,
+              userName: agentRef,
+              notificationData: state.notificationData);
         } else {
-          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+              arguments: state.notificationData);
         }
         // });
       }
@@ -214,7 +232,11 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        print(
+            "Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}");
+
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+            arguments: state.notificationData);
       }
 
       if (state is OfflineState) {
@@ -239,7 +261,10 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
 }
 
 Future<void> showMPinDialog(
-    {String? mPin, String? userName, BuildContext? buildContext}) async {
+    {String? mPin,
+    String? userName,
+    BuildContext? buildContext,
+    dynamic notificationData}) async {
   return showDialog<void>(
       context: buildContext!,
       barrierDismissible: false,
@@ -252,14 +277,16 @@ Future<void> showMPinDialog(
           contentPadding: const EdgeInsets.all(20),
           content: ConformMpinScreen(
             successFunction: () => Navigator.pushReplacementNamed(
-                context, AppRoutes.homeTabScreen),
+                context, AppRoutes.homeTabScreen,
+                arguments: notificationData),
             forgotPinFunction: () async {
               if (ConnectivityResult.none ==
                   await Connectivity().checkConnectivity()) {
                 AppUtils.showErrorToast(
                     Languages.of(context)!.noInternetConnection);
               } else {
-                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+                    arguments: notificationData);
               }
             },
             mPin: mPin!,
