@@ -14,6 +14,9 @@ class EventAttr {
   String? modelMake;
   String? registrationNo;
   String? chassisNo;
+  String? reginalText;
+  String? translatedText;
+  String? audioS3Path;
 
   EventAttr({
     this.date,
@@ -31,6 +34,9 @@ class EventAttr {
     this.modelMake,
     this.registrationNo,
     this.chassisNo,
+    this.reginalText,
+    this.translatedText,
+    this.audioS3Path,
   });
 
   factory EventAttr.fromJson(Map<String, dynamic> json) => EventAttr(
@@ -49,6 +55,9 @@ class EventAttr {
         modelMake: json['modelMake'] as String?,
         registrationNo: json['registrationNo'] as String?,
         chassisNo: json['chassisNo'] as String?,
+        reginalText: json['reginal_text'] as String?,
+        translatedText: json['translated_text'] as String?,
+        audioS3Path: json['audioS3Path'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,5 +76,8 @@ class EventAttr {
         'modelMake': modelMake,
         'registrationNo': registrationNo,
         'chassisNo': chassisNo,
+        'reginal_text': reginalText,
+        'translated_text': translatedText,
+        'audioS3Path': audioS3Path,
       };
 }

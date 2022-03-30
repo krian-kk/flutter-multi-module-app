@@ -8,7 +8,6 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/audio_convertion_model.dart';
-import 'package:origa/models/event_details_api_model/result.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
@@ -317,27 +316,15 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
-                      '${Languages.of(context)!.mode.toString().toUpperCase()} : ${expandedList[index].eventAttr!.mode.toString().toUpperCase()}',
+                      expandedList[index]
+                          .eventAttr!
+                          .mode
+                          .toString()
+                          .toUpperCase(),
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  // if (expandedList[index].mode != null)
-                  //   CustomText(
-                  //     Languages.of(context)!.mode.toString().toUpperCase() +
-                  //         ' : ' +
-                  //         expandedList[index].mode.toString().toUpperCase(),
-                  //     fontSize: FontSize.fourteen,
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  // if (expandedList[index].mode != null)
-                  //   CustomText(
-                  //     expandedList[index].mode.toString().toUpperCase(),
-                  //     fontSize: FontSize.fourteen,
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
                   const SizedBox(height: 8),
                   if (expandedList[index].eventType == 'REPO')
                     Column(
@@ -399,15 +386,16 @@ class _CustomEventDetailsBottomSheetState
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-                  // if (expandedList[index].reginalText != null &&
-                  //     expandedList[index].translatedText != null &&
-                  //     expandedList[index].audioS3Path != null)
-                  //   remarkS2TaudioWidget(
-                  //     reginalText: expandedList[index].reginalText,
-                  //     translatedText: expandedList[index].translatedText,
-                  //     audioPath: expandedList[index].audioS3Path,
-                  //     index: index,
-                  //   ),
+                  if (expandedList[index].eventAttr?.reginalText != null &&
+                      expandedList[index].eventAttr?.translatedText != null &&
+                      expandedList[index].eventAttr?.audioS3Path != null)
+                    remarkS2TaudioWidget(
+                      reginalText: expandedList[index].eventAttr?.reginalText,
+                      translatedText:
+                          expandedList[index].eventAttr?.translatedText,
+                      audioPath: expandedList[index].eventAttr?.audioS3Path,
+                      index: index,
+                    ),
                 ],
               ),
             ),
