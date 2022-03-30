@@ -93,10 +93,8 @@ class EventAttr {
   late double latitude;
   late double longitude;
   late CollectionsDeposition deposition;
-  // ignore: non_constant_identifier_names
-  late String? reginal_text;
-  // ignore: non_constant_identifier_names
-  late String? translated_text;
+  late String? reginalText;
+  late String? translatedText;
   late String? audioS3Path;
 
   EventAttr({
@@ -116,10 +114,8 @@ class EventAttr {
     this.latitude = 0,
     this.longitude = 0,
     required this.deposition,
-    // ignore: non_constant_identifier_names
-    this.reginal_text,
-    // ignore: non_constant_identifier_names
-    this.translated_text,
+    this.reginalText,
+    this.translatedText,
     this.audioS3Path,
   });
 
@@ -140,8 +136,8 @@ class EventAttr {
     latitude = json['Latitude'];
     longitude = json['Longitude'];
     deposition = json['deposition'];
-    reginal_text = json['reginal_text'];
-    translated_text = json['translated_text'];
+    reginalText = json['reginal_text'];
+    translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
 
@@ -163,11 +159,9 @@ class EventAttr {
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
     data['deposition'] = deposition;
-    if (reginal_text != null &&
-        translated_text != null &&
-        audioS3Path != null) {
-      data['reginal_text'] = reginal_text;
-      data['translated_text'] = translated_text;
+    if (reginalText != null && translatedText != null && audioS3Path != null) {
+      data['reginal_text'] = reginalText;
+      data['translated_text'] = translatedText;
       data['audioS3Path'] = audioS3Path;
     }
 

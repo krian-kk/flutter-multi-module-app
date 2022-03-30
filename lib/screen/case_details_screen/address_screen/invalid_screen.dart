@@ -80,17 +80,19 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         isVoiceRecordWidget: true,
                         returnS2Tresponse: (val) {
                           if (val is Speech2TextModel) {
-                            setState(() => widget.bloc.returnS2TInvalid = val);
+                            setState(() =>
+                                widget.bloc.returnS2TAddressInvalid = val);
                           }
                         },
-                        checkRecord: (isRecord, text) {
+                        checkRecord: (isRecord, text, returnS2T) {
                           setState(() {
-                            widget.bloc.isRecordInvaild = isRecord;
-                            widget.bloc.translateTextInvalid = text!;
-                            widget.bloc.isTranslateInvalid = true;
+                            widget.bloc.returnS2TAddressInvalid = returnS2T;
+                            widget.bloc.isRecordAddressInvaild = isRecord;
+                            widget.bloc.translateTextAddressInvalid = text!;
+                            widget.bloc.isTranslateAddressInvalid = true;
                           });
                         },
-                        isSubmit: widget.bloc.isTranslateInvalid,
+                        isSubmit: widget.bloc.isTranslateAddressInvalid,
                         caseId: widget.bloc.caseId,
                       )),
                       const SizedBox(height: 19),

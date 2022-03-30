@@ -446,9 +446,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                         altitude: position.altitude,
                                         heading: position.heading,
                                         speed: position.speed,
-                                        reginal_text:
+                                        reginalText:
                                             returnS2Tdata.result?.reginalText,
-                                        translated_text: returnS2Tdata
+                                        translatedText: returnS2Tdata
                                             .result?.translatedText,
                                         audioS3Path:
                                             returnS2Tdata.result?.audioS3Path,

@@ -139,8 +139,10 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                   widget.bloc.returnS2TCustomerNotMet = val);
                             }
                           },
-                          checkRecord: (isRecord, text) {
+                          checkRecord: (isRecord, text, returnS2Tdata) {
                             setState(() {
+                              widget.bloc.returnS2TCustomerNotMet =
+                                  returnS2Tdata;
                               widget.bloc.isRecordCustomerNotMet = isRecord;
                               widget.bloc.translateTextCustomerNotMet = text!;
                               widget.bloc.isTranslateCustomerNotMet = true;

@@ -559,27 +559,28 @@ class _AddressScreenState extends State<AddressScreen>
                                       fontWeight: FontWeight.w600,
                                       onTap: isSubmitSecond
                                           ? () {
-                                              if (widget.bloc.isRecordInvaild ==
+                                              if (widget.bloc
+                                                      .isRecordAddressInvaild ==
                                                   Constants.process) {
                                                 AppUtils.showToast(
                                                     'Stop the Record then Submit');
-                                              } else if (widget
-                                                      .bloc.isRecordInvaild ==
+                                              } else if (widget.bloc
+                                                      .isRecordAddressInvaild ==
                                                   Constants.stop) {
                                                 AppUtils.showToast(
                                                     'Please wait audio is converting');
                                               } else {
-                                                if (widget
-                                                        .bloc.isRecordInvaild ==
+                                                if (widget.bloc
+                                                        .isRecordAddressInvaild ==
                                                     Constants.submit) {
                                                   setState(() => widget
                                                           .bloc
                                                           .addressInvalidRemarksController
                                                           .text =
                                                       widget.bloc
-                                                          .translateTextInvalid);
+                                                          .translateTextAddressInvalid);
                                                   setState(() => widget.bloc
-                                                          .isTranslateInvalid =
+                                                          .isTranslateAddressInvalid =
                                                       false);
                                                 }
                                                 widget.bloc.add(

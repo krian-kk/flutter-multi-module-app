@@ -439,8 +439,8 @@ class _CustomRemainderBottomSheetState
               remarks: remarksControlller.text,
               longitude: latLng.longitude,
               latitude: latLng.latitude,
-              reginal_text: returnS2Tdata.result?.reginalText,
-              translated_text: returnS2Tdata.result?.translatedText,
+              reginalText: returnS2Tdata.result?.reginalText,
+              translatedText: returnS2Tdata.result?.translatedText,
               audioS3Path: returnS2Tdata.result?.audioS3Path,
             ),
             contact: Contact(

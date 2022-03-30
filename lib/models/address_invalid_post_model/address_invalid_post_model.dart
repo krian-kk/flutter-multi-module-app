@@ -91,6 +91,9 @@ class AddressInvalidEventAttr {
   late double speed;
   late double latitude;
   late double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   AddressInvalidEventAttr({
     required this.remarks,
@@ -102,6 +105,9 @@ class AddressInvalidEventAttr {
     required this.speed,
     required this.latitude,
     required this.longitude,
+    this.reginalText,
+    this.translatedText,
+    this.audioS3Path,
   });
 
   AddressInvalidEventAttr.fromJson(Map<String, dynamic> json) {
@@ -114,6 +120,9 @@ class AddressInvalidEventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
+    reginalText = json['reginal_text'];
+    translatedText = json['translated_text'];
+    audioS3Path = json['audioS3Path'];
   }
 
   Map<String, dynamic> toJson() {
@@ -127,6 +136,11 @@ class AddressInvalidEventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
+    if (reginalText != null && translatedText != null && audioS3Path != null) {
+      data['reginal_text'] = reginalText;
+      data['translated_text'] = translatedText;
+      data['audioS3Path'] = audioS3Path;
+    }
     return data;
   }
 }

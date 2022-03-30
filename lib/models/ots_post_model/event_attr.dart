@@ -11,10 +11,8 @@ class OTSEventAttr {
   double speed;
   double latitude;
   double longitude;
-  // ignore: non_constant_identifier_names
-  late String? reginal_text;
-  // ignore: non_constant_identifier_names
-  late String? translated_text;
+  late String? reginalText;
+  late String? translatedText;
   late String? audioS3Path;
 
   OTSEventAttr({
@@ -30,10 +28,8 @@ class OTSEventAttr {
     required this.speed,
     required this.latitude,
     required this.longitude,
-    // ignore: non_constant_identifier_names
-    this.reginal_text,
-    // ignore: non_constant_identifier_names
-    this.translated_text,
+    this.reginalText,
+    this.translatedText,
     this.audioS3Path,
   });
 
@@ -50,13 +46,13 @@ class OTSEventAttr {
         speed: json['speed'] as dynamic,
         latitude: (json['Latitude'] as num).toDouble(),
         longitude: (json['Longitude'] as num).toDouble(),
-        reginal_text: json['reginal_text'],
-        translated_text: json['translated_text'],
+        reginalText: json['reginal_text'],
+        translatedText: json['translated_text'],
         audioS3Path: json['audioS3Path'],
       );
 
   Map<String, dynamic> toJson() =>
-      reginal_text != null && translated_text != null && audioS3Path != null
+      reginalText != null && translatedText != null && audioS3Path != null
           ? {
               'date': date,
               'remarkOts': remarkOts,
@@ -71,8 +67,8 @@ class OTSEventAttr {
               'Latitude': latitude,
               'Longitude': longitude,
               'audioS3Path': audioS3Path,
-              'translated_text': translated_text,
-              'reginal_text': reginal_text,
+              'translated_text': translatedText,
+              'reginal_text': reginalText,
             }
           : {
               'date': date,

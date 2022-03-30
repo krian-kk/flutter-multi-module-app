@@ -309,9 +309,9 @@ class _CustomCaptureImageBottomSheetState
                                                   altitude: position.altitude,
                                                   heading: position.heading,
                                                   speed: position.speed,
-                                                  reginal_text: returnS2Tdata
+                                                  reginalText: returnS2Tdata
                                                       .result?.reginalText,
-                                                  translated_text: returnS2Tdata
+                                                  translatedText: returnS2Tdata
                                                       .result?.translatedText,
                                                   audioS3Path: returnS2Tdata
                                                       .result?.audioS3Path,

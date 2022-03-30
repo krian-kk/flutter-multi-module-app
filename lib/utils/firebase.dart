@@ -32,7 +32,9 @@ class FirebaseUtils {
       String? selectedClipValue,
       String? selectedFollowUpDate}) async {
     bool returnValues = false;
-    if (Singleton.instance.usertype == Constants.fieldagent) {
+    if (Singleton.instance.usertype == Constants.fieldagent
+        // && Constants.appDataLoadedFromFirebase
+        ) {
       FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)

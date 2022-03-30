@@ -81,13 +81,10 @@ class EventAttr {
   late String? disputereasons;
   late String remarks;
   late String followUpPriority;
-
   late double latitude;
   late double longitude;
-  // ignore: non_constant_identifier_names
-  late String? reginal_text;
-  // ignore: non_constant_identifier_names
-  late String? translated_text;
+  late String? reginalText;
+  late String? translatedText;
   late String? audioS3Path;
 
   EventAttr({
@@ -97,10 +94,8 @@ class EventAttr {
     this.followUpPriority = 'REVIEW',
     required this.latitude,
     required this.longitude,
-    // ignore: non_constant_identifier_names
-    this.reginal_text,
-    // ignore: non_constant_identifier_names
-    this.translated_text,
+    this.reginalText,
+    this.translatedText,
     this.audioS3Path,
   });
 
@@ -111,8 +106,8 @@ class EventAttr {
     followUpPriority = json['followUpPriority'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    reginal_text = json['reginal_text'];
-    translated_text = json['translated_text'];
+    reginalText = json['reginal_text'];
+    translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
 
@@ -124,11 +119,9 @@ class EventAttr {
     data['followUpPriority'] = followUpPriority;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    if (reginal_text != null &&
-        translated_text != null &&
-        audioS3Path != null) {
-      data['reginal_text'] = reginal_text;
-      data['translated_text'] = translated_text;
+    if (reginalText != null && translatedText != null && audioS3Path != null) {
+      data['reginal_text'] = reginalText;
+      data['translated_text'] = translatedText;
       data['audioS3Path'] = audioS3Path;
     }
     return data;
