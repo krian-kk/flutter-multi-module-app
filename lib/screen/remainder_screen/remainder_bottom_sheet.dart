@@ -457,7 +457,7 @@ class _CustomRemainderBottomSheetState
               eventsDetails: requestBodyData.toJson(),
               caseId: widget.caseId,
               selectedFollowUpDate: nextActionDateControlller.text,
-              selectedClipValue: Constants.remainder);
+              selectedClipValue: Constants.remainder,bloc: widget.bloc);
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
           } else {

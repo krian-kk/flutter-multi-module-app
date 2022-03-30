@@ -102,7 +102,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               setState(() {});
             }
             if (state is ClickMainAddressBottomSheetState) {
-              addressBottomSheet(context, bloc, state.i);
+              addressBottomSheet(context, bloc, state.i,
+                  addressModel: state.addressModel);
             }
             if (state is ClickMainCallBottomSheetState) {
               phoneBottomSheet(
@@ -1177,13 +1178,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   }
 
   void addressBottomSheet(
-      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+      BuildContext buildContext, CaseDetailsBloc bloc, int i,
+      {dynamic addressModel}) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SizedBox(
               height: MediaQuery.of(context).size.height * 0.89,
-              child: AddressScreen(bloc: bloc, index: i));
+              child: AddressScreen(
+                bloc: bloc,
+                index: i,
+                addressModel: addressModel,
+              ));
         });
   }
 

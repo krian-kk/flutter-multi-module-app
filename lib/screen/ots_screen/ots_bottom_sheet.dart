@@ -592,7 +592,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: otsPaymentDateControlller.text,
-                selectedClipValue: Constants.ots);
+                selectedClipValue: Constants.ots,bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {

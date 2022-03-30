@@ -455,7 +455,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: nextActionDateControlller.text,
-                selectedClipValue: Constants.rtp);
+                selectedClipValue: Constants.rtp,
+                bloc: widget.bloc);
 
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {

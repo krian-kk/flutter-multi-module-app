@@ -8,8 +8,7 @@ import 'package:origa/screen/my_visit/my_visits.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class OnclickNotificationNavigateScreen {
-  messageScreenBottomSheet(BuildContext? context,
-      {String? fromID, String? toID}) {
+  messageScreenBottomSheet(BuildContext? context, {String? fromID}) {
     showModalBottomSheet(
       context: context!,
       isDismissible: false,
@@ -25,8 +24,7 @@ class OnclickNotificationNavigateScreen {
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext buildContext, StateSetter setState) => SizedBox(
           height: MediaQuery.of(context).size.height * 0.86,
-          child:
-              ChatScreen(fromARefId: fromID, toARefId: toID, agentImage: null),
+          child: ChatScreen(fromARefId: fromID!, agentImage: null),
         ),
       ),
     );

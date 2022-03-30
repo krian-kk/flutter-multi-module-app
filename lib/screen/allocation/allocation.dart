@@ -90,7 +90,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+    bloc = AllocationBloc()
+      ..add(AllocationInitialEvent(context, isOfflineAPI: false));
     _controller = ScrollController()..addListener(_loadMore);
     internetChecking();
     getCurrentLocation();
@@ -105,6 +106,17 @@ class _AllocationScreenState extends State<AllocationScreen> {
     Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
         internetAvailability = event.name;
+        if (event.name == 'none') {
+          resultList.clear();
+          isOffline = true;
+          bloc.hasNextPage = false;
+        } else {
+          isOffline = false;
+          resultList.clear();
+          bloc.hasNextPage = true;
+          bloc = AllocationBloc()
+            ..add(AllocationInitialEvent(context, isOfflineAPI: false));
+        }
       });
     });
   }
@@ -613,24 +625,11 @@ class _AllocationScreenState extends State<AllocationScreen> {
           } //List<Result>
           if (state.successResponse is String) {
             if (state.successResponse == 'offlineData') {
-              FirebaseFirestore.instance
-                  .collection(Singleton.instance.firebaseDatabaseName)
-                  .doc(Singleton.instance.agentRef)
-                  .collection(Constants.firebaseCase)
-                  .get(const GetOptions(source: Source.serverAndCache))
-                  .then((value) {
-                bloc.starCount == 0;
-                bloc.resultList.clear();
-                for (var element in value.docs) {
-                  Map<String, dynamic>? data = element.data();
-                  bloc.resultList.add(Result.fromJson(data));
-                  resultList.add(Result.fromJson(data));
-                  if (Result.fromJson(data).starredCase == true) {
-                    bloc.starCount++;
-                  }
-                }
-              }).asStream();
+              isOffline = true;
               bloc.hasNextPage = false;
+            }
+            if (state.successResponse == 'synced') {
+              bloc.hasNextPage = true;
             }
           }
         }
@@ -681,16 +680,20 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
             await FirebaseUtils.updateStarred(
                 isStarred: true, caseId: state.caseId);
-            await APIRepository.apiRequest(
-              APIRequestType.post,
-              HttpUrl.updateStaredCase,
-              requestBodydata: jsonEncode(postData),
-            );
-            var removedItem = bloc.resultList[state.selectedIndex];
-            bloc.resultList.removeAt(state.selectedIndex);
-            setState(() {
-              bloc.resultList.insert(0, removedItem);
-            });
+
+            if (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity()) {
+              await APIRepository.apiRequest(
+                APIRequestType.post,
+                HttpUrl.updateStaredCase,
+                requestBodydata: jsonEncode(postData),
+              );
+              var removedItem = bloc.resultList[state.selectedIndex];
+              bloc.resultList.removeAt(state.selectedIndex);
+              setState(() {
+                bloc.resultList.insert(0, removedItem);
+              });
+            }
           } else {
             setState(() {
               bloc.starCount--;
@@ -699,12 +702,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
             await FirebaseUtils.updateStarred(
                 isStarred: false, caseId: state.caseId);
-
-            await APIRepository.apiRequest(
-              APIRequestType.post,
-              HttpUrl.updateStaredCase,
-              requestBodydata: jsonEncode(postData),
-            );
+            if (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity()) {
+              await APIRepository.apiRequest(
+                APIRequestType.post,
+                HttpUrl.updateStaredCase,
+                requestBodydata: jsonEncode(postData),
+              );
+            }
             var removedItem = bloc.resultList[state.selectedIndex];
             bloc.resultList.removeAt(state.selectedIndex);
             // To pick and add next starred false case
@@ -1149,11 +1154,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                     Singleton.instance.firebaseDatabaseName)
                                 .doc(Singleton.instance.agentRef)
                                 .collection(Constants.firebaseCase)
+                                .limit(100)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
-                              debugPrint(
-                                  'Offline state in screen ->streambuilder');
                               if (snapshot.hasError) {
                                 return Column(
                                   children: [
@@ -1173,8 +1177,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.active) {
-                                bloc.resultList.clear();
-                                resultList.clear();
+                                // bloc.resultList.clear();
+                                // resultList.clear();
+                                bloc.resultList = [];
+                                resultList = [];
                                 bloc.starCount = 0;
                                 for (var element in snapshot.data!.docs) {
                                   var tempResult = Result.fromJson(
@@ -1188,9 +1194,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 resultList.sort((a, b) {
                                   return b.starredCase ? 1 : -1;
                                 });
-
-                                debugPrint(
-                                    'Total list length--> ${bloc.resultList.length}');
                               }
                               return resultList.isEmpty
                                   ? Column(

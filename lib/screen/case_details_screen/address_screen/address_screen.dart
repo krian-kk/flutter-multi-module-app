@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,8 +30,10 @@ import 'package:permission_handler/permission_handler.dart';
 class AddressScreen extends StatefulWidget {
   final CaseDetailsBloc bloc;
   final int index;
+  final dynamic addressModel;
 
-  const AddressScreen({Key? key, required this.bloc, required this.index})
+  const AddressScreen(
+      {Key? key, required this.bloc, required this.index, this.addressModel})
       : super(key: key);
 
   @override
@@ -49,6 +52,8 @@ class _AddressScreenState extends State<AddressScreen>
     super.initState();
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_handleTabSelection);
+    widget.bloc.selectedAddressModel = widget.addressModel;
+    debugPrint('Selected address model -> ${widget.bloc.selectedAddressModel}');
     // Get Initial address health status based on selected tab customer met / customer not met / invalid
     widget.bloc.add(UpdateHealthStatusEvent(context,
         selectedHealthIndex: widget.index,

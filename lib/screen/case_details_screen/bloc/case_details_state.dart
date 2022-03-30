@@ -20,7 +20,8 @@ class CDNoInternetState extends CaseDetailsState {}
 
 class ClickMainAddressBottomSheetState extends CaseDetailsState {
   final int i;
-  ClickMainAddressBottomSheetState(this.i);
+  final dynamic addressModel;
+  ClickMainAddressBottomSheetState(this.i, {this.addressModel});
 }
 
 class ClickMainCallBottomSheetState extends CaseDetailsState {

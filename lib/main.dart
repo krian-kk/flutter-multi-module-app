@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
 
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,6 +13,7 @@ import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
+import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_theme.dart';
@@ -86,53 +88,79 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     bloc = BlocProvider.of<AuthenticationBloc>(context);
     androidAndIOSNotification();
 
+    // Background Notification onclick process
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
+        NotificationDataModel notificationData = NotificationDataModel();
+        try {
+          notificationData = NotificationDataModel.fromJson(message.data);
+        } catch (e) {
+          // debugPrint(e.toString());
+        }
         bloc!.add(AppStarted(
-            context: context, notificationData: message.notification!.body));
-        debugPrint(
-            'Get Initial firebase message ----> ${message.notification!.title}');
+            context: context,
+            notificationData: notificationData.typeOfNotification ??
+                message.data['typeOfNotification']));
       }
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      NotificationDataModel notificationData = NotificationDataModel();
+      try {
+        notificationData = NotificationDataModel.fromJson(message.data);
+      } catch (e) {
+        // debugPrint(e.toString());
+      }
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
-      debugPrint('Notification print-> ${notification!.title}');
-      debugPrint('notification!.body-> ${notification.body}');
-      // If `onMessage` is triggered with a notification, construct our own
-      // local notification to show to users using the created channel.
-      if (android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              icon: android.smallIcon,
+      AppleNotification? iOS = message.notification?.apple;
+      // debugPrint('Notification print-> ${notification!.title}');
+      // debugPrint('notification!.body-> ${notification.body}');
+      // listen and Show notification message
+      if (Platform.isAndroid) {
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                icon: android.smallIcon,
+              ),
             ),
-          ),
-          payload: notification.body,
-        );
+            payload: notificationData.typeOfNotification,
+          );
+        }
+      } else if (Platform.isIOS) {
+        if (notification != null && iOS != null) {
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            const NotificationDetails(),
+            payload: notificationData.typeOfNotification,
+          );
+        }
       }
     });
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       RemoteNotification? notification = message.notification;
       debugPrint(
-          'A new onMessageOpenedApp event was published!... -----> ${message.data}');
-
+          'A new onMessageOpenedApp published!... -----> ${message.data}');
       bloc!.add(
           AppStarted(context: context, notificationData: notification!.body));
     });
+  }
 
-    // FirebaseMessaging.onBackgroundMessage((message) async {
-    //   print("_messaging onBackgroundMessage::: $message");
-    // });
+  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    await Firebase.initializeApp();
+    // debugPrint("Handling a background message: ${message.messageId}");
   }
 
   void androidAndIOSNotification() async {
@@ -141,7 +169,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       "origa.ai", // title
       importance: Importance.high,
     );
-
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOS = const IOSInitializationSettings();
@@ -149,9 +176,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onClickNotification);
+        onSelectNotification: forgroundOnClickNotification);
 
     /// Create an Android Notification Channel.
     await flutterLocalNotificationsPlugin
@@ -169,19 +195,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 
-  Future onClickNotification(String? payload) async {
+  Future forgroundOnClickNotification(String? payload) async {
     //Handle notification tapped logic here
-    debugPrint(
-        'flutter selected Local Notifications Plugin payload ---> $payload');
-    bloc!.add(AppStarted(
-        context: context, notificationData: jsonDecode(jsonEncode(payload!))));
+    bloc!.add(AppStarted(context: context, notificationData: payload));
   }
-
-  //   void _configureSelectNotificationSubject() {
-  //   selectNotificationSubject.stream.listen((String? payload) async {
-  //     await Navigator.pushNamed(context, '/secondPage');
-  //   });
-  // }
 
   void setLocale(Locale locale) {
     setState(() {
