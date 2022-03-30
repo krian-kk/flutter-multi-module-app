@@ -436,7 +436,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   eventsDetails: requestBodyData.toJson(),
                   caseId: widget.caseId,
                   selectedFollowUpDate: nextActionDateControlller.text,
-                  selectedClipValue: Constants.dispute);
+                  selectedClipValue: Constants.dispute,bloc: widget.bloc);
               if (ConnectivityResult.none ==
                   await Connectivity().checkConnectivity()) {
               } else {

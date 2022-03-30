@@ -789,7 +789,7 @@ class _CustomCollectionsBottomSheetState
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
                       selectedFollowUpDate: dateControlller.text,
-                      selectedClipValue: Constants.collections);
+                      selectedClipValue: Constants.collections,bloc: widget.bloc);
                   if (ConnectivityResult.none ==
                       await Connectivity().checkConnectivity()) {
                     setState(() => isSubmit = true);
@@ -859,7 +859,7 @@ class _CustomCollectionsBottomSheetState
                                 eventsDetails: requestBodyData.toJson(),
                                 caseId: widget.caseId,
                                 selectedFollowUpDate: dateControlller.text,
-                                selectedClipValue: Constants.collections);
+                                selectedClipValue: Constants.collections,bloc: widget.bloc);
                             if (ConnectivityResult.none ==
                                 await Connectivity().checkConnectivity()) {
                             } else {

@@ -145,7 +145,10 @@ class _AddressDetailsBottomSheetScreenState
                                             onTap: () {
                                               widget.bloc.add(
                                                   ClickMainAddressBottomSheetEvent(
-                                                      i));
+                                                      i,
+                                                      addressModel: widget.bloc
+                                                              .listOfAddressDetails?[
+                                                          i]));
                                               Singleton.instance
                                                   .resAddressId_0 = widget
                                                           .bloc

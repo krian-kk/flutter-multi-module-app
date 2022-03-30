@@ -632,7 +632,7 @@ class _CustomOtherFeedBackBottomSheetState
               eventsDetails: requestBodyData.toJson(),
               caseId: widget.caseId,
               selectedFollowUpDate: dateControlller.text,
-              selectedClipValue: Constants.otherFeedback);
+              selectedClipValue: Constants.otherFeedback,bloc: widget.bloc);
 
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {

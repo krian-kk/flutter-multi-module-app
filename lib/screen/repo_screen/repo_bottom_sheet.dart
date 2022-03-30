@@ -481,7 +481,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       caseId: widget.caseId,
                                       selectedFollowUpDate:
                                           dateControlller.text,
-                                      selectedClipValue: Constants.repo);
+                                      selectedClipValue: Constants.repo,bloc: widget.bloc);
                                   if (ConnectivityResult.none ==
                                       await Connectivity()
                                           .checkConnectivity()) {

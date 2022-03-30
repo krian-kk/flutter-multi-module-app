@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
-      yield AllocationLoadingState();
+      if (!event.isOfflineAPI) {
+        yield AllocationLoadingState();
+      }
       SharedPreferences _pref = await SharedPreferences.getInstance();
       Singleton.instance.buildContext = event.context;
       userType = _pref.getString(Constants.userType);
@@ -134,84 +137,106 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield AllocationOfflineState(successResponse: "offlineData");
       } else {
         SharedPreferences _pref = await SharedPreferences.getInstance();
-        if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
-          debugPrint('Values--> in off initiateState');
-          yield AllocationOfflineState(successResponse: "offlineData");
-        } else {
-          isNoInternetAndServerError = false;
-          // Now set priority case is a load more event
-          isPriorityLoadMore = true;
-          Map<String, dynamic> priorityListData =
-              await APIRepository.apiRequest(
-                  APIRequestType.get,
-                  HttpUrl.priorityCaseList +
-                      'pageNo=${Constants.pageNo}' +
-                      '&limit=${Constants.limit}');
+        // if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
+        //   debugPrint('Values--> in off initiateState');
+        //   yield AllocationOfflineState(successResponse: "offlineData");
+        // } else {
+        isNoInternetAndServerError = false;
+        // Now set priority case is a load more event
+        isPriorityLoadMore = true;
 
-          resultList.clear();
-          starCount = 0;
+        //event.isOfflineAPI! For offline purpose only
+        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
+            APIRequestType.get,
+            event.isOfflineAPI == true
+                ? HttpUrl.priorityCaseListV2
+                : HttpUrl.priorityCaseListV1 +
+                    'pageNo=${Constants.pageNo}' +
+                    '&limit=${Constants.limit}');
 
-          if (priorityListData['success']) {
-            dynamic offlinePriorityResponseModel;
-            try {
-              offlinePriorityResponseModel =
-                  OfflinePriorityResponseModel.fromJson(
-                      priorityListData['data']);
-            } catch (e) {
-              debugPrint(e.toString());
-            }
-            if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
-              Singleton.instance.isOfflineStorageFeatureEnabled = true;
-              hasNextPage = false;
-              _pref.setBool(Constants.appDataLoadedFromFirebase, true);
-              _pref.setString(Constants.appDataLoadedFromFirebaseTime,
-                  DateTime.now().toString());
-              yield AllocationOfflineState(successResponse: "offlineData");
-            } else {
-              Singleton.instance.isOfflineStorageFeatureEnabled = false;
-              for (var element in priorityListData['data']['result']) {
-                resultList
-                    .add(Result.fromJson(jsonDecode(jsonEncode(element))));
-                if (Result.fromJson(jsonDecode(jsonEncode(element)))
-                        .starredCase ==
-                    true) {
-                  starCount++;
-                }
-              }
-              if (resultList.length >= 10) {
-                hasNextPage = true;
-              } else {
-                hasNextPage = false;
-              }
-              // Get Contractor Details and stored in Singleton
-              Map<String, dynamic> getContractorDetails =
-                  await APIRepository.apiRequest(
-                      APIRequestType.get, HttpUrl.contractorDetail);
-              if (getContractorDetails[Constants.success] == true) {
-                Map<String, dynamic> jsonData = getContractorDetails['data'];
-                // check and store cloudTelephony true or false
-                Singleton.instance.cloudTelephony =
-                    jsonData['result']['cloudTelephony'] ?? false;
+        resultList.clear();
+        starCount = 0;
 
-                Singleton.instance.feedbackTemplate =
-                    ContractorDetailsModel.fromJson(jsonData);
-                Singleton.instance.contractorInformations =
-                    ContractorAllInformationModel.fromJson(jsonData);
-              } else {
-                if (getContractorDetails['data'] != null) {
-                  AppUtils.showToast(getContractorDetails['data'] ?? '');
-                }
-              }
-              yield AllocationLoadedState(successResponse: resultList);
-            }
-          } else if (priorityListData['statusCode'] == 401 ||
-              priorityListData['data'] == Constants.connectionTimeout ||
-              priorityListData['statusCode'] == 502) {
-            isNoInternetAndServerError = true;
-            isNoInternetAndServerErrorMsg = priorityListData['data'];
-            yield AllocationLoadedState(successResponse: resultList);
+        if (priorityListData['success']) {
+          dynamic offlinePriorityResponseModel;
+          try {
+            offlinePriorityResponseModel =
+                OfflinePriorityResponseModel.fromJson(priorityListData['data']);
+          } catch (e) {
+            debugPrint(e.toString());
           }
+          if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
+            // Singleton.instance.isOfflineStorageFeatureEnabled = true;
+            // hasNextPage = false;
+            _pref.setBool(Constants.appDataLoadedFromFirebase, true);
+            _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+                DateTime.now().toString());
+            FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName)
+                .doc(Singleton.instance.agentRef)
+                .collection(Constants.firebaseCase)
+                .snapshots()
+                .forEach((element) {});
+            AppUtils.showToast('App synced with local');
+            //yield AllocationOfflineState(successResponse: "synced");
+          } else {
+            Singleton.instance.isOfflineStorageFeatureEnabled = false;
+            for (var element in priorityListData['data']['result']) {
+              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
+                  true) {
+                starCount++;
+              }
+            }
+            if (resultList.length >= 10) {
+              hasNextPage = true;
+            } else {
+              hasNextPage = false;
+            }
+            // Get Contractor Details and stored in Singleton
+            Map<String, dynamic> getContractorDetails =
+                await APIRepository.apiRequest(
+                    APIRequestType.get, HttpUrl.contractorDetail);
+            if (getContractorDetails[Constants.success] == true) {
+              Map<String, dynamic> jsonData = getContractorDetails['data'];
+              // check and store cloudTelephony true or false
+              Singleton.instance.cloudTelephony =
+                  jsonData['result']['cloudTelephony'] ?? false;
+
+              Singleton.instance.feedbackTemplate =
+                  ContractorDetailsModel.fromJson(jsonData);
+              Singleton.instance.contractorInformations =
+                  ContractorAllInformationModel.fromJson(jsonData);
+            } else {
+              if (getContractorDetails['data'] != null) {
+                AppUtils.showToast(getContractorDetails['data'] ?? '');
+              }
+            }
+            yield AllocationLoadedState(successResponse: resultList);
+            debugPrint('List length data--> ${resultList.length}');
+            if (!Singleton.instance.isOfflineStorageFeatureEnabled!) {
+              //Storing offline data
+              bool? isOfflineSynced = false;
+              try {
+                isOfflineSynced =
+                    _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+              } catch (e) {
+                debugPrint(e.toString());
+              }
+              if (isOfflineSynced == false) {
+                add(AllocationInitialEvent(event.context, isOfflineAPI: true));
+              }
+            }
+          }
+        } else if (priorityListData['statusCode'] == 401 ||
+            priorityListData['data'] == Constants.connectionTimeout ||
+            priorityListData['statusCode'] == 502) {
+          isNoInternetAndServerError = true;
+          isNoInternetAndServerErrorMsg = priorityListData['data'];
+          yield AllocationLoadedState(successResponse: resultList);
         }
+        // }
       }
     }
     if (event is TapPriorityEvent) {
@@ -231,7 +256,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.get,
-            HttpUrl.priorityCaseList +
+            HttpUrl.priorityCaseListV1 +
                 'pageNo=${Constants.pageNo}' +
                 '&limit=${Constants.limit}');
 
@@ -261,9 +286,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       customerCount++;
     }
     if (event is StartCallingEvent) {
-      // if (event.isStartFromButtonClick) {
-      //   tempTotalCount = autoCallingResultList.length;
-      // }
       if (event.isIncreaseCount && event.customerIndex! <= totalCount) {
         Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
@@ -286,7 +308,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       } else {
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.get,
-            HttpUrl.priorityCaseList +
+            HttpUrl.priorityCaseListV1 +
                 'pageNo=$page' +
                 '&limit=${Constants.limit}');
         PriorityCaseListModel listOfdata =
@@ -595,6 +617,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         resultList[event.selectedStarIndex].starredCase =
             !resultList[event.selectedStarIndex].starredCase;
       }
+      // debugPrint(
+      //     'Selected cases is stareed or not--> ${resultList[event.selectedStarIndex].starredCase}');
+      //
+      // debugPrint(
+      //     'Selected cases is account number--> ${resultList[event.selectedStarIndex].accNo}');
+      // // resultList[event.selectedStarIndex].starredCase =
+      // //     !resultList[event.selectedStarIndex].starredCase;
       yield UpdateStaredCaseState(
           caseId: event.caseID,
           isStared: resultList[event.selectedStarIndex].starredCase,

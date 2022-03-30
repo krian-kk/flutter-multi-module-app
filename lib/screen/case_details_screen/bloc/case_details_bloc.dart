@@ -60,6 +60,9 @@ part 'case_details_state.dart';
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   AllocationBloc allocationBloc;
 
+  //Offline purpose
+  dynamic selectedAddressModel;
+
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? custName;
@@ -416,7 +419,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickMainAddressBottomSheetEvent) {
       indexValue = event.index;
-      yield ClickMainAddressBottomSheetState(event.index);
+      yield ClickMainAddressBottomSheetState(event.index,
+          addressModel: event.addressModel);
     }
     if (event is ClickMainCallBottomSheetEvent) {
       indexValue = event.index;
@@ -498,12 +502,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         await FirebaseUtils.storeEvents(
-            eventsDetails: firebaseObject, caseId: caseId);
+            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
       } else {
         // For local storage purpose storing while online
         await FirebaseUtils.storeEvents(
-            eventsDetails: firebaseObject, caseId: caseId);
+            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.upload,
           HttpUrl.imageCaptured + "userType=$userType",
@@ -883,11 +887,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           if (postResult[Constants.success]) {
             AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
           }
-        }else {
+        } else {
           AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
         }
       } else {
-        AppUtils.showErrorToast(Languages.of(event.context)!.noInternetConnection);
+        AppUtils.showErrorToast(
+            Languages.of(event.context)!.noInternetConnection);
       }
       yield SendSMSloadState();
     }
@@ -1256,7 +1261,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         postResult = {'success': true};
       });
@@ -1266,7 +1272,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           eventsDetails: requestBodyData.toJson(),
           caseId: caseId,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1358,7 +1365,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   ? addressCustomerNotMetSelectedDate
                   : addressCustomerNotMetNextActionDateController.text,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         //For navigation purpose - back screen
         postResult = {'success': true};
@@ -1371,7 +1379,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               ? addressCustomerNotMetSelectedDate
               : addressCustomerNotMetNextActionDateController.text,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1461,7 +1470,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         postResult = {'success': true};
       });
@@ -1471,7 +1481,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           eventsDetails: requestBodyData.toJson(),
           caseId: caseId,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1535,7 +1546,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         postResult = {'success': true};
       });
@@ -1545,7 +1557,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           eventsDetails: requestBodyData.toJson(),
           caseId: caseId,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,

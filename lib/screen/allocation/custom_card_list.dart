@@ -27,7 +27,7 @@ class CustomCardList {
           String? distanceValues;
           if (resultData[index].distanceMeters != null) {
             distanceValues = resultData[index].distanceMeters < 1000
-                ? '${resultData[index].distanceMeters.toStringAsFixed(2)} Meters'
+                ? '${resultData[index].distanceMeters.toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
           }
           return Column(
@@ -127,18 +127,6 @@ class CustomCardList {
                       onTap: () async {
                         Singleton.instance.agrRef =
                             resultData[index].agrRef ?? '';
-                        // if (ConnectivityResult.none ==
-                        //     await Connectivity().checkConnectivity()) {
-                        //Case id(paramValues as _id) -> Firebase reference number
-                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
-                        //     'caseID': resultData[index].sId,
-                        //     'isOffline': true
-                        //   }));
-                        // } else {
-                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
-                        //     'caseID': resultData[index].caseId!,
-                        //   }));
-                        // }
                         bloc.add(NavigateCaseDetailEvent(paramValues: {
                           'caseID': resultData[index].caseId,
                           'isOffline': true
@@ -264,11 +252,6 @@ class CustomCardList {
                                             color: ColorResource.color484848,
                                             fontSize: FontSize.fourteen,
                                           ),
-                                          // CustomText(
-                                          //   resultData[index].address![1].value!,
-                                          //   color: ColorResource.color484848,
-                                          //   fontSize: FontSize.fourteen,
-                                          // ),
                                         ],
                                       ),
                                     )
@@ -325,21 +308,6 @@ class CustomCardList {
                                     children: [
                                       if (Singleton.instance.usertype ==
                                           Constants.fieldagent)
-                                        // resultData[index]
-                                        //             .collSubStatus!
-                                        //             .toLowerCase() ==
-                                        //         "new"
-                                        //     ? CustomText(
-                                        //         DateFormateUtils
-                                        //             .followUpDateFormate(
-                                        //                 DateTime.now()
-                                        //                     .toString()),
-                                        //         fontSize: FontSize.fourteen,
-                                        //         color:
-                                        //             ColorResource.color101010,
-                                        //         fontWeight: FontWeight.w700,
-                                        //       )
-                                        //     :
                                         CustomText(
                                           resultData[index].fieldfollowUpDate !=
                                                   null
@@ -354,21 +322,6 @@ class CustomCardList {
                                         ),
                                       if (Singleton.instance.usertype ==
                                           Constants.telecaller)
-                                        // resultData[index]
-                                        //             .telSubStatus!
-                                        //             .toLowerCase() ==
-                                        //         "new"
-                                        //     ? CustomText(
-                                        //         DateFormateUtils
-                                        //             .followUpDateFormate(
-                                        //                 DateTime.now()
-                                        //                     .toString()),
-                                        //         fontSize: FontSize.fourteen,
-                                        //         color:
-                                        //             ColorResource.color101010,
-                                        //         fontWeight: FontWeight.w700,
-                                        //       )
-                                        //     :
                                         CustomText(
                                           resultData[index].followUpDate != null
                                               ? DateFormateUtils

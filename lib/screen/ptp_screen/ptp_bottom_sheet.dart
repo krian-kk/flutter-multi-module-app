@@ -582,7 +582,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: ptpDateControlller.text,
-                selectedClipValue: Constants.ptp);
+                selectedClipValue: Constants.ptp,bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
