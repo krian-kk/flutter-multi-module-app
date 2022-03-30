@@ -421,13 +421,13 @@ class CustomCardList {
                         },
                         child: resultData[index].starredCase
                             ? SizedBox(
-                                height: 30,
-                                width: 30,
+                                height: 35,
+                                width: 35,
                                 child: SvgPicture.asset(ImageResource.star),
                               )
                             : SizedBox(
-                                height: 30,
-                                width: 30,
+                                height: 35,
+                                width: 35,
                                 child: SvgPicture.asset(ImageResource.unStar),
                               ),
                       ),
