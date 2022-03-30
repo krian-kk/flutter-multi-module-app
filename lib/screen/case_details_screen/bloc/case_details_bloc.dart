@@ -1542,6 +1542,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventAttr: PhoneInvalidEventAttr(
           remarks: phoneInvalidRemarksController.text,
           nextActionDate: DateTime.now().toString(),
+          reginalText: returnS2TPhoneInvalid.result?.reginalText,
+          translatedText: returnS2TPhoneInvalid.result?.translatedText,
+          audioS3Path: returnS2TPhoneInvalid.result?.audioS3Path,
         ),
         eventModule: 'Telecalling',
         contact: PhoneInvalidContact(
