@@ -25,7 +25,7 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/notification_data_model.dart';
+// import '../../models/notification_data_model.dart';
 import '../../utils/app_utils.dart';
 import '../message_screen/chat_screen_event.dart';
 import '../notification_navigate_screen.dart';
@@ -142,51 +142,47 @@ class _HomeTabScreenState extends State<HomeTabScreen>
       listener: (context, state) async {
         if (state is NavigateTabState) {
           const CustomLoadingWidget();
-          // NotificationDataModel notificationData = NotificationDataModel();
-          NotificationDataModel notificationData =
-              NotificationDataModel.fromJson(
-                  jsonDecode(state.notificationData!));
-          switch (notificationData.typeOfNotification!) {
+          // NotificationDataModel notificationData =
+          //     NotificationDataModel.fromJson(
+          //         jsonDecode(state.notificationData!));
+          switch (state.notificationData) {
             case '0':
               //{Tab index = 0 == Allocation}
               setState(() {
-                _controller!.index =
-                    int.parse(notificationData.typeOfNotification!);
+                _controller!.index = int.parse(state.notificationData);
               });
               break;
             case '1':
               //{Tab index = 1 == Dashboard}
               setState(() {
-                _controller!.index =
-                    int.parse(notificationData.typeOfNotification!);
+                _controller!.index = int.parse(state.notificationData);
               });
               break;
             case '2':
               //{Tab index = 2 == Profile}
               setState(() {
-                _controller!.index =
-                    int.parse(notificationData.typeOfNotification!);
+                _controller!.index = int.parse(state.notificationData);
               });
               break;
             case '3':
               SharedPreferences _prefs = await SharedPreferences.getInstance();
               // Initiate chat bloc
               ChatScreenBloc chatbloc = ChatScreenBloc();
-              chatbloc.add(ChatInitialEvent(toAref: notificationData.toAref));
+              chatbloc.add(ChatInitialEvent());
               await Future.delayed(const Duration(milliseconds: 1000));
               // Navigate Chat Screen
               OnclickNotificationNavigateScreen().messageScreenBottomSheet(
                   context,
-                  fromID: _prefs.getString(Constants.agentRef),
-                  toID: notificationData.toAref);
+                  fromID: _prefs.getString(Constants.agentRef));
               break;
             case '4':
               // Initiate Dashboard bloc
               DashboardBloc dashboardbloc = DashboardBloc();
               //Navigate MyVisit and MyCalls Screen
+              dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyVisitsEvent());
-
-              await Future.delayed(const Duration(milliseconds: 1000));
+              // dashboardbloc.add(SetTimeperiodValueEvent());
+              await Future.delayed(const Duration(milliseconds: 2000));
               if (dashboardbloc.myVisitsData.result != null) {
                 OnclickNotificationNavigateScreen()
                     .myVisitsSheet(context, dashboardbloc);
@@ -196,12 +192,13 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               break;
             case '5':
               SharedPreferences _pref = await SharedPreferences.getInstance();
-              if (_pref.getString(Constants.userType) == Constants.userType) {
+              if (_pref.getString(Constants.userType) == Constants.fieldagent) {
                 // Initiate Dashboard bloc
                 DashboardBloc dashboardbloc = DashboardBloc();
                 //Navigate MyDeposists Screen
+                dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
                 dashboardbloc.add(MyDeposistsEvent());
-                await Future.delayed(const Duration(milliseconds: 1000));
+                await Future.delayed(const Duration(milliseconds: 2000));
                 if (dashboardbloc.myDeposistsData.result != null) {
                   OnclickNotificationNavigateScreen()
                       .myDeposistsSheet(context, dashboardbloc);
@@ -214,8 +211,9 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               // Initiate Dashboard bloc
               DashboardBloc dashboardbloc = DashboardBloc();
               //Navigate MyReceipts Screen
+              dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyReceiptsEvent());
-              await Future.delayed(const Duration(milliseconds: 1000));
+              await Future.delayed(const Duration(milliseconds: 2000));
               if (dashboardbloc.myReceiptsData.result != null) {
                 OnclickNotificationNavigateScreen()
                     .myReceiptsSheet(context, dashboardbloc);
@@ -224,12 +222,12 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               }
               break;
             case '7':
-              //Navigate Case Detail Screen
-              Navigator.pushNamed(
-                context,
-                AppRoutes.caseDetailsScreen,
-                arguments: {'caseID': notificationData.caseId},
-              );
+              // //Navigate Case Detail Screen
+              // Navigator.pushNamed(
+              //   context,
+              //   AppRoutes.caseDetailsScreen,
+              //   arguments: {'caseID': notificationData.caseId},
+              // );
               break;
             default:
           }

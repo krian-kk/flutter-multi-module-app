@@ -119,3 +119,8 @@ class UpdateBrokenCasesEvent extends DashboardEvent {
   final dynamic caseAmount;
   UpdateBrokenCasesEvent(this.caseId, this.caseAmount);
 }
+
+class AddFilterTimeperiodFromNotification extends DashboardEvent {
+  final BuildContext? context;
+  AddFilterTimeperiodFromNotification(this.context);
+}

@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId!));
+    bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId));
     messageController.text = '';
     clientIDFromARef = widget.fromARefId ?? Singleton.instance.agentRef;
     toARef = widget.toARefId;

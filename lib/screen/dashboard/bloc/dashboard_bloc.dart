@@ -730,6 +730,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield HelpState();
     }
 
+    if (event is AddFilterTimeperiodFromNotification) {
+      filterOption.addAll([
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.today, value: '0'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.weekly, value: '1'),
+        FilterCasesByTimeperiod(
+            timeperiodText: Languages.of(event.context!)!.monthly, value: '2'),
+      ]);
+    }
+
     if (event is SearchReturnDataEvent) {
       yield SelectedTimeperiodDataLoadingState();
 
