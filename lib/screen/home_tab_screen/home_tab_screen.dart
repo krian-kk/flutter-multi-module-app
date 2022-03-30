@@ -101,7 +101,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                     .add(const Duration(days: 1)))
                 .millisecondsSinceEpoch -
             DateTime.now().millisecondsSinceEpoch;
-
         if (nextLoginTime > 0) {
           Future.delayed(
             Duration(milliseconds: nextLoginTime),

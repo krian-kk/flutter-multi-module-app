@@ -88,6 +88,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   List<File> uploadFileLists = [];
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
@@ -290,11 +292,14 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                 widget.isCall! == false
                                             ? true
                                             : false,
-                                    checkRecord: (isRecord) {
+                                    checkRecord: (isRecord, text) {
                                       setState(() {
                                         this.isRecord = isRecord;
+                                        translateText = text!;
+                                        isTranslate = true;
                                       });
                                     },
+                                    isSubmit: isTranslate,
                                     returnS2Tresponse: (val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
@@ -487,6 +492,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     } else if (isRecord == Constants.stop) {
       AppUtils.showToast('Please wait audio is converting');
     } else {
+      if (isRecord == Constants.submit) {
+        setState(() => remarksControlller.text = translateText);
+        setState(() => isTranslate = false);
+      }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton == '') {
           AppUtils.showToast(Languages.of(context)!.pleaseSelectOptions);
@@ -586,7 +595,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: otsPaymentDateControlller.text,
-                selectedClipValue: Constants.ots);
+                selectedClipValue: Constants.ots,bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {

@@ -107,6 +107,8 @@ class _CustomOtherFeedBackBottomSheetState
   Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
@@ -305,11 +307,14 @@ class _CustomOtherFeedBackBottomSheetState
                                                 widget.isCall! == false
                                             ? true
                                             : false,
-                                    checkRecord: (isRecord) {
+                                    checkRecord: (isRecord, text) {
                                       setState(() {
                                         this.isRecord = isRecord;
+                                        translateText = text!;
+                                        isTranslate = true;
                                       });
                                     },
+                                    isSubmit: isTranslate,
                                     returnS2Tresponse: (val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
@@ -511,6 +516,10 @@ class _CustomOtherFeedBackBottomSheetState
     } else if (isRecord == Constants.stop) {
       AppUtils.showToast('Please wait audio is converting');
     } else {
+      if (isRecord == Constants.submit) {
+        setState(() => remarksController.text = translateText);
+        setState(() => isTranslate = false);
+      }
       if (_formKey.currentState!.validate()) {
         // if (uploadFileLists.isEmpty) {
         //   AppUtils.showToast(
@@ -623,7 +632,7 @@ class _CustomOtherFeedBackBottomSheetState
               eventsDetails: requestBodyData.toJson(),
               caseId: widget.caseId,
               selectedFollowUpDate: dateControlller.text,
-              selectedClipValue: Constants.otherFeedback);
+              selectedClipValue: Constants.otherFeedback,bloc: widget.bloc);
 
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {

@@ -99,6 +99,8 @@ class _CustomCollectionsBottomSheetState
   Speech2TextModel returnS2Tdata = Speech2TextModel();
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   getFiles() async {
     FilePickerResult? result = await FilePicker.platform
@@ -390,11 +392,14 @@ class _CustomCollectionsBottomSheetState
                                               widget.isCall! == false
                                           ? true
                                           : false,
-                                  checkRecord: (isRecord) {
+                                  checkRecord: (isRecord, text) {
                                     setState(() {
                                       this.isRecord = isRecord;
+                                      translateText = text!;
+                                      isTranslate = true;
                                     });
                                   },
+                                  isSubmit: isTranslate,
                                   returnS2Tresponse: (val) {
                                     if (val is Speech2TextModel) {
                                       setState(() {
@@ -402,6 +407,7 @@ class _CustomCollectionsBottomSheetState
                                       });
                                     }
                                   },
+
                                   // suffixWidget: VoiceRecodingWidget(),
                                 ),
                                 const SizedBox(height: 15),
@@ -528,6 +534,10 @@ class _CustomCollectionsBottomSheetState
     } else if (isRecord == Constants.stop) {
       AppUtils.showToast('Please wait audio is converting');
     } else {
+      if (isRecord == Constants.submit) {
+        setState(() => remarksControlller.text = translateText);
+        setState(() => isTranslate = false);
+      }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton == '') {
           AppUtils.showToast(Languages.of(context)!.pleaseSelectOptions);
@@ -779,7 +789,7 @@ class _CustomCollectionsBottomSheetState
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
                       selectedFollowUpDate: dateControlller.text,
-                      selectedClipValue: Constants.collections);
+                      selectedClipValue: Constants.collections,bloc: widget.bloc);
                   if (ConnectivityResult.none ==
                       await Connectivity().checkConnectivity()) {
                     setState(() => isSubmit = true);
@@ -849,7 +859,7 @@ class _CustomCollectionsBottomSheetState
                                 eventsDetails: requestBodyData.toJson(),
                                 caseId: widget.caseId,
                                 selectedFollowUpDate: dateControlller.text,
-                                selectedClipValue: Constants.collections);
+                                selectedClipValue: Constants.collections,bloc: widget.bloc);
                             if (ConnectivityResult.none ==
                                 await Connectivity().checkConnectivity()) {
                             } else {

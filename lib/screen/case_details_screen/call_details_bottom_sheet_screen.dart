@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +6,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -152,27 +154,36 @@ class _CallDetailsBottomSheetScreenState
                                           ),
                                           const SizedBox(height: 7),
                                           GestureDetector(
-                                            onTap: () {
-                                              widget.bloc.add(
-                                                  ClickMainCallBottomSheetEvent(
-                                                      i));
-                                              Singleton
-                                                  .instance.contactId_0 = widget
-                                                          .bloc
-                                                          .caseDetailsAPIValue
-                                                          .result
-                                                          ?.callDetails![i]
-                                                      ['contactId_0'] ??
-                                                  "";
-                                              Singleton.instance
-                                                      .customerContactNo =
-                                                  widget
-                                                      .bloc
-                                                      .caseDetailsAPIValue
-                                                      .result
-                                                      ?.callDetails![i]['value']
-                                                      .toString()
-                                                      .toUpperCase();
+                                            onTap: () async {
+                                              if (ConnectivityResult.none !=
+                                                  await Connectivity()
+                                                      .checkConnectivity()) {
+                                                widget.bloc.add(
+                                                    ClickMainCallBottomSheetEvent(
+                                                        i));
+                                                Singleton.instance
+                                                    .contactId_0 = widget
+                                                            .bloc
+                                                            .caseDetailsAPIValue
+                                                            .result
+                                                            ?.callDetails![i]
+                                                        ['contactId_0'] ??
+                                                    "";
+                                                Singleton.instance
+                                                        .customerContactNo =
+                                                    widget
+                                                        .bloc
+                                                        .caseDetailsAPIValue
+                                                        .result
+                                                        ?.callDetails![i]
+                                                            ['value']
+                                                        .toString()
+                                                        .toUpperCase();
+                                              } else {
+                                                AppUtils.showErrorToast(
+                                                    Languages.of(context)!
+                                                        .noInternetConnection);
+                                              }
                                             },
                                             child: Container(
                                               width: double.infinity,
@@ -245,25 +256,35 @@ class _CallDetailsBottomSheetScreenState
                                                       children: [
                                                         SizedBox(
                                                             child: InkWell(
-                                                          onTap: () {
-                                                            widget.bloc
-                                                                .indexValue = i;
-                                                            widget.bloc.add(EventDetailsEvent(
-                                                                Constants
-                                                                    .callCustomer,
-                                                                widget
-                                                                    .bloc
-                                                                    .caseDetailsAPIValue
-                                                                    .result
-                                                                    ?.callDetails,
-                                                                false,
-                                                                isCallFromCallDetails:
-                                                                    true,
-                                                                seleectedContactNumber:
-                                                                    widget.bloc.listOfCallDetails?[i]
-                                                                            [
-                                                                            'value'] ??
-                                                                        ''));
+                                                          onTap: () async {
+                                                            if (ConnectivityResult
+                                                                    .none !=
+                                                                await Connectivity()
+                                                                    .checkConnectivity()) {
+                                                              widget.bloc
+                                                                  .indexValue = i;
+                                                              widget.bloc.add(EventDetailsEvent(
+                                                                  Constants
+                                                                      .callCustomer,
+                                                                  widget
+                                                                      .bloc
+                                                                      .caseDetailsAPIValue
+                                                                      .result
+                                                                      ?.callDetails,
+                                                                  false,
+                                                                  isCallFromCallDetails:
+                                                                      true,
+                                                                  seleectedContactNumber:
+                                                                      widget.bloc.listOfCallDetails?[i]
+                                                                              [
+                                                                              'value'] ??
+                                                                          ''));
+                                                            } else {
+                                                              AppUtils.showErrorToast(
+                                                                  Languages.of(
+                                                                          context)!
+                                                                      .noInternetConnection);
+                                                            }
                                                           },
                                                           child: Container(
                                                               decoration: const BoxDecoration(

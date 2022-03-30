@@ -60,6 +60,9 @@ part 'case_details_state.dart';
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   AllocationBloc allocationBloc;
 
+  //Offline purpose
+  dynamic selectedAddressModel;
+
   CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? custName;
@@ -146,6 +149,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 // its used to show QR button in Customer met screen
   bool isShowQRcode = false;
   bool isQRcodeBtnLoading = false;
+
 // its used to GeneratePaymentLink button in Case detail screen
   bool isGeneratePaymentLink = false;
   bool isGeneratePaymentLinkLoading = false;
@@ -232,11 +236,28 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               .toString()
               .replaceAll('null', '-') ??
           '_';
-      emiStartDateController.text = caseDetailsAPIValue
-              .result?.caseDetails!.emiStartDate
-              .toString()
-              .replaceAll('null', '-') ??
-          '_';
+      emiStartDateController.text =
+          (caseDetailsAPIValue.result?.caseDetails!.emiStartDate.toString() ==
+                  null)
+              ? '-'
+              : ((caseDetailsAPIValue
+                              .result?.caseDetails!.emiStartDate
+                              .toString()
+                              .length ??
+                          0) >
+                      11)
+                  ? DateFormat('dd/MM/yyyy')
+                      .format(DateTime.parse(caseDetailsAPIValue
+                              .result?.caseDetails!.emiStartDate
+                              .toString() ??
+                          ''))
+                      .toString()
+                      .toUpperCase()
+                  : caseDetailsAPIValue.result?.caseDetails!.emiStartDate
+                          .toString()
+                          .replaceAll('-', '/')
+                          .replaceAll('null', '-') ??
+                      '_';
       bankNameController.text = caseDetailsAPIValue
               .result?.caseDetails!.bankName
               .toString()
@@ -297,21 +318,22 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           .format(DateTime.now().add(const Duration(days: 1)));
 
       // Check Payment Configuartion Details and store the value of dynamicLink [isGeneratePaymentLink] and qrCode [isShowQRcode]
-      PaymentConfigurationModel paymentCofigurationData =
-          PaymentConfigurationModel();
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.get,
-        HttpUrl.getPaymentConfiguration,
-      );
-      if (postResult[Constants.success]) {
-        paymentCofigurationData =
-            PaymentConfigurationModel.fromJson(postResult['data']);
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        PaymentConfigurationModel paymentCofigurationData =
+            PaymentConfigurationModel();
+        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.get,
+          HttpUrl.getPaymentConfiguration,
+        );
+        if (postResult[Constants.success]) {
+          paymentCofigurationData =
+              PaymentConfigurationModel.fromJson(postResult['data']);
 
-        isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
-        isGeneratePaymentLink =
-            paymentCofigurationData.data![0].payment![0].dynamicLink!;
+          isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
+          isGeneratePaymentLink =
+              paymentCofigurationData.data![0].payment![0].dynamicLink!;
+        }
       }
-
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;
@@ -397,7 +419,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickMainAddressBottomSheetEvent) {
       indexValue = event.index;
-      yield ClickMainAddressBottomSheetState(event.index);
+      yield ClickMainAddressBottomSheetState(event.index,
+          addressModel: event.addressModel);
     }
     if (event is ClickMainCallBottomSheetEvent) {
       indexValue = event.index;
@@ -479,12 +502,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         await FirebaseUtils.storeEvents(
-            eventsDetails: firebaseObject, caseId: caseId);
+            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
       } else {
         // For local storage purpose storing while online
         await FirebaseUtils.storeEvents(
-            eventsDetails: firebaseObject, caseId: caseId);
+            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.upload,
           HttpUrl.imageCaptured + "userType=$userType",
@@ -849,22 +872,27 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is SendSMSEvent) {
       yield SendSMSloadState();
-      if (Singleton.instance.contractorInformations!.result!.sendSms!) {
-        var requestBodyData = SendSMS(
-          agentRef: Singleton.instance.agentRef,
-          agrRef: Singleton.instance.agrRef,
-          type: event.type,
-        );
-        Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.post,
-          HttpUrl.sendSMSurl,
-          requestBodydata: jsonEncode(requestBodyData),
-        );
-        if (postResult[Constants.success]) {
-          AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        if (Singleton.instance.contractorInformations!.result!.sendSms!) {
+          var requestBodyData = SendSMS(
+            agentRef: Singleton.instance.agentRef,
+            agrRef: Singleton.instance.agrRef,
+            type: event.type,
+          );
+          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            APIRequestType.post,
+            HttpUrl.sendSMSurl,
+            requestBodydata: jsonEncode(requestBodyData),
+          );
+          if (postResult[Constants.success]) {
+            AppUtils.topSnackBar(event.context, Constants.successfullySMSsend);
+          }
+        } else {
+          AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
         }
       } else {
-        AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
+        AppUtils.showErrorToast(
+            Languages.of(event.context)!.noInternetConnection);
       }
       yield SendSMSloadState();
     }
@@ -1233,7 +1261,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         postResult = {'success': true};
       });
@@ -1243,7 +1272,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           eventsDetails: requestBodyData.toJson(),
           caseId: caseId,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1335,7 +1365,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   ? addressCustomerNotMetSelectedDate
                   : addressCustomerNotMetNextActionDateController.text,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         //For navigation purpose - back screen
         postResult = {'success': true};
@@ -1348,7 +1379,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               ? addressCustomerNotMetSelectedDate
               : addressCustomerNotMetNextActionDateController.text,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1438,7 +1470,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         postResult = {'success': true};
       });
@@ -1448,7 +1481,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           eventsDetails: requestBodyData.toJson(),
           caseId: caseId,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1512,7 +1546,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context))
+                  selectedClipValue, context),
+              bloc: this)
           .then((value) {
         postResult = {'success': true};
       });
@@ -1522,7 +1557,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           eventsDetails: requestBodyData.toJson(),
           caseId: caseId,
           selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context));
+              selectedClipValue, context),
+          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,

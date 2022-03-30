@@ -78,6 +78,8 @@ class _CustomRemainderBottomSheetState
   final _formKey = GlobalKey<FormState>();
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
@@ -273,12 +275,14 @@ class _CustomRemainderBottomSheetState
                                     });
                                   }
                                 },
-                                checkRecord: (isRecord) {
+                                checkRecord: (isRecord, text) {
                                   setState(() {
                                     this.isRecord = isRecord;
+                                    translateText = text!;
+                                    isTranslate = true;
                                   });
                                 },
-                                // suffixWidget: VoiceRecodingWidget(),
+                                isSubmit: isTranslate,
                                 validationRules: const ['required'],
                                 isLabel: true,
                               )),
@@ -390,6 +394,10 @@ class _CustomRemainderBottomSheetState
     } else if (isRecord == Constants.stop) {
       AppUtils.showToast('Please wait audio is converting');
     } else {
+      if (isRecord == Constants.submit) {
+        setState(() => remarksControlller.text = translateText);
+        setState(() => isTranslate = false);
+      }
       if (_formKey.currentState!.validate()) {
         setState(() => isSubmit = false);
         bool isNotAutoCalling = true;
@@ -453,7 +461,7 @@ class _CustomRemainderBottomSheetState
               eventsDetails: requestBodyData.toJson(),
               caseId: widget.caseId,
               selectedFollowUpDate: nextActionDateControlller.text,
-              selectedClipValue: Constants.remainder);
+              selectedClipValue: Constants.remainder,bloc: widget.bloc);
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
           } else {

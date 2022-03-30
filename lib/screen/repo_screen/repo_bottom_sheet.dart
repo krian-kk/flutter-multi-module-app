@@ -70,6 +70,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   List<File> uploadFileLists = [];
 
   String? isRecord;
+  String translateText = '';
+  bool isTranslate = true;
 
   late FocusNode modelMakeFocusNode;
   late FocusNode registraionNoFocusNode;
@@ -288,12 +290,14 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               });
                             }
                           },
-                          checkRecord: (isRecord) {
+                          checkRecord: (isRecord, text) {
                             setState(() {
                               this.isRecord = isRecord;
+                              translateText = text!;
+                              isTranslate = true;
                             });
                           },
-                          // suffixWidget: VoiceRecodingWidget(),
+                          isSubmit: isTranslate,
                           isLabel: true,
                         )),
                         const SizedBox(height: 15),
@@ -350,6 +354,11 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               AppUtils.showToast(
                                   'Please wait audio is converting');
                             } else {
+                              if (isRecord == Constants.submit) {
+                                setState(() =>
+                                    remarksControlller.text = translateText);
+                                setState(() => isTranslate = false);
+                              }
                               if (_formKey.currentState!.validate() &&
                                   dateControlller.text != '' &&
                                   timeControlller.text != '') {
@@ -472,7 +481,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       caseId: widget.caseId,
                                       selectedFollowUpDate:
                                           dateControlller.text,
-                                      selectedClipValue: Constants.repo);
+                                      selectedClipValue: Constants.repo,bloc: widget.bloc);
                                   if (ConnectivityResult.none ==
                                       await Connectivity()
                                           .checkConnectivity()) {

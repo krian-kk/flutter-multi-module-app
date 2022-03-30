@@ -27,7 +27,7 @@ class CustomCardList {
           String? distanceValues;
           if (resultData[index].distanceMeters != null) {
             distanceValues = resultData[index].distanceMeters < 1000
-                ? '${resultData[index].distanceMeters.toStringAsFixed(2)} Meters'
+                ? '${resultData[index].distanceMeters.toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
           }
           return Column(
@@ -127,18 +127,6 @@ class CustomCardList {
                       onTap: () async {
                         Singleton.instance.agrRef =
                             resultData[index].agrRef ?? '';
-                        // if (ConnectivityResult.none ==
-                        //     await Connectivity().checkConnectivity()) {
-                        //Case id(paramValues as _id) -> Firebase reference number
-                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
-                        //     'caseID': resultData[index].sId,
-                        //     'isOffline': true
-                        //   }));
-                        // } else {
-                        //   bloc.add(NavigateCaseDetailEvent(paramValues: {
-                        //     'caseID': resultData[index].caseId!,
-                        //   }));
-                        // }
                         bloc.add(NavigateCaseDetailEvent(paramValues: {
                           'caseID': resultData[index].caseId,
                           'isOffline': true
@@ -165,12 +153,11 @@ class CustomCardList {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 2.0,
-                            ),
+                            const SizedBox(height: 2.0),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 2),
+                                      horizontal: 24, vertical: 2)
+                                  .copyWith(bottom: 0),
                               child: CustomText(
                                 resultData[index].bankName! +
                                     ' / ' +
@@ -198,9 +185,7 @@ class CustomCardList {
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        const SizedBox(
-                                          height: 3.0,
-                                        ),
+                                        const SizedBox(height: 3.0),
                                         CustomText(
                                           resultData[index].cust!,
                                           fontSize: FontSize.sixteen,
@@ -224,7 +209,6 @@ class CustomCardList {
                                                     .collSubStatus ??
                                                 '',
                                           ),
-                                  // : const SizedBox(),
                                   if (Singleton.instance.usertype ==
                                       Constants.telecaller)
                                     resultData[index].telSubStatus == "new"
@@ -239,18 +223,17 @@ class CustomCardList {
                                                     .telSubStatus ??
                                                 '',
                                           ),
-                                  // : const SizedBox(),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 6),
+                                  horizontal: 15, vertical: 5),
                               child: bloc.userType == Constants.fieldagent
                                   ? Container(
                                       width: MediaQuery.of(context).size.width,
                                       padding: const EdgeInsets.fromLTRB(
-                                          20, 12, 15, 12),
+                                          20, 5, 15, 5),
                                       decoration: BoxDecoration(
                                         color: ColorResource.colorF8F9FB,
                                         borderRadius: BorderRadius.circular(10),
@@ -269,11 +252,6 @@ class CustomCardList {
                                             color: ColorResource.color484848,
                                             fontSize: FontSize.fourteen,
                                           ),
-                                          // CustomText(
-                                          //   resultData[index].address![1].value!,
-                                          //   color: ColorResource.color484848,
-                                          //   fontSize: FontSize.fourteen,
-                                          // ),
                                         ],
                                       ),
                                     )
@@ -285,7 +263,7 @@ class CustomCardList {
                                                   item.cType!.contains('phone')
                                               ? Container(
                                                   margin: const EdgeInsets.only(
-                                                      top: 10, right: 20),
+                                                      top: 8, right: 20),
                                                   padding: const EdgeInsets
                                                           .symmetric(
                                                       horizontal: 17,
@@ -309,17 +287,14 @@ class CustomCardList {
                                       ],
                                     ),
                             ),
-                            const SizedBox(
-                              height: 5,
-                            ),
+                            const SizedBox(height: 0),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
                               child: AppUtils.showDivider(),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(23, 5, 14, 13),
+                              padding: const EdgeInsets.fromLTRB(23, 0, 14, 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -333,21 +308,6 @@ class CustomCardList {
                                     children: [
                                       if (Singleton.instance.usertype ==
                                           Constants.fieldagent)
-                                        // resultData[index]
-                                        //             .collSubStatus!
-                                        //             .toLowerCase() ==
-                                        //         "new"
-                                        //     ? CustomText(
-                                        //         DateFormateUtils
-                                        //             .followUpDateFormate(
-                                        //                 DateTime.now()
-                                        //                     .toString()),
-                                        //         fontSize: FontSize.fourteen,
-                                        //         color:
-                                        //             ColorResource.color101010,
-                                        //         fontWeight: FontWeight.w700,
-                                        //       )
-                                        //     :
                                         CustomText(
                                           resultData[index].fieldfollowUpDate !=
                                                   null
@@ -362,21 +322,6 @@ class CustomCardList {
                                         ),
                                       if (Singleton.instance.usertype ==
                                           Constants.telecaller)
-                                        // resultData[index]
-                                        //             .telSubStatus!
-                                        //             .toLowerCase() ==
-                                        //         "new"
-                                        //     ? CustomText(
-                                        //         DateFormateUtils
-                                        //             .followUpDateFormate(
-                                        //                 DateTime.now()
-                                        //                     .toString()),
-                                        //         fontSize: FontSize.fourteen,
-                                        //         color:
-                                        //             ColorResource.color101010,
-                                        //         fontWeight: FontWeight.w700,
-                                        //       )
-                                        //     :
                                         CustomText(
                                           resultData[index].followUpDate != null
                                               ? DateFormateUtils
@@ -392,8 +337,9 @@ class CustomCardList {
                                       Row(
                                         children: [
                                           CustomText(
-                                            Languages.of(context)!.disposition,
+                                            Languages.of(context)!.view,
                                             fontSize: FontSize.fourteen,
+                                            lineHeight: 1,
                                             color: ColorResource.color23375A,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -427,8 +373,16 @@ class CustomCardList {
                               context: context));
                         },
                         child: resultData[index].starredCase
-                            ? SvgPicture.asset(ImageResource.star)
-                            : SvgPicture.asset(ImageResource.unStar),
+                            ? SizedBox(
+                                height: 35,
+                                width: 35,
+                                child: SvgPicture.asset(ImageResource.star),
+                              )
+                            : SizedBox(
+                                height: 35,
+                                width: 35,
+                                child: SvgPicture.asset(ImageResource.unStar),
+                              ),
                       ),
                     ),
                 ],
