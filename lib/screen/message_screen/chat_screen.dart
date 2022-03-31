@@ -61,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
     bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId));
     messageController.text = '';
     clientIDFromARef = widget.fromARefId ?? Singleton.instance.agentRef;
-    toARef = widget.toARefId;
+    toARef = widget.toARefId ?? bloc.toId;
     debugPrint(
         'FromID--> ${widget.fromARefId} and ToID --> ${widget.toARefId}');
     createAblyRealtimeInstance();
@@ -317,6 +317,8 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       });
 
+      // getHistory();
+
       //to getting the history of data
       var result = await chatChannel.history(ably.RealtimeHistoryParams(
           direction: 'forwards',
@@ -353,6 +355,24 @@ class _ChatScreenState extends State<ChatScreen> {
       rethrow;
     }
   }
+
+  // void getHistory([ably.RealtimeHistoryParams? params]) async {
+  //   var result = await chatChannel.history(params);
+
+  //   var messages = result.items; // get messages
+  //   print("1st message ${messages}");
+  //   var hasNextPage = result.hasNext(); // tells whether there are more results
+  //   if (hasNextPage) {
+  //     result = await result.next(); // will fetch next page results
+  //     messages = result.items;
+  //     print("2st message ${messages}");
+  //   }
+  //   if (!hasNextPage) {
+  //     result = await result.first(); // will fetch first page results
+  //     messages = result.items;
+  //     print("3st message ${messages}");
+  //   }
+  // }
 
   // void leavePresence() async {
   //   await chatChannel.presence.leave();

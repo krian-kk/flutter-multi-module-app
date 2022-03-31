@@ -206,8 +206,8 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         debugPrint(
             "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
 
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
-            arguments: state.notificationData);
+        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+        //     arguments: state.notificationData);
         String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
         String? agentRef =
             await PreferenceHelper.getPreference(Constants.agentRef);
@@ -269,27 +269,30 @@ Future<void> showMPinDialog(
       context: buildContext!,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          contentPadding: const EdgeInsets.all(20),
-          content: ConformMpinScreen(
-            successFunction: () => Navigator.pushReplacementNamed(
-                context, AppRoutes.homeTabScreen,
-                arguments: notificationData),
-            forgotPinFunction: () async {
-              if (ConnectivityResult.none ==
-                  await Connectivity().checkConnectivity()) {
-                AppUtils.showErrorToast(
-                    Languages.of(context)!.noInternetConnection);
-              } else {
-                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-                    arguments: notificationData);
-              }
-            },
-            mPin: mPin!,
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: ConformMpinScreen(
+              successFunction: () => Navigator.pushReplacementNamed(
+                  context, AppRoutes.homeTabScreen,
+                  arguments: notificationData),
+              forgotPinFunction: () async {
+                if (ConnectivityResult.none ==
+                    await Connectivity().checkConnectivity()) {
+                  AppUtils.showErrorToast(
+                      Languages.of(context)!.noInternetConnection);
+                } else {
+                  Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+                      arguments: notificationData);
+                }
+              },
+              mPin: mPin!,
+            ),
           ),
         );
       });

@@ -228,12 +228,12 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
                                 validationRules: const ['required'],
-                                isVoiceRecordWidget:
-                                    Singleton.instance.usertype ==
-                                                Constants.fieldagent &&
-                                            widget.isCall! == false
-                                        ? true
-                                        : false,
+                                isVoiceRecordWidget: true,
+                                // Singleton.instance.usertype ==
+                                //             Constants.fieldagent &&
+                                //         widget.isCall! == false
+                                //     ? true
+                                //     : false,
                                 returnS2Tresponse: (val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {
@@ -249,6 +249,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                     isTranslate = true;
                                   });
                                 },
+
                                 isSubmit: isTranslate,
                                 isLabel: true,
                               )),

@@ -206,9 +206,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }),
       ProfileNavigation(
           title: Languages.of(context)!.selectSpeechToTextLanguage,
-          isEnable: Singleton.instance.usertype == Constants.fieldagent
-              ? true
-              : false,
+          isEnable: true,
+          // Singleton.instance.usertype == Constants.fieldagent
+          //     ? true
+          //     : false,
           onTap: () {
             bloc.add(CustomerLaunguagePrefrerenceEvent(context));
           }),

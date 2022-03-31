@@ -380,18 +380,21 @@ class AutoCalling {
                                                                 MainAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              CustomText(
-                                                                bloc
-                                                                        .autoCallingResultList[
-                                                                            indexs]
-                                                                        .address?[
-                                                                            i]
-                                                                        .value ??
-                                                                    '_',
-                                                                color: ColorResource
-                                                                    .color484848,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
+                                                              Expanded(
+                                                                child:
+                                                                    CustomText(
+                                                                  bloc
+                                                                          .autoCallingResultList[
+                                                                              indexs]
+                                                                          .address?[
+                                                                              i]
+                                                                          .value ??
+                                                                      '_',
+                                                                  color: ColorResource
+                                                                      .color484848,
+                                                                  fontSize: FontSize
+                                                                      .fourteen,
+                                                                ),
                                                               ),
                                                               const SizedBox(
                                                                 width: 15,
