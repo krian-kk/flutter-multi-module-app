@@ -4,9 +4,9 @@ class AllocationEvent extends BaseEquatable {}
 
 class AllocationInitialEvent extends AllocationEvent {
   final BuildContext context;
-  bool isOfflineAPI = false;
+  final bool isOfflineAPI;
 
-  AllocationInitialEvent(this.context, {required this.isOfflineAPI});
+  AllocationInitialEvent(this.context, {this.isOfflineAPI = false});
 }
 
 class MapViewEvent extends AllocationEvent {

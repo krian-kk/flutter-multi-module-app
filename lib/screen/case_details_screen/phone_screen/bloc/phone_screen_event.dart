@@ -10,6 +10,6 @@ class PhoneScreenBottomSheetIntialEvent extends PhoneScreenEvent {
       {required this.context, required this.caseDetailsBloc});
 }
 
-class PhoneScreenBottomSheetLoadingEvent extends PhoneScreenEvent {}
+// class PhoneScreenBottomSheetLoadingEvent extends PhoneScreenEvent {}
 
-class PhoneScreenBottomSheetLoadedEvent extends PhoneScreenEvent {}
+// class PhoneScreenBottomSheetLoadedEvent extends PhoneScreenEvent {}

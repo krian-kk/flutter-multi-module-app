@@ -27,10 +27,10 @@ import 'bloc.dart';
 late AndroidNotificationChannel channel;
 // local notification integration
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-late AuthenticationBloc bloc;
+// late AuthenticationBloc bloc;
 
 void main() async {
-  bloc = AuthenticationBloc();
+  // bloc = AuthenticationBloc();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 // Requesting Push Notification Permission

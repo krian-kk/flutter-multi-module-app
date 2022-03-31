@@ -1,6 +1,6 @@
-part of 'help_bloc.dart';
+// part of 'help_bloc.dart';
 
-@immutable
-class HelpEvent extends BaseEquatable {}
+// @immutable
+// class HelpEvent extends BaseEquatable {}
 
-class HelpInitialEvent extends HelpEvent {}
+// class HelpInitialEvent extends HelpEvent {}

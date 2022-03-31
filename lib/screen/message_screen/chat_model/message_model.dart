@@ -1,18 +1,18 @@
-class Messages {
-  final String? messageIds;
-  final String? deliveredOn;
-  final String? seenOn;
-  final bool? delivered;
-  final bool? seen;
+// class Messages {
+//   final String? messageIds;
+//   final String? deliveredOn;
+//   final String? seenOn;
+//   final bool? delivered;
+//   final bool? seen;
 
-  Messages({
-    this.messageIds,
-    this.deliveredOn,
-    this.seenOn,
-    this.delivered,
-    this.seen,
-  });
-}
+//   Messages({
+//     this.messageIds,
+//     this.deliveredOn,
+//     this.seenOn,
+//     this.delivered,
+//     this.seen,
+//   });
+// }
 
 class ChatHistory {
   String? name;

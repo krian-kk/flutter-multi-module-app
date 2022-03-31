@@ -1,10 +1,10 @@
-part of 'help_bloc.dart';
+// part of 'help_bloc.dart';
 
-@immutable
-class HelpState extends BaseEquatable {}
+// @immutable
+// class HelpState extends BaseEquatable {}
 
-class HelpInitial extends HelpState {}
+// class HelpInitial extends HelpState {}
 
-class HelpLoadingState extends HelpState {}
+// class HelpLoadingState extends HelpState {}
 
-class HelpLoadedState extends HelpState {}
+// class HelpLoadedState extends HelpState {}
