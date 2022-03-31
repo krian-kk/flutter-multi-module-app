@@ -391,7 +391,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   ),
                 ],
               ),
-              // jdkdj
               bottomNavigationBar: Container(
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
