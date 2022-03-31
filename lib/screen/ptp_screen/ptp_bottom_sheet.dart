@@ -391,6 +391,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   ),
                 ],
               ),
+              // jdkdj
               bottomNavigationBar: Container(
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
@@ -579,7 +580,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: ptpDateControlller.text,
-                selectedClipValue: Constants.ptp,bloc: widget.bloc);
+                selectedClipValue: Constants.ptp,
+                bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
