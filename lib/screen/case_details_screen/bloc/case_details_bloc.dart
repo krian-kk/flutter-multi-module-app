@@ -771,9 +771,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseIndex: paramValue['caseIndex'],
             ));
           }
+          yield PostDataApiSuccessState();
         }
-
-        yield PostDataApiSuccessState();
       }
       yield EnablePhoneInvalidBtnState();
     }

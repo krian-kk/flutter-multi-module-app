@@ -76,7 +76,7 @@ class _TelecallerPhoneUnreachableScreenState
                         ),
                         const SizedBox(height: 25),
                         CustomText(
-                          Languages.of(context)!.nextActionDate.toUpperCase(),
+                          Languages.of(context)!.nextActionDate,
                           color: ColorResource.color666666,
                           fontSize: FontSize.twelve,
                           fontWeight: FontWeight.w400,

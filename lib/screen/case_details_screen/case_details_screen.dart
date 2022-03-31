@@ -668,28 +668,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                               context,
                                                                               type: Constants.repaymentInfoType));
                                                                         }
-                                                                        // DialogUtils.showDialog(
-                                                                        //     buildContext: context,
-                                                                        //     title: Languages.of(context)!.reciptsAlertMesg,
-                                                                        //     description: '',
-                                                                        //     okBtnText: Languages.of(context)!.submit.toUpperCase(),
-                                                                        //     cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                                                                        //     okBtnFunction: (val) async {
-                                                                        //       //  bloc
-                                                                        //       //     .isSendSMSloading
-                                                                        //       // ? const CustomLoadingWidget(
-                                                                        //       //     radius:
-                                                                        //       //         12,
-                                                                        //       //     strokeWidth:
-                                                                        //       //         2,
-                                                                        //       //   )
-                                                                        //       // :
-                                                                        //       if (!bloc
-                                                                        //           .isSendSMSloading) {
-                                                                        //         bloc.add(SendSMSEvent(context,
-                                                                        //             type: Constants.repaymentInfoType));
-                                                                        //       }
-                                                                        //     });
                                                                       },
                                                                       child:
                                                                           Container(

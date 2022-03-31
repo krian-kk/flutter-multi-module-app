@@ -706,7 +706,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                                 .translateTextUnReachable);
                                                         setState(() => widget
                                                                 .bloc
-                                                                .isTranslatePhoneInvalid =
+                                                                .isTranslateUnReachable =
                                                             false);
                                                       }
                                                       if (widget
