@@ -82,19 +82,20 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           children: _buildSelectedClip(selectedClipList),
                         ),
                         const SizedBox(height: 25),
-                        CustomText(
-                          Languages.of(context)!.nextActionDate,
-                          color: ColorResource.color666666,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
+                        // CustomText(
+                        //   Languages.of(context)!.nextActionDate,
+                        //   color: ColorResource.color666666,
+                        //   fontSize: FontSize.twelve,
+                        //   fontWeight: FontWeight.w400,
+                        //   fontStyle: FontStyle.normal,
+                        // ),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width - 62) / 2,
                           child: CustomReadOnlyTextField(
-                            '',
+                            Languages.of(context)!.nextActionDate,
                             widget
                                 .bloc.phoneUnreachableNextActionDateController,
+                            isLabel: true,
                             focusNode: widget
                                 .bloc.phoneUnreachableNextActionDateFocusNode,
                             isReadOnly: true,

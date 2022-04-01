@@ -30,7 +30,6 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
@@ -178,23 +177,24 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    CustomText(
-                                      Languages.of(context)!.nextActionDate,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w400,
-                                      color: ColorResource.color666666,
-                                      fontStyle: FontStyle.normal,
-                                    ),
+                                    // CustomText(
+                                    //   Languages.of(context)!.nextActionDate,
+                                    //   fontSize: FontSize.twelve,
+                                    //   fontWeight: FontWeight.w400,
+                                    //   color: ColorResource.color666666,
+                                    //   fontStyle: FontStyle.normal,
+                                    // ),
                                     SizedBox(
                                       width:
                                           (MediaQuery.of(context).size.width -
                                                   42) /
                                               2,
                                       child: CustomReadOnlyTextField(
-                                        '',
+                                        Languages.of(context)!.nextActionDate,
                                         nextActionDateControlller,
                                         validationRules: const ['required'],
                                         isReadOnly: true,
+                                        isLabel: true,
                                         onEditing: () =>
                                             _formKey.currentState!.validate(),
                                         onTapped: () =>

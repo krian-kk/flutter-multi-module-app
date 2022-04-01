@@ -483,7 +483,7 @@ class LanguageHi extends Languages {
   String get modelMake => 'मॉडल बनाना*';
 
   @override
-  String get registrationNo => 'पंजीकरण क्रमांक';
+  String get registrationNo => 'पंजीकरण क्रमांक*';
 
   @override
   String get chassisNo => 'चेसिस संख्या*';

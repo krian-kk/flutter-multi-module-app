@@ -148,11 +148,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         //event.isOfflineAPI! For offline purpose only
         Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
             APIRequestType.get,
-            event.isOfflineAPI == true
-                ? HttpUrl.priorityCaseListV2
-                : HttpUrl.priorityCaseListV1 +
-                    'pageNo=${Constants.pageNo}' +
-                    '&limit=${Constants.limit}');
+            // event.isOfflineAPI == true
+            //     ? HttpUrl.priorityCaseListV2
+            //     :
+            HttpUrl.priorityCaseListV1 +
+                'pageNo=${Constants.pageNo}' +
+                '&limit=${Constants.limit}');
 
         resultList.clear();
         starCount = 0;
@@ -215,19 +216,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             }
             yield AllocationLoadedState(successResponse: resultList);
             debugPrint('List length data--> ${resultList.length}');
-            if (!Singleton.instance.isOfflineStorageFeatureEnabled!) {
-              //Storing offline data
-              bool? isOfflineSynced = false;
-              try {
-                isOfflineSynced =
-                    _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
-              } catch (e) {
-                debugPrint(e.toString());
-              }
-              if (isOfflineSynced == false) {
-                add(AllocationInitialEvent(event.context, isOfflineAPI: true));
-              }
-            }
+            // if (!Singleton.instance.isOfflineStorageFeatureEnabled!) {
+            //   //Storing offline data
+            //   bool? isOfflineSynced = false;
+            //   try {
+            //     isOfflineSynced =
+            //         _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+            //   } catch (e) {
+            //     debugPrint(e.toString());
+            //   }
+            //   if (isOfflineSynced == false) {
+            //     add(AllocationInitialEvent(event.context, isOfflineAPI: true));
+            //   }
+            // }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||

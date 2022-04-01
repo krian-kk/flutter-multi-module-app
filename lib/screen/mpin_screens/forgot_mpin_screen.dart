@@ -78,7 +78,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
             child: PinCodeTextField(
               appContext: context,
               controller: contoller,
-              length: 4,
+              length: 6,
               mainAxisAlignment: MainAxisAlignment.center,
               obscureText: false,
               animationType: AnimationType.scale,
@@ -112,7 +112,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                     ? Colors.red
                     : ColorResource.color232222.withOpacity(0.3),
                 fieldHeight: 46,
-                fieldWidth: 37,
+                fieldWidth: 23,
                 borderWidth: 1,
               ),
             ),
@@ -121,7 +121,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           CustomButton(
             Languages.of(context)!.submitOTP.toUpperCase(),
             fontSize: FontSize.sixteen,
-            isEnabled: (contoller.text.length > 3),
+            isEnabled: (contoller.text.length > 5),
             onTap: () {
               widget.submitOtpFunction(
                   contoller.text, isError, changeIsError());

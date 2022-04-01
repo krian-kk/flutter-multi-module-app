@@ -483,7 +483,7 @@ class LanguageTa extends Languages {
   String get modelMake => 'மாடல்  மேக்*';
 
   @override
-  String get registrationNo => 'பதிவு எண்';
+  String get registrationNo => 'பதிவு எண்*';
 
   @override
   String get chassisNo => 'Chassis எண்*';
