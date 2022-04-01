@@ -29,7 +29,6 @@ class EventDetailsPlayAudioModel {
 }
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
-  // EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel = [];
 
@@ -55,7 +54,6 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               .then((QuerySnapshot<Map<String, dynamic>> value) {
             if (value.docs.isNotEmpty) {
               //temporaryList for events list
-              // List<EventDetailsResultModel>? result = [];
               List<EvnetDetailsResultsModel>? results = [];
               for (var element in value.docs) {
                 try {
@@ -79,7 +77,6 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
 
           if (getEventDetailsData[Constants.success] == true) {
             Map<String, dynamic> jsonData = getEventDetailsData['data'];
-            // eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
             eventDetailsAPIValues = EventDetailsModel.fromJson(jsonData);
             log('Event Details Value ===== > ${jsonEncode(jsonData)}');
           } else {

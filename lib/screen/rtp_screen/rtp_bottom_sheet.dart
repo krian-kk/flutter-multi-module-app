@@ -228,12 +228,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
                                 validationRules: const ['required'],
-                                isVoiceRecordWidget:
-                                    Singleton.instance.usertype ==
-                                                Constants.fieldagent &&
-                                            widget.isCall! == false
-                                        ? true
-                                        : false,
+                                isVoiceRecordWidget: true,
                                 returnS2Tresponse: (val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {

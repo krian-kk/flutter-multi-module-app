@@ -925,4 +925,7 @@ class LanguageHi extends Languages {
 
   @override
   String get selectSpeechToTextLanguage => 'भाषण से पाठ भाषा का चयन करें';
+
+  @override
+  String get agent => 'एजेंट';
 }

@@ -922,4 +922,7 @@ class LanguageEn extends Languages {
 
   @override
   String get selectSpeechToTextLanguage => 'Select Speech to text language';
+
+  @override
+  String get agent => 'Agent';
 }

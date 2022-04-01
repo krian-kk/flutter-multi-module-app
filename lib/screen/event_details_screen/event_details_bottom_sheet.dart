@@ -256,10 +256,10 @@ class _CustomEventDetailsBottomSheetState
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (expandedList[index].eventAttr?.date != null)
+                    if (expandedList[index].createdAt != null)
                       CustomText(
                         DateFormateUtils.followUpDateFormate(
-                            expandedList[index].eventAttr!.date.toString()),
+                            expandedList[index].createdAt.toString()),
                         fontSize: FontSize.seventeen,
                         fontWeight: FontWeight.w700,
                         color: ColorResource.color000000,
@@ -275,45 +275,80 @@ class _CustomEventDetailsBottomSheetState
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: [
-                  expandedList[index].eventType == 'OTS'
-                      ? (expandedList[index].eventAttr?.amntOts != null)
-                          ? CustomText(
-                              'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color000000,
-                            )
-                          : const SizedBox()
-                      : const SizedBox(),
-                  if (expandedList[index].eventType == 'RECEIPT')
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (expandedList[index].eventAttr?.customerName != null)
-                          CustomText(
-                            expandedList[index].eventAttr?.customerName ?? '-',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.amountCollected !=
-                            null)
-                          CustomText(
-                            'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        (expandedList[index].eventAttr?.chequeRefNo != null)
-                            ? CustomText(
-                                'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
-                                fontSize: FontSize.fourteen,
-                                fontWeight: FontWeight.w700,
-                                color: ColorResource.color000000,
-                              )
-                            : const SizedBox(),
-                      ],
+                  if (expandedList[index].createdBy != null)
+                    CustomText(
+                      '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
                     ),
+                  if (expandedList[index].eventAttr?.date != null)
+                    CustomText(
+                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${expandedList[index].eventAttr?.date.toString()}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.time != null)
+                    CustomText(
+                      '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.mode != null)
+                    CustomText(
+                      '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.remarks != null)
+                    CustomText(
+                      '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  // expandedList[index].eventType == 'OTS'
+                  //     ? (expandedList[index].eventAttr?.amntOts != null)
+                  //         ? CustomText(
+                  //             'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
+                  //             fontSize: FontSize.fourteen,
+                  //             fontWeight: FontWeight.w700,
+                  //             color: ColorResource.color000000,
+                  //           )
+                  //         : const SizedBox()
+                  //     : const SizedBox(),
+                  // if (expandedList[index].eventType == 'RECEIPT')
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       if (expandedList[index].eventAttr?.customerName != null)
+                  //         CustomText(
+                  //           expandedList[index].eventAttr?.customerName ?? '-',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.amountCollected !=
+                  //           null)
+                  //         CustomText(
+                  //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       (expandedList[index].eventAttr?.chequeRefNo != null)
+                  //           ? CustomText(
+                  //               'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
+                  //               fontSize: FontSize.fourteen,
+                  //               fontWeight: FontWeight.w700,
+                  //               color: ColorResource.color000000,
+                  //             )
+                  //           : const SizedBox(),
+                  //     ],
+                  //   ),
                   // if (expandedList[index].eventType == 'PTP')
                   //   Column(
                   //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,78 +365,78 @@ class _CustomEventDetailsBottomSheetState
 
                   //     ],
                   //   ),
-                  if (expandedList[index].eventAttr?.mode != null)
-                    CustomText(
-                      expandedList[index]
-                          .eventAttr!
-                          .mode
-                          .toString()
-                          .toUpperCase(),
-                      fontSize: FontSize.fourteen,
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  const SizedBox(height: 8),
-                  if (expandedList[index].eventType == 'REPO')
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (expandedList[index].eventAttr?.customerName != null)
-                          CustomText(
-                            expandedList[index]
-                                .eventAttr!
-                                .customerName
-                                .toString(),
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.modelMake != null)
-                          CustomText(
-                            'Model Make: ${expandedList[index].eventAttr!.modelMake}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.registrationNo !=
-                            null)
-                          CustomText(
-                            'Registration No: ${expandedList[index].eventAttr!.registrationNo}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.chassisNo != null)
-                          CustomText(
-                            'Chassis No: ${expandedList[index].eventAttr!.chassisNo}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                      ],
-                    ),
-                  CustomText(
-                    Languages.of(context)!
-                        .remarks
-                        .replaceAll('*', '')
-                        .toUpperCase(),
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
-                  CustomText(
-                    (expandedList[index].eventAttr?.remarks != null)
-                        ? expandedList[index].eventAttr!.remarks.toString()
-                        : (expandedList[index].eventAttr?.remarkOts != null)
-                            ? expandedList[index]
-                                .eventAttr!
-                                .remarkOts
-                                .toString()
-                            : '_',
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
+                  // if (expandedList[index].eventAttr?.mode != null)
+                  //   CustomText(
+                  //     expandedList[index]
+                  //         .eventAttr!
+                  //         .mode
+                  //         .toString()
+                  //         .toUpperCase(),
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  // const SizedBox(height: 8),
+                  // if (expandedList[index].eventType == 'REPO')
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       if (expandedList[index].eventAttr?.customerName != null)
+                  //         CustomText(
+                  //           expandedList[index]
+                  //               .eventAttr!
+                  //               .customerName
+                  //               .toString(),
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.modelMake != null)
+                  //         CustomText(
+                  //           'Model Make: ${expandedList[index].eventAttr!.modelMake}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.registrationNo !=
+                  //           null)
+                  //         CustomText(
+                  //           'Registration No: ${expandedList[index].eventAttr!.registrationNo}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.chassisNo != null)
+                  //         CustomText(
+                  //           'Chassis No: ${expandedList[index].eventAttr!.chassisNo}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //     ],
+                  //   ),
+                  // CustomText(
+                  //   Languages.of(context)!
+                  //       .remarks
+                  //       .replaceAll('*', '')
+                  //       .toUpperCase(),
+                  //   fontSize: FontSize.fourteen,
+                  //   fontWeight: FontWeight.w700,
+                  //   color: ColorResource.color000000,
+                  // ),
+                  // CustomText(
+                  //   (expandedList[index].eventAttr?.remarks != null)
+                  //       ? expandedList[index].eventAttr!.remarks.toString()
+                  //       : (expandedList[index].eventAttr?.remarkOts != null)
+                  //           ? expandedList[index]
+                  //               .eventAttr!
+                  //               .remarkOts
+                  //               .toString()
+                  //           : '_',
+                  //   fontSize: FontSize.fourteen,
+                  //   fontWeight: FontWeight.w700,
+                  //   color: ColorResource.color000000,
+                  // ),
                   if (expandedList[index].eventAttr?.reginalText != null &&
                       expandedList[index].eventAttr?.translatedText != null &&
                       expandedList[index].eventAttr?.audioS3Path != null)

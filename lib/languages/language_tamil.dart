@@ -929,4 +929,7 @@ class LanguageTa extends Languages {
   @override
   String get selectSpeechToTextLanguage =>
       'பேச்சு முதல் உரை மொழியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get agent => 'முகவர்';
 }

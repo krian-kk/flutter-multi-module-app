@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mime/mime.dart';
-import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
@@ -37,83 +35,83 @@ class FirebaseUtils {
       String? selectedFollowUpDate,
       required CaseDetailsBloc bloc}) async {
     bool returnValues = false;
-    if (Singleton.instance.usertype == Constants.fieldagent
-        // && Constants.appDataLoadedFromFirebase
-        ) {
-      FirebaseFirestore.instance
-          .collection(Singleton.instance.firebaseDatabaseName)
-          .doc(Singleton.instance.agentRef)
-          .collection(Constants.firebaseEvent)
-          .add(eventsDetails);
-      if (selectedClipValue != null &&
-          selectedClipValue != Constants.collections) {
-        var indexNumber = 0;
+    // if (Singleton.instance.usertype == Constants.fieldagent
+    //     // && Constants.appDataLoadedFromFirebase
+    //     ) {
+    //   FirebaseFirestore.instance
+    //       .collection(Singleton.instance.firebaseDatabaseName)
+    //       .doc(Singleton.instance.agentRef)
+    //       .collection(Constants.firebaseEvent)
+    //       .add(eventsDetails);
+    //   if (selectedClipValue != null &&
+    //       selectedClipValue != Constants.collections) {
+    //     var indexNumber = 0;
 
-        List<Map> toUpdateValues = [];
-        UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
-            Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
-        var status = 0;
-        switch (data.tabIndex) {
-          case 0:
-            status = 2;
-            break;
-          case 1:
-            status = 1;
-            break;
-          case 2:
-            status = 0;
-            break;
-          default:
-            status = int.parse(data.currentHealth);
-            break;
-        }
-        bloc.selectedAddressModel['health'] = status.toString();
-        toUpdateValues.add(bloc.selectedAddressModel);
-        FirebaseFirestore.instance
-            .collection(Singleton.instance.firebaseDatabaseName)
-            .doc(Singleton.instance.agentRef)
-            .collection(Constants.firebaseCase)
-            .doc(caseId)
-            .snapshots()
-            .forEach((element) {
-          element.data()!.forEach((key, value) {
-            if (key == 'addressDetails') {
-              Map selectedAddress = bloc.selectedAddressModel;
-              value.asMap().forEach((index, values) {
-                Map addressModel = Map.from(values);
-                if (selectedAddress['value'] == addressModel['value']) {
-                  indexNumber = index;
-                  debugPrint(indexNumber.toString());
-                } else {
-                  toUpdateValues.add(addressModel);
-                }
-              });
-            }
-          });
-        });
+    //     List<Map> toUpdateValues = [];
+    //     UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+    //         Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
+    //     var status = 0;
+    //     switch (data.tabIndex) {
+    //       case 0:
+    //         status = 2;
+    //         break;
+    //       case 1:
+    //         status = 1;
+    //         break;
+    //       case 2:
+    //         status = 0;
+    //         break;
+    //       default:
+    //         status = int.parse(data.currentHealth);
+    //         break;
+    //     }
+    //     bloc.selectedAddressModel['health'] = status.toString();
+    //     toUpdateValues.add(bloc.selectedAddressModel);
+    //     FirebaseFirestore.instance
+    //         .collection(Singleton.instance.firebaseDatabaseName)
+    //         .doc(Singleton.instance.agentRef)
+    //         .collection(Constants.firebaseCase)
+    //         .doc(caseId)
+    //         .snapshots()
+    //         .forEach((element) {
+    //       element.data()!.forEach((key, value) {
+    //         if (key == 'addressDetails') {
+    //           Map selectedAddress = bloc.selectedAddressModel;
+    //           value.asMap().forEach((index, values) {
+    //             Map addressModel = Map.from(values);
+    //             if (selectedAddress['value'] == addressModel['value']) {
+    //               indexNumber = index;
+    //               debugPrint(indexNumber.toString());
+    //             } else {
+    //               toUpdateValues.add(addressModel);
+    //             }
+    //           });
+    //         }
+    //       });
+    //     });
 
-        debugPrint('values--> ${bloc.selectedAddressModel}');
-        debugPrint('toUpdateValues--> $toUpdateValues');
-        FirebaseFirestore.instance
-            .collection(Singleton.instance.firebaseDatabaseName)
-            .doc(Singleton.instance.agentRef)
-            .collection(Constants.firebaseCase)
-            .doc(caseId)
-            .update(
-              selectedFollowUpDate == null
-                  ? {'collSubStatus': selectedClipValue}
-                  : {
-                      'fieldfollowUpDate': selectedFollowUpDate,
-                      'collSubStatus': selectedClipValue,
-                      // 'addressDetails.$indexNumber': bloc.selectedAddressModel,
-                      'addressDetails': toUpdateValues,
-                    },
-            );
-      }
-      returnValues = true;
-    } else {
-      returnValues = false;
-    }
+    //     debugPrint('values--> ${bloc.selectedAddressModel}');
+    //     debugPrint('toUpdateValues--> $toUpdateValues');
+    //     FirebaseFirestore.instance
+    //         .collection(Singleton.instance.firebaseDatabaseName)
+    //         .doc(Singleton.instance.agentRef)
+    //         .collection(Constants.firebaseCase)
+    //         .doc(caseId)
+    //         .update(
+    //           selectedFollowUpDate == null
+    //               ? {'collSubStatus': selectedClipValue}
+    //               : {
+    //                   'fieldfollowUpDate': selectedFollowUpDate,
+    //                   'collSubStatus': selectedClipValue,
+    //                   // 'addressDetails.$indexNumber': bloc.selectedAddressModel,
+    //                   'addressDetails': toUpdateValues,
+    //                 },
+    //         );
+    //   }
+    //   returnValues = true;
+    // } else {
+    //   returnValues = false;
+    // }
     return returnValues;
   }
 

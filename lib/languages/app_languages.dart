@@ -611,4 +611,6 @@ abstract class Languages {
   String get visit;
 
   String get selectSpeechToTextLanguage;
+
+  String get agent;
 }

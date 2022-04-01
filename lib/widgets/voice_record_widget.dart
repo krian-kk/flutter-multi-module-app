@@ -235,73 +235,76 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     return Listener(
       child: GestureDetector(
         onTap: () async {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          if (prefs.getString(Constants.s2tLangcode) != null) {
-            if (isRecordOn) {
-              if (mounted) {
-                setState(() {
-                  timer?.cancel();
-                  if (mounted) {
-                    setState(() {
-                      glowingRadius = 17;
-                      recordContainerWidth = 1;
-                      recordContainerColor = Colors.transparent;
-                      recordCountText = '';
-                      isRecordOn = false;
-                      stopRecorder();
-                    });
-                  }
-                });
-              }
-            } else {
-              int secondsRemaining = 60;
-              if (mounted) {
-                setState(() {
-                  isRecordOn = true;
-                  glowingRadius = 22;
-                  recordContainerWidth = 120;
-                  recordContainerColor = ColorResource.colorF7F8FA;
-                  recordCountText = '60 Sec';
-                });
-              }
-              startRecord();
-              timer = Timer.periodic(const Duration(seconds: 1), (_) {
-                if (secondsRemaining != 0) {
-                  if (mounted) {
-                    setState(() {
-                      secondsRemaining--;
-                      recordCountText = '${secondsRemaining.toString()} Sec';
-                    });
-                  }
-                } else {
+          if (!isStartLoading) {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            if (prefs.getString(Constants.s2tLangcode) != null) {
+              if (isRecordOn) {
+                if (mounted) {
                   setState(() {
-                    if (timer!.isActive) {
-                      timer?.cancel();
-                      stopRecorder();
-                      if (mounted) {
-                        setState(() {
-                          isRecordOn = false;
-                          recordContainerColor = Colors.transparent;
-                          glowingRadius = 17;
-                          recordContainerWidth = 1;
-                          recordCountText = '';
-                        });
-                      }
+                    timer?.cancel();
+                    if (mounted) {
+                      setState(() {
+                        glowingRadius = 17;
+                        recordContainerWidth = 1;
+                        recordContainerColor = Colors.transparent;
+                        recordCountText = '';
+                        isRecordOn = false;
+                        stopRecorder();
+                      });
                     }
                   });
                 }
-              });
-            }
-            widget.recordingData!(isRecordOn);
-          } else {
-            DialogUtils.showDialog(
-                buildContext: context,
-                title: Languages.of(context)!.errorMsgS2TlangCode,
-                description: '',
-                okBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                okBtnFunction: (val) {
-                  Navigator.pop(context);
+              } else {
+                int secondsRemaining = 60;
+                if (mounted) {
+                  setState(() {
+                    isRecordOn = true;
+                    glowingRadius = 22;
+                    recordContainerWidth = 120;
+                    recordContainerColor = ColorResource.colorF7F8FA;
+                    recordCountText = '60 Sec';
+                  });
+                }
+                startRecord();
+                timer = Timer.periodic(const Duration(seconds: 1), (_) {
+                  if (secondsRemaining != 0) {
+                    if (mounted) {
+                      setState(() {
+                        secondsRemaining--;
+                        recordCountText = '${secondsRemaining.toString()} Sec';
+                      });
+                    }
+                  } else {
+                    setState(() {
+                      if (timer!.isActive) {
+                        timer?.cancel();
+                        stopRecorder();
+                        if (mounted) {
+                          setState(() {
+                            isRecordOn = false;
+                            recordContainerColor = Colors.transparent;
+                            glowingRadius = 17;
+                            recordContainerWidth = 1;
+                            recordCountText = '';
+                          });
+                        }
+                      }
+                    });
+                  }
                 });
+              }
+              widget.recordingData!(isRecordOn);
+            } else {
+              DialogUtils.showDialog(
+                  buildContext: context,
+                  title: Languages.of(context)!.errorMsgS2TlangCode,
+                  description: '',
+                  okBtnText: Languages.of(context)!.cancel.toUpperCase(),
+                  okBtnFunction: (val) {
+                    Navigator.pop(context);
+                  });
+            }
           }
         },
         child: SizedBox(
