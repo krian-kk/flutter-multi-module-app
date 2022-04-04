@@ -2,7 +2,7 @@ class EventAttr {
   String? date;
   dynamic time;
   String? remarks;
-  // int? ptpAmount;
+  int? ptpAmount;
   String? mode;
   String? ptpType;
   // String? followUpPriority;
@@ -22,7 +22,7 @@ class EventAttr {
     this.date,
     this.time,
     this.remarks,
-    // this.ptpAmount,
+    this.ptpAmount,
     this.mode,
     this.ptpType,
     // this.followUpPriority,
@@ -43,7 +43,7 @@ class EventAttr {
         date: json['date'] as String?,
         time: json['time'] as dynamic,
         remarks: json['remarks'] as String?,
-        // ptpAmount: json['ptpAmount'] as int?,
+        ptpAmount: json['ptpAmount'] as int?,
         mode: json['mode'] as String?,
         ptpType: json['PTPType'] as String?,
         // followUpPriority: json['followUpPriority'] as String?,
@@ -64,7 +64,7 @@ class EventAttr {
         'date': date,
         'time': time,
         'remarks': remarks,
-        // 'ptpAmount': ptpAmount,
+        'ptpAmount': ptpAmount,
         'mode': mode,
         'PTPType': ptpType,
         // 'followUpPriority': followUpPriority,

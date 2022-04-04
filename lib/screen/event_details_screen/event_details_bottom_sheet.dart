@@ -291,6 +291,15 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
+                  if (expandedList[index].eventType?.toLowerCase() ==
+                          Constants.ptp.toLowerCase() &&
+                      expandedList[index].eventAttr?.ptpAmount != null)
+                    CustomText(
+                      '${Languages.of(context)!.ptpAmount} : ${expandedList[index].eventAttr?.ptpAmount}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
                   if (expandedList[index].eventAttr?.date != null)
                     CustomText(
                       '${Languages.of(context)!.date.replaceAll('*', '')} : ${expandedList[index].eventAttr?.date.toString()}',
@@ -307,7 +316,7 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
-                      '${(expandedList[index].eventType?.toLowerCase() == Constants.ptp.toLowerCase() || expandedList[index].eventType?.toLowerCase() == Constants.tcPtp.toLowerCase()) ? Languages.of(context)!.ptpType : Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
+                      '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,

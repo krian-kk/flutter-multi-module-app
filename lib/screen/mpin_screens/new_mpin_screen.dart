@@ -9,7 +9,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class NewMpinScreen extends StatefulWidget {
   final OnChange saveFuction;
@@ -67,7 +67,7 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: PinCodeTextField(
+            child: PinCodeTextFieldWidget(
               appContext: context,
               controller: contoller,
               length: 4,

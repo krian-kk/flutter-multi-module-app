@@ -19,7 +19,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:objectid/objectid.dart';
+import 'package:origa/widgets/object_id_widget.dart';
 
 class BankTab extends StatefulWidget {
   final DashboardBloc bloc;
@@ -149,7 +149,7 @@ class _BankTabState extends State<BankTab> {
                                   //   );
                                   // } else {
 
-                                  final id = ObjectId();
+                                  final id = ObjectIdWidget();
                                   var requestBodyData = BankDepositPostModel(
                                       caseIds: widget.selectedCaseIds!.length ==
                                               1

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:objectid/objectid.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/company_branch_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -19,6 +18,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
+import 'package:origa/widgets/object_id_widget.dart';
 
 class CompanyBranch extends StatefulWidget {
   final DashboardBloc bloc;
@@ -143,7 +143,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                     //     gravity: ToastGravity.CENTER,
                                     //   );
                                     // } else {
-                                    final id = ObjectId();
+                                    final id = ObjectIdWidget();
                                     var requestBodyData =
                                         CompanyBranchDepositPostModel(
                                       caseIds: widget.selectedCaseIds!.length ==

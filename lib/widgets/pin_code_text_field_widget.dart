@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 
 const bool kIsWeb = identical(0, 0.0);
 
-class PinCodeTextField extends StatefulWidget {
+class PinCodeTextFieldWidget extends StatefulWidget {
   final BuildContext appContext;
   final List<BoxShadow>? boxShadows;
   final int length;
@@ -64,7 +64,7 @@ class PinCodeTextField extends StatefulWidget {
   final Gradient? textGradient;
   final bool readOnly;
 
-  PinCodeTextField({
+  PinCodeTextFieldWidget({
     Key? key,
     required this.appContext,
     required this.length,
@@ -124,10 +124,10 @@ class PinCodeTextField extends StatefulWidget {
         super(key: key);
 
   @override
-  _PinCodeTextFieldState createState() => _PinCodeTextFieldState();
+  _PinCodeTextFieldWidgetState createState() => _PinCodeTextFieldWidgetState();
 }
 
-class _PinCodeTextFieldState extends State<PinCodeTextField>
+class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
     with TickerProviderStateMixin {
   TextEditingController? _textEditingController;
   FocusNode? _focusNode;
@@ -812,6 +812,7 @@ class CursorPainter extends CustomPainter {
   }
 
   @override
+  // ignore: avoid_renaming_method_parameters
   bool shouldRepaint(CustomPainter oldDelecate) {
     return false;
   }

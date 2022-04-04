@@ -16,7 +16,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -308,7 +308,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
-                                  child: PinCodeTextField(
+                                  child: PinCodeTextFieldWidget(
                                     appContext: context,
                                     controller: pinCodeController,
                                     length: 6,

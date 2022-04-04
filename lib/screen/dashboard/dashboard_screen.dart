@@ -532,6 +532,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         const SizedBox(
                                           height: 12,
                                         ),
+                                        // ================================================================================================
                                         StaggeredGridView.countBuilder(
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -814,6 +815,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                             ),
                                             );
                                           },
+                                          // ========================================================================================================
                                           staggeredTileBuilder: (int index) =>
                                               StaggeredTile.count(
                                                   2,
