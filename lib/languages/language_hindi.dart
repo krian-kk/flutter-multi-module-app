@@ -474,7 +474,7 @@ class LanguageHi extends Languages {
   String get otsPaymentTime => 'OTS भुगतान समय*';
 
   @override
-  String get rtpDenialReason => 'RTP/अस्वीकार का  कारण';
+  String get rtpDenialReason => 'RTP/अस्वीकार का  कारण*';
 
   @override
   String get disputeReason => 'विवाद का कारण';

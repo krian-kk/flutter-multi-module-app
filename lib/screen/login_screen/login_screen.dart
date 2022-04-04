@@ -537,22 +537,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ColorResource.colorffffff,
                                           ),
                                         const SizedBox(height: 10),
-                                        CustomButton(
-                                          Languages.of(context)!.help,
-                                          onTap: () => webViewScreen(
-                                            context,
-                                            urlAddress:
-                                                'https://www.google.com/?client=safari',
-                                          ),
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          cardShape: 90,
-                                          fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w600,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                        ),
+                                        // CustomButton(
+                                        //   Languages.of(context)!.help,
+                                        //   onTap: () => webViewScreen(
+                                        //     context,
+                                        //     urlAddress:
+                                        //         'https://www.google.com/?client=safari',
+                                        //   ),
+                                        //   borderColor:
+                                        //       ColorResource.color23375A,
+                                        //   cardShape: 90,
+                                        //   fontSize: FontSize.sixteen,
+                                        //   fontWeight: FontWeight.w600,
+                                        //   textColor: ColorResource.color23375A,
+                                        //   buttonBackgroundColor:
+                                        //       ColorResource.colorffffff,
+                                        // ),
                                       ],
                                     ),
                                   ),

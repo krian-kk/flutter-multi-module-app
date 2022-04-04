@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 
 class DashboardListModel {
   String? title;
@@ -16,25 +16,25 @@ class DashboardListModel {
   });
 }
 
-class CaseListModel {
-  bool? newlyAdded;
-  String? amount;
-  String? customerName;
-  String? address;
-  String? date;
-  String? loanID;
-  GestureTapCallback? onTap;
+// class CaseListModel {
+//   bool? newlyAdded;
+//   String? amount;
+//   String? customerName;
+//   String? address;
+//   String? date;
+//   String? loanID;
+//   GestureTapCallback? onTap;
 
-  CaseListModel({
-    this.newlyAdded,
-    this.amount,
-    this.customerName,
-    this.address,
-    this.date,
-    this.loanID,
-    this.onTap,
-  });
-}
+//   CaseListModel({
+//     this.newlyAdded,
+//     this.amount,
+//     this.customerName,
+//     this.address,
+//     this.date,
+//     this.loanID,
+//     this.onTap,
+//   });
+// }
 
 class FilterCasesByTimeperiod {
   String? timeperiodText;

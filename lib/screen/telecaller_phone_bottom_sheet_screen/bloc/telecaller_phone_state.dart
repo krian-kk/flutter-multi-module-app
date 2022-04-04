@@ -1,88 +1,88 @@
-part of 'telecaller_phone_bloc.dart';
+// part of 'telecaller_phone_bloc.dart';
 
-@immutable
-class TelecallerPhoneState extends BaseEquatable {}
+// @immutable
+// class TelecallerPhoneState extends BaseEquatable {}
 
-class TelecallerPhoneInitial extends TelecallerPhoneState {}
+// class TelecallerPhoneInitial extends TelecallerPhoneState {}
 
-class TelecallerPhoneLoadingState extends TelecallerPhoneState {}
+// class TelecallerPhoneLoadingState extends TelecallerPhoneState {}
 
-class TelecallerPhoneLoadedState extends TelecallerPhoneState {}
+// class TelecallerPhoneLoadedState extends TelecallerPhoneState {}
 
-class TcNoInternetState extends TelecallerPhoneState {}
+// class TcNoInternetState extends TelecallerPhoneState {}
 
-// class ClickMainAddressBottomSheetState extends CaseDetailsState {
-//   final int i;
-//   ClickMainAddressBottomSheetState(this.i);
+// // class ClickMainAddressBottomSheetState extends CaseDetailsState {
+// //   final int i;
+// //   ClickMainAddressBottomSheetState(this.i);
+// // }
+
+// // class ClickMainCallBottomSheetState extends CaseDetailsState {
+// //   final int i;
+// //   ClickMainCallBottomSheetState(this.i);
+// // }
+
+// // class ClickAddAddressState extends CaseDetailsState {}
+
+// // class ClickViewMapState extends CaseDetailsState {}
+
+// // // class CDNoInternetConnectionState extends CaseDetailsState {}
+
+// // class CallCaseDetailsState extends CaseDetailsState {
+// //   final dynamic paramValues;
+// //   CallCaseDetailsState({this.paramValues});
+// // }
+
+// // class PushAndPOPNavigationCaseDetailsState extends CaseDetailsState {
+// //   final dynamic paramValues;
+// //   PushAndPOPNavigationCaseDetailsState({this.paramValues});
+// // }
+
+// class TcClickOpenBottomSheetState extends TelecallerPhoneState {
+//   final String title;
+//   final List list;
+//   final bool? isCall;
+//   final String? health;
+//   TcClickOpenBottomSheetState(this.title, this.list, this.isCall,
+//       {this.health});
 // }
 
-// class ClickMainCallBottomSheetState extends CaseDetailsState {
-//   final int i;
-//   ClickMainCallBottomSheetState(this.i);
-// }
+// class TcPostDataApiSuccessState extends TelecallerPhoneState {}
 
-// class ClickAddAddressState extends CaseDetailsState {}
+// class TcEnableUnreachableBtnState extends TelecallerPhoneState {}
 
-// class ClickViewMapState extends CaseDetailsState {}
+// class TcDisableUnreachableBtnState extends TelecallerPhoneState {}
 
-// // class CDNoInternetConnectionState extends CaseDetailsState {}
+// class TcEnablePhoneInvalidBtnState extends TelecallerPhoneState {}
 
-// class CallCaseDetailsState extends CaseDetailsState {
-//   final dynamic paramValues;
-//   CallCaseDetailsState({this.paramValues});
-// }
+// class TcDisablePhoneInvalidBtnState extends TelecallerPhoneState {}
 
-// class PushAndPOPNavigationCaseDetailsState extends CaseDetailsState {
-//   final dynamic paramValues;
-//   PushAndPOPNavigationCaseDetailsState({this.paramValues});
-// }
+// // class EnableCustomerNotMetBtnState extends CaseDetailsState {}
 
-class TcClickOpenBottomSheetState extends TelecallerPhoneState {
-  final String title;
-  final List list;
-  final bool? isCall;
-  final String? health;
-  TcClickOpenBottomSheetState(this.title, this.list, this.isCall,
-      {this.health});
-}
+// // class DisableCustomerNotMetBtnState extends CaseDetailsState {}
 
-class TcPostDataApiSuccessState extends TelecallerPhoneState {}
+// // class EnableAddressInvalidBtnState extends CaseDetailsState {}
 
-class TcEnableUnreachableBtnState extends TelecallerPhoneState {}
+// // class DisableAddressInvalidBtnState extends CaseDetailsState {}
 
-class TcDisableUnreachableBtnState extends TelecallerPhoneState {}
+// // class EnableCaptureImageBtnState extends CaseDetailsState {}
 
-class TcEnablePhoneInvalidBtnState extends TelecallerPhoneState {}
+// // class DisableCaptureImageBtnState extends CaseDetailsState {}
 
-class TcDisablePhoneInvalidBtnState extends TelecallerPhoneState {}
+// // class AddedNewAddressListState extends CaseDetailsState {}
 
-// class EnableCustomerNotMetBtnState extends CaseDetailsState {}
+// // class AddedNewCallContactListState extends CaseDetailsState {}
 
-// class DisableCustomerNotMetBtnState extends CaseDetailsState {}
+// // class PhoneBottomSheetSuccessState extends CaseDetailsState {}
 
-// class EnableAddressInvalidBtnState extends CaseDetailsState {}
+// // class UpdateSuccessfullState extends CaseDetailsState {}
 
-// class DisableAddressInvalidBtnState extends CaseDetailsState {}
-
-// class EnableCaptureImageBtnState extends CaseDetailsState {}
-
-// class DisableCaptureImageBtnState extends CaseDetailsState {}
-
-// class AddedNewAddressListState extends CaseDetailsState {}
-
-// class AddedNewCallContactListState extends CaseDetailsState {}
-
-// class PhoneBottomSheetSuccessState extends CaseDetailsState {}
-
-// class UpdateSuccessfullState extends CaseDetailsState {}
-
-// class UpdateHealthStatusState extends CaseDetailsState {
-//   // final BuildContext context;
-//   // final int? selectedHealthIndex;
-//   // final int? tabIndex;
-//   // final dynamic currentHealth;
-//   UpdateHealthStatusState(
-//       // this.context,
-//       //   {this.selectedHealthIndex, this.tabIndex, this.currentHealth}
-//       );
-// }
+// // class UpdateHealthStatusState extends CaseDetailsState {
+// //   // final BuildContext context;
+// //   // final int? selectedHealthIndex;
+// //   // final int? tabIndex;
+// //   // final dynamic currentHealth;
+// //   UpdateHealthStatusState(
+// //       // this.context,
+// //       //   {this.selectedHealthIndex, this.tabIndex, this.currentHealth}
+// //       );
+// // }

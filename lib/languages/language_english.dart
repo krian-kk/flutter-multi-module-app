@@ -434,7 +434,7 @@ class LanguageEn extends Languages {
   String get nextActionTime => 'Next Action Time*';
 
   @override
-  String get remarks => 'REMARKS*';
+  String get remarks => 'Remarks*';
 
   @override
   String get ptpDate => 'PTP Date*';
@@ -473,7 +473,7 @@ class LanguageEn extends Languages {
   String get otsPaymentTime => 'OTS Payment Time';
 
   @override
-  String get rtpDenialReason => 'RTP/Denial Reason';
+  String get rtpDenialReason => 'RTP/Denial Reason*';
 
   @override
   String get disputeReason => 'Dispute Reason';

@@ -314,6 +314,22 @@ class _CustomEventDetailsBottomSheetState
                             : const SizedBox(),
                       ],
                     ),
+                  // if (expandedList[index].eventType == 'PTP')
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+
+                  //       if (expandedList[index].eventAttr?.amountCollected !=
+                  //           null)
+                  //         CustomText(
+                  //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+
+                  //     ],
+                  //   ),
                   if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
                       expandedList[index]

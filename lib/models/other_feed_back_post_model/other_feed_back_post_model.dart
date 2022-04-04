@@ -166,30 +166,30 @@ class EventAttr {
   }
 }
 
-class AgentLocation {
-  late double latitude;
-  late double longitude;
-  late String missingAgentLocation;
+// class AgentLocation {
+//   late double latitude;
+//   late double longitude;
+//   late String missingAgentLocation;
 
-  AgentLocation(
-      {this.latitude = 0,
-      this.longitude = 0,
-      this.missingAgentLocation = 'true'});
+//   AgentLocation(
+//       {this.latitude = 0,
+//       this.longitude = 0,
+//       this.missingAgentLocation = 'true'});
 
-  AgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
-  }
+//   AgentLocation.fromJson(Map<String, dynamic> json) {
+//     latitude = json['latitude'];
+//     longitude = json['longitude'];
+//     missingAgentLocation = json['missingAgentLocation'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['latitude'] = latitude;
+//     data['longitude'] = longitude;
+//     data['missingAgentLocation'] = missingAgentLocation;
+//     return data;
+//   }
+// }
 
 class OtherFeedBackContact {
   late String cType;

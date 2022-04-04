@@ -392,27 +392,144 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 15),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
-                                            Languages.of(context)!.bankName,
+                                            Languages.of(context)!
+                                                .bankName
+                                                .replaceAll("*", ''),
                                             bloc.bankNameController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(height: 17),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
                                             Languages.of(context)!.product,
                                             bloc.productController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(height: 17),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
                                             Languages.of(context)!.batchNo,
                                             bloc.batchNoController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
+                                          // Extra text field
+                                          extraTextField(
+                                              title:
+                                                  'Date of loan disbursement',
+                                              controller: bloc
+                                                  .dateOfLoanDisbursementController),
+                                          extraTextField(
+                                              title: 'TOS',
+                                              controller: bloc.tosController),
+                                          extraTextField(
+                                              title: 'EMI Amount',
+                                              controller:
+                                                  bloc.emiAmountController),
+                                          extraTextField(
+                                              title: 'No of pending EMI',
+                                              controller: bloc
+                                                  .noOfPendingEmiController),
+                                          extraTextField(
+                                              title: 'Penalty Amount',
+                                              controller:
+                                                  bloc.penaltyAmountController),
+                                          extraTextField(
+                                              title: 'OD interest',
+                                              controller:
+                                                  bloc.odInterestController),
+                                          extraTextField(
+                                              title: 'Asset details',
+                                              controller:
+                                                  bloc.assetDetailsController),
+                                          extraTextField(
+                                              title: 'CO-Lender ',
+                                              controller:
+                                                  bloc.coLenderController),
+                                          extraTextField(
+                                              title: 'Employer Business Entity',
+                                              controller: bloc
+                                                  .employerBussinessEntityController),
+                                          extraTextField(
+                                              title: 'Last payment date',
+                                              controller: bloc
+                                                  .lastPaymentDateController),
+                                          extraTextField(
+                                              title: 'Sourcing RM Name',
+                                              controller: bloc
+                                                  .sourcingRmnameController),
+
+                                          extraTextField(
+                                              title: 'Last paid amount',
+                                              controller: bloc
+                                                  .lastPaidAmountController),
+                                          extraTextField(
+                                              title: 'Risk Ranking',
+                                              controller:
+                                                  bloc.riskRankingController),
+                                          extraTextField(
+                                              title: 'Review flag',
+                                              controller:
+                                                  bloc.reviewFlagController),
+                                          extraTextField(
+                                              title: 'Location',
+                                              controller:
+                                                  bloc.locationController),
+                                          extraTextField(
+                                              title: 'Agency',
+                                              controller:
+                                                  bloc.agencyController),
+                                          extraTextField(
+                                              title: 'Customer ID',
+                                              controller:
+                                                  bloc.customerIdController),
+                                          extraTextField(
+                                              title: 'Min due amount',
+                                              controller:
+                                                  bloc.minDueAmountController),
+                                          extraTextField(
+                                              title: 'Card outstanding',
+                                              controller: bloc
+                                                  .cardOutstandingController),
+                                          extraTextField(
+                                              title: 'Statement date',
+                                              controller:
+                                                  bloc.statementDateController),
+                                          extraTextField(
+                                              title: 'Due date',
+                                              controller:
+                                                  bloc.dueDateController),
+                                          extraTextField(
+                                              title: 'Card status',
+                                              controller:
+                                                  bloc.cardStatusController),
+                                          extraTextField(
+                                              title: 'Last billed amount',
+                                              controller: bloc
+                                                  .lastBilledAmountController),
+
+                                          extraTextField(
+                                              title: 'Chassis Number',
+                                              controller:
+                                                  bloc.chassisNumberController),
+                                          extraTextField(
+                                              title: 'Model make',
+                                              controller:
+                                                  bloc.modelMakeController),
+                                          extraTextField(
+                                              title: 'Risk bucket',
+                                              controller:
+                                                  bloc.riskBucketController),
+                                          extraTextField(
+                                              title: 'Ref 1',
+                                              controller:
+                                                  bloc.reference1Controller),
+                                          extraTextField(
+                                              title: 'Ref 2',
+                                              controller:
+                                                  bloc.reference2Controller),
                                           const SizedBox(height: 23),
                                           CustomText(
                                             Languages.of(context)!
@@ -668,28 +785,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                               context,
                                                                               type: Constants.repaymentInfoType));
                                                                         }
-                                                                        // DialogUtils.showDialog(
-                                                                        //     buildContext: context,
-                                                                        //     title: Languages.of(context)!.reciptsAlertMesg,
-                                                                        //     description: '',
-                                                                        //     okBtnText: Languages.of(context)!.submit.toUpperCase(),
-                                                                        //     cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                                                                        //     okBtnFunction: (val) async {
-                                                                        //       //  bloc
-                                                                        //       //     .isSendSMSloading
-                                                                        //       // ? const CustomLoadingWidget(
-                                                                        //       //     radius:
-                                                                        //       //         12,
-                                                                        //       //     strokeWidth:
-                                                                        //       //         2,
-                                                                        //       //   )
-                                                                        //       // :
-                                                                        //       if (!bloc
-                                                                        //           .isSendSMSloading) {
-                                                                        //         bloc.add(SendSMSEvent(context,
-                                                                        //             type: Constants.repaymentInfoType));
-                                                                        //       }
-                                                                        //     });
                                                                       },
                                                                       child:
                                                                           Container(
@@ -877,8 +972,41 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             children: [
                                                               CustomText(
                                                                 Languages.of(
-                                                                        context)!
-                                                                    .accountNo,
+                                                                            context)!
+                                                                        .bankName
+                                                                        .replaceAll(
+                                                                            '*',
+                                                                            '') +
+                                                                    ': ' +
+                                                                    bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .otherLoanDetails![
+                                                                            index]
+                                                                        .bankName!,
+                                                                color: ColorResource
+                                                                    .color666666,
+                                                                fontSize:
+                                                                    FontSize
+                                                                        .twelve,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                              CustomText(
+                                                                Languages.of(
+                                                                            context)!
+                                                                        .accountNo +
+                                                                    ': ' +
+                                                                    bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .otherLoanDetails![
+                                                                            index]
+                                                                        .accNo!,
                                                                 color: ColorResource
                                                                     .color666666,
                                                                 fontSize:
@@ -1161,6 +1289,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         ),
       ),
     );
+  }
+
+  Widget extraTextField(
+      {required String title, required TextEditingController controller}) {
+    return controller.text != '-'
+        ? Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: CustomReadOnlyTextField(
+              title,
+              controller,
+              isLabel: true,
+              isEnable: false,
+            ),
+          )
+        : const SizedBox();
   }
 
   void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,

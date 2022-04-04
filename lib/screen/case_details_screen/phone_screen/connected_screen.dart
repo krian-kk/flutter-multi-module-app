@@ -31,54 +31,9 @@ class PhoneConnectedScreen extends StatefulWidget {
 
 class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
-  // List<CustomerMetGridModel> phoneCustomerMetGridList = [];
   @override
   Widget build(BuildContext context) {
-    // phoneCustomerMetGridList.addAll([
-    //   CustomerMetGridModel(
-    //       ImageResource.ptp, Languages.of(context)!.ptp.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(Constants.ptp,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!, true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(
-    //       ImageResource.rtp, Languages.of(context)!.rtp.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(Constants.rtp,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!, true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(
-    //       ImageResource.dispute, Languages.of(context)!.dispute.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Constants.dispute,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(
-    //       ImageResource.remainder,
-    //       (Languages.of(context)!.remainderCb.toUpperCase())
-    //           .toUpperCase()
-    //           .toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Constants.remainder,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(ImageResource.collections,
-    //       Languages.of(context)!.collections.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Constants.collections,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(ImageResource.ots, Constants.ots,
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Languages.of(context)!.ots.toUpperCase(),
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    // ]);
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];

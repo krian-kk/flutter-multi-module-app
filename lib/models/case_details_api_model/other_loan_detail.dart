@@ -27,9 +27,9 @@ class OtherLoanDetail {
       originalDue: json['original_due'],
       odVal: json['odVal'],
       cust: json['cust'] as String?,
-      accNo: json['accNo'] as String?,
+      accNo: json['accNo'] != null ? json['accNo'] as String? : ' ',
       caseId: json['caseId'] as String?,
-      bankName: json['bankName'] as String?,
+      bankName: json['bankName'] != null ? json['bankName'] as String? : ' ',
       agrRef: json['agrRef'] as String?,
     );
   }

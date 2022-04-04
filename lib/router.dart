@@ -206,26 +206,26 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         debugPrint(
             "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
 
-        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
-        //     arguments: state.notificationData);
-        String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
-        String? agentRef =
-            await PreferenceHelper.getPreference(Constants.agentRef);
-        // await SharedPreferences.getInstance().then((value) {
-        //   String? mPin = value.getString(Constants.mPin);
-        //   String? agentRef = value.getString(Constants.agentRef);
-        //   print('Mpin ======= > ${mPin}');
-        if (mPin != null) {
-          showMPinDialog(
-              mPin: mPin,
-              buildContext: context,
-              userName: agentRef,
-              notificationData: state.notificationData);
-        } else {
-          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-              arguments: state.notificationData);
-        }
-        // });
+        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+            arguments: state.notificationData);
+        // String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
+        // String? agentRef =
+        //     await PreferenceHelper.getPreference(Constants.agentRef);
+        // // await SharedPreferences.getInstance().then((value) {
+        // //   String? mPin = value.getString(Constants.mPin);
+        // //   String? agentRef = value.getString(Constants.agentRef);
+        // //   print('Mpin ======= > ${mPin}');
+        // if (mPin != null) {
+        //   showMPinDialog(
+        //       mPin: mPin,
+        //       buildContext: context,
+        //       userName: agentRef,
+        //       notificationData: state.notificationData);
+        // } else {
+        //   Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+        //       arguments: state.notificationData);
+        // }
+        // // });
       }
 
       if (state is AuthenticationUnAuthenticated) {

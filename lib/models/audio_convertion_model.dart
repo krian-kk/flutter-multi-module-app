@@ -67,17 +67,17 @@ class Result {
   }
 }
 
-class Metadata {
-  // Metadata({});
+// class Metadata {
+//   // Metadata({});
 
-  // Metadata.fromJson(Map<String, dynamic> json) {
-  // }
+//   // Metadata.fromJson(Map<String, dynamic> json) {
+//   // }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     return data;
+//   }
+// }
 
 class Body {
   String? type;

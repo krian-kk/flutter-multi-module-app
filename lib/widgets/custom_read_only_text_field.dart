@@ -347,10 +347,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   // errorText: validatePassword(widget.controller.text.trim()),
                   labelStyle: widget.lableStyle ??
                       const TextStyle(
+                          color: ColorResource.color666666,
+                          fontFamily: 'Lato',
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
-                          fontSize: FontSize.twelve,
-                          color: ColorResource.color23375A),
+                          fontSize: FontSize.fifteen),
+                  // const TextStyle(
+                  //     fontWeight: FontWeight.w400,
+                  //     fontStyle: FontStyle.normal,
+                  //     fontSize: FontSize.twelve,
+                  //     color: ColorResource.color23375A),
 
                   // Theme.of(context).textTheme.subtitle1!.copyWith(
                   //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
