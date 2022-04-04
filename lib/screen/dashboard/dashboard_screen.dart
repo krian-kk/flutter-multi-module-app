@@ -21,7 +21,8 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:origa/widgets/percent_indicatior_widget.dart';
+// import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../router.dart';
 
@@ -403,7 +404,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               const SizedBox(
                                                 height: 5,
                                               ),
-                                              LinearPercentIndicator(
+                                              PercentageIndicatorWidget(
                                                 padding:
                                                     const EdgeInsets.all(4),
                                                 animation: true,
@@ -475,7 +476,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               const SizedBox(
                                                 height: 5,
                                               ),
-                                              LinearPercentIndicator(
+                                              PercentageIndicatorWidget(
                                                 padding:
                                                     const EdgeInsets.all(4),
                                                 addAutomaticKeepAlive: false,

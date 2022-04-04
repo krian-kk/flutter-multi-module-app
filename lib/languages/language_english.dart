@@ -308,6 +308,9 @@ class LanguageEn extends Languages {
   String get ptp => 'PTP';
 
   @override
+  String get ptpType => 'PTP Type';
+
+  @override
   String get rtp => 'RTP (DENIAL)';
 
   @override
@@ -476,7 +479,7 @@ class LanguageEn extends Languages {
   String get rtpDenialReason => 'RTP/Denial Reason*';
 
   @override
-  String get disputeReason => 'Dispute Reason';
+  String get disputeReason => 'Dispute Reason*';
 
   @override
   String get modelMake => 'Model Make*';

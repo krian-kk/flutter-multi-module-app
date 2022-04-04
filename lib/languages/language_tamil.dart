@@ -309,6 +309,9 @@ class LanguageTa extends Languages {
   String get ptp => 'PTP';
 
   @override
+  String get ptpType => 'PTP வகை';
+
+  @override
   String get rtp => 'RTP (மறுப்பு)';
 
   @override
@@ -477,7 +480,7 @@ class LanguageTa extends Languages {
   String get rtpDenialReason => 'RTP/மறுப்பு காரணம்*';
 
   @override
-  String get disputeReason => 'சர்ச்சை காரணம்';
+  String get disputeReason => 'சர்ச்சை காரணம்*';
 
   @override
   String get modelMake => 'மாடல்  மேக்*';

@@ -282,6 +282,15 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
+                  if (expandedList[index].eventType?.toLowerCase() ==
+                          Constants.receipt.toLowerCase() &&
+                      expandedList[index].eventAttr?.amountCollected != null)
+                    CustomText(
+                      '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected}',
+                      fontSize: FontSize.fourteen,
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
                   if (expandedList[index].eventAttr?.date != null)
                     CustomText(
                       '${Languages.of(context)!.date.replaceAll('*', '')} : ${expandedList[index].eventAttr?.date.toString()}',
@@ -298,11 +307,21 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
-                      '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
+                      '${(expandedList[index].eventType?.toLowerCase() == Constants.ptp.toLowerCase() || expandedList[index].eventType?.toLowerCase() == Constants.tcPtp.toLowerCase()) ? Languages.of(context)!.ptpType : Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
                       fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
+                  // if (expandedList[index].eventType?.toLowerCase() ==
+                  //         Constants.ptp.toLowerCase() ||
+                  //     expandedList[index].eventType?.toLowerCase() ==
+                  //         Constants.tcPtp.toLowerCase())
+                  //   CustomText(
+                  //     '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.ptpType.toString()}',
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   if (expandedList[index].eventAttr?.remarks != null)
                     CustomText(
                       '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',

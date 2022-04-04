@@ -4,11 +4,11 @@ class EventAttr {
   String? remarks;
   // int? ptpAmount;
   String? mode;
-  // String? ptpType;
+  String? ptpType;
   // String? followUpPriority;
   // String? amntOts;
   // String? customerName;
-  // String? amountCollected;
+  String? amountCollected;
   // String? chequeRefNo;
   // String? remarkOts;
   // String? modelMake;
@@ -24,11 +24,11 @@ class EventAttr {
     this.remarks,
     // this.ptpAmount,
     this.mode,
-    // this.ptpType,
+    this.ptpType,
     // this.followUpPriority,
     // this.amntOts,
     // this.customerName,
-    // this.amountCollected,
+    this.amountCollected,
     // this.chequeRefNo,
     // this.remarkOts,
     // this.modelMake,
@@ -45,11 +45,11 @@ class EventAttr {
         remarks: json['remarks'] as String?,
         // ptpAmount: json['ptpAmount'] as int?,
         mode: json['mode'] as String?,
-        // ptpType: json['PTPType'] as String?,
+        ptpType: json['PTPType'] as String?,
         // followUpPriority: json['followUpPriority'] as String?,
         // amntOts: json['amntOts'] as String?,
         // customerName: json['customerName'] as String?,
-        // amountCollected: json['amountCollected'] as String?,
+        amountCollected: json['amountCollected'] as String?,
         // chequeRefNo: json['chequeRefNo'] as String?,
         // remarkOts: json['remarkOts'] as String?,
         // modelMake: json['modelMake'] as String?,
@@ -66,11 +66,11 @@ class EventAttr {
         'remarks': remarks,
         // 'ptpAmount': ptpAmount,
         'mode': mode,
-        // 'PTPType': ptpType,
+        'PTPType': ptpType,
         // 'followUpPriority': followUpPriority,
         // 'amntOts': amntOts,
         // 'customerName': customerName,
-        // 'amountCollected': amountCollected,
+        'amountCollected': amountCollected,
         // 'chequeRefNo': chequeRefNo,
         // 'remarkOts': remarkOts,
         // 'modelMake': modelMake,

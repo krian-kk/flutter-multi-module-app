@@ -203,6 +203,8 @@ abstract class Languages {
 
   String get ptp;
 
+  String get ptpType;
+
   String get rtp;
 
   String get dispute;
