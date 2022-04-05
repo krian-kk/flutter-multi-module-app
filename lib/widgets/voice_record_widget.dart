@@ -29,19 +29,21 @@ import '../utils/constants.dart';
 const AudioSource theSource = AudioSource.microphone;
 
 class VoiceRecodingWidget extends StatefulWidget {
-  const VoiceRecodingWidget({
-    Key? key,
-    this.recordingData,
-    this.caseId,
-    required this.filePath,
-    this.checkRecord,
-    required this.onRecordStart,
-  }) : super(key: key);
+  const VoiceRecodingWidget(
+      {Key? key,
+      this.recordingData,
+      this.caseId,
+      required this.filePath,
+      this.checkRecord,
+      required this.onRecordStart,
+      required this.enableTextFieldFunction})
+      : super(key: key);
   final String filePath;
   final Function? recordingData;
   final String? caseId;
   final OnChangeCheckRecord? checkRecord;
   final Function onRecordStart;
+  final OnChangeIsEnable enableTextFieldFunction;
 
   @override
   State<VoiceRecodingWidget> createState() => _VoiceRecodingWidgetState();
@@ -101,6 +103,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   // ----------------------  Here is the code for recording  -------
 
   Future<bool> startRecord() async {
+    FocusScope.of(context).unfocus();
     bool result = false;
     widget.onRecordStart();
     if (Platform.isIOS) {
@@ -111,7 +114,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       await platform
           .invokeMethod('startRecordAudio', {'filePath': widget.filePath}).then(
               (dynamic value) {
+        widget.enableTextFieldFunction(!value);
         setState(() => result = value);
+        // setState(() => widget.isEnableTextField = value);
       });
     } else if (Platform.isAndroid) {
       if (!recorderIsInited) {
@@ -126,6 +131,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         audioSource: theSource,
       )
           .then((void value) {
+        widget.enableTextFieldFunction(false);
         setState(() => result = true);
       });
     }
@@ -220,7 +226,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         getTranslatedData.result?.translatedText,
         getTranslatedData,
       );
+      widget.enableTextFieldFunction(true);
     } else {
+      widget.enableTextFieldFunction(true);
       widget.checkRecord!(Constants.none, '', Speech2TextModel());
     }
   }

@@ -928,4 +928,82 @@ class LanguageEn extends Languages {
 
   @override
   String get agent => 'Agent';
+
+  @override
+  String get dateOfLoanDisbursement => 'Date of loan disbursement';
+
+  @override
+  String get tos => 'TOS';
+
+  @override
+  String get emiAmount => 'EMI Amount';
+
+  @override
+  String get noOfPendingEMI => 'No Of Pending EMI';
+
+  @override
+  String get penaltyAmount => 'Penalty Amount';
+
+  @override
+  String get odInterest => 'OD interest';
+
+  @override
+  String get assetDetails => 'Asset details';
+
+  @override
+  String get coLender => 'CO-Lender ';
+
+  @override
+  String get employerBusinessEntity => 'Employer Business Entity';
+
+  @override
+  String get lastPaymentDate => 'Last payment date';
+
+  @override
+  String get sourcingRmName => 'Sourcing RM Name';
+
+  @override
+  String get lastPaidAmount => 'Last paid amount';
+
+  @override
+  String get riskRanking => 'Risk Ranking';
+
+  @override
+  String get reviewFlag => 'Review flag';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get agency => 'Agency';
+
+  @override
+  String get minDueAmount => 'Min due amount';
+
+  @override
+  String get cardOutstanding => 'Card outstanding';
+
+  @override
+  String get statementDate => 'Statement date';
+
+  @override
+  String get dueDate => 'Due date';
+
+  @override
+  String get cardStatus => 'Card status';
+
+  @override
+  String get lastBilledAmount => 'Last billed amount';
+
+  @override
+  String get chassisNumber => 'Chassis Number';
+
+  @override
+  String get riskBucket => 'Risk bucket';
+
+  @override
+  String get ref1 => 'Ref 1';
+
+  @override
+  String get ref2 => 'Ref 2';
 }

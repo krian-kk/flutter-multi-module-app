@@ -109,6 +109,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   bool isPlaying = false;
   bool isPaused = false;
   bool isActiveSpeaker = false;
+  bool isEnableReadOnly = true;
   TextEditingController translateTextController =
       TextEditingController(text: '');
   bool isEdit = false;
@@ -216,6 +217,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             height: widget.isLabel ? null : widget.height,
             child: TextFormField(
               textInputAction: TextInputAction.done,
+
               cursorHeight: 17,
               validator: (String? value) {
                 if (widget.validationRules.isNotEmpty) {
@@ -273,7 +275,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               enableSuggestions: false,
               obscureText: widget.obscureText,
               controller: widget.controller,
-              readOnly: widget.isReadOnly,
+              readOnly: widget.isReadOnly && isEnableReadOnly,
               enabled: widget.isEnable,
               keyboardType: widget.keyBoardType,
               cursorColor: widget.cursorColor,
@@ -324,6 +326,9 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                 widget.checkRecord!(
                                     Constants.none, '', Speech2TextModel());
                                 widget.returnS2Tresponse!(getTranslatedData);
+                              },
+                              enableTextFieldFunction: (bool val) {
+                                setState(() => isEnableReadOnly = val);
                               },
                               caseId: widget.caseId,
                               checkRecord: widget.checkRecord,
