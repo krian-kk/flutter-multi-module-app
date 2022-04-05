@@ -308,6 +308,9 @@ class LanguageEn extends Languages {
   String get ptp => 'PTP';
 
   @override
+  String get ptpType => 'PTP Type';
+
+  @override
   String get rtp => 'RTP (DENIAL)';
 
   @override
@@ -440,7 +443,7 @@ class LanguageEn extends Languages {
   String get ptpDate => 'PTP Date*';
 
   @override
-  String get ptpTime => 'PTP TIME*';
+  String get ptpTime => 'PTP Time*';
 
   @override
   String get ptpAmount => 'PTP Amount*';
@@ -476,16 +479,16 @@ class LanguageEn extends Languages {
   String get rtpDenialReason => 'RTP/Denial Reason*';
 
   @override
-  String get disputeReason => 'Dispute Reason';
+  String get disputeReason => 'Dispute Reason*';
 
   @override
-  String get modelMake => 'MODEL MAKE*';
+  String get modelMake => 'Model Make*';
 
   @override
-  String get registrationNo => 'Registration No';
+  String get registrationNo => 'Registration No*';
 
   @override
-  String get chassisNo => 'CHASSIS NO*';
+  String get chassisNo => 'Chassis No*';
 
   @override
   String get customUpload => 'CUSTOM UPLOAD';
@@ -922,4 +925,7 @@ class LanguageEn extends Languages {
 
   @override
   String get selectSpeechToTextLanguage => 'Select Speech to text language';
+
+  @override
+  String get agent => 'Agent';
 }

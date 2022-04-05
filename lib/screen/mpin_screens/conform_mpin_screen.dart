@@ -7,7 +7,8 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
+// import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConformMpinScreen extends StatefulWidget {
   final GestureTapCallback successFunction;
@@ -73,7 +74,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: PinCodeTextField(
+            child: PinCodeTextFieldWidget(
               appContext: context,
               controller: contoller,
               length: 4,

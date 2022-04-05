@@ -309,6 +309,9 @@ class LanguageHi extends Languages {
   String get ptp => 'PTP';
 
   @override
+  String get ptpType => 'पीटीपी प्रकार';
+
+  @override
   String get rtp => 'RTP (अस्वीकार)';
 
   @override
@@ -477,13 +480,13 @@ class LanguageHi extends Languages {
   String get rtpDenialReason => 'RTP/अस्वीकार का  कारण*';
 
   @override
-  String get disputeReason => 'विवाद का कारण';
+  String get disputeReason => 'विवाद का कारण*';
 
   @override
   String get modelMake => 'मॉडल बनाना*';
 
   @override
-  String get registrationNo => 'पंजीकरण क्रमांक';
+  String get registrationNo => 'पंजीकरण क्रमांक*';
 
   @override
   String get chassisNo => 'चेसिस संख्या*';
@@ -925,4 +928,7 @@ class LanguageHi extends Languages {
 
   @override
   String get selectSpeechToTextLanguage => 'भाषण से पाठ भाषा का चयन करें';
+
+  @override
+  String get agent => 'एजेंट';
 }

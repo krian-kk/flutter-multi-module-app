@@ -9,7 +9,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class ForgotMpinScreen extends StatefulWidget {
   final OnChangeBoolFuction submitOtpFunction;
@@ -75,10 +75,10 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: PinCodeTextField(
+            child: PinCodeTextFieldWidget(
               appContext: context,
               controller: contoller,
-              length: 4,
+              length: 6,
               mainAxisAlignment: MainAxisAlignment.center,
               obscureText: false,
               animationType: AnimationType.scale,
@@ -112,7 +112,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                     ? Colors.red
                     : ColorResource.color232222.withOpacity(0.3),
                 fieldHeight: 46,
-                fieldWidth: 37,
+                fieldWidth: 20,
                 borderWidth: 1,
               ),
             ),
@@ -121,7 +121,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           CustomButton(
             Languages.of(context)!.submitOTP.toUpperCase(),
             fontSize: FontSize.sixteen,
-            isEnabled: (contoller.text.length > 3),
+            isEnabled: (contoller.text.length > 5),
             onTap: () {
               widget.submitOtpFunction(
                   contoller.text, isError, changeIsError());

@@ -227,23 +227,24 @@ class _CustomOtherFeedBackBottomSheetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    CustomText(
-                                      Languages.of(context)!.nextActionDate,
-                                      fontSize: FontSize.twelve,
-                                      fontWeight: FontWeight.w400,
-                                      color: ColorResource.color666666,
-                                      fontStyle: FontStyle.normal,
-                                    ),
+                                    // CustomText(
+                                    //   Languages.of(context)!.nextActionDate,
+                                    //   fontSize: FontSize.twelve,
+                                    //   fontWeight: FontWeight.w400,
+                                    //   color: ColorResource.color666666,
+                                    //   fontStyle: FontStyle.normal,
+                                    // ),
                                     SizedBox(
                                       width:
                                           (MediaQuery.of(context).size.width -
                                                   44) /
                                               2,
                                       child: CustomReadOnlyTextField(
-                                        Languages.of(context)!.date,
+                                        Languages.of(context)!.nextActionDate,
                                         dateControlller,
                                         validationRules: const ['required'],
                                         isReadOnly: true,
+                                        isLabel: true,
                                         onTapped: () =>
                                             PickDateAndTimeUtils.pickDate(
                                                 context,
@@ -629,7 +630,8 @@ class _CustomOtherFeedBackBottomSheetState
               eventsDetails: requestBodyData.toJson(),
               caseId: widget.caseId,
               selectedFollowUpDate: dateControlller.text,
-              selectedClipValue: Constants.otherFeedback,bloc: widget.bloc);
+              selectedClipValue: Constants.otherFeedback,
+              bloc: widget.bloc);
 
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {

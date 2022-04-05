@@ -82,19 +82,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                           children: _buildSelectedClip(selectedClipList),
                         ),
                         const SizedBox(height: 25),
-                        CustomText(
-                          Languages.of(context)!.nextActionDate,
-                          color: ColorResource.color666666,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width - 62) / 2,
                           child: CustomReadOnlyTextField(
-                            '',
+                            Languages.of(context)!.nextActionDate,
                             widget.bloc
                                 .addressCustomerNotMetNextActionDateController,
+                            isLabel: true,
                             focusNode:
                                 widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,

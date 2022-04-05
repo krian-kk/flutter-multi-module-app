@@ -203,6 +203,8 @@ abstract class Languages {
 
   String get ptp;
 
+  String get ptpType;
+
   String get rtp;
 
   String get dispute;
@@ -611,4 +613,6 @@ abstract class Languages {
   String get visit;
 
   String get selectSpeechToTextLanguage;
+
+  String get agent;
 }

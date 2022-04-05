@@ -46,14 +46,11 @@ dependencies:
   location: ^4.3.0
   location_permissions: ^4.0.0
   mime: ^1.0.1
-  objectid: ^2.0.0
   openid_client: ^0.4.3
   overlay_support: ^1.2.1
   package_info_plus: ^1.0.4
   path_provider: ^2.0.5
-  percent_indicator: ^3.4.0
   permission_handler: ^8.1.4+2
-  pin_code_fields: ^7.3.0
   shared_preferences: ^2.0.8
   url_launcher: ^6.0.11
   webview_flutter: ^3.0.1

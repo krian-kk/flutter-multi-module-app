@@ -233,26 +233,28 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          CustomText(
-                                            Languages.of(context)!
-                                                .otsPaymentDate,
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w400,
-                                            color: ColorResource.color666666,
-                                            fontStyle: FontStyle.normal,
-                                          ),
+                                          // CustomText(
+                                          //   Languages.of(context)!
+                                          //       .otsPaymentDate,
+                                          //   fontSize: FontSize.twelve,
+                                          //   fontWeight: FontWeight.w400,
+                                          //   color: ColorResource.color666666,
+                                          //   fontStyle: FontStyle.normal,
+                                          // ),
                                           SizedBox(
                                             width: (MediaQuery.of(context)
                                                     .size
                                                     .width) /
                                                 2,
                                             child: CustomReadOnlyTextField(
-                                              '',
+                                              Languages.of(context)!
+                                                  .otsPaymentDate,
                                               otsPaymentDateControlller,
                                               validationRules: const [
                                                 'required'
                                               ],
                                               isReadOnly: true,
+                                              isLabel: true,
                                               onTapped: () =>
                                                   PickDateAndTimeUtils.pickDate(
                                                       context,
@@ -592,7 +594,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: otsPaymentDateControlller.text,
-                selectedClipValue: Constants.ots,bloc: widget.bloc);
+                selectedClipValue: Constants.ots,
+                bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {

@@ -196,105 +196,161 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               children: <Widget>[
                                 widget.customerLoanUserWidget,
                                 const SizedBox(height: 11),
+                                // Row(
+                                //   children: [
+                                //     Flexible(
+                                //         child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.start,
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       mainAxisSize: MainAxisSize.min,
+                                //       children: [
+                                //         // CustomText(
+                                //         //   Languages.of(context)!.ptpDate,
+                                //         //   fontSize: FontSize.twelve,
+                                //         //   fontWeight: FontWeight.w400,
+                                //         //   color: ColorResource.color666666,
+                                //         //   fontStyle: FontStyle.normal,
+                                //         // ),
+                                //         SizedBox(
+                                //           width: (MediaQuery.of(context)
+                                //                   .size
+                                //                   .width) /
+                                //               2,
+                                //           child: CustomReadOnlyTextField(
+                                //             // Languages.of(context)!.ptpDate,
+                                //             Languages.of(context)!.ptpDate,
+                                //             ptpDateControlller,
+                                //             // isLabel: true,
+                                //             isReadOnly: true,
+                                //             validationRules: const ['required'],
+                                //             onTapped: () =>
+                                //                 PickDateAndTimeUtils.pickDate(
+                                //                     context,
+                                //                     (newDate, followUpDate) {
+                                //               if (newDate != null &&
+                                //                   followUpDate != null) {
+                                //                 setState(() {
+                                //                   ptpDateControlller.text =
+                                //                       newDate;
+                                //                 });
+                                //                 widget.bloc.add(
+                                //                     ChangeFollowUpDateEvent(
+                                //                         followUpDate:
+                                //                             followUpDate));
+                                //               }
+                                //             }),
+                                //             suffixWidget: SvgPicture.asset(
+                                //               ImageResource.calendar,
+                                //               fit: BoxFit.scaleDown,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     )),
+                                //     const SizedBox(width: 7),
+                                //     Flexible(
+                                //         child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.start,
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       mainAxisSize: MainAxisSize.min,
+                                //       children: [
+                                //         // CustomText(
+                                //         //   Languages.of(context)!.ptpTime,
+                                //         //   fontSize: FontSize.twelve,
+                                //         //   fontWeight: FontWeight.w400,
+                                //         //   color: ColorResource.color666666,
+                                //         //   fontStyle: FontStyle.normal,
+                                //         // ),
+                                //         SizedBox(
+                                //           width: (MediaQuery.of(context)
+                                //                   .size
+                                //                   .width) /
+                                //               2,
+                                //           child: CustomReadOnlyTextField(
+                                //             // Languages.of(context)!.ptpTime,
+                                //             Languages.of(context)!.ptpTime,
+                                //             ptpTimeControlller,
+                                //             // isLabel: true,
+                                //             validatorCallBack: () {},
+                                //             isReadOnly: true,
+                                //             isLabel: true,
+                                //             validationRules: const ['required'],
+                                //             onTapped: () =>
+                                //                 PickDateAndTimeUtils.pickTime(
+                                //                     context, (newTime) {
+                                //               if (newTime != null) {
+                                //                 setState(() {
+                                //                   ptpTimeControlller.text =
+                                //                       newTime;
+                                //                 });
+                                //               }
+                                //             }),
+                                //             suffixWidget: SvgPicture.asset(
+                                //               ImageResource.clock,
+                                //               fit: BoxFit.scaleDown,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     )),
+                                //   ],
+                                // ),
                                 Row(
                                   children: [
                                     Flexible(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!.ptpDate,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
-                                          color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
+                                      child: CustomReadOnlyTextField(
+                                        Languages.of(context)!.ptpDate,
+                                        ptpDateControlller,
+                                        isLabel: true,
+                                        isReadOnly: true,
+                                        validationRules: const ['required'],
+                                        onTapped: () =>
+                                            PickDateAndTimeUtils.pickDate(
+                                                context,
+                                                (newDate, followUpDate) {
+                                          if (newDate != null &&
+                                              followUpDate != null) {
+                                            setState(() {
+                                              ptpDateControlller.text = newDate;
+                                            });
+                                            widget.bloc.add(
+                                                ChangeFollowUpDateEvent(
+                                                    followUpDate:
+                                                        followUpDate));
+                                          }
+                                        }),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.calendar,
+                                          fit: BoxFit.scaleDown,
                                         ),
-                                        SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width) /
-                                              2,
-                                          child: CustomReadOnlyTextField(
-                                            // Languages.of(context)!.ptpDate,
-                                            '',
-                                            ptpDateControlller,
-                                            // isLabel: true,
-                                            isReadOnly: true,
-                                            validationRules: const ['required'],
-                                            onTapped: () =>
-                                                PickDateAndTimeUtils.pickDate(
-                                                    context,
-                                                    (newDate, followUpDate) {
-                                              if (newDate != null &&
-                                                  followUpDate != null) {
-                                                setState(() {
-                                                  ptpDateControlller.text =
-                                                      newDate;
-                                                });
-                                                widget.bloc.add(
-                                                    ChangeFollowUpDateEvent(
-                                                        followUpDate:
-                                                            followUpDate));
-                                              }
-                                            }),
-                                            suffixWidget: SvgPicture.asset(
-                                              ImageResource.calendar,
-                                              fit: BoxFit.scaleDown,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
+                                      ),
+                                    ),
                                     const SizedBox(width: 7),
                                     Flexible(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!.ptpTime,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
-                                          color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                        SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width) /
-                                              2,
-                                          child: CustomReadOnlyTextField(
-                                            // Languages.of(context)!.ptpTime,
-                                            '',
-                                            ptpTimeControlller,
-                                            // isLabel: true,
-                                            validatorCallBack: () {},
-                                            isReadOnly: true,
-                                            validationRules: const ['required'],
-                                            onTapped: () =>
-                                                PickDateAndTimeUtils.pickTime(
-                                                    context, (newTime) {
-                                              if (newTime != null) {
-                                                setState(() {
-                                                  ptpTimeControlller.text =
-                                                      newTime;
-                                                });
-                                              }
-                                            }),
-                                            suffixWidget: SvgPicture.asset(
-                                              ImageResource.clock,
-                                              fit: BoxFit.scaleDown,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                        child: CustomReadOnlyTextField(
+                                      Languages.of(context)!.ptpTime,
+                                      ptpTimeControlller,
+                                      validatorCallBack: () {},
+                                      isReadOnly: true,
+                                      isLabel: true,
+                                      validationRules: const ['required'],
+                                      onTapped: () =>
+                                          PickDateAndTimeUtils.pickTime(context,
+                                              (newTime) {
+                                        if (newTime != null) {
+                                          setState(() {
+                                            ptpTimeControlller.text = newTime;
+                                          });
+                                        }
+                                      }),
+                                      suffixWidget: SvgPicture.asset(
+                                        ImageResource.clock,
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     )),
                                   ],
                                 ),

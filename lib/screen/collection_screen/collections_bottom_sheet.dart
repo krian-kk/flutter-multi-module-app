@@ -230,31 +230,29 @@ class _CustomCollectionsBottomSheetState
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        CustomText(
-                                          Languages.of(context)!
-                                              .amountCollected,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
-                                          color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
-                                        ),
+                                        // CustomText(
+                                        //   ,
+                                        //   fontSize: FontSize.twelve,
+                                        //   fontWeight: FontWeight.w400,
+                                        //   color: ColorResource.color666666,
+                                        //   fontStyle: FontStyle.normal,
+                                        // ),
                                         SizedBox(
                                           width: (MediaQuery.of(context)
                                                   .size
                                                   .width) /
                                               2,
                                           child: CustomReadOnlyTextField(
-                                            '',
+                                            Languages.of(context)!
+                                                .amountCollected,
                                             amountCollectedControlller,
-                                            // contentPadding:
-                                            //     const EdgeInsets.fromLTRB(
-                                            //         1, 23, 5, 10),
                                             onChanged: () {
                                               if (_formKey.currentState!
                                                   .validate()) {
                                                 _formKey.currentState!.save();
                                               }
                                             },
+                                            isLabel: true,
                                             validatorCallBack: () {},
                                             keyBoardType: TextInputType.number,
                                             focusNode: amountCollectedFocusNode,
@@ -267,12 +265,16 @@ class _CustomCollectionsBottomSheetState
                                                 GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      amountCollectedControlller
-                                                          .text = (int.parse(
-                                                                  amountCollectedControlller
-                                                                      .text) +
-                                                              1)
-                                                          .toString();
+                                                      if (amountCollectedControlller
+                                                              .text !=
+                                                          '') {
+                                                        amountCollectedControlller
+                                                            .text = (int.parse(
+                                                                    amountCollectedControlller
+                                                                        .text) +
+                                                                1)
+                                                            .toString();
+                                                      }
                                                     });
                                                   },
                                                   child: SvgPicture.asset(
@@ -284,12 +286,16 @@ class _CustomCollectionsBottomSheetState
                                                 GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      amountCollectedControlller
-                                                          .text = (int.parse(
-                                                                  amountCollectedControlller
-                                                                      .text) -
-                                                              1)
-                                                          .toString();
+                                                      if (amountCollectedControlller
+                                                              .text !=
+                                                          '') {
+                                                        amountCollectedControlller
+                                                            .text = (int.parse(
+                                                                    amountCollectedControlller
+                                                                        .text) +
+                                                                1)
+                                                            .toString();
+                                                      }
                                                     });
                                                   },
                                                   child: SvgPicture.asset(
@@ -314,16 +320,17 @@ class _CustomCollectionsBottomSheetState
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          CustomText(
-                                            Languages.of(context)!.date,
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w400,
-                                            color: ColorResource.color666666,
-                                            fontStyle: FontStyle.normal,
-                                          ),
+                                          // CustomText(
+                                          //   Languages.of(context)!.date,
+                                          //   fontSize: FontSize.twelve,
+                                          //   fontWeight: FontWeight.w400,
+                                          //   color: ColorResource.color666666,
+                                          //   fontStyle: FontStyle.normal,
+                                          // ),
                                           CustomReadOnlyTextField(
-                                            '',
+                                            Languages.of(context)!.date,
                                             dateControlller,
+                                            isLabel: true,
                                             validationRules: const ['required'],
                                             isReadOnly: true,
                                             onTapped: () =>
@@ -785,7 +792,8 @@ class _CustomCollectionsBottomSheetState
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
                       selectedFollowUpDate: dateControlller.text,
-                      selectedClipValue: Constants.collections,bloc: widget.bloc);
+                      selectedClipValue: Constants.collections,
+                      bloc: widget.bloc);
                   if (ConnectivityResult.none ==
                       await Connectivity().checkConnectivity()) {
                     setState(() => isSubmit = true);
@@ -855,7 +863,8 @@ class _CustomCollectionsBottomSheetState
                                 eventsDetails: requestBodyData.toJson(),
                                 caseId: widget.caseId,
                                 selectedFollowUpDate: dateControlller.text,
-                                selectedClipValue: Constants.collections,bloc: widget.bloc);
+                                selectedClipValue: Constants.collections,
+                                bloc: widget.bloc);
                             if (ConnectivityResult.none ==
                                 await Connectivity().checkConnectivity()) {
                             } else {

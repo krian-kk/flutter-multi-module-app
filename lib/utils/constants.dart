@@ -37,6 +37,7 @@ class Constants {
   static const String telecaller = 'TELECALLER';
 
   static const String ptp = 'PTP';
+  static const String tcPtp = 'TC : PTP';
   static const String rtp = 'RTP (DENIAL)';
   static const String denial = 'DENIAL';
   static const String dispute = 'DISPUTE';

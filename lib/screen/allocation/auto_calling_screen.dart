@@ -17,7 +17,7 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 import 'package:origa/widgets/no_case_available.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:origa/widgets/percent_indicatior_widget.dart';
 
 class AutoCalling {
   static Future<void> phoneBottomSheet(
@@ -75,7 +75,7 @@ class AutoCalling {
                               fontWeight: FontWeight.w700,
                             ),
                             const SizedBox(height: 5),
-                            LinearPercentIndicator(
+                            PercentageIndicatorWidget(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 6, vertical: 4),
                               animation: true,

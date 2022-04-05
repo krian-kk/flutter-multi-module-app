@@ -309,6 +309,9 @@ class LanguageTa extends Languages {
   String get ptp => 'PTP';
 
   @override
+  String get ptpType => 'PTP வகை';
+
+  @override
   String get rtp => 'RTP (மறுப்பு)';
 
   @override
@@ -477,13 +480,13 @@ class LanguageTa extends Languages {
   String get rtpDenialReason => 'RTP/மறுப்பு காரணம்*';
 
   @override
-  String get disputeReason => 'சர்ச்சை காரணம்';
+  String get disputeReason => 'சர்ச்சை காரணம்*';
 
   @override
   String get modelMake => 'மாடல்  மேக்*';
 
   @override
-  String get registrationNo => 'பதிவு எண்';
+  String get registrationNo => 'பதிவு எண்*';
 
   @override
   String get chassisNo => 'Chassis எண்*';
@@ -929,4 +932,7 @@ class LanguageTa extends Languages {
   @override
   String get selectSpeechToTextLanguage =>
       'பேச்சு முதல் உரை மொழியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get agent => 'முகவர்';
 }

@@ -27,7 +27,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
@@ -154,21 +153,22 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CustomText(
-                                  Languages.of(context)!.date,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                // CustomText(
+                                //   Languages.of(context)!.date,
+                                //   fontSize: FontSize.twelve,
+                                //   fontWeight: FontWeight.w400,
+                                //   color: ColorResource.color666666,
+                                //   fontStyle: FontStyle.normal,
+                                // ),
                                 SizedBox(
                                   width:
                                       (MediaQuery.of(context).size.width) / 2,
                                   child: CustomReadOnlyTextField(
-                                    '',
+                                    Languages.of(context)!.date,
                                     dateControlller,
                                     validationRules: const ['required'],
                                     isReadOnly: true,
+                                    isLabel: true,
                                     onTapped: () =>
                                         PickDateAndTimeUtils.pickDate(context,
                                             (newDate, followUpDate) {
@@ -196,20 +196,21 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CustomText(
-                                  Languages.of(context)!.time,
-                                  fontSize: FontSize.twelve,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorResource.color666666,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                // CustomText(
+                                //   Languages.of(context)!.time,
+                                //   fontSize: FontSize.twelve,
+                                //   fontWeight: FontWeight.w400,
+                                //   color: ColorResource.color666666,
+                                //   fontStyle: FontStyle.normal,
+                                // ),
                                 SizedBox(
                                   width:
                                       (MediaQuery.of(context).size.width) / 2,
                                   child: CustomReadOnlyTextField(
-                                    '',
+                                    Languages.of(context)!.time,
                                     timeControlller,
                                     isReadOnly: true,
+                                    isLabel: true,
                                     validationRules: const ['required'],
                                     onTapped: () =>
                                         PickDateAndTimeUtils.pickTime(context,
@@ -244,8 +245,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.registrationNo.toUpperCase() +
-                              '*',
+                          Languages.of(context)!.registrationNo,
                           registrationNoControlller,
                           focusNode: registraionNoFocusNode,
                           validationRules: const ['required'],
@@ -482,7 +482,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       caseId: widget.caseId,
                                       selectedFollowUpDate:
                                           dateControlller.text,
-                                      selectedClipValue: Constants.repo,bloc: widget.bloc);
+                                      selectedClipValue: Constants.repo,
+                                      bloc: widget.bloc);
                                   if (ConnectivityResult.none ==
                                       await Connectivity()
                                           .checkConnectivity()) {
