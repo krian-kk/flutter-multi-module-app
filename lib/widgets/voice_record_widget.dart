@@ -167,9 +167,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   }
 
   apiCall() async {
-    setState(() {
-      uploadFileLists = [File(widget.filePath)];
-    });
+    if (mounted) {
+      setState(() => uploadFileLists = [File(widget.filePath)]);
+    }
     await audioTranslateAPI();
   }
 

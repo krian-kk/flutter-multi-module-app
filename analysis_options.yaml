@@ -56,6 +56,6 @@ linter:
 
     # Blindly follow the Flutter code style, which prefers types everywhere
 
-    # always_specify_types: true
+    always_specify_types: true
 
     # Back to the 80s
